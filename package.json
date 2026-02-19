@@ -1,0 +1,27 @@
+{
+  "name": "bac-bank",
+  "private": true,
+  "version": "0.1.0",
+  "description": "BAC Bank monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @bac-bank/api",
+    "dev:all": "concurrently \"npm run dev -w @bac-bank/api\" \"npm run dev -w @bac-bank/web\"",
+    "dev:api": "npm run dev -w @bac-bank/api",
+    "dev:web": "npm run dev -w @bac-bank/web",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "test": "npm run test --workspaces",
+    "db:up": "docker compose up -d postgres redis",
+    "db:down": "docker compose down"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

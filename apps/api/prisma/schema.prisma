@@ -1,0 +1,470 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SessionType {
+  NORMAL
+  MAKEUP
+}
+
+enum ContentFormat {
+  MARKDOWN
+  HYBRID
+}
+
+enum AssetType {
+  IMAGE
+  GRAPH
+  TABLE
+  FILE
+}
+
+enum IngestionBatchStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PARTIALLY_PUBLISHED
+  PUBLISHED
+  FAILED
+}
+
+enum IngestionDraftStatus {
+  DRAFT
+  APPROVED
+  REJECTED
+  PUBLISHED
+}
+
+enum IngestionIssueSeverity {
+  INFO
+  WARNING
+  ERROR
+}
+
+enum PracticeSessionStatus {
+  CREATED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Stream {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code            String          @unique
+  name            String          @unique
+  subjectMappings StreamSubject[]
+  exams           Exam[]
+  users           User[]
+  createdAt       DateTime        @default(now()) @map("created_at")
+  updatedAt       DateTime        @updatedAt @map("updated_at")
+
+  @@map("streams")
+}
+
+model Subject {
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  code           String          @unique
+  name           String          @unique
+  streamMappings StreamSubject[]
+  exams          Exam[]          @relation("SubjectExams")
+  topics         Topic[]
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+
+  @@map("subjects")
+}
+
+model StreamSubject {
+  streamId   String   @map("stream_id") @db.Uuid
+  subjectId  String   @map("subject_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at")
+  stream     Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  subject    Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@id([streamId, subjectId])
+  @@index([subjectId])
+  @@map("stream_subjects")
+}
+
+model Exam {
+  id                      String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  year                    Int
+  streamId                String      @map("stream_id") @db.Uuid
+  subjectId               String      @map("subject_id") @db.Uuid
+  sessionType             SessionType @map("session_type")
+  durationMinutes         Int         @map("duration_minutes")
+  totalPoints             Int         @map("total_points")
+  officialSourceReference String?     @map("official_source_reference") @db.Text
+  isPublished             Boolean     @default(false) @map("is_published")
+  stream                  Stream      @relation(fields: [streamId], references: [id], onDelete: Restrict)
+  subject                 Subject     @relation("SubjectExams", fields: [subjectId], references: [id], onDelete: Restrict)
+  exercises               Exercise[]
+  createdAt               DateTime    @default(now()) @map("created_at")
+  updatedAt               DateTime    @updatedAt @map("updated_at")
+
+  @@unique([year, streamId, subjectId, sessionType])
+  @@index([year, streamId, subjectId])
+  @@map("exams")
+}
+
+model Exercise {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  examId      String     @map("exam_id") @db.Uuid
+  title       String?
+  introText   String?    @map("intro_text") @db.Text
+  orderIndex  Int        @map("order_index")
+  totalPoints Int        @map("total_points")
+  exam        Exam       @relation(fields: [examId], references: [id], onDelete: Cascade)
+  questions   Question[]
+  sessionExercises PracticeSessionExercise[]
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  @@unique([examId, orderIndex])
+  @@index([examId])
+  @@map("exercises")
+}
+
+model Question {
+  id              String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  exerciseId      String            @map("exercise_id") @db.Uuid
+  orderIndex      Int               @map("order_index")
+  points          Int
+  difficultyLevel Int?              @map("difficulty_level")
+  contentFormat   ContentFormat     @default(MARKDOWN) @map("content_format")
+  isActive        Boolean           @default(true) @map("is_active")
+  exercise        Exercise          @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  contents        QuestionContent[]
+  assets          QuestionAsset[]
+  answer          Answer?
+  questionTopics  QuestionTopic[]
+  attempts        UserAttempt[]
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  @@unique([exerciseId, orderIndex])
+  @@index([exerciseId])
+  @@map("questions")
+}
+
+model QuestionContent {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  questionId      String   @map("question_id") @db.Uuid
+  contentMarkdown String   @map("content_markdown") @db.Text
+  versionNumber   Int      @default(1) @map("version_number")
+  question        Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@unique([questionId, versionNumber])
+  @@index([questionId, createdAt])
+  @@map("question_contents")
+}
+
+model QuestionAsset {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  questionId String    @map("question_id") @db.Uuid
+  fileUrl    String    @map("file_url") @db.Text
+  assetType  AssetType @map("asset_type")
+  orderIndex Int       @default(0) @map("order_index")
+  caption    String?   @db.Text
+  question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([questionId, orderIndex])
+  @@map("question_assets")
+}
+
+model Answer {
+  id                        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  questionId                String   @unique @map("question_id") @db.Uuid
+  officialAnswerMarkdown    String   @map("official_answer_markdown") @db.Text
+  markingSchemeMarkdown     String?  @map("marking_scheme_markdown") @db.Text
+  commonMistakesMarkdown    String?  @map("common_mistakes_markdown") @db.Text
+  examinerCommentaryMarkdown String? @map("examiner_commentary_markdown") @db.Text
+  question                  Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  createdAt                 DateTime @default(now()) @map("created_at")
+  updatedAt                 DateTime @updatedAt @map("updated_at")
+
+  @@map("answers")
+}
+
+model Topic {
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId      String          @map("subject_id") @db.Uuid
+  code           String
+  name           String
+  parentId       String?         @map("parent_id") @db.Uuid
+  subject        Subject         @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  parent         Topic?          @relation("TopicHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children       Topic[]         @relation("TopicHierarchy")
+  questionTopics QuestionTopic[]
+  topicStats     UserTopicStats[]
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+
+  @@unique([subjectId, code])
+  @@unique([subjectId, parentId, name])
+  @@index([subjectId])
+  @@index([parentId])
+  @@map("topics")
+}
+
+model QuestionTopic {
+  questionId String  @map("question_id") @db.Uuid
+  topicId    String  @map("topic_id") @db.Uuid
+  weight     Decimal @default(1.0) @db.Decimal(4, 2)
+  isPrimary  Boolean @default(false) @map("is_primary")
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  topic      Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, topicId])
+  @@index([topicId])
+  @@map("question_topics")
+}
+
+model User {
+  id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String          @unique
+  fullName     String?         @map("full_name")
+  passwordHash String          @map("password_hash")
+  streamId     String?         @map("stream_id") @db.Uuid
+  stream       Stream?         @relation(fields: [streamId], references: [id], onDelete: SetNull)
+  attempts     UserAttempt[]
+  topicStats   UserTopicStats[]
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+
+  @@index([streamId])
+  @@map("users")
+}
+
+model UserAttempt {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String   @map("user_id") @db.Uuid
+  questionId      String   @map("question_id") @db.Uuid
+  selectedAnswer  String?  @map("selected_answer") @db.Text
+  isCorrect       Boolean? @map("is_correct")
+  scoreAwarded    Decimal? @map("score_awarded") @db.Decimal(5, 2)
+  maxScore        Decimal? @map("max_score") @db.Decimal(5, 2)
+  timeSpentSeconds Int?    @map("time_spent_seconds")
+  attemptedAt     DateTime @default(now()) @map("attempted_at")
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question        Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, questionId])
+  @@index([questionId, attemptedAt])
+  @@map("user_attempts")
+}
+
+model UserTopicStats {
+  userId             String   @map("user_id") @db.Uuid
+  topicId            String   @map("topic_id") @db.Uuid
+  accuracyPercentage Decimal  @default(0) @map("accuracy_percentage") @db.Decimal(5, 2)
+  totalAttempts      Int      @default(0) @map("total_attempts")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic              Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([userId, topicId])
+  @@index([topicId])
+  @@map("user_topic_stats")
+}
+
+model PracticeSession {
+  id                   String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                String?
+  requestedExerciseCount Int                     @default(6) @map("requested_exercise_count")
+  filtersJson          Json?                     @map("filters_json")
+  status               PracticeSessionStatus     @default(CREATED)
+  exercises            PracticeSessionExercise[]
+  createdAt            DateTime                  @default(now()) @map("created_at")
+  updatedAt            DateTime                  @updatedAt @map("updated_at")
+
+  @@index([status, createdAt])
+  @@map("practice_sessions")
+}
+
+model PracticeSessionExercise {
+  sessionId   String          @map("session_id") @db.Uuid
+  exerciseId  String          @map("exercise_id") @db.Uuid
+  orderIndex  Int             @map("order_index")
+  session     PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exercise    Exercise        @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  @@id([sessionId, exerciseId])
+  @@unique([sessionId, orderIndex])
+  @@index([exerciseId])
+  @@map("practice_session_exercises")
+}
+
+model IngestionBatch {
+  id            String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  label         String
+  sourceType    String               @default("PDF_OCR") @map("source_type")
+  sourcePath    String?              @map("source_path") @db.Text
+  parserVersion String?              @map("parser_version")
+  ocrEngine     String?              @map("ocr_engine")
+  status        IngestionBatchStatus @default(DRAFT)
+  metadata      Json?
+  submittedAt   DateTime?            @map("submitted_at")
+  reviewedAt    DateTime?            @map("reviewed_at")
+  publishedAt   DateTime?            @map("published_at")
+  createdAt     DateTime             @default(now()) @map("created_at")
+  updatedAt     DateTime             @updatedAt @map("updated_at")
+  documents     IngestionDocument[]
+  examDrafts    IngestionExamDraft[]
+  issues        IngestionIssue[]
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("ingestion_batches")
+}
+
+model IngestionDocument {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  batchId        String               @map("batch_id") @db.Uuid
+  fileName       String               @map("file_name")
+  filePath       String               @map("file_path") @db.Text
+  checksumSha256 String?              @map("checksum_sha256")
+  pageCount      Int?                 @map("page_count")
+  languageHint   String?              @map("language_hint")
+  metadata       Json?
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+  batch          IngestionBatch       @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  examDrafts     IngestionExamDraft[]
+
+  @@unique([batchId, fileName])
+  @@index([batchId])
+  @@map("ingestion_documents")
+}
+
+model IngestionExamDraft {
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  batchId                 String              @map("batch_id") @db.Uuid
+  documentId              String?             @map("document_id") @db.Uuid
+  year                    Int
+  streamCode              String              @map("stream_code")
+  subjectCode             String              @map("subject_code")
+  sessionType             SessionType         @map("session_type")
+  durationMinutes         Int?                @map("duration_minutes")
+  totalPoints             Int?                @map("total_points")
+  officialSourceReference String?             @map("official_source_reference") @db.Text
+  title                   String?
+  status                  IngestionDraftStatus @default(DRAFT)
+  reviewNotes             String?             @map("review_notes") @db.Text
+  metadata                Json?
+  createdAt               DateTime            @default(now()) @map("created_at")
+  updatedAt               DateTime            @updatedAt @map("updated_at")
+  batch                   IngestionBatch      @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  document                IngestionDocument?  @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  exercises               IngestionExerciseDraft[]
+  issues                  IngestionIssue[]
+
+  @@index([batchId])
+  @@index([documentId])
+  @@index([year, streamCode, subjectCode, sessionType])
+  @@map("ingestion_exam_drafts")
+}
+
+model IngestionExerciseDraft {
+  id          String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  examDraftId String               @map("exam_draft_id") @db.Uuid
+  orderIndex  Int                  @map("order_index")
+  title       String?
+  introText   String?              @map("intro_text") @db.Text
+  totalPoints Int?                 @map("total_points")
+  status      IngestionDraftStatus @default(DRAFT)
+  reviewNotes String?              @map("review_notes") @db.Text
+  metadata    Json?
+  createdAt   DateTime             @default(now()) @map("created_at")
+  updatedAt   DateTime             @updatedAt @map("updated_at")
+  examDraft   IngestionExamDraft   @relation(fields: [examDraftId], references: [id], onDelete: Cascade)
+  questions   IngestionQuestionDraft[]
+
+  @@unique([examDraftId, orderIndex])
+  @@index([examDraftId])
+  @@map("ingestion_exercise_drafts")
+}
+
+model IngestionQuestionDraft {
+  id                         String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  exerciseDraftId            String                      @map("exercise_draft_id") @db.Uuid
+  orderIndex                 Int                         @map("order_index")
+  points                     Int?
+  difficultyLevel            Int?                        @map("difficulty_level")
+  contentFormat              ContentFormat               @default(MARKDOWN) @map("content_format")
+  contentMarkdown            String                      @map("content_markdown") @db.Text
+  officialAnswerMarkdown     String?                     @map("official_answer_markdown") @db.Text
+  markingSchemeMarkdown      String?                     @map("marking_scheme_markdown") @db.Text
+  commonMistakesMarkdown     String?                     @map("common_mistakes_markdown") @db.Text
+  examinerCommentaryMarkdown String?                     @map("examiner_commentary_markdown") @db.Text
+  sourcePageStart            Int?                        @map("source_page_start")
+  sourcePageEnd              Int?                        @map("source_page_end")
+  status                     IngestionDraftStatus        @default(DRAFT)
+  reviewNotes                String?                     @map("review_notes") @db.Text
+  metadata                   Json?
+  createdAt                  DateTime                    @default(now()) @map("created_at")
+  updatedAt                  DateTime                    @updatedAt @map("updated_at")
+  exerciseDraft              IngestionExerciseDraft      @relation(fields: [exerciseDraftId], references: [id], onDelete: Cascade)
+  assets                     IngestionQuestionAssetDraft[]
+  topics                     IngestionQuestionTopicDraft[]
+  issues                     IngestionIssue[]
+
+  @@unique([exerciseDraftId, orderIndex])
+  @@index([exerciseDraftId])
+  @@map("ingestion_question_drafts")
+}
+
+model IngestionQuestionAssetDraft {
+  id              String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  questionDraftId String                @map("question_draft_id") @db.Uuid
+  fileUrl         String                @map("file_url") @db.Text
+  assetType       AssetType             @map("asset_type")
+  orderIndex      Int                   @default(0) @map("order_index")
+  caption         String?               @db.Text
+  metadata        Json?
+  createdAt       DateTime              @default(now()) @map("created_at")
+  questionDraft   IngestionQuestionDraft @relation(fields: [questionDraftId], references: [id], onDelete: Cascade)
+
+  @@index([questionDraftId, orderIndex])
+  @@map("ingestion_question_asset_drafts")
+}
+
+model IngestionQuestionTopicDraft {
+  questionDraftId String                 @map("question_draft_id") @db.Uuid
+  topicCode       String                 @map("topic_code")
+  weight          Decimal                @default(1.0) @db.Decimal(4, 2)
+  isPrimary       Boolean                @default(false) @map("is_primary")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  questionDraft   IngestionQuestionDraft @relation(fields: [questionDraftId], references: [id], onDelete: Cascade)
+
+  @@id([questionDraftId, topicCode])
+  @@index([topicCode])
+  @@map("ingestion_question_topic_drafts")
+}
+
+model IngestionIssue {
+  id              String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  batchId         String                 @map("batch_id") @db.Uuid
+  examDraftId     String?                @map("exam_draft_id") @db.Uuid
+  questionDraftId String?                @map("question_draft_id") @db.Uuid
+  severity        IngestionIssueSeverity
+  code            String
+  message         String                 @db.Text
+  isResolved      Boolean                @default(false) @map("is_resolved")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  resolvedAt      DateTime?              @map("resolved_at")
+  batch           IngestionBatch         @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  examDraft       IngestionExamDraft?    @relation(fields: [examDraftId], references: [id], onDelete: SetNull)
+  questionDraft   IngestionQuestionDraft? @relation(fields: [questionDraftId], references: [id], onDelete: SetNull)
+
+  @@index([batchId, severity, isResolved])
+  @@index([examDraftId])
+  @@index([questionDraftId])
+  @@map("ingestion_issues")
+}
