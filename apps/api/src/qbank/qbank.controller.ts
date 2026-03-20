@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateAttemptDto } from './dto/create-attempt.dto';
 import { CreatePracticeSessionDto } from './dto/create-practice-session.dto';
+import { GetExamQueryDto } from './dto/get-exam-query.dto';
 import { GetQuestionsQueryDto } from './dto/get-questions-query.dto';
 import { GetPracticeSessionsQueryDto } from './dto/get-practice-sessions-query.dto';
 import { QbankService } from './qbank.service';
@@ -20,6 +21,19 @@ export class QbankController {
   @Get('filters')
   getFilters() {
     return this.qbankService.getFilters();
+  }
+
+  @Get('catalog')
+  getCatalog() {
+    return this.qbankService.getCatalog();
+  }
+
+  @Get('exams/:id')
+  getExamById(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Query() query: GetExamQueryDto,
+  ) {
+    return this.qbankService.getExamById(id, query.sujetNumber);
   }
 
   @Get('questions')

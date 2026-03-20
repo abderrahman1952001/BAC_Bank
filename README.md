@@ -63,6 +63,9 @@ cp .env.example .env
 npm run db:up
 ```
 
+This also starts Adminer on `http://localhost:8080` (PostgreSQL UI).
+PostgreSQL is exposed on host port `5433` to avoid collisions with local PostgreSQL installs.
+
 4. Generate Prisma client:
 
 ```bash
@@ -84,6 +87,70 @@ npm run dev:all
 - API base URL: `http://localhost:3001/api/v1`
 - Web app URL: `http://localhost:3000`
 
+## Database Table + Field Management
+
+### Browse all tables and edit records
+
+1. Start DB services:
+
+```bash
+npm run db:up
+```
+
+2. Open Adminer: `http://localhost:8080`
+3. Login with:
+   - System: `PostgreSQL`
+   - Server: `postgres`
+   - Username: `bac_user`
+   - Password: `bac_password`
+   - Database: `bac_bank`
+
+You can browse all tables and edit row data from the UI.
+
+### Edit data with Prisma Studio
+
+```bash
+npm run db:studio
+```
+
+Prisma Studio opens a table editor for all Prisma models.
+
+### Add or update DB fields for the app (recommended flow)
+
+1. Update model fields in `apps/api/prisma/schema.prisma`.
+2. Create/apply migration:
+
+```bash
+npm run db:migrate -- --name describe_change
+```
+
+3. Restart API if needed.
+
+For quick local prototyping without a migration file, you can use:
+
+```bash
+npm run prisma:db:push -w @bac-bank/api
+```
+
+Use migrations for real app changes so schema stays reproducible.
+
+If your API runs on the host machine (not in Docker), use:
+
+```env
+DATABASE_URL=postgresql://bac_user:bac_password@localhost:5433/bac_bank?schema=public
+```
+
+## Admin CMS Data Model
+
+The admin editors now write directly to the primary hierarchy tables:
+
+- `exams`
+- `exam_variants`
+- `exam_nodes`
+- `exam_node_blocks`
+
+There is no draft-copy import step. Editing in `/admin/*` updates the live database rows.
+
 ## API Endpoints (MVP)
 
 - `GET /api/v1/health`
@@ -95,6 +162,7 @@ npm run dev:all
 - `POST /api/v1/qbank/sessions`
 - `GET /api/v1/qbank/sessions/:id`
 - `POST /api/v1/qbank/questions/:id/attempts`
+- `POST /api/v1/admin/exams/bootstrap`
 
 ## Notes
 

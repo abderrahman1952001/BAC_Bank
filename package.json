@@ -15,8 +15,10 @@
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
     "test": "npm run test --workspaces",
-    "db:up": "docker compose up -d postgres redis",
-    "db:down": "docker compose down"
+    "db:up": "docker compose up -d postgres redis adminer",
+    "db:down": "docker compose down",
+    "db:studio": "npm run prisma:studio -w @bac-bank/api",
+    "db:migrate": "npm run prisma:migrate:dev -w @bac-bank/api"
   },
   "engines": {
     "node": ">=20"

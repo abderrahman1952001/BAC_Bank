@@ -24,38 +24,66 @@ enum AssetType {
   FILE
 }
 
-enum IngestionBatchStatus {
-  DRAFT
-  IN_REVIEW
-  APPROVED
-  PARTIALLY_PUBLISHED
-  PUBLISHED
-  FAILED
-}
-
-enum IngestionDraftStatus {
-  DRAFT
-  APPROVED
-  REJECTED
-  PUBLISHED
-}
-
-enum IngestionIssueSeverity {
-  INFO
-  WARNING
-  ERROR
-}
-
 enum PracticeSessionStatus {
   CREATED
   IN_PROGRESS
   COMPLETED
 }
 
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum ExamVariantCode {
+  SUJET_1
+  SUJET_2
+}
+
+enum ExamNodeType {
+  EXERCISE
+  PART
+  QUESTION
+  SUBQUESTION
+  CONTEXT
+}
+
+enum BlockRole {
+  STEM
+  PROMPT
+  SOLUTION
+  HINT
+  RUBRIC
+  META
+}
+
+enum BlockType {
+  PARAGRAPH
+  LATEX
+  IMAGE
+  CODE
+  HEADING
+  LIST
+  TABLE
+}
+
+enum MediaType {
+  IMAGE
+  FILE
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  REVIEWER
+}
+
 model Stream {
   id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   code            String          @unique
   name            String          @unique
+  slug            String?         @unique
+  description     String?         @db.Text
   subjectMappings StreamSubject[]
   exams           Exam[]
   users           User[]
@@ -69,6 +97,8 @@ model Subject {
   id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   code           String          @unique
   name           String          @unique
+  slug           String?         @unique
+  coefficient    Int?
   streamMappings StreamSubject[]
   exams          Exam[]          @relation("SubjectExams")
   topics         Topic[]
@@ -81,6 +111,7 @@ model Subject {
 model StreamSubject {
   streamId   String   @map("stream_id") @db.Uuid
   subjectId  String   @map("subject_id") @db.Uuid
+  coefficient Int?
   createdAt  DateTime @default(now()) @map("created_at")
   stream     Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
   subject    Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
@@ -102,6 +133,7 @@ model Exam {
   isPublished             Boolean     @default(false) @map("is_published")
   stream                  Stream      @relation(fields: [streamId], references: [id], onDelete: Restrict)
   subject                 Subject     @relation("SubjectExams", fields: [subjectId], references: [id], onDelete: Restrict)
+  variants                ExamVariant[]
   exercises               Exercise[]
   createdAt               DateTime    @default(now()) @map("created_at")
   updatedAt               DateTime    @updatedAt @map("updated_at")
@@ -109,6 +141,67 @@ model Exam {
   @@unique([year, streamId, subjectId, sessionType])
   @@index([year, streamId, subjectId])
   @@map("exams")
+}
+
+model ExamVariant {
+  id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  examId    String            @map("exam_id") @db.Uuid
+  code      ExamVariantCode
+  title     String?
+  status    PublicationStatus @default(DRAFT)
+  metadata  Json?
+  exam      Exam              @relation(fields: [examId], references: [id], onDelete: Cascade)
+  nodes     ExamNode[]
+  createdAt DateTime          @default(now()) @map("created_at")
+  updatedAt DateTime          @updatedAt @map("updated_at")
+
+  @@unique([examId, code])
+  @@index([examId, status])
+  @@map("exam_variants")
+}
+
+model ExamNode {
+  id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  variantId String            @map("variant_id") @db.Uuid
+  parentId  String?           @map("parent_id") @db.Uuid
+  nodeType  ExamNodeType      @map("node_type")
+  orderIndex Int              @map("order_index")
+  label     String?
+  title     String?
+  maxPoints Decimal?          @map("max_points") @db.Decimal(6, 2)
+  status    PublicationStatus @default(DRAFT)
+  metadata  Json?
+  variant   ExamVariant       @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  parent    ExamNode?         @relation("ExamNodeHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  ExamNode[]        @relation("ExamNodeHierarchy")
+  blocks    ExamNodeBlock[]
+  createdAt DateTime          @default(now()) @map("created_at")
+  updatedAt DateTime          @updatedAt @map("updated_at")
+
+  @@unique([variantId, parentId, orderIndex])
+  @@index([variantId, nodeType])
+  @@index([parentId])
+  @@map("exam_nodes")
+}
+
+model ExamNodeBlock {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nodeId     String    @map("node_id") @db.Uuid
+  role       BlockRole
+  orderIndex Int       @map("order_index")
+  blockType  BlockType @map("block_type")
+  textValue  String?   @map("text_value") @db.Text
+  mediaId    String?   @map("media_id") @db.Uuid
+  data       Json?
+  node       ExamNode  @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  media      Media?    @relation(fields: [mediaId], references: [id], onDelete: SetNull)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@unique([nodeId, role, orderIndex])
+  @@index([nodeId, role])
+  @@index([mediaId])
+  @@map("exam_node_blocks")
 }
 
 model Exercise {
@@ -230,15 +323,32 @@ model User {
   email        String          @unique
   fullName     String?         @map("full_name")
   passwordHash String          @map("password_hash")
+  role         UserRole        @default(USER)
   streamId     String?         @map("stream_id") @db.Uuid
   stream       Stream?         @relation(fields: [streamId], references: [id], onDelete: SetNull)
   attempts     UserAttempt[]
   topicStats   UserTopicStats[]
+  uploadedMedia Media[]        @relation("UserUploadedMedia")
   createdAt    DateTime        @default(now()) @map("created_at")
   updatedAt    DateTime        @updatedAt @map("updated_at")
 
   @@index([streamId])
   @@map("users")
+}
+
+model Media {
+  id         String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  url        String          @db.Text
+  type       MediaType
+  uploadedBy String?         @map("uploaded_by") @db.Uuid
+  metadata   Json?
+  uploader   User?           @relation("UserUploadedMedia", fields: [uploadedBy], references: [id], onDelete: SetNull)
+  blocks     ExamNodeBlock[]
+  createdAt  DateTime        @default(now()) @map("created_at")
+  updatedAt  DateTime        @updatedAt @map("updated_at")
+
+  @@index([uploadedBy, createdAt])
+  @@map("media")
 }
 
 model UserAttempt {
@@ -299,172 +409,4 @@ model PracticeSessionExercise {
   @@unique([sessionId, orderIndex])
   @@index([exerciseId])
   @@map("practice_session_exercises")
-}
-
-model IngestionBatch {
-  id            String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  label         String
-  sourceType    String               @default("PDF_OCR") @map("source_type")
-  sourcePath    String?              @map("source_path") @db.Text
-  parserVersion String?              @map("parser_version")
-  ocrEngine     String?              @map("ocr_engine")
-  status        IngestionBatchStatus @default(DRAFT)
-  metadata      Json?
-  submittedAt   DateTime?            @map("submitted_at")
-  reviewedAt    DateTime?            @map("reviewed_at")
-  publishedAt   DateTime?            @map("published_at")
-  createdAt     DateTime             @default(now()) @map("created_at")
-  updatedAt     DateTime             @updatedAt @map("updated_at")
-  documents     IngestionDocument[]
-  examDrafts    IngestionExamDraft[]
-  issues        IngestionIssue[]
-
-  @@index([status])
-  @@index([createdAt])
-  @@map("ingestion_batches")
-}
-
-model IngestionDocument {
-  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  batchId        String               @map("batch_id") @db.Uuid
-  fileName       String               @map("file_name")
-  filePath       String               @map("file_path") @db.Text
-  checksumSha256 String?              @map("checksum_sha256")
-  pageCount      Int?                 @map("page_count")
-  languageHint   String?              @map("language_hint")
-  metadata       Json?
-  createdAt      DateTime             @default(now()) @map("created_at")
-  updatedAt      DateTime             @updatedAt @map("updated_at")
-  batch          IngestionBatch       @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  examDrafts     IngestionExamDraft[]
-
-  @@unique([batchId, fileName])
-  @@index([batchId])
-  @@map("ingestion_documents")
-}
-
-model IngestionExamDraft {
-  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  batchId                 String              @map("batch_id") @db.Uuid
-  documentId              String?             @map("document_id") @db.Uuid
-  year                    Int
-  streamCode              String              @map("stream_code")
-  subjectCode             String              @map("subject_code")
-  sessionType             SessionType         @map("session_type")
-  durationMinutes         Int?                @map("duration_minutes")
-  totalPoints             Int?                @map("total_points")
-  officialSourceReference String?             @map("official_source_reference") @db.Text
-  title                   String?
-  status                  IngestionDraftStatus @default(DRAFT)
-  reviewNotes             String?             @map("review_notes") @db.Text
-  metadata                Json?
-  createdAt               DateTime            @default(now()) @map("created_at")
-  updatedAt               DateTime            @updatedAt @map("updated_at")
-  batch                   IngestionBatch      @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  document                IngestionDocument?  @relation(fields: [documentId], references: [id], onDelete: SetNull)
-  exercises               IngestionExerciseDraft[]
-  issues                  IngestionIssue[]
-
-  @@index([batchId])
-  @@index([documentId])
-  @@index([year, streamCode, subjectCode, sessionType])
-  @@map("ingestion_exam_drafts")
-}
-
-model IngestionExerciseDraft {
-  id          String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  examDraftId String               @map("exam_draft_id") @db.Uuid
-  orderIndex  Int                  @map("order_index")
-  title       String?
-  introText   String?              @map("intro_text") @db.Text
-  totalPoints Int?                 @map("total_points")
-  status      IngestionDraftStatus @default(DRAFT)
-  reviewNotes String?              @map("review_notes") @db.Text
-  metadata    Json?
-  createdAt   DateTime             @default(now()) @map("created_at")
-  updatedAt   DateTime             @updatedAt @map("updated_at")
-  examDraft   IngestionExamDraft   @relation(fields: [examDraftId], references: [id], onDelete: Cascade)
-  questions   IngestionQuestionDraft[]
-
-  @@unique([examDraftId, orderIndex])
-  @@index([examDraftId])
-  @@map("ingestion_exercise_drafts")
-}
-
-model IngestionQuestionDraft {
-  id                         String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  exerciseDraftId            String                      @map("exercise_draft_id") @db.Uuid
-  orderIndex                 Int                         @map("order_index")
-  points                     Int?
-  difficultyLevel            Int?                        @map("difficulty_level")
-  contentFormat              ContentFormat               @default(MARKDOWN) @map("content_format")
-  contentMarkdown            String                      @map("content_markdown") @db.Text
-  officialAnswerMarkdown     String?                     @map("official_answer_markdown") @db.Text
-  markingSchemeMarkdown      String?                     @map("marking_scheme_markdown") @db.Text
-  commonMistakesMarkdown     String?                     @map("common_mistakes_markdown") @db.Text
-  examinerCommentaryMarkdown String?                     @map("examiner_commentary_markdown") @db.Text
-  sourcePageStart            Int?                        @map("source_page_start")
-  sourcePageEnd              Int?                        @map("source_page_end")
-  status                     IngestionDraftStatus        @default(DRAFT)
-  reviewNotes                String?                     @map("review_notes") @db.Text
-  metadata                   Json?
-  createdAt                  DateTime                    @default(now()) @map("created_at")
-  updatedAt                  DateTime                    @updatedAt @map("updated_at")
-  exerciseDraft              IngestionExerciseDraft      @relation(fields: [exerciseDraftId], references: [id], onDelete: Cascade)
-  assets                     IngestionQuestionAssetDraft[]
-  topics                     IngestionQuestionTopicDraft[]
-  issues                     IngestionIssue[]
-
-  @@unique([exerciseDraftId, orderIndex])
-  @@index([exerciseDraftId])
-  @@map("ingestion_question_drafts")
-}
-
-model IngestionQuestionAssetDraft {
-  id              String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  questionDraftId String                @map("question_draft_id") @db.Uuid
-  fileUrl         String                @map("file_url") @db.Text
-  assetType       AssetType             @map("asset_type")
-  orderIndex      Int                   @default(0) @map("order_index")
-  caption         String?               @db.Text
-  metadata        Json?
-  createdAt       DateTime              @default(now()) @map("created_at")
-  questionDraft   IngestionQuestionDraft @relation(fields: [questionDraftId], references: [id], onDelete: Cascade)
-
-  @@index([questionDraftId, orderIndex])
-  @@map("ingestion_question_asset_drafts")
-}
-
-model IngestionQuestionTopicDraft {
-  questionDraftId String                 @map("question_draft_id") @db.Uuid
-  topicCode       String                 @map("topic_code")
-  weight          Decimal                @default(1.0) @db.Decimal(4, 2)
-  isPrimary       Boolean                @default(false) @map("is_primary")
-  createdAt       DateTime               @default(now()) @map("created_at")
-  questionDraft   IngestionQuestionDraft @relation(fields: [questionDraftId], references: [id], onDelete: Cascade)
-
-  @@id([questionDraftId, topicCode])
-  @@index([topicCode])
-  @@map("ingestion_question_topic_drafts")
-}
-
-model IngestionIssue {
-  id              String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  batchId         String                 @map("batch_id") @db.Uuid
-  examDraftId     String?                @map("exam_draft_id") @db.Uuid
-  questionDraftId String?                @map("question_draft_id") @db.Uuid
-  severity        IngestionIssueSeverity
-  code            String
-  message         String                 @db.Text
-  isResolved      Boolean                @default(false) @map("is_resolved")
-  createdAt       DateTime               @default(now()) @map("created_at")
-  resolvedAt      DateTime?              @map("resolved_at")
-  batch           IngestionBatch         @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  examDraft       IngestionExamDraft?    @relation(fields: [examDraftId], references: [id], onDelete: SetNull)
-  questionDraft   IngestionQuestionDraft? @relation(fields: [questionDraftId], references: [id], onDelete: SetNull)
-
-  @@index([batchId, severity, isResolved])
-  @@index([examDraftId])
-  @@index([questionDraftId])
-  @@map("ingestion_issues")
 }

@@ -7,8 +7,23 @@ CREATE TYPE "IngestionDraftStatus" AS ENUM ('DRAFT', 'APPROVED', 'REJECTED', 'PU
 -- CreateEnum
 CREATE TYPE "IngestionIssueSeverity" AS ENUM ('INFO', 'WARNING', 'ERROR');
 
--- AlterTable
-ALTER TABLE "subjects" RENAME CONSTRAINT "subjects_new_pkey" TO "subjects_pkey";
+-- Keep the primary key constraint name stable when this migration is replayed
+-- against a database where "subjects" was already normalized manually.
+DO $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM pg_constraint c
+        JOIN pg_class t ON t.oid = c.conrelid
+        JOIN pg_namespace n ON n.oid = t.relnamespace
+        WHERE c.conname = 'subjects_new_pkey'
+          AND t.relname = 'subjects'
+          AND n.nspname = 'public'
+    ) THEN
+        ALTER TABLE "public"."subjects" RENAME CONSTRAINT "subjects_new_pkey" TO "subjects_pkey";
+    END IF;
+END
+$$;
 
 -- CreateTable
 CREATE TABLE "ingestion_batches" (

@@ -1,11 +1,15 @@
 import { SessionPlayer } from '@/components/session-player';
 
 type SessionPlayerPageProps = {
-  params: {
+  params: Promise<{
     sessionId: string;
-  };
+  }>;
 };
 
-export default function SessionPlayerPage({ params }: SessionPlayerPageProps) {
-  return <SessionPlayer sessionId={params.sessionId} />;
+export default async function SessionPlayerPage({
+  params,
+}: SessionPlayerPageProps) {
+  const { sessionId } = await params;
+
+  return <SessionPlayer sessionId={sessionId} />;
 }

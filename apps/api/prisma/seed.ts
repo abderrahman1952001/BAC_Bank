@@ -1,6 +1,13 @@
 import {
   AssetType,
+  BlockRole,
+  BlockType,
   ContentFormat,
+  ExamNodeType,
+  ExamVariantCode,
+  MediaType,
+  Prisma,
+  PublicationStatus,
   PrismaClient,
   SessionType,
 } from '@prisma/client';
@@ -51,9 +58,20 @@ type ExerciseSeed = {
     assets?: Array<{
       fileUrl: string;
       caption: string;
+      data?: Prisma.InputJsonObject;
     }>;
   }>;
 };
+
+type StructuredVariantBucket = {
+  code: ExamVariantCode;
+  title: string;
+  exercises: ExerciseSeed[];
+};
+
+function slugFromCode(code: string): string {
+  return code.toLowerCase().replace(/_/g, '-');
+}
 
 const SUBJECT_CATALOG = [
   { code: 'ARABIC', name: 'اللغة العربية وآدابها' },
@@ -240,10 +258,14 @@ async function seedBaseTaxonomy(): Promise<BaseTaxonomy> {
   for (const subject of SUBJECT_CATALOG) {
     const savedSubject = await prisma.subject.upsert({
       where: { code: subject.code },
-      update: { name: subject.name },
+      update: {
+        name: subject.name,
+        slug: slugFromCode(subject.code),
+      },
       create: {
         code: subject.code,
         name: subject.name,
+        slug: slugFromCode(subject.code),
       },
     });
 
@@ -253,10 +275,14 @@ async function seedBaseTaxonomy(): Promise<BaseTaxonomy> {
   for (const stream of STREAM_DEFINITIONS) {
     const savedStream = await prisma.stream.upsert({
       where: { code: stream.code },
-      update: { name: stream.name },
+      update: {
+        name: stream.name,
+        slug: slugFromCode(stream.code),
+      },
       create: {
         code: stream.code,
         name: stream.name,
+        slug: slugFromCode(stream.code),
       },
     });
 
@@ -280,6 +306,7 @@ async function seedBaseTaxonomy(): Promise<BaseTaxonomy> {
         create: {
           streamId: savedStream.id,
           subjectId,
+          coefficient: null,
         },
       });
     }
@@ -341,6 +368,178 @@ async function syncSeMathTopics(subjectId: string): Promise<Record<TopicCode, st
   }
 
   return ids;
+}
+
+function splitExercisesByVariant(exercises: ExerciseSeed[]): StructuredVariantBucket[] {
+  const sujetOne = exercises.filter((exercise) =>
+    exercise.title.includes('الموضوع الأول'),
+  );
+  const sujetTwo = exercises.filter((exercise) =>
+    exercise.title.includes('الموضوع الثاني'),
+  );
+
+  return [
+    {
+      code: ExamVariantCode.SUJET_1,
+      title: 'الموضوع الأول',
+      exercises: sujetOne,
+    },
+    {
+      code: ExamVariantCode.SUJET_2,
+      title: 'الموضوع الثاني',
+      exercises: sujetTwo,
+    },
+  ];
+}
+
+async function seedExamVariantHierarchy(examId: string, exercises: ExerciseSeed[]) {
+  const variants = splitExercisesByVariant(exercises);
+
+  for (const variantSeed of variants) {
+    const variant = await prisma.examVariant.upsert({
+      where: {
+        examId_code: {
+          examId,
+          code: variantSeed.code,
+        },
+      },
+      update: {
+        title: variantSeed.title,
+        status: PublicationStatus.PUBLISHED,
+        metadata: {
+          source: 'OCR_FORMATTED_MARKDOWN',
+          rendering: 'PROGRESSIVE_INTERACTIVE',
+        },
+      },
+      create: {
+        examId,
+        code: variantSeed.code,
+        title: variantSeed.title,
+        status: PublicationStatus.PUBLISHED,
+        metadata: {
+          source: 'OCR_FORMATTED_MARKDOWN',
+          rendering: 'PROGRESSIVE_INTERACTIVE',
+        },
+      },
+    });
+
+    await prisma.examNode.deleteMany({
+      where: {
+        variantId: variant.id,
+      },
+    });
+
+    for (const [exerciseIndex, exerciseSeed] of variantSeed.exercises.entries()) {
+      const exerciseNode = await prisma.examNode.create({
+        data: {
+          variantId: variant.id,
+          parentId: null,
+          nodeType: ExamNodeType.EXERCISE,
+          orderIndex: exerciseIndex + 1,
+          label: `التمرين ${exerciseIndex + 1}`,
+          title: exerciseSeed.title,
+          maxPoints: exerciseSeed.totalPoints,
+          status: PublicationStatus.PUBLISHED,
+          metadata: {
+            originalOrderIndex: exerciseSeed.orderIndex,
+            tags: [],
+          },
+        },
+      });
+
+      await prisma.examNodeBlock.create({
+        data: {
+          nodeId: exerciseNode.id,
+          role: BlockRole.STEM,
+          orderIndex: 1,
+          blockType: BlockType.PARAGRAPH,
+          textValue: exerciseSeed.introText ?? exerciseSeed.title,
+        },
+      });
+
+      for (const questionSeed of exerciseSeed.questions) {
+        const questionNode = await prisma.examNode.create({
+          data: {
+            variantId: variant.id,
+            parentId: exerciseNode.id,
+            nodeType: ExamNodeType.QUESTION,
+            orderIndex: questionSeed.orderIndex,
+            label: `${questionSeed.orderIndex}`,
+            title: `سؤال ${questionSeed.orderIndex}`,
+            maxPoints: questionSeed.points,
+            status: PublicationStatus.PUBLISHED,
+            metadata: {
+              topicCodes: questionSeed.topicCodes,
+            },
+          },
+        });
+
+        await prisma.examNodeBlock.create({
+          data: {
+            nodeId: questionNode.id,
+            role: BlockRole.PROMPT,
+            orderIndex: 1,
+            blockType: BlockType.PARAGRAPH,
+            textValue: questionSeed.prompt,
+          },
+        });
+
+        await prisma.examNodeBlock.create({
+          data: {
+            nodeId: questionNode.id,
+            role: BlockRole.SOLUTION,
+            orderIndex: 1,
+            blockType: BlockType.PARAGRAPH,
+            textValue: questionSeed.officialAnswerMarkdown,
+          },
+        });
+
+        if (questionSeed.markingSchemeMarkdown) {
+          await prisma.examNodeBlock.create({
+            data: {
+              nodeId: questionNode.id,
+              role: BlockRole.RUBRIC,
+              orderIndex: 1,
+              blockType: BlockType.PARAGRAPH,
+              textValue: questionSeed.markingSchemeMarkdown,
+            },
+          });
+        }
+
+        for (const [assetIndex, asset] of (questionSeed.assets ?? []).entries()) {
+          const media = await prisma.media.create({
+            data: {
+              url: asset.fileUrl,
+              type: MediaType.IMAGE,
+              metadata: {
+                caption: asset.caption,
+              },
+            },
+          });
+
+          const blockData: Prisma.InputJsonObject = asset.data
+            ? {
+                caption: asset.caption,
+                probabilityTree: asset.data,
+              }
+            : {
+                caption: asset.caption,
+              };
+
+          await prisma.examNodeBlock.create({
+            data: {
+              nodeId: questionNode.id,
+              role: BlockRole.PROMPT,
+              orderIndex: assetIndex + 2,
+              blockType: BlockType.IMAGE,
+              mediaId: media.id,
+              data: blockData,
+            },
+          });
+        }
+      }
+    }
+  }
 }
 
 async function seedOcrExercises(
@@ -411,6 +610,35 @@ async function seedOcrExercises(
             {
               fileUrl: '/samples/dzexams/2025/math-sci/assets/subject1_ex1_graph.jpg',
               caption: 'الشجرة المرجعية - الموضوع الأول - التمرين 1',
+              data: {
+                type: 'probability_tree',
+                direction: 'ltr',
+                root: {
+                  label: 'السحب الأول',
+                  children: [
+                    {
+                      label: 'R',
+                      edgeLabel: 'R',
+                      probability: '2/5',
+                      children: [
+                        { label: 'RR', edgeLabel: 'RR', probability: '1/10' },
+                        { label: 'RV', edgeLabel: 'RV', probability: '3/5' },
+                        { label: 'VV', edgeLabel: 'VV', probability: '3/10' },
+                      ],
+                    },
+                    {
+                      label: 'V',
+                      edgeLabel: 'V',
+                      probability: '3/5',
+                      children: [
+                        { label: 'RR', edgeLabel: 'RR', probability: '1/5' },
+                        { label: 'RV', edgeLabel: 'RV', probability: '3/5' },
+                        { label: 'VV', edgeLabel: 'VV', probability: '1/5' },
+                      ],
+                    },
+                  ],
+                },
+              },
             },
           ],
         },
@@ -467,6 +695,17 @@ async function seedOcrExercises(
             {
               fileUrl: '/samples/dzexams/2025/math-sci/assets/subject1_ex2_graph.jpg',
               caption: 'الشكل البياني المرجعي للتمرين 2 - الموضوع الأول',
+              data: {
+                type: 'formula_graph',
+                title: 'Cf: f(x) = (x+2)/(x+1) و Δ: y = x',
+                xDomain: [-3, 4],
+                yDomain: [-3, 4],
+                grid: true,
+                curves: [
+                  { fn: '(x + 2) / (x + 1)', color: '#0d6efd' },
+                  { fn: 'x', color: '#e11d48' },
+                ],
+              },
             },
           ],
         },
@@ -700,6 +939,34 @@ async function seedOcrExercises(
             {
               fileUrl: '/samples/dzexams/2025/math-sci/assets/subject2_ex2_graph.jpg',
               caption: 'شجرة الاحتمالات - الموضوع الثاني - التمرين 2',
+              data: {
+                type: 'probability_tree',
+                direction: 'ltr',
+                root: {
+                  label: 'السحب الأول من U2',
+                  children: [
+                    {
+                      label: 'V1',
+                      edgeLabel: 'V',
+                      probability: '4/6',
+                      children: [
+                        { label: 'V2', edgeLabel: 'V', probability: '3/5' },
+                        { label: 'R2', edgeLabel: 'R', probability: '2/5' },
+                      ],
+                    },
+                    {
+                      label: 'R1',
+                      edgeLabel: 'R',
+                      probability: '2/6',
+                      children: [
+                        { label: 'V2', edgeLabel: 'V', probability: '3/6' },
+                        { label: 'R2', edgeLabel: 'R', probability: '2/6' },
+                        { label: 'B2', edgeLabel: 'B', probability: '1/6' },
+                      ],
+                    },
+                  ],
+                },
+              },
             },
           ],
         },
@@ -888,6 +1155,8 @@ async function seedOcrExercises(
       }
     }
   }
+
+  await seedExamVariantHierarchy(exam.id, exercises);
 }
 
 async function main() {
@@ -895,7 +1164,9 @@ async function main() {
   const topicIds = await syncSeMathTopics(base.subjectId);
   await seedOcrExercises(base, topicIds);
 
-  console.log('Seed complete: BAC 2025 mathematics exam seeded with official corrections.');
+  console.log(
+    'Seed complete: BAC 2025 mathematics exam seeded in both flat QBank tables and hierarchical variant/node blocks.',
+  );
 }
 
 main()

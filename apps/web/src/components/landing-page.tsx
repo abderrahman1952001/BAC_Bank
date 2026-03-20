@@ -1,131 +1,88 @@
 import Link from 'next/link';
 
-const highlights = [
+const features = [
   {
-    title: 'فلاتر دقيقة وسريعة',
-    description:
-      'اختَر السنة، الشعبة، المادة والمحور للوصول المباشر إلى التمارين التي تحتاجها.',
+    title: 'Structured by BAC reality',
+    description: 'شعبة، مادة، سنة، Sujet 1/Sujet 2 ثم التمارين والأسئلة.',
   },
   {
-    title: 'محتوى موثوق ومنظم',
-    description:
-      'أسئلة بصياغة واضحة مع مرفقات وصور عند الحاجة لتقريب الفهم قبل الحل.',
+    title: 'Premium exercise reading',
+    description: 'عرض أنيق للتمارين مع الصور والمرفقات والتنقل السريع بين الأسئلة.',
   },
   {
-    title: 'تحليل تقدمك بسهولة',
-    description:
-      'تابع عدد الأسئلة التي راجعتها وحدد نقاط القوة والضعف أسبوعاً بعد أسبوع.',
-  },
-  {
-    title: 'مرونة كاملة في التعلم',
-    description:
-      'استخدم المنصة على الهاتف أو الحاسوب وبنفس الجودة مع تجربة مناسبة للطالب الجزائري.',
-  },
-  {
-    title: 'جلسات وتمارين متجددة',
-    description:
-      'ارجع إلى امتحانات سابقة وأنشئ قائمة مراجعة شخصية قبل كل اختبار.',
-  },
-  {
-    title: 'واجهة عربية مريحة',
-    description:
-      'تصميم واضح باللغة العربية يساعدك على التركيز في المراجعة بدل تضييع الوقت.',
+    title: 'Smart study sessions',
+    description: 'ابن جلسات مراجعة حسب المادة والمحاور مع نتائج مطابقة مباشرة.',
   },
 ];
 
-const testimonials = [
-  {
-    name: 'سارة - ثالثة ثانوي',
-    text: 'أكثر شيء ساعدني هو الفلترة حسب المحور، صرت أراجع بشكل مركز وفي وقت أقل.',
-  },
-  {
-    name: 'محمد - شعبة علوم تجريبية',
-    text: 'التصميم بسيط وسريع، وقدرت ننظم برنامج المراجعة بدون فوضى.',
-  },
-  {
-    name: 'إيمان - مترشحة حرة',
-    text: 'وجود المحتوى بالعربية خلاني نفهم بسرعة ونركز على الحل بدل الترجمة.',
-  },
+const flow = [
+  '1) اختر الشعبة',
+  '2) اختر المادة',
+  '3) اختر السنة ثم sujet',
+  '4) راجع التمارين والأسئلة بتجربة نظيفة',
 ];
 
 export function LandingPage() {
   return (
-    <main className="landing-shell">
-      <section className="landing-hero">
-        <header className="landing-nav">
-          <p className="brand">BAC Bank</p>
-          <nav>
-            <a href="#features">المزايا</a>
-            <a href="#students">آراء الطلبة</a>
-            <a href="#start">ابدأ الآن</a>
-          </nav>
-          <Link href="/auth" className="nav-cta">
-            دخول
+    <main className="landing-page">
+      <header className="landing-nav">
+        <Link href="/" className="landing-brand">
+          BAC Bank
+        </Link>
+        <nav>
+          <a href="#features">Features</a>
+          <a href="#flow">Flow</a>
+          <a href="#start">Start</a>
+        </nav>
+        <Link href="/auth" className="btn-secondary">
+          Login
+        </Link>
+      </header>
+
+      <section className="landing-hero" id="start">
+        <p className="page-kicker">Algerian BAC QBank</p>
+        <h1>
+          جميع sujets البكالوريا الجزائرية
+          <br />
+          في تجربة مراجعة premium
+        </h1>
+        <p>
+          ليس PDF خام. كل sujet منظم بطريقة عملية: من الفهرسة إلى التمرين إلى
+          السؤال، مع واجهة نظيفة وسريعة.
+        </p>
+        <div className="landing-actions">
+          <Link href="/auth" className="btn-primary">
+            إنشاء حساب
           </Link>
-        </header>
-
-        <div className="hero-content">
-          <p className="hero-kicker">تحضير ذكي للبكالوريا</p>
-          <h1>منصة عربية تساعد طلبة الجزائر على المراجعة بخطة واضحة ونتائج أفضل</h1>
-          <p>
-            جمعنا أفضل أفكار منصات المراجعة الحديثة: بداية قوية، وصول سريع للأسئلة،
-            وتجربة دراسة عملية من أول دقيقة.
-          </p>
-          <div className="hero-actions" id="start">
-            <Link href="/auth" className="btn-primary">
-              أنشئ حسابك الآن
-            </Link>
-            <Link href="/auth" className="btn-secondary">
-              تسجيل الدخول
-            </Link>
-          </div>
-        </div>
-
-        <div className="hero-metrics">
-          <article>
-            <span>10+</span>
-            <p>سنوات امتحانات</p>
-          </article>
-          <article>
-            <span>20+</span>
-            <p>مادة ومحور</p>
-          </article>
-          <article>
-            <span>سريع</span>
-            <p>وصول مباشر للأسئلة</p>
-          </article>
+          <Link href="/auth" className="btn-secondary">
+            تسجيل الدخول
+          </Link>
         </div>
       </section>
 
-      <section className="highlights-grid" id="features">
-        {highlights.map((item) => (
-          <article key={item.title}>
-            <h2>{item.title}</h2>
-            <p>{item.description}</p>
+      <section className="landing-feature-grid" id="features">
+        {features.map((feature) => (
+          <article key={feature.title} className="landing-feature-card">
+            <h2>{feature.title}</h2>
+            <p>{feature.description}</p>
           </article>
         ))}
       </section>
 
-      <section className="student-section" id="students">
-        <div className="student-head">
-          <p>آراء حقيقية</p>
-          <h2>طلاب البكالوريا يراجعون بثقة أكثر</h2>
-        </div>
-        <div className="testimonials-grid">
-          {testimonials.map((item) => (
-            <article key={item.name}>
-              <h3>{item.name}</h3>
-              <p>{item.text}</p>
-            </article>
+      <section className="landing-flow" id="flow">
+        <h2>How students navigate BAC Bank</h2>
+        <div className="flow-list">
+          {flow.map((step) => (
+            <p key={step}>{step}</p>
           ))}
         </div>
       </section>
 
       <section className="landing-cta">
         <h2>جاهز تبدأ؟</h2>
-        <p>من التسجيل إلى المراجعة اليومية، كل شيء في مسار واضح وبواجهة عربية كاملة.</p>
+        <p>ادخل الآن وابدأ المراجعة بنفس جودة منصات QBank الاحترافية.</p>
         <Link href="/auth" className="btn-primary">
-          ابدأ مجاناً
+          Start now
         </Link>
       </section>
     </main>

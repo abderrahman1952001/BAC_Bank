@@ -1,9 +1,23 @@
 import type { Metadata } from 'next';
+import { Cairo, Tajawal } from 'next/font/google';
 import './globals.css';
 
+const cairo = Cairo({
+  subsets: ['arabic', 'latin'],
+  variable: '--font-body',
+  weight: ['400', '500', '600', '700', '800'],
+});
+
+const tajawal = Tajawal({
+  subsets: ['arabic', 'latin'],
+  variable: '--font-display',
+  weight: ['500', '700', '800', '900'],
+});
+
 export const metadata: Metadata = {
-  title: 'BAC Bank | منصة مراجعة البكالوريا',
-  description: 'منصة عربية لطلبة الجزائر: مراجعة، فلترة الأسئلة، وتتبع التقدم.',
+  title: 'BAC Bank | Premium Algerian BAC QBank',
+  description:
+    'منصة مراجعة مميزة لطلبة البكالوريا في الجزائر: sujets منظمة وجلسات دراسة ذكية.',
 };
 
 export default function RootLayout({
@@ -12,8 +26,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl">
-      <body>{children}</body>
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
+      <body
+        className={`${cairo.variable} ${tajawal.variable}`}
+        suppressHydrationWarning
+      >
+        {children}
+      </body>
     </html>
   );
 }

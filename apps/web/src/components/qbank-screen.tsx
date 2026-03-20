@@ -74,7 +74,7 @@ type QuestionsResponse = {
 };
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001/api/v1';
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? '/api/v1';
 const ASSET_BASE_URL = process.env.NEXT_PUBLIC_ASSET_BASE_URL;
 
 const sessionTypeLabels: Record<QuestionItem['exam']['sessionType'], string> = {

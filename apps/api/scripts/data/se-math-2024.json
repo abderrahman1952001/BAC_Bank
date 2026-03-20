@@ -1,0 +1,1163 @@
+{
+  "exam": {
+    "year": 2024,
+    "stream_name_ar": "علوم تجريبية",
+    "subject_name_ar": "الرياضيات",
+    "session_type": "NORMAL",
+    "duration_minutes": 210,
+    "total_points": 20,
+    "source_language": "ar",
+    "has_correction": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title_ar": "الموضوع الأول",
+      "exercises": [
+        {
+          "order_index": 1,
+          "title_ar": "التمرين الأول",
+          "max_points": 4,
+          "context_blocks": [
+            {
+              "type": "paragraph",
+              "text": "يحتوي كيس على 11 كرية متماثلة لا نفرق بينها باللمس موزعة كما يلي: كريتان بيضاوان مرقمتان بـ: 1 ، 3 وأربع كريات حمراء مرقمة بـ: 0 ، 1 ، 1 ، 3 وخمس كريات خضراء مرقمة بـ: 0 ، 1 ، 1 ، 3 ، 4."
+            }
+          ],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "I.1.أ",
+              "title_ar": "احسب احتمال الحادثة A وبين أن P(B)=56/165",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "I) نسحب عشوائيا وفي آن واحد 3 كريات من الكيس ونعتبر الحوادث الآتية:\nA : \"الحصول على 3 كريات من نفس اللون\"\nB : \"الحصول على 3 كريات جداء أرقامها عدد فردي\"\nC : \"الحصول على 3 كريات جداء أرقامها عدد زوجي\"\n(أ) احسب احتمال الحادثة A وبين أن: $P(B)=\\frac{56}{165}$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$P(A)=\\frac{C_4^3+C_5^3}{C_{11}^3}=\\frac{14}{165}$\n$P(B)=\\frac{C_8^3}{C_{11}^3}=\\frac{56}{165}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 2,
+              "label": "I.1.ب",
+              "title_ar": "الاحتمال الشرطي ثم استنتاج P(C)",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) احسب الاحتمال الشرطي $P_A(B)$ ثم استنتج $P(C)$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$P_A(B)=\\frac{P(A\\cap B)}{P(A)}=\\frac{1}{7}$\n$P(C)=1-P(B)=\\frac{109}{165}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات", "الاحتمال الشرطي"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "I.2.أ",
+              "title_ar": "قانون الاحتمال والأمل الرياضياتي",
+              "max_points": 1.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) X المتغير العشوائي الذي يرفق بكل عملية سحب لثلاث كريات عدد الكريات التي تحمل رقما زوجيا.\n(أ) عين قانون الاحتمال للمتغير العشوائي X ثم احسب أمله الرياضياتي $E(X)$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "قانون الاحتمال:\n$x_i \\in \\{0,1,2,3\\}$\n$P(X=0)=\\frac{56}{165}$\n$P(X=1)=\\frac{84}{165}$\n$P(X=2)=\\frac{24}{165}$\n$P(X=3)=\\frac{1}{165}$\n$E(X)=\\frac{9}{11}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات", "المتغير العشوائي"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "I.2.ب",
+              "title_ar": "احسب احتمال الحادثة X>1",
+              "max_points": 0.25,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) احسب احتمال الحادثة $(X>1)$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$P(X>1)=P(X=2)+P(X=3)=\\frac{5}{33}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 5,
+              "label": "II",
+              "title_ar": "السحب على التوالي وبدون إرجاع",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "II) نسحب الآن من الكيس عشوائيا 3 كريات على التوالي وبدون إرجاع.\nاحسب احتمال الحادثة D: \"الحصول على 3 كريات جداء أرقامها معدوم\"."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$P(D)=1-P(\\overline{D})=1-\\frac{A_9^3}{A_{11}^3}=\\frac{27}{55}$\nأو $P(D)=\\frac{3A_2^1\\times A_9^2+3A_2^2\\times A_9^1}{A_{11}^3}=\\frac{27}{55}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات"],
+              "asset_ids": []
+            }
+          ]
+        },
+        {
+          "order_index": 2,
+          "title_ar": "التمرين الثاني",
+          "max_points": 4,
+          "context_blocks": [],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "I",
+              "title_ar": "حل المعادلة في C",
+              "max_points": 1.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "I) حل في مجموعة الأعداد المركبة C المعادلة ذات المجهول z الآتية:\n$(z-1+2\\sqrt{3})[z^{2}-2(1-\\sqrt{3})z+5-2\\sqrt{3}]=0$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$S=\\{1-2\\sqrt{3};\\;1-\\sqrt{3}-i;\\;1-\\sqrt{3}+i\\}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "حل المعادلات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 2,
+              "label": "II.1",
+              "title_ar": "كتابة أعداد مركبة على الشكل المثلثي",
+              "max_points": 1.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "II) في المستوى المركب المنسوب إلى المعلم المتعامد والمتجانس $(O;\\vec{u},\\vec{v})$، نعتبر النقط A و B و C التي لاحقاتها على الترتيب $z_A$ و $z_B$ و $z_C$ حيث:\n$z_A=1-\\sqrt{3}+i$ ، $z_B=1-2\\sqrt{3}$ ، $z_C=\\overline{z_A}$\n(1) اكتب كلا من $z_A-1$ و $z_C-1$ و $z_B$ على الشكل المثلثي."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$z_A-1=2\\left(\\cos\\frac{5\\pi}{6}+i\\sin\\frac{5\\pi}{6}\\right)$\n$z_C-1=2\\left(\\cos\\left(-\\frac{5\\pi}{6}\\right)+i\\sin\\left(-\\frac{5\\pi}{6}\\right)\\right)$\n$z_B=(2\\sqrt{3}-1)(\\cos\\pi+i\\sin\\pi)$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "الشكل المثلثي"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "II.2",
+              "title_ar": "لاحقة مرجح الجملة المثقلة",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) جد لاحقة النقطة D مرجح الجملة المثقلة $\\{(A;1),(B;-1),(C;1)\\}$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$z_D=\\frac{z_A-z_B+z_C}{1-1+1}=1$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "المرجح"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "II.3",
+              "title_ar": "طبيعة الرباعي",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(3) بين أن الرباعي ABCD معين."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ABCD متوازي أضلاع و $AB=AD=2$ إذن ABCD معين."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "الهندسة المستوية"],
+              "asset_ids": []
+            }
+          ]
+        },
+        {
+          "order_index": 3,
+          "title_ar": "التمرين الثالث",
+          "max_points": 5,
+          "context_blocks": [
+            {
+              "type": "paragraph",
+              "text": "$(u_n)$ المتتالية العددية المعرفة بـ: $u_0=0$ ومن أجل كل عدد طبيعي $n$، $u_{n+1}=\\frac{4-u_n}{2+u_n}$"
+            }
+          ],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "1",
+              "title_ar": "حساب الحدود والبرهان بالتراجع",
+              "max_points": 1.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(1) احسب الحدود $u_1$ و $u_2$ و $u_3$ ثم برهن بالتراجع أنه من أجل كل عدد طبيعي $n$، $0\\le u_n\\le2$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$u_1=2$ ، $u_2=\\frac{1}{2}$ ، $u_3=\\frac{7}{5}$\nوبالبرهان بالتراجع: من أجل كل عدد طبيعي $n$، $0\\le u_n\\le2$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات", "البرهان بالتراجع"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 2,
+              "label": "2.أ",
+              "title_ar": "المتتالية الهندسية",
+              "max_points": 1.25,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) $(v_n)$ المتتالية العددية المعرفة على $\\mathbb{N}$ بـ: $v_n=\\frac{u_n-1}{u_n+4}$\n(أ) أثبت أن المتتالية $(v_n)$ هندسية أساسها $-\\frac{2}{3}$ ثم اكتب عبارة $v_n$ بدلالة $n$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$v_{n+1}=-\\frac{2}{3}v_n$\n$v_n=-\\frac{1}{4}\\left(-\\frac{2}{3}\\right)^n$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات", "المتتالية الهندسية"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "2.ب",
+              "title_ar": "كتابة u_n بدلالة v_n",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) بين أنه من أجل كل عدد طبيعي $n$، $u_n=\\frac{5}{1-v_n}-4$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$u_n=\\frac{5}{1-v_n}-4$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "2.ج",
+              "title_ar": "حساب النهاية",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ج) استنتج $\\lim_{n\\to+\\infty}u_n$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$\\lim_{n\\to+\\infty}u_n=\\lim_{n\\to+\\infty}\\left(\\frac{5}{1+\\frac{1}{4}\\left(-\\frac{2}{3}\\right)^n}-4\\right)=1$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات", "النهايات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 5,
+              "label": "3",
+              "title_ar": "المجاميع",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(3) من أجل كل عدد طبيعي $n$، نضع:\n$S_n=v_n+v_{n+1}+\\cdots+v_{n+2024}$\nو\n$T_n=\\frac{1}{4+u_n}+\\frac{1}{4+u_{n+1}}+\\cdots+\\frac{1}{4+u_{n+2024}}$\n- احسب $S_n$ بدلالة $n$ ثم استنتج $T_n$ بدلالة $n$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$S_n=-\\frac{3}{20}\\left(-\\frac{2}{3}\\right)^n\\left(1+\\left(\\frac{2}{3}\\right)^{2025}\\right)$\n$T_n=\\frac{1}{5}(2025-S_n)$\nومنه:\n$T_n=405+\\frac{3}{100}\\left(-\\frac{2}{3}\\right)^n\\left(1+\\left(\\frac{2}{3}\\right)^{2025}\\right)$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات", "المجاميع"],
+              "asset_ids": []
+            }
+          ]
+        },
+        {
+          "order_index": 4,
+          "title_ar": "التمرين الرابع",
+          "max_points": 7,
+          "context_blocks": [],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "I.1",
+              "title_ar": "دراسة الدالة g",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "I) يُمثل الجدول المقابل تغيّرات الدالة $g$ المعرفة على $\\mathbb{R}$ بـ: $g(x)=x\\,e^{-x+1}-2$\nاحسب $g(1)$ ثم استنتج إشارة $g(x)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$g(1)=-1$\nومن أجل كل $x\\in\\mathbb{R}$ فإن $g(x)<0$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "دراسة الدوال", "إشارة الدالة"],
+              "asset_ids": ["SUJET_1_EX_4_TABLE_1"]
+            },
+            {
+              "order_index": 2,
+              "label": "II.1.أ",
+              "title_ar": "النهايات",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "II) الدالة $f$ المعرفة على $\\mathbb{R}$ بـ: $f(x)=-2x+3-x\\,e^{-x+1}$ و $(C_f)$ تمثيلها البياني.\n(1) (أ) احسب $\\lim_{x\\to-\\infty}f(x)$ و $\\lim_{x\\to+\\infty}f(x)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$\\lim_{x\\to+\\infty}f(x)=-\\infty$\n$\\lim_{x\\to-\\infty}f(x)=+\\infty$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "النهايات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "II.1.ب",
+              "title_ar": "المستقيم المقارب المائل",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) بين أن المستقيم $(\\Delta)$ ذا المعادلة $y=-2x+3$ مقارب مائل للمنحني $(C_f)$ عند $+\\infty$ ثم ادرس الوضع النسبي للمنحني $(C_f)$ والمستقيم $(\\Delta)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$\\lim_{x\\to+\\infty}[f(x)-(-2x+3)]=0$\nلما $x<0$ يكون $(C_f)$ أعلى $(\\Delta)$، ولما $x>0$ يكون $(C_f)$ أسفل $(\\Delta)$، ويقطعانه في $I(0;3)$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "المستقيم المقارب المائل", "الوضع النسبي"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "II.2.أ",
+              "title_ar": "حساب المشتقة",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) (أ) بين أنه من أجل كل عدد حقيقي $x$، $f'(x)=g(x)-e^{-x+1}$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$f'(x)=g(x)-e^{-x+1}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "الاشتقاق"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 5,
+              "label": "II.2.ب",
+              "title_ar": "اتجاه التغير",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) استنتج اتجاه تغيّر الدالة $f$ ثم شكل جدول تغيّراتها."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الدالة $f$ متناقصة تماما على $\\mathbb{R}$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "اتجاه التغير", "جدول التغيرات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 6,
+              "label": "II.3",
+              "title_ar": "المماس",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(3) بين أن $(C_f)$ يقبل مماسا $(T)$ موازيا لـ $(\\Delta)$، ويطلب تعيين معادلة له."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$f'(x)=-2$ تكافئ $x=1$\nومعادلة المماس $(T)$ هي: $y=-2x+2$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "المماس"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 7,
+              "label": "II.4.أ",
+              "title_ar": "الرسم",
+              "max_points": 1.25,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(4) (أ) ارسم $(T)$ و $(\\Delta)$ و $(C_f)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الرسم المطلوب للمستقيمين $(T)$ و $(\\Delta)$ والمنحنى $(C_f)$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "التمثيل البياني"],
+              "asset_ids": ["SUJET_1_EX_4_GRAPH_1"]
+            },
+            {
+              "order_index": 8,
+              "label": "II.4.ب",
+              "title_ar": "المناقشة البيانية",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) عين بيانيا قيم الوسيط الحقيقي $m$ التي من أجلها تقبل المعادلة $f(x)=-2x+m$ حلين مختلفين."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تقبل المعادلة $f(x)=-2x+m$ حلين مختلفين لما $2<m<3$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "المناقشة البيانية"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 9,
+              "label": "II.5.أ",
+              "title_ar": "المكاملة بالتجزئة",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(5) (أ) باستعمال المكاملة بالتجزئة، بين أن $\\int_0^1 x\\,e^{-x+1}\\,dx=e-2$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "باستعمال المكاملة بالتجزئة نجد: $\\int_0^1 x\\,e^{-x+1}\\,dx=e-2$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "حساب التكامل", "المكاملة بالتجزئة"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 10,
+              "label": "II.5.ب",
+              "title_ar": "حساب المساحة",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) استنتج بالسنتيمتر المربع مساحة الحيز المستوي المحدد بـ $(C_f)$ و $(\\Delta)$ والمستقيمين اللذين معادلتاهما $x=0$ و $x=1$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$\\int_0^1(-2x+3-f(x))\\,dx=e-2$\nومنه $\\mathcal{A}=4(e-2)\\,cm^2$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "حساب المساحات"],
+              "asset_ids": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title_ar": "الموضوع الثاني",
+      "exercises": [
+        {
+          "order_index": 1,
+          "title_ar": "التمرين الأول",
+          "max_points": 4,
+          "context_blocks": [
+            {
+              "type": "paragraph",
+              "text": "يحتوي كيس على 5 قطع كهربائية غير متمايزة ولا نفرق بينها باللمس، منها 3 قطع سليمة وقطعتان غير سليمتين. نرمز إلى القطعة السليمة بالرمز $S$ وإلى القطعة غير السليمة بالرمز $\\overline{S}$.\nنسحب عشوائيا من الكيس 3 قطع على التوالي مع الإرجاع، ونعتبر الحوادث:\nA : \"القطعة الأولى المسحوبة سليمة\"\nB : \"سحب قطعة واحدة فقط سليمة\"\nC : \"القطعة الثالثة المسحوبة سليمة\"."
+            }
+          ],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "1",
+              "title_ar": "شجرة الاحتمالات",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(1) شكل شجرة الاحتمالات التي تنمذج هذه التجربة."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "شجرة الاحتمالات الموافقة للتجربة."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات", "شجرة الاحتمالات"],
+              "asset_ids": ["SUJET_2_EX_1_TREE_1"]
+            },
+            {
+              "order_index": 2,
+              "label": "2",
+              "title_ar": "حساب الاحتمالات",
+              "max_points": 1.25,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) احسب $P(A)$ و $P(B)$ احتمالي الحادثتين A و B ثم بين أن $P(C)=\\frac{3}{5}$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$P(A)=\\frac{3}{5}$\n$P(B)=3\\left(\\frac{3}{5}\\right)\\left(\\frac{2}{5}\\right)^2=\\frac{36}{125}$\n$P(C)=\\left(\\frac{3}{5}\\right)^3+\\left(\\frac{3}{5}\\right)\\left(\\frac{2}{5}\\right)^2+2\\left(\\frac{3}{5}\\right)^2\\left(\\frac{2}{5}\\right)=\\frac{3}{5}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "3",
+              "title_ar": "الاحتمال الشرطي والاستقلالية",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(3) احسب الاحتمال الشرطي $P_C(A)$، هل الحادثتان A و C مستقلتان؟"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$P(A\\cap C)=\\left(\\frac{3}{5}\\right)^3+\\left(\\frac{3}{5}\\right)^2\\left(\\frac{2}{5}\\right)=\\frac{9}{25}$\n$P_C(A)=\\frac{P(A\\cap C)}{P(C)}=\\frac{3}{5}$\nوبما أن $P_C(A)=P(A)$ فإن الحادثتين A و C مستقلتان."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات", "الاحتمال الشرطي", "استقلالية الحوادث"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "4.أ",
+              "title_ar": "قيم المتغير العشوائي",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(4) ترفق بكل قطعة سليمة العدد 10 وبكل قطعة غير سليمة العدد -10، ونعتبر X المتغير العشوائي الذي يرفق بكل عملية سحب من الكيس لثلاث قطع مجموع الأعداد المرفقة بها.\n(أ) برر أن قيم المتغير العشوائي X هي: -30 ، -10 ، 10 ، 30."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "قيم المتغير العشوائي X هي: $-30$ و $-10$ و $10$ و $30$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات", "المتغير العشوائي"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 5,
+              "label": "4.ب",
+              "title_ar": "قانون الاحتمال والأمل الرياضياتي",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) عين قانون الاحتمال للمتغير العشوائي X ثم احسب أمله الرياضياتي $E(X)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "قانون الاحتمال:\n$P(X=-30)=\\frac{8}{125}$\n$P(X=-10)=\\frac{36}{125}$\n$P(X=10)=\\frac{54}{125}$\n$P(X=30)=\\frac{27}{125}$\n$E(X)=6$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الاحتمالات", "الأمل الرياضياتي"],
+              "asset_ids": []
+            }
+          ]
+        },
+        {
+          "order_index": 2,
+          "title_ar": "التمرين الثاني",
+          "max_points": 4,
+          "context_blocks": [
+            {
+              "type": "paragraph",
+              "text": "عين الاقتراح الصحيح الوحيد من بين الاقتراحات الثلاثة مع التبرير في كل حالة مما يلي:"
+            }
+          ],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "1",
+              "title_ar": "مرافق العدد المركب",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(1) $z$ عدد مركب مرافقه $\\overline{z}$، مرافق العدد المركب $z+i$ هو:\nأ) $\\overline{z}-i$\nب) $\\overline{z}+i$\nج) $-i$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الإجابة الصحيحة: (أ)\n$\\overline{z+i}=\\overline{z}-i$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "مرافق عدد مركب"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 2,
+              "label": "2",
+              "title_ar": "قوة عدد مركب",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) العدد المركب $\\left(\\frac{1+i}{1-i}\\right)^{2024}$ يساوي:\nأ) 1\nب) $i$\nج) -1"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الإجابة الصحيحة: (أ)\n$\\left(\\frac{1+i}{1-i}\\right)^{2024}=i^{2024}=1$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "الشكل الجبري"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "3",
+              "title_ar": "مجموع لوغاريتمات",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(3) $z$ عدد مركب حيث $z=2(1+i\\sqrt{3})$.\nمن أجل كل عدد طبيعي غير معدوم $n$، نضع:\n$S_n=\\ln|z|+\\ln|z|^2+\\cdots+\\ln|z|^n$\nأ) $S_n=n(n+1)\\ln2$\nب) $S_n=2\\left(\\frac{1-(2\\ln2)^n}{1-2\\ln2}\\right)\\ln2$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الإجابة الصحيحة: (أ)\n$S_n=2\\ln2(1+2+\\cdots+n)=n(n+1)\\ln2$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "المتتاليات", "المجاميع"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "4",
+              "title_ar": "الشكل المثلثي",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(4) $z$ عدد مركب حيث: $z=\\sin\\frac{\\pi}{8}+i\\cos\\frac{\\pi}{8}$، الشكل المثلثي للعدد المركب $z$ هو:\nأ) $\\cos\\frac{3\\pi}{8}+i\\sin\\frac{3\\pi}{8}$\nب) $\\cos\\frac{\\pi}{8}+i\\sin\\frac{\\pi}{8}$\nج) $-\\cos\\frac{\\pi}{8}+i\\sin\\frac{\\pi}{8}$"
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الإجابة الصحيحة: (أ)\n$z=\\cos\\left(\\frac{\\pi}{2}-\\frac{\\pi}{8}\\right)+i\\sin\\left(\\frac{\\pi}{2}-\\frac{\\pi}{8}\\right)=\\cos\\frac{3\\pi}{8}+i\\sin\\frac{3\\pi}{8}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الأعداد المركبة", "الشكل المثلثي"],
+              "asset_ids": []
+            }
+          ]
+        },
+        {
+          "order_index": 3,
+          "title_ar": "التمرين الثالث",
+          "max_points": 5,
+          "context_blocks": [],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "1",
+              "title_ar": "تغيرات الدالة f",
+              "max_points": 1.25,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(1) $f$ الدالة العددية المعرفة على المجال $[2;+\\infty[$ كما يلي: $f(x)=\\frac{x+1}{2x}$.\n- شكل جدول تغيرات الدالة $f$ ثم استنتج أنه من أجل كل $x$ من $[2;+\\infty[$ فإن $\\frac{1}{2}<f(x)\\le\\frac{3}{4}$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الدالة $f$ متناقصة على $[2;+\\infty[$، ومنه من أجل كل $x\\in[2;+\\infty[$ فإن $\\frac{1}{2}<f(x)\\le\\frac{3}{4}$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "المتتاليات", "اتجاه التغير"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 2,
+              "label": "2.أ",
+              "title_ar": "النسبة u_{n+1}/u_n",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) $(u_n)$ المتتالية العددية المعرفة من أجل كل عدد طبيعي $n\\ge2$ بـ: $u_n=\\frac{n}{2^n}$.\n(أ) بين أنه من أجل كل $n\\ge2$، $\\frac{u_{n+1}}{u_n}\\le\\frac{3}{4}$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "من أجل كل $n\\ge2$ نجد: $\\frac{u_{n+1}}{u_n}=f(n)\\le\\frac{3}{4}$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "2.ب",
+              "title_ar": "حصر المتتالية ونهايتها",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) أثبت أنه من أجل كل $n\\ge2$ فإن $u_n\\le\\frac{1}{2}\\left(\\frac{3}{4}\\right)^{n-2}$ ثم استنتج $\\lim_{n\\to+\\infty}u_n$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$u_n\\le\\frac{1}{2}\\left(\\frac{3}{4}\\right)^{n-2}$\nومن ثم $\\lim_{n\\to+\\infty}u_n=0$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات", "البرهان بالتراجع", "النهايات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "3",
+              "title_ar": "مجموع حدود",
+              "max_points": 2.25,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(3) نضع من أجل كل $n\\ge2$:\n$S_n=\\frac{u_2}{2}+\\frac{u_3}{3}+\\cdots+\\frac{u_n}{n}$\n- بين أن: $S_n=\\frac{1}{2}\\left(1-\\left(\\frac{1}{2}\\right)^{n-1}\\right)$ ثم عين العدد الطبيعي $n$ حتى يكون $S_n=\\frac{511}{1024}$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$S_n=\\frac{1}{2}\\left(1-\\left(\\frac{1}{2}\\right)^{n-1}\\right)$\nوالحل هو: $n=10$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["المتتاليات", "المجاميع"],
+              "asset_ids": []
+            }
+          ]
+        },
+        {
+          "order_index": 4,
+          "title_ar": "التمرين الرابع",
+          "max_points": 7,
+          "context_blocks": [],
+          "questions": [
+            {
+              "order_index": 1,
+              "label": "I.1",
+              "title_ar": "دراسة الدالة g بيانيا",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "I) الدالة $g$ المعرفة على $]0;+\\infty[$ كما يلي: $g(x)=\\frac{1}{2}x^3+\\frac{1}{2}-\\ln x$، تمثيلها البياني $(C_g)$ كما في الشكل.\nبقراءة بيانية عين إشارة $g(x)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$g(x)$ موجب تماما على المجال $]0;+\\infty[$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "القراءة البيانية", "إشارة الدالة"],
+              "asset_ids": ["SUJET_2_EX_4_GRAPH_1"]
+            },
+            {
+              "order_index": 2,
+              "label": "II.1",
+              "title_ar": "حساب النهايات",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "II) $f$ الدالة المعرفة على $]0;+\\infty[$ بـ: $f(x)=-x-\\frac{\\ln x}{x^2}$ و $(C_f)$ تمثيلها البياني.\n(1) احسب $\\lim_{x\\to0}f(x)$ و $\\lim_{x\\to+\\infty}f(x)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$\\lim_{x\\to0}f(x)=+\\infty$\n$\\lim_{x\\to+\\infty}f(x)=-\\infty$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "النهايات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 3,
+              "label": "II.2.أ",
+              "title_ar": "المشتقة",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(2) (أ) بين أنه من أجل كل $x\\in]0;+\\infty[$ فإن $f'(x)=\\frac{-2g(x)}{x^3}$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$f'(x)=\\frac{-2g(x)}{x^3}$"
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "الاشتقاق"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 4,
+              "label": "II.2.ب",
+              "title_ar": "اتجاه التغير وجدول التغيرات",
+              "max_points": 0.5,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ب) استنتج اتجاه تغيّر الدالة $f$ ثم شكل جدول تغيّراتها."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الدالة $f$ متناقصة تماما على $]0;+\\infty[$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "اتجاه التغير", "جدول التغيرات"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 5,
+              "label": "II.2.ج",
+              "title_ar": "مبرهنة القيم المتوسطة",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(ج) أثبت أن المعادلة $f(x)=0$ تقبل حلا وحيدا $\\alpha$ حيث $0.7<\\alpha<0.71$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$f(0.7)\\times f(0.71)<0$، والدالة $f$ مستمرة ومتناقصة تماما على $[0.7,0.71]$، ومنه تقبل المعادلة $f(x)=0$ حلا وحيدا $\\alpha$ حيث $0.7<\\alpha<0.71$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "مبرهنة القيم المتوسطة"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 6,
+              "label": "II.3",
+              "title_ar": "المستقيم المقارب والوضع النسبي",
+              "max_points": 1.25,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(3) (أ) بين أن المنحني $(C_f)$ يقبل مستقيما مقاربا مائلا $(\\Delta)$، ويطلب تعيين معادلة له.\n(ب) ادرس الوضع النسبي للمنحني $(C_f)$ والمستقيم $(\\Delta)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$\\lim_{x\\to+\\infty}(f(x)+x)=0$، ومنه فإن $(\\Delta)$ مستقيم مقارب مائل لـ $(C_f)$ ومعادلته $y=-x$.\nويكون $(C_f)$ أعلى $(\\Delta)$ على $]0,1[$ وأسفل $(\\Delta)$ على $]1,+\\infty[$ ويقطعه في $A(1,-1)$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "المستقيم المقارب المائل", "الوضع النسبي"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 7,
+              "label": "II.4",
+              "title_ar": "المماس",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(4) بين أن المنحني $(C_f)$ يقبل مماسا $(T)$ معامل توجيهه -1، ويطلب تعيين معادلة له."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$f'(x)=-1$ تكافئ $x=\\sqrt{e}$، ومعادلة المماس $(T)$ هي: $y=-x-\\frac{1}{2e}$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "المماس"],
+              "asset_ids": []
+            },
+            {
+              "order_index": 8,
+              "label": "II.5",
+              "title_ar": "الرسم والمناقشة",
+              "max_points": 1,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(5) (أ) ارسم كلا من $(T)$ و $(\\Delta)$ و $(C_f)$.\n(ب) $m$ وسيط حقيقي، عين بيانيا قيم $m$ التي من أجلها تقبل المعادلة $\\frac{\\ln x}{x^2}=m$ حلين مختلفين."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الرسم المطلوب لـ $(T)$ و $(\\Delta)$ و $(C_f)$.\nوتقبل المعادلة $\\frac{\\ln x}{x^2}=m$ حلين مختلفين لما $0<m<\\frac{1}{2e}$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "التمثيل البياني", "المناقشة البيانية"],
+              "asset_ids": ["SUJET_2_EX_4_GRAPH_2"]
+            },
+            {
+              "order_index": 9,
+              "label": "II.6",
+              "title_ar": "الدوال الأصلية وحساب المساحة",
+              "max_points": 0.75,
+              "prompt_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(6) (أ) أثبت أن الدالة $H:x\\mapsto\\frac{-1-\\ln x}{x}$ هي دالة أصلية للدالة $h:x\\mapsto\\frac{\\ln x}{x^2}$ على $]0;+\\infty[$.\n(ب) $\\mathcal{A}(\\alpha)$ المساحة بالسنتيمتر المربع للحيز المستوي المحدد بالمنحني $(C_f)$ والمستقيمات التي معادلاتها $y=-x$ و $x=\\alpha$ و $x=1$.\n- بين أن: $\\mathcal{A}(\\alpha)=4\\left(\\alpha^2-\\frac{1}{\\alpha}+1\\right)$."
+                }
+              ],
+              "solution_blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "(أ) من أجل كل $x\\in]0;+\\infty[$ فإن $H'(x)=h(x)$.\n(ب) $\\int_\\alpha^1\\frac{-\\ln x}{x^2}\\,dx=H(\\alpha)-H(1)=\\frac{-1-\\ln\\alpha}{\\alpha}+1$، ومن $f(\\alpha)=0$ نجد $\\ln\\alpha=-\\alpha^3$، ومنه:\n$\\mathcal{A}(\\alpha)=4\\left(\\alpha^2-\\frac{1}{\\alpha}+1\\right)$."
+                }
+              ],
+              "hint_blocks": [],
+              "topics": ["الدوال", "الدوال الأصلية", "حساب المساحات"],
+              "asset_ids": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "SUJET_1_EX_4_TABLE_1",
+      "variant_code": "SUJET_1",
+      "exercise_order_index": 4,
+      "question_order_index": 1,
+      "role": "PROMPT",
+      "kind": "TABLE",
+      "page_number": 2,
+      "location_hint": "left-middle",
+      "caption_ar": "جدول تغيرات الدالة g",
+      "needs_crop": true,
+      "crop_file_name_suggestion": "sujet1_ex4_g_variation_table",
+      "structured_data": {},
+      "notes": "Scanned variation table from the sujet statement."
+    },
+    {
+      "id": "SUJET_1_EX_4_GRAPH_1",
+      "variant_code": "SUJET_1",
+      "exercise_order_index": 4,
+      "question_order_index": 7,
+      "role": "SOLUTION",
+      "kind": "FUNCTION_GRAPH",
+      "page_number": 6,
+      "location_hint": "lower-middle",
+      "caption_ar": "رسم T و Δ و C_f في التصحيح",
+      "needs_crop": true,
+      "crop_file_name_suggestion": "sujet1_ex4_cf_solution_graph",
+      "structured_data": {
+        "status": "approximate_scan"
+      },
+      "notes": "Solution-side scanned graph from the correction."
+    },
+    {
+      "id": "SUJET_2_EX_1_TREE_1",
+      "variant_code": "SUJET_2",
+      "exercise_order_index": 1,
+      "question_order_index": 1,
+      "role": "SOLUTION",
+      "kind": "PROBABILITY_TREE",
+      "page_number": 7,
+      "location_hint": "upper-middle",
+      "caption_ar": "شجرة الاحتمالات في التصحيح",
+      "needs_crop": true,
+      "crop_file_name_suggestion": "sujet2_ex1_tree_solution",
+      "structured_data": {},
+      "notes": "The statement asks the student to draw the tree; the full tree appears in the correction."
+    },
+    {
+      "id": "SUJET_2_EX_4_GRAPH_1",
+      "variant_code": "SUJET_2",
+      "exercise_order_index": 4,
+      "question_order_index": 1,
+      "role": "PROMPT",
+      "kind": "FUNCTION_GRAPH",
+      "page_number": 4,
+      "location_hint": "left-lower",
+      "caption_ar": "التمثيل البياني للدالة g",
+      "needs_crop": true,
+      "crop_file_name_suggestion": "sujet2_ex4_cg_prompt_graph",
+      "structured_data": {
+        "status": "approximate_scan"
+      },
+      "notes": "Prompt-side scanned graph shown in the sujet statement."
+    },
+    {
+      "id": "SUJET_2_EX_4_GRAPH_2",
+      "variant_code": "SUJET_2",
+      "exercise_order_index": 4,
+      "question_order_index": 8,
+      "role": "SOLUTION",
+      "kind": "FUNCTION_GRAPH",
+      "page_number": 8,
+      "location_hint": "lower-middle",
+      "caption_ar": "رسم T و Δ و C_f في التصحيح",
+      "needs_crop": true,
+      "crop_file_name_suggestion": "sujet2_ex4_cf_solution_graph",
+      "structured_data": {
+        "status": "approximate_scan"
+      },
+      "notes": "Solution-side scanned graph from the correction."
+    }
+  ],
+  "uncertainties": [
+    "Some OCR-heavy algebraic lines were manually normalized before insertion; review them in the admin editor against the scanned PDF.",
+    "Tables and graphs are inserted as scanned image blocks for the current UI, not as semantic table/graph payloads."
+  ]
+}
