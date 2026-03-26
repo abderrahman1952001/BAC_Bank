@@ -1,4 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
+import multipart from '@fastify/multipart';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -13,6 +14,13 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix('api/v1');
+  await app.register(multipart, {
+    limits: {
+      files: 2,
+      fileSize: 32 * 1024 * 1024,
+      fields: 16,
+    },
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

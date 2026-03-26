@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const features = [
   {
@@ -34,9 +35,12 @@ export function LandingPage() {
           <a href="#flow">Flow</a>
           <a href="#start">Start</a>
         </nav>
-        <Link href="/auth" className="btn-secondary">
-          Login
-        </Link>
+        <div className="landing-nav-actions">
+          <ThemeToggle />
+          <Link href="/auth" className="btn-secondary">
+            Login
+          </Link>
+        </div>
       </header>
 
       <section className="landing-hero" id="start">

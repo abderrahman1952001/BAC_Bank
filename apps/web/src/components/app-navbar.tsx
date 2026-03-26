@@ -4,19 +4,20 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { clearClientRole, getClientRole } from '@/lib/client-auth';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const baseNavItems = [
   {
     href: '/app',
-    label: 'Accueil',
+    label: 'الرئيسية',
   },
   {
     href: '/app/browse',
-    label: 'Browse BAC sujets',
+    label: 'تصفح المواضيع',
   },
   {
     href: '/app/sessions/new',
-    label: 'Create Study Session',
+    label: 'جلسة مخصصة',
   },
 ];
 
@@ -39,7 +40,7 @@ export function AppNavbar() {
             ...baseNavItems,
             {
               href: '/admin',
-              label: 'Admin CMS',
+              label: 'الإدارة',
             },
           ]
         : baseNavItems,
@@ -50,10 +51,10 @@ export function AppNavbar() {
     <header className="app-navbar">
       <Link href="/app" className="app-brand">
         <span className="app-brand-badge">BAC</span>
-        <span>BAC Bank</span>
+        <span>بنك البكالوريا</span>
       </Link>
 
-      <nav className="app-nav-links" aria-label="Main navigation">
+      <nav className="app-nav-links" aria-label="التنقل الرئيسي">
         {navItems.map((item) => (
           <Link
             key={item.href}
@@ -66,6 +67,7 @@ export function AppNavbar() {
       </nav>
 
       <div className="app-nav-actions">
+        <ThemeToggle />
         <Link
           href="/"
           className="btn-secondary"
@@ -73,7 +75,7 @@ export function AppNavbar() {
             clearClientRole();
           }}
         >
-          Log out
+          خروج
         </Link>
       </div>
     </header>

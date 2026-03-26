@@ -19,6 +19,15 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "intake:source:eddirasa": "ts-node --transpile-only scripts/ingest-eddirasa-bac.ts",
+    "intake:storage:audit": "ts-node --transpile-only scripts/audit-bac-storage.ts",
+    "intake:storage:readability": "ts-node --transpile-only scripts/repair-source-document-readability.ts",
+    "ingest:eddirasa": "ts-node --transpile-only scripts/ingest-eddirasa-bac.ts",
+    "repair:eddirasa-storage": "ts-node --transpile-only scripts/repair-eddirasa-storage.ts",
+    "repair:source-document-readability": "ts-node --transpile-only scripts/repair-source-document-readability.ts",
+    "normalize:page-storage-keys": "ts-node --transpile-only scripts/normalize-page-storage-keys.ts",
+    "audit:bac-storage": "ts-node --transpile-only scripts/audit-bac-storage.ts",
+    "audit:canonical-completeness": "ts-node --transpile-only scripts/audit-canonical-completeness.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
@@ -28,15 +37,21 @@
     "prisma:db:pull": "prisma db pull"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.914.0",
+    "@fastify/multipart": "^9.4.0",
+    "@google/genai": "^1.46.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-fastify": "^11.1.14",
     "@prisma/client": "^6.18.0",
+    "@smithy/node-http-handler": "^4.5.0",
+    "cheerio": "^1.1.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "sharp": "^0.34.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

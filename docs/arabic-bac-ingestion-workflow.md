@@ -25,6 +25,7 @@ These visuals should not all be treated as plain images.
 
 Keep one authoring model only:
 
+- `Paper`
 - `Exam`
 - `ExamVariant`
 - `ExamNode`
@@ -37,6 +38,10 @@ Keep one authoring model only:
 
 Do not keep parallel authoring tables for `Exercise`, `Question`, `QuestionContent`,
 `QuestionAsset`, and `Answer`.
+
+Use `Paper` as the canonical content owner and `Exam` as the stream-facing offering row.
+Use leaf `streams` / `subjects` for actual pathway and paper identities, with family tables above them for the top-level BAC taxonomy.
+That keeps shared BAC papers deduplicated while preserving browse URLs and admin workflows per stream/year/subject/session.
 
 ## Block Strategy
 

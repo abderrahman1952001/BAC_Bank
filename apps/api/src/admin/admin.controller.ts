@@ -21,11 +21,11 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Get('uploads/images/:fileName')
-  getImage(
+  async getImage(
     @Param('fileName') fileName: string,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const image = this.adminService.getImage(fileName);
+    const image = await this.adminService.getImage(fileName);
 
     response.header('Content-Type', image.mimeType);
     return new StreamableFile(image.data);
@@ -179,7 +179,7 @@ export class AdminController {
 
   @UseGuards(AdminRoleGuard)
   @Post('uploads/images')
-  uploadImage(@Body() payload: Record<string, unknown>) {
+  async uploadImage(@Body() payload: Record<string, unknown>) {
     return this.adminService.uploadImage(payload);
   }
 }

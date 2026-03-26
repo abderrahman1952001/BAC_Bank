@@ -1,4 +1,4 @@
-import { BrowseSubjects } from '@/components/browse-subjects';
+import { redirect } from 'next/navigation';
 
 type BrowseSubjectsPageProps = {
   params: Promise<{
@@ -11,5 +11,5 @@ export default async function BrowseSubjectsPage({
 }: BrowseSubjectsPageProps) {
   const { streamCode } = await params;
 
-  return <BrowseSubjects streamCode={streamCode} />;
+  redirect(`/app/browse?stream=${encodeURIComponent(streamCode)}`);
 }

@@ -1,5 +1,19 @@
-import { BrowseStreams } from '@/components/browse-streams';
+import { BrowseWorkspace } from '@/components/browse-workspace';
 
-export default function BrowseStreamsPage() {
-  return <BrowseStreams />;
+type BrowseWorkspacePageProps = {
+  searchParams: Promise<{
+    stream?: string;
+    subject?: string;
+    year?: string;
+    examId?: string;
+    sujet?: string;
+  }>;
+};
+
+export default async function BrowseWorkspacePage({
+  searchParams,
+}: BrowseWorkspacePageProps) {
+  const resolvedSearchParams = await searchParams;
+
+  return <BrowseWorkspace initialSearch={resolvedSearchParams} />;
 }

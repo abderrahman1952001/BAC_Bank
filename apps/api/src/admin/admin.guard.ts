@@ -23,7 +23,9 @@ export class AdminRoleGuard implements CanActivate {
     const role = userRole ?? headerRole ?? cookieRole;
 
     if (role !== 'ADMIN') {
-      throw new ForbiddenException('ADMIN role is required to access this endpoint.');
+      throw new ForbiddenException(
+        'ADMIN role is required to access this endpoint.',
+      );
     }
 
     return true;

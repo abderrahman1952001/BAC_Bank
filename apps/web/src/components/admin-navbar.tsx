@@ -3,23 +3,20 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { clearClientRole } from '@/lib/client-auth';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const navItems = [
   {
-    href: '/admin',
-    label: 'Dashboard',
+    href: '/admin/ingestion',
+    label: 'Ingestion',
   },
   {
-    href: '/admin/exams',
-    label: 'Exams',
+    href: '/admin/library',
+    label: 'Library',
   },
 ];
 
 function isActive(pathname: string, href: string) {
-  if (href === '/admin') {
-    return pathname === '/admin';
-  }
-
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -28,7 +25,7 @@ export function AdminNavbar() {
 
   return (
     <header className="admin-navbar">
-      <Link href="/admin" className="app-brand">
+      <Link href="/admin/ingestion" className="app-brand">
         <span className="app-brand-badge">CMS</span>
         <span>BAC Admin</span>
       </Link>
@@ -46,6 +43,7 @@ export function AdminNavbar() {
       </nav>
 
       <div className="admin-nav-actions">
+        <ThemeToggle />
         <Link href="/app" className="btn-secondary">
           Student App
         </Link>

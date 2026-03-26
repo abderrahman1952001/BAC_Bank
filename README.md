@@ -10,8 +10,11 @@ This repository is a monorepo with:
 ## Current MVP Scope
 
 - Normalized BAC taxonomy:
-  - Unique subject catalog (no duplicates)
-  - Stream-to-subject mappings for common vs stream-specific subjects
+  - Top-level `stream_families` / `subject_families` plus leaf `streams` / `subjects`
+  - Year-aware stream-to-subject rules for common vs stream-specific subjects
+- Canonical BAC paper storage:
+  - One canonical `paper` can be shared by multiple stream-facing `exam` offerings
+  - Browse and admin routes still address stream/year/subject exam offerings
 - Session-based practice workflow:
   - Build a session for one subject with guided filters (stream/year/topic/session type)
   - Live preview of matching exercise count while filtering
@@ -142,14 +145,31 @@ DATABASE_URL=postgresql://bac_user:bac_password@localhost:5433/bac_bank?schema=p
 
 ## Admin CMS Data Model
 
-The admin editors now write directly to the primary hierarchy tables:
+The live content model is split into browse-facing offerings and canonical paper content:
 
+- `stream_families`
+- `streams`
+- `subject_families`
+- `subjects`
+- `papers`
 - `exams`
 - `exam_variants`
 - `exam_nodes`
 - `exam_node_blocks`
 
-There is no draft-copy import step. Editing in `/admin/*` updates the live database rows.
+`streams` and `subjects` are the leaf pathway / paper-subject identities used by exam offerings.
+`stream_families` and `subject_families` hold the top-level BAC taxonomy above them.
+`exams` are the stream-facing offering rows (`year + stream + subject + session`).
+`papers` own the shared hierarchy and allow one BAC sujet to be reused across multiple streams when the official paper is common.
+
+The BAC ingestion workflow now uses a separate review layer before publication:
+
+- `ingestion_jobs`
+- `source_documents`
+- `source_pages`
+
+Review in `/admin/ingestion/*` keeps imported PDFs, page PNGs, crop boxes, and draft JSON out of the live exam tables until an admin explicitly approves and publishes the job.
+If a paper is shared across streams, set `draft_json.exam.metadata.paperFamilyCode` before publication so multiple offerings attach to the same canonical paper.
 
 ## API Endpoints (MVP)
 
@@ -163,11 +183,35 @@ There is no draft-copy import step. Editing in `/admin/*` updates the live datab
 - `GET /api/v1/qbank/sessions/:id`
 - `POST /api/v1/qbank/questions/:id/attempts`
 - `POST /api/v1/admin/exams/bootstrap`
+- `GET /api/v1/admin/ingestion/jobs`
+- `GET /api/v1/admin/ingestion/jobs/:jobId`
+- `POST /api/v1/admin/ingestion/intake/manual`
+- `PATCH /api/v1/admin/ingestion/jobs/:jobId`
+- `POST /api/v1/admin/ingestion/jobs/:jobId/approve`
+- `POST /api/v1/admin/ingestion/jobs/:jobId/publish`
+- `GET /api/v1/ingestion/documents/:documentId/file`
+- `GET /api/v1/ingestion/pages/:pageId/image`
+- `GET /api/v1/ingestion/jobs/:jobId/assets/:assetId/preview`
+- `GET /api/v1/ingestion/media/:mediaId`
 
 ## Notes
 
 - Migration SQL is generated in `apps/api/prisma/migrations`.
-- `npm run prisma:seed -w @bac-bank/api` now includes a seeded sample:
-  - BAC 2025 Math (Sciences Exp) from `/home/abderrahman/dzexams-bac-mathematiques-2229208.pdf`
-  - Markdown summaries per exercise + linked original page assets at `apps/web/public/samples/dzexams/2025/math-sci/`.
+- BAC intake overview: [docs/intake-pipeline.md](docs/intake-pipeline.md)
+- Source intake command examples:
+  - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage originals --min-year 2008`
+  - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage pages --min-year 2008`
+  - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage ocr --ocr-backend gemini --job-id <job-id>`
+  - Requires `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ENDPOINT`, and `PUBLIC_API_BASE_URL`.
+  - Gemini is the extraction backend. The current default model is `gemini-3-flash-preview`. Set `GEMINI_API_KEY` or `GOOGLE_API_KEY` before running `ocr` or `process`.
+  - `--gemini-model gemini-3-flash-preview`, `--gemini-max-output-tokens 65535`, and `--gemini-temperature 1` override the Gemini 3 generation config.
+  - `--stage originals` stores original PDFs in R2 and records `source_documents`.
+  - `--stage pages` rasterizes PDFs, uploads PNG page images to R2, and creates/updates `source_pages`.
+  - `--stage ocr` reuses the stored originals/pages and updates `draft_json` with Gemini extraction.
+  - `--stage process` remains as a compatibility shortcut for `pages + ocr` on already uploaded originals.
+  - `--job-id a,b,c` lets `pages`, `ocr`, or `process` target exact ingestion jobs.
+  - `--slug slug-a,slug-b` lets `originals`, `pages`, `ocr`, or `process` target exact Eddirasa exam slugs.
+  - Uses `pdftoppm` to rasterize PDF pages into PNGs before uploading them to R2.
+  - Manual PDF intake is available in the admin UI at `/admin/ingestion`.
+- `npm run prisma:seed -w @bac-bank/api` now syncs base BAC taxonomy plus the mathematics topic list used by the practice/topic mapping flow.
 - In this environment, Docker daemon access may be restricted; migrations can still be generated from schema, then applied on a DB-enabled machine/CI.

@@ -17,7 +17,59 @@ const blockTypes: Array<ContentBlock['type']> = [
   'latex',
   'image',
   'code',
+  'table',
+  'list',
+  'graph',
+  'tree',
 ];
+
+function stringifyBlockData(data: ContentBlock['data']) {
+  if (!data || Object.keys(data).length === 0) {
+    return '';
+  }
+
+  return JSON.stringify(data, null, 2);
+}
+
+function formatTableRows(data: ContentBlock['data']) {
+  if (!Array.isArray(data?.rows)) {
+    return '';
+  }
+
+  return data.rows
+    .map((row) =>
+      Array.isArray(row)
+        ? row.map((cell) => String(cell ?? '')).join(' | ')
+        : '',
+    )
+    .filter((row) => row.trim().length > 0)
+    .join('\n');
+}
+
+function parseTableRows(value: string) {
+  return value
+    .split('\n')
+    .map((line) =>
+      line
+        .split('|')
+        .map((cell) => cell.trim())
+        .filter((cell) => cell.length > 0),
+    )
+    .filter((row) => row.length > 0);
+}
+
+function withRowsData(data: ContentBlock['data'], rows: string[][]) {
+  const nextData =
+    data && Object.keys(data).length > 0 ? { ...data } : ({} as Record<string, unknown>);
+
+  if (rows.length > 0) {
+    nextData.rows = rows;
+  } else {
+    delete nextData.rows;
+  }
+
+  return Object.keys(nextData).length ? nextData : null;
+}
 
 export function BlockEditor({
   title,
@@ -26,6 +78,7 @@ export function BlockEditor({
   onUploadImage,
 }: BlockEditorProps) {
   const [uploadingBlockId, setUploadingBlockId] = useState<string | null>(null);
+  const [dataErrors, setDataErrors] = useState<Record<string, string>>({});
 
   const normalizedBlocks = useMemo(
     () => (blocks.length ? blocks : [makeEmptyBlock('paragraph')]),
@@ -211,7 +264,10 @@ export function BlockEditor({
               </label>
             ) : null}
 
-            {block.type === 'image' ? (
+            {block.type === 'image' ||
+            block.type === 'table' ||
+            block.type === 'graph' ||
+            block.type === 'tree' ? (
               <label className="field">
                 <span>Caption</span>
                 <input
@@ -226,9 +282,35 @@ export function BlockEditor({
               </label>
             ) : null}
 
+            {block.type === 'table' ? (
+              <label className="field">
+                <span>Table Rows</span>
+                <textarea
+                  key={`${block.id}:${formatTableRows(block.data)}`}
+                  rows={5}
+                  defaultValue={formatTableRows(block.data)}
+                  placeholder="Cell A | Cell B&#10;Row 2 Col 1 | Row 2 Col 2"
+                  onBlur={(event) => {
+                    const rows = parseTableRows(event.target.value);
+                    updateBlock(block.id, {
+                      data: withRowsData(block.data, rows),
+                    });
+                  }}
+                />
+              </label>
+            ) : null}
+
             <label className="field">
               <span>
-                {block.type === 'image' ? 'Image URL' : 'Content'}
+                {block.type === 'image'
+                  ? 'Image URL'
+                  : block.type === 'list'
+                    ? 'List Content'
+                    : block.type === 'table'
+                      ? 'Fallback Text'
+                      : block.type === 'graph' || block.type === 'tree'
+                        ? 'Supporting Text'
+                      : 'Content'}
               </span>
               <textarea
                 rows={block.type === 'code' ? 7 : 4}
@@ -256,6 +338,63 @@ export function BlockEditor({
                 ) : null}
               </label>
             ) : null}
+
+            <details className="field">
+              <summary>Structured Data JSON</summary>
+              <textarea
+                key={`${block.id}:${stringifyBlockData(block.data)}`}
+                rows={6}
+                defaultValue={stringifyBlockData(block.data)}
+                placeholder='{"kind":"formula_graph"}'
+                onBlur={(event) => {
+                  const nextValue = event.target.value.trim();
+
+                  if (!nextValue) {
+                    updateBlock(block.id, { data: null });
+                    setDataErrors((current) => {
+                      const next = { ...current };
+                      delete next[block.id];
+                      return next;
+                    });
+                    return;
+                  }
+
+                  try {
+                    const parsed = JSON.parse(nextValue) as unknown;
+
+                    if (
+                      !parsed ||
+                      typeof parsed !== 'object' ||
+                      Array.isArray(parsed)
+                    ) {
+                      throw new Error(
+                        'Structured data must be a JSON object.',
+                      );
+                    }
+
+                    updateBlock(block.id, {
+                      data: parsed as Record<string, unknown>,
+                    });
+                    setDataErrors((current) => {
+                      const next = { ...current };
+                      delete next[block.id];
+                      return next;
+                    });
+                  } catch (error) {
+                    setDataErrors((current) => ({
+                      ...current,
+                      [block.id]:
+                        error instanceof Error
+                          ? error.message
+                          : 'Invalid JSON payload.',
+                    }));
+                  }
+                }}
+              />
+              {dataErrors[block.id] ? (
+                <small className="error-text">{dataErrors[block.id]}</small>
+              ) : null}
+            </details>
 
             {block.type === 'latex' ? (
               <div className="latex-preview">

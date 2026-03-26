@@ -7,11 +7,10 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateAttemptDto } from './dto/create-attempt.dto';
 import { CreatePracticeSessionDto } from './dto/create-practice-session.dto';
 import { GetExamQueryDto } from './dto/get-exam-query.dto';
-import { GetQuestionsQueryDto } from './dto/get-questions-query.dto';
 import { GetPracticeSessionsQueryDto } from './dto/get-practice-sessions-query.dto';
+import { UpdatePracticeSessionProgressDto } from './dto/update-practice-session-progress.dto';
 import { QbankService } from './qbank.service';
 
 @Controller('qbank')
@@ -36,16 +35,6 @@ export class QbankController {
     return this.qbankService.getExamById(id, query.sujetNumber);
   }
 
-  @Get('questions')
-  getQuestions(@Query() query: GetQuestionsQueryDto) {
-    return this.qbankService.listQuestions(query);
-  }
-
-  @Get('questions/:id')
-  getQuestionById(@Param('id', ParseUUIDPipe) id: string) {
-    return this.qbankService.getQuestionById(id);
-  }
-
   @Get('sessions')
   listRecentPracticeSessions(@Query() query: GetPracticeSessionsQueryDto) {
     return this.qbankService.listRecentPracticeSessions(query.limit);
@@ -66,11 +55,11 @@ export class QbankController {
     return this.qbankService.getPracticeSessionById(id);
   }
 
-  @Post('questions/:id/attempts')
-  createAttempt(
+  @Post('sessions/:id/progress')
+  updatePracticeSessionProgress(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() payload: CreateAttemptDto,
+    @Body() payload: UpdatePracticeSessionProgressDto,
   ) {
-    return this.qbankService.createAttempt(id, payload);
+    return this.qbankService.updatePracticeSessionProgress(id, payload);
   }
 }

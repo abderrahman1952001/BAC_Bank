@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { setClientRole, UserRole } from '@/lib/client-auth';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 type AuthMode = 'login' | 'register';
 
@@ -22,7 +23,10 @@ export function AuthGateway() {
     <main className="auth-page">
       <section className="auth-layout">
         <aside className="auth-side">
-          <p className="page-kicker">BAC Bank</p>
+          <div className="auth-side-top">
+            <p className="page-kicker">BAC Bank</p>
+            <ThemeToggle />
+          </div>
           <h1>دخول الطالب</h1>
           <p>
             أنشئ حسابك أو سجل الدخول، ثم انتقل مباشرة إلى الصفحة الرئيسية مع navbar

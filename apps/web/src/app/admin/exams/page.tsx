@@ -1,5 +1,5 @@
-import { AdminExamsPage } from '@/components/admin-exams-page';
+import { redirect } from 'next/navigation';
 
 export default function AdminExamsRoute() {
-  return <AdminExamsPage />;
+  redirect('/admin/library');
 }

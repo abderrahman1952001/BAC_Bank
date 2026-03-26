@@ -8,28 +8,39 @@ import {
   BlockType as PrismaBlockType,
   ExamNodeType,
   ExamVariantCode,
+  MediaType,
   Prisma,
   PublicationStatus,
   SessionType,
 } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { basename, extname, join } from 'path';
+import { basename, extname } from 'path';
+import sharp from 'sharp';
 import { PrismaService } from '../prisma/prisma.service';
+import { R2StorageClient, readR2ConfigFromEnv } from '../ingestion/r2-storage';
 
-const ADMIN_IMAGE_UPLOAD_DIR = join(process.cwd(), 'uploads', 'admin-images');
 const MAX_IMAGE_SIZE_BYTES = 6 * 1024 * 1024;
 const DEFAULT_EXAM_DURATION_MINUTES = 210;
 const DEFAULT_EXAM_TOTAL_POINTS = 40;
 
 type AdminStatus = 'draft' | 'published';
 type AdminSessionType = 'normal' | 'rattrapage';
-type BlockType = 'paragraph' | 'latex' | 'image' | 'code' | 'heading';
+type BlockType =
+  | 'paragraph'
+  | 'latex'
+  | 'image'
+  | 'code'
+  | 'heading'
+  | 'table'
+  | 'list'
+  | 'graph'
+  | 'tree';
 
 type ContentBlock = {
   id: string;
   type: BlockType;
   value: string;
+  data?: Record<string, unknown> | null;
   meta?: {
     level?: number;
     caption?: string;
@@ -88,7 +99,6 @@ type ExamNodeRow = {
   nodeType: ExamNodeType;
   orderIndex: number;
   label: string | null;
-  title: string | null;
   maxPoints: Prisma.Decimal | null;
   status: PublicationStatus;
   metadata: Prisma.JsonValue | null;
@@ -99,6 +109,8 @@ type ExamNodeRow = {
 
 @Injectable()
 export class AdminService {
+  private storageClient: R2StorageClient | null = null;
+
   constructor(private readonly prisma: PrismaService) {}
 
   getMe() {
@@ -196,6 +208,13 @@ export class AdminService {
         select: {
           code: true,
           name: true,
+          isDefault: true,
+          family: {
+            select: {
+              code: true,
+              name: true,
+            },
+          },
         },
         orderBy: {
           name: 'asc',
@@ -205,6 +224,13 @@ export class AdminService {
         select: {
           code: true,
           name: true,
+          isDefault: true,
+          family: {
+            select: {
+              code: true,
+              name: true,
+            },
+          },
         },
         orderBy: {
           name: 'asc',
@@ -224,6 +250,28 @@ export class AdminService {
     return {
       subjects,
       streams,
+      subjectFamilies: Array.from(
+        new Map(
+          subjects.map((subject) => [
+            subject.family.code,
+            {
+              code: subject.family.code,
+              name: subject.family.name,
+            },
+          ]),
+        ).values(),
+      ).sort((a, b) => a.name.localeCompare(b.name)),
+      streamFamilies: Array.from(
+        new Map(
+          streams.map((stream) => [
+            stream.family.code,
+            {
+              code: stream.family.code,
+              name: stream.family.name,
+            },
+          ]),
+        ).values(),
+      ).sort((a, b) => a.name.localeCompare(b.name)),
       years: years.map((entry) => entry.year),
     };
   }
@@ -257,16 +305,21 @@ export class AdminService {
             code: true,
           },
         },
-        variants: {
+        paper: {
           select: {
-            id: true,
-            code: true,
-            status: true,
-            nodes: {
+            officialSourceReference: true,
+            variants: {
               select: {
                 id: true,
-                parentId: true,
-                nodeType: true,
+                code: true,
+                status: true,
+                nodes: {
+                  select: {
+                    id: true,
+                    parentId: true,
+                    nodeType: true,
+                  },
+                },
               },
             },
           },
@@ -293,7 +346,13 @@ export class AdminService {
     });
 
     return {
-      data: exams.map((exam) => this.mapExam(exam)),
+      data: exams.map((exam) =>
+        this.mapExam({
+          ...exam,
+          officialSourceReference: exam.paper.officialSourceReference,
+          variants: exam.paper.variants,
+        }),
+      ),
     };
   }
 
@@ -315,7 +374,13 @@ export class AdminService {
     const subjectCode = await this.resolveSubjectCode(payload.subject);
     const sessionType = this.toSessionType(payload.session);
     const status = this.toPublicationStatus(payload.status);
-    const officialSourceReference = this.readOptionalString(payload.original_pdf_url);
+    const paperFamilyCode =
+      this.readOptionalString(payload.paper_family_code) ??
+      this.readOptionalString(payload.paperFamilyCode) ??
+      this.derivePaperFamilyCode(streamCode, subjectCode);
+    const officialSourceReference = this.readOptionalString(
+      payload.original_pdf_url,
+    );
 
     const [stream, subject] = await Promise.all([
       this.prisma.stream.findUnique({
@@ -353,19 +418,48 @@ export class AdminService {
     });
 
     if (existing) {
-      throw new BadRequestException('An exam already exists for this year/stream/subject/session.');
+      throw new BadRequestException(
+        'An exam already exists for this year/stream/subject/session.',
+      );
     }
 
     const created = await this.prisma.$transaction(async (tx) => {
+      const existingPaper = await tx.paper.findFirst({
+        where: {
+          year,
+          subjectId: subject.id,
+          sessionType,
+          familyCode: paperFamilyCode,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      const paperId = existingPaper?.id ?? randomUUID();
+
+      if (!existingPaper) {
+        await tx.paper.create({
+          data: {
+            id: paperId,
+            year,
+            subjectId: subject.id,
+            sessionType,
+            familyCode: paperFamilyCode,
+            durationMinutes: DEFAULT_EXAM_DURATION_MINUTES,
+            totalPoints: DEFAULT_EXAM_TOTAL_POINTS,
+            officialSourceReference,
+          },
+        });
+      }
+
       const exam = await tx.exam.create({
         data: {
           year,
           streamId: stream.id,
           subjectId: subject.id,
           sessionType,
-          durationMinutes: DEFAULT_EXAM_DURATION_MINUTES,
-          totalPoints: DEFAULT_EXAM_TOTAL_POINTS,
-          officialSourceReference,
+          paperId,
           isPublished: status === PublicationStatus.PUBLISHED,
         },
         include: {
@@ -382,22 +476,24 @@ export class AdminService {
         },
       });
 
-      await tx.examVariant.createMany({
-        data: [
-          {
-            examId: exam.id,
-            code: ExamVariantCode.SUJET_1,
-            title: 'الموضوع الأول',
-            status,
-          },
-          {
-            examId: exam.id,
-            code: ExamVariantCode.SUJET_2,
-            title: 'الموضوع الثاني',
-            status,
-          },
-        ],
-      });
+      if (!existingPaper) {
+        await tx.examVariant.createMany({
+          data: [
+            {
+              paperId,
+              code: ExamVariantCode.SUJET_1,
+              title: 'الموضوع الأول',
+              status,
+            },
+            {
+              paperId,
+              code: ExamVariantCode.SUJET_2,
+              title: 'الموضوع الثاني',
+              status,
+            },
+          ],
+        });
+      }
 
       return exam.id;
     });
@@ -411,8 +507,22 @@ export class AdminService {
       where: {
         id: examId,
       },
-      select: {
-        id: true,
+      include: {
+        paper: {
+          select: {
+            id: true,
+            year: true,
+            subjectId: true,
+            sessionType: true,
+            familyCode: true,
+            officialSourceReference: true,
+            offerings: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -420,12 +530,30 @@ export class AdminService {
       throw new NotFoundException(`Exam ${examId} not found.`);
     }
 
-    const data: Prisma.ExamUpdateInput = {};
+    const nextYear =
+      payload.year !== undefined
+        ? this.readInteger(payload.year, 'year')
+        : exam.year;
+    const nextSessionType =
+      payload.session !== undefined
+        ? this.toSessionType(payload.session)
+        : exam.sessionType;
+    const nextStatus =
+      payload.status !== undefined
+        ? this.toPublicationStatus(payload.status)
+        : exam.isPublished
+          ? PublicationStatus.PUBLISHED
+          : PublicationStatus.DRAFT;
+    const nextOfficialSourceReference =
+      payload.original_pdf_url !== undefined
+        ? this.readOptionalString(payload.original_pdf_url)
+        : exam.paper.officialSourceReference;
+    const nextPaperFamilyCode =
+      this.readOptionalString(payload.paper_family_code) ??
+      this.readOptionalString(payload.paperFamilyCode) ??
+      exam.paper.familyCode;
 
-    if (payload.year !== undefined) {
-      data.year = this.readInteger(payload.year, 'year');
-    }
-
+    let nextStreamId = exam.streamId;
     if (payload.stream !== undefined) {
       const streamCode = await this.resolveStreamCode(payload.stream);
       const stream = await this.prisma.stream.findUnique({
@@ -441,13 +569,10 @@ export class AdminService {
         throw new BadRequestException('stream must map to an existing stream.');
       }
 
-      data.stream = {
-        connect: {
-          id: stream.id,
-        },
-      };
+      nextStreamId = stream.id;
     }
 
+    let nextSubjectId = exam.subjectId;
     if (payload.subject !== undefined) {
       const subjectCode = await this.resolveSubjectCode(payload.subject);
       const subject = await this.prisma.subject.findUnique({
@@ -460,50 +585,76 @@ export class AdminService {
       });
 
       if (!subject) {
-        throw new BadRequestException('subject must map to an existing subject.');
+        throw new BadRequestException(
+          'subject must map to an existing subject.',
+        );
       }
 
-      data.subject = {
-        connect: {
-          id: subject.id,
-        },
-      };
+      nextSubjectId = subject.id;
     }
 
-    if (payload.session !== undefined) {
-      data.sessionType = this.toSessionType(payload.session);
-    }
+    const paperShapeChanged =
+      nextYear !== exam.paper.year ||
+      nextSubjectId !== exam.paper.subjectId ||
+      nextSessionType !== exam.paper.sessionType ||
+      nextPaperFamilyCode !== exam.paper.familyCode ||
+      nextOfficialSourceReference !== exam.paper.officialSourceReference;
 
-    if (payload.original_pdf_url !== undefined) {
-      data.officialSourceReference = this.readOptionalString(payload.original_pdf_url);
-    }
-
-    let nextVariantStatus: PublicationStatus | null = null;
-
-    if (payload.status !== undefined) {
-      const status = this.toPublicationStatus(payload.status);
-      nextVariantStatus = status;
-      data.isPublished = status === PublicationStatus.PUBLISHED;
+    if (paperShapeChanged && exam.paper.offerings.length > 1) {
+      throw new BadRequestException(
+        'This exam shares a canonical paper with other offerings. Update the paper through ingestion or edit a non-shared offering.',
+      );
     }
 
     await this.prisma.$transaction(async (tx) => {
+      if (paperShapeChanged) {
+        const conflictingPaper = await tx.paper.findFirst({
+          where: {
+            year: nextYear,
+            subjectId: nextSubjectId,
+            sessionType: nextSessionType,
+            familyCode: nextPaperFamilyCode,
+            NOT: {
+              id: exam.paperId,
+            },
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        if (conflictingPaper) {
+          throw new BadRequestException(
+            'Another canonical paper already exists for this year/subject/session/family.',
+          );
+        }
+
+        await tx.paper.update({
+          where: {
+            id: exam.paperId,
+          },
+          data: {
+            year: nextYear,
+            subjectId: nextSubjectId,
+            sessionType: nextSessionType,
+            familyCode: nextPaperFamilyCode,
+            officialSourceReference: nextOfficialSourceReference,
+          },
+        });
+      }
+
       await tx.exam.update({
         where: {
           id: examId,
         },
-        data,
+        data: {
+          year: nextYear,
+          streamId: nextStreamId,
+          subjectId: nextSubjectId,
+          sessionType: nextSessionType,
+          isPublished: nextStatus === PublicationStatus.PUBLISHED,
+        },
       });
-
-      if (nextVariantStatus) {
-        await tx.examVariant.updateMany({
-          where: {
-            examId,
-          },
-          data: {
-            status: nextVariantStatus,
-          },
-        });
-      }
     });
 
     const updated = await this.getExamByIdForAdmin(examId);
@@ -517,6 +668,7 @@ export class AdminService {
       },
       select: {
         id: true,
+        paperId: true,
       },
     });
 
@@ -524,10 +676,26 @@ export class AdminService {
       throw new NotFoundException(`Exam ${examId} not found.`);
     }
 
-    await this.prisma.exam.delete({
-      where: {
-        id: examId,
-      },
+    await this.prisma.$transaction(async (tx) => {
+      await tx.exam.delete({
+        where: {
+          id: examId,
+        },
+      });
+
+      const remainingOfferings = await tx.exam.count({
+        where: {
+          paperId: exam.paperId,
+        },
+      });
+
+      if (remainingOfferings === 0) {
+        await tx.paper.delete({
+          where: {
+            id: exam.paperId,
+          },
+        });
+      }
     });
 
     return {
@@ -548,7 +716,8 @@ export class AdminService {
     const childrenByParent = this.buildChildrenByParent(allNodes);
 
     const exerciseNodes = allNodes.filter(
-      (node) => node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
+      (node) =>
+        node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
     );
 
     const orderedExercises = this.sortExercisesForAdmin(exerciseNodes);
@@ -556,7 +725,10 @@ export class AdminService {
     return {
       exam: this.mapExam(exam),
       exercises: orderedExercises.map((exercise, index) => {
-        const descendantIds = this.collectDescendantIds(exercise.id, childrenByParent);
+        const descendantIds = this.collectDescendantIds(
+          exercise.id,
+          childrenByParent,
+        );
         let questionCount = 0;
 
         for (const nodeId of descendantIds) {
@@ -584,7 +756,7 @@ export class AdminService {
 
     const variantCode = this.readOptionalExamVariantCode(payload.variant_code);
     const targetVariant = await this.resolveOrCreateTargetVariant(
-      exam.id,
+      exam.paperId,
       exam.variants,
       variantCode,
       this.toPublicationStatus(payload.status),
@@ -592,7 +764,8 @@ export class AdminService {
 
     const existingExerciseNodes = exam.variants.flatMap((variant) =>
       variant.nodes.filter(
-        (node) => node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
+        (node) =>
+          node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
       ),
     );
 
@@ -626,8 +799,7 @@ export class AdminService {
         parentId: null,
         nodeType: ExamNodeType.EXERCISE,
         orderIndex: maxVariantOrder + 1,
-        label: `Exercise ${maxVariantOrder + 1}`,
-        title: title ?? `Exercise ${maxVariantOrder + 1}`,
+        label: title ?? `Exercise ${maxVariantOrder + 1}`,
         maxPoints: null,
         status,
         metadata: this.toJsonValue(metadata),
@@ -638,10 +810,14 @@ export class AdminService {
     });
 
     const refreshed = await this.getExamExercises(examId);
-    const mapped = refreshed.exercises.find((exercise) => exercise.id === created.id);
+    const mapped = refreshed.exercises.find(
+      (exercise) => exercise.id === created.id,
+    );
 
     if (!mapped) {
-      throw new NotFoundException(`Exercise ${created.id} not found after creation.`);
+      throw new NotFoundException(
+        `Exercise ${created.id} not found after creation.`,
+      );
     }
 
     return mapped;
@@ -655,7 +831,18 @@ export class AdminService {
       include: {
         variant: {
           select: {
-            examId: true,
+            paper: {
+              select: {
+                offerings: {
+                  orderBy: {
+                    createdAt: 'asc',
+                  },
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -669,7 +856,7 @@ export class AdminService {
     const existingMetadata = this.parseExerciseMetadata(exercise.metadata);
 
     if (payload.title !== undefined) {
-      data.title = this.readOptionalString(payload.title);
+      data.label = this.readOptionalString(payload.title);
     }
 
     if (payload.status !== undefined) {
@@ -694,7 +881,8 @@ export class AdminService {
           : {}),
         ...(payload.difficulty !== undefined
           ? {
-              difficulty: this.readOptionalString(payload.difficulty) ?? undefined,
+              difficulty:
+                this.readOptionalString(payload.difficulty) ?? undefined,
             }
           : {}),
         ...(payload.tags !== undefined
@@ -714,11 +902,15 @@ export class AdminService {
       data,
     });
 
-    const refreshed = await this.getExamExercises(exercise.variant.examId);
+    const refreshed = await this.getExamExercises(
+      this.pickRepresentativeExamId(exercise.variant.paper.offerings),
+    );
     const mapped = refreshed.exercises.find((entry) => entry.id === exerciseId);
 
     if (!mapped) {
-      throw new NotFoundException(`Exercise ${exerciseId} not found after update.`);
+      throw new NotFoundException(
+        `Exercise ${exerciseId} not found after update.`,
+      );
     }
 
     return mapped;
@@ -733,7 +925,18 @@ export class AdminService {
         variant: {
           select: {
             id: true,
-            examId: true,
+            paper: {
+              select: {
+                offerings: {
+                  orderBy: {
+                    createdAt: 'asc',
+                  },
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -776,7 +979,9 @@ export class AdminService {
       }
     });
 
-    await this.rebalanceExerciseAdminOrder(exercise.variant.examId);
+    await this.rebalanceExerciseAdminOrder(
+      this.pickRepresentativeExamId(exercise.variant.paper.offerings),
+    );
 
     return {
       success: true,
@@ -784,13 +989,19 @@ export class AdminService {
   }
 
   async reorderExercises(examId: string, payload: Record<string, unknown>) {
-    const orderedIds = this.readRequiredStringArray(payload.ordered_ids, 'ordered_ids');
+    const orderedIds = this.readRequiredStringArray(
+      payload.ordered_ids,
+      'ordered_ids',
+    );
 
     const exam = await this.getExamByIdForAdmin(examId);
 
     const exerciseNodes = exam.variants.flatMap((variant) =>
       variant.nodes
-        .filter((node) => node.nodeType === ExamNodeType.EXERCISE && node.parentId === null)
+        .filter(
+          (node) =>
+            node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
+        )
         .map((node) => ({
           ...node,
           variantCode: variant.code,
@@ -878,7 +1089,9 @@ export class AdminService {
   async getExerciseEditor(exerciseId: string) {
     const context = await this.loadExerciseContext(exerciseId);
 
-    const exerciseMetadata = this.parseExerciseMetadata(context.exercise.metadata);
+    const exerciseMetadata = this.parseExerciseMetadata(
+      context.exercise.metadata,
+    );
     const orderedQuestions = this.orderQuestionsForAdmin(
       context.exercise.id,
       context.variantNodes,
@@ -887,18 +1100,18 @@ export class AdminService {
     const questionIdSet = new Set(orderedQuestions.map((entry) => entry.id));
 
     const questions = orderedQuestions.map((question, index) => {
-      const parsedMetadata = this.parseQuestionMetadata(question.metadata, question);
+      const parsedMetadata = this.parseQuestionMetadata(
+        question.metadata,
+        question,
+      );
 
       return {
         id: question.id,
-        title:
-          parsedMetadata.title ??
-          question.title ??
-          question.label ??
-          `Question ${index + 1}`,
-        parent_id: question.parentId && questionIdSet.has(question.parentId)
-          ? question.parentId
-          : null,
+        title: parsedMetadata.title ?? `Question ${index + 1}`,
+        parent_id:
+          question.parentId && questionIdSet.has(question.parentId)
+            ? question.parentId
+            : null,
         order_index: index + 1,
         status: this.fromPublicationStatus(question.status),
         points: question.maxPoints !== null ? Number(question.maxPoints) : null,
@@ -906,22 +1119,28 @@ export class AdminService {
           parsedMetadata.contentBlocks && parsedMetadata.contentBlocks.length
             ? parsedMetadata.contentBlocks
             : this.mapNodeBlocksToContentBlocks(
-                question.blocks.filter((block) =>
-                  block.role === BlockRole.PROMPT || block.role === BlockRole.STEM,
+                question.blocks.filter(
+                  (block) =>
+                    block.role === BlockRole.PROMPT ||
+                    block.role === BlockRole.STEM,
                 ),
               ),
         solution_blocks:
           parsedMetadata.solutionBlocks && parsedMetadata.solutionBlocks.length
             ? parsedMetadata.solutionBlocks
             : this.mapNodeBlocksToContentBlocks(
-                question.blocks.filter((block) => block.role === BlockRole.SOLUTION),
+                question.blocks.filter(
+                  (block) => block.role === BlockRole.SOLUTION,
+                ),
               ),
         hint_blocks:
           parsedMetadata.hintBlocks !== undefined
             ? parsedMetadata.hintBlocks
             : this.mapNodeBlocksToContentBlocks(
-                question.blocks.filter((block) =>
-                  block.role === BlockRole.HINT || block.role === BlockRole.RUBRIC,
+                question.blocks.filter(
+                  (block) =>
+                    block.role === BlockRole.HINT ||
+                    block.role === BlockRole.RUBRIC,
                 ),
               ),
         created_at: question.createdAt,
@@ -944,14 +1163,15 @@ export class AdminService {
         : this.mapNodeBlocksToContentBlocks(
             context.exercise.blocks.filter(
               (block) =>
-                block.role === BlockRole.STEM || block.role === BlockRole.PROMPT,
+                block.role === BlockRole.STEM ||
+                block.role === BlockRole.PROMPT,
             ),
           );
 
     return {
       exercise: {
         id: context.exercise.id,
-        title: context.exercise.title,
+        title: context.exercise.label,
         order_index: context.exercise.orderIndex,
         status: this.fromPublicationStatus(context.exercise.status),
         theme: exerciseMetadata.theme ?? null,
@@ -960,10 +1180,14 @@ export class AdminService {
         metadata: {
           year: exerciseMetadata.hierarchyMeta?.year ?? context.exam.year,
           session:
-            (exerciseMetadata.hierarchyMeta?.session as AdminSessionType | undefined) ??
-            this.fromSessionType(context.exam.sessionType),
-          subject: exerciseMetadata.hierarchyMeta?.subject ?? context.exam.subject.code,
-          branch: exerciseMetadata.hierarchyMeta?.branch ?? context.exam.stream.code,
+            (exerciseMetadata.hierarchyMeta?.session as
+              | AdminSessionType
+              | undefined) ?? this.fromSessionType(context.exam.sessionType),
+          subject:
+            exerciseMetadata.hierarchyMeta?.subject ??
+            context.exam.subject.code,
+          branch:
+            exerciseMetadata.hierarchyMeta?.branch ?? context.exam.stream.code,
           points:
             exerciseMetadata.hierarchyMeta?.points ??
             (context.exercise.maxPoints !== null
@@ -978,7 +1202,10 @@ export class AdminService {
     };
   }
 
-  async updateExerciseMetadata(exerciseId: string, payload: Record<string, unknown>) {
+  async updateExerciseMetadata(
+    exerciseId: string,
+    payload: Record<string, unknown>,
+  ) {
     const exercise = await this.prisma.examNode.findUnique({
       where: {
         id: exerciseId,
@@ -1081,9 +1308,13 @@ export class AdminService {
     const parentId = this.readOptionalString(payload.parent_id);
 
     if (parentId) {
-      const parentExists = orderedQuestions.some((question) => question.id === parentId);
+      const parentExists = orderedQuestions.some(
+        (question) => question.id === parentId,
+      );
       if (!parentExists) {
-        throw new BadRequestException('parent_id must reference a question in this exercise.');
+        throw new BadRequestException(
+          'parent_id must reference a question in this exercise.',
+        );
       }
     }
 
@@ -1091,7 +1322,8 @@ export class AdminService {
       id: question.id,
       orderIndex: index + 1,
       parentId:
-        question.parentId && orderedQuestions.some((entry) => entry.id === question.parentId)
+        question.parentId &&
+        orderedQuestions.some((entry) => entry.id === question.parentId)
           ? question.parentId
           : null,
     }));
@@ -1102,12 +1334,19 @@ export class AdminService {
       parentId,
     };
 
-    const validationErrors = this.validateHierarchy([...existingNodes, syntheticNode]);
+    const validationErrors = this.validateHierarchy([
+      ...existingNodes,
+      syntheticNode,
+    ]);
     this.throwIfValidationFails(validationErrors);
 
-    const title = this.readOptionalString(payload.title) ?? `Question ${existingNodes.length + 1}`;
+    const title =
+      this.readOptionalString(payload.title) ??
+      `Question ${existingNodes.length + 1}`;
     const points =
-      payload.points !== undefined ? this.readDecimal(payload.points, 'points') : 0;
+      payload.points !== undefined
+        ? this.readDecimal(payload.points, 'points')
+        : 0;
     const contentBlocks =
       payload.content_blocks !== undefined
         ? this.normalizeBlocks(payload.content_blocks)
@@ -1138,13 +1377,11 @@ export class AdminService {
           parentId: parentNodeId,
           nodeType: parentId ? ExamNodeType.SUBQUESTION : ExamNodeType.QUESTION,
           orderIndex: siblingOrder,
-          label: null,
-          title,
+          label: title,
           maxPoints: points,
           status,
           metadata: this.toJsonValue(
             this.toQuestionMetadata({
-              title,
               adminOrder: existingNodes.length + 1,
               contentBlocks,
               solutionBlocks,
@@ -1210,7 +1447,7 @@ export class AdminService {
 
     const existingMetadata = this.parseQuestionMetadata(question.metadata, {
       orderIndex: question.orderIndex,
-      title: question.title,
+      label: question.label,
       metadata: question.metadata,
     });
 
@@ -1222,10 +1459,14 @@ export class AdminService {
           : null;
 
     if (nextParentId) {
-      const parentExists = orderedQuestions.some((entry) => entry.id === nextParentId);
+      const parentExists = orderedQuestions.some(
+        (entry) => entry.id === nextParentId,
+      );
 
       if (!parentExists) {
-        throw new BadRequestException('parent_id must reference a question in the same exercise.');
+        throw new BadRequestException(
+          'parent_id must reference a question in the same exercise.',
+        );
       }
     }
 
@@ -1233,7 +1474,8 @@ export class AdminService {
       const parentId =
         entry.id === question.id
           ? nextParentId
-          : entry.parentId && orderedQuestions.some((value) => value.id === entry.parentId)
+          : entry.parentId &&
+              orderedQuestions.some((value) => value.id === entry.parentId)
             ? entry.parentId
             : null;
 
@@ -1249,48 +1491,60 @@ export class AdminService {
 
     const title =
       payload.title !== undefined
-        ? this.readOptionalString(payload.title) ?? `Question ${question.orderIndex}`
-        : existingMetadata.title ?? question.title ?? `Question ${question.orderIndex}`;
+        ? (this.readOptionalString(payload.title) ??
+          `Question ${question.orderIndex}`)
+        : (existingMetadata.title ??
+          question.label ??
+          `Question ${question.orderIndex}`);
 
     const contentBlocks =
       payload.content_blocks !== undefined
         ? this.normalizeBlocks(payload.content_blocks)
-        : existingMetadata.contentBlocks ??
+        : (existingMetadata.contentBlocks ??
           this.mapNodeBlocksToContentBlocks(
             this.mapLoadedBlocks(question.blocks).filter(
-              (block) => block.role === BlockRole.PROMPT || block.role === BlockRole.STEM,
+              (block) =>
+                block.role === BlockRole.PROMPT ||
+                block.role === BlockRole.STEM,
             ),
-          );
+          ));
 
     const solutionBlocks =
       payload.solution_blocks !== undefined
         ? this.normalizeBlocks(payload.solution_blocks)
-        : existingMetadata.solutionBlocks ??
+        : (existingMetadata.solutionBlocks ??
           this.mapNodeBlocksToContentBlocks(
             this.mapLoadedBlocks(question.blocks).filter(
               (block) => block.role === BlockRole.SOLUTION,
             ),
-          );
+          ));
 
     const hintBlocks =
       payload.hint_blocks !== undefined
         ? this.normalizeNullableBlocks(payload.hint_blocks)
-        : existingMetadata.hintBlocks ??
+        : (existingMetadata.hintBlocks ??
           this.mapNodeBlocksToContentBlocks(
             this.mapLoadedBlocks(question.blocks).filter(
               (block) =>
-                block.role === BlockRole.HINT || block.role === BlockRole.RUBRIC,
+                block.role === BlockRole.HINT ||
+                block.role === BlockRole.RUBRIC,
             ),
-          );
+          ));
 
     const currentOrder =
       existingMetadata.adminOrder ??
-      (orderedQuestions.findIndex((entry) => entry.id === question.id) + 1);
+      orderedQuestions.findIndex((entry) => entry.id === question.id) + 1;
+    const { title: _legacyTitle, ...existingMetadataWithoutTitle } =
+      existingMetadata;
 
     const nextParentNodeId = nextParentId ?? context.exercise.id;
     const parentChanged = nextParentNodeId !== question.parentId;
     const nextOrderIndex = parentChanged
-      ? this.nextSiblingOrder(context.variantNodes, nextParentNodeId, questionId)
+      ? this.nextSiblingOrder(
+          context.variantNodes,
+          nextParentNodeId,
+          questionId,
+        )
       : question.orderIndex;
 
     await this.prisma.$transaction(async (tx) => {
@@ -1300,7 +1554,10 @@ export class AdminService {
         },
         data: {
           parentId: nextParentNodeId,
-          nodeType: nextParentId ? ExamNodeType.SUBQUESTION : ExamNodeType.QUESTION,
+          nodeType: nextParentId
+            ? ExamNodeType.SUBQUESTION
+            : ExamNodeType.QUESTION,
+          label: title,
           ...(payload.points !== undefined
             ? {
                 maxPoints: this.readDecimal(payload.points, 'points'),
@@ -1311,11 +1568,9 @@ export class AdminService {
                 status: this.toPublicationStatus(payload.status),
               }
             : {}),
-          title,
           metadata: this.toJsonValue(
             this.toQuestionMetadata({
-              ...existingMetadata,
-              title,
+              ...existingMetadataWithoutTitle,
               adminOrder: currentOrder,
               contentBlocks,
               solutionBlocks,
@@ -1469,7 +1724,9 @@ export class AdminService {
           },
           data: {
             parentId: parentNodeId,
-            nodeType: item.parentId ? ExamNodeType.SUBQUESTION : ExamNodeType.QUESTION,
+            nodeType: item.parentId
+              ? ExamNodeType.SUBQUESTION
+              : ExamNodeType.QUESTION,
             orderIndex: siblingIndex,
             metadata: this.toJsonValue(
               this.toQuestionMetadata({
@@ -1485,9 +1742,12 @@ export class AdminService {
     return this.getExerciseEditor(exerciseId);
   }
 
-  uploadImage(payload: Record<string, unknown>) {
+  async uploadImage(payload: Record<string, unknown>) {
     const fileName = this.readString(payload.file_name, 'file_name');
-    const contentBase64 = this.readString(payload.content_base64, 'content_base64');
+    const contentBase64 = this.readString(
+      payload.content_base64,
+      'content_base64',
+    );
     const { mimeType, data } = this.parseBase64Image(contentBase64);
 
     if (data.length > MAX_IMAGE_SIZE_BYTES) {
@@ -1495,35 +1755,77 @@ export class AdminService {
     }
 
     const extension = this.resolveFileExtension(fileName, mimeType);
-    const storedFileName = `${Date.now()}-${randomUUID()}${extension}`;
+    const mediaId = randomUUID();
+    const storageKey = `admin/images/${mediaId}${extension}`;
+    const imageMetadata = await sharp(data)
+      .metadata()
+      .catch(() => null);
+    const apiBase = this.getApiBaseUrl();
+    const url = `${apiBase}/api/v1/admin/uploads/images/${mediaId}`;
 
-    mkdirSync(ADMIN_IMAGE_UPLOAD_DIR, {
-      recursive: true,
+    await this.getStorageClient().putObject({
+      key: storageKey,
+      body: data,
+      contentType: mimeType,
+      metadata: {
+        source: 'admin_upload',
+      },
     });
 
-    writeFileSync(join(ADMIN_IMAGE_UPLOAD_DIR, storedFileName), data);
-
-    const apiBase = this.getApiBaseUrl();
-
-    return {
-      file_name: storedFileName,
-      url: `${apiBase}/api/v1/admin/uploads/images/${storedFileName}`,
-    };
-  }
-
-  getImage(fileName: string) {
-    const safeName = basename(fileName);
-    const filePath = join(ADMIN_IMAGE_UPLOAD_DIR, safeName);
-
-    if (!existsSync(filePath)) {
-      throw new NotFoundException(`Image ${fileName} not found.`);
+    try {
+      await this.prisma.media.create({
+        data: {
+          id: mediaId,
+          url,
+          type: MediaType.IMAGE,
+          metadata: this.toJsonValue({
+            storageKey,
+            mimeType,
+            originalFileName: fileName,
+            width: imageMetadata?.width ?? null,
+            height: imageMetadata?.height ?? null,
+            source: 'admin_upload_r2',
+          }),
+        },
+      });
+    } catch (error) {
+      await this.getStorageClient()
+        .deleteObject(storageKey)
+        .catch(() => undefined);
+      throw error;
     }
 
     return {
-      filePath,
-      mimeType: this.mimeTypeFromExtension(extname(filePath).toLowerCase()),
-      data: readFileSync(filePath),
+      file_name: mediaId,
+      url,
     };
+  }
+
+  async getImage(fileName: string) {
+    const safeName = basename(fileName);
+    const media = await this.prisma.media.findUnique({
+      where: {
+        id: safeName,
+      },
+      select: {
+        metadata: true,
+      },
+    });
+
+    if (media) {
+      const storageKey = this.readStringField(media.metadata, 'storageKey');
+
+      if (storageKey) {
+        return {
+          mimeType:
+            this.readStringField(media.metadata, 'mimeType') ??
+            'application/octet-stream',
+          data: await this.getStorageClient().getObjectBuffer(storageKey),
+        };
+      }
+    }
+
+    throw new NotFoundException(`Image ${fileName} not found.`);
   }
 
   private async getExamByIdForAdmin(examId: string) {
@@ -1532,6 +1834,44 @@ export class AdminService {
         id: examId,
       },
       include: {
+        paper: {
+          select: {
+            id: true,
+            familyCode: true,
+            officialSourceReference: true,
+            variants: {
+              orderBy: {
+                code: 'asc',
+              },
+              select: {
+                id: true,
+                code: true,
+                title: true,
+                status: true,
+                nodes: {
+                  select: {
+                    id: true,
+                    variantId: true,
+                    parentId: true,
+                    nodeType: true,
+                    orderIndex: true,
+                    label: true,
+                    maxPoints: true,
+                    status: true,
+                    metadata: true,
+                    createdAt: true,
+                    updatedAt: true,
+                  },
+                },
+              },
+            },
+            offerings: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
         stream: {
           select: {
             code: true,
@@ -1542,33 +1882,6 @@ export class AdminService {
             code: true,
           },
         },
-        variants: {
-          orderBy: {
-            code: 'asc',
-          },
-          select: {
-            id: true,
-            code: true,
-            title: true,
-            status: true,
-            nodes: {
-              select: {
-                id: true,
-                variantId: true,
-                parentId: true,
-                nodeType: true,
-                orderIndex: true,
-                label: true,
-                title: true,
-                maxPoints: true,
-                status: true,
-                metadata: true,
-                createdAt: true,
-                updatedAt: true,
-              },
-            },
-          },
-        },
       },
     });
 
@@ -1576,7 +1889,107 @@ export class AdminService {
       throw new NotFoundException(`Exam ${examId} not found.`);
     }
 
-    return exam;
+    return this.normalizeAdminExamRecord(exam);
+  }
+
+  private normalizeAdminExamRecord<
+    T extends {
+      id: string;
+      year: number;
+      sessionType: SessionType;
+      isPublished: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      stream: {
+        code: string;
+      };
+      subject: {
+        code: string;
+      };
+      paper: {
+        id: string;
+        familyCode: string;
+        officialSourceReference: string | null;
+        offerings: Array<{
+          id: string;
+        }>;
+        variants: Array<{
+          id: string;
+          code: ExamVariantCode;
+          title: string | null;
+          status: PublicationStatus;
+          nodes: Array<{
+            id: string;
+            variantId: string;
+            parentId: string | null;
+            nodeType: ExamNodeType;
+            orderIndex: number;
+            label: string | null;
+            maxPoints: Prisma.Decimal | null;
+            status: PublicationStatus;
+            metadata: Prisma.JsonValue | null;
+            createdAt: Date;
+            updatedAt: Date;
+          }>;
+        }>;
+      };
+    },
+  >(exam: T) {
+    return {
+      ...exam,
+      paperId: exam.paper.id,
+      paperFamilyCode: exam.paper.familyCode,
+      offeringCount: exam.paper.offerings.length,
+      officialSourceReference: exam.paper.officialSourceReference,
+      variants: exam.paper.variants,
+    };
+  }
+
+  private pickRepresentativeExamOffering<
+    T extends {
+      id: string;
+      year: number;
+      sessionType: SessionType;
+      isPublished: boolean;
+      createdAt: Date;
+      updatedAt: Date;
+      stream: {
+        code: string;
+      };
+      subject: {
+        code: string;
+      };
+      paper: {
+        officialSourceReference: string | null;
+        variants: unknown[];
+        id?: string;
+        familyCode?: string;
+      };
+    },
+  >(offerings: T[]) {
+    const offering = offerings[0] ?? null;
+
+    if (!offering) {
+      throw new NotFoundException('No exam offering is linked to this paper.');
+    }
+
+    return offering;
+  }
+
+  private pickRepresentativeExamId(offerings: Array<{ id: string }>) {
+    const offering = offerings[0] ?? null;
+
+    if (!offering) {
+      throw new NotFoundException('No exam offering is linked to this paper.');
+    }
+
+    return offering.id;
+  }
+
+  private derivePaperFamilyCode(streamCode: string, subjectCode: string) {
+    return `${streamCode.trim().toUpperCase()}__${subjectCode
+      .trim()
+      .toUpperCase()}`;
   }
 
   private mapExam(
@@ -1607,7 +2020,8 @@ export class AdminService {
     const allNodes = exam.variants.flatMap((variant) => variant.nodes);
 
     const exerciseCount = allNodes.filter(
-      (node) => node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
+      (node) =>
+        node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
     ).length;
 
     const questionCount = allNodes.filter(
@@ -1634,7 +2048,7 @@ export class AdminService {
   private mapExerciseNode(
     node: {
       id: string;
-      title: string | null;
+      label: string | null;
       status: PublicationStatus;
       metadata: Prisma.JsonValue | null;
       createdAt: Date;
@@ -1647,7 +2061,7 @@ export class AdminService {
 
     return {
       id: node.id,
-      title: node.title,
+      title: node.label,
       order_index: orderIndex,
       theme: metadata.theme ?? null,
       difficulty: metadata.difficulty ?? null,
@@ -1671,7 +2085,6 @@ export class AdminService {
         nodeType: true,
         orderIndex: true,
         label: true,
-        title: true,
         maxPoints: true,
         status: true,
         metadata: true,
@@ -1699,41 +2112,45 @@ export class AdminService {
           select: {
             id: true,
             code: true,
-            exam: {
-              include: {
-                stream: {
-                  select: {
-                    code: true,
-                  },
-                },
-                subject: {
-                  select: {
-                    code: true,
-                  },
-                },
-                variants: {
+            paper: {
+              select: {
+                offerings: {
                   orderBy: {
-                    code: 'asc',
+                    createdAt: 'asc',
                   },
                   select: {
                     id: true,
-                    code: true,
-                    title: true,
-                    status: true,
-                    nodes: {
+                    year: true,
+                    sessionType: true,
+                    isPublished: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    stream: {
                       select: {
-                        id: true,
-                        variantId: true,
-                        parentId: true,
-                        nodeType: true,
-                        orderIndex: true,
-                        label: true,
-                        title: true,
-                        maxPoints: true,
-                        status: true,
-                        metadata: true,
-                        createdAt: true,
-                        updatedAt: true,
+                        code: true,
+                      },
+                    },
+                    subject: {
+                      select: {
+                        code: true,
+                      },
+                    },
+                    paper: {
+                      select: {
+                        officialSourceReference: true,
+                        variants: {
+                          orderBy: {
+                            code: 'asc',
+                          },
+                          select: {
+                            nodes: {
+                              select: {
+                                nodeType: true,
+                                parentId: true,
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                   },
@@ -1760,7 +2177,6 @@ export class AdminService {
         nodeType: true,
         orderIndex: true,
         label: true,
-        title: true,
         maxPoints: true,
         status: true,
         metadata: true,
@@ -1788,7 +2204,10 @@ export class AdminService {
     });
 
     const childrenByParent = this.buildChildrenByParent(variantNodes);
-    const descendantIds = this.collectDescendantIds(exerciseId, childrenByParent);
+    const descendantIds = this.collectDescendantIds(
+      exerciseId,
+      childrenByParent,
+    );
 
     const questionNodes = variantNodes.filter(
       (node) =>
@@ -1797,11 +2216,20 @@ export class AdminService {
           node.nodeType === ExamNodeType.SUBQUESTION),
     );
 
+    const representativeExam = this.pickRepresentativeExamOffering(
+      exercise.variant.paper.offerings,
+    );
+
     return {
       exercise: this.mapNodeWithBlocks(exercise),
       variantNodes: variantNodes.map((node) => this.mapNodeWithBlocks(node)),
       questionNodes: questionNodes.map((node) => this.mapNodeWithBlocks(node)),
-      exam: exercise.variant.exam,
+      exam: {
+        ...representativeExam,
+        officialSourceReference:
+          representativeExam.paper.officialSourceReference,
+        variants: representativeExam.paper.variants,
+      },
     };
   }
 
@@ -1831,7 +2259,6 @@ export class AdminService {
         nodeType: true,
         orderIndex: true,
         label: true,
-        title: true,
         maxPoints: true,
         status: true,
         metadata: true,
@@ -1863,11 +2290,13 @@ export class AdminService {
     let current = byId.get(questionId) ?? null;
 
     while (current && current.nodeType !== ExamNodeType.EXERCISE) {
-      current = current.parentId ? byId.get(current.parentId) ?? null : null;
+      current = current.parentId ? (byId.get(current.parentId) ?? null) : null;
     }
 
     if (!current || current.nodeType !== ExamNodeType.EXERCISE) {
-      throw new BadRequestException('Question does not belong to a valid exercise subtree.');
+      throw new BadRequestException(
+        'Question does not belong to a valid exercise subtree.',
+      );
     }
 
     return this.loadExerciseContext(current.id);
@@ -1899,7 +2328,10 @@ export class AdminService {
 
     walk(exerciseId);
 
-    const descendantIds = this.collectDescendantIds(exerciseId, childrenByParent);
+    const descendantIds = this.collectDescendantIds(
+      exerciseId,
+      childrenByParent,
+    );
 
     const questionNodes = nodes.filter(
       (node) =>
@@ -1912,15 +2344,23 @@ export class AdminService {
       const leftMetadata = this.parseQuestionMetadata(left.metadata, left);
       const rightMetadata = this.parseQuestionMetadata(right.metadata, right);
 
-      const leftOrder = leftMetadata.adminOrder ?? fallbackOrder.get(left.id) ?? Number.MAX_SAFE_INTEGER;
-      const rightOrder = rightMetadata.adminOrder ?? fallbackOrder.get(right.id) ?? Number.MAX_SAFE_INTEGER;
+      const leftOrder =
+        leftMetadata.adminOrder ??
+        fallbackOrder.get(left.id) ??
+        Number.MAX_SAFE_INTEGER;
+      const rightOrder =
+        rightMetadata.adminOrder ??
+        fallbackOrder.get(right.id) ??
+        Number.MAX_SAFE_INTEGER;
 
       if (leftOrder !== rightOrder) {
         return leftOrder - rightOrder;
       }
 
-      const leftFallback = fallbackOrder.get(left.id) ?? Number.MAX_SAFE_INTEGER;
-      const rightFallback = fallbackOrder.get(right.id) ?? Number.MAX_SAFE_INTEGER;
+      const leftFallback =
+        fallbackOrder.get(left.id) ?? Number.MAX_SAFE_INTEGER;
+      const rightFallback =
+        fallbackOrder.get(right.id) ?? Number.MAX_SAFE_INTEGER;
 
       if (leftFallback !== rightFallback) {
         return leftFallback - rightFallback;
@@ -1950,7 +2390,8 @@ export class AdminService {
       }
 
       const variantDelta =
-        this.examVariantRank(left.variantCode) - this.examVariantRank(right.variantCode);
+        this.examVariantRank(left.variantCode) -
+        this.examVariantRank(right.variantCode);
 
       if (variantDelta !== 0) {
         return variantDelta;
@@ -1964,9 +2405,9 @@ export class AdminService {
     });
   }
 
-  private buildChildrenByParent<T extends { id: string; parentId: string | null }>(
-    nodes: T[],
-  ) {
+  private buildChildrenByParent<
+    T extends { id: string; parentId: string | null },
+  >(nodes: T[]) {
     const map = new Map<string, T[]>();
 
     for (const node of nodes) {
@@ -1979,10 +2420,9 @@ export class AdminService {
     return map;
   }
 
-  private collectDescendantIds<T extends { id: string; parentId: string | null }>(
-    rootId: string,
-    childrenByParent: Map<string, T[]>,
-  ) {
+  private collectDescendantIds<
+    T extends { id: string; parentId: string | null },
+  >(rootId: string, childrenByParent: Map<string, T[]>) {
     const visited = new Set<string>();
     const stack = [rootId];
 
@@ -2008,34 +2448,31 @@ export class AdminService {
     return visited;
   }
 
-  private mapNodeWithBlocks(
-    node: {
+  private mapNodeWithBlocks(node: {
+    id: string;
+    variantId: string;
+    parentId: string | null;
+    nodeType: ExamNodeType;
+    orderIndex: number;
+    label: string | null;
+    maxPoints: Prisma.Decimal | null;
+    status: PublicationStatus;
+    metadata: Prisma.JsonValue | null;
+    createdAt: Date;
+    updatedAt: Date;
+    blocks: Array<{
       id: string;
-      variantId: string;
-      parentId: string | null;
-      nodeType: ExamNodeType;
+      role: BlockRole;
       orderIndex: number;
-      label: string | null;
-      title: string | null;
-      maxPoints: Prisma.Decimal | null;
-      status: PublicationStatus;
-      metadata: Prisma.JsonValue | null;
-      createdAt: Date;
-      updatedAt: Date;
-      blocks: Array<{
-        id: string;
-        role: BlockRole;
-        orderIndex: number;
-        blockType: PrismaBlockType;
-        textValue: string | null;
-        data: Prisma.JsonValue | null;
-        media: {
-          url: string;
-          metadata: Prisma.JsonValue | null;
-        } | null;
-      }>;
-    },
-  ): ExamNodeRow {
+      blockType: PrismaBlockType;
+      textValue: string | null;
+      data: Prisma.JsonValue | null;
+      media: {
+        url: string;
+        metadata: Prisma.JsonValue | null;
+      } | null;
+    }>;
+  }): ExamNodeRow {
     return {
       id: node.id,
       variantId: node.variantId,
@@ -2043,7 +2480,6 @@ export class AdminService {
       nodeType: node.nodeType,
       orderIndex: node.orderIndex,
       label: node.label,
-      title: node.title,
       maxPoints: node.maxPoints,
       status: node.status,
       metadata: node.metadata,
@@ -2078,7 +2514,9 @@ export class AdminService {
     }));
   }
 
-  private parseExerciseMetadata(raw: Prisma.JsonValue | null): ExerciseMetadata {
+  private parseExerciseMetadata(
+    raw: Prisma.JsonValue | null,
+  ): ExerciseMetadata {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
       return {};
     }
@@ -2086,7 +2524,9 @@ export class AdminService {
     const value = raw as Record<string, unknown>;
     const hierarchyRaw = value.hierarchyMeta;
     const hierarchy =
-      hierarchyRaw && typeof hierarchyRaw === 'object' && !Array.isArray(hierarchyRaw)
+      hierarchyRaw &&
+      typeof hierarchyRaw === 'object' &&
+      !Array.isArray(hierarchyRaw)
         ? (hierarchyRaw as Record<string, unknown>)
         : undefined;
 
@@ -2095,20 +2535,23 @@ export class AdminService {
       difficulty: this.readOptionalString(value.difficulty) ?? undefined,
       tags: this.readOptionalStringArray(value.tags),
       adminOrder:
-        typeof value.adminOrder === 'number' && Number.isInteger(value.adminOrder)
+        typeof value.adminOrder === 'number' &&
+        Number.isInteger(value.adminOrder)
           ? value.adminOrder
           : undefined,
       hierarchyMeta: hierarchy
         ? {
             year:
-              typeof hierarchy.year === 'number' && Number.isInteger(hierarchy.year)
+              typeof hierarchy.year === 'number' &&
+              Number.isInteger(hierarchy.year)
                 ? hierarchy.year
                 : undefined,
             session: this.readOptionalString(hierarchy.session) ?? undefined,
             subject: this.readOptionalString(hierarchy.subject) ?? undefined,
             branch: this.readOptionalString(hierarchy.branch) ?? undefined,
             points:
-              typeof hierarchy.points === 'number' && Number.isFinite(hierarchy.points)
+              typeof hierarchy.points === 'number' &&
+              Number.isFinite(hierarchy.points)
                 ? hierarchy.points
                 : undefined,
             contextBlocks: this.normalizeBlocks(hierarchy.contextBlocks),
@@ -2119,11 +2562,11 @@ export class AdminService {
 
   private parseQuestionMetadata(
     raw: Prisma.JsonValue | null,
-    question: Pick<ExamNodeRow, 'orderIndex' | 'title' | 'metadata'>,
+    question: Pick<ExamNodeRow, 'orderIndex' | 'label' | 'metadata'>,
   ): QuestionMetadata {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
       return {
-        title: question.title ?? `Question ${question.orderIndex}`,
+        title: question.label ?? `Question ${question.orderIndex}`,
       };
     }
 
@@ -2131,9 +2574,12 @@ export class AdminService {
 
     return this.toQuestionMetadata({
       title:
-        this.readOptionalString(value.title) ?? question.title ?? `Question ${question.orderIndex}`,
+        this.readOptionalString(value.title) ??
+        question.label ??
+        `Question ${question.orderIndex}`,
       adminOrder:
-        typeof value.adminOrder === 'number' && Number.isInteger(value.adminOrder)
+        typeof value.adminOrder === 'number' &&
+        Number.isInteger(value.adminOrder)
           ? value.adminOrder
           : undefined,
       ...(Object.prototype.hasOwnProperty.call(value, 'contentBlocks')
@@ -2171,7 +2617,8 @@ export class AdminService {
             tags: input.tags,
           }
         : {}),
-      ...(typeof input.adminOrder === 'number' && Number.isInteger(input.adminOrder)
+      ...(typeof input.adminOrder === 'number' &&
+      Number.isInteger(input.adminOrder)
         ? {
             adminOrder: input.adminOrder,
           }
@@ -2180,7 +2627,9 @@ export class AdminService {
         ? {
             hierarchyMeta: {
               ...input.hierarchyMeta,
-              contextBlocks: this.normalizeBlocks(input.hierarchyMeta.contextBlocks),
+              contextBlocks: this.normalizeBlocks(
+                input.hierarchyMeta.contextBlocks,
+              ),
             },
           }
         : {}),
@@ -2194,7 +2643,8 @@ export class AdminService {
             title: input.title,
           }
         : {}),
-      ...(typeof input.adminOrder === 'number' && Number.isInteger(input.adminOrder)
+      ...(typeof input.adminOrder === 'number' &&
+      Number.isInteger(input.adminOrder)
         ? {
             adminOrder: input.adminOrder,
           }
@@ -2217,7 +2667,9 @@ export class AdminService {
     };
   }
 
-  private mapNodeBlocksToContentBlocks(blocks: ExamNodeBlockRow[]): ContentBlock[] {
+  private mapNodeBlocksToContentBlocks(
+    blocks: ExamNodeBlockRow[],
+  ): ContentBlock[] {
     return [...blocks]
       .sort((left, right) => {
         if (left.role !== right.role) {
@@ -2226,11 +2678,11 @@ export class AdminService {
 
         return left.orderIndex - right.orderIndex;
       })
-      .map((block, index) => {
+      .reduce<ContentBlock[]>((result, block, index) => {
         const type = this.fromPrismaBlockType(block.blockType);
 
         if (!type) {
-          return null;
+          return result;
         }
 
         const level = this.readNumberField(block.data, 'level');
@@ -2241,13 +2693,22 @@ export class AdminService {
 
         const value =
           type === 'image'
-            ? block.media?.url ?? this.readStringField(block.data, 'url') ?? block.textValue ?? ''
-            : block.textValue ?? '';
+            ? (block.media?.url ??
+              this.readStringField(block.data, 'url') ??
+              block.textValue ??
+              '')
+            : (block.textValue ?? '');
 
-        return {
+        result.push({
           id: block.id || `block-${index + 1}`,
           type,
           value,
+          data:
+            block.data &&
+            typeof block.data === 'object' &&
+            !Array.isArray(block.data)
+              ? (block.data as Record<string, unknown>)
+              : null,
           ...(level !== null || caption || language
             ? {
                 meta: {
@@ -2269,9 +2730,10 @@ export class AdminService {
                 },
               }
             : {}),
-        };
-      })
-      .filter((entry): entry is ContentBlock => Boolean(entry));
+        });
+
+        return result;
+      }, []);
   }
 
   private async replaceNodeBlocks(
@@ -2302,6 +2764,11 @@ export class AdminService {
         }
 
         const data: Prisma.InputJsonObject = {
+          ...(block.data &&
+          typeof block.data === 'object' &&
+          !Array.isArray(block.data)
+            ? (block.data as Prisma.InputJsonObject)
+            : {}),
           ...(block.meta?.caption
             ? {
                 caption: block.meta.caption,
@@ -2354,10 +2821,15 @@ export class AdminService {
       (node) => node.parentId === parentId && node.id !== excludeNodeId,
     );
 
-    return siblings.reduce((max, node) => Math.max(max, node.orderIndex), 0) + 1;
+    return (
+      siblings.reduce((max, node) => Math.max(max, node.orderIndex), 0) + 1
+    );
   }
 
-  private async resequenceChildren(tx: Prisma.TransactionClient, parentId: string) {
+  private async resequenceChildren(
+    tx: Prisma.TransactionClient,
+    parentId: string,
+  ) {
     const siblings = await tx.examNode.findMany({
       where: {
         parentId,
@@ -2384,7 +2856,10 @@ export class AdminService {
 
   private async rebalanceQuestionAdminOrder(exerciseId: string) {
     const context = await this.loadExerciseContext(exerciseId);
-    const orderedQuestions = this.orderQuestionsForAdmin(exerciseId, context.variantNodes);
+    const orderedQuestions = this.orderQuestionsForAdmin(
+      exerciseId,
+      context.variantNodes,
+    );
 
     await this.prisma.$transaction(async (tx) => {
       for (let index = 0; index < orderedQuestions.length; index += 1) {
@@ -2415,7 +2890,8 @@ export class AdminService {
       exam.variants.flatMap((variant) =>
         variant.nodes
           .filter(
-            (node) => node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
+            (node) =>
+              node.nodeType === ExamNodeType.EXERCISE && node.parentId === null,
           )
           .map((node) => ({
             ...node,
@@ -2447,7 +2923,7 @@ export class AdminService {
   }
 
   private async resolveOrCreateTargetVariant(
-    examId: string,
+    paperId: string,
     variants: Array<{
       id: string;
       code: ExamVariantCode;
@@ -2457,7 +2933,9 @@ export class AdminService {
     status: PublicationStatus,
   ) {
     if (requestedCode) {
-      const existing = variants.find((variant) => variant.code === requestedCode);
+      const existing = variants.find(
+        (variant) => variant.code === requestedCode,
+      );
 
       if (existing) {
         return existing;
@@ -2465,7 +2943,7 @@ export class AdminService {
 
       return this.prisma.examVariant.create({
         data: {
-          examId,
+          paperId,
           code: requestedCode,
           title: this.defaultVariantTitle(requestedCode),
           status,
@@ -2479,13 +2957,15 @@ export class AdminService {
     }
 
     if (variants.length) {
-      const sujetOne = variants.find((variant) => variant.code === ExamVariantCode.SUJET_1);
+      const sujetOne = variants.find(
+        (variant) => variant.code === ExamVariantCode.SUJET_1,
+      );
       return sujetOne ?? variants[0];
     }
 
     return this.prisma.examVariant.create({
       data: {
-        examId,
+        paperId,
         code: ExamVariantCode.SUJET_1,
         title: this.defaultVariantTitle(ExamVariantCode.SUJET_1),
         status,
@@ -2504,7 +2984,9 @@ export class AdminService {
 
     for (const node of nodes) {
       if (node.parentId && !idSet.has(node.parentId)) {
-        errors.push(`Question ${node.id} references missing parent ${node.parentId}.`);
+        errors.push(
+          `Question ${node.id} references missing parent ${node.parentId}.`,
+        );
       }
 
       if (node.parentId && node.parentId === node.id) {
@@ -2516,7 +2998,9 @@ export class AdminService {
       }
     }
 
-    const orderIndexes = nodes.map((node) => node.orderIndex).sort((a, b) => a - b);
+    const orderIndexes = nodes
+      .map((node) => node.orderIndex)
+      .sort((a, b) => a - b);
 
     if (new Set(orderIndexes).size !== orderIndexes.length) {
       errors.push('Duplicate order_index detected in questions list.');
@@ -2574,57 +3058,63 @@ export class AdminService {
       return [];
     }
 
-    return value
-      .map((entry, index) => {
-        if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
-          return null;
-        }
+    return value.reduce<ContentBlock[]>((result, entry, index) => {
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+        return result;
+      }
 
-        const raw = entry as Record<string, unknown>;
-        const blockType = this.normalizeBlockType(raw.type);
-        const blockValue = typeof raw.value === 'string' ? raw.value : '';
+      const raw = entry as Record<string, unknown>;
+      const blockType = this.normalizeBlockType(raw.type);
+      const blockValue = typeof raw.value === 'string' ? raw.value : '';
 
-        if (!blockType) {
-          return null;
-        }
+      if (!blockType) {
+        return result;
+      }
 
-        const metaRaw =
-          raw.meta && typeof raw.meta === 'object' && !Array.isArray(raw.meta)
-            ? (raw.meta as Record<string, unknown>)
-            : undefined;
-
-        const meta = metaRaw
-          ? {
-              ...(typeof metaRaw.level === 'number'
-                ? {
-                    level: metaRaw.level,
-                  }
-                : {}),
-              ...(typeof metaRaw.caption === 'string'
-                ? {
-                    caption: metaRaw.caption,
-                  }
-                : {}),
-              ...(typeof metaRaw.language === 'string'
-                ? {
-                    language: metaRaw.language,
-                  }
-                : {}),
-            }
+      const metaRaw =
+        raw.meta && typeof raw.meta === 'object' && !Array.isArray(raw.meta)
+          ? (raw.meta as Record<string, unknown>)
           : undefined;
 
-        return {
-          id: typeof raw.id === 'string' && raw.id ? raw.id : `block-${index + 1}`,
-          type: blockType,
-          value: blockValue,
-          ...(meta && Object.keys(meta).length
-            ? {
-                meta,
-              }
-            : {}),
-        };
-      })
-      .filter((entry): entry is ContentBlock => Boolean(entry));
+      const meta = metaRaw
+        ? {
+            ...(typeof metaRaw.level === 'number'
+              ? {
+                  level: metaRaw.level,
+                }
+              : {}),
+            ...(typeof metaRaw.caption === 'string'
+              ? {
+                  caption: metaRaw.caption,
+                }
+              : {}),
+            ...(typeof metaRaw.language === 'string'
+              ? {
+                  language: metaRaw.language,
+                }
+              : {}),
+          }
+        : undefined;
+
+      result.push({
+        id:
+          typeof raw.id === 'string' && raw.id ? raw.id : `block-${index + 1}`,
+        type: blockType,
+        value: blockValue,
+        ...(raw.data && typeof raw.data === 'object' && !Array.isArray(raw.data)
+          ? {
+              data: raw.data as Record<string, unknown>,
+            }
+          : {}),
+        ...(meta && Object.keys(meta).length
+          ? {
+              meta,
+            }
+          : {}),
+      });
+
+      return result;
+    }, []);
   }
 
   private normalizeNullableBlocks(
@@ -2657,7 +3147,11 @@ export class AdminService {
       value !== 'latex' &&
       value !== 'image' &&
       value !== 'code' &&
-      value !== 'heading'
+      value !== 'heading' &&
+      value !== 'table' &&
+      value !== 'list' &&
+      value !== 'graph' &&
+      value !== 'tree'
     ) {
       return null;
     }
@@ -2676,6 +3170,22 @@ export class AdminService {
 
     if (value === 'image') {
       return PrismaBlockType.IMAGE;
+    }
+
+    if (value === 'table') {
+      return PrismaBlockType.TABLE;
+    }
+
+    if (value === 'list') {
+      return PrismaBlockType.LIST;
+    }
+
+    if (value === 'graph') {
+      return PrismaBlockType.GRAPH;
+    }
+
+    if (value === 'tree') {
+      return PrismaBlockType.TREE;
     }
 
     if (value === 'code') {
@@ -2700,6 +3210,22 @@ export class AdminService {
 
     if (value === PrismaBlockType.IMAGE) {
       return 'image';
+    }
+
+    if (value === PrismaBlockType.TABLE) {
+      return 'table';
+    }
+
+    if (value === PrismaBlockType.LIST) {
+      return 'list';
+    }
+
+    if (value === PrismaBlockType.GRAPH) {
+      return 'graph';
+    }
+
+    if (value === PrismaBlockType.TREE) {
+      return 'tree';
     }
 
     if (value === PrismaBlockType.CODE) {
@@ -2816,7 +3342,9 @@ export class AdminService {
       return byName.code;
     }
 
-    throw new BadRequestException('subject must map to an existing subject code/name.');
+    throw new BadRequestException(
+      'subject must map to an existing subject code/name.',
+    );
   }
 
   private async resolveStreamCode(value: unknown) {
@@ -2848,7 +3376,9 @@ export class AdminService {
       return byName.code;
     }
 
-    throw new BadRequestException('stream must map to an existing stream code/name.');
+    throw new BadRequestException(
+      'stream must map to an existing stream code/name.',
+    );
   }
 
   private validateExactIdSet(
@@ -2859,7 +3389,10 @@ export class AdminService {
     const expectedSet = new Set(expected);
     const providedSet = new Set(provided);
 
-    if (expectedSet.size !== providedSet.size || expectedSet.size !== expected.length) {
+    if (
+      expectedSet.size !== providedSet.size ||
+      expectedSet.size !== expected.length
+    ) {
       throw new BadRequestException(
         `Invalid ${label} set size. Duplicate IDs are not allowed.`,
       );
@@ -2902,7 +3435,11 @@ export class AdminService {
   }
 
   private readInteger(value: unknown, fieldName: string) {
-    if (typeof value !== 'number' || !Number.isFinite(value) || !Number.isInteger(value)) {
+    if (
+      typeof value !== 'number' ||
+      !Number.isFinite(value) ||
+      !Number.isInteger(value)
+    ) {
       throw new BadRequestException(`${fieldName} must be an integer.`);
     }
 
@@ -2924,7 +3461,10 @@ export class AdminService {
 
     const scaled = value * 100;
 
-    if (!Number.isInteger(Math.round(scaled)) || Math.abs(scaled - Math.round(scaled)) > 1e-9) {
+    if (
+      !Number.isInteger(Math.round(scaled)) ||
+      Math.abs(scaled - Math.round(scaled)) > 1e-9
+    ) {
       throw new BadRequestException(
         `${fieldName} must be a non-negative number with up to 2 decimal places.`,
       );
@@ -2946,7 +3486,9 @@ export class AdminService {
 
   private readRequiredStringArray(value: unknown, fieldName: string) {
     if (!Array.isArray(value) || !value.length) {
-      throw new BadRequestException(`${fieldName} must be a non-empty string array.`);
+      throw new BadRequestException(
+        `${fieldName} must be a non-empty string array.`,
+      );
     }
 
     const parsed = value.map((entry) => {
@@ -2994,7 +3536,9 @@ export class AdminService {
   }
 
   private parseBase64Image(value: string) {
-    const directMatch = value.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+    const directMatch = value.match(
+      /^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/,
+    );
 
     if (!directMatch) {
       throw new BadRequestException(
@@ -3051,32 +3595,16 @@ export class AdminService {
     return '.img';
   }
 
-  private mimeTypeFromExtension(extension: string) {
-    if (extension === '.png') {
-      return 'image/png';
-    }
-
-    if (extension === '.jpg' || extension === '.jpeg') {
-      return 'image/jpeg';
-    }
-
-    if (extension === '.webp') {
-      return 'image/webp';
-    }
-
-    if (extension === '.gif') {
-      return 'image/gif';
-    }
-
-    if (extension === '.svg') {
-      return 'image/svg+xml';
-    }
-
-    return 'application/octet-stream';
-  }
-
   private toJsonValue(value: unknown) {
     return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+  }
+
+  private getStorageClient() {
+    if (!this.storageClient) {
+      this.storageClient = new R2StorageClient(readR2ConfigFromEnv());
+    }
+
+    return this.storageClient;
   }
 
   private getApiBaseUrl() {

@@ -3,6 +3,7 @@ export const API_BASE_URL =
 export const ASSET_BASE_URL = process.env.NEXT_PUBLIC_ASSET_BASE_URL;
 
 export type SessionType = 'NORMAL' | 'MAKEUP';
+export type PracticeStudyMode = 'SOLVE' | 'REVIEW';
 export type PublicationStatus = 'DRAFT' | 'PUBLISHED';
 export type ExamVariantCode = 'SUJET_1' | 'SUJET_2';
 export type ExamNodeType =
@@ -25,23 +26,57 @@ export type BlockType =
   | 'CODE'
   | 'HEADING'
   | 'LIST'
-  | 'TABLE';
+  | 'TABLE'
+  | 'GRAPH'
+  | 'TREE';
 export type MediaType = 'IMAGE' | 'FILE';
 
 export type FiltersResponse = {
   streams: Array<{
     code: string;
     name: string;
+    isDefault?: boolean;
+    family?: {
+      code: string;
+      name: string;
+    };
     subjectCodes: string[];
   }>;
   subjects: Array<{
     code: string;
     name: string;
+    isDefault?: boolean;
+    family?: {
+      code: string;
+      name: string;
+    };
     streams: Array<{
       code: string;
       name: string;
+      family?: {
+        code: string;
+        name: string;
+      };
     }>;
     streamCodes: string[];
+  }>;
+  streamFamilies?: Array<{
+    code: string;
+    name: string;
+    streams: Array<{
+      code: string;
+      name: string;
+      isDefault: boolean;
+    }>;
+  }>;
+  subjectFamilies?: Array<{
+    code: string;
+    name: string;
+    subjects: Array<{
+      code: string;
+      name: string;
+      isDefault: boolean;
+    }>;
   }>;
   years: number[];
   topics: Array<{
@@ -50,6 +85,10 @@ export type FiltersResponse = {
     subject: {
       code: string;
       name: string;
+      family?: {
+        code: string;
+        name: string;
+      };
     };
     streamCodes: string[];
   }>;
@@ -60,9 +99,17 @@ export type CatalogResponse = {
   streams: Array<{
     code: string;
     name: string;
+    family?: {
+      code: string;
+      name: string;
+    };
     subjects: Array<{
       code: string;
       name: string;
+      family?: {
+        code: string;
+        name: string;
+      };
       years: Array<{
         year: number;
         sujets: Array<{
@@ -87,12 +134,19 @@ export type ExamResponse = {
   stream: {
     code: string;
     name: string;
+    family?: {
+      code: string;
+      name: string;
+    };
   };
   subject: {
     code: string;
     name: string;
+    family?: {
+      code: string;
+      name: string;
+    };
   };
-  renderMode: 'legacy' | 'hierarchy';
   selectedSujetNumber: 1 | 2 | null;
   selectedSujetLabel: string | null;
   availableSujets: Array<{
@@ -107,40 +161,80 @@ export type ExamResponse = {
     status: PublicationStatus;
     nodeCount: number;
     exercises: ExamHierarchyNode[];
-  } | null;
+  };
   exerciseCount: number;
   exercises: Array<{
     id: string;
     orderIndex: number;
     title: string | null;
-    introText: string | null;
     totalPoints: number;
-    sujetNumber: 1 | 2;
-    sujetLabel: string;
     questionCount: number;
-    questions: Array<{
-      id: string;
-      orderIndex: number;
-      points: number;
-      difficultyLevel: number | null;
-      contentFormat: 'MARKDOWN' | 'HYBRID';
-      contentVersion: number | null;
-      contentMarkdown: string | null;
-      assets: QuestionAsset[];
-      topics: Array<{
+  }>;
+};
+
+export type PracticeSessionResponse = {
+  id: string;
+  title: string | null;
+  status: 'CREATED' | 'IN_PROGRESS' | 'COMPLETED';
+  requestedExerciseCount: number;
+  exerciseCount: number;
+  progress: PracticeSessionProgress | null;
+  filters: {
+    years?: number[];
+    streamCode?: string | null;
+    subjectCode?: string | null;
+    topicCodes?: string[];
+    sessionTypes?: string[];
+  } | null;
+  exercises: Array<{
+    sessionOrder: number;
+    id: string;
+    orderIndex: number;
+    title: string | null;
+    totalPoints: number;
+    questionCount: number;
+    hierarchy: {
+      exerciseNodeId: string;
+      exerciseLabel: string | null;
+      contextBlocks: ExamHierarchyBlock[];
+      questions: Array<{
+        id: string;
+        orderIndex: number;
+        label: string;
+        points: number;
+        depth: number;
+        topics: Array<{
+          code: string;
+          name: string;
+          isPrimary: boolean;
+          weight: number;
+        }>;
+        promptBlocks: ExamHierarchyBlock[];
+        solutionBlocks: ExamHierarchyBlock[];
+        hintBlocks: ExamHierarchyBlock[];
+        rubricBlocks: ExamHierarchyBlock[];
+      }>;
+    };
+    exam: {
+      year: number;
+      sessionType: 'NORMAL' | 'MAKEUP';
+      subject: {
         code: string;
         name: string;
-        isPrimary: boolean;
-        weight: number;
-      }>;
-      answer: {
-        officialAnswerMarkdown: string;
-        markingSchemeMarkdown: string | null;
-        commonMistakesMarkdown: string | null;
-        examinerCommentaryMarkdown: string | null;
-        updatedAt: string;
-      } | null;
-    }>;
+        family?: {
+          code: string;
+          name: string;
+        };
+      };
+      stream: {
+        code: string;
+        name: string;
+        family?: {
+          code: string;
+          name: string;
+        };
+      };
+    };
   }>;
 };
 
@@ -149,10 +243,15 @@ export type ExamHierarchyNode = {
   nodeType: ExamNodeType;
   orderIndex: number;
   label: string | null;
-  title: string | null;
   maxPoints: number | null;
   status: PublicationStatus;
   metadata: unknown;
+  topics: Array<{
+    code: string;
+    name: string;
+    isPrimary: boolean;
+    weight: number;
+  }>;
   blocks: ExamHierarchyBlock[];
   children: ExamHierarchyNode[];
 };
@@ -172,14 +271,6 @@ export type ExamHierarchyBlock = {
   } | null;
 };
 
-export type QuestionAsset = {
-  id?: string;
-  fileUrl: string;
-  assetType: 'IMAGE' | 'GRAPH' | 'TABLE' | 'FILE';
-  orderIndex: number;
-  caption: string | null;
-};
-
 export type SessionPreviewResponse = {
   subjectCode: string;
   streamCode: string | null;
@@ -188,20 +279,66 @@ export type SessionPreviewResponse = {
   sessionTypes: SessionType[];
   matchingExerciseCount: number;
   matchingSujetCount: number;
+  sampleExercises: Array<{
+    exerciseNodeId: string;
+    orderIndex: number;
+    title: string | null;
+    questionCount: number;
+    examId: string;
+    year: number;
+    stream: {
+      code: string;
+      name: string;
+      family?: {
+        code: string;
+        name: string;
+      };
+    };
+    subject: {
+      code: string;
+      name: string;
+      family?: {
+        code: string;
+        name: string;
+      };
+    };
+    sessionType: SessionType;
+    sujetNumber: 1 | 2;
+    sujetLabel: string;
+  }>;
   matchingSujets: Array<{
     examId: string;
     year: number;
     stream: {
       code: string;
       name: string;
+      family?: {
+        code: string;
+        name: string;
+      };
     };
     subject: {
       code: string;
       name: string;
+      family?: {
+        code: string;
+        name: string;
+      };
     };
     sessionType: SessionType;
     sujetNumber: 1 | 2;
     sujetLabel: string;
+    matchingExerciseCount: number;
+  }>;
+  yearsDistribution: Array<{
+    year: number;
+    matchingExerciseCount: number;
+  }>;
+  streamsDistribution: Array<{
+    stream: {
+      code: string;
+      name: string;
+    };
     matchingExerciseCount: number;
   }>;
   maxSelectableExercises: number;
@@ -209,6 +346,34 @@ export type SessionPreviewResponse = {
 
 export type CreateSessionResponse = {
   id: string;
+};
+
+export type PracticeSessionProgress = {
+  activeExerciseId: string | null;
+  activeQuestionId: string | null;
+  mode: PracticeStudyMode;
+  questionStates: Array<{
+    questionId: string;
+    opened: boolean;
+    completed: boolean;
+    skipped: boolean;
+    solutionViewed: boolean;
+  }>;
+  summary: {
+    totalQuestionCount: number;
+    completedQuestionCount: number;
+    skippedQuestionCount: number;
+    unansweredQuestionCount: number;
+    solutionViewedCount: number;
+  };
+  updatedAt: string;
+};
+
+export type UpdateSessionProgressResponse = {
+  id: string;
+  status: 'CREATED' | 'IN_PROGRESS' | 'COMPLETED';
+  progress: PracticeSessionProgress | null;
+  updatedAt: string;
 };
 
 export type RecentPracticeSessionsResponse = {

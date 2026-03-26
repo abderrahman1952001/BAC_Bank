@@ -8,10 +8,18 @@ type SujetViewerPageProps = {
     examId: string;
     sujetNumber: string;
   }>;
+  searchParams: Promise<{
+    exercise?: string;
+    question?: string;
+  }>;
 };
 
-export default async function SujetViewerPage({ params }: SujetViewerPageProps) {
+export default async function SujetViewerPage({
+  params,
+  searchParams,
+}: SujetViewerPageProps) {
   const { streamCode, subjectCode, year, examId, sujetNumber } = await params;
+  const { exercise, question } = await searchParams;
 
   return (
     <SujetViewer
@@ -20,6 +28,8 @@ export default async function SujetViewerPage({ params }: SujetViewerPageProps) 
       year={year}
       examId={examId}
       sujetNumber={sujetNumber}
+      initialExercise={exercise}
+      initialQuestion={question}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { BrowseYears } from '@/components/browse-years';
+import { redirect } from 'next/navigation';
 
 type BrowseYearsPageProps = {
   params: Promise<{
@@ -12,10 +12,7 @@ export default async function BrowseYearsPage({
 }: BrowseYearsPageProps) {
   const { streamCode, subjectCode } = await params;
 
-  return (
-    <BrowseYears
-      streamCode={streamCode}
-      subjectCode={subjectCode}
-    />
+  redirect(
+    `/app/browse?stream=${encodeURIComponent(streamCode)}&subject=${encodeURIComponent(subjectCode)}`,
   );
 }
