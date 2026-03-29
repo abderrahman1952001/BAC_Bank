@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  API_BASE_URL,
   createApiUrl,
   readApiErrorMessage,
   withApiRequestDefaults,
@@ -8,15 +9,19 @@ import {
 
 describe("api client helpers", () => {
   it("prefixes relative API paths with the configured base URL", () => {
-    expect(createApiUrl("/auth/login")).toBe("/api/v1/auth/login");
-    expect(createApiUrl("qbank/catalog")).toBe("/api/v1/qbank/catalog");
+    expect(createApiUrl("/auth/login")).toBe(`${API_BASE_URL}/auth/login`);
+    expect(createApiUrl("qbank/catalog")).toBe(
+      `${API_BASE_URL}/qbank/catalog`,
+    );
   });
 
   it("leaves absolute URLs and fully-qualified API URLs unchanged", () => {
     expect(createApiUrl("https://example.com/health")).toBe(
       "https://example.com/health",
     );
-    expect(createApiUrl("/api/v1/qbank/catalog")).toBe("/api/v1/qbank/catalog");
+    expect(createApiUrl(`${API_BASE_URL}/qbank/catalog`)).toBe(
+      `${API_BASE_URL}/qbank/catalog`,
+    );
   });
 
   it("applies consistent fetch defaults", () => {
