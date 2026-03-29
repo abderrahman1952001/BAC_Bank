@@ -1,18 +1,9 @@
 import type { NextConfig } from "next";
+import { isAbsoluteUrl } from "./src/lib/api-upstream";
 
 const publicApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api/v1";
-const publicApiOriginFallback =
-  process.env.PUBLIC_API_BASE_URL ?? "http://localhost:3001";
-
-function isAbsoluteUrl(value: string) {
-  return value.startsWith("http://") || value.startsWith("https://");
-}
-
-const apiUpstream =
-  process.env.API_UPSTREAM_URL ??
-  (isAbsoluteUrl(publicApiBaseUrl)
-    ? publicApiBaseUrl
-    : `${publicApiOriginFallback.replace(/\/$/, "")}/api/v1`);
+const publicApiOrigin = process.env.PUBLIC_API_BASE_URL ?? "";
+const apiUpstream = process.env.API_UPSTREAM_URL ?? "";
 const assetBaseUrl = process.env.NEXT_PUBLIC_ASSET_BASE_URL ?? "";
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -44,7 +35,9 @@ function buildContentSecurityPolicy() {
   ]);
 
   const apiOrigin = toOrigin(
-    isAbsoluteUrl(publicApiBaseUrl) ? publicApiBaseUrl : apiUpstream,
+    isAbsoluteUrl(publicApiBaseUrl)
+      ? publicApiBaseUrl
+      : apiUpstream || publicApiOrigin,
   );
   const assetOrigin = toOrigin(assetBaseUrl);
 
@@ -129,26 +122,6 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: securityHeaders,
-      },
-    ];
-  },
-  async rewrites() {
-    if (isAbsoluteUrl(publicApiBaseUrl)) {
-      return [];
-    }
-
-    if (apiUpstream.startsWith("/")) {
-      return [];
-    }
-
-    const normalizedPublicApiBaseUrl = publicApiBaseUrl.endsWith("/")
-      ? publicApiBaseUrl.slice(0, -1)
-      : publicApiBaseUrl;
-
-    return [
-      {
-        source: `${normalizedPublicApiBaseUrl}/:path*`,
-        destination: `${apiUpstream}/:path*`,
       },
     ];
   },
