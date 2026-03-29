@@ -332,19 +332,13 @@ export function SessionBuilderSkeleton() {
 
 export function StudentHubSkeleton() {
   return (
-    <div className="hub-layout" aria-hidden="true">
-      <div className="hub-main-column">
-        <div className="study-skeleton block" />
-        <div className="hub-action-grid">
-          <div className="study-skeleton panel tall" />
-          <div className="study-skeleton panel tall" />
-        </div>
-        <div className="study-skeleton panel tall" />
-      </div>
-      <div className="hub-side-column">
-        <div className="study-skeleton panel tall" />
+    <div className="hub-page" aria-hidden="true">
+      <div className="study-skeleton block tall" />
+      <div className="hub-path-grid">
+        <div className="study-skeleton panel" />
         <div className="study-skeleton panel" />
       </div>
+      <div className="study-skeleton panel tall" />
     </div>
   );
 }

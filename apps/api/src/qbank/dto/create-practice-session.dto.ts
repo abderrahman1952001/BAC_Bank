@@ -11,6 +11,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
+import { SESSION_YEAR_MAX, SESSION_YEAR_MIN } from '../session-year-range';
 
 function normalizeCodeList({ value }: TransformFnParams): string[] | undefined {
   if (value === undefined || value === null || value === '') {
@@ -80,8 +81,8 @@ export class CreatePracticeSessionDto {
   @IsArray()
   @ArrayMaxSize(18)
   @IsInt({ each: true })
-  @Min(2008, { each: true })
-  @Max(2025, { each: true })
+  @Min(SESSION_YEAR_MIN, { each: true })
+  @Max(SESSION_YEAR_MAX, { each: true })
   years?: number[];
 
   @Transform(({ value }: TransformFnParams) =>
@@ -97,6 +98,13 @@ export class CreatePracticeSessionDto {
   )
   @IsString()
   streamCode?: string;
+
+  @IsOptional()
+  @Transform(normalizeCodeList)
+  @IsArray()
+  @ArrayMaxSize(12)
+  @IsString({ each: true })
+  streamCodes?: string[];
 
   @IsOptional()
   @Transform(normalizeCodeList)

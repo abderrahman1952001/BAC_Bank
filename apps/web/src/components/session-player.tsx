@@ -1,52 +1,55 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useEffect, useEffectEvent, useMemo, useState } from 'react';
-import { StudySectionCard } from '@/components/study-content';
-import { StudyQuestionPanel } from '@/components/study-question-panel';
-import {
-  StudyExerciseStageCard,
-  StudyQuestionPromptContent,
-  StudyQuestionSolutionStack,
-} from '@/components/study-stage';
+import Link from "next/link";
+import { useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import {
   EmptyState,
-  StudyKeyHint,
-  StudyNavigator,
-  StudyStateLegend,
-} from '@/components/study-shell';
+} from "@/components/study-shell";
+import {
+  SessionPlayerContextPane,
+  SessionPlayerHeader,
+  SessionPlayerNavigatorModal,
+  SessionPlayerQuestionPane,
+} from "@/components/session-player-sections";
 import {
   API_BASE_URL,
   fetchJson,
-  formatSessionType,
   PracticeSessionResponse,
   UpdateSessionProgressResponse,
-} from '@/lib/qbank';
+} from "@/lib/qbank";
+import {
+  buildActiveExerciseTopics,
+  buildPrimaryActionLabel,
+  buildQuestionStatePresentation,
+  buildSessionGoalSummary,
+  buildSessionMeta,
+  buildSessionNavigatorExercises,
+  buildSessionProgressUpdateRequest,
+  buildSessionQuestionRefs,
+  findFirstSkippedQuestionRef,
+  findFirstUnansweredQuestionRef,
+  getAdjacentQuestionRef,
+  getQuestionDirection,
+  type QuestionMotionDirection,
+  resolveSessionPlayerProgress,
+  type SessionQuestionRef,
+} from "@/lib/session-player";
 import {
   buildEmptyStudyProgress,
-  chooseFreshestStudyProgress,
   countStudyProgress,
-  getFirstUnansweredQuestionId,
-  getQuestionVisualState,
-  normalizeStudyProgress,
   readLocalStudyProgress,
-  serializeStudyProgress,
   StudyProgressSnapshot,
   writeLocalStudyProgress,
-} from '@/lib/study';
+} from "@/lib/study";
 import {
   buildStudyExercisesFromSessionExercises,
   canRevealStudyQuestionSolution,
-  getStudyQuestionTopics,
   StudyExerciseModel,
-} from '@/lib/study-surface';
-
-type SessionQuestionRef = {
-  exerciseId: string;
-  questionId: string;
+} from "@/lib/study-surface";
+type QuestionMotionState = {
+  phase: "out" | "in";
+  direction: QuestionMotionDirection;
 };
-
-type QuestionMotionDirection = 'forward' | 'backward';
 
 function isInteractiveElement(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) {
@@ -63,13 +66,22 @@ function TheaterModeSkeleton() {
     <div className="theater-mode theater-mode-loading" aria-hidden="true">
       <header className="theater-header">
         <div className="theater-header-left">
-          <div className="study-skeleton" style={{ minHeight: 40, width: 110 }} />
+          <div
+            className="study-skeleton"
+            style={{ minHeight: 40, width: 110 }}
+          />
         </div>
         <div className="theater-header-center">
-          <div className="study-skeleton" style={{ minHeight: 40, width: 220 }} />
+          <div
+            className="study-skeleton"
+            style={{ minHeight: 40, width: 220 }}
+          />
         </div>
         <div className="theater-header-right">
-          <div className="study-skeleton" style={{ minHeight: 40, width: 100 }} />
+          <div
+            className="study-skeleton"
+            style={{ minHeight: 40, width: 100 }}
+          />
         </div>
       </header>
 
@@ -85,7 +97,10 @@ function TheaterModeSkeleton() {
           <div className="theater-skeleton-stack">
             <div className="study-skeleton block tall" />
             <div className="study-skeleton block" />
-            <div className="study-skeleton" style={{ minHeight: 52, width: 180 }} />
+            <div
+              className="study-skeleton"
+              style={{ minHeight: 52, width: 180 }}
+            />
           </div>
         </main>
       </div>
@@ -103,8 +118,10 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   const [progressReady, setProgressReady] = useState(false);
   const [completionOpen, setCompletionOpen] = useState(false);
   const [showNavigator, setShowNavigator] = useState(false);
-  const [questionMotionDirection, setQuestionMotionDirection] =
-    useState<QuestionMotionDirection>('forward');
+  const [questionMotion, setQuestionMotion] =
+    useState<QuestionMotionState | null>(null);
+  const questionMotionOutTimerRef = useRef<number | null>(null);
+  const questionMotionInTimerRef = useRef<number | null>(null);
 
   const storageKey = `bac-bank:session:${sessionId}:progress`;
   const exercises = useMemo<StudyExerciseModel[]>(
@@ -129,8 +146,8 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
 
         setSession(payload);
       } catch (loadError) {
-        if (!(loadError instanceof Error) || loadError.name !== 'AbortError') {
-          setError('تعذر تحميل الجلسة.');
+        if (!(loadError instanceof Error) || loadError.name !== "AbortError") {
+          setError("تعذر تحميل الجلسة.");
         }
       } finally {
         setLoading(false);
@@ -145,13 +162,7 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   }, [sessionId]);
 
   const allQuestionRefs = useMemo<SessionQuestionRef[]>(
-    () =>
-      exercises.flatMap((exercise) =>
-        exercise.questions.map((question) => ({
-          exerciseId: exercise.id,
-          questionId: question.id,
-        })),
-      ),
+    () => buildSessionQuestionRefs(exercises),
     [exercises],
   );
   const allQuestionIds = useMemo(
@@ -164,47 +175,13 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
       return;
     }
 
-    const remoteProgress = normalizeStudyProgress(session.progress);
-    const localProgress = readLocalStudyProgress(storageKey);
-    const mergedProgress =
-      chooseFreshestStudyProgress(localProgress, remoteProgress) ??
-      buildEmptyStudyProgress();
-    const firstExercise = exercises[0];
-    const firstQuestionId = firstExercise.questions[0]?.id ?? null;
-
-    const activeExerciseId = exercises.some(
-      (exercise) => exercise.id === mergedProgress.activeExerciseId,
-    )
-      ? mergedProgress.activeExerciseId
-      : firstExercise.id;
-    const activeExercise =
-      exercises.find((exercise) => exercise.id === activeExerciseId) ??
-      firstExercise;
-    const activeQuestionId = activeExercise.questions.some(
-      (question) => question.id === mergedProgress.activeQuestionId,
-    )
-      ? mergedProgress.activeQuestionId
-      : activeExercise.questions[0]?.id ?? firstQuestionId;
-
-    const nextProgress: StudyProgressSnapshot = {
-      ...mergedProgress,
-      activeExerciseId,
-      activeQuestionId,
-      questionStates: {
-        ...mergedProgress.questionStates,
-        ...(activeQuestionId
-          ? {
-              [activeQuestionId]: {
-                ...mergedProgress.questionStates[activeQuestionId],
-                opened: true,
-              },
-            }
-          : {}),
-      },
-      updatedAt: mergedProgress.updatedAt || new Date().toISOString(),
-    };
-
-    setProgress(nextProgress);
+    setProgress(
+      resolveSessionPlayerProgress({
+        exercises,
+        remoteProgress: session.progress,
+        localProgress: readLocalStudyProgress(storageKey),
+      }),
+    );
     setProgressReady(true);
   }, [exercises, session, storageKey]);
 
@@ -217,27 +194,18 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
 
     const controller = new AbortController();
     const timer = window.setTimeout(async () => {
-      const serialized = serializeStudyProgress(progress, allQuestionIds);
-
       try {
         const payload = await fetchJson<UpdateSessionProgressResponse>(
           `${API_BASE_URL}/qbank/sessions/${sessionId}/progress`,
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             signal: controller.signal,
-            body: JSON.stringify({
-              activeExerciseId: serialized.activeExerciseId,
-              activeQuestionId: serialized.activeQuestionId,
-              mode: serialized.mode,
-              questionStates: serialized.questionStates,
-              totalQuestionCount: serialized.summary.totalQuestionCount,
-              completedQuestionCount: serialized.summary.completedQuestionCount,
-              skippedQuestionCount: serialized.summary.skippedQuestionCount,
-              solutionViewedCount: serialized.summary.solutionViewedCount,
-            }),
+            body: JSON.stringify(
+              buildSessionProgressUpdateRequest(progress, allQuestionIds),
+            ),
           },
         );
 
@@ -287,27 +255,22 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
     () => countStudyProgress(allQuestionIds, progress.questionStates),
     [allQuestionIds, progress.questionStates],
   );
-  const activeQuestionIndex = useMemo(() => {
-    if (!activeExercise || !activeQuestion) {
-      return -1;
-    }
-
-    return activeExercise.questions.findIndex(
-      (question) => question.id === activeQuestion.id,
-    );
-  }, [activeExercise, activeQuestion]);
   const currentQuestionPosition = useMemo(() => {
     if (!activeQuestion) {
       return 0;
     }
 
-    return allQuestionIds.findIndex((questionId) => questionId === activeQuestion.id) + 1;
+    return (
+      allQuestionIds.findIndex(
+        (questionId) => questionId === activeQuestion.id,
+      ) + 1
+    );
   }, [activeQuestion, allQuestionIds]);
   const activeQuestionState = activeQuestion
     ? progress.questionStates[activeQuestion.id]
     : undefined;
   const solutionVisible =
-    Boolean(activeQuestionState?.solutionViewed) || progress.mode === 'REVIEW';
+    Boolean(activeQuestionState?.solutionViewed) || progress.mode === "REVIEW";
   const canRevealSolution = canRevealStudyQuestionSolution(activeQuestion);
   const isLastQuestion =
     progressCounts.totalCount > 0 &&
@@ -315,142 +278,47 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   const progressPercent =
     (currentQuestionPosition / Math.max(progressCounts.totalCount, 1)) * 100;
 
-  const activeExerciseTopics = useMemo(() => {
-    if (!activeExercise) {
-      return [];
-    }
+  const activeExerciseTopics = useMemo(
+    () => buildActiveExerciseTopics(activeExercise),
+    [activeExercise],
+  );
 
-    return Array.from(
-      new Map(
-        activeExercise.questions
-          .flatMap((question) => getStudyQuestionTopics(question))
-          .map((topic) => [topic.code, topic]),
-      ).values(),
-    );
-  }, [activeExercise]);
+  const sessionMeta = useMemo(() => buildSessionMeta(session), [session]);
 
-  const sessionMeta = useMemo(() => {
-    if (!session?.exercises.length) {
-      return [];
-    }
-
-    const firstExercise = session.exercises[0];
-    const streamNames = Array.from(
-      new Set(session.exercises.map((exercise) => exercise.exam.stream.name)),
-    );
-    const yearValues = Array.from(
-      new Set(session.exercises.map((exercise) => exercise.exam.year)),
-    ).sort((a, b) => b - a);
-
-    return [
-      { label: 'المادة', value: firstExercise.exam.subject.name },
-      {
-        label: 'الشعب',
-        value: streamNames.length === 1 ? streamNames[0] : 'عدة شعب',
-      },
-      {
-        label: 'السنوات',
-        value:
-          yearValues.length > 1
-            ? `${yearValues[yearValues.length - 1]} - ${yearValues[0]}`
-            : String(yearValues[0]),
-      },
-      { label: 'الحفظ', value: 'تلقائي' },
-    ];
-  }, [session?.exercises]);
-
-  const sessionGoalSummary = useMemo(() => {
-    if (!session?.filters) {
-      return 'جلسة تدريب مخصصة من مجموعة تمارين مطابقة لنفس الهدف.';
-    }
-
-    const parts: string[] = [];
-
-    if (session.filters.topicCodes?.length) {
-      parts.push(
-        session.filters.topicCodes.length === 1
-          ? 'محور واحد محدد'
-          : `${session.filters.topicCodes.length} محاور محددة`,
-      );
-    } else {
-      parts.push('كل المحاور المطابقة');
-    }
-
-    if (session.filters.streamCode) {
-      parts.push(`شعبة ${activeExercise?.sourceExam?.stream.name ?? 'محددة'}`);
-    } else {
-      parts.push('كل الشعب المطابقة');
-    }
-
-    if (session.filters.years?.length) {
-      const sortedYears = [...session.filters.years].sort((a, b) => b - a);
-      parts.push(
-        sortedYears.length === 1
-          ? `سنة ${sortedYears[0]}`
-          : `بين ${sortedYears[sortedYears.length - 1]} و ${sortedYears[0]}`,
-      );
-    }
-
-    if (session.filters.sessionTypes?.length === 1) {
-      parts.push(
-        formatSessionType(session.filters.sessionTypes[0] as 'NORMAL' | 'MAKEUP'),
-      );
-    }
-
-    return parts.join(' · ');
-  }, [activeExercise?.sourceExam?.stream.name, session?.filters]);
+  const sessionGoalSummary = useMemo(
+    () => buildSessionGoalSummary(session),
+    [session],
+  );
 
   const navigatorExercises = useMemo(
     () =>
-      exercises.map((exercise) => {
-        const exerciseQuestionIds = exercise.questions.map((question) => question.id);
-        const counts = countStudyProgress(exerciseQuestionIds, progress.questionStates);
-
-        return {
-          id: exercise.id,
-          title: `التمرين ${exercise.displayOrder}`,
-          subtitle: exercise.sourceExam
-            ? `${exercise.sourceExam.subject.name} · ${exercise.sourceExam.year}`
-            : undefined,
-          badge: `${exercise.questions.length} س`,
-          progressLabel: `${counts.completedCount}/${counts.totalCount} منجزة`,
-          questions: exercise.questions.map((question) => ({
-            id: question.id,
-            label: question.label,
-            shortLabel: question.label,
-            status: getQuestionVisualState(
-              progress.questionStates[question.id],
-              question.id === activeQuestion?.id,
-            ),
-            solutionViewed: progress.questionStates[question.id]?.solutionViewed,
-          })),
-        };
+      buildSessionNavigatorExercises({
+        exercises,
+        questionStates: progress.questionStates,
+        activeQuestionId: activeQuestion?.id ?? null,
       }),
     [activeQuestion?.id, exercises, progress.questionStates],
   );
 
-  const questionStateLabel = activeQuestionState?.skipped
-    ? 'متروك'
-    : activeQuestionState?.completed
-      ? 'تمت المراجعة'
-      : solutionVisible
-        ? 'تم كشف الحل'
-        : 'جاهز للحل';
-  const questionStateTone = activeQuestionState?.skipped
-    ? 'danger'
-    : activeQuestionState?.completed
-      ? 'success'
-      : solutionVisible
-        ? 'accent'
-        : 'brand';
-  const primaryActionLabel =
-    !solutionVisible && canRevealSolution
-      ? 'إظهار الحل'
-      : isLastQuestion
-        ? 'إنهاء الجلسة'
-        : !solutionVisible && !canRevealSolution
-          ? 'متابعة إلى السؤال التالي'
-          : 'السؤال التالي';
+  const questionStatePresentation = buildQuestionStatePresentation({
+    state: activeQuestionState,
+    solutionVisible,
+  });
+  const primaryActionLabel = buildPrimaryActionLabel({
+    solutionVisible,
+    canRevealSolution,
+    isLastQuestion,
+  });
+  const questionMotionClass = questionMotion
+    ? questionMotion.phase === "out"
+      ? questionMotion.direction === "forward"
+        ? "is-leaving-forward"
+        : "is-leaving-backward"
+      : questionMotion.direction === "forward"
+        ? "is-entering-forward"
+        : "is-entering-backward"
+    : "";
+  const questionMotionLocked = Boolean(questionMotion);
 
   function updateProgress(
     updater: (current: StudyProgressSnapshot) => StudyProgressSnapshot,
@@ -464,40 +332,74 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
     });
   }
 
-  function getQuestionRefIndex(questionId: string | null) {
-    if (!questionId) {
-      return -1;
+  function clearQuestionMotionTimers() {
+    if (questionMotionOutTimerRef.current) {
+      window.clearTimeout(questionMotionOutTimerRef.current);
+      questionMotionOutTimerRef.current = null;
     }
 
-    return allQuestionRefs.findIndex((item) => item.questionId === questionId);
+    if (questionMotionInTimerRef.current) {
+      window.clearTimeout(questionMotionInTimerRef.current);
+      questionMotionInTimerRef.current = null;
+    }
   }
 
-  function getAdjacentQuestionRef(direction: -1 | 1): SessionQuestionRef | null {
-    if (!activeQuestion) {
-      return null;
+  function transitionToQuestion(
+    nextRef: SessionQuestionRef,
+    direction: QuestionMotionDirection,
+    updater?: (current: StudyProgressSnapshot) => StudyProgressSnapshot,
+  ) {
+    if (questionMotionLocked) {
+      return false;
     }
 
-    const currentIndex = getQuestionRefIndex(activeQuestion.id);
+    clearQuestionMotionTimers();
+    setCompletionOpen(false);
+    setShowNavigator(false);
+    setQuestionMotion({
+      phase: "out",
+      direction,
+    });
 
-    if (currentIndex === -1) {
-      return null;
-    }
+    questionMotionOutTimerRef.current = window.setTimeout(() => {
+      updateProgress((current) => {
+        const base = updater ? updater(current) : current;
 
-    return allQuestionRefs[currentIndex + direction] ?? null;
-  }
+        return {
+          ...base,
+          activeExerciseId: nextRef.exerciseId,
+          activeQuestionId: nextRef.questionId,
+          questionStates: {
+            ...base.questionStates,
+            [nextRef.questionId]: {
+              ...base.questionStates[nextRef.questionId],
+              opened: true,
+            },
+          },
+        };
+      });
 
-  function setQuestionDirection(targetQuestionId: string) {
-    const currentIndex = getQuestionRefIndex(progress.activeQuestionId);
-    const nextIndex = getQuestionRefIndex(targetQuestionId);
+      setQuestionMotion({
+        phase: "in",
+        direction,
+      });
 
-    if (currentIndex === -1 || nextIndex === -1) {
-      return;
-    }
+      questionMotionInTimerRef.current = window.setTimeout(() => {
+        setQuestionMotion(null);
+        questionMotionInTimerRef.current = null;
+      }, 220);
 
-    setQuestionMotionDirection(nextIndex >= currentIndex ? 'forward' : 'backward');
+      questionMotionOutTimerRef.current = null;
+    }, 150);
+
+    return true;
   }
 
   function activateQuestion(exerciseId: string, questionId: string) {
+    if (questionMotionLocked) {
+      return;
+    }
+
     if (
       exerciseId === progress.activeExerciseId &&
       questionId === progress.activeQuestionId
@@ -506,22 +408,17 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
       return;
     }
 
-    setQuestionDirection(questionId);
-    setCompletionOpen(false);
-    setShowNavigator(false);
-
-    updateProgress((current) => ({
-      ...current,
-      activeExerciseId: exerciseId,
-      activeQuestionId: questionId,
-      questionStates: {
-        ...current.questionStates,
-        [questionId]: {
-          ...current.questionStates[questionId],
-          opened: true,
-        },
+    void transitionToQuestion(
+      {
+        exerciseId,
+        questionId,
       },
-    }));
+      getQuestionDirection({
+        targetQuestionId: questionId,
+        activeQuestionId: progress.activeQuestionId,
+        allQuestionRefs,
+      }),
+    );
   }
 
   function activateExercise(exerciseId: string) {
@@ -538,8 +435,8 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   function patchQuestionState(
     questionId: string,
     updater: (
-      current: StudyProgressSnapshot['questionStates'][string] | undefined,
-    ) => StudyProgressSnapshot['questionStates'][string],
+      current: StudyProgressSnapshot["questionStates"][string] | undefined,
+    ) => StudyProgressSnapshot["questionStates"][string],
   ) {
     updateProgress((current) => ({
       ...current,
@@ -551,7 +448,11 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   }
 
   function goToAdjacentQuestion(direction: -1 | 1) {
-    const nextRef = getAdjacentQuestionRef(direction);
+    const nextRef = getAdjacentQuestionRef({
+      direction,
+      activeQuestionId: activeQuestion?.id ?? null,
+      allQuestionRefs,
+    });
 
     if (!nextRef) {
       return false;
@@ -562,16 +463,11 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   }
 
   function goToFirstUnanswered() {
-    const questionId = getFirstUnansweredQuestionId(
+    const questionRef = findFirstUnansweredQuestionRef({
       allQuestionIds,
-      progress.questionStates,
-    );
-
-    if (!questionId) {
-      return;
-    }
-
-    const questionRef = allQuestionRefs.find((item) => item.questionId === questionId);
+      questionStates: progress.questionStates,
+      allQuestionRefs,
+    });
 
     if (!questionRef) {
       return;
@@ -581,14 +477,11 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   }
 
   function goToFirstSkipped() {
-    const questionId =
-      allQuestionIds.find((item) => progress.questionStates[item]?.skipped) ?? null;
-
-    if (!questionId) {
-      return;
-    }
-
-    const questionRef = allQuestionRefs.find((item) => item.questionId === questionId);
+    const questionRef = findFirstSkippedQuestionRef({
+      allQuestionIds,
+      questionStates: progress.questionStates,
+      allQuestionRefs,
+    });
 
     if (!questionRef) {
       return;
@@ -612,22 +505,37 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   }
 
   function skipCurrentQuestion() {
-    if (!activeQuestion) {
+    if (!activeQuestion || questionMotionLocked) {
       return;
     }
 
-    const nextRef = getAdjacentQuestionRef(1);
+    const nextRef = getAdjacentQuestionRef({
+      direction: 1,
+      activeQuestionId: activeQuestion.id,
+      allQuestionRefs,
+    });
 
     setCompletionOpen(false);
 
-    if (nextRef) {
-      setQuestionMotionDirection('forward');
+    if (!nextRef) {
+      updateProgress((current) => ({
+        ...current,
+        questionStates: {
+          ...current.questionStates,
+          [activeQuestion.id]: {
+            ...(current.questionStates[activeQuestion.id] ?? {}),
+            opened: true,
+            completed: false,
+            skipped: true,
+          },
+        },
+      }));
+      setCompletionOpen(true);
+      return;
     }
 
-    updateProgress((current) => ({
+    void transitionToQuestion(nextRef, "forward", (current) => ({
       ...current,
-      activeExerciseId: nextRef?.exerciseId ?? current.activeExerciseId,
-      activeQuestionId: nextRef?.questionId ?? current.activeQuestionId,
       questionStates: {
         ...current.questionStates,
         [activeQuestion.id]: {
@@ -636,35 +544,26 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
           completed: false,
           skipped: true,
         },
-        ...(nextRef
-          ? {
-              [nextRef.questionId]: {
-                ...current.questionStates[nextRef.questionId],
-                opened: true,
-              },
-            }
-          : {}),
       },
     }));
-
-    if (!nextRef) {
-      setCompletionOpen(true);
-    }
   }
 
   function advanceFromCurrentQuestion() {
-    if (!activeQuestion) {
+    if (!activeQuestion || questionMotionLocked) {
       return;
     }
 
-    const nextRef = getAdjacentQuestionRef(1);
+    const nextRef = getAdjacentQuestionRef({
+      direction: 1,
+      activeQuestionId: activeQuestion.id,
+      allQuestionRefs,
+    });
 
     setCompletionOpen(false);
 
-    if (progress.mode === 'REVIEW') {
+    if (progress.mode === "REVIEW") {
       if (nextRef) {
-        setQuestionMotionDirection('forward');
-        activateQuestion(nextRef.exerciseId, nextRef.questionId);
+        void transitionToQuestion(nextRef, "forward");
       } else {
         setCompletionOpen(true);
       }
@@ -672,14 +571,29 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
       return;
     }
 
-    if (nextRef) {
-      setQuestionMotionDirection('forward');
+    if (!nextRef) {
+      updateProgress((current) => ({
+        ...current,
+        questionStates: {
+          ...current.questionStates,
+          [activeQuestion.id]: {
+            ...(current.questionStates[activeQuestion.id] ?? {}),
+            opened: true,
+            completed: true,
+            skipped: false,
+            solutionViewed:
+              Boolean(
+                current.questionStates[activeQuestion.id]?.solutionViewed,
+              ) || current.mode === "REVIEW",
+          },
+        },
+      }));
+      setCompletionOpen(true);
+      return;
     }
 
-    updateProgress((current) => ({
+    void transitionToQuestion(nextRef, "forward", (current) => ({
       ...current,
-      activeExerciseId: nextRef?.exerciseId ?? current.activeExerciseId,
-      activeQuestionId: nextRef?.questionId ?? current.activeQuestionId,
       questionStates: {
         ...current.questionStates,
         [activeQuestion.id]: {
@@ -688,23 +602,12 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
           completed: true,
           skipped: false,
           solutionViewed:
-            Boolean(current.questionStates[activeQuestion.id]?.solutionViewed) ||
-            current.mode === 'REVIEW',
+            Boolean(
+              current.questionStates[activeQuestion.id]?.solutionViewed,
+            ) || current.mode === "REVIEW",
         },
-        ...(nextRef
-          ? {
-              [nextRef.questionId]: {
-                ...current.questionStates[nextRef.questionId],
-                opened: true,
-              },
-            }
-          : {}),
       },
     }));
-
-    if (!nextRef) {
-      setCompletionOpen(true);
-    }
   }
 
   function handlePrimaryAction() {
@@ -725,7 +628,7 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
   });
 
   useEffect(() => {
-    if (progress.mode !== 'REVIEW' || !activeQuestion) {
+    if (progress.mode !== "REVIEW" || !activeQuestion) {
       return;
     }
 
@@ -749,29 +652,39 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
+      if (questionMotionLocked) {
+        return;
+      }
+
       if (isInteractiveElement(event.target)) {
         return;
       }
 
-      if (event.key.toLowerCase() === 'n') {
+      if (event.key.toLowerCase() === "n") {
         event.preventDefault();
         handleAdjacentQuestion(1);
       }
 
-      if (event.key.toLowerCase() === 'p') {
+      if (event.key.toLowerCase() === "p") {
         event.preventDefault();
         handleAdjacentQuestion(-1);
       }
 
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setShowNavigator(false);
       }
     }
 
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [questionMotionLocked]);
+
+  useEffect(() => {
+    return () => {
+      clearQuestionMotionTimers();
     };
   }, []);
 
@@ -795,8 +708,12 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
         <div className="theater-empty-shell">
           <EmptyState
             title="تعذر تحميل الجلسة"
-            description={error || 'لا توجد بيانات لهذه الجلسة'}
-            action={<Link href="/app" className="btn-primary">العودة للرئيسية</Link>}
+            description={error || "لا توجد بيانات لهذه الجلسة"}
+            action={
+              <Link href="/app" className="btn-primary">
+                العودة للرئيسية
+              </Link>
+            }
           />
         </div>
       </div>
@@ -805,309 +722,68 @@ export function SessionPlayer({ sessionId }: { sessionId: string }) {
 
   return (
     <div className="theater-mode">
-      <header className="theater-header">
-        <div className="theater-header-left">
-          <Link href="/app" className="btn-ghost">
-            إغلاق
-          </Link>
-        </div>
-
-        <div className="theater-header-center">
-          <div className="theater-progress-container">
-            <span className="theater-progress-text">
-              السؤال {currentQuestionPosition} من {progressCounts.totalCount}
-            </span>
-            <div className="theater-progress-track" aria-hidden="true">
-              <div
-                className="theater-progress-fill"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="theater-header-right">
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() => setShowNavigator(true)}
-          >
-            الخريطة
-          </button>
-        </div>
-      </header>
+      <SessionPlayerHeader
+        currentQuestionPosition={currentQuestionPosition}
+        totalQuestionCount={progressCounts.totalCount}
+        progressPercent={progressPercent}
+        onOpenNavigator={() => setShowNavigator(true)}
+      />
 
       <div className="theater-body">
-        <aside className="theater-context-pane">
-          <div className="theater-pane-shell">
-            <section className="theater-session-intro">
-              <p className="page-kicker">جلسة دراسة</p>
-              <h1>{session.title ?? 'جلسة تدريب مخصصة'}</h1>
-              <p className="theater-session-copy">
-                {session.exerciseCount} تمارين مختارة داخل نفس سطح الدراسة، مع
-                حفظ تلقائي للموضع والتقدم.
-              </p>
-              <div className="study-meta-row">
-                {sessionMeta.map((item) => (
-                  <span key={`${item.label}:${item.value}`} className="study-meta-pill">
-                    <strong>{item.label}</strong>
-                    <span>{item.value}</span>
-                  </span>
-                ))}
-              </div>
-            </section>
+        <SessionPlayerContextPane
+          session={session}
+          sessionMeta={sessionMeta}
+          sessionGoalSummary={sessionGoalSummary}
+          activeExerciseTopics={activeExerciseTopics}
+          activeExercise={activeExercise}
+        />
 
-            <StudySectionCard tone="commentary" title="سياق الجلسة">
-              <p className="muted-text">{sessionGoalSummary}</p>
-              {activeExerciseTopics.length ? (
-                <div className="topic-chip-row theater-context-topics">
-                  {activeExerciseTopics.slice(0, 8).map((topic) => (
-                    <span key={`${activeExercise.id}:${topic.code}`}>
-                      {topic.name}
-                      {topic.isPrimary ? ' · رئيسي' : ''}
-                    </span>
-                  ))}
-                </div>
-              ) : null}
-            </StudySectionCard>
-
-            <StudyExerciseStageCard
-              exercise={activeExercise}
-              kicker={
-                activeExercise.sourceExam
-                  ? `${activeExercise.sourceExam.subject.name} · ${activeExercise.sourceExam.stream.name} · ${activeExercise.sourceExam.year} · ${formatSessionType(activeExercise.sourceExam.sessionType)}`
-                  : 'جلسة تدريب مخصصة'
-              }
-              heading={
-                <>
-                  التمرين {activeExercise.displayOrder}
-                  {activeExercise.title ? ` · ${activeExercise.title}` : ''}
-                </>
-              }
-              badgeLabel={`${activeExercise.questions.length} أسئلة`}
-            />
-          </div>
-        </aside>
-
-        <main className="theater-question-pane">
-          <div className="theater-pane-shell theater-question-shell">
-            <div className="theater-question-deck">
-              <div
-                key={activeQuestion.id}
-                className={`theater-question-card is-${questionMotionDirection}`}
-              >
-                <StudyQuestionPanel
-                  title={activeQuestion.label}
-                  subtitle={`التمرين ${activeExercise.displayOrder} · السؤال ${activeQuestionIndex + 1} داخل هذا التمرين`}
-                  isActive={false}
-                  stateLabel={questionStateLabel}
-                  stateTone={questionStateTone}
-                  positionLabel={`السؤال ${currentQuestionPosition} من ${progressCounts.totalCount}`}
-                  pointsLabel={`${activeQuestion.points} نقطة`}
-                  modeLabel={progress.mode === 'REVIEW' ? 'وضع المراجعة' : undefined}
-                  solutionViewed={Boolean(activeQuestionState?.solutionViewed)}
-                  topics={getStudyQuestionTopics(activeQuestion).map((topic) => ({
-                    key: `${activeQuestion.id}-${topic.code}`,
-                    label: topic.name,
-                    isPrimary: topic.isPrimary,
-                  }))}
-                  keyboardHint={{
-                    keys: ['N', 'P'],
-                    label: 'التالي / السابق',
-                  }}
-                >
-                  <StudyQuestionPromptContent question={activeQuestion} />
-                </StudyQuestionPanel>
-
-                <div
-                  className={`solution-reveal-wrapper${solutionVisible ? ' is-open' : ''}`}
-                >
-                  <div className="solution-reveal-inner">
-                    <StudyQuestionSolutionStack question={activeQuestion} />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="theater-actions-bar">
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={handlePrimaryAction}
-              >
-                {primaryActionLabel}
-              </button>
-
-              {!solutionVisible && progress.mode !== 'REVIEW' ? (
-                <button
-                  type="button"
-                  className="theater-subtle-action"
-                  onClick={skipCurrentQuestion}
-                >
-                  تخطي
-                </button>
-              ) : null}
-            </div>
-
-            <p className="theater-footer-note">
-              التنقل اليدوي متاح من الخريطة أو عبر N / P.
-            </p>
-
-            {completionOpen ? (
-              <StudySectionCard tone="commentary" title="ملخص الجلسة">
-                <p className="completion-summary-copy">
-                  {progressCounts.unansweredCount || progressCounts.skippedCount
-                    ? 'أنهيت المرور الحالي على الجلسة، وما زالت هناك أسئلة تحتاج رجوعاً سريعاً قبل الإغلاق.'
-                    : 'أنهيت المرور الأول على الجلسة. يمكنك الآن مراجعة الحلول والتنقل بحرية بين الأسئلة.'}
-                </p>
-
-                <div className="completion-summary-grid">
-                  <article>
-                    <strong>{progressCounts.completedCount}</strong>
-                    <span>منجزة</span>
-                  </article>
-                  <article>
-                    <strong>{progressCounts.skippedCount}</strong>
-                    <span>متروكة</span>
-                  </article>
-                  <article>
-                    <strong>{progressCounts.solutionViewedCount}</strong>
-                    <span>حلول مكشوفة</span>
-                  </article>
-                </div>
-
-                <div className="theater-summary-actions">
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={goToFirstUnanswered}
-                    disabled={progressCounts.unansweredCount === 0}
-                  >
-                    اذهب إلى غير المنجز
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={goToFirstSkipped}
-                    disabled={progressCounts.skippedCount === 0}
-                  >
-                    راجع المتروك
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={() =>
-                      updateProgress((current) => ({
-                        ...current,
-                        mode: current.mode === 'REVIEW' ? 'SOLVE' : 'REVIEW',
-                      }))
-                    }
-                  >
-                    {progress.mode === 'REVIEW' ? 'العودة لوضع الحل' : 'فتح وضع المراجعة'}
-                  </button>
-                  <Link href="/app" className="btn-primary">
-                    العودة للرئيسية
-                  </Link>
-                </div>
-              </StudySectionCard>
-            ) : null}
-          </div>
-        </main>
+        <SessionPlayerQuestionPane
+          activeQuestion={activeQuestion}
+          activeExercise={activeExercise}
+          questionMotionClass={questionMotionClass}
+          questionStatePresentation={questionStatePresentation}
+          currentQuestionPosition={currentQuestionPosition}
+          progressCounts={progressCounts}
+          progressMode={progress.mode}
+          activeQuestionState={activeQuestionState}
+          solutionVisible={solutionVisible}
+          questionMotionLocked={questionMotionLocked}
+          primaryActionLabel={primaryActionLabel}
+          completionOpen={completionOpen}
+          onPrimaryAction={handlePrimaryAction}
+          onSkipQuestion={skipCurrentQuestion}
+          onGoToFirstUnanswered={goToFirstUnanswered}
+          onGoToFirstSkipped={goToFirstSkipped}
+          onToggleMode={() =>
+            updateProgress((current) => ({
+              ...current,
+              mode: current.mode === "REVIEW" ? "SOLVE" : "REVIEW",
+            }))
+          }
+        />
       </div>
 
       {showNavigator ? (
-        <div
-          className="navigator-modal-backdrop"
-          onClick={() => setShowNavigator(false)}
-        >
-          <aside
-            className="navigator-modal-content"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="theater-modal-stack">
-              <div className="study-stage-head">
-                <div>
-                  <p className="page-kicker">خريطة الجلسة</p>
-                  <h2>{session.title ?? 'جلسة تدريب مخصصة'}</h2>
-                </div>
-                <button
-                  type="button"
-                  className="btn-ghost"
-                  onClick={() => setShowNavigator(false)}
-                >
-                  إغلاق
-                </button>
-              </div>
-
-              <div className="theater-modal-section">
-                <StudyStateLegend includeSkipped />
-                <StudyKeyHint
-                  keys={['N', 'P']}
-                  label="للتنقل السريع بين السؤال التالي والسابق"
-                />
-              </div>
-
-              <div className="theater-modal-actions">
-                <button
-                  type="button"
-                  className={
-                    progress.mode === 'SOLVE'
-                      ? 'study-toggle-button active'
-                      : 'study-toggle-button'
-                  }
-                  onClick={() =>
-                    updateProgress((current) => ({
-                      ...current,
-                      mode: 'SOLVE',
-                    }))
-                  }
-                >
-                  وضع الحل
-                </button>
-                <button
-                  type="button"
-                  className={
-                    progress.mode === 'REVIEW'
-                      ? 'study-toggle-button active'
-                      : 'study-toggle-button'
-                  }
-                  onClick={() =>
-                    updateProgress((current) => ({
-                      ...current,
-                      mode: 'REVIEW',
-                    }))
-                  }
-                >
-                  وضع المراجعة
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={goToFirstUnanswered}
-                  disabled={progressCounts.unansweredCount === 0}
-                >
-                  أول غير منجز
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={goToFirstSkipped}
-                  disabled={progressCounts.skippedCount === 0}
-                >
-                  راجع المتروك
-                </button>
-              </div>
-
-              <StudyNavigator
-                exercises={navigatorExercises}
-                activeExerciseId={activeExercise.id}
-                activeQuestionId={activeQuestion.id}
-                onSelectExercise={activateExercise}
-                onSelectQuestion={activateQuestion}
-              />
-            </div>
-          </aside>
-        </div>
+        <SessionPlayerNavigatorModal
+          sessionTitle={session.title}
+          progressMode={progress.mode}
+          progressCounts={progressCounts}
+          navigatorExercises={navigatorExercises}
+          activeExerciseId={activeExercise.id}
+          activeQuestionId={activeQuestion.id}
+          onClose={() => setShowNavigator(false)}
+          onSetMode={(mode) =>
+            updateProgress((current) => ({
+              ...current,
+              mode,
+            }))
+          }
+          onGoToFirstUnanswered={goToFirstUnanswered}
+          onGoToFirstSkipped={goToFirstSkipped}
+          onSelectExercise={activateExercise}
+          onSelectQuestion={activateQuestion}
+        />
       ) : null}
     </div>
   );

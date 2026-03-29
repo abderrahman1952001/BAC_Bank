@@ -12,11 +12,16 @@ import {
   StreamableFile,
   UseGuards,
 } from '@nestjs/common';
-import type { MultipartFile } from '@fastify/multipart';
+import type { Multipart, MultipartFile } from '@fastify/multipart';
 import type { FastifyReply } from 'fastify';
 import type { FastifyRequest } from 'fastify';
 import { AdminRoleGuard } from '../admin/admin.guard';
 import { IngestionService } from './ingestion.service';
+
+type MultipartRequest = FastifyRequest & {
+  isMultipart: () => boolean;
+  parts: () => AsyncIterableIterator<Multipart>;
+};
 
 @Controller()
 export class IngestionController {
@@ -52,9 +57,7 @@ export class IngestionController {
 
   @UseGuards(AdminRoleGuard)
   @Post('admin/ingestion/exams/:examId/revision')
-  createPublishedRevisionJob(
-    @Param('examId', ParseUUIDPipe) examId: string,
-  ) {
+  createPublishedRevisionJob(@Param('examId', ParseUUIDPipe) examId: string) {
     return this.ingestionService.createPublishedRevisionJob(examId);
   }
 
@@ -158,13 +161,9 @@ export class IngestionController {
   }
 
   private async parseManualUploadRequest(request: FastifyRequest) {
-    if (
-      typeof (request as FastifyRequest & { isMultipart?: () => boolean })
-        .isMultipart !== 'function' ||
-      !(
-        request as FastifyRequest & { isMultipart: () => boolean }
-      ).isMultipart()
-    ) {
+    const multipartRequest = this.asMultipartRequest(request);
+
+    if (!multipartRequest || !multipartRequest.isMultipart()) {
       throw new BadRequestException(
         'manual intake expects multipart/form-data.',
       );
@@ -179,7 +178,7 @@ export class IngestionController {
       ReturnType<IngestionController['readMultipartFilePart']>
     > | null = null;
 
-    for await (const part of request.parts()) {
+    for await (const part of multipartRequest.parts()) {
       if (part.type === 'file') {
         const parsed = await this.readMultipartFilePart(part);
 
@@ -245,13 +244,9 @@ export class IngestionController {
   }
 
   private async parseCorrectionUploadRequest(request: FastifyRequest) {
-    if (
-      typeof (request as FastifyRequest & { isMultipart?: () => boolean })
-        .isMultipart !== 'function' ||
-      !(
-        request as FastifyRequest & { isMultipart: () => boolean }
-      ).isMultipart()
-    ) {
+    const multipartRequest = this.asMultipartRequest(request);
+
+    if (!multipartRequest || !multipartRequest.isMultipart()) {
       throw new BadRequestException(
         'correction upload expects multipart/form-data.',
       );
@@ -261,7 +256,7 @@ export class IngestionController {
       ReturnType<IngestionController['readMultipartFilePart']>
     > | null = null;
 
-    for await (const part of request.parts()) {
+    for await (const part of multipartRequest.parts()) {
       if (part.type !== 'file') {
         continue;
       }
@@ -282,6 +277,19 @@ export class IngestionController {
     return {
       correctionDocument,
     };
+  }
+
+  private asMultipartRequest(request: FastifyRequest): MultipartRequest | null {
+    const candidate = request as Partial<MultipartRequest>;
+
+    if (
+      typeof candidate.isMultipart !== 'function' ||
+      typeof candidate.parts !== 'function'
+    ) {
+      return null;
+    }
+
+    return request as MultipartRequest;
   }
 
   private parseRequiredField(value: string | undefined, fieldName: string) {

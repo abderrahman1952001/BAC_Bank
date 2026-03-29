@@ -87,6 +87,13 @@ npm run prisma:migrate:dev -w @bac-bank/api
 npm run dev:all
 ```
 
+- The ingestion worker is included in `npm run dev:all`.
+- You can also run it separately with:
+
+```bash
+npm run dev:worker
+```
+
 - API base URL: `http://localhost:3001/api/v1`
 - Web app URL: `http://localhost:3000`
 
@@ -174,6 +181,8 @@ If a paper is shared across streams, set `draft_json.exam.metadata.paperFamilyCo
 ## API Endpoints (MVP)
 
 - `GET /api/v1/health`
+- `GET /api/v1/health/live`
+- `GET /api/v1/health/ready`
 - `GET /api/v1/qbank/filters`
 - `GET /api/v1/qbank/questions`
 - `GET /api/v1/qbank/questions/:id`
@@ -196,6 +205,7 @@ If a paper is shared across streams, set `draft_json.exam.metadata.paperFamilyCo
 
 ## Notes
 
+- Production runbook: [docs/production-runbook.md](docs/production-runbook.md)
 - Migration SQL is generated in `apps/api/prisma/migrations`.
 - BAC intake overview: [docs/intake-pipeline.md](docs/intake-pipeline.md)
 - Source intake command examples:

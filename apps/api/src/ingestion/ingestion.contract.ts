@@ -74,6 +74,7 @@ export type DraftNode = {
   orderIndex: number;
   label: string | null;
   maxPoints: number | null;
+  topicCodes: string[];
   blocks: DraftBlock[];
 };
 
@@ -348,6 +349,7 @@ function normalizeNode(
         : fallbackIndex + 1,
     label: normalizedLabel ?? normalizedTitle,
     maxPoints,
+    topicCodes: normalizeTopicCodes(raw.topicCodes),
     blocks: normalizeBlocks(raw.blocks),
   };
 }
@@ -628,6 +630,21 @@ function normalizeOptionalString(value: unknown): string | null {
 
   const trimmed = value.trim();
   return trimmed.length ? trimmed : null;
+}
+
+function normalizeTopicCodes(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return Array.from(
+    new Set(
+      value
+        .filter((entry): entry is string => typeof entry === 'string')
+        .map((entry) => entry.trim().toUpperCase())
+        .filter((entry) => entry.length > 0),
+    ),
+  );
 }
 
 function readNonEmptyString(value: unknown, fieldName: string): string {

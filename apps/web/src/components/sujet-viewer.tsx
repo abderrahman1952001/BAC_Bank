@@ -1,36 +1,40 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useCallback, useEffect, useEffectEvent, useMemo, useState } from 'react';
-import { AppNavbar } from '@/components/app-navbar';
-import { StudyQuestionPanel } from '@/components/study-question-panel';
+import Link from "next/link";
 import {
-  StudyExerciseStageCard,
-  StudyQuestionPromptContent,
-  StudyQuestionSolutionStack,
-} from '@/components/study-stage';
+  useCallback,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useState,
+} from "react";
+import { useAuthSession } from "@/components/auth-provider";
+import { AppNavbar } from "@/components/app-navbar";
 import {
   InlineEditTarget,
   SujetInlineEditor,
-} from '@/components/sujet-inline-editor';
+} from "@/components/sujet-inline-editor";
 import {
   EmptyState,
   StudyHeader,
-  StudyKeyHint,
-  StudyNavigator,
-  StudyProgressBar,
   StudyScreenSkeleton,
   StudyShell,
-  StudySidebar,
-  StudyStateLegend,
-} from '@/components/study-shell';
-import { getClientRole } from '@/lib/client-auth';
+} from "@/components/study-shell";
+import {
+  SujetViewerFocusContextPane,
+  SujetViewerFocusHeader,
+  SujetViewerFocusNavigatorModal,
+  SujetViewerFocusQuestionPane,
+  SujetViewerHeaderActions,
+  SujetViewerHeaderProgress,
+  SujetViewerStandardLayout,
+} from "@/components/sujet-viewer-sections";
 import {
   API_BASE_URL,
   ExamResponse,
   fetchJson,
   formatSessionType,
-} from '@/lib/qbank';
+} from "@/lib/qbank";
 import {
   buildEmptyStudyProgress,
   countStudyProgress,
@@ -39,13 +43,13 @@ import {
   readLocalStudyProgress,
   StudyProgressSnapshot,
   writeLocalStudyProgress,
-} from '@/lib/study';
+} from "@/lib/study";
 import {
   buildStudyExercisesFromExam,
   canRevealStudyQuestionSolution,
   getStudyQuestionTopics,
   StudyExerciseModel,
-} from '@/lib/study-surface';
+} from "@/lib/study-surface";
 
 type QuestionRef = {
   exerciseId: string;
@@ -86,15 +90,16 @@ export function SujetViewer({
     buildEmptyStudyProgress(),
   );
   const [progressReady, setProgressReady] = useState(false);
-  const [inlineEditTarget, setInlineEditTarget] = useState<InlineEditTarget | null>(
-    null,
-  );
-  const [role] = useState<'USER' | 'ADMIN'>(() => getClientRole());
+  const [focusMode, setFocusMode] = useState(false);
+  const [showNavigator, setShowNavigator] = useState(false);
+  const [inlineEditTarget, setInlineEditTarget] =
+    useState<InlineEditTarget | null>(null);
+  const { user } = useAuthSession();
 
   const decodedExamId = decodeURIComponent(examId);
   const parsedSujetNumber = Number(sujetNumber);
   const storageKey = `bac-bank:sujet:${decodedExamId}:${parsedSujetNumber}`;
-  const isAdmin = role === 'ADMIN';
+  const isAdmin = user?.role === "ADMIN";
 
   const loadExam = useCallback(async () => {
     setLoading(true);
@@ -107,7 +112,7 @@ export function SujetViewer({
 
       setExam(payload);
     } catch {
-      setError('تعذر تحميل هذا الموضوع.');
+      setError("تعذر تحميل هذا الموضوع.");
     } finally {
       setLoading(false);
     }
@@ -142,15 +147,20 @@ export function SujetViewer({
       return;
     }
 
-    const localProgress = readLocalStudyProgress(storageKey) ?? buildEmptyStudyProgress();
+    const localProgress =
+      readLocalStudyProgress(storageKey) ?? buildEmptyStudyProgress();
 
     const queryExercise =
       initialExercise && /^\d+$/.test(initialExercise)
-        ? exercises.find((exercise) => exercise.orderIndex === Number(initialExercise))
+        ? exercises.find(
+            (exercise) => exercise.orderIndex === Number(initialExercise),
+          )
         : exercises.find((exercise) => exercise.id === initialExercise);
     const fallbackExercise =
       queryExercise ??
-      exercises.find((exercise) => exercise.id === localProgress.activeExerciseId) ??
+      exercises.find(
+        (exercise) => exercise.id === localProgress.activeExerciseId,
+      ) ??
       exercises[0];
 
     const queryQuestion =
@@ -235,7 +245,11 @@ export function SujetViewer({
       return 0;
     }
 
-    return allQuestionIds.findIndex((questionId) => questionId === activeQuestion.id) + 1;
+    return (
+      allQuestionIds.findIndex(
+        (questionId) => questionId === activeQuestion.id,
+      ) + 1
+    );
   }, [activeQuestion, allQuestionIds]);
   const activeQuestionState = activeQuestion
     ? progress.questionStates[activeQuestion.id]
@@ -244,15 +258,35 @@ export function SujetViewer({
     activeQuestionState,
     false,
   );
+  const progressPercent =
+    (currentQuestionPosition / Math.max(progressCounts.totalCount, 1)) * 100;
   const solutionVisible =
-    Boolean(activeQuestionState?.solutionViewed) || progress.mode === 'REVIEW';
+    Boolean(activeQuestionState?.solutionViewed) || progress.mode === "REVIEW";
   const canRevealSolution = canRevealStudyQuestionSolution(activeQuestion);
+  const activeExerciseTopics = useMemo(() => {
+    if (!activeExercise) {
+      return [];
+    }
+
+    return Array.from(
+      new Map(
+        activeExercise.questions
+          .flatMap((question) => getStudyQuestionTopics(question))
+          .map((topic) => [topic.code, topic]),
+      ).values(),
+    );
+  }, [activeExercise]);
 
   const navigatorExercises = useMemo(
     () =>
       exercises.map((exercise) => {
-        const exerciseQuestionIds = exercise.questions.map((question) => question.id);
-        const counts = countStudyProgress(exerciseQuestionIds, progress.questionStates);
+        const exerciseQuestionIds = exercise.questions.map(
+          (question) => question.id,
+        );
+        const counts = countStudyProgress(
+          exerciseQuestionIds,
+          progress.questionStates,
+        );
 
         return {
           id: exercise.id,
@@ -268,7 +302,8 @@ export function SujetViewer({
               progress.questionStates[question.id],
               question.id === activeQuestion?.id,
             ),
-            solutionViewed: progress.questionStates[question.id]?.solutionViewed,
+            solutionViewed:
+              progress.questionStates[question.id]?.solutionViewed,
           })),
         };
       }),
@@ -284,7 +319,20 @@ export function SujetViewer({
     }));
   }
 
+  function setProgressMode(mode: StudyProgressSnapshot["mode"]) {
+    updateProgress((current) => ({
+      ...current,
+      mode,
+    }));
+  }
+
+  function exitFocusMode() {
+    setFocusMode(false);
+    setShowNavigator(false);
+  }
+
   function activateQuestion(exerciseId: string, questionId: string) {
+    setShowNavigator(false);
     updateProgress((current) => ({
       ...current,
       activeExerciseId: exerciseId,
@@ -312,7 +360,9 @@ export function SujetViewer({
 
   function patchQuestionState(
     questionId: string,
-    patch: (current: StudyProgressSnapshot['questionStates'][string] | undefined) => {
+    patch: (
+      current: StudyProgressSnapshot["questionStates"][string] | undefined,
+    ) => {
       opened?: boolean;
       completed?: boolean;
       solutionViewed?: boolean;
@@ -352,7 +402,7 @@ export function SujetViewer({
   });
 
   useEffect(() => {
-    if (progress.mode !== 'REVIEW' || !activeQuestion) {
+    if (progress.mode !== "REVIEW" || !activeQuestion) {
       return;
     }
 
@@ -380,21 +430,25 @@ export function SujetViewer({
         return;
       }
 
-      if (event.key.toLowerCase() === 'n') {
+      if (event.key.toLowerCase() === "n") {
         event.preventDefault();
         handleAdjacentQuestion(1);
       }
 
-      if (event.key.toLowerCase() === 'p') {
+      if (event.key.toLowerCase() === "p") {
         event.preventDefault();
         handleAdjacentQuestion(-1);
       }
+
+      if (event.key === "Escape") {
+        setShowNavigator(false);
+      }
     }
 
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
 
@@ -403,6 +457,88 @@ export function SujetViewer({
   )}&subject=${encodeURIComponent(decodeURIComponent(subjectCode))}&year=${encodeURIComponent(year)}&examId=${encodeURIComponent(decodedExamId)}&sujet=${encodeURIComponent(
     sujetNumber,
   )}`;
+  const exerciseEditAction = isAdmin ? (
+    <button
+      type="button"
+      className="btn-secondary"
+      onClick={() =>
+        setInlineEditTarget({
+          kind: "exercise",
+          exerciseId: activeExercise?.id ?? "",
+          title:
+            activeExercise?.title ??
+            `التمرين ${activeExercise?.displayOrder ?? ""}`,
+        })
+      }
+      disabled={!activeExercise}
+    >
+      تحرير التمرين
+    </button>
+  ) : null;
+  const questionActionButtons =
+    activeExercise && activeQuestion ? (
+      <>
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={() => goToAdjacentQuestion(-1)}
+          disabled={currentQuestionPosition <= 1}
+        >
+          السابق
+        </button>
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={() => goToAdjacentQuestion(1)}
+          disabled={currentQuestionPosition >= progressCounts.totalCount}
+        >
+          التالي
+        </button>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={() =>
+            patchQuestionState(activeQuestion.id, (current) => ({
+              ...(current ?? {}),
+              opened: true,
+              completed: !current?.completed,
+            }))
+          }
+        >
+          {activeQuestionState?.completed ? "إلغاء الإنجاز" : "تم"}
+        </button>
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={() =>
+            patchQuestionState(activeQuestion.id, (current) => ({
+              ...(current ?? {}),
+              opened: true,
+              solutionViewed: true,
+            }))
+          }
+          disabled={!canRevealSolution}
+        >
+          إظهار الحل
+        </button>
+        {isAdmin ? (
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={() =>
+              setInlineEditTarget({
+                kind: "question",
+                exerciseId: activeExercise.id,
+                questionId: activeQuestion.id,
+                title: activeQuestion.label,
+              })
+            }
+          >
+            تحرير السؤال
+          </button>
+        ) : null}
+      </>
+    ) : null;
 
   if (loading) {
     return (
@@ -410,6 +546,72 @@ export function SujetViewer({
         <AppNavbar />
         <StudyScreenSkeleton />
       </StudyShell>
+    );
+  }
+
+  if (focusMode && exam && activeExercise && activeQuestion) {
+    return (
+      <>
+        <div className="theater-mode">
+          <SujetViewerFocusHeader
+            backToBrowseHref={backToBrowseHref}
+            currentQuestionPosition={currentQuestionPosition}
+            totalQuestionCount={progressCounts.totalCount}
+            progressPercent={progressPercent}
+            onExitFocusMode={exitFocusMode}
+            onOpenNavigator={() => setShowNavigator(true)}
+          />
+
+          <div className="theater-body">
+            <SujetViewerFocusContextPane
+              exam={exam}
+              sujetNumber={sujetNumber}
+              progressMode={progress.mode}
+              totalQuestionCount={progressCounts.totalCount}
+              activeExerciseTopics={activeExerciseTopics}
+              activeExercise={activeExercise}
+              exerciseAction={exerciseEditAction}
+              onSetMode={setProgressMode}
+            />
+
+            <SujetViewerFocusQuestionPane
+              activeExercise={activeExercise}
+              activeQuestion={activeQuestion}
+              activeQuestionStateDescriptor={activeQuestionStateDescriptor}
+              activeQuestionState={activeQuestionState}
+              progressMode={progress.mode}
+              currentQuestionPosition={currentQuestionPosition}
+              totalQuestionCount={progressCounts.totalCount}
+              solutionVisible={solutionVisible}
+              questionActions={questionActionButtons}
+            />
+          </div>
+
+          {showNavigator ? (
+            <SujetViewerFocusNavigatorModal
+              exam={exam}
+              sujetNumber={sujetNumber}
+              progressMode={progress.mode}
+              navigatorExercises={navigatorExercises}
+              activeExerciseId={activeExercise.id}
+              activeQuestionId={activeQuestion.id}
+              onClose={() => setShowNavigator(false)}
+              onExitFocusMode={exitFocusMode}
+              onSetMode={setProgressMode}
+              onSelectExercise={activateExercise}
+              onSelectQuestion={activateQuestion}
+            />
+          ) : null}
+        </div>
+
+        {isAdmin ? (
+          <SujetInlineEditor
+            target={inlineEditTarget}
+            onClose={() => setInlineEditTarget(null)}
+            onSaved={loadExam}
+          />
+        ) : null}
+      </>
     );
   }
 
@@ -424,222 +626,47 @@ export function SujetViewer({
             title={exam.selectedSujetLabel ?? `الموضوع ${sujetNumber}`}
             subtitle="واجهة مركزة للتمرين الحالي مع خريطة ثابتة للتنقل بين التمارين والأسئلة."
             meta={[
-              { label: 'المادة', value: exam.subject.name },
-              { label: 'الشعبة', value: exam.stream.name },
-              { label: 'السنة', value: String(exam.year) },
+              { label: "المادة", value: exam.subject.name },
+              { label: "الشعبة", value: exam.stream.name },
+              { label: "السنة", value: String(exam.year) },
               {
-                label: 'الدورة',
+                label: "الدورة",
                 value: formatSessionType(exam.sessionType),
               },
             ]}
             actions={
-              <div className="study-toggle-row">
-                <Link href={backToBrowseHref} className="btn-secondary">
-                  العودة للتصفح
-                </Link>
-                <button
-                  type="button"
-                  className={
-                    progress.mode === 'SOLVE'
-                      ? 'study-toggle-button active'
-                      : 'study-toggle-button'
-                  }
-                  onClick={() =>
-                    updateProgress((current) => ({
-                      ...current,
-                      mode: 'SOLVE',
-                    }))
-                  }
-                >
-                  وضع الحل
-                </button>
-                <button
-                  type="button"
-                  className={
-                    progress.mode === 'REVIEW'
-                      ? 'study-toggle-button active'
-                      : 'study-toggle-button'
-                  }
-                  onClick={() =>
-                    updateProgress((current) => ({
-                      ...current,
-                      mode: 'REVIEW',
-                    }))
-                  }
-                >
-                  وضع المراجعة
-                </button>
-              </div>
+              <SujetViewerHeaderActions
+                backToBrowseHref={backToBrowseHref}
+                progressMode={progress.mode}
+                onEnterFocusMode={() => setFocusMode(true)}
+                onSetMode={setProgressMode}
+              />
             }
             progress={
-              <div className="study-progress-grid">
-                <StudyProgressBar
-                  label="تقدم الموضوع"
-                  detail={`${progressCounts.completedCount} من ${progressCounts.totalCount} منجزة`}
-                  value={
-                    (progressCounts.completedCount /
-                      Math.max(progressCounts.totalCount, 1)) *
-                    100
-                  }
-                />
-                <StudyProgressBar
-                  label="الموضع الحالي"
-                  detail={`السؤال ${currentQuestionPosition} من ${progressCounts.totalCount}`}
-                  value={
-                    (currentQuestionPosition / Math.max(progressCounts.totalCount, 1)) *
-                    100
-                  }
-                />
-              </div>
+              <SujetViewerHeaderProgress
+                progressCounts={progressCounts}
+                currentQuestionPosition={currentQuestionPosition}
+              />
             }
           />
 
-          <div className="study-layout">
-            <StudySidebar
-              title="التنقل داخل الموضوع"
-              subtitle={`التمرين ${activeExerciseIndex + 1} من ${exercises.length}`}
-              footer={
-                <div className="study-sidebar-footer-stack">
-                  <StudyStateLegend />
-                  <StudyKeyHint
-                    keys={['N', 'P']}
-                    label="للتنقل السريع بين السؤال التالي والسابق"
-                  />
-                </div>
-              }
-            >
-              <StudyNavigator
-                exercises={navigatorExercises}
-                activeExerciseId={activeExercise.id}
-                activeQuestionId={activeQuestion.id}
-                onSelectExercise={activateExercise}
-                onSelectQuestion={activateQuestion}
-              />
-            </StudySidebar>
-
-            <section className="study-stage">
-              <StudyExerciseStageCard
-                exercise={activeExercise}
-                kicker={`${exam.subject.name} · ${exam.stream.name} · ${exam.year}`}
-                heading={
-                  <>
-                    التمرين {activeExercise.displayOrder}
-                    {activeExercise.title ? ` · ${activeExercise.title}` : ''}
-                  </>
-                }
-                badgeLabel={`${activeExercise.questions.length} أسئلة`}
-                actions={
-                  isAdmin ? (
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={() =>
-                        setInlineEditTarget({
-                          kind: 'exercise',
-                          exerciseId: activeExercise.id,
-                          title:
-                            activeExercise.title ??
-                            `التمرين ${activeExercise.displayOrder}`,
-                        })
-                      }
-                    >
-                      تحرير التمرين
-                    </button>
-                  ) : null
-                }
-              />
-
-              <StudyQuestionPanel
-                key={`${activeExercise.id}:${activeQuestion.id}`}
-                title={activeQuestion.label}
-                subtitle={`التمرين ${activeExercise.displayOrder} · السؤال ${activeQuestionIndex + 1} داخل هذا التمرين`}
-                stateLabel={activeQuestionStateDescriptor.label}
-                stateTone={activeQuestionStateDescriptor.tone}
-                positionLabel={`السؤال ${activeQuestionIndex + 1} من ${activeExercise.questions.length}`}
-                pointsLabel={`${activeQuestion.points} نقطة`}
-                modeLabel={progress.mode === 'REVIEW' ? 'وضع المراجعة' : 'وضع الحل'}
-                solutionViewed={Boolean(activeQuestionState?.solutionViewed)}
-                topics={getStudyQuestionTopics(activeQuestion).map((topic) => ({
-                  key: `${activeQuestion.id}-${topic.code}`,
-                  label: topic.name,
-                  isPrimary: topic.isPrimary,
-                }))}
-                keyboardHint={{
-                  keys: ['N', 'P'],
-                  label: 'التالي / السابق',
-                }}
-                actions={
-                  <>
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={() => goToAdjacentQuestion(-1)}
-                      disabled={currentQuestionPosition <= 1}
-                    >
-                      السابق
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={() => goToAdjacentQuestion(1)}
-                      disabled={currentQuestionPosition >= progressCounts.totalCount}
-                    >
-                      التالي
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-primary"
-                      onClick={() =>
-                        patchQuestionState(activeQuestion.id, (current) => ({
-                          ...(current ?? {}),
-                          opened: true,
-                          completed: !current?.completed,
-                        }))
-                      }
-                    >
-                      {activeQuestionState?.completed ? 'إلغاء الإنجاز' : 'تم'}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={() =>
-                        patchQuestionState(activeQuestion.id, (current) => ({
-                          ...(current ?? {}),
-                          opened: true,
-                          solutionViewed: true,
-                        }))
-                      }
-                      disabled={!canRevealSolution}
-                    >
-                      إظهار الحل
-                    </button>
-                    {isAdmin ? (
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        onClick={() =>
-                          setInlineEditTarget({
-                            kind: 'question',
-                            exerciseId: activeExercise.id,
-                            questionId: activeQuestion.id,
-                            title: activeQuestion.label,
-                          })
-                        }
-                      >
-                        تحرير السؤال
-                      </button>
-                    ) : null}
-                  </>
-                }
-              >
-                <StudyQuestionPromptContent question={activeQuestion} />
-              </StudyQuestionPanel>
-
-              {solutionVisible ? (
-                <StudyQuestionSolutionStack question={activeQuestion} />
-              ) : null}
-            </section>
-          </div>
+          <SujetViewerStandardLayout
+            exam={exam}
+            exercises={exercises}
+            activeExerciseIndex={activeExerciseIndex}
+            activeExercise={activeExercise}
+            activeQuestion={activeQuestion}
+            activeQuestionIndex={activeQuestionIndex}
+            activeQuestionStateDescriptor={activeQuestionStateDescriptor}
+            activeQuestionState={activeQuestionState}
+            solutionVisible={solutionVisible}
+            progressMode={progress.mode}
+            navigatorExercises={navigatorExercises}
+            exerciseAction={exerciseEditAction}
+            questionActions={questionActionButtons}
+            onSelectExercise={activateExercise}
+            onSelectQuestion={activateQuestion}
+          />
         </>
       ) : !error ? (
         <EmptyState

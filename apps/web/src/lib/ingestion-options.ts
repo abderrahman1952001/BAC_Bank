@@ -37,6 +37,8 @@ export const INGESTION_SUBJECT_OPTIONS = [
 
 export const INGESTION_STATUS_ORDER = [
   "draft",
+  "queued",
+  "processing",
   "in_review",
   "approved",
   "published",
@@ -48,6 +50,8 @@ export const INGESTION_STATUS_LABELS: Record<
   string
 > = {
   draft: "Draft",
+  queued: "Queued",
+  processing: "Processing",
   in_review: "In Review",
   approved: "Approved",
   published: "Published",

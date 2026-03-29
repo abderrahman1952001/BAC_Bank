@@ -1,6 +1,7 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
+import { resolveBooleanFlag } from '../runtime/runtime-config';
 
 @Injectable()
 export class PrismaService
@@ -13,8 +14,10 @@ export class PrismaService
     super({
       datasourceUrl: configService.get<string>('DATABASE_URL'),
     });
-    this.connectOnStartup =
-      configService.get<string>('PRISMA_CONNECT_ON_STARTUP', 'true') === 'true';
+    this.connectOnStartup = resolveBooleanFlag({
+      value: configService.get<string>('PRISMA_CONNECT_ON_STARTUP'),
+      fallback: true,
+    });
   }
 
   async onModuleInit(): Promise<void> {

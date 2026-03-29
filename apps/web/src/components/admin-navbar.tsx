@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { clearClientRole } from '@/lib/client-auth';
-import { ThemeToggle } from '@/components/theme-toggle';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useSignOut } from "@/components/use-sign-out";
 
 const navItems = [
   {
-    href: '/admin/ingestion',
-    label: 'Ingestion',
+    href: "/admin/ingestion",
+    label: "Ingestion",
   },
   {
-    href: '/admin/library',
-    label: 'Library',
+    href: "/admin/library",
+    label: "Library",
   },
 ];
 
@@ -22,6 +22,7 @@ function isActive(pathname: string, href: string) {
 
 export function AdminNavbar() {
   const pathname = usePathname();
+  const { isSigningOut, signOut } = useSignOut();
 
   return (
     <header className="admin-navbar">
@@ -35,7 +36,7 @@ export function AdminNavbar() {
           <Link
             key={item.href}
             href={item.href}
-            className={isActive(pathname, item.href) ? 'active' : ''}
+            className={isActive(pathname, item.href) ? "active" : ""}
           >
             {item.label}
           </Link>
@@ -47,15 +48,16 @@ export function AdminNavbar() {
         <Link href="/app" className="btn-secondary">
           Student App
         </Link>
-        <Link
-          href="/"
+        <button
+          type="button"
           className="btn-secondary"
           onClick={() => {
-            clearClientRole();
+            void signOut();
           }}
+          disabled={isSigningOut}
         >
-          Log out
-        </Link>
+          {isSigningOut ? "Signing out…" : "Log out"}
+        </button>
       </div>
     </header>
   );

@@ -1,35 +1,36 @@
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? '/api/v1';
+import { fetchApiJson } from "@/lib/api-client";
+
+export { API_BASE_URL } from "@/lib/api-client";
 export const ASSET_BASE_URL = process.env.NEXT_PUBLIC_ASSET_BASE_URL;
 
-export type SessionType = 'NORMAL' | 'MAKEUP';
-export type PracticeStudyMode = 'SOLVE' | 'REVIEW';
-export type PublicationStatus = 'DRAFT' | 'PUBLISHED';
-export type ExamVariantCode = 'SUJET_1' | 'SUJET_2';
+export type SessionType = "NORMAL" | "MAKEUP";
+export type PracticeStudyMode = "SOLVE" | "REVIEW";
+export type PublicationStatus = "DRAFT" | "PUBLISHED";
+export type ExamVariantCode = "SUJET_1" | "SUJET_2";
 export type ExamNodeType =
-  | 'EXERCISE'
-  | 'PART'
-  | 'QUESTION'
-  | 'SUBQUESTION'
-  | 'CONTEXT';
+  | "EXERCISE"
+  | "PART"
+  | "QUESTION"
+  | "SUBQUESTION"
+  | "CONTEXT";
 export type BlockRole =
-  | 'STEM'
-  | 'PROMPT'
-  | 'SOLUTION'
-  | 'HINT'
-  | 'RUBRIC'
-  | 'META';
+  | "STEM"
+  | "PROMPT"
+  | "SOLUTION"
+  | "HINT"
+  | "RUBRIC"
+  | "META";
 export type BlockType =
-  | 'PARAGRAPH'
-  | 'LATEX'
-  | 'IMAGE'
-  | 'CODE'
-  | 'HEADING'
-  | 'LIST'
-  | 'TABLE'
-  | 'GRAPH'
-  | 'TREE';
-export type MediaType = 'IMAGE' | 'FILE';
+  | "PARAGRAPH"
+  | "LATEX"
+  | "IMAGE"
+  | "CODE"
+  | "HEADING"
+  | "LIST"
+  | "TABLE"
+  | "GRAPH"
+  | "TREE";
+export type MediaType = "IMAGE" | "FILE";
 
 export type FiltersResponse = {
   streams: Array<{
@@ -82,6 +83,10 @@ export type FiltersResponse = {
   topics: Array<{
     code: string;
     name: string;
+    slug: string;
+    parentCode: string | null;
+    displayOrder: number;
+    isSelectable: boolean;
     subject: {
       code: string;
       name: string;
@@ -175,13 +180,14 @@ export type ExamResponse = {
 export type PracticeSessionResponse = {
   id: string;
   title: string | null;
-  status: 'CREATED' | 'IN_PROGRESS' | 'COMPLETED';
+  status: "CREATED" | "IN_PROGRESS" | "COMPLETED";
   requestedExerciseCount: number;
   exerciseCount: number;
   progress: PracticeSessionProgress | null;
   filters: {
     years?: number[];
     streamCode?: string | null;
+    streamCodes?: string[];
     subjectCode?: string | null;
     topicCodes?: string[];
     sessionTypes?: string[];
@@ -206,8 +212,6 @@ export type PracticeSessionResponse = {
         topics: Array<{
           code: string;
           name: string;
-          isPrimary: boolean;
-          weight: number;
         }>;
         promptBlocks: ExamHierarchyBlock[];
         solutionBlocks: ExamHierarchyBlock[];
@@ -217,7 +221,7 @@ export type PracticeSessionResponse = {
     };
     exam: {
       year: number;
-      sessionType: 'NORMAL' | 'MAKEUP';
+      sessionType: "NORMAL" | "MAKEUP";
       subject: {
         code: string;
         name: string;
@@ -249,8 +253,6 @@ export type ExamHierarchyNode = {
   topics: Array<{
     code: string;
     name: string;
-    isPrimary: boolean;
-    weight: number;
   }>;
   blocks: ExamHierarchyBlock[];
   children: ExamHierarchyNode[];
@@ -274,6 +276,7 @@ export type ExamHierarchyBlock = {
 export type SessionPreviewResponse = {
   subjectCode: string;
   streamCode: string | null;
+  streamCodes: string[];
   years: number[];
   topicCodes: string[];
   sessionTypes: SessionType[];
@@ -371,7 +374,7 @@ export type PracticeSessionProgress = {
 
 export type UpdateSessionProgressResponse = {
   id: string;
-  status: 'CREATED' | 'IN_PROGRESS' | 'COMPLETED';
+  status: "CREATED" | "IN_PROGRESS" | "COMPLETED";
   progress: PracticeSessionProgress | null;
   updatedAt: string;
 };
@@ -380,29 +383,18 @@ export type RecentPracticeSessionsResponse = {
   data: Array<{
     id: string;
     title: string | null;
-    status: 'CREATED' | 'IN_PROGRESS' | 'COMPLETED';
+    status: "CREATED" | "IN_PROGRESS" | "COMPLETED";
     requestedExerciseCount: number;
     exerciseCount: number;
     createdAt: string;
   }>;
 };
 
-export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, { ...init, cache: 'no-store' });
-
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as
-      | { message?: string | string[] }
-      | null;
-
-    const message = Array.isArray(payload?.message)
-      ? payload.message.join(' · ')
-      : payload?.message;
-
-    throw new Error(message || 'Failed request.');
-  }
-
-  return (await response.json()) as T;
+export async function fetchJson<T>(
+  url: string,
+  init?: RequestInit,
+): Promise<T> {
+  return fetchApiJson<T>(url, init);
 }
 
 export function toAssetUrl(fileUrl: string): string | null {
@@ -410,11 +402,11 @@ export function toAssetUrl(fileUrl: string): string | null {
     return null;
   }
 
-  if (fileUrl.startsWith('http://') || fileUrl.startsWith('https://')) {
+  if (fileUrl.startsWith("http://") || fileUrl.startsWith("https://")) {
     return fileUrl;
   }
 
-  if (fileUrl.startsWith('/')) {
+  if (fileUrl.startsWith("/")) {
     return fileUrl;
   }
 
@@ -422,9 +414,9 @@ export function toAssetUrl(fileUrl: string): string | null {
     return null;
   }
 
-  return `${ASSET_BASE_URL.replace(/\/$/, '')}/${fileUrl.replace(/^\//, '')}`;
+  return `${ASSET_BASE_URL.replace(/\/$/, "")}/${fileUrl.replace(/^\//, "")}`;
 }
 
 export function formatSessionType(type: SessionType): string {
-  return type === 'MAKEUP' ? 'استدراكية' : 'عادية';
+  return type === "MAKEUP" ? "استدراكية" : "عادية";
 }

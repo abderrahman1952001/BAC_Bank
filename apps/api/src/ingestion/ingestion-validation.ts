@@ -411,7 +411,8 @@ function validateAsset(
 function isPublishedRevisionDraft(draft: IngestionDraft) {
   return (
     draft.exam.provider === 'published_revision' ||
-    readMetadataString(draft.exam.metadata, 'editingMode') === 'published_revision'
+    readMetadataString(draft.exam.metadata, 'editingMode') ===
+      'published_revision'
   );
 }
 

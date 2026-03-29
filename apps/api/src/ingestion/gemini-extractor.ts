@@ -819,6 +819,7 @@ function buildDraftVariantFromGemini(
       orderIndex: exercise.orderIndex,
       label: exercise.title,
       maxPoints: exercise.maxPoints,
+      topicCodes: [],
       blocks: [
         ...toDraftTextBlocks(exercise.contextBlocks, 'PROMPT'),
         ...toDraftAssetBlocks(
@@ -840,6 +841,7 @@ function buildDraftVariantFromGemini(
         orderIndex: question.orderIndex,
         label: question.label ?? question.title,
         maxPoints: question.maxPoints,
+        topicCodes: [],
         blocks: [
           ...toDraftTextBlocks(question.promptBlocks, 'PROMPT'),
           ...toDraftAssetBlocks(

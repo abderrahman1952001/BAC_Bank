@@ -1,26 +1,34 @@
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 
-const features = [
+const highlights = [
   {
-    title: 'Structured by BAC reality',
-    description: 'شعبة، مادة، سنة، Sujet 1/Sujet 2 ثم التمارين والأسئلة.',
+    label: 'الفهرسة',
+    value: 'Sujet 1 · Sujet 2',
   },
   {
-    title: 'Premium exercise reading',
-    description: 'عرض أنيق للتمارين مع الصور والمرفقات والتنقل السريع بين الأسئلة.',
+    label: 'القارئ',
+    value: 'Exercise -> Question',
   },
   {
-    title: 'Smart study sessions',
-    description: 'ابن جلسات مراجعة حسب المادة والمحاور مع نتائج مطابقة مباشرة.',
+    label: 'الجلسات',
+    value: 'Builder سريع',
   },
 ];
 
-const flow = [
-  '1) اختر الشعبة',
-  '2) اختر المادة',
-  '3) اختر السنة ثم sujet',
-  '4) راجع التمارين والأسئلة بتجربة نظيفة',
+const surfaces = [
+  {
+    title: 'تصفح',
+    detail: 'شعبة، مادة، سنة',
+  },
+  {
+    title: 'جلسة',
+    detail: 'محاور، سنوات، حجم',
+  },
+  {
+    title: 'دراسة',
+    detail: 'تنقل هادئ وحفظ تلقائي',
+  },
 ];
 
 export function LandingPage() {
@@ -30,64 +38,64 @@ export function LandingPage() {
         <Link href="/" className="landing-brand">
           BAC Bank
         </Link>
-        <nav>
-          <a href="#features">Features</a>
-          <a href="#flow">Flow</a>
-          <a href="#start">Start</a>
-        </nav>
         <div className="landing-nav-actions">
           <ThemeToggle />
           <Link href="/auth" className="btn-secondary">
-            Login
+            دخول
+          </Link>
+          <Link href="/auth" className="btn-primary">
+            ابدأ
           </Link>
         </div>
       </header>
 
       <section className="landing-hero" id="start">
-        <p className="page-kicker">Algerian BAC QBank</p>
-        <h1>
-          جميع sujets البكالوريا الجزائرية
-          <br />
-          في تجربة مراجعة premium
-        </h1>
-        <p>
-          ليس PDF خام. كل sujet منظم بطريقة عملية: من الفهرسة إلى التمرين إلى
-          السؤال، مع واجهة نظيفة وسريعة.
-        </p>
-        <div className="landing-actions">
-          <Link href="/auth" className="btn-primary">
-            إنشاء حساب
-          </Link>
-          <Link href="/auth" className="btn-secondary">
-            تسجيل الدخول
-          </Link>
+        <div className="landing-hero-copy">
+          <p className="landing-eyebrow">Algerian BAC QBank</p>
+          <h1>بنك البكالوريا بواجهة هادئة وواضحة.</h1>
+          <p>اختيار سريع. قراءة نظيفة. دراسة بلا ضجيج.</p>
+          <div className="landing-actions">
+            <Link href="/auth" className="btn-primary">
+              إنشاء حساب
+            </Link>
+            <Link href="/auth" className="btn-secondary">
+              تسجيل الدخول
+            </Link>
+          </div>
         </div>
-      </section>
 
-      <section className="landing-feature-grid" id="features">
-        {features.map((feature) => (
-          <article key={feature.title} className="landing-feature-card">
-            <h2>{feature.title}</h2>
-            <p>{feature.description}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="landing-flow" id="flow">
-        <h2>How students navigate BAC Bank</h2>
-        <div className="flow-list">
-          {flow.map((step) => (
-            <p key={step}>{step}</p>
+        <div className="landing-hero-panel" aria-label="سطوح التطبيق">
+          {highlights.map((item) => (
+            <article key={item.label} className="landing-stat">
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </article>
           ))}
         </div>
       </section>
 
+      <section className="landing-utility-strip">
+        {surfaces.map((item) => (
+          <article key={item.title} className="landing-utility-item">
+            <span>{item.title}</span>
+            <strong>{item.detail}</strong>
+          </article>
+        ))}
+      </section>
+
       <section className="landing-cta">
-        <h2>جاهز تبدأ؟</h2>
-        <p>ادخل الآن وابدأ المراجعة بنفس جودة منصات QBank الاحترافية.</p>
-        <Link href="/auth" className="btn-primary">
-          Start now
-        </Link>
+        <div>
+          <h2>ادخل مباشرة إلى المذاكرة</h2>
+          <p>حساب واحد. موضوع أو جلسة. والباقي واضح.</p>
+        </div>
+        <div className="landing-actions">
+          <Link href="/auth" className="btn-primary">
+            دخول
+          </Link>
+          <Link href="/" className="btn-secondary">
+            الرئيسية
+          </Link>
+        </div>
       </section>
     </main>
   );

@@ -1,10 +1,16 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { StudySectionCard } from '@/components/study-content';
-import { StudyBadge, StudyKeyHint } from '@/components/study-shell';
+import { ReactNode } from "react";
+import { StudySectionCard } from "@/components/study-content";
+import { StudyBadge, StudyKeyHint } from "@/components/study-shell";
 
-type StudyQuestionTone = 'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'accent';
+type StudyQuestionTone =
+  | "neutral"
+  | "brand"
+  | "success"
+  | "warning"
+  | "danger"
+  | "accent";
 
 export function StudyQuestionPanel({
   title,
@@ -33,7 +39,6 @@ export function StudyQuestionPanel({
   topics?: Array<{
     key: string;
     label: string;
-    isPrimary?: boolean;
   }>;
   keyboardHint?: {
     keys: string[];
@@ -42,6 +47,9 @@ export function StudyQuestionPanel({
   actions?: ReactNode;
   children: ReactNode;
 }) {
+  const visibleTopics = topics?.slice(0, 4) ?? [];
+  const hiddenTopicsCount = Math.max(0, (topics?.length ?? 0) - visibleTopics.length);
+
   return (
     <StudySectionCard tone="prompt">
       <div className="study-question-panel">
@@ -59,8 +67,12 @@ export function StudyQuestionPanel({
           {isActive ? <StudyBadge tone="brand">قيد الدراسة</StudyBadge> : null}
           <StudyBadge tone={stateTone}>{stateLabel}</StudyBadge>
           <StudyBadge tone="neutral">{positionLabel}</StudyBadge>
-          {pointsLabel ? <StudyBadge tone="neutral">{pointsLabel}</StudyBadge> : null}
-          {modeLabel ? <StudyBadge tone="neutral">{modeLabel}</StudyBadge> : null}
+          {pointsLabel ? (
+            <StudyBadge tone="neutral">{pointsLabel}</StudyBadge>
+          ) : null}
+          {modeLabel ? (
+            <StudyBadge tone="neutral">{modeLabel}</StudyBadge>
+          ) : null}
           {solutionViewed ? (
             <StudyBadge tone="accent">تم كشف الحل</StudyBadge>
           ) : null}
@@ -68,18 +80,20 @@ export function StudyQuestionPanel({
 
         <div className="study-question-body">{children}</div>
 
-        {topics?.length ? (
+        {visibleTopics.length ? (
           <div className="topic-chip-row">
-            {topics.map((topic) => (
-              <span key={topic.key}>
-                {topic.label}
-                {topic.isPrimary ? ' · رئيسي' : ''}
-              </span>
+            {visibleTopics.map((topic) => (
+              <span key={topic.key}>{topic.label}</span>
             ))}
+            {hiddenTopicsCount ? <span>+{hiddenTopicsCount}</span> : null}
           </div>
         ) : null}
 
-        {actions ? <div className="study-action-row study-action-row-tight">{actions}</div> : null}
+        {actions ? (
+          <div className="study-action-row study-action-row-tight">
+            {actions}
+          </div>
+        ) : null}
       </div>
     </StudySectionCard>
   );

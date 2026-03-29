@@ -1,27 +1,21 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { execFile } from 'child_process';
 import {
   BlockRole,
   BlockType as PrismaBlockType,
   ExamNodeType,
   ExamVariantCode,
   IngestionJobStatus,
-  MediaType,
   Prisma,
   PublicationStatus,
   SessionType,
   SourceDocumentKind,
 } from '@prisma/client';
-import { createHash, randomUUID } from 'crypto';
-import { promises as fs } from 'fs';
-import os from 'os';
-import path from 'path';
-import { promisify } from 'util';
-import sharp from 'sharp';
+import { randomUUID } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   DraftAsset,
@@ -34,6 +28,8 @@ import {
   createEmptyDraft,
   normalizeIngestionDraft,
 } from './ingestion.contract';
+import { collectDraftTopicCodes } from './ingestion-draft-graph';
+import { cropAssetBuffer, cropBufferWithBox } from './ingestion-image-crop';
 import {
   extractDraftWithGemini,
   hasGeminiApiKeyConfigured,
@@ -43,17 +39,26 @@ import {
   readDefaultGeminiTemperature,
   recoverBlockSuggestionFromGemini,
 } from './gemini-extractor';
-import { validateIngestionDraft } from './ingestion-validation';
-import { mapWithConcurrency } from './intake-runtime';
-import { R2StorageClient, readR2ConfigFromEnv } from './r2-storage';
 import {
-  CanonicalStorageContext,
-  buildCanonicalDocumentFileName,
-  buildCanonicalDocumentStorageKey,
-  buildCanonicalPageStorageKey,
-} from './storage-naming';
-
-const execFileAsync = promisify(execFile);
+  buildIngestionProcessRequest,
+  IngestionProcessRequest,
+  readIngestionProcessRequest,
+  withIngestionProcessRequestMetadata,
+  withoutIngestionProcessRequestMetadata,
+} from './ingestion-process-request';
+import {
+  IngestionSourceDocumentService,
+  type IntakeUploadDocumentInput,
+} from './ingestion-source-document.service';
+import {
+  buildPublishedMediaCreateData,
+  IngestionPublishedAssetsService,
+} from './ingestion-published-assets.service';
+import { IngestionPublishedVariantService } from './ingestion-published-variant.service';
+import { IngestionStoredPageService } from './ingestion-stored-page.service';
+import { validateIngestionDraft } from './ingestion-validation';
+import { R2StorageClient, readR2ConfigFromEnv } from './r2-storage';
+import { CanonicalStorageContext } from './storage-naming';
 const DEFAULT_RASTER_DPI = readPositiveIntegerEnv(
   process.env.INGESTION_RASTER_DPI,
   220,
@@ -63,20 +68,21 @@ const DEFAULT_PAGE_CONCURRENCY = readPositiveIntegerEnv(
   process.env.INGESTION_PAGE_CONCURRENCY,
   4,
 );
+const DEFAULT_PROCESSING_LEASE_MS = readPositiveIntegerEnv(
+  process.env.INGESTION_PROCESSING_LEASE_MS,
+  30 * 60 * 1000,
+  60 * 1000,
+);
 const PUBLISHED_REVISION_PROVIDER = 'published_revision';
 
 type AdminIngestionStatus =
   | 'draft'
+  | 'queued'
+  | 'processing'
   | 'in_review'
   | 'approved'
   | 'published'
   | 'failed';
-
-type IntakeUploadDocumentInput = {
-  buffer: Buffer;
-  mimeType: string;
-  originalFileName: string;
-};
 
 type FullIngestionJobRecord = Prisma.IngestionJobGetPayload<{
   include: {
@@ -95,22 +101,18 @@ type FullIngestionJobRecord = Prisma.IngestionJobGetPayload<{
   };
 }>;
 
-type PreparedPublishedAsset = {
-  assetId: string;
-  mediaId: string;
-  storageKey: string;
-  width: number | null;
-  height: number | null;
-  classification: DraftAsset['classification'];
-  sourcePageId: string;
-  cropBox: DraftAsset['cropBox'];
-};
-
 @Injectable()
 export class IngestionService {
+  private readonly logger = new Logger(IngestionService.name);
   private storageClient: R2StorageClient | null = null;
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly publishedAssetsService: IngestionPublishedAssetsService,
+    private readonly publishedVariantService: IngestionPublishedVariantService,
+    private readonly storedPageService: IngestionStoredPageService,
+    private readonly sourceDocumentService: IngestionSourceDocumentService,
+  ) {}
 
   async listJobs() {
     const jobs = await this.prisma.ingestionJob.findMany({
@@ -232,10 +234,16 @@ export class IngestionService {
       qualifierKey,
     };
 
-    this.assertPdfUpload(input.examDocument, 'examDocument');
+    this.sourceDocumentService.assertPdfUpload(
+      input.examDocument,
+      'examDocument',
+    );
 
     if (input.correctionDocument) {
-      this.assertPdfUpload(input.correctionDocument, 'correctionDocument');
+      this.sourceDocumentService.assertPdfUpload(
+        input.correctionDocument,
+        'correctionDocument',
+      );
     }
 
     const draft = createEmptyDraft({
@@ -295,13 +303,15 @@ export class IngestionService {
     });
 
     try {
-      const examDocument = await this.storeManualSourceDocument({
-        jobId: job.id,
-        kind: SourceDocumentKind.EXAM,
-        upload: input.examDocument,
-        context,
-        sourceReference,
-      });
+      const examDocument =
+        await this.sourceDocumentService.storeManualSourceDocument({
+          jobId: job.id,
+          kind: SourceDocumentKind.EXAM,
+          upload: input.examDocument,
+          context,
+          sourceReference,
+          storageClient: this.getStorageClient(),
+        });
       draft.exam.examDocumentId = examDocument.id;
       draft.exam.examDocumentStorageKey = examDocument.storageKey;
 
@@ -309,13 +319,15 @@ export class IngestionService {
       let correctionDocumentStorageKey: string | null = null;
 
       if (input.correctionDocument) {
-        const correctionDocument = await this.storeManualSourceDocument({
-          jobId: job.id,
-          kind: SourceDocumentKind.CORRECTION,
-          upload: input.correctionDocument,
-          context,
-          sourceReference,
-        });
+        const correctionDocument =
+          await this.sourceDocumentService.storeManualSourceDocument({
+            jobId: job.id,
+            kind: SourceDocumentKind.CORRECTION,
+            upload: input.correctionDocument,
+            context,
+            sourceReference,
+            storageClient: this.getStorageClient(),
+          });
         correctionDocumentId = correctionDocument.id;
         correctionDocumentStorageKey = correctionDocument.storageKey;
       }
@@ -430,6 +442,15 @@ export class IngestionService {
                     orderIndex: true,
                     label: true,
                     maxPoints: true,
+                    topicMappings: {
+                      select: {
+                        topic: {
+                          select: {
+                            code: true,
+                          },
+                        },
+                      },
+                    },
                     blocks: {
                       orderBy: [
                         {
@@ -472,6 +493,8 @@ export class IngestionService {
         status: {
           in: [
             IngestionJobStatus.DRAFT,
+            IngestionJobStatus.QUEUED,
+            IngestionJobStatus.PROCESSING,
             IngestionJobStatus.IN_REVIEW,
             IngestionJobStatus.APPROVED,
           ],
@@ -613,15 +636,20 @@ export class IngestionService {
     }
 
     if (
+      job.status === IngestionJobStatus.QUEUED ||
+      job.status === IngestionJobStatus.PROCESSING ||
       job.status === IngestionJobStatus.IN_REVIEW ||
       job.status === IngestionJobStatus.APPROVED
     ) {
       throw new BadRequestException(
-        'Add or replace the correction PDF before review starts. Reprocessing reviewed jobs is intentionally blocked unless you force it explicitly.',
+        'Add or replace the correction PDF before processing or review starts. Reprocessing reviewed jobs is intentionally blocked unless you force it explicitly.',
       );
     }
 
-    this.assertPdfUpload(input.correctionDocument, 'correctionDocument');
+    this.sourceDocumentService.assertPdfUpload(
+      input.correctionDocument,
+      'correctionDocument',
+    );
 
     const draft = this.hydrateDraft(job);
     const context = this.buildStorageContextFromDraft(draft);
@@ -635,18 +663,20 @@ export class IngestionService {
       ) ?? null;
 
     const correctionDocument = existingCorrection
-      ? await this.replaceManualSourceDocument({
+      ? await this.sourceDocumentService.replaceManualSourceDocument({
           sourceDocument: existingCorrection,
           upload: input.correctionDocument,
           context,
           sourceReference,
+          storageClient: this.getStorageClient(),
         })
-      : await this.storeManualSourceDocument({
+      : await this.sourceDocumentService.storeManualSourceDocument({
           jobId: job.id,
           kind: SourceDocumentKind.CORRECTION,
           upload: input.correctionDocument,
           context,
           sourceReference,
+          storageClient: this.getStorageClient(),
         });
 
     draft.exam.correctionDocumentId = correctionDocument.id;
@@ -689,9 +719,98 @@ export class IngestionService {
       );
     }
 
-    const replaceExisting = this.readBooleanFlag(payload.replace_existing);
-    const skipExtraction = this.readBooleanFlag(payload.skip_extraction);
-    const forceReprocess = this.readBooleanFlag(payload.force_reprocess);
+    if (job.status === IngestionJobStatus.QUEUED) {
+      throw new BadRequestException(
+        'This ingestion job is already queued for processing.',
+      );
+    }
+
+    if (job.status === IngestionJobStatus.PROCESSING) {
+      throw new BadRequestException(
+        'This ingestion job is already being processed by a worker.',
+      );
+    }
+
+    const processRequest = buildIngestionProcessRequest({
+      forceReprocess: this.readBooleanFlag(payload.force_reprocess),
+      replaceExisting: this.readBooleanFlag(payload.replace_existing),
+      skipExtraction: this.readBooleanFlag(payload.skip_extraction),
+      jobStatus: job.status,
+      isPublishedRevision: this.isPublishedRevisionProvider(job.provider),
+    });
+    const queuedAt = new Date(processRequest.queuedAt);
+    const saved = await this.prisma.ingestionJob.update({
+      where: {
+        id: jobId,
+      },
+      data: {
+        status: IngestionJobStatus.QUEUED,
+        errorMessage: null,
+        processingRequestedAt: queuedAt,
+        processingStartedAt: null,
+        processingFinishedAt: null,
+        processingLeaseExpiresAt: null,
+        processingWorkerId: null,
+        metadata: this.toJsonValue(
+          withIngestionProcessRequestMetadata(job.metadata, processRequest),
+        ),
+      },
+      include: {
+        sourceDocuments: {
+          include: {
+            pages: {
+              orderBy: {
+                pageNumber: 'asc',
+              },
+            },
+          },
+          orderBy: {
+            kind: 'asc',
+          },
+        },
+      },
+    });
+
+    return this.mapJobDetail(saved, this.hydrateDraft(saved));
+  }
+
+  async runNextQueuedJob(workerId: string) {
+    const claimedJob = await this.claimNextQueuedJob(workerId);
+
+    if (!claimedJob) {
+      return null;
+    }
+
+    const stopLeaseRefresh = this.startProcessingLeaseHeartbeat(
+      claimedJob.id,
+      workerId,
+    );
+
+    try {
+      await this.processQueuedJob(
+        claimedJob.id,
+        readIngestionProcessRequest(claimedJob.metadata),
+      );
+      return claimedJob.id;
+    } finally {
+      stopLeaseRefresh();
+    }
+  }
+
+  private async processQueuedJob(
+    jobId: string,
+    processRequest: IngestionProcessRequest,
+  ) {
+    const job = await this.findJobOrThrow(jobId);
+
+    if (job.status === IngestionJobStatus.PUBLISHED) {
+      throw new BadRequestException(
+        'Published ingestion jobs cannot be reprocessed from admin.',
+      );
+    }
+
+    const replaceExisting = processRequest.replaceExisting;
+    const skipExtraction = processRequest.skipExtraction;
     let draft = this.hydrateDraft(job);
 
     try {
@@ -716,26 +835,22 @@ export class IngestionService {
         );
       }
 
-      if (
-        !forceReprocess &&
-        (job.status === IngestionJobStatus.IN_REVIEW ||
-          job.status === IngestionJobStatus.APPROVED)
-      ) {
-        throw new BadRequestException(
-          'This job already entered review. Reprocessing can replace reviewed draft edits. Retry with force_reprocess if you really want to rerun extraction.',
-        );
-      }
-
-      await this.ensureStoredPagesForDocument({
+      await this.storedPageService.ensureStoredPagesForDocument({
         sourceDocument: examDocument,
         year: draft.exam.year,
         replaceExisting,
+        storageClient: this.getStorageClient(),
+        rasterDpi: DEFAULT_RASTER_DPI,
+        pageConcurrency: DEFAULT_PAGE_CONCURRENCY,
       });
 
-      await this.ensureStoredPagesForDocument({
+      await this.storedPageService.ensureStoredPagesForDocument({
         sourceDocument: correctionDocument,
         year: draft.exam.year,
         replaceExisting,
+        storageClient: this.getStorageClient(),
+        rasterDpi: DEFAULT_RASTER_DPI,
+        pageConcurrency: DEFAULT_PAGE_CONCURRENCY,
       });
 
       const refreshedJob = await this.findJobOrThrow(jobId);
@@ -773,16 +888,18 @@ export class IngestionService {
           temperature: readDefaultGeminiTemperature(),
           examDocument: {
             fileName: examDocumentForExtraction.fileName,
-            buffer: await this.readSourceDocumentBuffer(
+            buffer: await this.storedPageService.readSourceDocumentBuffer(
               examDocumentForExtraction,
+              this.getStorageClient(),
             ),
           },
           correctionDocument:
             correctionDocumentForExtraction !== null
               ? {
                   fileName: correctionDocumentForExtraction.fileName,
-                  buffer: await this.readSourceDocumentBuffer(
+                  buffer: await this.storedPageService.readSourceDocumentBuffer(
                     correctionDocumentForExtraction,
+                    this.getStorageClient(),
                   ),
                 }
               : null,
@@ -807,7 +924,13 @@ export class IngestionService {
           status: IngestionJobStatus.IN_REVIEW,
           reviewedAt: null,
           errorMessage: null,
+          processingFinishedAt: new Date(),
+          processingLeaseExpiresAt: null,
+          processingWorkerId: null,
           draftJson: this.toJsonValue(draft),
+          metadata: this.toJsonValue(
+            withoutIngestionProcessRequestMetadata(refreshedJob.metadata),
+          ),
         },
         include: {
           sourceDocuments: {
@@ -834,11 +957,120 @@ export class IngestionService {
         data: {
           status: IngestionJobStatus.FAILED,
           errorMessage: error instanceof Error ? error.message : String(error),
+          processingFinishedAt: new Date(),
+          processingLeaseExpiresAt: null,
+          processingWorkerId: null,
+          metadata: this.toJsonValue(
+            withoutIngestionProcessRequestMetadata(job.metadata),
+          ),
         },
       });
 
       throw error;
     }
+  }
+
+  private async claimNextQueuedJob(workerId: string) {
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      const now = new Date();
+      const candidate = await this.prisma.ingestionJob.findFirst({
+        where: {
+          OR: [
+            {
+              status: IngestionJobStatus.QUEUED,
+            },
+            {
+              status: IngestionJobStatus.PROCESSING,
+              processingLeaseExpiresAt: {
+                lt: now,
+              },
+            },
+          ],
+        },
+        orderBy: [
+          {
+            processingRequestedAt: 'asc',
+          },
+          {
+            createdAt: 'asc',
+          },
+        ],
+        select: {
+          id: true,
+          metadata: true,
+          processingAttemptCount: true,
+          processingLeaseExpiresAt: true,
+          status: true,
+        },
+      });
+
+      if (!candidate) {
+        return null;
+      }
+
+      const nextLeaseExpiresAt = new Date(
+        Date.now() + DEFAULT_PROCESSING_LEASE_MS,
+      );
+      const claimResult = await this.prisma.ingestionJob.updateMany({
+        where: {
+          id: candidate.id,
+          status: candidate.status,
+          ...(candidate.status === IngestionJobStatus.PROCESSING
+            ? {
+                processingLeaseExpiresAt: candidate.processingLeaseExpiresAt,
+              }
+            : {}),
+        },
+        data: {
+          status: IngestionJobStatus.PROCESSING,
+          errorMessage: null,
+          processingStartedAt: new Date(),
+          processingLeaseExpiresAt: nextLeaseExpiresAt,
+          processingWorkerId: workerId,
+          processingAttemptCount: candidate.processingAttemptCount + 1,
+        },
+      });
+
+      if (claimResult.count === 1) {
+        return {
+          id: candidate.id,
+          metadata: candidate.metadata,
+        };
+      }
+    }
+
+    return null;
+  }
+
+  private startProcessingLeaseHeartbeat(jobId: string, workerId: string) {
+    const refreshIntervalMs = Math.max(
+      30_000,
+      Math.floor(DEFAULT_PROCESSING_LEASE_MS / 3),
+    );
+    const timer = setInterval(() => {
+      void this.prisma.ingestionJob
+        .updateMany({
+          where: {
+            id: jobId,
+            status: IngestionJobStatus.PROCESSING,
+            processingWorkerId: workerId,
+          },
+          data: {
+            processingLeaseExpiresAt: new Date(
+              Date.now() + DEFAULT_PROCESSING_LEASE_MS,
+            ),
+          },
+        })
+        .catch((error) => {
+          this.logger.warn(
+            `Failed to refresh ingestion lease for ${jobId}: ${error instanceof Error ? error.message : String(error)}`,
+          );
+        });
+    }, refreshIntervalMs);
+
+    return () => {
+      clearInterval(timer);
+    };
   }
 
   async getJob(jobId: string) {
@@ -918,6 +1150,15 @@ export class IngestionService {
       throw new NotFoundException(`Ingestion job ${jobId} not found.`);
     }
 
+    if (
+      job.status === IngestionJobStatus.QUEUED ||
+      job.status === IngestionJobStatus.PROCESSING
+    ) {
+      throw new BadRequestException(
+        'Queued or active ingestion jobs cannot be edited until processing finishes.',
+      );
+    }
+
     const currentDraft = this.hydrateDraft(job);
     let draft = currentDraft;
     const reviewNotes = Object.prototype.hasOwnProperty.call(
@@ -992,6 +1233,15 @@ export class IngestionService {
 
   async approveJob(jobId: string) {
     const job = await this.findJobOrThrow(jobId);
+
+    if (
+      job.status === IngestionJobStatus.QUEUED ||
+      job.status === IngestionJobStatus.PROCESSING
+    ) {
+      throw new BadRequestException(
+        'Wait until processing finishes before approving this ingestion job.',
+      );
+    }
 
     const draft = this.hydrateDraft(job);
     const validation = validateIngestionDraft(draft);
@@ -1166,11 +1416,13 @@ export class IngestionService {
     }
 
     const paperId = existingPaper ?? randomUUID();
-    const preparedAssets = await this.preparePublishedAssets(
-      job.id,
-      draft,
-      paperId,
-    );
+    const preparedAssets =
+      await this.publishedAssetsService.preparePublishedAssets({
+        jobId: job.id,
+        draft,
+        paperId,
+        storageClient: this.getStorageClient(),
+      });
 
     let examIdResult: string;
     let paperIdResult: string;
@@ -1382,53 +1634,33 @@ export class IngestionService {
         }
 
         const assetMediaIds = new Map<string, string>();
+        const topicIdsByCode =
+          await this.publishedVariantService.buildSubjectTopicIdMap(
+            tx,
+            subject.id,
+            collectDraftTopicCodes(draft),
+            draft.exam.subjectCode,
+          );
 
         for (const preparedAsset of preparedAssets) {
           await tx.media.create({
-            data: {
-              id: preparedAsset.mediaId,
-              url: `${this.getApiBaseUrl()}/api/v1/ingestion/media/${preparedAsset.mediaId}`,
-              type: MediaType.IMAGE,
-              metadata: this.toJsonValue({
-                storageKey: preparedAsset.storageKey,
-                mimeType: 'image/png',
-                width: preparedAsset.width,
-                height: preparedAsset.height,
-                classification: preparedAsset.classification,
-                sourcePageId: preparedAsset.sourcePageId,
-                cropBox: preparedAsset.cropBox,
-              }),
-            },
+            data: buildPublishedMediaCreateData(
+              preparedAsset,
+              this.getApiBaseUrl(),
+            ),
           });
 
           assetMediaIds.set(preparedAsset.assetId, preparedAsset.mediaId);
         }
 
-        for (const variant of draft.variants) {
-          const variantId = randomUUID();
-
-          await tx.examVariant.create({
-            data: {
-              id: variantId,
-              paperId,
-              code: this.toPrismaVariantCode(variant.code),
-              title: variant.title,
-              status: PublicationStatus.PUBLISHED,
-              metadata: this.toJsonValue({
-                importedFromJobId: job.id,
-              }),
-            },
-          });
-
-          const nodesByParent = this.groupNodesByParent(variant.nodes);
-          await this.createVariantNodes(
-            tx,
-            variantId,
-            null,
-            nodesByParent,
-            assetMediaIds,
-          );
-        }
+        await this.publishedVariantService.createPublishedVariants({
+          tx,
+          jobId: job.id,
+          paperId,
+          draft,
+          topicIdsByCode,
+          assetMediaIds,
+        });
 
         const publishedExamIds = Array.from(
           publishedExamIdsByStreamCode.values(),
@@ -1467,10 +1699,9 @@ export class IngestionService {
       paperIdResult = publishResult.paperId;
       publishedExamIdsResult = publishResult.publishedExamIds;
     } catch (error) {
-      await Promise.allSettled(
-        preparedAssets.map((asset) =>
-          this.getStorageClient().deleteObject(asset.storageKey),
-        ),
+      await this.publishedAssetsService.cleanupPreparedAssets(
+        preparedAssets,
+        this.getStorageClient(),
       );
       throw error;
     }
@@ -1606,7 +1837,7 @@ export class IngestionService {
     const pageBuffer = await this.getStorageClient().getObjectBuffer(
       page.storageKey,
     );
-    const cropped = await this.cropAssetBuffer(pageBuffer, asset);
+    const cropped = await cropAssetBuffer(pageBuffer, asset);
 
     return {
       mimeType: 'image/png',
@@ -1704,267 +1935,6 @@ export class IngestionService {
     };
   }
 
-  private async preparePublishedAssets(
-    jobId: string,
-    draft: IngestionDraft,
-    examId: string,
-  ) {
-    const preparedAssets: PreparedPublishedAsset[] = [];
-    const uploadedKeys: string[] = [];
-
-    try {
-      for (const assetId of this.collectReferencedAssetIds(draft)) {
-        const asset = draft.assets.find((entry) => entry.id === assetId);
-
-        if (!asset) {
-          throw new BadRequestException(
-            `Block references missing asset ${assetId}.`,
-          );
-        }
-
-        const page = await this.prisma.sourcePage.findUnique({
-          where: {
-            id: asset.sourcePageId,
-          },
-          include: {
-            document: {
-              select: {
-                jobId: true,
-              },
-            },
-          },
-        });
-
-        if (!page || page.document.jobId !== jobId) {
-          throw new BadRequestException(
-            `Asset ${asset.id} references an unknown source page.`,
-          );
-        }
-
-        const pageBuffer = await this.getStorageClient().getObjectBuffer(
-          page.storageKey,
-        );
-        const cropped = await this.cropAssetBuffer(pageBuffer, asset);
-        const mediaId = randomUUID();
-        const storageKey = [
-          'published',
-          'assets',
-          `${draft.exam.year}`,
-          examId,
-          `${mediaId}.png`,
-        ].join('/');
-
-        await this.getStorageClient().putObject({
-          key: storageKey,
-          body: cropped,
-          contentType: 'image/png',
-          metadata: {
-            sourcePageId: asset.sourcePageId,
-            classification: asset.classification,
-            documentKind: asset.documentKind,
-          },
-        });
-        uploadedKeys.push(storageKey);
-
-        const imageInfo = await sharp(cropped).metadata();
-
-        preparedAssets.push({
-          assetId: asset.id,
-          mediaId,
-          storageKey,
-          width: imageInfo.width ?? null,
-          height: imageInfo.height ?? null,
-          classification: asset.classification,
-          sourcePageId: asset.sourcePageId,
-          cropBox: asset.cropBox,
-        });
-      }
-
-      return preparedAssets;
-    } catch (error) {
-      await Promise.allSettled(
-        uploadedKeys.map((storageKey) =>
-          this.getStorageClient().deleteObject(storageKey),
-        ),
-      );
-      throw error;
-    }
-  }
-
-  private collectReferencedAssetIds(draft: IngestionDraft) {
-    const assetIds = new Set<string>();
-
-    for (const variant of draft.variants) {
-      for (const node of variant.nodes) {
-        for (const block of node.blocks) {
-          if (block.assetId) {
-            assetIds.add(block.assetId);
-          }
-        }
-      }
-    }
-
-    return assetIds;
-  }
-
-  private groupNodesByParent(nodes: DraftNode[]) {
-    const map = new Map<string | null, DraftNode[]>();
-
-    for (const node of nodes) {
-      const bucket = map.get(node.parentId) ?? [];
-      bucket.push(node);
-      map.set(node.parentId, bucket);
-    }
-
-    for (const bucket of map.values()) {
-      bucket.sort((left, right) => left.orderIndex - right.orderIndex);
-    }
-
-    return map;
-  }
-
-  private async createVariantNodes(
-    tx: Prisma.TransactionClient,
-    variantId: string,
-    parentDraftNodeId: string | null,
-    nodesByParent: Map<string | null, DraftNode[]>,
-    assetMediaIds: Map<string, string>,
-    parentId: string | null = null,
-  ) {
-    const nodes = nodesByParent.get(parentDraftNodeId) ?? [];
-
-    for (const node of nodes) {
-      const nodeId = randomUUID();
-
-      await tx.examNode.create({
-        data: {
-          id: nodeId,
-          variantId,
-          parentId,
-          nodeType: this.toPrismaNodeType(node.nodeType),
-          orderIndex: node.orderIndex,
-          label: node.label,
-          maxPoints: node.maxPoints,
-          status: PublicationStatus.PUBLISHED,
-          metadata: this.toJsonValue({
-            importedFromDraftNodeId: node.id,
-          }),
-        },
-      });
-
-      await this.createNodeBlocks(tx, nodeId, node.blocks, assetMediaIds);
-      await this.createVariantNodes(
-        tx,
-        variantId,
-        node.id,
-        nodesByParent,
-        assetMediaIds,
-        nodeId,
-      );
-    }
-  }
-
-  private async createNodeBlocks(
-    tx: Prisma.TransactionClient,
-    nodeId: string,
-    blocks: DraftBlock[],
-    assetMediaIds: Map<string, string>,
-  ) {
-    for (let index = 0; index < blocks.length; index += 1) {
-      const block = blocks[index];
-      const mediaId =
-        block.assetId !== undefined && block.assetId !== null
-          ? (assetMediaIds.get(block.assetId) ?? null)
-          : null;
-
-      await tx.examNodeBlock.create({
-        data: {
-          nodeId,
-          role: this.toPrismaBlockRole(block.role),
-          orderIndex: index + 1,
-          blockType: this.toPrismaBlockType(block),
-          textValue:
-            mediaId &&
-            block.type !== 'table' &&
-            block.type !== 'list' &&
-            !this.hasStructuredRenderData(block)
-              ? null
-              : block.value,
-          mediaId,
-          data: this.toJsonValue({
-            ...(this.asDraftBlockData(block) ?? {}),
-            ...(this.inferStructuredKind(block) &&
-            this.readJsonString(block.data ?? null, 'kind') === null
-              ? {
-                  kind: this.inferStructuredKind(block),
-                }
-              : {}),
-            ...(block.meta?.level !== undefined
-              ? {
-                  level: block.meta.level,
-                }
-              : {}),
-            ...(block.meta?.language
-              ? {
-                  language: block.meta.language,
-                }
-              : {}),
-            ...(block.assetId
-              ? {
-                  assetId: block.assetId,
-                }
-              : {}),
-            ...(mediaId
-              ? {
-                  kind: this.inferStructuredKind(block) ?? 'reviewed_asset',
-                }
-              : {}),
-          }),
-        },
-      });
-    }
-  }
-
-  private async cropAssetBuffer(pageBuffer: Buffer, asset: DraftAsset) {
-    return this.cropBufferWithBox(pageBuffer, asset.cropBox);
-  }
-
-  private async cropBufferWithBox(
-    pageBuffer: Buffer,
-    cropBox: DraftAsset['cropBox'],
-  ) {
-    const pageMetadata = await sharp(pageBuffer).metadata();
-    const width = pageMetadata.width ?? 0;
-    const height = pageMetadata.height ?? 0;
-
-    if (!width || !height) {
-      throw new BadRequestException(
-        'Source page image dimensions are missing.',
-      );
-    }
-
-    const left = Math.max(0, Math.floor(cropBox.x));
-    const top = Math.max(0, Math.floor(cropBox.y));
-    const cropWidth = Math.max(
-      1,
-      Math.min(width - left, Math.floor(cropBox.width)),
-    );
-    const cropHeight = Math.max(
-      1,
-      Math.min(height - top, Math.floor(cropBox.height)),
-    );
-
-    return sharp(pageBuffer)
-      .extract({
-        left,
-        top,
-        width: cropWidth,
-        height: cropHeight,
-      })
-      .png()
-      .toBuffer();
-  }
-
   private async recoverSuggestionFromCrop(input: {
     pageStorageKey: string;
     cropBox: DraftAsset['cropBox'];
@@ -1977,7 +1947,7 @@ export class IngestionService {
     const pageBuffer = await this.getStorageClient().getObjectBuffer(
       input.pageStorageKey,
     );
-    const cropped = await this.cropBufferWithBox(pageBuffer, input.cropBox);
+    const cropped = await cropBufferWithBox(pageBuffer, input.cropBox);
 
     return recoverBlockSuggestionFromGemini({
       label: input.label,
@@ -2042,207 +2012,6 @@ export class IngestionService {
     }
 
     return job;
-  }
-
-  private async ensureStoredPagesForDocument(input: {
-    sourceDocument: FullIngestionJobRecord['sourceDocuments'][number];
-    year: number;
-    replaceExisting: boolean;
-  }) {
-    if (
-      !input.replaceExisting &&
-      input.sourceDocument.pageCount !== null &&
-      input.sourceDocument.pages.length === input.sourceDocument.pageCount
-    ) {
-      return {
-        pageCount: input.sourceDocument.pageCount,
-      };
-    }
-
-    const pdfBuffer = await this.readSourceDocumentBuffer(input.sourceDocument);
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'bac-ingestion-'));
-    const pdfPath = path.join(tempDir, input.sourceDocument.fileName);
-
-    try {
-      await fs.writeFile(pdfPath, pdfBuffer);
-      const rasterizedPages = await this.rasterizePdf(
-        pdfPath,
-        tempDir,
-        DEFAULT_RASTER_DPI,
-      );
-      const existingPageMap = new Map(
-        input.sourceDocument.pages.map((page) => [page.pageNumber, page]),
-      );
-
-      if (input.replaceExisting) {
-        const nextPageNumbers = new Set(
-          rasterizedPages.map((page) => page.pageNumber),
-        );
-        const stalePageIds = input.sourceDocument.pages
-          .filter((page) => !nextPageNumbers.has(page.pageNumber))
-          .map((page) => page.id);
-
-        if (stalePageIds.length > 0) {
-          await this.prisma.sourcePage.deleteMany({
-            where: {
-              id: {
-                in: stalePageIds,
-              },
-            },
-          });
-        }
-      }
-
-      await this.prisma.sourceDocument.update({
-        where: {
-          id: input.sourceDocument.id,
-        },
-        data: {
-          pageCount: rasterizedPages.length,
-          metadata: this.toJsonValue({
-            ...(this.asJsonRecord(input.sourceDocument.metadata) ?? {}),
-            rasterDpi: DEFAULT_RASTER_DPI,
-            processedAt: new Date().toISOString(),
-          }),
-        },
-      });
-
-      await mapWithConcurrency(
-        rasterizedPages,
-        DEFAULT_PAGE_CONCURRENCY,
-        async (page) => {
-          const storageKey = buildCanonicalPageStorageKey(
-            {
-              year: input.year,
-            },
-            input.sourceDocument.fileName,
-            page.pageNumber,
-          );
-          const existingPage = existingPageMap.get(page.pageNumber) ?? null;
-          const pageBuffer = await fs.readFile(page.filePath);
-          const sha256 = createHash('sha256').update(pageBuffer).digest('hex');
-
-          if (
-            !existingPage ||
-            input.replaceExisting ||
-            existingPage.storageKey !== storageKey
-          ) {
-            await this.getStorageClient().putObject({
-              key: storageKey,
-              body: pageBuffer,
-              contentType: 'image/png',
-            });
-          }
-
-          const metadata = this.asJsonRecord(existingPage?.metadata ?? null);
-
-          if (existingPage) {
-            await this.prisma.sourcePage.update({
-              where: {
-                id: existingPage.id,
-              },
-              data: {
-                storageKey,
-                width: page.width,
-                height: page.height,
-                sha256,
-                metadata: this.toJsonValue({
-                  ...(metadata ?? {}),
-                  rasterDpi: DEFAULT_RASTER_DPI,
-                }),
-              },
-            });
-            return;
-          }
-
-          await this.prisma.sourcePage.create({
-            data: {
-              documentId: input.sourceDocument.id,
-              pageNumber: page.pageNumber,
-              storageKey,
-              width: page.width,
-              height: page.height,
-              sha256,
-              metadata: this.toJsonValue({
-                rasterDpi: DEFAULT_RASTER_DPI,
-              }),
-            },
-          });
-        },
-      );
-
-      return {
-        pageCount: rasterizedPages.length,
-      };
-    } finally {
-      await fs.rm(tempDir, {
-        recursive: true,
-        force: true,
-      });
-    }
-  }
-
-  private async rasterizePdf(
-    pdfPath: string,
-    outputDir: string,
-    rasterDpi: number,
-  ) {
-    const prefix = path.join(outputDir, 'page');
-
-    await execFileAsync('pdftoppm', [
-      '-r',
-      `${rasterDpi}`,
-      '-png',
-      pdfPath,
-      prefix,
-    ]);
-
-    const files = (await fs.readdir(outputDir))
-      .filter((fileName) => /^page-\d+\.png$/.test(fileName))
-      .sort(
-        (left, right) =>
-          this.readPageNumberFromRasterFile(left) -
-          this.readPageNumberFromRasterFile(right),
-      );
-
-    const pages: Array<{
-      filePath: string;
-      pageNumber: number;
-      width: number;
-      height: number;
-    }> = [];
-
-    for (const fileName of files) {
-      const filePath = path.join(outputDir, fileName);
-      const metadata = await sharp(filePath).metadata();
-
-      pages.push({
-        filePath,
-        pageNumber: this.readPageNumberFromRasterFile(fileName),
-        width: metadata.width ?? 0,
-        height: metadata.height ?? 0,
-      });
-    }
-
-    return pages;
-  }
-
-  private async readSourceDocumentBuffer(
-    sourceDocument: FullIngestionJobRecord['sourceDocuments'][number],
-  ) {
-    return this.getStorageClient().getObjectBuffer(sourceDocument.storageKey);
-  }
-
-  private readPageNumberFromRasterFile(fileName: string) {
-    const match = fileName.match(/page-(\d+)\.png$/);
-
-    if (!match) {
-      throw new BadRequestException(
-        `Unexpected rasterized page file name ${fileName}.`,
-      );
-    }
-
-    return Number.parseInt(match[1], 10);
   }
 
   private hydrateDraft(job: {
@@ -2393,7 +2162,9 @@ export class IngestionService {
   ) {
     const validation = validateIngestionDraft(draft);
     const workflow = this.buildWorkflowState(job);
-    const requiresSourceDocuments = !this.isPublishedRevisionProvider(job.provider);
+    const requiresSourceDocuments = !this.isPublishedRevisionProvider(
+      job.provider,
+    );
 
     return {
       job: {
@@ -2488,6 +2259,8 @@ export class IngestionService {
       can_process:
         hasExamDocument &&
         hasCorrectionDocument &&
+        job.status !== IngestionJobStatus.QUEUED &&
+        job.status !== IngestionJobStatus.PROCESSING &&
         job.status !== IngestionJobStatus.PUBLISHED,
       review_started: reviewStarted,
     };
@@ -2530,6 +2303,11 @@ export class IngestionService {
           orderIndex: number;
           label: string | null;
           maxPoints: Prisma.Decimal | null;
+          topicMappings: Array<{
+            topic: {
+              code: string;
+            };
+          }>;
           blocks: Array<{
             id: string;
             role: BlockRole;
@@ -2604,6 +2382,11 @@ export class IngestionService {
     orderIndex: number;
     label: string | null;
     maxPoints: Prisma.Decimal | null;
+    topicMappings: Array<{
+      topic: {
+        code: string;
+      };
+    }>;
     blocks: Array<{
       id: string;
       role: BlockRole;
@@ -2622,6 +2405,7 @@ export class IngestionService {
       orderIndex: node.orderIndex,
       label: node.label,
       maxPoints: node.maxPoints !== null ? Number(node.maxPoints) : null,
+      topicCodes: node.topicMappings.map((mapping) => mapping.topic.code),
       blocks: node.blocks.map((block) => this.mapPublishedBlockToDraft(block)),
     };
   }
@@ -2659,10 +2443,7 @@ export class IngestionService {
       id: block.id,
       role: this.fromPublishedBlockRole(block.role),
       type,
-      value:
-        type === 'image' && mediaUrl
-          ? mediaUrl
-          : (block.textValue ?? ''),
+      value: type === 'image' && mediaUrl ? mediaUrl : (block.textValue ?? ''),
       ...(Object.keys(nextData).length
         ? {
             data: nextData,
@@ -2725,7 +2506,11 @@ export class IngestionService {
     }
 
     if (blockType === PrismaBlockType.TABLE) {
-      return Array.isArray(data.rows) ? 'table' : hasMediaUrl ? 'image' : 'table';
+      return Array.isArray(data.rows)
+        ? 'table'
+        : hasMediaUrl
+          ? 'image'
+          : 'table';
     }
 
     if (blockType === PrismaBlockType.GRAPH) {
@@ -2771,124 +2556,6 @@ export class IngestionService {
     );
   }
 
-  private async storeManualSourceDocument(input: {
-    jobId: string;
-    kind: SourceDocumentKind;
-    upload: IntakeUploadDocumentInput;
-    context: CanonicalStorageContext;
-    sourceReference: string | null;
-  }) {
-    const storageClient = this.getStorageClient();
-    const fileName = buildCanonicalDocumentFileName(input.context, input.kind);
-    const storageKey = buildCanonicalDocumentStorageKey(
-      input.context,
-      fileName,
-    );
-    const pageCount = await this.readPdfPageCount(input.upload.buffer);
-    const sha256 = createHash('sha256')
-      .update(input.upload.buffer)
-      .digest('hex');
-
-    await storageClient.putObject({
-      key: storageKey,
-      body: input.upload.buffer,
-      contentType: 'application/pdf',
-      metadata: {
-        intakeMethod: 'manual-upload',
-      },
-    });
-
-    return this.prisma.sourceDocument.create({
-      data: {
-        jobId: input.jobId,
-        kind: input.kind,
-        storageKey,
-        fileName,
-        mimeType: 'application/pdf',
-        pageCount,
-        sha256,
-        sourceUrl: null,
-        language: 'ar',
-        metadata: this.toJsonValue({
-          intakeMethod: 'manual_upload',
-          uploadedFileName: input.upload.originalFileName,
-          uploadedMimeType: input.upload.mimeType,
-          uploadedAt: new Date().toISOString(),
-          sourceReference: input.sourceReference,
-        }),
-      },
-      select: {
-        id: true,
-        storageKey: true,
-      },
-    });
-  }
-
-  private async replaceManualSourceDocument(input: {
-    sourceDocument: FullIngestionJobRecord['sourceDocuments'][number];
-    upload: IntakeUploadDocumentInput;
-    context: CanonicalStorageContext;
-    sourceReference: string | null;
-  }) {
-    const storageClient = this.getStorageClient();
-    const fileName = buildCanonicalDocumentFileName(
-      input.context,
-      input.sourceDocument.kind,
-    );
-    const storageKey = buildCanonicalDocumentStorageKey(
-      input.context,
-      fileName,
-    );
-    const pageCount = await this.readPdfPageCount(input.upload.buffer);
-    const sha256 = createHash('sha256')
-      .update(input.upload.buffer)
-      .digest('hex');
-
-    await storageClient.putObject({
-      key: storageKey,
-      body: input.upload.buffer,
-      contentType: 'application/pdf',
-      metadata: {
-        intakeMethod: 'manual-upload',
-      },
-    });
-
-    if (input.sourceDocument.pages.length > 0) {
-      await this.prisma.sourcePage.deleteMany({
-        where: {
-          documentId: input.sourceDocument.id,
-        },
-      });
-    }
-
-    return this.prisma.sourceDocument.update({
-      where: {
-        id: input.sourceDocument.id,
-      },
-      data: {
-        storageKey,
-        fileName,
-        mimeType: 'application/pdf',
-        pageCount,
-        sha256,
-        sourceUrl: null,
-        language: 'ar',
-        metadata: this.toJsonValue({
-          intakeMethod: 'manual_upload',
-          uploadedFileName: input.upload.originalFileName,
-          uploadedMimeType: input.upload.mimeType,
-          uploadedAt: new Date().toISOString(),
-          sourceReference: input.sourceReference,
-          replacedAt: new Date().toISOString(),
-        }),
-      },
-      select: {
-        id: true,
-        storageKey: true,
-      },
-    });
-  }
-
   private buildStorageContextFromDraft(
     draft: IngestionDraft,
   ): CanonicalStorageContext {
@@ -2899,46 +2566,6 @@ export class IngestionService {
       sessionType: this.toPrismaSessionType(draft.exam.sessionType),
       qualifierKey: this.readJsonString(draft.exam.metadata, 'qualifierKey'),
     };
-  }
-
-  private async readPdfPageCount(buffer: Buffer) {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'bac-upload-'));
-    const pdfPath = path.join(tempDir, 'upload.pdf');
-
-    try {
-      await fs.writeFile(pdfPath, buffer);
-      const { stdout } = await execFileAsync('pdfinfo', [pdfPath]);
-      const match = stdout.match(/^Pages:\s+(\d+)/m);
-
-      if (!match) {
-        return null;
-      }
-
-      const count = Number.parseInt(match[1], 10);
-      return Number.isInteger(count) && count > 0 ? count : null;
-    } catch {
-      return null;
-    } finally {
-      await fs.rm(tempDir, { recursive: true, force: true });
-    }
-  }
-
-  private assertPdfUpload(
-    upload: IntakeUploadDocumentInput,
-    fieldName: string,
-  ) {
-    if (!upload.buffer.length) {
-      throw new BadRequestException(`${fieldName} must not be empty.`);
-    }
-
-    const looksLikePdf =
-      upload.mimeType === 'application/pdf' ||
-      upload.originalFileName.toLowerCase().endsWith('.pdf') ||
-      upload.buffer.subarray(0, 4).toString('utf8') === '%PDF';
-
-    if (!looksLikePdf) {
-      throw new BadRequestException(`${fieldName} must be a PDF.`);
-    }
   }
 
   private readStrictPositiveYear(value: number) {
@@ -3033,6 +2660,14 @@ export class IngestionService {
   private fromIngestionStatus(
     status: IngestionJobStatus,
   ): AdminIngestionStatus {
+    if (status === IngestionJobStatus.QUEUED) {
+      return 'queued';
+    }
+
+    if (status === IngestionJobStatus.PROCESSING) {
+      return 'processing';
+    }
+
     if (status === IngestionJobStatus.IN_REVIEW) {
       return 'in_review';
     }
@@ -3062,6 +2697,14 @@ export class IngestionService {
       return IngestionJobStatus.DRAFT;
     }
 
+    if (value === 'queued' || value === 'QUEUED') {
+      return IngestionJobStatus.QUEUED;
+    }
+
+    if (value === 'processing' || value === 'PROCESSING') {
+      return IngestionJobStatus.PROCESSING;
+    }
+
     if (value === 'in_review' || value === 'IN_REVIEW') {
       return IngestionJobStatus.IN_REVIEW;
     }
@@ -3079,7 +2722,7 @@ export class IngestionService {
     }
 
     throw new BadRequestException(
-      'status must be one of draft, in_review, approved, published, or failed.',
+      'status must be one of draft, queued, processing, in_review, approved, published, or failed.',
     );
   }
 
@@ -3111,174 +2754,6 @@ export class IngestionService {
     return value === 'MAKEUP' ? SessionType.MAKEUP : SessionType.NORMAL;
   }
 
-  private toPrismaVariantCode(value: DraftVariantCode) {
-    return value === 'SUJET_2'
-      ? ExamVariantCode.SUJET_2
-      : ExamVariantCode.SUJET_1;
-  }
-
-  private toPrismaNodeType(value: DraftNode['nodeType']) {
-    if (value === 'PART') {
-      return ExamNodeType.PART;
-    }
-
-    if (value === 'QUESTION') {
-      return ExamNodeType.QUESTION;
-    }
-
-    if (value === 'SUBQUESTION') {
-      return ExamNodeType.SUBQUESTION;
-    }
-
-    if (value === 'CONTEXT') {
-      return ExamNodeType.CONTEXT;
-    }
-
-    return ExamNodeType.EXERCISE;
-  }
-
-  private toPrismaBlockRole(value: DraftBlockRole) {
-    if (value === 'SOLUTION') {
-      return BlockRole.SOLUTION;
-    }
-
-    if (value === 'HINT') {
-      return BlockRole.HINT;
-    }
-
-    if (value === 'META') {
-      return BlockRole.META;
-    }
-
-    return BlockRole.PROMPT;
-  }
-
-  private toPrismaBlockType(value: DraftBlock) {
-    if (value.type === 'heading') {
-      return PrismaBlockType.HEADING;
-    }
-
-    if (value.type === 'latex') {
-      return PrismaBlockType.LATEX;
-    }
-
-    if (value.type === 'code') {
-      return PrismaBlockType.CODE;
-    }
-
-    if (value.type === 'list') {
-      return PrismaBlockType.LIST;
-    }
-
-    if (this.isFormulaGraphBlock(value)) {
-      if (!this.hasFormulaGraphData(value) && value.assetId) {
-        return PrismaBlockType.IMAGE;
-      }
-
-      return this.hasFormulaGraphData(value)
-        ? PrismaBlockType.GRAPH
-        : PrismaBlockType.PARAGRAPH;
-    }
-
-    if (this.isProbabilityTreeBlock(value)) {
-      if (!this.hasProbabilityTreeData(value) && value.assetId) {
-        return PrismaBlockType.IMAGE;
-      }
-
-      return this.hasProbabilityTreeData(value)
-        ? PrismaBlockType.TREE
-        : PrismaBlockType.PARAGRAPH;
-    }
-
-    if (value.type === 'table') {
-      if (value.assetId && !this.hasStructuredTableData(value)) {
-        return PrismaBlockType.IMAGE;
-      }
-
-      return PrismaBlockType.TABLE;
-    }
-
-    if (value.type === 'image' || value.assetId) {
-      return PrismaBlockType.IMAGE;
-    }
-
-    return PrismaBlockType.PARAGRAPH;
-  }
-
-  private asDraftBlockData(block: DraftBlock) {
-    if (
-      !block.data ||
-      typeof block.data !== 'object' ||
-      Array.isArray(block.data)
-    ) {
-      return null;
-    }
-
-    return block.data;
-  }
-
-  private hasStructuredTableData(block: DraftBlock) {
-    const data = this.asDraftBlockData(block);
-
-    if (!data) {
-      return false;
-    }
-
-    return Array.isArray(data.rows);
-  }
-
-  private hasFormulaGraphData(block: DraftBlock) {
-    const data = this.asDraftBlockData(block);
-
-    if (!data) {
-      return false;
-    }
-
-    const kind = this.readJsonString(data, 'kind');
-
-    return (
-      kind === 'formula_graph' ||
-      isRecordWithKey(data, 'formulaGraph') ||
-      isRecordWithKey(data, 'graph')
-    );
-  }
-
-  private hasProbabilityTreeData(block: DraftBlock) {
-    const data = this.asDraftBlockData(block);
-
-    if (!data) {
-      return false;
-    }
-
-    const kind = this.readJsonString(data, 'kind');
-
-    return (
-      kind === 'probability_tree' ||
-      isRecordWithKey(data, 'probabilityTree') ||
-      isRecordWithKey(data, 'tree')
-    );
-  }
-
-  private isFormulaGraphBlock(block: DraftBlock) {
-    return block.type === 'graph' || this.hasFormulaGraphData(block);
-  }
-
-  private isProbabilityTreeBlock(block: DraftBlock) {
-    return block.type === 'tree' || this.hasProbabilityTreeData(block);
-  }
-
-  private inferStructuredKind(block: DraftBlock) {
-    if (this.isFormulaGraphBlock(block)) {
-      return 'formula_graph';
-    }
-
-    if (this.isProbabilityTreeBlock(block)) {
-      return 'probability_tree';
-    }
-
-    return this.readJsonString(block.data ?? null, 'kind');
-  }
-
   private toGeminiRecoveryMode(
     value: unknown,
     fallback: DraftAsset['classification'],
@@ -3298,14 +2773,6 @@ export class IngestionService {
     }
 
     return 'text';
-  }
-
-  private hasStructuredRenderData(block: DraftBlock) {
-    return (
-      this.hasStructuredTableData(block) ||
-      this.hasFormulaGraphData(block) ||
-      this.hasProbabilityTreeData(block)
-    );
   }
 
   private resolveDraftStreamCodes(draft: IngestionDraft) {

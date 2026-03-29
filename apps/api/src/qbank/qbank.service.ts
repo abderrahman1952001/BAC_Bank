@@ -4,10 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
-  BlockRole,
-  BlockType,
   ExamNodeType,
-  ExamVariantCode,
   PracticeSessionStatus,
   Prisma,
   PublicationStatus,
@@ -19,73 +16,27 @@ import {
   PracticeStudyMode,
   UpdatePracticeSessionProgressDto,
 } from './dto/update-practice-session-progress.dto';
-
-const SESSION_YEAR_MIN = 2008;
-const SESSION_YEAR_MAX = 2025;
+import {
+  buildHierarchyExerciseSummaries,
+  buildPracticeSearchCorpus,
+  buildSessionExerciseHierarchyPayload,
+  collectHierarchyQuestionItemsForSession,
+  type ExamVariantWithNodes,
+  getSessionTypeRank,
+  getSujetLabel,
+  type HierarchyNodePayload,
+  mapVariantHierarchy,
+  pickRepresentativeExamOffering,
+  pushPracticeSessionExamOffering,
+  sortPracticeSessionExamOfferings,
+  toPracticeSessionExamOffering,
+  toSujetNumberFromVariantCode,
+  type PracticeSessionExamOffering,
+  type PracticeSessionExerciseCandidate,
+  type SujetNumber,
+} from './qbank-session-helpers';
+import { SESSION_YEAR_MAX, SESSION_YEAR_MIN } from './session-year-range';
 const DEFAULT_PREVIEW_SUJETS_LIMIT = 80;
-
-type SujetNumber = 1 | 2;
-
-type HierarchyBlockPayload = {
-  id: string;
-  role: BlockRole;
-  orderIndex: number;
-  blockType: BlockType;
-  textValue: string | null;
-  data: Prisma.JsonValue | null;
-  media: {
-    id: string;
-    url: string;
-    type: string;
-    metadata: Prisma.JsonValue | null;
-  } | null;
-};
-
-type HierarchyTopicTagPayload = {
-  code: string;
-  name: string;
-  isPrimary: boolean;
-  weight: number;
-};
-
-type HierarchyNodePayload = {
-  id: string;
-  nodeType: ExamNodeType;
-  orderIndex: number;
-  label: string | null;
-  maxPoints: number | null;
-  status: PublicationStatus;
-  metadata: Prisma.JsonValue | null;
-  topics: HierarchyTopicTagPayload[];
-  blocks: HierarchyBlockPayload[];
-  children: HierarchyNodePayload[];
-};
-
-type ExamVariantWithNodes = {
-  id: string;
-  code: ExamVariantCode;
-  title: string | null;
-  status: PublicationStatus;
-  nodes: Array<{
-    id: string;
-    parentId: string | null;
-    nodeType: ExamNodeType;
-    orderIndex: number;
-    label: string | null;
-    maxPoints: Prisma.Decimal | null;
-    status: PublicationStatus;
-    metadata: Prisma.JsonValue | null;
-    topicMappings: Array<{
-      isPrimary: boolean;
-      weight: Prisma.Decimal;
-      topic: {
-        code: string;
-        name: string;
-      };
-    }>;
-    blocks: HierarchyBlockPayload[];
-  }>;
-};
 
 type PracticeSessionProgressSnapshot = {
   activeExerciseId: string | null;
@@ -106,54 +57,6 @@ type PracticeSessionProgressSnapshot = {
     solutionViewedCount: number;
   };
   updatedAt: string;
-};
-
-type PracticeSessionExerciseCandidate = {
-  exerciseNodeId: string;
-  orderIndex: number;
-  title: string | null;
-  totalPoints: number;
-  questionCount: number;
-  sujetNumber: SujetNumber;
-  sujetLabel: string;
-  variantId: string;
-  variantCode: ExamVariantCode;
-  variantTitle: string | null;
-  exam: {
-    id: string;
-    year: number;
-    sessionType: SessionType;
-    subject: {
-      code: string;
-      name: string;
-    };
-    stream: {
-      code: string;
-      name: string;
-    };
-  };
-  hierarchy: SessionExerciseHierarchyPayload;
-  searchableText: string;
-};
-
-type SessionHierarchyQuestionPayload = {
-  id: string;
-  orderIndex: number;
-  label: string;
-  points: number;
-  depth: number;
-  topics: HierarchyTopicTagPayload[];
-  promptBlocks: HierarchyBlockPayload[];
-  solutionBlocks: HierarchyBlockPayload[];
-  hintBlocks: HierarchyBlockPayload[];
-  rubricBlocks: HierarchyBlockPayload[];
-};
-
-type SessionExerciseHierarchyPayload = {
-  exerciseNodeId: string;
-  exerciseLabel: string | null;
-  contextBlocks: HierarchyBlockPayload[];
-  questions: SessionHierarchyQuestionPayload[];
 };
 
 @Injectable()
@@ -219,6 +122,15 @@ export class QbankService {
         select: {
           code: true,
           name: true,
+          slug: true,
+          displayOrder: true,
+          isSelectable: true,
+          studentLabel: true,
+          parent: {
+            select: {
+              code: true,
+            },
+          },
           subject: {
             select: {
               code: true,
@@ -338,7 +250,11 @@ export class QbankService {
       ),
       topics: topics.map((topic) => ({
         code: topic.code,
-        name: topic.name,
+        name: topic.studentLabel ?? topic.name,
+        slug: topic.slug,
+        parentCode: topic.parent?.code ?? null,
+        displayOrder: topic.displayOrder,
+        isSelectable: topic.isSelectable,
         subject: {
           code: topic.subject.code,
           name: topic.subject.name,
@@ -518,7 +434,7 @@ export class QbankService {
       }
 
       for (const variant of exam.paper.variants) {
-        const sujetNumber = this.toSujetNumberFromVariantCode(variant.code);
+        const sujetNumber = toSujetNumberFromVariantCode(variant.code);
 
         if (!sujetNumber) {
           continue;
@@ -528,7 +444,7 @@ export class QbankService {
         yearEntry.sujets.set(sujetKey, {
           examId: exam.id,
           sujetNumber,
-          label: variant.title || this.getSujetLabel(sujetNumber),
+          label: variant.title || getSujetLabel(sujetNumber),
           sessionType: exam.sessionType,
           exerciseCount: variant.nodes.length,
         });
@@ -558,8 +474,8 @@ export class QbankService {
                     }
 
                     return (
-                      this.getSessionTypeRank(a.sessionType) -
-                      this.getSessionTypeRank(b.sessionType)
+                      getSessionTypeRank(a.sessionType) -
+                      getSessionTypeRank(b.sessionType)
                     );
                   }),
                 })),
@@ -636,14 +552,13 @@ export class QbankService {
                     status: true,
                     metadata: true,
                     topicMappings: {
-                      orderBy: [{ isPrimary: 'desc' }, { weight: 'desc' }],
                       select: {
-                        isPrimary: true,
-                        weight: true,
                         topic: {
                           select: {
                             code: true,
                             name: true,
+                            studentLabel: true,
+                            displayOrder: true,
                           },
                         },
                       },
@@ -657,14 +572,7 @@ export class QbankService {
                         blockType: true,
                         textValue: true,
                         data: true,
-                        media: {
-                          select: {
-                            id: true,
-                            url: true,
-                            type: true,
-                            metadata: true,
-                          },
-                        },
+                        media: true,
                       },
                     },
                   },
@@ -682,7 +590,7 @@ export class QbankService {
 
     const availableVariantEntries = exam.paper.variants
       .map((variant) => {
-        const number = this.toSujetNumberFromVariantCode(variant.code);
+        const number = toSujetNumberFromVariantCode(variant.code);
 
         if (!number) {
           return null;
@@ -722,11 +630,11 @@ export class QbankService {
       );
     }
 
-    const hierarchy = this.mapVariantHierarchy(selectedVariantEntry.variant);
+    const hierarchy = mapVariantHierarchy(selectedVariantEntry.variant);
     const selectedVariantLabel =
       selectedVariantEntry.variant.title ||
-      this.getSujetLabel(selectedVariantEntry.sujetNumber);
-    const exerciseSummaries = this.buildHierarchyExerciseSummaries(
+      getSujetLabel(selectedVariantEntry.sujetNumber);
+    const exerciseSummaries = buildHierarchyExerciseSummaries(
       hierarchy.exercises,
     );
 
@@ -744,7 +652,7 @@ export class QbankService {
       selectedSujetLabel: selectedVariantLabel,
       availableSujets: availableVariantEntries.map((entry) => ({
         sujetNumber: entry.sujetNumber,
-        label: entry.variant.title || this.getSujetLabel(entry.sujetNumber),
+        label: entry.variant.title || getSujetLabel(entry.sujetNumber),
       })),
       hierarchy: {
         ...hierarchy,
@@ -755,11 +663,12 @@ export class QbankService {
     };
   }
 
-  async listRecentPracticeSessions(limit = 8) {
+  async listRecentPracticeSessions(userId: string, limit = 8) {
     const cappedLimit = Math.min(Math.max(limit, 1), 20);
 
     const sessions = await this.prisma.practiceSession.findMany({
       where: {
+        userId,
         exercises: {
           some: {},
         },
@@ -830,39 +739,41 @@ export class QbankService {
     >();
 
     for (const exercise of matchingExercises) {
-      yearsDistributionMap.set(
-        exercise.exam.year,
-        (yearsDistributionMap.get(exercise.exam.year) ?? 0) + 1,
-      );
+      for (const exam of exercise.examOfferings) {
+        yearsDistributionMap.set(
+          exam.year,
+          (yearsDistributionMap.get(exam.year) ?? 0) + 1,
+        );
 
-      const streamEntry = streamsDistributionMap.get(exercise.exam.stream.code);
-      if (streamEntry) {
-        streamEntry.matchingExerciseCount += 1;
-      } else {
-        streamsDistributionMap.set(exercise.exam.stream.code, {
-          stream: exercise.exam.stream,
+        const streamEntry = streamsDistributionMap.get(exam.stream.code);
+        if (streamEntry) {
+          streamEntry.matchingExerciseCount += 1;
+        } else {
+          streamsDistributionMap.set(exam.stream.code, {
+            stream: exam.stream,
+            matchingExerciseCount: 1,
+          });
+        }
+
+        const key = `${exam.id}:${exercise.sujetNumber}`;
+        const current = matchingSujetsMap.get(key);
+
+        if (current) {
+          current.matchingExerciseCount += 1;
+          continue;
+        }
+
+        matchingSujetsMap.set(key, {
+          examId: exam.id,
+          year: exam.year,
+          stream: exam.stream,
+          subject: exam.subject,
+          sessionType: exam.sessionType,
+          sujetNumber: exercise.sujetNumber,
+          sujetLabel: exercise.sujetLabel,
           matchingExerciseCount: 1,
         });
       }
-
-      const key = `${exercise.exam.id}:${exercise.sujetNumber}`;
-      const current = matchingSujetsMap.get(key);
-
-      if (current) {
-        current.matchingExerciseCount += 1;
-        continue;
-      }
-
-      matchingSujetsMap.set(key, {
-        examId: exercise.exam.id,
-        year: exercise.exam.year,
-        stream: exercise.exam.stream,
-        subject: exercise.exam.subject,
-        sessionType: exercise.exam.sessionType,
-        sujetNumber: exercise.sujetNumber,
-        sujetLabel: exercise.sujetLabel,
-        matchingExerciseCount: 1,
-      });
     }
 
     const matchingSujetEntries = Array.from(matchingSujetsMap.values()).sort(
@@ -881,8 +792,7 @@ export class QbankService {
         }
 
         return (
-          this.getSessionTypeRank(a.sessionType) -
-          this.getSessionTypeRank(b.sessionType)
+          getSessionTypeRank(a.sessionType) - getSessionTypeRank(b.sessionType)
         );
       },
     );
@@ -896,18 +806,20 @@ export class QbankService {
       orderIndex: exercise.orderIndex,
       title: exercise.title,
       questionCount: exercise.questionCount,
-      examId: exercise.exam.id,
-      year: exercise.exam.year,
-      stream: exercise.exam.stream,
-      subject: exercise.exam.subject,
-      sessionType: exercise.exam.sessionType,
+      examId: exercise.sourceExam.id,
+      year: exercise.sourceExam.year,
+      stream: exercise.sourceExam.stream,
+      subject: exercise.sourceExam.subject,
+      sessionType: exercise.sourceExam.sessionType,
       sujetNumber: exercise.sujetNumber,
       sujetLabel: exercise.sujetLabel,
     }));
 
     return {
       subjectCode: filters.subjectCode,
-      streamCode: filters.streamCode ?? null,
+      streamCode:
+        filters.streamCodes.length === 1 ? filters.streamCodes[0] : null,
+      streamCodes: filters.streamCodes,
       years: filters.years,
       topicCodes: filters.topicCodes,
       sessionTypes: filters.sessionTypes,
@@ -928,7 +840,10 @@ export class QbankService {
     };
   }
 
-  async createPracticeSession(payload: CreatePracticeSessionDto) {
+  async createPracticeSession(
+    userId: string,
+    payload: CreatePracticeSessionDto,
+  ) {
     const filters = await this.resolvePracticeSessionFilters(payload);
     const exerciseCount = filters.exerciseCount;
     const candidates =
@@ -945,7 +860,9 @@ export class QbankService {
 
     const filtersSnapshot: Prisma.InputJsonObject = {
       years: filters.years,
-      streamCode: filters.streamCode ?? null,
+      streamCode:
+        filters.streamCodes.length === 1 ? filters.streamCodes[0] : null,
+      streamCodes: filters.streamCodes,
       subjectCode: filters.subjectCode,
       topicCodes: filters.topicCodes,
       sessionTypes: filters.sessionTypes,
@@ -955,6 +872,7 @@ export class QbankService {
     const created = await this.prisma.$transaction(async (tx) => {
       const session = await tx.practiceSession.create({
         data: {
+          userId,
           title: payload.title,
           requestedExerciseCount: exerciseCount,
           status: PracticeSessionStatus.CREATED,
@@ -967,6 +885,7 @@ export class QbankService {
         data: selected.map((exercise, index) => ({
           sessionId: session.id,
           exerciseNodeId: exercise.exerciseNodeId,
+          examId: exercise.sourceExam.id,
           orderIndex: index + 1,
         })),
       });
@@ -974,12 +893,12 @@ export class QbankService {
       return session;
     });
 
-    return this.getPracticeSessionById(created.id);
+    return this.getPracticeSessionById(userId, created.id);
   }
 
-  async getPracticeSessionById(id: string) {
-    const session = await this.prisma.practiceSession.findUnique({
-      where: { id },
+  async getPracticeSessionById(userId: string, id: string) {
+    const session = await this.prisma.practiceSession.findFirst({
+      where: { id, userId },
       select: {
         id: true,
         title: true,
@@ -993,50 +912,31 @@ export class QbankService {
           orderBy: { orderIndex: 'asc' },
           select: {
             orderIndex: true,
+            exam: {
+              select: {
+                id: true,
+                year: true,
+                sessionType: true,
+                subject: {
+                  select: {
+                    code: true,
+                    name: true,
+                  },
+                },
+                stream: {
+                  select: {
+                    code: true,
+                    name: true,
+                  },
+                },
+              },
+            },
             exerciseNode: {
               select: {
                 id: true,
                 orderIndex: true,
                 maxPoints: true,
                 variantId: true,
-                variant: {
-                  select: {
-                    id: true,
-                    code: true,
-                    title: true,
-                    paper: {
-                      select: {
-                        offerings: {
-                          where: {
-                            isPublished: true,
-                          },
-                          orderBy: [
-                            { year: 'desc' },
-                            { stream: { name: 'asc' } },
-                            { createdAt: 'asc' },
-                          ],
-                          select: {
-                            id: true,
-                            year: true,
-                            sessionType: true,
-                            subject: {
-                              select: {
-                                code: true,
-                                name: true,
-                              },
-                            },
-                            stream: {
-                              select: {
-                                code: true,
-                                name: true,
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
               },
             },
           },
@@ -1116,14 +1016,13 @@ export class QbankService {
                 status: true,
                 metadata: true,
                 topicMappings: {
-                  orderBy: [{ isPrimary: 'desc' }, { weight: 'desc' }],
                   select: {
-                    isPrimary: true,
-                    weight: true,
                     topic: {
                       select: {
                         code: true,
                         name: true,
+                        studentLabel: true,
+                        displayOrder: true,
                       },
                     },
                   },
@@ -1156,38 +1055,20 @@ export class QbankService {
       string,
       {
         exercise: HierarchyNodePayload;
-        exam: {
-          id: string;
-          year: number;
-          sessionType: SessionType;
-          subject: {
-            code: string;
-            name: string;
-          };
-          stream: {
-            code: string;
-            name: string;
-          };
-        };
+        fallbackExam: PracticeSessionExamOffering | null;
       }
     >();
 
     for (const variant of variants) {
-      const hierarchy = this.mapVariantHierarchy(
-        variant as ExamVariantWithNodes,
-      );
-      const representativeExam = this.pickRepresentativeExamOffering(
+      const hierarchy = mapVariantHierarchy(variant as ExamVariantWithNodes);
+      const representativeExam = pickRepresentativeExamOffering(
         variant.paper.offerings,
       );
-
-      if (!representativeExam) {
-        continue;
-      }
 
       for (const exercise of hierarchy.exercises) {
         exerciseByNodeId.set(exercise.id, {
           exercise,
-          exam: representativeExam,
+          fallbackExam: representativeExam,
         });
       }
     }
@@ -1211,16 +1092,25 @@ export class QbankService {
           );
         }
 
-        const questions = this.collectHierarchyQuestionItemsForSession(
+        const questions = collectHierarchyQuestionItemsForSession(
           linkedExercise.exercise.children,
+          0,
+          linkedExercise.exercise.topics,
         );
         const totalPoints =
           linkedExercise.exercise.maxPoints ??
           questions.reduce((sum, question) => sum + question.points, 0);
-        const hierarchy = this.buildSessionExerciseHierarchyPayload(
+        const hierarchy = buildSessionExerciseHierarchyPayload(
           linkedExercise.exercise,
           questions,
         );
+        const exam = entry.exam ?? linkedExercise.fallbackExam;
+
+        if (!exam) {
+          throw new NotFoundException(
+            `Practice session ${id} references missing exam context for exercise ${entry.exerciseNode.id}.`,
+          );
+        }
 
         return {
           sessionOrder: entry.orderIndex,
@@ -1229,7 +1119,7 @@ export class QbankService {
           title: linkedExercise.exercise.label || null,
           totalPoints,
           hierarchy,
-          exam: linkedExercise.exam,
+          exam,
           questionCount: questions.length,
         };
       }),
@@ -1237,11 +1127,12 @@ export class QbankService {
   }
 
   async updatePracticeSessionProgress(
+    userId: string,
     id: string,
     payload: UpdatePracticeSessionProgressDto,
   ) {
     const exists = await this.prisma.practiceSession.count({
-      where: { id },
+      where: { id, userId },
     });
 
     if (!exists) {
@@ -1273,214 +1164,12 @@ export class QbankService {
     };
   }
 
-  private toSujetNumberFromVariantCode(
-    code: ExamVariantCode,
-  ): SujetNumber | null {
-    if (code === ExamVariantCode.SUJET_1) {
-      return 1;
-    }
-
-    if (code === ExamVariantCode.SUJET_2) {
-      return 2;
-    }
-
-    return null;
-  }
-
-  private mapVariantHierarchy(variant: ExamVariantWithNodes): {
-    variantId: string;
-    variantCode: ExamVariantCode;
-    title: string;
-    status: PublicationStatus;
-    nodeCount: number;
-    exercises: HierarchyNodePayload[];
-  } {
-    const nodesByParent = new Map<
-      string | null,
-      ExamVariantWithNodes['nodes']
-    >();
-
-    for (const node of variant.nodes) {
-      const parentKey = node.parentId ?? null;
-      const siblings = nodesByParent.get(parentKey) ?? [];
-      siblings.push(node);
-      nodesByParent.set(parentKey, siblings);
-    }
-
-    for (const siblings of nodesByParent.values()) {
-      siblings.sort((a, b) => a.orderIndex - b.orderIndex);
-    }
-
-    const mapNode = (
-      node: ExamVariantWithNodes['nodes'][number],
-    ): HierarchyNodePayload => {
-      const children = (nodesByParent.get(node.id) ?? []).map((child) =>
-        mapNode(child),
-      );
-
-      return {
-        id: node.id,
-        nodeType: node.nodeType,
-        orderIndex: node.orderIndex,
-        label: node.label,
-        maxPoints: node.maxPoints !== null ? Number(node.maxPoints) : null,
-        status: node.status,
-        metadata: node.metadata,
-        topics: node.topicMappings
-          .map((mapping) => ({
-            code: mapping.topic.code,
-            name: mapping.topic.name,
-            isPrimary: mapping.isPrimary,
-            weight: Number(mapping.weight),
-          }))
-          .sort((a, b) => Number(b.isPrimary) - Number(a.isPrimary)),
-        blocks: [...node.blocks]
-          .sort((a, b) => {
-            const roleDelta =
-              this.getBlockRoleRank(a.role) - this.getBlockRoleRank(b.role);
-            if (roleDelta !== 0) {
-              return roleDelta;
-            }
-
-            return a.orderIndex - b.orderIndex;
-          })
-          .map((block) => ({
-            id: block.id,
-            role: block.role,
-            orderIndex: block.orderIndex,
-            blockType: block.blockType,
-            textValue: block.textValue,
-            data: block.data,
-            media: block.media
-              ? {
-                  id: block.media.id,
-                  url: block.media.url,
-                  type: block.media.type,
-                  metadata: block.media.metadata,
-                }
-              : null,
-          })),
-        children,
-      };
-    };
-
-    const rootNodes = nodesByParent.get(null) ?? [];
-    const mappedRoots = rootNodes.map((rootNode) => mapNode(rootNode));
-    const mappedExercises = mappedRoots.filter(
-      (node) => node.nodeType === ExamNodeType.EXERCISE,
-    );
-
-    return {
-      variantId: variant.id,
-      variantCode: variant.code,
-      title: variant.title || 'الموضوع',
-      status: variant.status,
-      nodeCount: variant.nodes.length,
-      exercises: mappedExercises.length ? mappedExercises : mappedRoots,
-    };
-  }
-
-  private collectHierarchyQuestionItemsForSession(
-    nodes: HierarchyNodePayload[],
-    depth = 0,
-  ): SessionHierarchyQuestionPayload[] {
-    const ordered = [...nodes].sort((a, b) => a.orderIndex - b.orderIndex);
-    const items: SessionHierarchyQuestionPayload[] = [];
-
-    for (const node of ordered) {
-      const isQuestionNode =
-        node.nodeType === ExamNodeType.QUESTION ||
-        node.nodeType === ExamNodeType.SUBQUESTION;
-
-      if (isQuestionNode) {
-        items.push({
-          id: node.id,
-          orderIndex: node.orderIndex,
-          label: node.label || `السؤال ${node.orderIndex}`,
-          points: node.maxPoints ?? 0,
-          depth,
-          topics: node.topics,
-          promptBlocks: this.blocksByRoles(node.blocks, [
-            BlockRole.PROMPT,
-            BlockRole.STEM,
-          ]),
-          solutionBlocks: this.blocksByRoles(node.blocks, [BlockRole.SOLUTION]),
-          hintBlocks: this.blocksByRoles(node.blocks, [BlockRole.HINT]),
-          rubricBlocks: this.blocksByRoles(node.blocks, [BlockRole.RUBRIC]),
-        });
-      }
-
-      if (node.children.length) {
-        items.push(
-          ...this.collectHierarchyQuestionItemsForSession(
-            node.children,
-            isQuestionNode ? depth + 1 : depth,
-          ),
-        );
-      }
-    }
-
-    return items;
-  }
-
-  private getExerciseContextBlocksFromHierarchy(
-    exerciseNode: HierarchyNodePayload,
-    contextNodes?: HierarchyNodePayload[],
-  ): HierarchyBlockPayload[] {
-    const ownContext = this.blocksByRoles(exerciseNode.blocks, [
-      BlockRole.STEM,
-      BlockRole.PROMPT,
-    ]);
-    const nestedContext = [...(contextNodes ?? exerciseNode.children)]
-      .filter((child) => child.nodeType === ExamNodeType.CONTEXT)
-      .sort((a, b) => a.orderIndex - b.orderIndex)
-      .flatMap((child) =>
-        this.blocksByRoles(child.blocks, [BlockRole.STEM, BlockRole.PROMPT]),
-      );
-
-    return [...ownContext, ...nestedContext];
-  }
-
-  private buildSessionExerciseHierarchyPayload(
-    exerciseNode: HierarchyNodePayload,
-    questions: SessionHierarchyQuestionPayload[],
-    contextNodes?: HierarchyNodePayload[],
-  ): SessionExerciseHierarchyPayload {
-    return {
-      exerciseNodeId: exerciseNode.id,
-      exerciseLabel: exerciseNode.label || null,
-      contextBlocks: this.getExerciseContextBlocksFromHierarchy(
-        exerciseNode,
-        contextNodes,
-      ),
-      questions,
-    };
-  }
-
-  private buildHierarchyExerciseSummaries(exercises: HierarchyNodePayload[]) {
-    return exercises.map((exercise) => {
-      const questions = this.collectHierarchyQuestionItemsForSession(
-        exercise.children,
-      );
-      const totalPoints =
-        exercise.maxPoints ??
-        questions.reduce((sum, question) => sum + question.points, 0);
-
-      return {
-        id: exercise.id,
-        orderIndex: exercise.orderIndex,
-        title: exercise.label || null,
-        totalPoints,
-        questionCount: questions.length,
-      };
-    });
-  }
-
   private async listPracticeSessionExerciseCandidates(filters: {
     years: number[];
-    streamCode?: string;
+    streamCodes: string[];
     subjectCode: string;
     topicCodes: string[];
+    topicMatchCodes: string[];
     sessionTypes: SessionType[];
     search?: string;
   }): Promise<PracticeSessionExerciseCandidate[]> {
@@ -1490,10 +1179,12 @@ export class QbankService {
         subject: {
           code: filters.subjectCode,
         },
-        ...(filters.streamCode
+        ...(filters.streamCodes.length
           ? {
               stream: {
-                code: filters.streamCode,
+                code: {
+                  in: filters.streamCodes,
+                },
               },
             }
           : {}),
@@ -1553,14 +1244,13 @@ export class QbankService {
                     status: true,
                     metadata: true,
                     topicMappings: {
-                      orderBy: [{ isPrimary: 'desc' }, { weight: 'desc' }],
                       select: {
-                        isPrimary: true,
-                        weight: true,
                         topic: {
                           select: {
                             code: true,
                             name: true,
+                            studentLabel: true,
+                            displayOrder: true,
                           },
                         },
                       },
@@ -1596,40 +1286,45 @@ export class QbankService {
     const candidateMap = new Map<string, PracticeSessionExerciseCandidate>();
 
     for (const exam of exams) {
+      const examOffering = toPracticeSessionExamOffering(exam);
+
       for (const variant of exam.paper.variants) {
-        const sujetNumber = this.toSujetNumberFromVariantCode(variant.code);
+        const sujetNumber = toSujetNumberFromVariantCode(variant.code);
 
         if (!sujetNumber) {
           continue;
         }
 
-        const hierarchy = this.mapVariantHierarchy(
-          variant as ExamVariantWithNodes,
-        );
+        const hierarchy = mapVariantHierarchy(variant as ExamVariantWithNodes);
 
         for (const exercise of hierarchy.exercises) {
-          if (candidateMap.has(exercise.id)) {
+          const existingCandidate = candidateMap.get(exercise.id);
+
+          if (existingCandidate) {
+            pushPracticeSessionExamOffering(
+              existingCandidate.examOfferings,
+              examOffering,
+            );
             continue;
           }
 
-          const questions = this.collectHierarchyQuestionItemsForSession(
+          const questions = collectHierarchyQuestionItemsForSession(
             exercise.children,
+            0,
+            exercise.topics,
           );
 
           if (!questions.length) {
             continue;
           }
 
-          const searchableText = this.buildPracticeSearchCorpus(
-            exercise,
-            questions,
-          );
+          const searchableText = buildPracticeSearchCorpus(exercise, questions);
 
           if (
-            filters.topicCodes.length &&
+            filters.topicMatchCodes.length &&
             !questions.some((question) =>
               question.topics.some((topic) =>
-                filters.topicCodes.includes(topic.code),
+                filters.topicMatchCodes.includes(topic.code),
               ),
             )
           ) {
@@ -1654,21 +1349,12 @@ export class QbankService {
             totalPoints,
             questionCount: questions.length,
             sujetNumber,
-            sujetLabel: variant.title || this.getSujetLabel(sujetNumber),
+            sujetLabel: variant.title || getSujetLabel(sujetNumber),
             variantId: variant.id,
             variantCode: variant.code,
             variantTitle: variant.title,
-            exam: {
-              id: exam.id,
-              year: exam.year,
-              sessionType: exam.sessionType,
-              subject: exam.subject,
-              stream: exam.stream,
-            },
-            hierarchy: this.buildSessionExerciseHierarchyPayload(
-              exercise,
-              questions,
-            ),
+            sourceExam: examOffering,
+            examOfferings: [examOffering],
             searchableText,
           } satisfies PracticeSessionExerciseCandidate);
         }
@@ -1677,12 +1363,21 @@ export class QbankService {
 
     const candidates = Array.from(candidateMap.values());
 
+    for (const candidate of candidates) {
+      candidate.examOfferings = sortPracticeSessionExamOfferings(
+        candidate.examOfferings,
+      );
+      candidate.sourceExam = candidate.examOfferings[0] ?? candidate.sourceExam;
+    }
+
     return candidates.sort((a, b) => {
-      if (a.exam.year !== b.exam.year) {
-        return b.exam.year - a.exam.year;
+      if (a.sourceExam.year !== b.sourceExam.year) {
+        return b.sourceExam.year - a.sourceExam.year;
       }
 
-      const streamOrder = a.exam.stream.name.localeCompare(b.exam.stream.name);
+      const streamOrder = a.sourceExam.stream.name.localeCompare(
+        b.sourceExam.stream.name,
+      );
       if (streamOrder !== 0) {
         return streamOrder;
       }
@@ -1692,8 +1387,8 @@ export class QbankService {
       }
 
       const sessionRankDelta =
-        this.getSessionTypeRank(a.exam.sessionType) -
-        this.getSessionTypeRank(b.exam.sessionType);
+        getSessionTypeRank(a.sourceExam.sessionType) -
+        getSessionTypeRank(b.sourceExam.sessionType);
 
       if (sessionRankDelta !== 0) {
         return sessionRankDelta;
@@ -1703,246 +1398,6 @@ export class QbankService {
     });
   }
 
-  private buildPracticeSearchCorpus(
-    exercise: HierarchyNodePayload,
-    questions: SessionHierarchyQuestionPayload[],
-  ): string {
-    return [
-      exercise.label,
-      this.blocksToMarkdown(exercise.blocks),
-      this.blocksToMarkdown(
-        this.getExerciseContextBlocksFromHierarchy(exercise),
-      ),
-      ...questions.flatMap((question) => [
-        question.label,
-        this.blocksToMarkdown(question.promptBlocks),
-        this.blocksToMarkdown(question.solutionBlocks),
-        this.blocksToMarkdown(question.hintBlocks),
-        this.blocksToMarkdown(question.rubricBlocks),
-        ...question.topics.map((topic) => topic.code),
-        ...question.topics.map((topic) => topic.name),
-      ]),
-    ]
-      .filter(
-        (value): value is string =>
-          typeof value === 'string' && value.length > 0,
-      )
-      .join('\n')
-      .toLowerCase();
-  }
-
-  private blocksByRoles(
-    blocks: HierarchyBlockPayload[],
-    roles: BlockRole[],
-  ): HierarchyBlockPayload[] {
-    return blocks
-      .filter((block) => roles.includes(block.role))
-      .sort((a, b) => a.orderIndex - b.orderIndex);
-  }
-
-  private blocksToMarkdown(blocks: HierarchyBlockPayload[]): string {
-    return blocks
-      .map((block) => {
-        const structuredText = this.structuredBlockText(block);
-
-        if (structuredText) {
-          return structuredText;
-        }
-
-        if (block.blockType === BlockType.IMAGE) {
-          return '';
-        }
-
-        if (block.blockType === BlockType.HEADING) {
-          return block.textValue ? `## ${block.textValue}` : '';
-        }
-
-        if (block.blockType === BlockType.LATEX) {
-          return block.textValue ? `$$${block.textValue}$$` : '';
-        }
-
-        if (block.blockType === BlockType.CODE) {
-          return block.textValue ? `\`\`\`\n${block.textValue}\n\`\`\`` : '';
-        }
-
-        return block.textValue ?? '';
-      })
-      .map((value) => value.trim())
-      .filter((value) => Boolean(value))
-      .join('\n\n');
-  }
-
-  private structuredBlockText(block: HierarchyBlockPayload) {
-    if (block.blockType === BlockType.TABLE) {
-      const rows = this.readStructuredTableRows(block.data);
-
-      if (rows.length > 0) {
-        return rows.map((row) => row.join(' | ')).join('\n');
-      }
-    }
-
-    if (
-      !block.data ||
-      typeof block.data !== 'object' ||
-      Array.isArray(block.data)
-    ) {
-      return null;
-    }
-
-    const data = block.data as Record<string, unknown>;
-    const values: string[] = [];
-
-    if (typeof data.kind === 'string') {
-      values.push(data.kind);
-    }
-
-    if (typeof data.caption === 'string') {
-      values.push(data.caption);
-    }
-
-    const formulaGraph =
-      this.readStructuredRecord(data.formulaGraph) ??
-      this.readStructuredRecord(data.graph);
-    const probabilityTree =
-      this.readStructuredRecord(data.probabilityTree) ??
-      this.readStructuredRecord(data.tree);
-
-    if (formulaGraph) {
-      if (typeof formulaGraph.title === 'string') {
-        values.push(formulaGraph.title);
-      }
-
-      const curves = Array.isArray(formulaGraph.curves)
-        ? formulaGraph.curves
-        : Array.isArray(formulaGraph.functions)
-          ? formulaGraph.functions
-          : [];
-
-      for (const curve of curves) {
-        if (curve && typeof curve === 'object' && !Array.isArray(curve)) {
-          if (typeof (curve as Record<string, unknown>).label === 'string') {
-            values.push((curve as Record<string, unknown>).label as string);
-          }
-
-          if (typeof (curve as Record<string, unknown>).fn === 'string') {
-            values.push((curve as Record<string, unknown>).fn as string);
-          }
-        }
-      }
-    }
-
-    if (probabilityTree) {
-      this.collectProbabilityTreeText(probabilityTree, values);
-    }
-
-    return values
-      .map((value) => value.trim())
-      .filter((value) => value.length > 0)
-      .join('\n');
-  }
-
-  private readStructuredTableRows(value: Prisma.JsonValue | null) {
-    if (!value || typeof value !== 'object' || Array.isArray(value)) {
-      return [];
-    }
-
-    const rows = (value as Record<string, unknown>).rows;
-
-    if (!Array.isArray(rows)) {
-      return [];
-    }
-
-    return rows
-      .map((row) =>
-        Array.isArray(row)
-          ? row.map((cell) => String(cell ?? '').trim()).filter(Boolean)
-          : [],
-      )
-      .filter((row) => row.length > 0);
-  }
-
-  private readStructuredRecord(value: unknown) {
-    if (!value || typeof value !== 'object' || Array.isArray(value)) {
-      return null;
-    }
-
-    return value as Record<string, unknown>;
-  }
-
-  private collectProbabilityTreeText(
-    node: Record<string, unknown>,
-    values: string[],
-  ) {
-    if (typeof node.label === 'string') {
-      values.push(node.label);
-    }
-
-    if (typeof node.edgeLabel === 'string') {
-      values.push(node.edgeLabel);
-    }
-
-    if (typeof node.probability === 'string') {
-      values.push(node.probability);
-    }
-
-    if (!Array.isArray(node.children)) {
-      return;
-    }
-
-    for (const child of node.children) {
-      const childRecord = this.readStructuredRecord(child);
-
-      if (childRecord) {
-        this.collectProbabilityTreeText(childRecord, values);
-      }
-    }
-  }
-
-  private getBlockRoleRank(role: BlockRole): number {
-    switch (role) {
-      case BlockRole.STEM:
-        return 1;
-      case BlockRole.PROMPT:
-        return 2;
-      case BlockRole.HINT:
-        return 3;
-      case BlockRole.SOLUTION:
-        return 4;
-      case BlockRole.RUBRIC:
-        return 5;
-      case BlockRole.META:
-        return 6;
-      default:
-        return 99;
-    }
-  }
-
-  private getSujetLabel(sujetNumber: SujetNumber): string {
-    return `الموضوع ${sujetNumber}`;
-  }
-
-  private getSessionTypeRank(sessionType: SessionType): number {
-    return sessionType === SessionType.NORMAL ? 1 : 2;
-  }
-
-  private pickRepresentativeExamOffering<
-    T extends {
-      id: string;
-      year: number;
-      sessionType: SessionType;
-      subject: {
-        code: string;
-        name: string;
-      };
-      stream: {
-        code: string;
-        name: string;
-      };
-    },
-  >(offerings: T[]) {
-    return offerings[0] ?? null;
-  }
-
   private async resolvePracticeSessionFilters(
     payload: CreatePracticeSessionDto,
   ) {
@@ -1950,8 +1405,12 @@ export class QbankService {
       (year) => year >= SESSION_YEAR_MIN && year <= SESSION_YEAR_MAX,
     );
     const subjectCode = payload.subjectCode.trim().toUpperCase();
-    const streamCode = payload.streamCode?.trim().toUpperCase();
+    const streamCodes = this.uniqueCodes([
+      ...(payload.streamCodes ?? []),
+      ...(payload.streamCode ? [payload.streamCode] : []),
+    ]);
     const topicCodes = this.uniqueCodes(payload.topicCodes);
+    let topicMatchCodes = topicCodes;
     const sessionTypes = this.uniqueSessionTypes(payload.sessionTypes);
     const search = payload.search?.trim() || undefined;
     const exerciseCount = payload.exerciseCount ?? 6;
@@ -1994,34 +1453,57 @@ export class QbankService {
       ),
     );
 
-    if (streamCode && !allowedStreamCodes.includes(streamCode)) {
+    const invalidStreamCodes = streamCodes.filter(
+      (streamCode) => !allowedStreamCodes.includes(streamCode),
+    );
+
+    if (invalidStreamCodes.length) {
       throw new BadRequestException(
         'The selected stream is not available for this subject.',
       );
     }
 
     if (topicCodes.length) {
-      const topicCount = await this.prisma.topic.count({
+      const subjectTopics = await this.prisma.topic.findMany({
         where: {
-          code: { in: topicCodes },
           subject: {
             code: subjectCode,
           },
         },
+        select: {
+          code: true,
+          parent: {
+            select: {
+              code: true,
+            },
+          },
+        },
       });
+      const subjectTopicCodes = new Set(
+        subjectTopics.map((topic) => topic.code),
+      );
 
-      if (topicCount !== topicCodes.length) {
+      if (!topicCodes.every((code) => subjectTopicCodes.has(code))) {
         throw new BadRequestException(
           'One or more selected topics are invalid for this subject.',
         );
       }
+
+      topicMatchCodes = this.expandTopicCodesToDescendants(
+        subjectTopics.map((topic) => ({
+          code: topic.code,
+          parentCode: topic.parent?.code ?? null,
+        })),
+        topicCodes,
+      );
     }
 
     return {
       years,
-      streamCode,
+      streamCodes,
       subjectCode,
       topicCodes,
+      topicMatchCodes,
       sessionTypes,
       search,
       exerciseCount,
@@ -2126,6 +1608,48 @@ export class QbankService {
     }
 
     return PracticeSessionStatus.CREATED;
+  }
+
+  private expandTopicCodesToDescendants(
+    topics: Array<{
+      code: string;
+      parentCode: string | null;
+    }>,
+    selectedCodes: string[],
+  ): string[] {
+    if (!selectedCodes.length) {
+      return [];
+    }
+
+    const childrenByParent = new Map<string | null, string[]>();
+
+    for (const topic of topics) {
+      const bucket = childrenByParent.get(topic.parentCode) ?? [];
+      bucket.push(topic.code);
+      childrenByParent.set(topic.parentCode, bucket);
+    }
+
+    const expanded = new Set<string>(selectedCodes);
+    const queue = [...selectedCodes];
+
+    while (queue.length) {
+      const currentCode = queue.shift();
+
+      if (!currentCode) {
+        continue;
+      }
+
+      for (const childCode of childrenByParent.get(currentCode) ?? []) {
+        if (expanded.has(childCode)) {
+          continue;
+        }
+
+        expanded.add(childCode);
+        queue.push(childCode);
+      }
+    }
+
+    return Array.from(expanded);
   }
 
   private uniqueCodes(input?: string[]): string[] {

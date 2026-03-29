@@ -1,29 +1,29 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useMemo, useState } from 'react';
-import { clearClientRole, getClientRole } from '@/lib/client-auth';
-import { ThemeToggle } from '@/components/theme-toggle';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAuthSession } from "@/components/auth-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useSignOut } from "@/components/use-sign-out";
 
 const baseNavItems = [
   {
-    href: '/app',
-    label: 'الرئيسية',
+    href: "/app",
+    label: "الرئيسية",
   },
   {
-    href: '/app/browse',
-    label: 'تصفح المواضيع',
+    href: "/app/browse",
+    label: "المواضيع",
   },
   {
-    href: '/app/sessions/new',
-    label: 'جلسة مخصصة',
+    href: "/app/sessions/new",
+    label: "جلسة",
   },
 ];
 
 function isLinkActive(pathname: string, href: string): boolean {
-  if (href === '/app') {
-    return pathname === '/app';
+  if (href === "/app") {
+    return pathname === "/app";
   }
 
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -31,27 +31,25 @@ function isLinkActive(pathname: string, href: string): boolean {
 
 export function AppNavbar() {
   const pathname = usePathname();
-  const [role] = useState<'USER' | 'ADMIN'>(() => getClientRole());
+  const { user } = useAuthSession();
+  const { isSigningOut, signOut } = useSignOut();
 
-  const navItems = useMemo(
-    () =>
-      role === 'ADMIN'
-        ? [
-            ...baseNavItems,
-            {
-              href: '/admin',
-              label: 'الإدارة',
-            },
-          ]
-        : baseNavItems,
-    [role],
-  );
+  const navItems =
+    user?.role === "ADMIN"
+      ? [
+          ...baseNavItems,
+          {
+            href: "/admin",
+            label: "الإدارة",
+          },
+        ]
+      : baseNavItems;
 
   return (
     <header className="app-navbar">
       <Link href="/app" className="app-brand">
-        <span className="app-brand-badge">BAC</span>
-        <span>بنك البكالوريا</span>
+        <span className="app-brand-badge">BB</span>
+        <span className="app-brand-text">BAC Bank</span>
       </Link>
 
       <nav className="app-nav-links" aria-label="التنقل الرئيسي">
@@ -59,7 +57,7 @@ export function AppNavbar() {
           <Link
             key={item.href}
             href={item.href}
-            className={isLinkActive(pathname, item.href) ? 'active' : ''}
+            className={isLinkActive(pathname, item.href) ? "active" : ""}
           >
             {item.label}
           </Link>
@@ -68,15 +66,16 @@ export function AppNavbar() {
 
       <div className="app-nav-actions">
         <ThemeToggle />
-        <Link
-          href="/"
+        <button
+          type="button"
           className="btn-secondary"
           onClick={() => {
-            clearClientRole();
+            void signOut();
           }}
+          disabled={isSigningOut}
         >
-          خروج
-        </Link>
+          {isSigningOut ? "جارٍ تسجيل الخروج..." : "خروج"}
+        </button>
       </div>
     </header>
   );

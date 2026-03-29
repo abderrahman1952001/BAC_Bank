@@ -4,9 +4,25 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import {
+  AdminLibraryContextStrip,
+  AdminLibraryFiltersRail,
+  AdminLibraryPreviewPanel,
+  AdminLibrarySujetsPanel,
+} from '@/components/admin-library-sections';
+import {
   BrowseWorkspaceSkeleton,
   EmptyState,
 } from '@/components/study-shell';
+import {
+  buildAdminLibraryContextTitle,
+  buildAdminLibraryQuery,
+  buildAdminLibrarySelectionPrompt,
+  buildStudentPreviewHref,
+  normalizeCode,
+  parseSujetNumber,
+  parseYear,
+  resolveSelectionFromExamId,
+} from '@/lib/admin-library';
 import {
   AdminIngestionJobResponse,
   fetchAdminJson,
@@ -17,66 +33,6 @@ import {
   ExamResponse,
   fetchJson,
 } from '@/lib/qbank';
-
-function normalizeCode(value: string | null) {
-  return value?.trim().toUpperCase() ?? '';
-}
-
-function parseYear(value: string | null) {
-  if (!value) {
-    return null;
-  }
-
-  const parsed = Number(value);
-  return Number.isInteger(parsed) ? parsed : null;
-}
-
-function parseSujetNumber(value: string | null) {
-  if (!value) {
-    return null;
-  }
-
-  const parsed = Number(value);
-  return parsed === 1 || parsed === 2 ? parsed : null;
-}
-
-function formatSessionLabel(sessionType: 'NORMAL' | 'MAKEUP') {
-  return sessionType === 'MAKEUP' ? 'Makeup' : 'Normal';
-}
-
-function resolveSelectionFromExamId(
-  catalog: CatalogResponse,
-  examId: string,
-  preferredSujetNumber: number | null,
-) {
-  for (const stream of catalog.streams) {
-    for (const subject of stream.subjects) {
-      for (const year of subject.years) {
-        const matchingSujet =
-          year.sujets.find(
-            (item) =>
-              item.examId === examId &&
-              item.sujetNumber === preferredSujetNumber,
-          ) ??
-          year.sujets.find((item) => item.examId === examId) ??
-          null;
-
-        if (!matchingSujet) {
-          continue;
-        }
-
-        return {
-          streamCode: stream.code,
-          subjectCode: subject.code,
-          year: year.year,
-          sujetNumber: matchingSujet.sujetNumber,
-        };
-      }
-    }
-  }
-
-  return null;
-}
 
 export function AdminLibraryPage() {
   const router = useRouter();
@@ -280,29 +236,13 @@ export function AdminLibraryPage() {
   }, [selectedExamId, selectedSujetNumber, yearEntry]);
 
   useEffect(() => {
-    const nextParams = new URLSearchParams();
-
-    if (selectedStreamCode) {
-      nextParams.set('stream', selectedStreamCode);
-    }
-
-    if (selectedSubjectCode) {
-      nextParams.set('subject', selectedSubjectCode);
-    }
-
-    if (selectedYear) {
-      nextParams.set('year', String(selectedYear));
-    }
-
-    if (selectedExamId) {
-      nextParams.set('examId', selectedExamId);
-    }
-
-    if (selectedSujetNumber) {
-      nextParams.set('sujet', String(selectedSujetNumber));
-    }
-
-    const nextQuery = nextParams.toString();
+    const nextQuery = buildAdminLibraryQuery({
+      selectedStreamCode,
+      selectedSubjectCode,
+      selectedYear,
+      selectedExamId,
+      selectedSujetNumber,
+    });
     const currentQuery =
       typeof window === 'undefined'
         ? ''
@@ -392,25 +332,22 @@ export function AdminLibraryPage() {
     }
   }
 
-  const browseContextTitle = subject
-    ? `${subject.name}${selectedYear ? ` · ${selectedYear}` : ''}`
-    : stream
-      ? `Stream: ${stream.name}`
-      : 'Choose a stream, subject, and year';
+  const browseContextTitle = buildAdminLibraryContextTitle({
+    streamName: stream?.name ?? null,
+    subjectName: subject?.name ?? null,
+    selectedYear,
+  });
   const sujetsCount = yearEntry?.sujets.length ?? 0;
-  const selectionPrompt = !stream
-    ? 'Start from a stream, then narrow the library to the exact published offering you want to revise.'
-    : !subject
-      ? 'Pick a subject to load the published years for this stream.'
-      : !selectedYear
-        ? 'Choose a year to reveal the matching published sujets.'
-        : !selectedSujet
-          ? 'Select the published sujet you want to inspect before starting a revision.'
-          : 'This published offering is ready. Open the revision workflow to edit the canonical paper in the ingestion review editor.';
-  const studentPreviewHref =
-    selectedExam && selectedSujet
-      ? `/app/browse/${selectedExam.stream.code}/${selectedExam.subject.code}/${selectedExam.year}/${selectedExam.id}/${selectedExam.selectedSujetNumber ?? selectedSujet.sujetNumber}`
-      : null;
+  const selectionPrompt = buildAdminLibrarySelectionPrompt({
+    hasStream: Boolean(stream),
+    hasSubject: Boolean(subject),
+    hasSelectedYear: selectedYear !== null,
+    hasSelectedSujet: Boolean(selectedSujet),
+  });
+  const studentPreviewHref = buildStudentPreviewHref(
+    selectedExam,
+    selectedSujet?.sujetNumber ?? null,
+  );
 
   if (loadingCatalog) {
     return (
@@ -455,293 +392,62 @@ export function AdminLibraryPage() {
       ) : (
         <div className="browse-workspace">
           <div className="browse-workspace-body">
-            <aside className="study-sidebar">
-              <div className="study-sidebar-header">
-                <p className="page-kicker">Library Filters</p>
-                <h2>Published Catalog</h2>
-                <p>{selectionPrompt}</p>
-              </div>
-
-              <div className="browse-filter-group">
-                <div className="browse-filter-head">
-                  <h3>Stream</h3>
-                  {selectedStreamCode ? (
-                    <button
-                      type="button"
-                      className="browse-clear-button"
-                      onClick={() => setSelectedStreamCode('')}
-                    >
-                      Clear
-                    </button>
-                  ) : null}
-                </div>
-                <div className="chip-grid">
-                  {(catalog?.streams ?? []).map((item) => (
-                    <button
-                      key={item.code}
-                      type="button"
-                      className={
-                        item.code === selectedStreamCode
-                          ? 'choice-chip active'
-                          : 'choice-chip'
-                      }
-                      onClick={() => setSelectedStreamCode(item.code)}
-                    >
-                      {item.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="browse-filter-group">
-                <div className="browse-filter-head">
-                  <h3>Subject</h3>
-                  {selectedSubjectCode ? (
-                    <button
-                      type="button"
-                      className="browse-clear-button"
-                      onClick={() => setSelectedSubjectCode('')}
-                    >
-                      Clear
-                    </button>
-                  ) : null}
-                </div>
-                {!stream ? (
-                  <p className="muted-text">Choose a stream first.</p>
-                ) : (
-                  <div className="chip-grid">
-                    {stream.subjects.map((item) => (
-                      <button
-                        key={item.code}
-                        type="button"
-                        className={
-                          item.code === selectedSubjectCode
-                            ? 'choice-chip active'
-                            : 'choice-chip'
-                        }
-                        onClick={() => setSelectedSubjectCode(item.code)}
-                      >
-                        {item.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="browse-filter-group">
-                <div className="browse-filter-head">
-                  <h3>Year</h3>
-                  {selectedYear ? (
-                    <button
-                      type="button"
-                      className="browse-clear-button"
-                      onClick={() => setSelectedYear(null)}
-                    >
-                      Clear
-                    </button>
-                  ) : null}
-                </div>
-                {!subject ? (
-                  <p className="muted-text">Published years appear after you choose a subject.</p>
-                ) : (
-                  <div className="browse-year-list">
-                    {subject.years.map((item) => (
-                      <button
-                        key={item.year}
-                        type="button"
-                        className={
-                          item.year === selectedYear
-                            ? 'browse-year-button active'
-                            : 'browse-year-button'
-                        }
-                        onClick={() => setSelectedYear(item.year)}
-                      >
-                        <strong>{item.year}</strong>
-                        <span>{item.sujets.length} sujets</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </aside>
+            <AdminLibraryFiltersRail
+              catalog={catalog}
+              stream={stream}
+              subject={subject}
+              selectedStreamCode={selectedStreamCode}
+              selectedSubjectCode={selectedSubjectCode}
+              selectedYear={selectedYear}
+              selectionPrompt={selectionPrompt}
+              onClearStream={() => setSelectedStreamCode('')}
+              onClearSubject={() => setSelectedSubjectCode('')}
+              onClearYear={() => setSelectedYear(null)}
+              onSelectStream={setSelectedStreamCode}
+              onSelectSubject={setSelectedSubjectCode}
+              onSelectYear={setSelectedYear}
+            />
 
             <div className="browse-main-column">
-              <section className="browse-context-strip">
-                <div>
-                  <p className="page-kicker">Current Focus</p>
-                  <h2>{browseContextTitle}</h2>
-                  <p>{selectionPrompt}</p>
-                </div>
-                <div className="browse-context-pills">
-                  {stream ? <span>{stream.name}</span> : null}
-                  {subject ? <span>{subject.name}</span> : null}
-                  {selectedYear ? <span>{selectedYear}</span> : null}
-                  {selectedSujet ? <span>{selectedSujet.label}</span> : null}
-                </div>
-              </section>
+              <AdminLibraryContextStrip
+                browseContextTitle={browseContextTitle}
+                selectionPrompt={selectionPrompt}
+                streamName={stream?.name ?? null}
+                subjectName={subject?.name ?? null}
+                selectedYear={selectedYear}
+                selectedSujetLabel={selectedSujet?.label ?? null}
+              />
 
-              <section className="browse-panel">
-                <div className="browse-panel-head">
-                  <div>
-                    <h2>Published Sujets</h2>
-                    <p>
-                      {subject && selectedYear
-                        ? `${subject.name} · ${selectedYear} · ${sujetsCount} published sujet(s)`
-                        : 'Complete the selection in the left rail.'}
-                    </p>
-                  </div>
-                </div>
+              <AdminLibrarySujetsPanel
+                stream={stream}
+                subject={subject}
+                selectedYear={selectedYear}
+                yearEntry={yearEntry}
+                sujetsCount={sujetsCount}
+                selectionPrompt={selectionPrompt}
+                selectedExamId={selectedExamId}
+                selectedSujetNumber={selectedSujetNumber}
+                onSelectSujet={(examId, sujetNumber) => {
+                  setSelectedExamId(examId);
+                  setSelectedSujetNumber(sujetNumber);
+                  setRevisionError(null);
+                }}
+              />
 
-                {!stream || !subject || !selectedYear ? (
-                  <EmptyState
-                    title="Finish the catalog path"
-                    description={selectionPrompt}
-                  />
-                ) : yearEntry && yearEntry.sujets.length ? (
-                  <div className="browse-sujet-grid">
-                    {yearEntry.sujets.map((item) => {
-                      const isActive =
-                        item.examId === selectedExamId &&
-                        item.sujetNumber === selectedSujetNumber;
-
-                      return (
-                        <button
-                          key={`${item.examId}:${item.sujetNumber}`}
-                          type="button"
-                          className={
-                            isActive
-                              ? 'browse-sujet-card active'
-                              : 'browse-sujet-card'
-                          }
-                          onClick={() => {
-                            setSelectedExamId(item.examId);
-                            setSelectedSujetNumber(item.sujetNumber);
-                            setRevisionError(null);
-                          }}
-                        >
-                          <div className="browse-sujet-card-top">
-                            <strong>{item.label}</strong>
-                            <span>{item.exerciseCount} exercises</span>
-                          </div>
-                          <p>{formatSessionLabel(item.sessionType)}</p>
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <EmptyState
-                    title="No published sujets here yet"
-                    description="Try another year or subject to find a live paper to revise."
-                  />
-                )}
-              </section>
-
-              <section className="browse-panel browse-preview-panel">
-                <div className="browse-panel-head">
-                  <div>
-                    <h2>Published Paper Preview</h2>
-                    <p>
-                      Review the live paper before you branch into a revision draft.
-                    </p>
-                  </div>
-                  <div className="table-actions">
-                    {studentPreviewHref ? (
-                      <Link href={studentPreviewHref} className="btn-secondary">
-                        Student Preview
-                      </Link>
-                    ) : null}
-                    <button
-                      type="button"
-                      className="btn-primary"
-                      onClick={() => {
-                        void startRevision();
-                      }}
-                      disabled={startingRevision || !selectedExamId}
-                    >
-                      {startingRevision ? 'Opening…' : 'Open Revision Workflow'}
-                    </button>
-                  </div>
-                </div>
-
-                {revisionError ? <p className="error-text">{revisionError}</p> : null}
-
-                {loadingExam ? (
-                  <div className="browse-preview-layout">
-                    <div className="study-skeleton block" />
-                    <div className="study-skeleton block tall" />
-                  </div>
-                ) : examError ? (
-                  <EmptyState
-                    title="Preview unavailable"
-                    description={examError}
-                    action={
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        onClick={() => window.location.reload()}
-                      >
-                        Retry
-                      </button>
-                    }
-                  />
-                ) : selectedExam ? (
-                  <div className="browse-preview-layout">
-                    <article className="browse-preview-summary">
-                      <div className="study-meta-row">
-                        <span className="study-meta-pill">
-                          <strong>Session</strong>
-                          <span>{formatSessionLabel(selectedExam.sessionType)}</span>
-                        </span>
-                        <span className="study-meta-pill">
-                          <strong>Duration</strong>
-                          <span>{selectedExam.durationMinutes} min</span>
-                        </span>
-                        <span className="study-meta-pill">
-                          <strong>Total points</strong>
-                          <span>{selectedExam.totalPoints}</span>
-                        </span>
-                      </div>
-
-                      <div className="browse-preview-copy">
-                        <h3>
-                          {selectedExam.selectedSujetLabel ?? selectedSujet?.label}
-                        </h3>
-                        <p>
-                          {selectedExam.subject.name} · {selectedExam.stream.name} ·{' '}
-                          {selectedExam.year}
-                        </p>
-                        <p className="muted-text">
-                          Opening a revision creates or resumes a draft for the
-                          shared canonical paper, then sends you to the ingestion
-                          review editor for validation and republishing.
-                        </p>
-                        {selectedExam.officialSourceReference ? (
-                          <p className="muted-text">
-                            Source reference: {selectedExam.officialSourceReference}
-                          </p>
-                        ) : null}
-                      </div>
-                    </article>
-
-                    <div className="browse-exercise-list">
-                      {selectedExam.exercises.map((exercise) => (
-                        <article key={exercise.id} className="browse-exercise-card">
-                          <div>
-                            <strong>Exercise {exercise.orderIndex}</strong>
-                            <span>{exercise.questionCount} questions</span>
-                          </div>
-                          <p>{exercise.title ?? 'Untitled exercise'}</p>
-                        </article>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <EmptyState
-                    title="Choose a published sujet"
-                    description="Its live structure and exercises will appear here before you open the revision flow."
-                  />
-                )}
-              </section>
+              <AdminLibraryPreviewPanel
+                studentPreviewHref={studentPreviewHref}
+                startingRevision={startingRevision}
+                selectedExamId={selectedExamId}
+                onStartRevision={() => {
+                  void startRevision();
+                }}
+                revisionError={revisionError}
+                loadingExam={loadingExam}
+                examError={examError}
+                selectedExam={selectedExam}
+                selectedSujetLabel={selectedSujet?.label ?? null}
+                onRetryPreview={() => window.location.reload()}
+              />
             </div>
           </div>
         </div>

@@ -1,41 +1,46 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ValidationPipe } from '@nestjs/common';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import request from 'supertest';
+import {
+  API_GLOBAL_PREFIX,
+  configureApiApp,
+  createApiAdapter,
+} from './../src/app-setup';
 import { AppModule } from './../src/app.module';
+
+jest.setTimeout(15000);
 
 describe('App (e2e)', () => {
   let app: NestFastifyApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     process.env.PRISMA_CONNECT_ON_STARTUP = 'false';
+    process.env.AUTH_BOOTSTRAP_ADMIN_ON_STARTUP = 'false';
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication<NestFastifyApplication>(
-      new FastifyAdapter(),
-    );
-    app.setGlobalPrefix('api/v1');
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-      }),
-    );
+    app =
+      moduleFixture.createNestApplication<NestFastifyApplication>(
+        createApiAdapter(),
+      );
+    await configureApiApp(app);
     await app.init();
     await app.getHttpAdapter().getInstance().ready();
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await app.close();
   });
 
-  it('/api/v1/health (GET)', () => {
-    return request(app.getHttpServer()).get('/api/v1/health').expect(200);
+  it(`/${API_GLOBAL_PREFIX}/health/live (GET)`, async () => {
+    const response = await request(app.getHttpServer())
+      .get(`/${API_GLOBAL_PREFIX}/health/live`)
+      .expect(200);
+
+    expect(response.headers['x-frame-options']).toBe('DENY');
+    expect(response.headers['x-content-type-options']).toBe('nosniff');
+    expect(response.headers['x-request-id']).toBeDefined();
   });
 });

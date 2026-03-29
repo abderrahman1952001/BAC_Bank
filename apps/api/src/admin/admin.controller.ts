@@ -8,11 +8,13 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   Res,
   StreamableFile,
   UseGuards,
 } from '@nestjs/common';
 import type { FastifyReply } from 'fastify';
+import type { AuthenticatedRequest } from '../auth/auth.types';
 import { AdminRoleGuard } from './admin.guard';
 import { AdminService } from './admin.service';
 
@@ -33,8 +35,8 @@ export class AdminController {
 
   @UseGuards(AdminRoleGuard)
   @Get('me')
-  getMe() {
-    return this.adminService.getMe();
+  getMe(@Req() request: AuthenticatedRequest) {
+    return this.adminService.getMe(request.user!);
   }
 
   @UseGuards(AdminRoleGuard)

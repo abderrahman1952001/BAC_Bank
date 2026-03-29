@@ -1,7 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import {
+  AdminIngestionJobBrowserSection,
+  AdminIngestionManualUploadSection,
+} from '@/components/admin-ingestion-page-sections';
 import {
   AdminIngestionJobListResponse,
   AdminIngestionJobResponse,
@@ -10,42 +13,16 @@ import {
   fetchAdminJson,
 } from '@/lib/admin';
 import {
-  findStreamLabel,
-  findSubjectLabel,
-  INGESTION_STATUS_LABELS,
-  INGESTION_STATUS_ORDER,
+  buildGroupedStatuses,
+  buildStatusCounts,
+  filterJobs,
+  JobStatusFilter,
+  StatusScopedFilter,
+  toJobSummary,
+} from '@/lib/admin-ingestion-page';
+import {
   INGESTION_STREAM_OPTIONS,
-  INGESTION_SUBJECT_OPTIONS,
 } from '@/lib/ingestion-options';
-
-type JobStatusFilter = 'all' | AdminIngestionJobSummary['status'];
-type StatusScopedFilter = {
-  streamKey: string | 'all';
-  year: number | 'all';
-};
-
-function formatSession(session: AdminIngestionJobSummary['session']) {
-  if (session === 'rattrapage') {
-    return 'Rattrapage';
-  }
-
-  return 'Normal';
-}
-
-function compareJobs(left: AdminIngestionJobSummary, right: AdminIngestionJobSummary) {
-  if (left.year !== right.year) {
-    return right.year - left.year;
-  }
-
-  const updatedAtDelta =
-    new Date(right.updated_at).getTime() - new Date(left.updated_at).getTime();
-
-  if (updatedAtDelta !== 0) {
-    return updatedAtDelta;
-  }
-
-  return left.label.localeCompare(right.label);
-}
 
 export function AdminIngestionPage() {
   const [jobs, setJobs] = useState<AdminIngestionJobSummary[]>([]);
@@ -73,20 +50,6 @@ export function AdminIngestionPage() {
   const [sourceReference, setSourceReference] = useState('');
   const [examPdf, setExamPdf] = useState<File | null>(null);
   const [correctionPdf, setCorrectionPdf] = useState<File | null>(null);
-
-  function toJobSummary(
-    payload: AdminIngestionJobResponse,
-  ): AdminIngestionJobSummary {
-    return {
-      ...payload.job,
-      workflow: payload.workflow,
-      source_document_count: payload.documents.length,
-      source_page_count: payload.documents.reduce(
-        (sum, document) => sum + document.pages.length,
-        0,
-      ),
-    };
-  }
 
   useEffect(() => {
     const controller = new AbortController();
@@ -120,6 +83,32 @@ export function AdminIngestionPage() {
     };
   }, []);
 
+  const hasActiveProcessingJobs = useMemo(
+    () =>
+      jobs.some(
+        (job) => job.status === 'queued' || job.status === 'processing',
+      ),
+    [jobs],
+  );
+
+  useEffect(() => {
+    if (!hasActiveProcessingJobs) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      void fetchAdminJson<AdminIngestionJobListResponse>('/ingestion/jobs')
+        .then((payload) => {
+          setJobs(payload.data);
+        })
+        .catch(() => undefined);
+    }, 5000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [hasActiveProcessingJobs]);
+
   useEffect(() => {
     setPaperStreamCodes((current) => {
       if (current.includes(streamCode)) {
@@ -130,156 +119,27 @@ export function AdminIngestionPage() {
     });
   }, [streamCode]);
 
-  const statusCounts = useMemo(() => {
-    const counts: Record<JobStatusFilter, number> = {
-      all: jobs.length,
-      draft: 0,
-      in_review: 0,
-      approved: 0,
-      published: 0,
-      failed: 0,
-    };
+  const statusCounts = useMemo(() => buildStatusCounts(jobs), [jobs]);
 
-    for (const job of jobs) {
-      counts[job.status] += 1;
-    }
+  const filteredJobs = useMemo(
+    () =>
+      filterJobs({
+        jobs,
+        jobQuery,
+        statusFilter,
+      }),
+    [jobQuery, jobs, statusFilter],
+  );
 
-    return counts;
-  }, [jobs]);
-
-  const filteredJobs = useMemo(() => {
-    const query = jobQuery.trim().toLowerCase();
-
-    return jobs.filter((job) => {
-      if (statusFilter !== 'all' && job.status !== statusFilter) {
-        return false;
-      }
-
-      if (!query) {
-        return true;
-      }
-
-      const searchText = [
-        job.label,
-        job.year,
-        job.stream_code,
-        findStreamLabel(job.stream_code),
-        job.subject_code,
-        findSubjectLabel(job.subject_code),
-        job.status,
-        job.workflow.awaiting_correction ? 'waiting correction' : '',
-      ]
-        .join(' ')
-        .toLowerCase();
-
-      return searchText.includes(query);
-    });
-  }, [jobQuery, jobs, statusFilter]);
-
-  const groupedStatuses = useMemo(() => {
-    const visibleStatuses =
-      statusFilter === 'all'
-        ? INGESTION_STATUS_ORDER.filter((status) =>
-            filteredJobs.some((job) => job.status === status),
-          )
-        : ([statusFilter] as const);
-
-    return visibleStatuses.map((status) => {
-      const jobsForStatus = filteredJobs
-        .filter((job) => job.status === status)
-        .sort(compareJobs);
-      const availableStreamKeys = Array.from(
-        new Set(jobsForStatus.map((job) => job.stream_code ?? 'UNMAPPED')),
-      ).sort((left, right) => {
-        const leftLabel =
-          left === 'UNMAPPED' ? 'Unmapped stream' : findStreamLabel(left);
-        const rightLabel =
-          right === 'UNMAPPED' ? 'Unmapped stream' : findStreamLabel(right);
-
-        return leftLabel.localeCompare(rightLabel);
-      });
-      const scopedFilter = statusScopedFilters[status];
-      const activeStreamKey =
-        scopedFilter?.streamKey &&
-        scopedFilter.streamKey !== 'all' &&
-        availableStreamKeys.includes(scopedFilter.streamKey)
-          ? scopedFilter.streamKey
-          : 'all';
-      const streamFilteredJobs =
-        activeStreamKey === 'all'
-          ? jobsForStatus
-          : jobsForStatus.filter(
-              (job) => (job.stream_code ?? 'UNMAPPED') === activeStreamKey,
-            );
-      const availableYears = Array.from(
-        new Set(streamFilteredJobs.map((job) => job.year)),
-      ).sort((left, right) => right - left);
-      const activeYear =
-        typeof scopedFilter?.year === 'number' &&
-        availableYears.includes(scopedFilter.year)
-          ? scopedFilter.year
-          : 'all';
-      const scopedJobs =
-        activeYear === 'all'
-          ? streamFilteredJobs
-          : streamFilteredJobs.filter((job) => job.year === activeYear);
-      const streams = new Map<string, AdminIngestionJobSummary[]>();
-
-      for (const job of scopedJobs) {
-        const streamKey = job.stream_code ?? 'UNMAPPED';
-        const bucket = streams.get(streamKey) ?? [];
-        bucket.push(job);
-        streams.set(streamKey, bucket);
-      }
-
-      return {
-        status,
-        label: INGESTION_STATUS_LABELS[status],
-        count: jobsForStatus.length,
-        activeStreamKey,
-        activeYear,
-        availableStreamGroups: availableStreamKeys.map((streamKey) => ({
-          streamKey,
-          label:
-            streamKey === 'UNMAPPED'
-              ? 'Unmapped stream'
-              : findStreamLabel(streamKey),
-          count: jobsForStatus.filter(
-            (job) => (job.stream_code ?? 'UNMAPPED') === streamKey,
-          ).length,
-        })),
-        availableYears: availableYears.map((yearValue) => ({
-          year: yearValue,
-          count: streamFilteredJobs.filter((job) => job.year === yearValue).length,
-        })),
-        streamGroups: [...streams.entries()]
-          .map(([streamKey, streamJobs]) => {
-            const years = new Map<number, AdminIngestionJobSummary[]>();
-
-            for (const job of streamJobs) {
-              const bucket = years.get(job.year) ?? [];
-              bucket.push(job);
-              years.set(job.year, bucket);
-            }
-
-            return {
-              streamKey,
-              streamLabel:
-                streamKey === 'UNMAPPED'
-                  ? 'Unmapped stream'
-                  : findStreamLabel(streamKey),
-              yearGroups: [...years.entries()]
-                .sort((left, right) => right[0] - left[0])
-                .map(([groupYear, yearJobs]) => ({
-                  year: groupYear,
-                  jobs: [...yearJobs].sort(compareJobs),
-                })),
-            };
-          })
-          .sort((left, right) => left.streamLabel.localeCompare(right.streamLabel)),
-      };
-    });
-  }, [filteredJobs, statusFilter, statusScopedFilters]);
+  const groupedStatuses = useMemo(
+    () =>
+      buildGroupedStatuses({
+        filteredJobs,
+        statusFilter,
+        statusScopedFilters,
+      }),
+    [filteredJobs, statusFilter, statusScopedFilters],
+  );
 
   function updateStatusScopedFilter(
     status: AdminIngestionJobSummary['status'],
@@ -432,7 +292,9 @@ export function AdminIngestionPage() {
         current.map((entry) => (entry.id === job.id ? updatedSummary : entry)),
       );
       setCreatedJob((current) => (current?.job.id === job.id ? payload : current));
-      setProcessNotice(`Processed ${payload.job.label}.`);
+      setProcessNotice(
+        `Queued ${payload.job.label} for background processing. The list will refresh while the worker runs.`,
+      );
     } catch (processError) {
       setError(
         processError instanceof Error
@@ -483,178 +345,30 @@ export function AdminIngestionPage() {
       </div>
 
       <div className="ingestion-entry-grid">
-        <article className="admin-context-card ingestion-entry-card">
-          <p className="page-kicker">Primary Workflow</p>
-          <h2>Manual Upload</h2>
-          <p className="muted-text">
-            Upload official PDFs directly when you already have them or when a
-            source adapter is flaky.
-          </p>
-          <p className="muted-text">
-            Upload both PDFs together when you have them. If the correction is
-            missing, create the job now and attach the correction later from the
-            review screen.
-          </p>
-
-          <form className="ingestion-upload-form" onSubmit={handleManualUpload}>
-            <label>
-              <span>Year</span>
-              <input
-                type="number"
-                min={2008}
-                max={2100}
-                value={year}
-                onChange={(event) => setYear(event.target.value)}
-                required
-              />
-            </label>
-
-            <label>
-              <span>Primary Exam Offering Stream</span>
-              <select
-                value={streamCode}
-                onChange={(event) => setStreamCode(event.target.value)}
-              >
-                {paperStreamCodes.map((code) => (
-                  <option key={code} value={code}>
-                    {code} · {findStreamLabel(code)}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="field admin-form-wide ingestion-upload-span-2">
-              <span>Paper Streams</span>
-              <div className="ingestion-stream-checkbox-grid">
-                {INGESTION_STREAM_OPTIONS.map(([value, label]) => {
-                  const checked = paperStreamCodes.includes(value);
-
-                  return (
-                    <label
-                      key={value}
-                      className={
-                        checked
-                          ? 'ingestion-stream-option active'
-                          : 'ingestion-stream-option'
-                      }
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={(event) => {
-                          togglePaperStream(value, event.target.checked);
-                        }}
-                      />
-                      <span>
-                        <strong>{value}</strong> {label}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-              <small className="muted-text">
-                One shared paper can publish to several streams. The primary exam
-                offering stream stays inside the selected set.
-              </small>
-            </label>
-
-            <label>
-              <span>Subject</span>
-              <select
-                value={subjectCode}
-                onChange={(event) => setSubjectCode(event.target.value)}
-              >
-                {INGESTION_SUBJECT_OPTIONS.map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {value} · {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              <span>Session</span>
-              <select
-                value={session}
-                onChange={(event) =>
-                  setSession(event.target.value === 'MAKEUP' ? 'MAKEUP' : 'NORMAL')
-                }
-              >
-                <option value="NORMAL">NORMAL</option>
-                <option value="MAKEUP">MAKEUP</option>
-              </select>
-            </label>
-
-            <label className="ingestion-upload-span-2">
-              <span>Title</span>
-              <input
-                type="text"
-                placeholder="BAC 2025 · MATHEMATICS · SE"
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                required
-              />
-            </label>
-
-            <label>
-              <span>Qualifier Key</span>
-              <input
-                type="text"
-                placeholder="german / spanish / italian"
-                value={qualifierKey}
-                onChange={(event) => setQualifierKey(event.target.value)}
-              />
-            </label>
-
-            <label>
-              <span>Source Reference</span>
-              <input
-                type="text"
-                placeholder="Official ministry PDF / local archive"
-                value={sourceReference}
-                onChange={(event) => setSourceReference(event.target.value)}
-              />
-            </label>
-
-            <label>
-              <span>Exam PDF</span>
-              <input
-                type="file"
-                accept="application/pdf,.pdf"
-                onChange={(event) => setExamPdf(event.target.files?.[0] ?? null)}
-                required
-              />
-            </label>
-
-            <label>
-              <span>Correction PDF</span>
-              <input
-                type="file"
-                accept="application/pdf,.pdf"
-                onChange={(event) =>
-                  setCorrectionPdf(event.target.files?.[0] ?? null)
-                }
-              />
-            </label>
-
-            <button type="submit" className="btn-primary" disabled={uploading}>
-              {uploading ? 'Uploading…' : 'Create Intake Job'}
-            </button>
-          </form>
-
-          {uploadError ? <p className="error-text">{uploadError}</p> : null}
-          {createdJob ? (
-            <p className="success-text">
-              Manual intake created.
-              {createdJob.workflow.awaiting_correction
-                ? ' Add the correction PDF before processing.'
-                : ' Ready for processing.'}{' '}
-              <Link href={`/admin/ingestion/${createdJob.job.id}`}>
-                Open review job
-              </Link>
-            </p>
-          ) : null}
-        </article>
+        <AdminIngestionManualUploadSection
+          year={year}
+          streamCode={streamCode}
+          paperStreamCodes={paperStreamCodes}
+          subjectCode={subjectCode}
+          session={session}
+          title={title}
+          qualifierKey={qualifierKey}
+          sourceReference={sourceReference}
+          uploading={uploading}
+          uploadError={uploadError}
+          createdJob={createdJob}
+          onSubmit={handleManualUpload}
+          onYearChange={setYear}
+          onStreamCodeChange={setStreamCode}
+          onTogglePaperStream={togglePaperStream}
+          onSubjectCodeChange={setSubjectCode}
+          onSessionChange={setSession}
+          onTitleChange={setTitle}
+          onQualifierKeyChange={setQualifierKey}
+          onSourceReferenceChange={setSourceReference}
+          onExamPdfChange={setExamPdf}
+          onCorrectionPdfChange={setCorrectionPdf}
+        />
 
         <details className="admin-context-card ingestion-entry-card">
           <summary className="ingestion-advanced-summary">Bulk Intake Tools</summary>
@@ -684,281 +398,21 @@ export function AdminIngestionPage() {
       {error ? <p className="error-text">{error}</p> : null}
       {processNotice ? <p className="success-text">{processNotice}</p> : null}
 
-      <section className="admin-context-card">
-        <div className="admin-page-head ingestion-section-head">
-          <div>
-            <h2>Job Browser</h2>
-            <p className="muted-text">
-              Browse by workflow status first, then drill into stream and year to
-              find the exact ingestion job quickly.
-            </p>
-          </div>
-          <label className="field ingestion-job-search">
-            <span>Find a job</span>
-            <input
-              type="search"
-              placeholder="Search title, stream, subject, year…"
-              value={jobQuery}
-              onChange={(event) => setJobQuery(event.target.value)}
-            />
-          </label>
-        </div>
-
-        <div className="ingestion-status-nav" role="tablist" aria-label="Job statuses">
-          <button
-            type="button"
-            className={
-              statusFilter === 'all' ? 'ingestion-status-chip active' : 'ingestion-status-chip'
-            }
-            onClick={() => setStatusFilter('all')}
-          >
-            All
-            <span>{statusCounts.all}</span>
-          </button>
-          {INGESTION_STATUS_ORDER.map((status) => (
-            <button
-              key={status}
-              type="button"
-              className={
-                statusFilter === status
-                  ? 'ingestion-status-chip active'
-                  : 'ingestion-status-chip'
-              }
-              onClick={() => setStatusFilter(status)}
-            >
-              {INGESTION_STATUS_LABELS[status]}
-              <span>{statusCounts[status]}</span>
-            </button>
-          ))}
-        </div>
-
-        {!loading && !filteredJobs.length ? (
-          <article className="ingestion-empty-state">
-            <h3>No matching jobs</h3>
-            <p className="muted-text">
-              Adjust the status filter or search query, or create a new intake job
-              above.
-            </p>
-          </article>
-        ) : null}
-
-        <div className="ingestion-job-browser">
-          {groupedStatuses.map((statusGroup) => (
-            <section key={statusGroup.status} className="ingestion-job-status-group">
-              <div className="admin-page-head ingestion-section-head">
-                <div>
-                  <h3>{statusGroup.label}</h3>
-                  <p className="muted-text">
-                    {statusGroup.count} job{statusGroup.count === 1 ? '' : 's'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="ingestion-subfilter-stack">
-                <div className="ingestion-subfilter-row">
-                  <span className="ingestion-subfilter-label">Stream</span>
-                  <div className="ingestion-subfilter-nav">
-                    <button
-                      type="button"
-                      className={
-                        statusGroup.activeStreamKey === 'all'
-                          ? 'ingestion-subfilter-chip active'
-                          : 'ingestion-subfilter-chip'
-                      }
-                      onClick={() => {
-                        updateStatusScopedFilter(statusGroup.status, {
-                          streamKey: 'all',
-                          year: 'all',
-                        });
-                      }}
-                    >
-                      All streams
-                      <span>{statusGroup.count}</span>
-                    </button>
-                    {statusGroup.availableStreamGroups.map((streamGroup) => (
-                      <button
-                        key={`${statusGroup.status}-${streamGroup.streamKey}`}
-                        type="button"
-                        className={
-                          statusGroup.activeStreamKey === streamGroup.streamKey
-                            ? 'ingestion-subfilter-chip active'
-                            : 'ingestion-subfilter-chip'
-                        }
-                        onClick={() => {
-                          updateStatusScopedFilter(statusGroup.status, {
-                            streamKey: streamGroup.streamKey,
-                            year: 'all',
-                          });
-                        }}
-                      >
-                        {streamGroup.label}
-                        <span>{streamGroup.count}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="ingestion-subfilter-row">
-                  <span className="ingestion-subfilter-label">Year</span>
-                  <div className="ingestion-subfilter-nav">
-                    <button
-                      type="button"
-                      className={
-                        statusGroup.activeYear === 'all'
-                          ? 'ingestion-subfilter-chip active'
-                          : 'ingestion-subfilter-chip'
-                      }
-                      onClick={() => {
-                        updateStatusScopedFilter(statusGroup.status, {
-                          year: 'all',
-                        });
-                      }}
-                    >
-                      All years
-                    </button>
-                    {statusGroup.availableYears.map((yearGroup) => (
-                      <button
-                        key={`${statusGroup.status}-${yearGroup.year}`}
-                        type="button"
-                        className={
-                          statusGroup.activeYear === yearGroup.year
-                            ? 'ingestion-subfilter-chip active'
-                            : 'ingestion-subfilter-chip'
-                        }
-                        onClick={() => {
-                          updateStatusScopedFilter(statusGroup.status, {
-                            year: yearGroup.year,
-                          });
-                        }}
-                      >
-                        {yearGroup.year}
-                        <span>{yearGroup.count}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="ingestion-job-stream-groups">
-                {statusGroup.streamGroups.map((streamGroup) => (
-                  <article
-                    key={`${statusGroup.status}-${streamGroup.streamKey}`}
-                    className="ingestion-job-stream-group"
-                  >
-                    <header className="ingestion-job-stream-head">
-                      <div>
-                        <h4>{streamGroup.streamLabel}</h4>
-                        <p className="muted-text">
-                          {streamGroup.yearGroups.reduce(
-                            (sum, group) => sum + group.jobs.length,
-                            0,
-                          )}{' '}
-                          job
-                          {streamGroup.yearGroups.reduce(
-                            (sum, group) => sum + group.jobs.length,
-                            0,
-                          ) === 1
-                            ? ''
-                            : 's'}
-                        </p>
-                      </div>
-                    </header>
-
-                    {streamGroup.yearGroups.map((yearGroup) => (
-                      <section
-                        key={`${streamGroup.streamKey}-${yearGroup.year}`}
-                        className="ingestion-job-year-group"
-                      >
-                        <div className="ingestion-job-year-head">
-                          <strong>{yearGroup.year}</strong>
-                          <span>{yearGroup.jobs.length} jobs</span>
-                        </div>
-
-                        <div className="ingestion-job-card-list">
-                          {yearGroup.jobs.map((job) => (
-                            <article key={job.id} className="ingestion-job-card">
-                              <div className="admin-page-head ingestion-section-head">
-                                <div>
-                                  <p className="page-kicker">
-                                    {findSubjectLabel(job.subject_code)}
-                                  </p>
-                                  <h4>{job.label}</h4>
-                                  <p className="muted-text">
-                                    {findStreamLabel(job.stream_code)} ·{' '}
-                                    {formatSession(job.session)}
-                                  </p>
-                                </div>
-                                <div className="ingestion-job-card-status">
-                                  <span className={`status-chip ${job.status}`}>
-                                    {INGESTION_STATUS_LABELS[job.status]}
-                                  </span>
-                                  {job.workflow.awaiting_correction ? (
-                                    <span className="ingestion-inline-note">
-                                      Waiting for correction
-                                    </span>
-                                  ) : null}
-                                </div>
-                              </div>
-
-                              <div className="ingestion-job-card-meta">
-                                <span>{job.source_document_count} docs</span>
-                                <span>{job.source_page_count} pages</span>
-                                <span>
-                                  Updated {new Date(job.updated_at).toLocaleString()}
-                                </span>
-                              </div>
-
-                              <div className="block-item-actions">
-                                <button
-                                  type="button"
-                                  className="btn-secondary"
-                                  onClick={() => {
-                                    void handleProcessJob(job);
-                                  }}
-                                  disabled={
-                                    processingJobId === job.id ||
-                                    !job.workflow.can_process ||
-                                    job.status === 'published'
-                                  }
-                                >
-                                  {job.workflow.awaiting_correction
-                                    ? 'Waiting'
-                                    : processingJobId === job.id
-                                      ? 'Processing…'
-                                      : job.workflow.review_started
-                                        ? 'Reprocess'
-                                        : 'Process'}
-                                </button>
-                                <Link
-                                  href={`/admin/ingestion/${job.id}`}
-                                  className="btn-primary"
-                                >
-                                  Open Review
-                                </Link>
-                                {job.published_exams.map((exam) => (
-                                  <Link
-                                    key={exam.id}
-                                    href={`/admin/library?examId=${exam.id}`}
-                                    className="btn-secondary"
-                                  >
-                                    {exam.is_primary
-                                      ? `Published ${exam.stream_code}`
-                                      : exam.stream_code}
-                                  </Link>
-                                ))}
-                              </div>
-                            </article>
-                          ))}
-                        </div>
-                      </section>
-                    ))}
-                  </article>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      </section>
+      <AdminIngestionJobBrowserSection
+        loading={loading}
+        jobQuery={jobQuery}
+        statusFilter={statusFilter}
+        statusCounts={statusCounts}
+        filteredJobs={filteredJobs}
+        groupedStatuses={groupedStatuses}
+        processingJobId={processingJobId}
+        onJobQueryChange={setJobQuery}
+        onStatusFilterChange={setStatusFilter}
+        onUpdateStatusScopedFilter={updateStatusScopedFilter}
+        onProcessJob={(job) => {
+          void handleProcessJob(job);
+        }}
+      />
     </section>
   );
 }

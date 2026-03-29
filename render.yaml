@@ -1,0 +1,161 @@
+previews:
+  generation: off
+
+envVarGroups:
+  - name: bac-bank-api-shared
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REDIS_REQUIRED
+        value: "true"
+      - key: LOG_HTTP_REQUESTS
+        value: "true"
+      - key: TRUST_PROXY
+        value: "true"
+      - key: AUTH_SESSION_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: AUTH_SESSION_TTL_DAYS
+        value: "7"
+      - key: AUTH_ADMIN_SESSION_TTL_HOURS
+        value: "12"
+      - key: AUTH_RATE_LIMIT_WINDOW_MS
+        value: "900000"
+      - key: AUTH_LOGIN_RATE_LIMIT_MAX_PER_IP
+        value: "20"
+      - key: AUTH_LOGIN_RATE_LIMIT_MAX_PER_EMAIL
+        value: "8"
+      - key: AUTH_REGISTER_RATE_LIMIT_MAX_PER_IP
+        value: "10"
+      - key: AUTH_REGISTER_RATE_LIMIT_MAX_PER_EMAIL
+        value: "4"
+      - key: AUTH_BOOTSTRAP_ADMIN_ON_STARTUP
+        value: "false"
+      - key: HEALTH_WORKER_STALE_MS
+        value: "45000"
+      - key: INGESTION_MIN_YEAR
+        value: "2008"
+      - key: INGESTION_QUEUE_POLL_INTERVAL_MS
+        value: "5000"
+      - key: INGESTION_PROCESSING_LEASE_MS
+        value: "1800000"
+      - key: WORKER_HEARTBEAT_INTERVAL_MS
+        value: "10000"
+
+databases:
+  - name: bac-bank-db
+    plan: basic-256mb
+    postgresMajorVersion: "16"
+    region: frankfurt
+
+services:
+  - type: keyvalue
+    name: bac-bank-redis
+    plan: starter
+    region: frankfurt
+    ipAllowList: []
+
+  - type: web
+    name: bac-bank-api
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    branch: main
+    dockerContext: .
+    dockerfilePath: ./apps/api/Dockerfile
+    autoDeploy: false
+    healthCheckPath: /api/v1/health/ready
+    preDeployCommand: npm run prisma:migrate:deploy -w @bac-bank/api
+    envVars:
+      - fromGroup: bac-bank-api-shared
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bac-bank-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: bac-bank-redis
+          property: connectionString
+      - key: CORS_ORIGIN
+        sync: false
+      - key: PUBLIC_API_BASE_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3-flash-preview
+      - key: GEMINI_MAX_OUTPUT_TOKENS
+        value: "65535"
+      - key: GEMINI_TEMPERATURE
+        value: "1"
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+
+  - type: worker
+    name: bac-bank-worker
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    branch: main
+    dockerContext: .
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerCommand: node apps/api/dist/worker.js
+    autoDeploy: false
+    envVars:
+      - fromGroup: bac-bank-api-shared
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bac-bank-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: bac-bank-redis
+          property: connectionString
+      - key: PUBLIC_API_BASE_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3-flash-preview
+      - key: GEMINI_MAX_OUTPUT_TOKENS
+        value: "65535"
+      - key: GEMINI_TEMPERATURE
+        value: "1"
+      - key: R2_ACCESS_KEY_ID
+        sync: false
+      - key: R2_SECRET_ACCESS_KEY
+        sync: false
+      - key: R2_ACCOUNT_ID
+        sync: false
+      - key: R2_BUCKET_NAME
+        sync: false
+      - key: R2_ENDPOINT
+        sync: false
+
+  - type: web
+    name: bac-bank-web
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    branch: main
+    dockerContext: .
+    dockerfilePath: ./apps/web/Dockerfile
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_BASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_ASSET_BASE_URL
+        sync: false

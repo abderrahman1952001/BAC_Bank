@@ -1,57 +1,16 @@
-'use client';
+import { RouteGuard } from "@/components/route-guard";
+import type { UserRole } from "@/lib/client-auth";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { fetchAdminJson } from '@/lib/admin';
-import { getClientRole } from '@/lib/client-auth';
+const ADMIN_ALLOWED_ROLES: UserRole[] = ["ADMIN"];
 
 export function AdminRouteGuard({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const [allowed, setAllowed] = useState(false);
-  const [checking, setChecking] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function verifyAccess() {
-      if (getClientRole() !== 'ADMIN') {
-        router.replace('/app');
-        return;
-      }
-
-      try {
-        await fetchAdminJson('/me');
-
-        if (isMounted) {
-          setAllowed(true);
-        }
-      } catch {
-        router.replace('/app');
-      } finally {
-        if (isMounted) {
-          setChecking(false);
-        }
-      }
-    }
-
-    void verifyAccess();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [router]);
-
-  if (checking) {
-    return (
-      <section className="panel">
-        <p>Checking admin access…</p>
-      </section>
-    );
-  }
-
-  if (!allowed) {
-    return null;
-  }
-
-  return <>{children}</>;
+  return (
+    <RouteGuard
+      allowedRoles={ADMIN_ALLOWED_ROLES}
+      loadingMessage="Checking admin access…"
+      unauthorizedRedirect="/app"
+    >
+      {children}
+    </RouteGuard>
+  );
 }

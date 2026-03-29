@@ -1,38 +1,14 @@
-import { ValidationPipe } from '@nestjs/common';
-import multipart from '@fastify/multipart';
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import { configureApiApp, createApiAdapter } from './app-setup';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    createApiAdapter(),
   );
-
-  app.setGlobalPrefix('api/v1');
-  await app.register(multipart, {
-    limits: {
-      files: 2,
-      fileSize: 32 * 1024 * 1024,
-      fields: 16,
-    },
-  });
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
-
-  app.enableCors({
-    origin: process.env.CORS_ORIGIN?.split(',') ?? true,
-    credentials: true,
-  });
+  await configureApiApp(app);
 
   const port = Number(process.env.PORT ?? 3001);
   await app.listen(port, '0.0.0.0');

@@ -3,48 +3,28 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  AdminExamExercisesFormSection,
+  AdminExamExercisesListSection,
+} from '@/components/admin-exam-exercises-sections';
+import {
   AdminExercise,
   AdminExam,
   AdminExamExercisesResponse,
+  AdminFiltersResponse,
   fetchAdminJson,
 } from '@/lib/admin';
-
-type ExerciseFormState = {
-  title: string;
-  theme: string;
-  difficulty: string;
-  tags: string;
-};
-
-function defaultExerciseForm(): ExerciseFormState {
-  return {
-    title: '',
-    theme: '',
-    difficulty: '',
-    tags: '',
-  };
-}
-
-function reorderById(items: AdminExercise[], draggedId: string, targetId: string) {
-  const sourceIndex = items.findIndex((item) => item.id === draggedId);
-  const targetIndex = items.findIndex((item) => item.id === targetId);
-
-  if (sourceIndex < 0 || targetIndex < 0) {
-    return items;
-  }
-
-  const copy = [...items];
-  const [moved] = copy.splice(sourceIndex, 1);
-  copy.splice(targetIndex, 0, moved);
-
-  return copy.map((item, index) => ({
-    ...item,
-    order_index: index + 1,
-  }));
-}
+import {
+  buildExerciseFormState,
+  buildExercisePayload,
+  defaultExerciseForm,
+  filterAvailableExerciseTopics,
+  reorderExercisesById,
+  type ExerciseFormState,
+} from '@/lib/admin-exam-exercises';
 
 export function AdminExamExercisesPage({ examId }: { examId: string }) {
   const [exam, setExam] = useState<AdminExam | null>(null);
+  const [filters, setFilters] = useState<AdminFiltersResponse | null>(null);
   const [exercises, setExercises] = useState<AdminExercise[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,10 +50,12 @@ export function AdminExamExercisesPage({ examId }: { examId: string }) {
     setError(null);
 
     try {
-      const payload = await fetchAdminJson<AdminExamExercisesResponse>(
-        `/exams/${examId}/exercises`,
-      );
+      const [payload, filtersPayload] = await Promise.all([
+        fetchAdminJson<AdminExamExercisesResponse>(`/exams/${examId}/exercises`),
+        fetchAdminJson<AdminFiltersResponse>('/filters'),
+      ]);
 
+      setFilters(filtersPayload);
       setExam(payload.exam);
       setExercises(payload.exercises);
     } catch {
@@ -98,12 +80,7 @@ export function AdminExamExercisesPage({ examId }: { examId: string }) {
     setEditingExerciseId(exercise.id);
     setShowForm(true);
     setFormError(null);
-    setFormState({
-      title: exercise.title ?? '',
-      theme: exercise.theme ?? '',
-      difficulty: exercise.difficulty ?? '',
-      tags: exercise.tags.join(', '),
-    });
+    setFormState(buildExerciseFormState(exercise));
   }
 
   async function submitForm() {
@@ -111,16 +88,7 @@ export function AdminExamExercisesPage({ examId }: { examId: string }) {
     setFormError(null);
 
     try {
-      const payload = {
-        title: formState.title.trim() || null,
-        theme: formState.theme.trim() || null,
-        difficulty: formState.difficulty.trim() || null,
-        tags: formState.tags
-          .split(',')
-          .map((entry) => entry.trim())
-          .filter((entry) => entry.length > 0),
-        status: 'published',
-      };
+      const payload = buildExercisePayload(formState);
 
       if (editingExerciseId) {
         await fetchAdminJson(`/exercises/${editingExerciseId}`, {
@@ -192,11 +160,20 @@ export function AdminExamExercisesPage({ examId }: { examId: string }) {
       return;
     }
 
-    const next = reorderById(exercises, draggingId, targetId);
+    const next = reorderExercisesById(exercises, draggingId, targetId);
     setDraggingId(null);
     setExercises(next);
     await persistOrder(next);
   }
+
+  const availableTopics = useMemo(
+    () =>
+      filterAvailableExerciseTopics({
+        filters,
+        exam,
+      }),
+    [exam, filters],
+  );
 
   return (
     <section className="panel">
@@ -233,97 +210,21 @@ export function AdminExamExercisesPage({ examId }: { examId: string }) {
       ) : null}
 
       {showForm ? (
-        <form
-          className="admin-form"
-          onSubmit={(event) => {
-            event.preventDefault();
+        <AdminExamExercisesFormSection
+          editingExerciseId={editingExerciseId}
+          exam={exam}
+          availableTopics={availableTopics}
+          formState={formState}
+          formError={formError}
+          submitting={submitting}
+          onFormStateChange={setFormState}
+          onSubmit={() => {
             void submitForm();
           }}
-        >
-          <h2>{editingExerciseId ? 'Edit Exercise' : 'Create Exercise'}</h2>
-
-          <div className="admin-form-grid">
-            <label className="field">
-              <span>Title</span>
-              <input
-                type="text"
-                value={formState.title}
-                onChange={(event) => {
-                  setFormState((current) => ({
-                    ...current,
-                    title: event.target.value,
-                  }));
-                }}
-              />
-            </label>
-
-            <label className="field">
-              <span>Theme</span>
-              <input
-                type="text"
-                value={formState.theme}
-                onChange={(event) => {
-                  setFormState((current) => ({
-                    ...current,
-                    theme: event.target.value,
-                  }));
-                }}
-              />
-            </label>
-
-            <label className="field">
-              <span>Difficulty</span>
-              <input
-                type="text"
-                value={formState.difficulty}
-                onChange={(event) => {
-                  setFormState((current) => ({
-                    ...current,
-                    difficulty: event.target.value,
-                  }));
-                }}
-              />
-            </label>
-
-            <label className="field admin-form-wide">
-              <span>Tags (comma separated)</span>
-              <input
-                type="text"
-                value={formState.tags}
-                onChange={(event) => {
-                  setFormState((current) => ({
-                    ...current,
-                    tags: event.target.value,
-                  }));
-                }}
-              />
-            </label>
-          </div>
-
-          {formError ? <p className="error-text">{formError}</p> : null}
-
-          <div className="admin-form-actions">
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => {
-                setShowForm(false);
-              }}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="btn-primary"
-              disabled={submitting}
-              onClick={() => {
-                void submitForm();
-              }}
-            >
-              Save
-            </button>
-          </div>
-        </form>
+          onCancel={() => {
+            setShowForm(false);
+          }}
+        />
       ) : null}
 
       {loading ? <p>Loading exercises…</p> : null}
@@ -334,67 +235,23 @@ export function AdminExamExercisesPage({ examId }: { examId: string }) {
       ) : null}
 
       {!loading && exercises.length > 0 ? (
-        <div className="admin-exercise-list">
-          {exercises.map((exercise) => (
-            <article
-              key={exercise.id}
-              className="admin-exercise-card"
-              draggable
-              onDragStart={() => {
-                setDraggingId(exercise.id);
-              }}
-              onDragEnd={() => {
-                setDraggingId(null);
-              }}
-              onDragOver={(event) => {
-                event.preventDefault();
-              }}
-              onDrop={() => {
-                void onDropOverExercise(exercise.id);
-              }}
-            >
-              <header>
-                <strong>
-                  #{exercise.order_index} {exercise.title ?? 'Untitled Exercise'}
-                </strong>
-                <span className={`status-chip ${exercise.status}`}>{exercise.status}</span>
-              </header>
-              <p>
-                Theme: {exercise.theme ?? '—'} · Difficulty: {exercise.difficulty ?? '—'}
-              </p>
-              <p>Tags: {exercise.tags.join(', ') || '—'}</p>
-              <p>
-                Questions: <strong>{exercise.question_count ?? 0}</strong>
-              </p>
-              <div className="table-actions">
-                <Link href={`/admin/exercises/${exercise.id}`} className="btn-secondary">
-                  Edit Questions
-                </Link>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={() => {
-                    openEditForm(exercise);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={() => {
-                    void deleteExercise(exercise.id);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
+        <AdminExamExercisesListSection
+          exercises={exercises}
+          draggingId={draggingId}
+          reordering={reordering}
+          onDragStart={setDraggingId}
+          onDragEnd={() => {
+            setDraggingId(null);
+          }}
+          onDropOverExercise={(exerciseId) => {
+            void onDropOverExercise(exerciseId);
+          }}
+          onEditExercise={openEditForm}
+          onDeleteExercise={(exerciseId) => {
+            void deleteExercise(exerciseId);
+          }}
+        />
       ) : null}
-
-      {reordering ? <p className="muted-text">Saving new order…</p> : null}
     </section>
   );
 }

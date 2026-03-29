@@ -1,17 +1,15 @@
-'use client';
+"use client";
 
 import {
   ExamHierarchyBlock,
   ExamHierarchyNode,
   ExamResponse,
   PracticeSessionResponse,
-} from '@/lib/qbank';
+} from "@/lib/qbank";
 
 export type StudyTopicTag = {
   code: string;
   name: string;
-  isPrimary: boolean;
-  weight: number;
 };
 
 type HierarchyQuestionItem = {
@@ -49,7 +47,7 @@ export type StudyExerciseModel = {
   contextBlocks: ExamHierarchyBlock[];
   sourceExam: {
     year: number;
-    sessionType: PracticeSessionResponse['exercises'][number]['exam']['sessionType'];
+    sessionType: PracticeSessionResponse["exercises"][number]["exam"]["sessionType"];
     subject: {
       code: string;
       name: string;
@@ -64,7 +62,7 @@ export type StudyExerciseModel = {
 
 function blocksByRoles(
   blocks: ExamHierarchyBlock[],
-  roles: Array<'STEM' | 'PROMPT' | 'SOLUTION' | 'HINT' | 'RUBRIC' | 'META'>,
+  roles: Array<"STEM" | "PROMPT" | "SOLUTION" | "HINT" | "RUBRIC" | "META">,
 ) {
   return blocks
     .filter((block) => roles.includes(block.role))
@@ -74,13 +72,22 @@ function blocksByRoles(
 function collectHierarchyQuestionItems(
   nodes: ExamHierarchyNode[],
   depth = 0,
+  inheritedTopics: StudyTopicTag[] = [],
 ): HierarchyQuestionItem[] {
   const ordered = [...nodes].sort((a, b) => a.orderIndex - b.orderIndex);
   const items: HierarchyQuestionItem[] = [];
 
   for (const node of ordered) {
+    const nodeTopics = Array.from(
+      new Map(
+        [...inheritedTopics, ...node.topics].map((topic) => [
+          topic.code,
+          topic,
+        ]),
+      ).values(),
+    ).sort((left, right) => left.name.localeCompare(right.name));
     const isQuestionNode =
-      node.nodeType === 'QUESTION' || node.nodeType === 'SUBQUESTION';
+      node.nodeType === "QUESTION" || node.nodeType === "SUBQUESTION";
 
     if (isQuestionNode) {
       items.push({
@@ -89,11 +96,11 @@ function collectHierarchyQuestionItems(
         label: node.label || `السؤال ${node.orderIndex}`,
         points: node.maxPoints ?? 0,
         depth,
-        topics: node.topics,
-        promptBlocks: blocksByRoles(node.blocks, ['PROMPT', 'STEM']),
-        solutionBlocks: blocksByRoles(node.blocks, ['SOLUTION']),
-        hintBlocks: blocksByRoles(node.blocks, ['HINT']),
-        rubricBlocks: blocksByRoles(node.blocks, ['RUBRIC']),
+        topics: nodeTopics,
+        promptBlocks: blocksByRoles(node.blocks, ["PROMPT", "STEM"]),
+        solutionBlocks: blocksByRoles(node.blocks, ["SOLUTION"]),
+        hintBlocks: blocksByRoles(node.blocks, ["HINT"]),
+        rubricBlocks: blocksByRoles(node.blocks, ["RUBRIC"]),
       });
     }
 
@@ -102,6 +109,7 @@ function collectHierarchyQuestionItems(
         ...collectHierarchyQuestionItems(
           node.children,
           isQuestionNode ? depth + 1 : depth,
+          nodeTopics,
         ),
       );
     }
@@ -111,11 +119,11 @@ function collectHierarchyQuestionItems(
 }
 
 function getExerciseContextBlocks(exercise: ExamHierarchyNode) {
-  const ownContext = blocksByRoles(exercise.blocks, ['STEM', 'PROMPT']);
+  const ownContext = blocksByRoles(exercise.blocks, ["STEM", "PROMPT"]);
   const nestedContext = [...exercise.children]
-    .filter((child) => child.nodeType === 'CONTEXT')
+    .filter((child) => child.nodeType === "CONTEXT")
     .sort((a, b) => a.orderIndex - b.orderIndex)
-    .flatMap((child) => blocksByRoles(child.blocks, ['STEM', 'PROMPT']));
+    .flatMap((child) => blocksByRoles(child.blocks, ["STEM", "PROMPT"]));
 
   return [...ownContext, ...nestedContext];
 }
@@ -135,7 +143,11 @@ export function buildStudyExercisesFromExam(
   };
 
   return exam.hierarchy.exercises.map((exercise, index) => {
-    const questions = collectHierarchyQuestionItems(exercise.children);
+    const questions = collectHierarchyQuestionItems(
+      exercise.children,
+      0,
+      exercise.topics,
+    );
     const totalPoints =
       exercise.maxPoints ??
       questions.reduce((sum, question) => sum + question.points, 0);
@@ -154,7 +166,7 @@ export function buildStudyExercisesFromExam(
 }
 
 export function buildStudyExercisesFromSessionExercises(
-  exercises: PracticeSessionResponse['exercises'],
+  exercises: PracticeSessionResponse["exercises"],
 ): StudyExerciseModel[] {
   return exercises.map((exercise) => ({
     id: exercise.id,
@@ -192,7 +204,7 @@ export function canRevealStudyQuestionSolution(
 
   return Boolean(
     question.solutionBlocks.length ||
-      question.hintBlocks.length ||
-      question.rubricBlocks.length,
+    question.hintBlocks.length ||
+    question.rubricBlocks.length,
   );
 }

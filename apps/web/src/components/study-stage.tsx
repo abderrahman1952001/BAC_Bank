@@ -12,6 +12,28 @@ import {
 
 const DEFAULT_EMPTY_PROMPT = 'لا يوجد نص مباشر لهذا السؤال حالياً.';
 
+function StudyDisclosureSection({
+  title,
+  tone,
+  defaultOpen = false,
+  children,
+}: {
+  title: string;
+  tone: 'solution' | 'hint' | 'commentary';
+  defaultOpen?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <details
+      className={`study-disclosure tone-${tone}`}
+      open={defaultOpen}
+    >
+      <summary>{title}</summary>
+      <div className="study-disclosure-body">{children}</div>
+    </details>
+  );
+}
+
 export function StudyExerciseStageCard({
   exercise,
   kicker,
@@ -76,21 +98,25 @@ export function StudyQuestionSolutionStack({
   return (
     <div className="study-answer-stack">
       {question.solutionBlocks.length ? (
-        <StudySectionCard tone="solution" title="الحل الرسمي">
+        <StudyDisclosureSection title="الحل" tone="solution" defaultOpen>
           <StudyHierarchyBlocks blocks={question.solutionBlocks} />
-        </StudySectionCard>
+        </StudyDisclosureSection>
       ) : null}
 
       {question.hintBlocks.length ? (
-        <StudySectionCard tone="hint" title="تلميحات">
+        <StudyDisclosureSection
+          title="تلميحات"
+          tone="hint"
+          defaultOpen={!question.solutionBlocks.length}
+        >
           <StudyHierarchyBlocks blocks={question.hintBlocks} />
-        </StudySectionCard>
+        </StudyDisclosureSection>
       ) : null}
 
       {question.rubricBlocks.length ? (
-        <StudySectionCard tone="commentary" title="سلم التنقيط">
+        <StudyDisclosureSection title="التنقيط" tone="commentary">
           <StudyHierarchyBlocks blocks={question.rubricBlocks} />
-        </StudySectionCard>
+        </StudyDisclosureSection>
       ) : null}
     </div>
   );

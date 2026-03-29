@@ -1,75 +1,62 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
-import { AppNavbar } from '@/components/app-navbar';
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { AppNavbar } from "@/components/app-navbar";
+import { useAuthSession } from "@/components/auth-provider";
+import {
+  SessionBuilderReviewStep,
+  SessionBuilderStepper,
+  SessionBuilderSubjectStep,
+  SessionBuilderTopicsStep,
+  SessionBuilderYearsStep,
+} from "@/components/session-builder-sections";
 import {
   EmptyState,
   SessionBuilderSkeleton,
-  SessionPreviewSkeleton,
   StudyHeader,
   StudyShell,
-} from '@/components/study-shell';
+} from "@/components/study-shell";
 import {
   API_BASE_URL,
   CreateSessionResponse,
   fetchJson,
   FiltersResponse,
-  formatSessionType,
   SessionPreviewResponse,
   SessionType,
-} from '@/lib/qbank';
-
-function toggleInList<T>(items: T[], value: T): T[] {
-  return items.includes(value)
-    ? items.filter((item) => item !== value)
-    : [...items, value];
-}
-
-function buildYearsFromRange(
-  allYears: number[],
-  mode: '3' | '5' | '8' | 'all' | 'custom',
-  startYear: number | null,
-  endYear: number | null,
-) {
-  if (!allYears.length) {
-    return [];
-  }
-
-  if (mode === 'all') {
-    return allYears;
-  }
-
-  if (mode === 'custom') {
-    if (!startYear || !endYear) {
-      return [];
-    }
-
-    const minYear = Math.min(startYear, endYear);
-    const maxYear = Math.max(startYear, endYear);
-
-    return allYears.filter((year) => year >= minYear && year <= maxYear);
-  }
-
-  const take = Number(mode);
-  return allYears.slice(0, take);
-}
-
-const SESSION_BUILDER_STORAGE_KEY = 'bac-bank:session-builder:v2';
-
-type StoredSessionBuilderPreferences = {
-  subjectCode?: string;
-  topicCodes?: string[];
-  streamCode?: string;
-  yearMode?: '3' | '5' | '8' | 'all' | 'custom';
-  yearStart?: number | null;
-  yearEnd?: number | null;
-  sessionTypes?: SessionType[];
-  exerciseCount?: number;
-};
+} from "@/lib/qbank";
+import {
+  buildBuilderPlanText,
+  buildBuilderSummaryText,
+  buildCreateSessionRequest,
+  buildPreviewSessionRequest,
+  buildSelectedTopicLabel,
+  buildSelectedYearsLabel,
+  buildStoredSessionBuilderPreferences,
+  buildYearsFromRange,
+  buildZeroResultsGuidance,
+  type BuilderStep,
+  type BuilderYearMode,
+  isBuilderStepEnabled,
+  resolveDefaultStreamCodes,
+  resolveStoredSessionBuilderState,
+  SESSION_BUILDER_STORAGE_KEY,
+  streamMatchesUserStream,
+  toggleInList,
+  type TopicSelectionMode,
+} from "@/lib/session-builder";
+import {
+  buildTopicAncestorsByCode,
+  buildTopicDescendantsByCode,
+  buildTopicTree,
+  collectSelectableTopics,
+  countSelectableTopics,
+  toggleExclusiveTopicSelection,
+} from "@/lib/topic-taxonomy";
 
 export function SessionBuilder() {
   const router = useRouter();
+  const { user } = useAuthSession();
 
   const [filters, setFilters] = useState<FiltersResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -77,21 +64,28 @@ export function SessionBuilder() {
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [title, setTitle] = useState('');
-  const [subjectCode, setSubjectCode] = useState('');
+  const [title, setTitle] = useState("");
+  const [subjectCode, setSubjectCode] = useState("");
   const [topicCodes, setTopicCodes] = useState<string[]>([]);
-  const [streamCode, setStreamCode] = useState('');
-  const [yearMode, setYearMode] = useState<'3' | '5' | '8' | 'all' | 'custom'>(
-    '5',
-  );
+  const [topicSelectionMode, setTopicSelectionMode] =
+    useState<TopicSelectionMode>(null);
+  const [selectedStreamCodes, setSelectedStreamCodes] = useState<
+    string[] | null
+  >(null);
+  const [yearMode, setYearMode] = useState<BuilderYearMode>("5");
   const [yearStart, setYearStart] = useState<number | null>(null);
   const [yearEnd, setYearEnd] = useState<number | null>(null);
   const [sessionTypes, setSessionTypes] = useState<SessionType[]>([]);
-  const [exerciseCount, setExerciseCount] = useState(6);
+  const [exerciseCount, setExerciseCount] = useState(8);
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState<BuilderStep>(1);
+  const [stepMotionDirection, setStepMotionDirection] = useState<
+    "forward" | "backward"
+  >("forward");
 
   const [preview, setPreview] = useState<SessionPreviewResponse | null>(null);
   const [preferencesReady, setPreferencesReady] = useState(false);
+  const userStreamCode = user?.stream?.code ?? null;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -112,8 +106,8 @@ export function SessionBuilder() {
         setYearStart(payload.years[payload.years.length - 1] ?? null);
         setYearEnd(payload.years[0] ?? null);
       } catch (loadError) {
-        if (!(loadError instanceof Error) || loadError.name !== 'AbortError') {
-          setError('تعذر تحميل خيارات الجلسة.');
+        if (!(loadError instanceof Error) || loadError.name !== "AbortError") {
+          setError("تعذر تحميل خيارات الجلسة.");
         }
       } finally {
         setLoading(false);
@@ -128,7 +122,12 @@ export function SessionBuilder() {
   }, []);
 
   useEffect(() => {
-    if (loading || !filters || preferencesReady || typeof window === 'undefined') {
+    if (
+      loading ||
+      !filters ||
+      preferencesReady ||
+      typeof window === "undefined"
+    ) {
       return;
     }
 
@@ -139,56 +138,65 @@ export function SessionBuilder() {
         return;
       }
 
-      const saved = JSON.parse(raw) as StoredSessionBuilderPreferences;
+      const restored = resolveStoredSessionBuilderState(
+        JSON.parse(raw),
+        filters,
+        userStreamCode,
+      );
 
-      if (
-        saved.subjectCode &&
-        filters.subjects.some((subject) => subject.code === saved.subjectCode)
-      ) {
-        setSubjectCode(saved.subjectCode);
+      if (restored.subjectCode) {
+        setSubjectCode(restored.subjectCode);
       }
 
-      if (Array.isArray(saved.topicCodes)) {
-        setTopicCodes(saved.topicCodes);
+      setTopicCodes(restored.topicCodes);
+
+      if (restored.topicSelectionMode) {
+        setTopicSelectionMode(restored.topicSelectionMode);
       }
 
-      if (typeof saved.streamCode === 'string') {
-        setStreamCode(saved.streamCode);
+      if ("selectedStreamCodes" in restored) {
+        setSelectedStreamCodes(restored.selectedStreamCodes ?? null);
       }
 
-      if (
-        saved.yearMode &&
-        ['3', '5', '8', 'all', 'custom'].includes(saved.yearMode)
-      ) {
-        setYearMode(saved.yearMode);
+      if (restored.yearMode) {
+        setYearMode(restored.yearMode);
       }
 
-      if (typeof saved.yearStart === 'number') {
-        setYearStart(saved.yearStart);
+      if (typeof restored.yearStart === "number") {
+        setYearStart(restored.yearStart);
       }
 
-      if (typeof saved.yearEnd === 'number') {
-        setYearEnd(saved.yearEnd);
+      if (typeof restored.yearEnd === "number") {
+        setYearEnd(restored.yearEnd);
       }
 
-      if (Array.isArray(saved.sessionTypes)) {
-        setSessionTypes(
-          saved.sessionTypes.filter((type) => filters.sessionTypes.includes(type)),
-        );
-      }
+      setSessionTypes(restored.sessionTypes);
 
-      if (typeof saved.exerciseCount === 'number') {
-        setExerciseCount(saved.exerciseCount);
+      if (typeof restored.exerciseCount === "number") {
+        setExerciseCount(restored.exerciseCount);
       }
     } catch {
       return;
     } finally {
       setPreferencesReady(true);
     }
-  }, [filters, loading, preferencesReady]);
+  }, [filters, loading, preferencesReady, userStreamCode]);
+
+  const suggestedSubjects = useMemo(() => {
+    if (!filters) {
+      return [];
+    }
+
+    return filters.subjects.filter((subject) =>
+      subject.streams.some((stream) =>
+        streamMatchesUserStream(stream, userStreamCode),
+      ),
+    );
+  }, [filters, userStreamCode]);
 
   const selectedSubject = useMemo(
-    () => filters?.subjects.find((subject) => subject.code === subjectCode) ?? null,
+    () =>
+      filters?.subjects.find((subject) => subject.code === subjectCode) ?? null,
     [filters, subjectCode],
   );
 
@@ -202,6 +210,17 @@ export function SessionBuilder() {
     );
   }, [filters, subjectCode]);
 
+  const defaultStreamCodes = useMemo(
+    () => resolveDefaultStreamCodes(availableStreams, userStreamCode),
+    [availableStreams, userStreamCode],
+  );
+
+  const effectiveStreamCodes = useMemo(
+    () =>
+      selectedStreamCodes === null ? defaultStreamCodes : selectedStreamCodes,
+    [defaultStreamCodes, selectedStreamCodes],
+  );
+
   const availableTopics = useMemo(() => {
     if (!filters || !subjectCode) {
       return [];
@@ -212,27 +231,93 @@ export function SessionBuilder() {
         return false;
       }
 
-      if (!streamCode) {
+      if (!effectiveStreamCodes.length) {
         return true;
       }
 
-      return topic.streamCodes.includes(streamCode);
+      return effectiveStreamCodes.some((streamCode) =>
+        topic.streamCodes.includes(streamCode),
+      );
     });
-  }, [filters, subjectCode, streamCode]);
+  }, [effectiveStreamCodes, filters, subjectCode]);
+
+  const topicTree = useMemo(
+    () => buildTopicTree(availableTopics),
+    [availableTopics],
+  );
+
+  const topicLookup = useMemo(
+    () => new Map(availableTopics.map((topic) => [topic.code, topic])),
+    [availableTopics],
+  );
+
+  const chapterTopics = useMemo(
+    () =>
+      topicTree.filter(
+        (topic) =>
+          topic.isSelectable || countSelectableTopics(topic.children) > 0,
+      ),
+    [topicTree],
+  );
+
+  const selectableSubtopicsByChapter = useMemo(
+    () =>
+      chapterTopics.map((chapter) => ({
+        chapter,
+        subtopics: collectSelectableTopics(chapter.children),
+      })),
+    [chapterTopics],
+  );
+
+  const topicDescendantsByCode = useMemo(() => {
+    return buildTopicDescendantsByCode(topicTree);
+  }, [topicTree]);
+
+  const topicAncestorsByCode = useMemo(() => {
+    return buildTopicAncestorsByCode(topicTree);
+  }, [topicTree]);
 
   useEffect(() => {
     if (!subjectCode) {
-      setStreamCode('');
+      return;
+    }
+
+    if (suggestedSubjects.some((subject) => subject.code === subjectCode)) {
+      return;
+    }
+
+    setStepMotionDirection("backward");
+    setCurrentStep(1);
+    setSubjectCode("");
+    setSelectedStreamCodes(null);
+    setTopicCodes([]);
+    setTopicSelectionMode(null);
+    setPreview(null);
+  }, [subjectCode, suggestedSubjects]);
+
+  useEffect(() => {
+    if (!subjectCode) {
+      setSelectedStreamCodes(null);
       setTopicCodes([]);
       setPreview(null);
       return;
     }
 
-    setStreamCode((current) =>
-      current && availableStreams.some((stream) => stream.code === current)
-        ? current
-        : '',
+    const availableStreamCodes = new Set(
+      availableStreams.map((stream) => stream.code),
     );
+
+    setSelectedStreamCodes((current) => {
+      if (current === null) {
+        return null;
+      }
+
+      const next = current.filter((streamCode) =>
+        availableStreamCodes.has(streamCode),
+      );
+
+      return next.length === current.length ? current : next;
+    });
   }, [availableStreams, subjectCode]);
 
   useEffect(() => {
@@ -245,17 +330,39 @@ export function SessionBuilder() {
 
   const selectedYears = useMemo(
     () =>
-      buildYearsFromRange(
-        filters?.years ?? [],
-        yearMode,
-        yearStart,
-        yearEnd,
-      ),
+      buildYearsFromRange(filters?.years ?? [], yearMode, yearStart, yearEnd),
     [filters?.years, yearEnd, yearMode, yearStart],
   );
 
+  const topicSelectionComplete =
+    topicSelectionMode === "all" || topicCodes.length > 0;
+  const yearSelectionComplete =
+    yearMode !== "custom" || (yearStart !== null && yearEnd !== null);
+  const builderReadyToPreview =
+    Boolean(subjectCode) && topicSelectionComplete && yearSelectionComplete;
+
   useEffect(() => {
-    if (!subjectCode) {
+    if (!subjectCode && currentStep !== 1) {
+      setCurrentStep(1);
+      return;
+    }
+
+    if (
+      (currentStep === 3 || currentStep === 4) &&
+      subjectCode &&
+      !topicSelectionComplete
+    ) {
+      setCurrentStep(2);
+      return;
+    }
+
+    if (currentStep === 4 && !yearSelectionComplete) {
+      setCurrentStep(3);
+    }
+  }, [currentStep, subjectCode, topicSelectionComplete, yearSelectionComplete]);
+
+  useEffect(() => {
+    if (!builderReadyToPreview) {
       setPreview(null);
       return;
     }
@@ -269,29 +376,34 @@ export function SessionBuilder() {
         const payload = await fetchJson<SessionPreviewResponse>(
           `${API_BASE_URL}/qbank/sessions/preview`,
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             signal: controller.signal,
-            body: JSON.stringify({
-              subjectCode,
-              topicCodes,
-              streamCode: streamCode || undefined,
-              years: selectedYears,
-              sessionTypes,
-            }),
+            body: JSON.stringify(
+              buildPreviewSessionRequest({
+                subjectCode,
+                topicCodes,
+                effectiveStreamCodes,
+                selectedYears,
+                sessionTypes,
+              }),
+            ),
           },
         );
 
         setPreview(payload);
       } catch (previewError) {
-        if (!(previewError instanceof Error) || previewError.name !== 'AbortError') {
+        if (
+          !(previewError instanceof Error) ||
+          previewError.name !== "AbortError"
+        ) {
           setPreview(null);
           setError(
             previewError instanceof Error
               ? previewError.message
-              : 'تعذر بناء معاينة الجلسة.',
+              : "تعذر بناء معاينة الجلسة.",
           );
         }
       } finally {
@@ -303,7 +415,14 @@ export function SessionBuilder() {
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [selectedYears, sessionTypes, streamCode, subjectCode, topicCodes]);
+  }, [
+    builderReadyToPreview,
+    effectiveStreamCodes,
+    selectedYears,
+    sessionTypes,
+    subjectCode,
+    topicCodes,
+  ]);
 
   const maxExerciseCount = useMemo(
     () => Math.max(1, Math.min(20, preview?.maxSelectableExercises ?? 20)),
@@ -317,188 +436,219 @@ export function SessionBuilder() {
   }, [exerciseCount, maxExerciseCount]);
 
   useEffect(() => {
-    if (!preferencesReady || loading || typeof window === 'undefined') {
+    if (!preferencesReady || loading || typeof window === "undefined") {
       return;
     }
 
-    const snapshot: StoredSessionBuilderPreferences = {
-      subjectCode: subjectCode || undefined,
-      topicCodes,
-      streamCode: streamCode || undefined,
-      yearMode,
-      yearStart,
-      yearEnd,
-      sessionTypes,
-      exerciseCount,
-    };
-
     window.localStorage.setItem(
       SESSION_BUILDER_STORAGE_KEY,
-      JSON.stringify(snapshot),
+      JSON.stringify(
+        buildStoredSessionBuilderPreferences({
+          subjectCode,
+          topicCodes,
+          topicSelectionMode,
+          selectedStreamCodes,
+          yearMode,
+          yearStart,
+          yearEnd,
+          sessionTypes,
+          exerciseCount,
+        }),
+      ),
     );
   }, [
     exerciseCount,
     loading,
     preferencesReady,
     sessionTypes,
-    streamCode,
+    selectedStreamCodes,
     subjectCode,
     topicCodes,
+    topicSelectionMode,
     yearEnd,
     yearMode,
     yearStart,
   ]);
 
-  const summaryText = useMemo(() => {
-    if (!selectedSubject) {
-      return 'ابدأ بالمادة، ثم حدد المحور الذي تريد تدريبه.';
-    }
+  const selectedTopicLabel = useMemo(
+    () =>
+      buildSelectedTopicLabel({
+        selectedSubjectName: selectedSubject?.name ?? null,
+        topicSelectionComplete,
+        topicSelectionMode,
+        topicCodes,
+        topicLookup,
+      }),
+    [
+      selectedSubject,
+      topicCodes,
+      topicLookup,
+      topicSelectionComplete,
+      topicSelectionMode,
+    ],
+  );
 
-    const parts = [`تدريب موجّه في ${selectedSubject.name}`];
+  const selectedYearsLabel = useMemo(
+    () => buildSelectedYearsLabel(selectedYears),
+    [selectedYears],
+  );
 
-    if (topicCodes.length) {
-      if (topicCodes.length === 1) {
-        const topic = availableTopics.find((item) => item.code === topicCodes[0]);
-        parts.push(topic?.name ?? 'محور واحد');
-      } else {
-        parts.push(`${topicCodes.length} محاور`);
-      }
-    } else {
-      parts.push('كل محاور المادة');
-    }
+  const summaryText = useMemo(
+    () =>
+      buildBuilderSummaryText({
+        selectedSubjectName: selectedSubject?.name ?? null,
+        topicSelectionComplete,
+        yearSelectionComplete,
+        selectedTopicLabel,
+        selectedYearsLabel,
+      }),
+    [
+      selectedSubject,
+      selectedTopicLabel,
+      selectedYearsLabel,
+      topicSelectionComplete,
+      yearSelectionComplete,
+    ],
+  );
 
-    if (streamCode) {
-      const stream = availableStreams.find((item) => item.code === streamCode);
-      if (stream) {
-        parts.push(`شعبة ${stream.name}`);
-      }
-    } else {
-      parts.push('كل الشعب المتاحة');
-    }
-
-    if (selectedYears.length) {
-      parts.push(
-        selectedYears.length === 1
-          ? `سنة ${selectedYears[0]}`
-          : `بين ${selectedYears[selectedYears.length - 1]} و ${selectedYears[0]}`,
-      );
-    }
-
-    return parts.join(' · ');
-  }, [
-    availableStreams,
-    availableTopics,
-    selectedSubject,
-    selectedYears,
-    streamCode,
-    topicCodes,
-  ]);
-  const planText = useMemo(() => {
-    if (!selectedSubject) {
-      return 'الجلسة ستتكوّن هنا بصياغة واضحة بعد اختيار المادة والمحاور.';
-    }
-
-    const topicLabel =
-      topicCodes.length === 0
-        ? 'كل محاور المادة'
-        : topicCodes.length === 1
-          ? availableTopics.find((item) => item.code === topicCodes[0])?.name ??
-            'محور واحد'
-          : `${topicCodes.length} محاور`;
-    const streamLabel = streamCode
-      ? availableStreams.find((item) => item.code === streamCode)?.name ??
-        'الشعبة المحددة'
-      : 'كل الشعب المتاحة';
-    const yearsLabel = selectedYears.length
-      ? selectedYears.length === 1
-        ? `سنة ${selectedYears[0]}`
-        : `بين ${selectedYears[selectedYears.length - 1]} و ${selectedYears[0]}`
-      : 'آخر السنوات المتاحة';
-    const plannedExerciseCount = Math.min(
+  const planText = useMemo(
+    () =>
+      buildBuilderPlanText({
+        selectedSubjectName: selectedSubject?.name ?? null,
+        topicSelectionComplete,
+        yearSelectionComplete,
+        selectedTopicLabel,
+        selectedYearsLabel,
+        effectiveStreamCodes,
+        availableStreams,
+        previewMatchingExerciseCount: preview?.matchingExerciseCount,
+        exerciseCount,
+        sessionTypes,
+      }),
+    [
+      availableStreams,
       exerciseCount,
-      preview?.matchingExerciseCount ?? exerciseCount,
+      preview?.matchingExerciseCount,
+      selectedSubject,
+      selectedTopicLabel,
+      selectedYearsLabel,
+      sessionTypes,
+      effectiveStreamCodes,
+      topicSelectionComplete,
+      yearSelectionComplete,
+    ],
+  );
+
+  const zeroResultsGuidance = useMemo(
+    () =>
+      buildZeroResultsGuidance({
+        builderReadyToPreview,
+        previewLoading,
+        previewMatchingExerciseCount: preview?.matchingExerciseCount,
+        topicSelectionMode,
+        topicCodesLength: topicCodes.length,
+        effectiveStreamCodesLength: effectiveStreamCodes.length,
+        sessionTypesLength: sessionTypes.length,
+        totalYearsCount: filters?.years.length ?? 0,
+        selectedYearsLength: selectedYears.length,
+        yearMode,
+      }),
+    [
+      builderReadyToPreview,
+      filters?.years.length,
+      preview?.matchingExerciseCount,
+      previewLoading,
+      sessionTypes.length,
+      selectedYears.length,
+      effectiveStreamCodes.length,
+      topicCodes.length,
+      topicSelectionMode,
+      yearMode,
+    ],
+  );
+
+  function setWizardStep(step: BuilderStep) {
+    if (step === currentStep) {
+      return;
+    }
+
+    setStepMotionDirection(step > currentStep ? "forward" : "backward");
+    setCurrentStep(step);
+  }
+
+  function handleSubjectSelect(nextSubjectCode: string) {
+    setSubjectCode(nextSubjectCode);
+    setTopicCodes([]);
+    setTopicSelectionMode(null);
+    setSelectedStreamCodes(null);
+    setPreview(null);
+    setWizardStep(2);
+  }
+
+  function handleStreamToggle(streamCode: string) {
+    setSelectedStreamCodes((current) =>
+      toggleInList(current ?? defaultStreamCodes, streamCode),
     );
+  }
 
-    return `هذه الجلسة ستسحب ${plannedExerciseCount} تمارين من ${topicLabel} في ${selectedSubject.name} ضمن ${streamLabel} ${yearsLabel}.`;
-  }, [
-    availableStreams,
-    availableTopics,
-    exerciseCount,
-    preview?.matchingExerciseCount,
-    selectedSubject,
-    selectedYears,
-    streamCode,
-    topicCodes,
-  ]);
-  const zeroResultsGuidance = useMemo(() => {
-    if (!subjectCode || previewLoading || preview?.matchingExerciseCount) {
-      return null;
+  function handleTopicModeChange(mode: Exclude<TopicSelectionMode, null>) {
+    setTopicSelectionMode(mode);
+
+    if (mode === "all") {
+      setTopicCodes([]);
     }
+  }
 
-    if (topicCodes.length) {
-      return {
-        title: 'لا توجد تمارين بهذه المحاور',
-        description:
-          'المحاور المختارة ضيقة أكثر من اللازم. افتح كل المحاور أو اترك محوراً واحداً فقط.',
-        actionLabel: 'فتح كل المحاور',
-        action: () => setTopicCodes([]),
-      };
-    }
+  function handleTopicToggle(topicCode: string) {
+    setTopicSelectionMode("custom");
+    setTopicCodes((current) =>
+      toggleExclusiveTopicSelection(
+        current,
+        topicCode,
+        topicDescendantsByCode,
+        topicAncestorsByCode,
+      ),
+    );
+  }
 
-    if (streamCode) {
-      return {
-        title: 'لا توجد نتائج لهذه الشعبة',
-        description:
-          'جرّب فتح التمرين على كل الشعب أولاً، ثم أعد تضييق النطاق إذا لزم الأمر.',
-        actionLabel: 'كل الشعب',
-        action: () => setStreamCode(''),
-      };
-    }
-
-    if (sessionTypes.length) {
-      return {
-        title: 'نوع الدورة ضيق النتائج',
-        description:
-          'ألغِ تقييد الدورة الحالية إذا كنت تريد عدداً أكبر من التمارين المطابقة.',
-        actionLabel: 'كل الدورات',
-        action: () => setSessionTypes([]),
-      };
-    }
-
+  function handleGoToStep(step: BuilderStep) {
     if (
-      filters?.years.length &&
-      (yearMode !== 'all' || selectedYears.length < filters.years.length)
+      isBuilderStepEnabled(step, {
+        subjectCode,
+        topicSelectionComplete,
+        yearSelectionComplete,
+      })
     ) {
-      return {
-        title: 'الفترة الزمنية ضيقة',
-        description:
-          'وسّع مجال السنوات حتى تظهر تمارين أكثر مطابقة لنفس الهدف.',
-        actionLabel: 'كل السنوات',
-        action: () => setYearMode('all'),
-      };
+      setWizardStep(step);
+    }
+  }
+
+  function handleZeroResultsGuidanceAction() {
+    if (!zeroResultsGuidance?.action) {
+      return;
     }
 
-    return {
-      title: 'لا توجد نتائج حالياً',
-      description:
-        'غيّر المادة أو ابدأ بمعاينة أوسع ثم ضيّق التمرين تدريجياً حتى تصل إلى النطاق المناسب.',
-      actionLabel: null,
-      action: null,
-    };
-  }, [
-    filters?.years.length,
-    preview?.matchingExerciseCount,
-    previewLoading,
-    sessionTypes.length,
-    selectedYears.length,
-    streamCode,
-    subjectCode,
-    topicCodes.length,
-    yearMode,
-  ]);
+    switch (zeroResultsGuidance.action) {
+      case "open_all_topics":
+        setTopicCodes([]);
+        setTopicSelectionMode("all");
+        return;
+      case "open_all_streams":
+        setSelectedStreamCodes([]);
+        return;
+      case "open_all_session_types":
+        setSessionTypes([]);
+        return;
+      case "open_all_years":
+        setYearMode("all");
+        return;
+      default:
+        return;
+    }
+  }
 
   async function handleCreateSession() {
-    if (creating || !subjectCode || !preview?.matchingExerciseCount) {
+    if (creating || !builderReadyToPreview || !preview?.matchingExerciseCount) {
       return;
     }
 
@@ -506,31 +656,42 @@ export function SessionBuilder() {
     setError(null);
 
     try {
+      const startedAt = Date.now();
       const payload = await fetchJson<CreateSessionResponse>(
         `${API_BASE_URL}/qbank/sessions`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            title: title.trim() || undefined,
-            subjectCode,
-            topicCodes,
-            streamCode: streamCode || undefined,
-            years: selectedYears,
-            sessionTypes,
-            exerciseCount,
-          }),
+          body: JSON.stringify(
+            buildCreateSessionRequest({
+              title,
+              subjectCode,
+              topicCodes,
+              effectiveStreamCodes,
+              selectedYears,
+              sessionTypes,
+              exerciseCount,
+            }),
+          ),
         },
       );
+
+      const remainingDelay = 900 - (Date.now() - startedAt);
+
+      if (remainingDelay > 0) {
+        await new Promise((resolve) =>
+          window.setTimeout(resolve, remainingDelay),
+        );
+      }
 
       router.push(`/app/sessions/${payload.id}`);
     } catch (submitError) {
       setError(
         submitError instanceof Error
           ? submitError.message
-          : 'تعذر إنشاء الجلسة.',
+          : "تعذر إنشاء الجلسة.",
       );
     } finally {
       setCreating(false);
@@ -541,18 +702,7 @@ export function SessionBuilder() {
     <StudyShell>
       <AppNavbar />
 
-      <StudyHeader
-        eyebrow="جلسة مخصصة"
-        title="ابن جلسة تدريب مركزة حول محور واضح"
-        subtitle="هذه الأداة مخصصة لتدريب موجّه على موضوع أو عدة محاور داخل مادة واحدة. ابدأ ببساطة، ثم ضيّق النطاق فقط عند الحاجة."
-        meta={[
-          { label: 'الخطة', value: summaryText },
-          {
-            label: 'الحجم',
-            value: `${exerciseCount} تمارين`,
-          },
-        ]}
-      />
+      <StudyHeader eyebrow="جلسة مخصصة" title="جلسة مخصصة" />
 
       {error && !filters ? (
         <EmptyState
@@ -575,426 +725,118 @@ export function SessionBuilder() {
       {loading && !filters ? <SessionBuilderSkeleton /> : null}
 
       {filters ? (
-        <div className="builder-workspace">
-        <section className="builder-form-panel">
-          <div className="builder-section">
-            <div className="builder-section-head">
-              <h2>1. المادة</h2>
-              <p>حدد المادة التي تريد التدريب عليها الآن.</p>
-            </div>
-            <div className="chip-grid">
-              {(filters?.subjects ?? []).map((subject) => (
-                <button
-                  key={subject.code}
-                  type="button"
-                  className={
-                    subjectCode === subject.code ? 'choice-chip active' : 'choice-chip'
-                  }
-                  onClick={() => setSubjectCode(subject.code)}
-                  disabled={loading}
-                >
-                  {subject.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="builder-section">
-            <div className="builder-section-head">
-              <h2>2. المحاور</h2>
-              <p>اختر محوراً واحداً أو عدة محاور. ويمكنك تركها مفتوحة إذا أردت تدريباً أوسع داخل المادة.</p>
+        <div className="builder-workspace builder-workspace-wizard">
+          <section className="builder-form-panel builder-form-panel-wizard">
+            <div className="builder-wizard-lead">
+              <p className="page-kicker">Builder</p>
+              <h2>أربع خطوات فقط</h2>
+              <p>{summaryText}</p>
             </div>
 
-            {!subjectCode ? (
-              <EmptyState
-                title="لا توجد محاور بعد"
-                description="اختر المادة أولاً حتى نعرض لك المحاور المطابقة."
-              />
-            ) : (
-              <div className="chip-grid">
-                {availableTopics.map((topic) => (
-                  <button
-                    key={topic.code}
-                    type="button"
-                    className={
-                      topicCodes.includes(topic.code)
-                        ? 'choice-chip active'
-                        : 'choice-chip'
-                    }
-                    onClick={() =>
-                      setTopicCodes((current) => toggleInList(current, topic.code))
-                    }
-                  >
-                    {topic.name}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+            <SessionBuilderStepper
+              currentStep={currentStep}
+              subjectCode={subjectCode}
+              topicSelectionComplete={topicSelectionComplete}
+              yearSelectionComplete={yearSelectionComplete}
+              hasPreviewResults={Boolean(preview?.matchingExerciseCount)}
+              onGoToStep={handleGoToStep}
+            />
 
-          <div className="builder-grid-two">
-            <div className="builder-section">
-              <div className="builder-section-head">
-                <h2>3. الشعبة</h2>
-                <p>اختيار اختياري. اتركها مفتوحة إذا كان هدفك تدريباً أوسع.</p>
-              </div>
-              <div className="chip-grid">
-                <button
-                  type="button"
-                  className={!streamCode ? 'choice-chip active' : 'choice-chip'}
-                  onClick={() => setStreamCode('')}
-                  disabled={!subjectCode}
-                >
-                  كل الشعب
-                </button>
-                {availableStreams.map((stream) => (
-                  <button
-                    key={stream.code}
-                    type="button"
-                    className={
-                      streamCode === stream.code ? 'choice-chip active' : 'choice-chip'
-                    }
-                    onClick={() => setStreamCode(stream.code)}
-                  >
-                    {stream.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="builder-section">
-              <div className="builder-section-head">
-                <h2>4. الفترة الزمنية</h2>
-                <p>اختر آخر السنوات أو وسّع المجال يدوياً إذا لزم الأمر.</p>
-              </div>
-
-              <div className="chip-grid">
-                {[
-                  { value: '3', label: 'آخر 3 سنوات' },
-                  { value: '5', label: 'آخر 5 سنوات' },
-                  { value: '8', label: 'آخر 8 سنوات' },
-                  { value: 'all', label: 'كل السنوات' },
-                  { value: 'custom', label: 'مجال مخصص' },
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className={
-                      yearMode === option.value ? 'choice-chip active' : 'choice-chip'
-                    }
-                    onClick={() =>
-                      setYearMode(
-                        option.value as '3' | '5' | '8' | 'all' | 'custom',
-                      )
-                    }
-                    disabled={!subjectCode}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-
-              {yearMode === 'custom' && filters?.years.length ? (
-                <div className="builder-year-range">
-                  <label className="field">
-                    <span>من</span>
-                    <select
-                      value={yearStart ?? ''}
-                      onChange={(event) =>
-                        setYearStart(Number(event.target.value) || null)
-                      }
-                    >
-                      {filters.years
-                        .slice()
-                        .sort((a, b) => a - b)
-                        .map((year) => (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        ))}
-                    </select>
-                  </label>
-
-                  <label className="field">
-                    <span>إلى</span>
-                    <select
-                      value={yearEnd ?? ''}
-                      onChange={(event) =>
-                        setYearEnd(Number(event.target.value) || null)
-                      }
-                    >
-                      {filters.years
-                        .slice()
-                        .sort((a, b) => b - a)
-                        .map((year) => (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        ))}
-                    </select>
-                  </label>
-                </div>
-              ) : null}
-            </div>
-          </div>
-
-          <div className="builder-section">
-            <div className="builder-section-head">
-              <h2>5. عدد التمارين</h2>
-              <p>اختر عدد التمارين التي تريدها داخل الجلسة.</p>
-            </div>
-            <div className="chip-grid">
-              {[4, 6, 8, 10, 12].map((count) => (
-                <button
-                  key={count}
-                  type="button"
-                  className={
-                    exerciseCount === count ? 'choice-chip active' : 'choice-chip'
-                  }
-                  onClick={() => setExerciseCount(Math.min(count, maxExerciseCount))}
-                  disabled={count > maxExerciseCount}
-                >
-                  {count} تمارين
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="builder-section">
-            <button
-              type="button"
-              className="builder-advanced-toggle"
-              onClick={() => setAdvancedOpen((current) => !current)}
-            >
-              <span>خيارات ثانوية</span>
-              <strong>{advancedOpen ? 'إخفاء' : 'إظهار'}</strong>
-            </button>
-
-            {advancedOpen ? (
-              <div className="builder-advanced-grid">
-                <div className="builder-subsection">
-                  <h3>نوع الدورة</h3>
-                  <div className="chip-grid">
-                    {filters?.sessionTypes.map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        className={
-                          sessionTypes.includes(type)
-                            ? 'choice-chip active'
-                            : 'choice-chip'
-                        }
-                        onClick={() =>
-                          setSessionTypes((current) => toggleInList(current, type))
-                        }
-                      >
-                        {formatSessionType(type)}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="builder-subsection">
-                  <h3>اسم الجلسة</h3>
-                  <label className="field">
-                    <span>اختياري</span>
-                    <input
-                      type="text"
-                      placeholder="مثال: تدريب الدوال قبل الفرض"
-                      value={title}
-                      onChange={(event) => setTitle(event.target.value)}
-                    />
-                  </label>
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </section>
-
-        <aside className="builder-preview-panel">
-          <div className="builder-preview-sticky">
-            <div className="builder-preview-head">
-              <div>
-                <h2>المعاينة</h2>
-                <p>اعرف بالضبط ما الذي ستنشئه قبل الضغط على زر البداية.</p>
-              </div>
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={handleCreateSession}
-                disabled={!subjectCode || creating || !preview?.matchingExerciseCount}
+            <section className="builder-stage-card">
+              <div
+                key={`builder-step-${currentStep}`}
+                className={`builder-stage-motion is-${stepMotionDirection}`}
               >
-                {creating ? 'جاري الإنشاء...' : 'ابدأ الجلسة'}
-              </button>
-            </div>
+                {currentStep === 1 ? (
+                  <SessionBuilderSubjectStep
+                    loading={loading}
+                    suggestedSubjects={suggestedSubjects}
+                    subjectCode={subjectCode}
+                    onSelectSubject={handleSubjectSelect}
+                  />
+                ) : null}
 
-            {loading ? <SessionPreviewSkeleton /> : null}
+                {currentStep === 2 ? (
+                  <SessionBuilderTopicsStep
+                    selectedSubject={selectedSubject}
+                    availableTopics={availableTopics}
+                    topicSelectionMode={topicSelectionMode}
+                    topicCodes={topicCodes}
+                    chapterTopics={chapterTopics}
+                    selectableSubtopicsByChapter={selectableSubtopicsByChapter}
+                    topicDescendantsByCode={topicDescendantsByCode}
+                    topicSelectionComplete={topicSelectionComplete}
+                    onChangeTopicMode={handleTopicModeChange}
+                    onToggleTopic={handleTopicToggle}
+                    onBack={() => setWizardStep(1)}
+                    onNext={() => setWizardStep(3)}
+                  />
+                ) : null}
 
-            {!loading && !subjectCode ? (
-              <EmptyState
-                title="المعاينة بانتظارك"
-                description="ابدأ بالمادة حتى نبني لك معاينة فعلية لعدد التمارين والمواضيع المطابقة."
-              />
-            ) : null}
-
-            {!loading && subjectCode ? (
-              <div className="builder-preview-stack">
-                <section className="builder-preview-card builder-preview-summary-card">
-                  <h3>ملخص سريع</h3>
-                  <p>{planText}</p>
-                </section>
-
-                <div className="builder-stat-grid">
-                  <article>
-                    <strong>
-                      {previewLoading ? '...' : preview?.matchingExerciseCount ?? 0}
-                    </strong>
-                    <span>تمارين مطابقة</span>
-                  </article>
-                  <article>
-                    <strong>
-                      {previewLoading ? '...' : preview?.matchingSujetCount ?? 0}
-                    </strong>
-                    <span>مواضيع متاحة</span>
-                  </article>
-                  <article>
-                    <strong>{selectedYears.length || '...'}</strong>
-                    <span>سنوات في النطاق</span>
-                  </article>
-                </div>
-
-                {previewLoading && !preview ? <SessionPreviewSkeleton /> : null}
-
-                {zeroResultsGuidance ? (
-                  <EmptyState
-                    title={zeroResultsGuidance.title}
-                    description={zeroResultsGuidance.description}
-                    action={
-                      zeroResultsGuidance.actionLabel && zeroResultsGuidance.action ? (
-                        <button
-                          type="button"
-                          className="btn-secondary"
-                          onClick={zeroResultsGuidance.action}
-                        >
-                          {zeroResultsGuidance.actionLabel}
-                        </button>
-                      ) : undefined
+                {currentStep === 3 ? (
+                  <SessionBuilderYearsStep
+                    filters={filters}
+                    selectedSubject={selectedSubject}
+                    topicSelectionComplete={topicSelectionComplete}
+                    selectedTopicLabel={selectedTopicLabel}
+                    yearMode={yearMode}
+                    yearStart={yearStart}
+                    yearEnd={yearEnd}
+                    advancedOpen={advancedOpen}
+                    subjectCode={subjectCode}
+                    effectiveStreamCodes={effectiveStreamCodes}
+                    availableStreams={availableStreams}
+                    sessionTypes={sessionTypes}
+                    yearSelectionComplete={yearSelectionComplete}
+                    onBack={() => setWizardStep(2)}
+                    onNext={() => setWizardStep(4)}
+                    onReturnToTopics={() => setWizardStep(2)}
+                    onSetYearMode={setYearMode}
+                    onSetYearStart={setYearStart}
+                    onSetYearEnd={setYearEnd}
+                    onToggleAdvanced={() =>
+                      setAdvancedOpen((current) => !current)
+                    }
+                    onOpenAllStreams={() => setSelectedStreamCodes([])}
+                    onToggleStream={handleStreamToggle}
+                    onToggleSessionType={(type) =>
+                      setSessionTypes((current) => toggleInList(current, type))
                     }
                   />
                 ) : null}
 
-                {preview && preview.matchingExerciseCount > 0 ? (
-                  <>
-                    <section className="builder-preview-card">
-                      <h3>عينة من التمارين المطابقة</h3>
-                      <div className="builder-preview-exercises">
-                        {preview.sampleExercises.map((exercise) => (
-                          <article
-                            key={`${exercise.exerciseNodeId}:${exercise.examId}`}
-                            className="builder-preview-exercise"
-                          >
-                            <div>
-                              <strong>
-                                {exercise.year} · {exercise.sujetLabel} · التمرين{' '}
-                                {exercise.orderIndex}
-                              </strong>
-                              <p>
-                                {exercise.stream.name} ·{' '}
-                                {formatSessionType(exercise.sessionType)}
-                              </p>
-                            </div>
-                            <span>
-                              {exercise.questionCount} أسئلة
-                              {exercise.title ? ` · ${exercise.title}` : ''}
-                            </span>
-                          </article>
-                        ))}
-                      </div>
-                    </section>
-
-                    <section className="builder-preview-card">
-                      <h3>توزيع السنوات</h3>
-                      <div className="preview-distribution-list">
-                        {preview.yearsDistribution.map((item) => (
-                          <div key={item.year} className="preview-distribution-row">
-                            <div>
-                              <strong>{item.year}</strong>
-                              <span>{item.matchingExerciseCount} تمرين</span>
-                            </div>
-                            <div className="preview-bar">
-                              <span
-                                style={{
-                                  width: `${Math.max(
-                                    10,
-                                    (item.matchingExerciseCount /
-                                      Math.max(preview.matchingExerciseCount, 1)) *
-                                      100,
-                                  )}%`,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-
-                    {preview.streamsDistribution.length > 1 ? (
-                      <section className="builder-preview-card">
-                        <h3>توزيع الشعب</h3>
-                        <div className="preview-distribution-list">
-                          {preview.streamsDistribution.map((item) => (
-                            <div
-                              key={item.stream.code}
-                              className="preview-distribution-row"
-                            >
-                              <div>
-                                <strong>{item.stream.name}</strong>
-                                <span>{item.matchingExerciseCount} تمرين</span>
-                              </div>
-                              <div className="preview-bar">
-                                <span
-                                  style={{
-                                    width: `${Math.max(
-                                      10,
-                                      (item.matchingExerciseCount /
-                                        Math.max(preview.matchingExerciseCount, 1)) *
-                                        100,
-                                    )}%`,
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </section>
-                    ) : null}
-
-                    <section className="builder-preview-card">
-                      <h3>عينة من المواضيع المطابقة</h3>
-                      <div className="builder-preview-sujets">
-                        {preview.matchingSujets.slice(0, 8).map((sujet) => (
-                          <article
-                            key={`${sujet.examId}:${sujet.sujetNumber}:${sujet.stream.code}`}
-                            className="builder-preview-sujet"
-                          >
-                            <strong>
-                              {sujet.year} · {sujet.sujetLabel}
-                            </strong>
-                            <p>
-                              {sujet.stream.name} · {formatSessionType(sujet.sessionType)}
-                            </p>
-                            <span>{sujet.matchingExerciseCount} تمرين مطابق</span>
-                          </article>
-                        ))}
-                      </div>
-                    </section>
-                  </>
+                {currentStep === 4 ? (
+                  <SessionBuilderReviewStep
+                    selectedSubject={selectedSubject}
+                    topicSelectionComplete={topicSelectionComplete}
+                    selectedTopicLabel={selectedTopicLabel}
+                    builderReadyToPreview={builderReadyToPreview}
+                    selectedYearsLabel={selectedYearsLabel}
+                    exerciseCount={exerciseCount}
+                    maxExerciseCount={maxExerciseCount}
+                    advancedOpen={advancedOpen}
+                    title={title}
+                    previewLoading={previewLoading}
+                    preview={preview}
+                    selectedYears={selectedYears}
+                    planText={planText}
+                    zeroResultsGuidance={zeroResultsGuidance}
+                    creating={creating}
+                    onBack={() => setWizardStep(3)}
+                    onReturnToYears={() => setWizardStep(3)}
+                    onSelectExerciseCount={setExerciseCount}
+                    onToggleAdvanced={() =>
+                      setAdvancedOpen((current) => !current)
+                    }
+                    onTitleChange={setTitle}
+                    onZeroResultsAction={handleZeroResultsGuidanceAction}
+                    onCreateSession={handleCreateSession}
+                  />
                 ) : null}
               </div>
-            ) : null}
-          </div>
-        </aside>
-      </div>
+            </section>
+          </section>
+        </div>
       ) : null}
     </StudyShell>
   );

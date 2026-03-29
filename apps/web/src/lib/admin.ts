@@ -1,5 +1,5 @@
-import { API_BASE_URL } from "@/lib/qbank";
-import { getClientRole } from "@/lib/client-auth";
+import { fetchApi, fetchApiJson, withJsonRequest } from "@/lib/api-client";
+import type { TopicOption } from "@/lib/topic-taxonomy";
 
 export type AdminStatus = "draft" | "published";
 export type AdminSession = "normal" | "rattrapage";
@@ -15,6 +15,8 @@ export type BlockType =
   | "tree";
 export type AdminIngestionStatus =
   | "draft"
+  | "queued"
+  | "processing"
   | "in_review"
   | "approved"
   | "published"
@@ -85,6 +87,7 @@ export type AdminFiltersResponse = {
     name: string;
   }>;
   years: number[];
+  topics: TopicOption[];
 };
 
 export type AdminExam = {
@@ -212,6 +215,7 @@ export type AdminIngestionDraft = {
       orderIndex: number;
       label: string | null;
       maxPoints: number | null;
+      topicCodes: string[];
       blocks: Array<{
         id: string;
         role: DraftBlockRole;
@@ -343,6 +347,10 @@ export type AdminExercise = {
   theme: string | null;
   difficulty: string | null;
   tags: string[];
+  topics: Array<{
+    code: string;
+    name: string;
+  }>;
   status: AdminStatus;
   question_count?: number;
   created_at: string;
@@ -361,6 +369,10 @@ export type QuestionNode = {
   order_index: number;
   status: AdminStatus;
   points: number | null;
+  topics: Array<{
+    code: string;
+    name: string;
+  }>;
   content_blocks: ContentBlock[];
   solution_blocks: ContentBlock[];
   hint_blocks: ContentBlock[] | null;
@@ -377,6 +389,10 @@ export type ExerciseEditorResponse = {
     theme: string | null;
     difficulty: string | null;
     tags: string[];
+    topics: Array<{
+      code: string;
+      name: string;
+    }>;
     metadata: {
       year: number;
       session: AdminSession;
@@ -392,63 +408,29 @@ export type ExerciseEditorResponse = {
 };
 
 function withAdminInit(init?: RequestInit): RequestInit {
-  const role = getClientRole();
-  const headers = new Headers(init?.headers ?? {});
-  const hasBody = init?.body !== undefined && init?.body !== null;
-
-  headers.set("x-user-role", role);
-
-  const usesFormData =
-    typeof FormData !== "undefined" && init?.body instanceof FormData;
-
-  if (hasBody && !usesFormData && !headers.has("Content-Type")) {
-    headers.set("Content-Type", "application/json");
-  }
-
-  return {
-    ...init,
-    credentials: "include",
-    headers,
-  };
+  return withJsonRequest(init);
 }
 
 export async function fetchAdmin(
   path: string,
   init?: RequestInit,
 ): Promise<Response> {
-  const response = await fetch(`${API_BASE_URL}/admin${path}`, withAdminInit(init));
-
-  if (!response.ok) {
-    let detail = `Request failed (${response.status})`;
-
-    try {
-      const payload = (await response.json()) as { message?: string };
-      if (payload?.message) {
-        detail = payload.message;
-      }
-    } catch {
-      try {
-        const text = await response.text();
-        if (text.trim()) {
-          detail = text.trim();
-        }
-      } catch {
-        // Ignore secondary parse failures.
-      }
-    }
-
-    throw new Error(detail);
-  }
-
-  return response;
+  return fetchApi(
+    `/admin${path}`,
+    withAdminInit(init),
+    "Admin request failed.",
+  );
 }
 
 export async function fetchAdminJson<T>(
   path: string,
   init?: RequestInit,
 ): Promise<T> {
-  const response = await fetchAdmin(path, init);
-  return (await response.json()) as T;
+  return fetchApiJson<T>(
+    `/admin${path}`,
+    withAdminInit(init),
+    "Admin request failed.",
+  );
 }
 
 export function makeEmptyBlock(type: BlockType = "paragraph"): ContentBlock {

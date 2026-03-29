@@ -6,7 +6,11 @@ import {
   ParseUUIDPipe,
   Post,
   Query,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
+import { SessionAuthGuard } from '../auth/session-auth.guard';
+import type { AuthenticatedRequest } from '../auth/auth.types';
 import { CreatePracticeSessionDto } from './dto/create-practice-session.dto';
 import { GetExamQueryDto } from './dto/get-exam-query.dto';
 import { GetPracticeSessionsQueryDto } from './dto/get-practice-sessions-query.dto';
@@ -35,31 +39,53 @@ export class QbankController {
     return this.qbankService.getExamById(id, query.sujetNumber);
   }
 
+  @UseGuards(SessionAuthGuard)
   @Get('sessions')
-  listRecentPracticeSessions(@Query() query: GetPracticeSessionsQueryDto) {
-    return this.qbankService.listRecentPracticeSessions(query.limit);
+  listRecentPracticeSessions(
+    @Req() request: AuthenticatedRequest,
+    @Query() query: GetPracticeSessionsQueryDto,
+  ) {
+    return this.qbankService.listRecentPracticeSessions(
+      request.user!.id,
+      query.limit,
+    );
   }
 
+  @UseGuards(SessionAuthGuard)
   @Post('sessions/preview')
   previewPracticeSession(@Body() payload: CreatePracticeSessionDto) {
     return this.qbankService.previewPracticeSession(payload);
   }
 
+  @UseGuards(SessionAuthGuard)
   @Post('sessions')
-  createPracticeSession(@Body() payload: CreatePracticeSessionDto) {
-    return this.qbankService.createPracticeSession(payload);
+  createPracticeSession(
+    @Req() request: AuthenticatedRequest,
+    @Body() payload: CreatePracticeSessionDto,
+  ) {
+    return this.qbankService.createPracticeSession(request.user!.id, payload);
   }
 
+  @UseGuards(SessionAuthGuard)
   @Get('sessions/:id')
-  getPracticeSessionById(@Param('id', ParseUUIDPipe) id: string) {
-    return this.qbankService.getPracticeSessionById(id);
+  getPracticeSessionById(
+    @Req() request: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return this.qbankService.getPracticeSessionById(request.user!.id, id);
   }
 
+  @UseGuards(SessionAuthGuard)
   @Post('sessions/:id/progress')
   updatePracticeSessionProgress(
+    @Req() request: AuthenticatedRequest,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() payload: UpdatePracticeSessionProgressDto,
   ) {
-    return this.qbankService.updatePracticeSessionProgress(id, payload);
+    return this.qbankService.updatePracticeSessionProgress(
+      request.user!.id,
+      id,
+      payload,
+    );
   }
 }

@@ -18,10 +18,18 @@ import {
   fetchJson,
   formatSessionType,
 } from '@/lib/qbank';
-
-function normalizeCode(value: string | null): string {
-  return value?.trim().toUpperCase() ?? '';
-}
+import {
+  buildBrowseContext,
+  buildBrowseQuery,
+  buildInitialBrowseSelection,
+  findBrowseStream,
+  findBrowseSubject,
+  findBrowseYearEntry,
+  findSelectedBrowseSujet,
+  reconcileBrowseSubjectCode,
+  reconcileBrowseSujetSelection,
+  reconcileBrowseYear,
+} from '@/lib/browse-workspace';
 
 export function BrowseWorkspace({
   initialSearch,
@@ -51,22 +59,14 @@ export function BrowseWorkspace({
   const [examError, setExamError] = useState<string | null>(null);
 
   useEffect(() => {
-    setSelectedStreamCode(normalizeCode(initialSearch?.stream ?? null));
-    setSelectedSubjectCode(normalizeCode(initialSearch?.subject ?? null));
-    setSelectedYear(
-      initialSearch?.year ? Number(initialSearch.year) : null,
-    );
-    setSelectedExamId(initialSearch?.examId ?? null);
-    setSelectedSujetNumber(
-      initialSearch?.sujet ? Number(initialSearch.sujet) : null,
-    );
-  }, [
-    initialSearch?.examId,
-    initialSearch?.stream,
-    initialSearch?.subject,
-    initialSearch?.sujet,
-    initialSearch?.year,
-  ]);
+    const nextSelection = buildInitialBrowseSelection(initialSearch);
+
+    setSelectedStreamCode(nextSelection.selectedStreamCode);
+    setSelectedSubjectCode(nextSelection.selectedSubjectCode);
+    setSelectedYear(nextSelection.selectedYear);
+    setSelectedExamId(nextSelection.selectedExamId);
+    setSelectedSujetNumber(nextSelection.selectedSujetNumber);
+  }, [initialSearch]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -101,16 +101,15 @@ export function BrowseWorkspace({
   }, []);
 
   const stream = useMemo(
-    () => catalog?.streams.find((item) => item.code === selectedStreamCode) ?? null,
+    () => findBrowseStream(catalog, selectedStreamCode),
     [catalog, selectedStreamCode],
   );
   const subject = useMemo(
-    () =>
-      stream?.subjects.find((item) => item.code === selectedSubjectCode) ?? null,
+    () => findBrowseSubject(stream, selectedSubjectCode),
     [selectedSubjectCode, stream],
   );
   const yearEntry = useMemo(
-    () => subject?.years.find((item) => item.year === selectedYear) ?? null,
+    () => findBrowseYearEntry(subject, selectedYear),
     [selectedYear, subject],
   );
 
@@ -139,9 +138,7 @@ export function BrowseWorkspace({
     }
 
     setSelectedSubjectCode((current) =>
-      current && stream.subjects.some((item) => item.code === current)
-        ? current
-        : '',
+      reconcileBrowseSubjectCode(stream, current),
     );
   }, [stream]);
 
@@ -153,81 +150,36 @@ export function BrowseWorkspace({
       return;
     }
 
-    setSelectedYear((current) =>
-      current && subject.years.some((item) => item.year === current)
-        ? current
-        : null,
-    );
+    setSelectedYear((current) => reconcileBrowseYear(subject, current));
   }, [subject]);
 
   useEffect(() => {
-    if (!yearEntry) {
-      setSelectedExamId(null);
-      setSelectedSujetNumber(null);
-      return;
-    }
+    const nextSelection = reconcileBrowseSujetSelection(
+      yearEntry,
+      selectedExamId,
+      selectedSujetNumber,
+    );
 
-    const nextExamId =
-      selectedExamId &&
-      yearEntry.sujets.some((item) => item.examId === selectedExamId)
-        ? selectedExamId
-        : null;
-
-    setSelectedExamId(nextExamId);
-
-    setSelectedSujetNumber((current) => {
-      const currentIsValid =
-        current !== null &&
-        yearEntry.sujets.some(
-          (item) => item.examId === nextExamId && item.sujetNumber === current,
-        );
-
-      if (currentIsValid) {
-        return current;
-      }
-
-      return null;
-    });
-  }, [selectedExamId, yearEntry]);
+    setSelectedExamId(nextSelection.selectedExamId);
+    setSelectedSujetNumber(nextSelection.selectedSujetNumber);
+  }, [selectedExamId, selectedSujetNumber, yearEntry]);
 
   const selectedSujet = useMemo(() => {
-    if (!yearEntry || !selectedExamId || !selectedSujetNumber) {
-      return null;
-    }
-
-    return (
-      yearEntry.sujets.find(
-        (item) =>
-          item.examId === selectedExamId &&
-          item.sujetNumber === selectedSujetNumber,
-      ) ?? null
+    return findSelectedBrowseSujet(
+      yearEntry,
+      selectedExamId,
+      selectedSujetNumber,
     );
   }, [selectedExamId, selectedSujetNumber, yearEntry]);
 
   useEffect(() => {
-    const nextParams = new URLSearchParams();
-
-    if (selectedStreamCode) {
-      nextParams.set('stream', selectedStreamCode);
-    }
-
-    if (selectedSubjectCode) {
-      nextParams.set('subject', selectedSubjectCode);
-    }
-
-    if (selectedYear) {
-      nextParams.set('year', String(selectedYear));
-    }
-
-    if (selectedExamId) {
-      nextParams.set('examId', selectedExamId);
-    }
-
-    if (selectedSujetNumber) {
-      nextParams.set('sujet', String(selectedSujetNumber));
-    }
-
-    const nextQuery = nextParams.toString();
+    const nextQuery = buildBrowseQuery({
+      selectedStreamCode,
+      selectedSubjectCode,
+      selectedYear,
+      selectedExamId,
+      selectedSujetNumber,
+    });
     const currentQuery =
       typeof window === 'undefined'
         ? ''
@@ -290,26 +242,14 @@ export function BrowseWorkspace({
     };
   }, [selectedSujet]);
 
-  const selectedMeta = [
-    stream ? { label: 'الشعبة', value: stream.name } : null,
-    subject ? { label: 'المادة', value: subject.name } : null,
-    selectedYear ? { label: 'السنة', value: String(selectedYear) } : null,
-  ].filter((item): item is { label: string; value: string } => item !== null);
-  const browseContextTitle = subject
-    ? `${subject.name}${selectedYear ? ` · ${selectedYear}` : ''}`
-    : stream
-      ? `الشعبة: ${stream.name}`
-      : 'اختر الشعبة والمادة والسنة';
-  const sujetsCount = yearEntry?.sujets.length ?? 0;
-  const selectionPrompt = !stream
-    ? 'ابدأ باختيار الشعبة، ثم أكمل المادة والسنة يدوياً.'
-    : !subject
-      ? 'اختر المادة أولاً حتى تظهر لك السنوات المتاحة.'
-      : !selectedYear
-        ? 'اختر السنة حتى تظهر قائمة المواضيع المطابقة.'
-        : !selectedSujet
-          ? 'اختر الموضوع الذي تريد معاينته قبل الدخول إلى وضع الدراسة.'
-          : `${selectedSujet.label} جاهز الآن، ويمكنك الدخول مباشرة إلى التمارين أو تبديل أي عنصر من الاختيار.`;
+  const { selectedMeta, browseContextTitle, sujetsCount, selectionPrompt } =
+    buildBrowseContext({
+      stream,
+      subject,
+      selectedYear,
+      yearEntry,
+      selectedSujet,
+    });
 
   if (loading) {
     return (
@@ -325,9 +265,8 @@ export function BrowseWorkspace({
       <AppNavbar />
 
       <StudyHeader
-        eyebrow="تصفح البكالوريا"
-        title="مساحة واحدة لتصفح المواضيع"
-        subtitle="بدّل الشعبة أو المادة أو السنة داخل نفس المساحة، وستبقى النتيجة واضحة أمامك من دون مسار صفحات متدرج."
+        eyebrow="تصفح"
+        title="المواضيع"
         meta={selectedMeta}
       />
 
@@ -336,7 +275,6 @@ export function BrowseWorkspace({
           <div className="browse-workspace-body">
             <StudySidebar
               title="الفلاتر"
-              subtitle="رتّب اختيارك بهدوء: شعبة ثم مادة ثم سنة. الواجهة لن تُكمل الخطوات عنك، لكنها ستبقي كل اختيار صالح في مكانه."
             >
               <div className="browse-filter-group">
                 <div className="browse-filter-head">
@@ -383,7 +321,7 @@ export function BrowseWorkspace({
                   ) : null}
                 </div>
                 {!stream ? (
-                  <p className="muted-text">اختر الشعبة أولاً.</p>
+                  <p className="muted-text">اختر الشعبة.</p>
                 ) : (
                   <div className="chip-grid">
                     {stream.subjects.map((item) => (
@@ -418,7 +356,7 @@ export function BrowseWorkspace({
                   ) : null}
                 </div>
                 {!subject ? (
-                  <p className="muted-text">بعد اختيار المادة ستظهر السنوات المتاحة.</p>
+                  <p className="muted-text">اختر المادة.</p>
                 ) : (
                   <div className="browse-year-list">
                     {subject.years.map((item) => (
@@ -444,11 +382,8 @@ export function BrowseWorkspace({
             <div className="browse-main-column">
               <section className="browse-context-strip">
                 <div>
-                  <p className="page-kicker">السياق الحالي</p>
                   <h2>{browseContextTitle}</h2>
-                  <p>
-                    {selectionPrompt}
-                  </p>
+                  <p>{selectionPrompt}</p>
                 </div>
                 <div className="browse-context-pills">
                   {stream ? <span>{stream.name}</span> : null}
@@ -461,18 +396,18 @@ export function BrowseWorkspace({
               <section className="browse-panel">
                 <div className="browse-panel-head">
                   <div>
-                    <h2>المواضيع المتاحة</h2>
+                    <h2>النتائج</h2>
                     <p>
                       {subject && selectedYear
-                        ? `${subject.name} · ${selectedYear} · ${sujetsCount} موضوع`
-                        : 'أكمل الاختيار من الشريط الجانبي.'}
+                        ? `${sujetsCount} موضوع`
+                        : selectionPrompt}
                     </p>
                   </div>
                 </div>
 
                 {!stream || !subject || !selectedYear ? (
                   <EmptyState
-                    title="أكمل الاختيار خطوة خطوة"
+                    title="النتائج غير جاهزة"
                     description={selectionPrompt}
                   />
                 ) : yearEntry && yearEntry.sujets.length ? (
@@ -508,7 +443,7 @@ export function BrowseWorkspace({
                 ) : (
                   <EmptyState
                     title="لا توجد مواضيع مطابقة"
-                    description="هذه السنة لا تحتوي على مواضيع منشورة لهذه المادة حالياً. جرّب أحدث سنة متاحة أو بدّل المادة من الشريط الجانبي."
+                    description="جرّب سنة أو مادة أخرى."
                   />
                 )}
               </section>
@@ -516,10 +451,8 @@ export function BrowseWorkspace({
               <section className="browse-panel browse-preview-panel">
                 <div className="browse-panel-head">
                   <div>
-                    <h2>معاينة الموضوع</h2>
-                    <p>
-                      التمارين تظهر هنا قبل الدخول، حتى تعرف أين ستبدأ بالضبط.
-                    </p>
+                    <h2>المعاينة</h2>
+                    <p>{selectedSujet ? selectedSujet.label : 'اختر موضوعاً.'}</p>
                   </div>
                   {selectedSujet && stream && subject && selectedYear ? (
                     <Link
@@ -598,7 +531,7 @@ export function BrowseWorkspace({
                 ) : (
                   <EmptyState
                     title="اختر موضوعاً"
-                    description="بعد اختيار الموضوع ستظهر هنا خلاصته وتمارينه، مع دخول مباشر إلى التمرين الذي تريد."
+                    description="ستظهر المعاينة هنا."
                   />
                 )}
               </section>

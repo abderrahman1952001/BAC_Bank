@@ -1,45 +1,73 @@
-export type UserRole = 'USER' | 'ADMIN';
+import { fetchApiJson, withJsonRequest } from "@/lib/api-client";
 
-const ROLE_STORAGE_KEY = 'bb_role';
+export type UserRole = "USER" | "ADMIN";
 
-export function getClientRole(): UserRole {
-  if (typeof window === 'undefined') {
-    return 'USER';
-  }
+export type AuthUser = {
+  id: string;
+  username: string;
+  email: string;
+  role: UserRole;
+  stream: {
+    code: string;
+    name: string;
+  } | null;
+};
 
-  const fromStorage = window.localStorage.getItem(ROLE_STORAGE_KEY);
+export type AuthSessionResponse = {
+  user: AuthUser;
+};
 
-  if (fromStorage === 'ADMIN' || fromStorage === 'USER') {
-    return fromStorage;
-  }
+export type AuthOptionsResponse = {
+  streams: Array<{
+    code: string;
+    name: string;
+  }>;
+};
 
-  const fromCookie = document.cookie
-    .split(';')
-    .map((chunk) => chunk.trim())
-    .find((chunk) => chunk.startsWith(`${ROLE_STORAGE_KEY}=`));
+export type LoginPayload = {
+  email: string;
+  password: string;
+};
 
-  if (!fromCookie) {
-    return 'USER';
-  }
+export type RegisterPayload = {
+  username: string;
+  email: string;
+  password: string;
+  streamCode: string;
+};
 
-  const cookieValue = decodeURIComponent(fromCookie.split('=')[1] ?? 'USER');
-  return cookieValue === 'ADMIN' ? 'ADMIN' : 'USER';
+async function fetchAuth<T>(path: string, init?: RequestInit): Promise<T> {
+  return fetchApiJson<T>(
+    `/auth${path}`,
+    withJsonRequest(init),
+    "Authentication request failed.",
+  );
 }
 
-export function setClientRole(role: UserRole) {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  window.localStorage.setItem(ROLE_STORAGE_KEY, role);
-  document.cookie = `${ROLE_STORAGE_KEY}=${encodeURIComponent(role)}; Path=/; Max-Age=2592000; SameSite=Lax`;
+export function getAuthOptions() {
+  return fetchAuth<AuthOptionsResponse>("/options");
 }
 
-export function clearClientRole() {
-  if (typeof window === 'undefined') {
-    return;
-  }
+export function getCurrentUser() {
+  return fetchAuth<AuthSessionResponse>("/me");
+}
 
-  window.localStorage.removeItem(ROLE_STORAGE_KEY);
-  document.cookie = `${ROLE_STORAGE_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
+export function registerUser(payload: RegisterPayload) {
+  return fetchAuth<AuthSessionResponse>("/register", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function loginUser(payload: LoginPayload) {
+  return fetchAuth<AuthSessionResponse>("/login", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function logoutUser() {
+  await fetchAuth<{ success: boolean }>("/logout", {
+    method: "POST",
+  });
 }

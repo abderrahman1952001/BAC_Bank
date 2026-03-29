@@ -1,0 +1,131 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+concurrency:
+  group: >-
+    deploy-${{ github.event_name == 'workflow_dispatch' && github.event.inputs.environment || 'staging' }}
+  cancel-in-progress: false
+
+jobs:
+  deploy-staging:
+    if: >-
+      (github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success') ||
+      (github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.environment == 'staging')
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Trigger API deploy
+        if: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_API_SERVICE_ID != '') }}
+        run: |
+          if [ -n "$RENDER_API_DEPLOY_HOOK_URL" ]; then
+            curl --fail --silent --show-error -X POST "$RENDER_API_DEPLOY_HOOK_URL"
+          else
+            curl --fail --silent --show-error -X POST \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              "https://api.render.com/v1/services/$RENDER_API_SERVICE_ID/deploys"
+          fi
+        env:
+          RENDER_API_DEPLOY_HOOK_URL: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
+
+      - name: Trigger worker deploy
+        if: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WORKER_SERVICE_ID != '') }}
+        run: |
+          if [ -n "$RENDER_WORKER_DEPLOY_HOOK_URL" ]; then
+            curl --fail --silent --show-error -X POST "$RENDER_WORKER_DEPLOY_HOOK_URL"
+          else
+            curl --fail --silent --show-error -X POST \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              "https://api.render.com/v1/services/$RENDER_WORKER_SERVICE_ID/deploys"
+          fi
+        env:
+          RENDER_WORKER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WORKER_SERVICE_ID: ${{ secrets.RENDER_WORKER_SERVICE_ID }}
+
+      - name: Trigger web deploy
+        if: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WEB_SERVICE_ID != '') }}
+        run: |
+          if [ -n "$RENDER_WEB_DEPLOY_HOOK_URL" ]; then
+            curl --fail --silent --show-error -X POST "$RENDER_WEB_DEPLOY_HOOK_URL"
+          else
+            curl --fail --silent --show-error -X POST \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              "https://api.render.com/v1/services/$RENDER_WEB_SERVICE_ID/deploys"
+          fi
+        env:
+          RENDER_WEB_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WEB_SERVICE_ID: ${{ secrets.RENDER_WEB_SERVICE_ID }}
+
+  deploy-production:
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.environment == 'production'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger API deploy
+        if: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_API_SERVICE_ID != '') }}
+        run: |
+          if [ -n "$RENDER_API_DEPLOY_HOOK_URL" ]; then
+            curl --fail --silent --show-error -X POST "$RENDER_API_DEPLOY_HOOK_URL"
+          else
+            curl --fail --silent --show-error -X POST \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              "https://api.render.com/v1/services/$RENDER_API_SERVICE_ID/deploys"
+          fi
+        env:
+          RENDER_API_DEPLOY_HOOK_URL: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
+
+      - name: Trigger worker deploy
+        if: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WORKER_SERVICE_ID != '') }}
+        run: |
+          if [ -n "$RENDER_WORKER_DEPLOY_HOOK_URL" ]; then
+            curl --fail --silent --show-error -X POST "$RENDER_WORKER_DEPLOY_HOOK_URL"
+          else
+            curl --fail --silent --show-error -X POST \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              "https://api.render.com/v1/services/$RENDER_WORKER_SERVICE_ID/deploys"
+          fi
+        env:
+          RENDER_WORKER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WORKER_SERVICE_ID: ${{ secrets.RENDER_WORKER_SERVICE_ID }}
+
+      - name: Trigger web deploy
+        if: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WEB_SERVICE_ID != '') }}
+        run: |
+          if [ -n "$RENDER_WEB_DEPLOY_HOOK_URL" ]; then
+            curl --fail --silent --show-error -X POST "$RENDER_WEB_DEPLOY_HOOK_URL"
+          else
+            curl --fail --silent --show-error -X POST \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              "https://api.render.com/v1/services/$RENDER_WEB_SERVICE_ID/deploys"
+          fi
+        env:
+          RENDER_WEB_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_WEB_SERVICE_ID: ${{ secrets.RENDER_WEB_SERVICE_ID }}
