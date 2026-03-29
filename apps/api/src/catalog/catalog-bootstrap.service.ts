@@ -26,14 +26,14 @@ export class CatalogBootstrapService implements OnApplicationBootstrap {
       return;
     }
 
-    const existingStreamFamilyCount = await this.prisma.streamFamily.count();
+    const existingStreamCount = await this.prisma.stream.count();
 
-    if (existingStreamFamilyCount > 0) {
+    if (existingStreamCount > 0) {
       return;
     }
 
     this.logger.log(
-      'No stream catalog rows were found. Bootstrapping the BAC catalog.',
+      'No stream rows were found. Bootstrapping the BAC catalog.',
     );
 
     try {

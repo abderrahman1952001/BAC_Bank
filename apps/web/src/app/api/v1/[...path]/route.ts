@@ -41,10 +41,13 @@ async function proxyRequest(request: NextRequest) {
       method: request.method,
       headers: requestHeaders,
       body: requestBody,
+      signal: AbortSignal.timeout(8000),
       cache: "no-store",
       redirect: "manual",
     });
     const responseHeaders = new Headers();
+    responseHeaders.set("x-bac-api-proxy", "route-handler");
+    responseHeaders.set("x-bac-api-upstream", upstreamUrl.toString());
 
     upstreamResponse.headers.forEach((value, key) => {
       if (key.toLowerCase() === "content-length") {
@@ -70,7 +73,13 @@ async function proxyRequest(request: NextRequest) {
       headers: responseHeaders,
     });
   } catch {
-    return new Response("API upstream request failed.", { status: 502 });
+    return new Response("API upstream request failed.", {
+      status: 502,
+      headers: {
+        "x-bac-api-proxy": "route-handler",
+        "x-bac-api-upstream": upstreamUrl.toString(),
+      },
+    });
   }
 }
 
