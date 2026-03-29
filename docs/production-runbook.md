@@ -35,7 +35,7 @@ Render will prompt for the blueprint values marked `sync: false`, including:
 
 - `CORS_ORIGIN`
 - `PUBLIC_API_BASE_URL`
-- `NEXT_PUBLIC_API_BASE_URL`
+- `API_UPSTREAM_URL`
 - `NEXT_PUBLIC_ASSET_BASE_URL`
 - `GEMINI_API_KEY`
 - `R2_ACCESS_KEY_ID`
@@ -69,7 +69,8 @@ The worker is required for queued ingestion processing. Admin intake requests no
 
 ### Web
 
-- `NEXT_PUBLIC_API_BASE_URL`
+- `NEXT_PUBLIC_API_BASE_URL=/api/v1`
+- `API_UPSTREAM_URL=https://<your-api-host>/api/v1`
 - `NEXT_PUBLIC_ASSET_BASE_URL` when assets are served from a separate origin
 
 ### Ingestion

@@ -1,0 +1,52 @@
+name: Seed Staging
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed-staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve staging database URL
+        id: database
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_POSTGRES_ID: ${{ secrets.RENDER_POSTGRES_ID }}
+        run: |
+          set -euo pipefail
+
+          connection_json=$(curl --fail --silent --show-error \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            "https://api.render.com/v1/postgres/$RENDER_POSTGRES_ID/connection-info")
+
+          external_connection_string=$(printf '%s' "$connection_json" | jq -r '.externalConnectionString')
+
+          if [ -z "$external_connection_string" ] || [ "$external_connection_string" = "null" ]; then
+            echo "Could not resolve the staging PostgreSQL connection string." >&2
+            exit 1
+          fi
+
+          separator='?'
+          case "$external_connection_string" in
+            *\?*) separator='&' ;;
+          esac
+
+          echo "url=${external_connection_string}${separator}schema=public&sslmode=require" >> "$GITHUB_OUTPUT"
+
+      - name: Seed staging database
+        env:
+          DATABASE_URL: ${{ steps.database.outputs.url }}
+        run: npm run prisma:seed -w @bac-bank/api

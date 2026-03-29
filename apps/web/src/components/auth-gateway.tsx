@@ -33,6 +33,10 @@ export function AuthGateway() {
     email: "",
     password: "",
   });
+  const registrationUnavailableMessage =
+    !loadingStreams && !error && streams.length === 0
+      ? "لا توجد شعب مهيأة في هذه البيئة بعد. شغّل البذور أو وصّل التطبيق بقاعدة بيانات تحتوي على taxonomy."
+      : null;
 
   useEffect(() => {
     if (status === "authenticated" && user) {
@@ -235,6 +239,11 @@ export function AuthGateway() {
                   />
                 </label>
                 {error ? <p className="auth-feedback">{error}</p> : null}
+                {registrationUnavailableMessage ? (
+                  <p className="auth-feedback">
+                    {registrationUnavailableMessage}
+                  </p>
+                ) : null}
                 <button
                   type="submit"
                   data-testid="auth-register-submit"

@@ -260,6 +260,23 @@ export function BrowseWorkspace({
     );
   }
 
+  if (!error && catalog && catalog.streams.length === 0) {
+    return (
+      <StudyShell>
+        <AppNavbar />
+        <StudyHeader
+          eyebrow="تصفح"
+          title="المواضيع"
+          meta={[]}
+        />
+        <EmptyState
+          title="لا توجد بيانات منشورة في هذه البيئة بعد"
+          description="بيئة staging تعمل، لكن فهرس الشعب والمواضيع ما زال فارغاً. شغّل البذور أولاً أو انشر بيانات تجريبية."
+        />
+      </StudyShell>
+    );
+  }
+
   return (
     <StudyShell>
       <AppNavbar />
