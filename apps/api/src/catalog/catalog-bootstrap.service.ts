@@ -36,9 +36,11 @@ export class CatalogBootstrapService implements OnApplicationBootstrap {
 
     try {
       process.env.BAC_BANK_IMPORT_CATALOG_SEED = '1';
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('ts-node/register/transpile-only');
 
       const seedModulePath = this.resolveSeedModulePath();
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const seedModule = require(seedModulePath) as {
         runCatalogSeed: () => Promise<void>;
       };
