@@ -824,7 +824,7 @@ async function syncSubjectTopics(
   await upsertLevel(topicTree, null);
 }
 
-async function main() {
+export async function runCatalogSeed() {
   const streamIds = await seedStreams();
   const subjectIds = await seedSubjects();
   await syncCurriculumRules(streamIds, subjectIds);
@@ -847,11 +847,13 @@ async function main() {
   );
 }
 
-main()
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+if (process.env.BAC_BANK_IMPORT_CATALOG_SEED !== '1') {
+  runCatalogSeed()
+    .catch((error) => {
+      console.error(error);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}

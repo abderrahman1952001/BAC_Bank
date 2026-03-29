@@ -1,10 +1,8 @@
-import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { resolveBooleanFlag } from '../runtime/runtime-config';
-
-const execFileAsync = promisify(execFile);
 
 @Injectable()
 export class CatalogBootstrapService implements OnApplicationBootstrap {
@@ -37,30 +35,38 @@ export class CatalogBootstrapService implements OnApplicationBootstrap {
     );
 
     try {
-      const npmExecutable = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-      const { stdout, stderr } = await execFileAsync(
-        npmExecutable,
-        ['run', 'prisma:seed', '-w', '@bac-bank/api'],
-        {
-          cwd: process.cwd(),
-          env: process.env,
-          maxBuffer: 10 * 1024 * 1024,
-        },
-      );
+      process.env.BAC_BANK_IMPORT_CATALOG_SEED = '1';
+      require('ts-node/register/transpile-only');
 
-      if (stdout.trim()) {
-        this.logger.log(stdout.trim());
-      }
+      const seedModulePath = this.resolveSeedModulePath();
+      const seedModule = require(seedModulePath) as {
+        runCatalogSeed: () => Promise<void>;
+      };
 
-      if (stderr.trim()) {
-        this.logger.warn(stderr.trim());
-      }
+      await seedModule.runCatalogSeed();
     } catch (error) {
       this.logger.error(
         'The BAC catalog bootstrap failed.',
         error instanceof Error ? error.stack : undefined,
       );
       throw error;
+    } finally {
+      delete process.env.BAC_BANK_IMPORT_CATALOG_SEED;
     }
+  }
+
+  private resolveSeedModulePath() {
+    const candidates = [
+      resolve(process.cwd(), 'apps/api/prisma/seed.ts'),
+      resolve(process.cwd(), 'prisma/seed.ts'),
+    ];
+
+    const match = candidates.find((candidate) => existsSync(candidate));
+
+    if (!match) {
+      throw new Error('Could not resolve the Prisma seed module path.');
+    }
+
+    return match;
   }
 }
