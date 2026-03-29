@@ -713,7 +713,7 @@ async function syncCurriculumRules(
       (mapping: (typeof currentMappings)[number]) =>
         !expectedPairs.has(`${mapping.streamId}:${mapping.subjectId}`),
     )
-    .map((mapping) => mapping.id);
+    .map((mapping: (typeof currentMappings)[number]) => mapping.id);
 
   if (mappingIdsToDelete.length > 0) {
     await prisma.streamSubject.deleteMany({
