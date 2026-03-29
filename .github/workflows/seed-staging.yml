@@ -46,6 +46,9 @@ jobs:
 
           echo "url=${external_connection_string}${separator}schema=public&sslmode=require" >> "$GITHUB_OUTPUT"
 
+      - name: Generate Prisma client
+        run: npm run prisma:generate -w @bac-bank/api
+
       - name: Seed staging database
         env:
           DATABASE_URL: ${{ steps.database.outputs.url }}
