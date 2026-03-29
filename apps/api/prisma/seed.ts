@@ -710,7 +710,7 @@ async function syncCurriculumRules(
 
   const mappingIdsToDelete = currentMappings
     .filter(
-      (mapping) =>
+      (mapping: (typeof currentMappings)[number]) =>
         !expectedPairs.has(`${mapping.streamId}:${mapping.subjectId}`),
     )
     .map((mapping) => mapping.id);
