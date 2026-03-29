@@ -34,14 +34,15 @@ jobs:
     environment: staging
     steps:
       - name: Trigger API deploy
-        if: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_API_SERVICE_ID != '') }}
         run: |
           if [ -n "$RENDER_API_DEPLOY_HOOK_URL" ]; then
             curl --fail --silent --show-error -X POST "$RENDER_API_DEPLOY_HOOK_URL"
-          else
+          elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_API_SERVICE_ID" ]; then
             curl --fail --silent --show-error -X POST \
               -H "Authorization: Bearer $RENDER_API_KEY" \
               "https://api.render.com/v1/services/$RENDER_API_SERVICE_ID/deploys"
+          else
+            echo "Skipping API deploy; no Render staging API deploy configuration is set."
           fi
         env:
           RENDER_API_DEPLOY_HOOK_URL: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL }}
@@ -49,14 +50,15 @@ jobs:
           RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
 
       - name: Trigger worker deploy
-        if: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WORKER_SERVICE_ID != '') }}
         run: |
           if [ -n "$RENDER_WORKER_DEPLOY_HOOK_URL" ]; then
             curl --fail --silent --show-error -X POST "$RENDER_WORKER_DEPLOY_HOOK_URL"
-          else
+          elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_WORKER_SERVICE_ID" ]; then
             curl --fail --silent --show-error -X POST \
               -H "Authorization: Bearer $RENDER_API_KEY" \
               "https://api.render.com/v1/services/$RENDER_WORKER_SERVICE_ID/deploys"
+          else
+            echo "Skipping worker deploy; no Render staging worker is configured yet."
           fi
         env:
           RENDER_WORKER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL }}
@@ -64,14 +66,15 @@ jobs:
           RENDER_WORKER_SERVICE_ID: ${{ secrets.RENDER_WORKER_SERVICE_ID }}
 
       - name: Trigger web deploy
-        if: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WEB_SERVICE_ID != '') }}
         run: |
           if [ -n "$RENDER_WEB_DEPLOY_HOOK_URL" ]; then
             curl --fail --silent --show-error -X POST "$RENDER_WEB_DEPLOY_HOOK_URL"
-          else
+          elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_WEB_SERVICE_ID" ]; then
             curl --fail --silent --show-error -X POST \
               -H "Authorization: Bearer $RENDER_API_KEY" \
               "https://api.render.com/v1/services/$RENDER_WEB_SERVICE_ID/deploys"
+          else
+            echo "Skipping web deploy; no Render staging web deploy configuration is set."
           fi
         env:
           RENDER_WEB_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL }}
@@ -86,14 +89,15 @@ jobs:
     environment: production
     steps:
       - name: Trigger API deploy
-        if: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_API_SERVICE_ID != '') }}
         run: |
           if [ -n "$RENDER_API_DEPLOY_HOOK_URL" ]; then
             curl --fail --silent --show-error -X POST "$RENDER_API_DEPLOY_HOOK_URL"
-          else
+          elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_API_SERVICE_ID" ]; then
             curl --fail --silent --show-error -X POST \
               -H "Authorization: Bearer $RENDER_API_KEY" \
               "https://api.render.com/v1/services/$RENDER_API_SERVICE_ID/deploys"
+          else
+            echo "Skipping API deploy; no Render production API deploy configuration is set."
           fi
         env:
           RENDER_API_DEPLOY_HOOK_URL: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL }}
@@ -101,14 +105,15 @@ jobs:
           RENDER_API_SERVICE_ID: ${{ secrets.RENDER_API_SERVICE_ID }}
 
       - name: Trigger worker deploy
-        if: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WORKER_SERVICE_ID != '') }}
         run: |
           if [ -n "$RENDER_WORKER_DEPLOY_HOOK_URL" ]; then
             curl --fail --silent --show-error -X POST "$RENDER_WORKER_DEPLOY_HOOK_URL"
-          else
+          elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_WORKER_SERVICE_ID" ]; then
             curl --fail --silent --show-error -X POST \
               -H "Authorization: Bearer $RENDER_API_KEY" \
               "https://api.render.com/v1/services/$RENDER_WORKER_SERVICE_ID/deploys"
+          else
+            echo "Skipping worker deploy; no Render production worker deploy configuration is set."
           fi
         env:
           RENDER_WORKER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WORKER_DEPLOY_HOOK_URL }}
@@ -116,14 +121,15 @@ jobs:
           RENDER_WORKER_SERVICE_ID: ${{ secrets.RENDER_WORKER_SERVICE_ID }}
 
       - name: Trigger web deploy
-        if: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL != '' || (secrets.RENDER_API_KEY != '' && secrets.RENDER_WEB_SERVICE_ID != '') }}
         run: |
           if [ -n "$RENDER_WEB_DEPLOY_HOOK_URL" ]; then
             curl --fail --silent --show-error -X POST "$RENDER_WEB_DEPLOY_HOOK_URL"
-          else
+          elif [ -n "$RENDER_API_KEY" ] && [ -n "$RENDER_WEB_SERVICE_ID" ]; then
             curl --fail --silent --show-error -X POST \
               -H "Authorization: Bearer $RENDER_API_KEY" \
               "https://api.render.com/v1/services/$RENDER_WEB_SERVICE_ID/deploys"
+          else
+            echo "Skipping web deploy; no Render production web deploy configuration is set."
           fi
         env:
           RENDER_WEB_DEPLOY_HOOK_URL: ${{ secrets.RENDER_WEB_DEPLOY_HOOK_URL }}
