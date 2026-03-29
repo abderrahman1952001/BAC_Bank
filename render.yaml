@@ -109,7 +109,7 @@ services:
     branch: main
     dockerContext: .
     dockerfilePath: ./apps/api/Dockerfile
-    dockerCommand: node apps/api/dist/worker.js
+    dockerCommand: node apps/api/dist/src/worker.js
     autoDeploy: false
     envVars:
       - fromGroup: bac-bank-api-shared
