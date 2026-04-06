@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useMemo, useState } from 'react';
-import { AdminIngestionAssetWorkspace } from '@/components/admin-ingestion-asset-workspace';
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import { AdminIngestionAssetWorkspace } from "@/components/admin-ingestion-asset-workspace";
 import {
   AdminIngestionReviewMetadataSection,
   AdminIngestionReviewOverviewSection,
   AdminIngestionReviewSourcesSection,
-} from '@/components/admin-ingestion-review-sections';
-import { AdminIngestionStructureEditor } from '@/components/admin-ingestion-structure-editor';
-import type { AdminIngestionValidationIssue } from '@/lib/admin';
+} from "@/components/admin-ingestion-review-sections";
+import { AdminIngestionStructureEditor } from "@/components/admin-ingestion-structure-editor";
+import type {
+  AdminIngestionJobResponse,
+  AdminIngestionValidationIssue,
+} from "@/lib/admin";
 import {
   buildDraftWithSelectedStreamCodes,
   buildExtractionSummary,
@@ -17,19 +20,25 @@ import {
   buildIssueCountBySection,
   buildProcessActionLabel,
   buildReviewActionState,
-  buildReviewSessionSnapshot,
+  canRunPrimaryReviewAction,
   formatAutosaveTimestamp,
   readDraftSelectedStreamCodes,
   resolveIssueSection,
   REVIEW_SECTION_LABELS,
   scrollToIssueTarget,
   type ReviewSection,
-} from '@/lib/admin-ingestion-review';
-import { useAdminIngestionReviewSession } from '@/lib/admin-ingestion-review-session';
+} from "@/lib/admin-ingestion-review";
+import { useAdminIngestionReviewSession } from "@/lib/admin-ingestion-review-session";
 
-export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
+export function AdminIngestionReviewPage({
+  jobId,
+  initialPayload,
+}: {
+  jobId: string;
+  initialPayload?: AdminIngestionJobResponse;
+}) {
   const [focusedIssueId, setFocusedIssueId] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState<ReviewSection>('overview');
+  const [activeSection, setActiveSection] = useState<ReviewSection>("overview");
   const {
     data,
     draft,
@@ -41,10 +50,11 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
     error,
     notice,
     autosaveError,
-    lastSavedSnapshot,
+    hasUnsavedChanges,
     lastSavedAt,
     correctionFile,
     reviewNotes,
+    setReviewNotes,
     setCorrectionFile,
     syncDraft,
     updateDraft,
@@ -55,6 +65,7 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
     approveAndPublish,
   } = useAdminIngestionReviewSession({
     jobId,
+    initialPayload,
   });
 
   const sourcePages = useMemo(
@@ -87,15 +98,6 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
     can_process: false,
     review_started: false,
   };
-  const reviewSessionSnapshot = useMemo(
-    () => buildReviewSessionSnapshot(draft, reviewNotes),
-    [draft, reviewNotes],
-  );
-  const hasUnsavedChanges = Boolean(
-    reviewSessionSnapshot &&
-      lastSavedSnapshot &&
-      reviewSessionSnapshot !== lastSavedSnapshot,
-  );
   const formattedLastSavedAt = useMemo(
     () => formatAutosaveTimestamp(lastSavedAt),
     [lastSavedAt],
@@ -107,8 +109,9 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
       : null;
   const focusedIssue = useMemo(
     () =>
-      validationSummary.issues.find((issue) => issue.id === effectiveFocusedIssueId) ??
-      null,
+      validationSummary.issues.find(
+        (issue) => issue.id === effectiveFocusedIssueId,
+      ) ?? null,
     [effectiveFocusedIssueId, validationSummary.issues],
   );
   const focusRequest = useMemo(
@@ -150,7 +153,7 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
   if (!data || !draft) {
     return (
       <section className="panel">
-        <p className="error-text">{error ?? 'Ingestion job not found.'}</p>
+        <p className="error-text">{error ?? "Ingestion job not found."}</p>
       </section>
     );
   }
@@ -166,7 +169,9 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
     attachingCorrection,
   });
   const primaryActionLabel = reviewActionState.primaryActionLabel;
-  const isPublishedRevisionJob = reviewActionState.isPublishedRevisionJob;
+  const isRevisionDraft = reviewActionState.isRevisionDraft;
+  const saveActionLabel = reviewActionState.saveActionLabel;
+  const approveActionLabel = reviewActionState.approveActionLabel;
   const publishedExams = data.job.published_exams;
   const autosaveStatusMessage = reviewActionState.autosaveStatusMessage;
   const autosaveStatusClassName = reviewActionState.autosaveStatusClassName;
@@ -175,18 +180,34 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
     jobStatus: data.job.status,
     processing,
   });
+  const canRunPrimaryAction = canRunPrimaryReviewAction({
+    job: data.job,
+    validation: validationSummary,
+  });
+  const publishedJobFrozenMessage =
+    data.job.status === "published"
+      ? isRevisionDraft
+        ? "This published revision is frozen."
+        : "This ingestion job is published and frozen. Start a revision from the library to make further changes."
+      : null;
 
   return (
     <section className="panel">
       <div className="admin-page-head">
-        <div>
-          <p className="page-kicker">Admin CMS</p>
+        <div className="admin-page-intro">
           <h1>{data.job.label}</h1>
-          <p className="muted-text">
-            {isPublishedRevisionJob
-              ? 'Revise a published canonical paper with the same review editor used for ingestion, then validate and republish it.'
-              : 'Review hierarchy, preview the final render, reconcile source assets, and publish from the canonical draft.'}
-          </p>
+          <div className="admin-page-meta-row">
+            <span className="admin-page-meta-pill">
+              {isRevisionDraft ? "Revision draft" : "Ingestion draft"}
+            </span>
+            <span className={`status-chip ${data.job.status}`}>
+              {data.job.status}
+            </span>
+            <span className="admin-page-meta-pill">
+              <strong>{publishedExams.length}</strong> offering
+              {publishedExams.length === 1 ? "" : "s"}
+            </span>
+          </div>
         </div>
         <div className="table-actions ingestion-action-bar">
           {publishedExams.map((exam) => (
@@ -195,10 +216,10 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
               href={`/admin/library?examId=${exam.id}`}
               className="btn-secondary"
             >
-              {exam.is_primary ? `Open ${exam.stream_code} Exam` : exam.stream_code}
+              {`Open ${exam.stream_code} Exam`}
             </Link>
           ))}
-          {!isPublishedRevisionJob ? (
+          {!isRevisionDraft ? (
             <button
               type="button"
               className="btn-secondary"
@@ -207,7 +228,7 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
               }}
               disabled={
                 reviewActionState.actionBusy ||
-                data.job.status === 'published' ||
+                data.job.status === "published" ||
                 !workflow.can_process
               }
             >
@@ -220,17 +241,21 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
             onClick={() => {
               void saveDraft().catch(() => undefined);
             }}
-            disabled={reviewActionState.actionBusy}
+            disabled={
+              reviewActionState.actionBusy || data.job.status === "published"
+            }
           >
-            Save Draft
+            {saveActionLabel}
           </button>
           <button
             type="button"
             className="btn-secondary"
             onClick={approveJob}
-            disabled={reviewActionState.actionBusy || !validationSummary.can_approve}
+            disabled={
+              reviewActionState.actionBusy || !validationSummary.can_approve
+            }
           >
-            Approve only
+            {approveActionLabel}
           </button>
           <button
             type="button"
@@ -238,8 +263,8 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
             onClick={approveAndPublish}
             disabled={
               reviewActionState.actionBusy ||
-              !validationSummary.can_publish ||
-              (!isPublishedRevisionJob && !workflow.has_correction_document)
+              !canRunPrimaryAction ||
+              (!isRevisionDraft && !workflow.has_correction_document)
             }
           >
             {primaryActionLabel}
@@ -250,42 +275,54 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
       <p className={autosaveStatusClassName}>{autosaveStatusMessage}</p>
       {error ? <p className="error-text">{error}</p> : null}
       {notice ? <p className="success-text">{notice}</p> : null}
+      {publishedJobFrozenMessage ? (
+        <p className="muted-text">{publishedJobFrozenMessage}</p>
+      ) : null}
 
-      <div className="ingestion-review-section-nav" role="tablist" aria-label="Review sections">
-        {(Object.keys(REVIEW_SECTION_LABELS) as ReviewSection[]).map((section) => (
-          <button
-            key={section}
-            type="button"
-            className={
-              activeSection === section
-                ? 'ingestion-section-chip active'
-                : 'ingestion-section-chip'
-            }
-            onClick={() => {
-              setActiveSection(section);
-            }}
-          >
-            {REVIEW_SECTION_LABELS[section]}
-            {issueCountBySection[section] > 0 ? (
-              <span>{issueCountBySection[section]}</span>
-            ) : null}
-          </button>
-        ))}
+      <div
+        className="ingestion-review-section-nav"
+        role="tablist"
+        aria-label="Review sections"
+      >
+        {(Object.keys(REVIEW_SECTION_LABELS) as ReviewSection[]).map(
+          (section) => (
+            <button
+              key={section}
+              type="button"
+              className={
+                activeSection === section
+                  ? "ingestion-section-chip active"
+                  : "ingestion-section-chip"
+              }
+              onClick={() => {
+                setActiveSection(section);
+              }}
+            >
+              {REVIEW_SECTION_LABELS[section]}
+              {issueCountBySection[section] > 0 ? (
+                <span>{issueCountBySection[section]}</span>
+              ) : null}
+            </button>
+          ),
+        )}
       </div>
 
-      {activeSection === 'overview' ? (
+      {activeSection === "overview" ? (
         <section className="ingestion-section-panel">
           <AdminIngestionReviewOverviewSection
             data={data}
             draft={draft}
             sourcePageCount={sourcePages.length}
             extractionSummary={extractionSummary}
-            isPublishedRevisionJob={isPublishedRevisionJob}
+            isPublishedRevisionJob={isRevisionDraft}
             focusedIssueId={effectiveFocusedIssueId}
             correctionFile={correctionFile}
             actionBusy={reviewActionState.actionBusy}
             attachingCorrection={attachingCorrection}
+            reviewNotes={reviewNotes}
+            notesReadOnly={data.job.status === "published"}
             onIssueFocus={handleIssueFocus}
+            onReviewNotesChange={setReviewNotes}
             onCorrectionFileChange={setCorrectionFile}
             onAttachCorrection={() => {
               void attachCorrection();
@@ -294,7 +331,7 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
         </section>
       ) : null}
 
-      {activeSection === 'metadata' ? (
+      {activeSection === "metadata" ? (
         <section className="ingestion-section-panel">
           <AdminIngestionReviewMetadataSection
             draft={draft}
@@ -326,55 +363,52 @@ export function AdminIngestionReviewPage({ jobId }: { jobId: string }) {
                 },
               }));
             }}
-            onPrimaryStreamCodeChange={(streamCode) => {
-              updateDraft((current) => ({
-                ...current,
-                exam: {
-                  ...current.exam,
-                  streamCode,
-                },
-              }));
-            }}
             onSelectedStreamCodesChange={updateSelectedStreams}
           />
         </section>
       ) : null}
 
-      {activeSection === 'structure' ? (
+      {activeSection === "structure" ? (
         <section className="ingestion-section-panel">
-        <AdminIngestionStructureEditor
-          jobId={jobId}
-          draft={draft}
-          sourcePages={sourcePages}
-          assetPreviewBaseUrl={data.asset_preview_base_url}
-          issues={validationSummary.issues}
-          focusRequest={activeSection === 'structure' ? focusRequest : null}
-          onChange={syncDraft}
-        />
-        </section>
-      ) : null}
-
-      {activeSection === 'sources' ? (
-        <section className="ingestion-section-panel">
-          <AdminIngestionReviewSourcesSection
-            data={data}
-            isPublishedRevisionJob={isPublishedRevisionJob}
+          <AdminIngestionStructureEditor
+            jobId={jobId}
+            draft={draft}
+            sourcePages={sourcePages}
+            assetPreviewBaseUrl={data.asset_preview_base_url}
+            issues={validationSummary.issues}
+            focusRequest={activeSection === "structure" ? focusRequest : null}
+            onChange={syncDraft}
           />
         </section>
       ) : null}
 
-      {activeSection === 'assets' ? (
+      {activeSection === "sources" ? (
         <section className="ingestion-section-panel">
-        <AdminIngestionAssetWorkspace
-          draft={draft}
-          sourcePages={sourcePages}
-          assetPreviewBaseUrl={data.asset_preview_base_url}
-          focusedAssetId={activeSection === 'assets' ? focusedIssue?.assetId ?? null : null}
-          focusedSourcePageId={
-            activeSection === 'assets' ? focusedIssue?.sourcePageId ?? null : null
-          }
-          onChange={syncDraft}
-        />
+          <AdminIngestionReviewSourcesSection
+            data={data}
+            isPublishedRevisionJob={isRevisionDraft}
+          />
+        </section>
+      ) : null}
+
+      {activeSection === "assets" ? (
+        <section className="ingestion-section-panel">
+          <AdminIngestionAssetWorkspace
+            draft={draft}
+            sourcePages={sourcePages}
+            assetPreviewBaseUrl={data.asset_preview_base_url}
+            focusedAssetId={
+              activeSection === "assets"
+                ? (focusedIssue?.assetId ?? null)
+                : null
+            }
+            focusedSourcePageId={
+              activeSection === "assets"
+                ? (focusedIssue?.sourcePageId ?? null)
+                : null
+            }
+            onChange={syncDraft}
+          />
         </section>
       ) : null}
     </section>

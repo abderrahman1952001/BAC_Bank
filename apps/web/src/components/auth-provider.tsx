@@ -10,6 +10,7 @@ import {
 import { AuthUser, getCurrentUser } from "@/lib/client-auth";
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
+type ResolvedAuthStatus = Exclude<AuthStatus, "loading">;
 
 type AuthContextValue = {
   status: AuthStatus;
@@ -20,9 +21,23 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [status, setStatus] = useState<AuthStatus>("loading");
-  const [user, setUser] = useState<AuthUser | null>(null);
+export function AuthProvider({
+  children,
+  initialUser = null,
+  initialStatus,
+}: {
+  children: React.ReactNode;
+  initialUser?: AuthUser | null;
+  initialStatus?: ResolvedAuthStatus;
+}) {
+  const [status, setStatus] = useState<AuthStatus>(() => {
+    if (initialStatus) {
+      return initialStatus;
+    }
+
+    return initialUser ? "authenticated" : "loading";
+  });
+  const [user, setUser] = useState<AuthUser | null>(initialUser);
 
   const refreshSession = useCallback(async () => {
     try {
@@ -43,6 +58,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    if (status !== "loading") {
+      return;
+    }
+
     const timeoutId = window.setTimeout(() => {
       void refreshSession();
     }, 0);
@@ -50,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [refreshSession]);
+  }, [refreshSession, status]);
 
   return (
     <AuthContext.Provider

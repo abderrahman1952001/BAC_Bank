@@ -1,23 +1,21 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   useCallback,
   useEffect,
   useEffectEvent,
   useMemo,
+  useRef,
   useState,
+  useTransition,
 } from "react";
 import { useAuthSession } from "@/components/auth-provider";
-import { AppNavbar } from "@/components/app-navbar";
-import {
-  InlineEditTarget,
-  SujetInlineEditor,
-} from "@/components/sujet-inline-editor";
+import { StudentNavbar } from "@/components/student-navbar";
 import {
   EmptyState,
   StudyHeader,
-  StudyScreenSkeleton,
   StudyShell,
 } from "@/components/study-shell";
 import {
@@ -30,10 +28,18 @@ import {
   SujetViewerStandardLayout,
 } from "@/components/sujet-viewer-sections";
 import {
+  AdminIngestionJobResponse,
+  fetchAdminJson,
+  parseAdminIngestionJobResponse,
+} from "@/lib/admin";
+import {
   API_BASE_URL,
   ExamResponse,
   fetchJson,
   formatSessionType,
+  parseUpsertExamActivityResponse,
+  UpsertExamActivityRequest,
+  UpsertExamActivityResponse,
 } from "@/lib/qbank";
 import {
   buildEmptyStudyProgress,
@@ -74,6 +80,7 @@ export function SujetViewer({
   sujetNumber,
   initialExercise,
   initialQuestion,
+  initialExam,
 }: {
   streamCode: string;
   subjectCode: string;
@@ -82,45 +89,30 @@ export function SujetViewer({
   sujetNumber: string;
   initialExercise?: string;
   initialQuestion?: string;
+  initialExam?: ExamResponse;
 }) {
-  const [exam, setExam] = useState<ExamResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const [refreshingExam, startRefreshingExam] = useTransition();
+  const [revisionError, setRevisionError] = useState<string | null>(null);
+  const [startingRevision, setStartingRevision] = useState(false);
   const [progress, setProgress] = useState<StudyProgressSnapshot>(
     buildEmptyStudyProgress(),
   );
   const [progressReady, setProgressReady] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
   const [showNavigator, setShowNavigator] = useState(false);
-  const [inlineEditTarget, setInlineEditTarget] =
-    useState<InlineEditTarget | null>(null);
+  const [collapsedQuestionSolutions, setCollapsedQuestionSolutions] = useState<
+    Record<string, boolean>
+  >({});
   const { user } = useAuthSession();
+  const lastSyncedExamActivityPayload = useRef<string | null>(null);
 
   const decodedExamId = decodeURIComponent(examId);
   const parsedSujetNumber = Number(sujetNumber);
   const storageKey = `bac-bank:sujet:${decodedExamId}:${parsedSujetNumber}`;
   const isAdmin = user?.role === "ADMIN";
-
-  const loadExam = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const payload = await fetchJson<ExamResponse>(
-        `${API_BASE_URL}/qbank/exams/${decodedExamId}?sujetNumber=${parsedSujetNumber}`,
-      );
-
-      setExam(payload);
-    } catch {
-      setError("تعذر تحميل هذا الموضوع.");
-    } finally {
-      setLoading(false);
-    }
-  }, [decodedExamId, parsedSujetNumber]);
-
-  useEffect(() => {
-    void loadExam();
-  }, [loadExam]);
+  const exam = initialExam ?? null;
+  const hasValidSujetNumber = Number.isInteger(parsedSujetNumber);
 
   const exercises = useMemo<StudyExerciseModel[]>(
     () => buildStudyExercisesFromExam(exam),
@@ -140,6 +132,24 @@ export function SujetViewer({
   const allQuestionIds = useMemo(
     () => allQuestionRefs.map((item) => item.questionId),
     [allQuestionRefs],
+  );
+  const questionLookup = useMemo(
+    () =>
+      new Map(
+        exercises.flatMap((exercise) =>
+          exercise.questions.map(
+            (question) =>
+              [
+                question.id,
+                {
+                  exerciseId: exercise.id,
+                  question,
+                },
+              ] as const,
+          ),
+        ),
+      ),
+    [exercises],
   );
 
   useEffect(() => {
@@ -224,35 +234,28 @@ export function SujetViewer({
       null,
     [activeExercise, progress.activeQuestionId],
   );
+  const activeQuestionId = activeQuestion?.id ?? null;
 
   const progressCounts = useMemo(
     () => countStudyProgress(allQuestionIds, progress.questionStates),
     [allQuestionIds, progress.questionStates],
   );
+  const activitySujetNumber = parsedSujetNumber === 2 ? 2 : 1;
   const activeExerciseIndex = useMemo(
     () => exercises.findIndex((exercise) => exercise.id === activeExercise?.id),
     [activeExercise?.id, exercises],
   );
-  const activeQuestionIndex = useMemo(
-    () =>
-      activeExercise?.questions.findIndex(
-        (question) => question.id === activeQuestion?.id,
-      ) ?? -1,
-    [activeExercise, activeQuestion?.id],
-  );
   const currentQuestionPosition = useMemo(() => {
-    if (!activeQuestion) {
+    if (!activeQuestionId) {
       return 0;
     }
 
     return (
-      allQuestionIds.findIndex(
-        (questionId) => questionId === activeQuestion.id,
-      ) + 1
+      allQuestionIds.findIndex((questionId) => questionId === activeQuestionId) + 1
     );
-  }, [activeQuestion, allQuestionIds]);
-  const activeQuestionState = activeQuestion
-    ? progress.questionStates[activeQuestion.id]
+  }, [activeQuestionId, allQuestionIds]);
+  const activeQuestionState = activeQuestionId
+    ? progress.questionStates[activeQuestionId]
     : undefined;
   const activeQuestionStateDescriptor = describeStudyQuestionState(
     activeQuestionState,
@@ -300,15 +303,75 @@ export function SujetViewer({
             shortLabel: question.label,
             status: getQuestionVisualState(
               progress.questionStates[question.id],
-              question.id === activeQuestion?.id,
+              question.id === activeQuestionId,
             ),
             solutionViewed:
               progress.questionStates[question.id]?.solutionViewed,
           })),
         };
       }),
-    [activeQuestion?.id, exercises, progress.questionStates],
+    [activeQuestionId, exercises, progress.questionStates],
   );
+
+  useEffect(() => {
+    if (!user || !exam || !progressReady) {
+      return;
+    }
+
+    const payload: UpsertExamActivityRequest = {
+      sujetNumber: activitySujetNumber,
+      totalQuestionCount: progressCounts.totalCount,
+      completedQuestionCount: progressCounts.completedCount,
+      openedQuestionCount: progressCounts.openedCount,
+      solutionViewedCount: progressCounts.solutionViewedCount,
+    };
+    const payloadBody = JSON.stringify(payload);
+    const payloadSignature = JSON.stringify({
+      examId: decodedExamId,
+      ...payload,
+    });
+
+    if (lastSyncedExamActivityPayload.current === payloadSignature) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => {
+      void fetchJson<UpsertExamActivityResponse>(
+        `${API_BASE_URL}/qbank/exams/${decodedExamId}/activity`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: payloadBody,
+          signal: controller.signal,
+        },
+        parseUpsertExamActivityResponse,
+      )
+        .then(() => {
+          lastSyncedExamActivityPayload.current = payloadSignature;
+        })
+        .catch(() => {
+          /* keep local study flow silent if activity sync fails */
+        });
+    }, 420);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [
+    activitySujetNumber,
+    decodedExamId,
+    exam,
+    progressCounts.completedCount,
+    progressCounts.openedCount,
+    progressCounts.solutionViewedCount,
+    progressCounts.totalCount,
+    progressReady,
+    user,
+  ]);
 
   function updateProgress(
     updater: (current: StudyProgressSnapshot) => StudyProgressSnapshot,
@@ -380,6 +443,79 @@ export function SujetViewer({
     }));
   }
 
+  function clearCollapsedQuestionSolution(questionId: string) {
+    setCollapsedQuestionSolutions((current) => {
+      if (!current[questionId]) {
+        return current;
+      }
+
+      const next = { ...current };
+      delete next[questionId];
+      return next;
+    });
+  }
+
+  function toggleQuestionComplete(exerciseId: string, questionId: string) {
+    activateQuestion(exerciseId, questionId);
+    patchQuestionState(questionId, (current) => ({
+      ...(current ?? {}),
+      opened: true,
+      completed: !current?.completed,
+    }));
+  }
+
+  function toggleQuestionSolution(exerciseId: string, questionId: string) {
+    const questionEntry = questionLookup.get(questionId);
+
+    if (!questionEntry || !canRevealStudyQuestionSolution(questionEntry.question)) {
+      return;
+    }
+
+    activateQuestion(exerciseId, questionId);
+
+    if (!progress.questionStates[questionId]?.solutionViewed) {
+      patchQuestionState(questionId, (current) => ({
+        ...(current ?? {}),
+        opened: true,
+        solutionViewed: true,
+      }));
+      clearCollapsedQuestionSolution(questionId);
+      return;
+    }
+
+    if (progress.mode === "REVIEW") {
+      return;
+    }
+
+    setCollapsedQuestionSolutions((current) => {
+      if (current[questionId]) {
+        const next = { ...current };
+        delete next[questionId];
+        return next;
+      }
+
+      return {
+        ...current,
+        [questionId]: true,
+      };
+    });
+  }
+
+  const isQuestionSolutionVisible = useCallback(
+    (questionId: string) => {
+      if (progress.mode === "REVIEW") {
+        return true;
+      }
+
+      if (!progress.questionStates[questionId]?.solutionViewed) {
+        return false;
+      }
+
+      return !collapsedQuestionSolutions[questionId];
+    },
+    [collapsedQuestionSolutions, progress.mode, progress.questionStates],
+  );
+
   function goToAdjacentQuestion(direction: -1 | 1) {
     if (!activeQuestion) {
       return;
@@ -400,13 +536,26 @@ export function SujetViewer({
   const handleAdjacentQuestion = useEffectEvent((direction: -1 | 1) => {
     goToAdjacentQuestion(direction);
   });
+  const handleRevealSolution = useEffectEvent(() => {
+    if (activeQuestion && canRevealSolution && !solutionVisible) {
+      patchQuestionState(activeQuestion.id, (current) => ({
+        ...(current ?? {}),
+        opened: true,
+        solutionViewed: true,
+      }));
+    }
+  });
 
   useEffect(() => {
-    if (progress.mode !== "REVIEW" || !activeQuestion) {
+    if (focusMode || !activeExercise) {
       return;
     }
 
-    if (progress.questionStates[activeQuestion.id]?.solutionViewed) {
+    const unopenedQuestions = activeExercise.questions.filter(
+      (question) => !progress.questionStates[question.id]?.opened,
+    );
+
+    if (!unopenedQuestions.length) {
       return;
     }
 
@@ -414,15 +563,56 @@ export function SujetViewer({
       ...current,
       questionStates: {
         ...current.questionStates,
-        [activeQuestion.id]: {
-          ...(current.questionStates[activeQuestion.id] ?? {}),
-          opened: true,
-          solutionViewed: true,
-        },
+        ...Object.fromEntries(
+          unopenedQuestions.map((question) => [
+            question.id,
+            {
+              ...(current.questionStates[question.id] ?? {}),
+              opened: true,
+            },
+          ]),
+        ),
       },
       updatedAt: new Date().toISOString(),
     }));
-  }, [activeQuestion, progress.mode, progress.questionStates]);
+  }, [activeExercise, focusMode, progress.questionStates]);
+
+  useEffect(() => {
+    if (progress.mode !== "REVIEW") {
+      return;
+    }
+
+    const visibleQuestions = focusMode
+      ? activeQuestion
+        ? [activeQuestion]
+        : []
+      : activeExercise?.questions ?? [];
+    const hiddenSolutions = visibleQuestions.filter(
+      (question) => !progress.questionStates[question.id]?.solutionViewed,
+    );
+
+    if (!hiddenSolutions.length) {
+      return;
+    }
+
+    setProgress((current) => ({
+      ...current,
+      questionStates: {
+        ...current.questionStates,
+        ...Object.fromEntries(
+          hiddenSolutions.map((question) => [
+            question.id,
+            {
+              ...(current.questionStates[question.id] ?? {}),
+              opened: true,
+              solutionViewed: true,
+            },
+          ]),
+        ),
+      },
+      updatedAt: new Date().toISOString(),
+    }));
+  }, [activeExercise, activeQuestion, focusMode, progress.mode, progress.questionStates]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -430,14 +620,19 @@ export function SujetViewer({
         return;
       }
 
-      if (event.key.toLowerCase() === "n") {
+      if (event.key === "ArrowRight") {
         event.preventDefault();
         handleAdjacentQuestion(1);
       }
 
-      if (event.key.toLowerCase() === "p") {
+      if (event.key === "ArrowLeft") {
         event.preventDefault();
         handleAdjacentQuestion(-1);
+      }
+
+      if (event.key.toLowerCase() === "s" || event.code === "Space") {
+        event.preventDefault();
+        handleRevealSolution();
       }
 
       if (event.key === "Escape") {
@@ -452,30 +647,89 @@ export function SujetViewer({
     };
   }, []);
 
-  const backToBrowseHref = `/app/browse?stream=${encodeURIComponent(
+  useEffect(() => {
+    if (focusMode || !activeQuestionId) {
+      return;
+    }
+
+    const element = document.getElementById(`study-question-${activeQuestionId}`);
+
+    if (!element) {
+      return;
+    }
+
+    const bounds = element.getBoundingClientRect();
+    const isInView =
+      bounds.top >= 120 && bounds.bottom <= window.innerHeight - 96;
+
+    if (isInView) {
+      return;
+    }
+
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [activeQuestionId, focusMode]);
+
+  async function startRevisionDraft() {
+    const paperId = exam?.paperId ?? null;
+
+    if (!paperId || startingRevision) {
+      return;
+    }
+
+    setStartingRevision(true);
+    setRevisionError(null);
+
+    try {
+      const payload = await fetchAdminJson<AdminIngestionJobResponse>(
+        `/ingestion/papers/${paperId}/revision`,
+        {
+          method: "POST",
+        },
+        parseAdminIngestionJobResponse,
+      );
+
+      router.push(`/admin/drafts/${payload.job.id}`);
+    } catch (startError) {
+      setRevisionError(
+        startError instanceof Error
+          ? startError.message
+          : "Failed to open a revision draft for this paper.",
+      );
+    } finally {
+      setStartingRevision(false);
+    }
+  }
+
+  const backToBrowseHref = `/student/browse?stream=${encodeURIComponent(
     decodeURIComponent(streamCode),
   )}&subject=${encodeURIComponent(decodeURIComponent(subjectCode))}&year=${encodeURIComponent(year)}&examId=${encodeURIComponent(decodedExamId)}&sujet=${encodeURIComponent(
     sujetNumber,
   )}`;
-  const exerciseEditAction = isAdmin ? (
+  const revisionDraftAction = isAdmin && exam?.paperId ? (
     <button
       type="button"
       className="btn-secondary"
-      onClick={() =>
-        setInlineEditTarget({
-          kind: "exercise",
-          exerciseId: activeExercise?.id ?? "",
-          title:
-            activeExercise?.title ??
-            `التمرين ${activeExercise?.displayOrder ?? ""}`,
-        })
-      }
-      disabled={!activeExercise}
+      onClick={() => {
+        void startRevisionDraft();
+      }}
+      disabled={startingRevision}
     >
-      تحرير التمرين
+      {startingRevision ? "Opening Revision Draft..." : "Open Revision Draft"}
     </button>
   ) : null;
-  const questionActionButtons =
+  const standardExerciseHeaderActions = activeExercise ? (
+    <button
+      type="button"
+      className="btn-secondary"
+      onClick={() => setFocusMode(true)}
+    >
+      وضع التركيز
+    </button>
+  ) : null;
+  const focusQuestionActionButtons =
     activeExercise && activeQuestion ? (
       <>
         <button
@@ -497,13 +751,7 @@ export function SujetViewer({
         <button
           type="button"
           className="btn-primary"
-          onClick={() =>
-            patchQuestionState(activeQuestion.id, (current) => ({
-              ...(current ?? {}),
-              opened: true,
-              completed: !current?.completed,
-            }))
-          }
+          onClick={() => toggleQuestionComplete(activeExercise.id, activeQuestion.id)}
         >
           {activeQuestionState?.completed ? "إلغاء الإنجاز" : "تم"}
         </button>
@@ -519,35 +767,10 @@ export function SujetViewer({
           }
           disabled={!canRevealSolution}
         >
-          إظهار الحل
+          الحل
         </button>
-        {isAdmin ? (
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={() =>
-              setInlineEditTarget({
-                kind: "question",
-                exerciseId: activeExercise.id,
-                questionId: activeQuestion.id,
-                title: activeQuestion.label,
-              })
-            }
-          >
-            تحرير السؤال
-          </button>
-        ) : null}
       </>
     ) : null;
-
-  if (loading) {
-    return (
-      <StudyShell>
-        <AppNavbar />
-        <StudyScreenSkeleton />
-      </StudyShell>
-    );
-  }
 
   if (focusMode && exam && activeExercise && activeQuestion) {
     return (
@@ -570,7 +793,7 @@ export function SujetViewer({
               totalQuestionCount={progressCounts.totalCount}
               activeExerciseTopics={activeExerciseTopics}
               activeExercise={activeExercise}
-              exerciseAction={exerciseEditAction}
+              exerciseAction={revisionDraftAction}
               onSetMode={setProgressMode}
             />
 
@@ -583,7 +806,7 @@ export function SujetViewer({
               currentQuestionPosition={currentQuestionPosition}
               totalQuestionCount={progressCounts.totalCount}
               solutionVisible={solutionVisible}
-              questionActions={questionActionButtons}
+              questionActions={focusQuestionActionButtons}
             />
           </div>
 
@@ -602,44 +825,32 @@ export function SujetViewer({
               onSelectQuestion={activateQuestion}
             />
           ) : null}
-        </div>
 
-        {isAdmin ? (
-          <SujetInlineEditor
-            target={inlineEditTarget}
-            onClose={() => setInlineEditTarget(null)}
-            onSaved={loadExam}
-          />
-        ) : null}
+          {revisionError ? <p className="error-text">{revisionError}</p> : null}
+        </div>
       </>
     );
   }
 
   return (
     <StudyShell>
-      <AppNavbar />
+      <StudentNavbar />
 
       {exam && activeExercise && activeQuestion ? (
-        <>
+        <section className="student-main-frame student-main-frame-sujet">
           <StudyHeader
-            eyebrow="وضع الدراسة"
-            title={exam.selectedSujetLabel ?? `الموضوع ${sujetNumber}`}
-            subtitle="واجهة مركزة للتمرين الحالي مع خريطة ثابتة للتنقل بين التمارين والأسئلة."
-            meta={[
-              { label: "المادة", value: exam.subject.name },
-              { label: "الشعبة", value: exam.stream.name },
-              { label: "السنة", value: String(exam.year) },
-              {
-                label: "الدورة",
-                value: formatSessionType(exam.sessionType),
-              },
-            ]}
+            eyebrow={`بكالوريا ${exam.year} · ${exam.stream.name} · ${formatSessionType(
+              exam.sessionType,
+            )}`}
+            title={`${exam.subject.name} - ${
+              exam.selectedSujetLabel ?? `الموضوع ${sujetNumber}`
+            }`}
             actions={
               <SujetViewerHeaderActions
                 backToBrowseHref={backToBrowseHref}
                 progressMode={progress.mode}
-                onEnterFocusMode={() => setFocusMode(true)}
                 onSetMode={setProgressMode}
+                adminAction={revisionDraftAction}
               />
             }
             progress={
@@ -655,36 +866,39 @@ export function SujetViewer({
             exercises={exercises}
             activeExerciseIndex={activeExerciseIndex}
             activeExercise={activeExercise}
-            activeQuestion={activeQuestion}
-            activeQuestionIndex={activeQuestionIndex}
-            activeQuestionStateDescriptor={activeQuestionStateDescriptor}
-            activeQuestionState={activeQuestionState}
-            solutionVisible={solutionVisible}
+            activeQuestionId={activeQuestionId}
             progressMode={progress.mode}
+            questionStates={progress.questionStates}
             navigatorExercises={navigatorExercises}
-            exerciseAction={exerciseEditAction}
-            questionActions={questionActionButtons}
+            exerciseHeaderActions={standardExerciseHeaderActions}
             onSelectExercise={activateExercise}
             onSelectQuestion={activateQuestion}
+            onToggleQuestionComplete={toggleQuestionComplete}
+            onToggleQuestionSolution={toggleQuestionSolution}
+            isQuestionSolutionVisible={isQuestionSolutionVisible}
           />
-        </>
-      ) : !error ? (
-        <EmptyState
-          title="لا توجد بيانات لهذا الموضوع"
-          description="جرّب العودة إلى التصفح ثم اختر موضوعاً آخر."
-        />
-      ) : (
+
+          {revisionError ? <p className="error-text">{revisionError}</p> : null}
+        </section>
+      ) : hasValidSujetNumber ? (
         <EmptyState
           title="تعذر تحميل الموضوع"
-          description={error}
+          description={
+            hasValidSujetNumber ? "أعد المحاولة." : "اختر موضوعاً آخر."
+          }
           action={
             <div className="study-action-row">
               <button
                 type="button"
                 className="btn-secondary"
-                onClick={() => void loadExam()}
+                onClick={() => {
+                  startRefreshingExam(() => {
+                    router.refresh();
+                  });
+                }}
+                disabled={refreshingExam}
               >
-                إعادة المحاولة
+                {refreshingExam ? "جارٍ التحديث..." : "إعادة المحاولة"}
               </button>
               <Link href={backToBrowseHref} className="btn-secondary">
                 العودة للتصفح
@@ -692,15 +906,12 @@ export function SujetViewer({
             </div>
           }
         />
-      )}
-
-      {isAdmin ? (
-        <SujetInlineEditor
-          target={inlineEditTarget}
-          onClose={() => setInlineEditTarget(null)}
-          onSaved={loadExam}
+      ) : (
+        <EmptyState
+          title="لا توجد بيانات لهذا الموضوع"
+          description="اختر موضوعاً آخر."
         />
-      ) : null}
+      )}
     </StudyShell>
   );
 }

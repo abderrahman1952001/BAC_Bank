@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { MediaType, Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import sharp from 'sharp';
@@ -7,6 +7,7 @@ import { IngestionDraft, type DraftAsset } from './ingestion.contract';
 import { collectReferencedAssetIds } from './ingestion-draft-graph';
 import { cropAssetBuffer } from './ingestion-image-crop';
 import { R2StorageClient } from './r2-storage';
+import { deleteStorageKeysBestEffort } from './storage-cleanup';
 
 export type PreparedPublishedAsset = {
   assetId: string;
@@ -19,12 +20,19 @@ export type PreparedPublishedAsset = {
   cropBox: DraftAsset['cropBox'];
 };
 
+export type PublishedMediaCleanupCandidate = {
+  id: string;
+  storageKey: string | null;
+};
+
 @Injectable()
 export class IngestionPublishedAssetsService {
+  private readonly logger = new Logger(IngestionPublishedAssetsService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async preparePublishedAssets(input: {
-    jobId: string;
+    paperSourceId: string;
     draft: IngestionDraft;
     paperId: string;
     storageClient: R2StorageClient;
@@ -49,13 +57,13 @@ export class IngestionPublishedAssetsService {
           include: {
             document: {
               select: {
-                jobId: true,
+                paperSourceId: true,
               },
             },
           },
         });
 
-        if (!page || page.document.jobId !== input.jobId) {
+        if (!page || page.document.paperSourceId !== input.paperSourceId) {
           throw new BadRequestException(
             `Asset ${asset.id} references an unknown source page.`,
           );
@@ -102,11 +110,16 @@ export class IngestionPublishedAssetsService {
 
       return preparedAssets;
     } catch (error) {
-      await Promise.allSettled(
-        uploadedKeys.map((storageKey) =>
-          input.storageClient.deleteObject(storageKey),
-        ),
+      const { failedKeys } = await deleteStorageKeysBestEffort(
+        input.storageClient,
+        uploadedKeys,
       );
+
+      if (failedKeys.length > 0) {
+        this.logger.warn(
+          `Failed to clean ${failedKeys.length} prepared published asset object(s): ${failedKeys.join(', ')}`,
+        );
+      }
       throw error;
     }
   }
@@ -115,11 +128,115 @@ export class IngestionPublishedAssetsService {
     preparedAssets: PreparedPublishedAsset[],
     storageClient: R2StorageClient,
   ) {
-    await Promise.allSettled(
-      preparedAssets.map((asset) =>
-        storageClient.deleteObject(asset.storageKey),
-      ),
+    const { failedKeys } = await deleteStorageKeysBestEffort(
+      storageClient,
+      preparedAssets.map((asset) => asset.storageKey),
     );
+
+    if (failedKeys.length > 0) {
+      this.logger.warn(
+        `Failed to clean ${failedKeys.length} prepared published asset object(s): ${failedKeys.join(', ')}`,
+      );
+    }
+  }
+
+  async listPublishedMediaForPaper(
+    tx: Prisma.TransactionClient,
+    paperId: string,
+  ): Promise<PublishedMediaCleanupCandidate[]> {
+    const media = await tx.media.findMany({
+      where: {
+        blocks: {
+          some: {
+            node: {
+              variant: {
+                paperId,
+              },
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        metadata: true,
+      },
+    });
+
+    return media.map((entry) => ({
+      id: entry.id,
+      storageKey: readJsonString(entry.metadata, 'storageKey'),
+    }));
+  }
+
+  async cleanupOrphanedPublishedMedia(input: {
+    candidates: PublishedMediaCleanupCandidate[];
+    storageClient: R2StorageClient;
+  }) {
+    const candidateIds = Array.from(
+      new Set(input.candidates.map((candidate) => candidate.id)),
+    );
+
+    if (!candidateIds.length) {
+      return;
+    }
+
+    const orphanedMedia = await this.prisma.media.findMany({
+      where: {
+        id: {
+          in: candidateIds,
+        },
+        blocks: {
+          none: {},
+        },
+      },
+      select: {
+        id: true,
+        metadata: true,
+      },
+    });
+
+    if (!orphanedMedia.length) {
+      return;
+    }
+
+    const orphanedStorageKeyById = new Map(
+      orphanedMedia.map((entry) => [
+        entry.id,
+        readJsonString(entry.metadata, 'storageKey'),
+      ]),
+    );
+    const { failedKeys } = await deleteStorageKeysBestEffort(
+      input.storageClient,
+      Array.from(orphanedStorageKeyById.values()),
+    );
+    const failedKeySet = new Set(failedKeys);
+    const deletableMediaIds = orphanedMedia
+      .filter((entry) => {
+        const storageKey = orphanedStorageKeyById.get(entry.id) ?? null;
+        return !storageKey || !failedKeySet.has(storageKey);
+      })
+      .map((entry) => entry.id);
+
+    if (failedKeys.length > 0) {
+      this.logger.warn(
+        `Failed to clean ${failedKeys.length} obsolete published media object(s): ${failedKeys.join(', ')}`,
+      );
+    }
+
+    if (!deletableMediaIds.length) {
+      return;
+    }
+
+    await this.prisma.media.deleteMany({
+      where: {
+        id: {
+          in: deletableMediaIds,
+        },
+        blocks: {
+          none: {},
+        },
+      },
+    });
   }
 }
 
@@ -145,4 +262,15 @@ export function buildPublishedMediaCreateData(
 
 function toJsonValue(value: unknown): Prisma.InputJsonValue {
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+}
+
+function readJsonString(metadata: Prisma.JsonValue | null, key: string) {
+  if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) {
+    return null;
+  }
+
+  const value = (metadata as Record<string, unknown>)[key];
+  return typeof value === 'string' && value.trim().length > 0
+    ? value.trim()
+    : null;
 }

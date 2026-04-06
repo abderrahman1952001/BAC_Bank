@@ -28,7 +28,7 @@ import {
 
 function createDraft(): AdminIngestionDraft {
   return {
-    schema: "1",
+    schema: "bac_ingestion_draft/v1",
     exam: {
       year: 2025,
       streamCode: "SE",
@@ -237,19 +237,22 @@ describe("admin ingestion structure helpers", () => {
       return moveDraftNode(withInsertedNode, "exercise-1", -1);
     });
 
-    expect(nextDraft.variants[0]?.nodes.find((node) => node.id === "question-2"))
-      .toEqual(
-        expect.objectContaining({
-          parentId: "exercise-1",
-          nodeType: "QUESTION",
-          orderIndex: 1,
-          label: "Question 2",
-        }),
-      );
-    expect(nextDraft.variants[0]?.nodes.find((node) => node.id === "exercise-1"))
-      .toEqual(expect.objectContaining({ orderIndex: 1 }));
-    expect(nextDraft.variants[0]?.nodes.find((node) => node.id === "exercise-0"))
-      .toEqual(expect.objectContaining({ orderIndex: 2 }));
+    expect(
+      nextDraft.variants[0]?.nodes.find((node) => node.id === "question-2"),
+    ).toEqual(
+      expect.objectContaining({
+        parentId: "exercise-1",
+        nodeType: "QUESTION",
+        orderIndex: 1,
+        label: "Question 2",
+      }),
+    );
+    expect(
+      nextDraft.variants[0]?.nodes.find((node) => node.id === "exercise-1"),
+    ).toEqual(expect.objectContaining({ orderIndex: 1 }));
+    expect(
+      nextDraft.variants[0]?.nodes.find((node) => node.id === "exercise-0"),
+    ).toEqual(expect.objectContaining({ orderIndex: 2 }));
   });
 
   it("can reparent and remove node subtrees without leaking descendants", () => {
@@ -363,9 +366,9 @@ describe("admin ingestion structure helpers", () => {
         ]),
       }),
     });
-    expect(
-      saved?.draft.variants[0]?.nodes[0]?.blocks[0]?.assetId,
-    ).toBe("asset-new");
+    expect(saved?.draft.variants[0]?.nodes[0]?.blocks[0]?.assetId).toBe(
+      "asset-new",
+    );
   });
 
   it("updates assets and applies native suggestions through the extracted asset helpers", () => {
@@ -497,8 +500,9 @@ describe("admin ingestion structure helpers", () => {
 
     expect(result.appendFallbackToInsert).toBe(true);
     expect(result.nextSelectedBlockId).toBe("block-new");
-    expect(result.draft.variants[0]?.nodes[2]?.blocks.map((block) => block.id))
-      .toEqual(["block-2", "block-new", "block-3"]);
+    expect(
+      result.draft.variants[0]?.nodes[2]?.blocks.map((block) => block.id),
+    ).toEqual(["block-2", "block-new", "block-3"]);
     expect(
       result.draft.variants[0]?.nodes[2]?.blocks.find(
         (block) => block.id === "block-new",
@@ -562,9 +566,9 @@ describe("admin ingestion structure helpers", () => {
   it("marks native suggestions stale when the underlying crop changes", () => {
     const previous = {
       ...createDraft().assets[0]!,
-      classification: "graph",
+      classification: "graph" as const,
       nativeSuggestion: {
-        type: "graph",
+        type: "graph" as const,
         value: "y=x^2",
         data: null,
         status: "suggested" as const,

@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+import { SubjectIcon } from "@/components/subject-icon";
 import { EmptyState } from "@/components/study-shell";
 import {
   type BuilderStep,
@@ -155,12 +157,21 @@ export function SessionBuilderStepper({
             disabled={!isEnabled}
             aria-current={isActive ? "step" : undefined}
           >
-            <span className="builder-stepper-index">
-              {isCompleted && !isActive ? "✓" : item.step}
+            <span className="builder-stepper-track" aria-hidden="true">
+              {isActive || isCompleted ? (
+                <motion.span
+                  className="builder-stepper-fill"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{
+                    duration: 0.28,
+                    ease: [0.2, 0.8, 0.2, 1],
+                  }}
+                />
+              ) : null}
             </span>
             <span className="builder-stepper-copy">
               <strong>{item.label}</strong>
-              <small>{item.description}</small>
             </span>
           </button>
         );
@@ -180,7 +191,7 @@ export function SessionBuilderSubjectStep({
       <div className="builder-stage-head">
         <div>
           <p className="page-kicker">الخطوة 1</p>
-          <h2>المادة</h2>
+          <h2>اختر المادة</h2>
         </div>
       </div>
 
@@ -196,15 +207,21 @@ export function SessionBuilderSubjectStep({
               onClick={() => onSelectSubject(subject.code)}
               disabled={loading}
             >
+              <span className="builder-card-icon" aria-hidden="true">
+                <SubjectIcon
+                  subjectCode={subject.code}
+                  subjectName={subject.name}
+                  size={24}
+                />
+              </span>
               <strong>{subject.name}</strong>
-              <span>{subject.family?.name ?? "مادة رسمية"}</span>
             </button>
           ))}
         </div>
       ) : (
         <EmptyState
           title="لا توجد مواد مرتبطة بشعبتك حالياً"
-          description="تحقق من الشعبة في الحساب."
+          description="تحقق من الحساب."
         />
       )}
     </>
@@ -230,7 +247,7 @@ export function SessionBuilderTopicsStep({
       <div className="builder-stage-head">
         <div>
           <p className="page-kicker">الخطوة 2</p>
-          <h2>اختر المحاور</h2>
+          <h2>المحاور</h2>
         </div>
         <button type="button" className="btn-secondary" onClick={onBack}>
           تغيير المادة
@@ -244,7 +261,7 @@ export function SessionBuilderTopicsStep({
       {!availableTopics.length ? (
         <EmptyState
           title="لا توجد محاور مطابقة حالياً"
-          description="جرّب مادة أخرى أو افتح كل الشعب."
+          description="غيّر المادة أو النطاق."
         />
       ) : (
         <>
@@ -255,8 +272,7 @@ export function SessionBuilderTopicsStep({
             }`}
             onClick={() => onChangeTopicMode("all")}
           >
-            <strong>كل فصول المادة</strong>
-            <span>جلسة واسعة داخل المادة.</span>
+            <strong>كل المحاور</strong>
           </button>
 
           <div className="builder-subject-grid">
@@ -284,10 +300,10 @@ export function SessionBuilderTopicsStep({
                     <strong>{chapter.name}</strong>
                     <span>
                       {selectedDescendants.length
-                        ? "تفرع أدق"
+                        ? `${selectedDescendants.length} مختارة`
                         : subtopicCount > 0
-                          ? `${subtopicCount} تفرعات`
-                          : "جاهز"}
+                          ? `${subtopicCount} فروع`
+                          : "مباشر"}
                     </span>
                   </button>
                 );
@@ -338,7 +354,7 @@ export function SessionBuilderTopicsStep({
           onClick={onNext}
           disabled={!topicSelectionComplete}
         >
-          التالي: السنوات
+          السنوات
         </button>
       </div>
     </>
@@ -402,9 +418,7 @@ export function SessionBuilderYearsStep({
             onClick={() => onSetYearMode(option.value)}
           >
             <strong>{option.label}</strong>
-            <span>
-              {option.value === "custom" ? "تحدده أنت." : "اختيار سريع."}
-            </span>
+            <span>{option.value === "custom" ? "مخصص" : "سريع"}</span>
           </button>
         ))}
       </div>
@@ -453,7 +467,7 @@ export function SessionBuilderYearsStep({
           className="builder-advanced-toggle"
           onClick={onToggleAdvanced}
         >
-          <span>تفاصيل إضافية</span>
+          <span>خيارات إضافية</span>
           <strong>{advancedOpen ? "إخفاء" : "إظهار"}</strong>
         </button>
 
@@ -526,7 +540,7 @@ export function SessionBuilderYearsStep({
           onClick={onNext}
           disabled={!yearSelectionComplete}
         >
-          التالي: حجم الجلسة
+          الحجم
         </button>
       </div>
     </>
@@ -599,7 +613,7 @@ export function SessionBuilderReviewStep({
           className="builder-advanced-toggle"
           onClick={onToggleAdvanced}
         >
-          <span>تفاصيل إضافية</span>
+          <span>خيارات إضافية</span>
           <strong>{advancedOpen ? "إخفاء" : "إظهار"}</strong>
         </button>
 
@@ -646,8 +660,8 @@ export function SessionBuilderReviewStep({
         <section className="builder-assembling-state">
           <span className="builder-loading-orb" aria-hidden="true" />
           <div>
-            <strong>جاري التجميع...</strong>
-            <p>نبني المعاينة.</p>
+            <strong>جاري التجميع</strong>
+            <p>تحديث المعاينة</p>
           </div>
         </section>
       ) : null}
@@ -671,9 +685,7 @@ export function SessionBuilderReviewStep({
       {preview ? (
         <div className="builder-preview-stack">
           {previewLoading ? (
-            <p className="builder-preview-inline-status">
-              جاري تحديث المطابقة...
-            </p>
+            <p className="builder-preview-inline-status">جاري التحديث</p>
           ) : null}
 
           <div className="builder-stat-grid">
@@ -694,7 +706,7 @@ export function SessionBuilderReviewStep({
           {preview.matchingExerciseCount > 0 ? (
             <>
               <section className="builder-preview-card builder-preview-summary-card">
-                <h3>الملخص</h3>
+                <h3>الخطة</h3>
                 <p>{planText}</p>
               </section>
 
@@ -772,10 +784,10 @@ export function SessionBuilderReviewStep({
           }
         >
           {creating
-            ? "جاري تجميع الجلسة..."
+            ? "جاري الإنشاء..."
             : previewLoading
-              ? "جاري تجميع التمارين المطابقة..."
-              : "ابدأ الجلسة"}
+              ? "جاري التحديث..."
+              : "إنشاء الجلسة"}
         </button>
       </div>
     </>

@@ -61,7 +61,18 @@ export function readDraftSelectedStreamCodes(
   }
 
   const metadata = isRecord(exam.metadata) ? exam.metadata : {};
-  const fromMetadata = Array.isArray(metadata.sharedStreamCodes)
+  const fromPaperStreamMetadata = Array.isArray(metadata.paperStreamCodes)
+    ? metadata.paperStreamCodes
+        .filter((value): value is string => typeof value === "string")
+        .map((value) => value.trim().toUpperCase())
+        .filter((value) => value.length > 0)
+    : [];
+
+  if (fromPaperStreamMetadata.length > 0) {
+    return Array.from(new Set(fromPaperStreamMetadata));
+  }
+
+  const fromSharedMetadata = Array.isArray(metadata.sharedStreamCodes)
     ? metadata.sharedStreamCodes
         .filter((value): value is string => typeof value === "string")
         .map((value) => value.trim().toUpperCase())
@@ -70,7 +81,7 @@ export function readDraftSelectedStreamCodes(
 
   return Array.from(
     new Set(
-      [exam.streamCode, ...fromMetadata]
+      [exam.streamCode, ...fromSharedMetadata]
         .filter((value): value is string => typeof value === "string")
         .map((value) => value.trim().toUpperCase())
         .filter((value) => value.length > 0),

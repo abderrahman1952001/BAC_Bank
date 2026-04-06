@@ -1,14 +1,22 @@
 import { describe, expect, it } from "vitest";
+import type { AdminIngestionJobSummary } from "@/lib/admin";
 import type { CatalogResponse, ExamResponse } from "@/lib/qbank";
 import {
+  buildActiveRevisionJobIdsByPaperId,
   buildAdminLibraryContextTitle,
   buildAdminLibraryQuery,
   buildAdminLibrarySelectionPrompt,
+  buildInitialAdminLibrarySelection,
   buildStudentPreviewHref,
+  findAdminLibraryStream,
+  findAdminLibrarySubject,
+  findAdminLibraryYearEntry,
+  findSelectedAdminLibrarySujet,
   formatPublishedSessionLabel,
   normalizeCode,
   parseSujetNumber,
   parseYear,
+  resolveAdminLibraryInitialSelection,
   resolveSelectionFromExamId,
 } from "@/lib/admin-library";
 
@@ -53,10 +61,10 @@ function makeCatalog(): CatalogResponse {
 function makeExam(): ExamResponse {
   return {
     id: "exam-1",
+    paperId: "paper-1",
     year: 2024,
     sessionType: "NORMAL",
     durationMinutes: 180,
-    totalPoints: 20,
     officialSourceReference: null,
     stream: { code: "SCI", name: "Sciences" },
     subject: { code: "MATH", name: "Math" },
@@ -71,6 +79,37 @@ function makeExam(): ExamResponse {
   };
 }
 
+function makeJob(
+  overrides: Partial<AdminIngestionJobSummary>,
+): AdminIngestionJobSummary {
+  return {
+    id: "job-1",
+    label: "Revision draft",
+    draft_kind: "revision",
+    provider: "manual",
+    year: 2024,
+    stream_codes: ["SCI"],
+    subject_code: "MATH",
+    session: null,
+    min_year: 2024,
+    status: "draft",
+    source_document_count: 2,
+    source_page_count: 8,
+    workflow: {
+      has_exam_document: true,
+      has_correction_document: true,
+      awaiting_correction: false,
+      can_process: true,
+      review_started: false,
+    },
+    published_paper_id: "paper-1",
+    published_exams: [],
+    created_at: "2026-04-06T00:00:00.000Z",
+    updated_at: "2026-04-06T00:00:00.000Z",
+    ...overrides,
+  };
+}
+
 describe("admin-library helpers", () => {
   it("normalizes URL-driven filters", () => {
     expect(normalizeCode(" sci ")).toBe("SCI");
@@ -78,6 +117,21 @@ describe("admin-library helpers", () => {
     expect(parseYear("oops")).toBeNull();
     expect(parseSujetNumber("1")).toBe(1);
     expect(parseSujetNumber("3")).toBeNull();
+    expect(
+      buildInitialAdminLibrarySelection({
+        stream: " sci ",
+        subject: " math ",
+        year: "2024",
+        examId: " exam-1 ",
+        sujet: "2",
+      }),
+    ).toEqual({
+      selectedStreamCode: "SCI",
+      selectedSubjectCode: "MATH",
+      selectedYear: 2024,
+      selectedExamId: "exam-1",
+      selectedSujetNumber: 2,
+    });
   });
 
   it("formats session labels and query strings", () => {
@@ -107,6 +161,22 @@ describe("admin-library helpers", () => {
       subjectCode: "MATH",
       year: 2024,
       sujetNumber: 1,
+    });
+
+    expect(
+      resolveAdminLibraryInitialSelection(
+        makeCatalog(),
+        buildInitialAdminLibrarySelection({
+          examId: "exam-1",
+          sujet: "2",
+        }),
+      ),
+    ).toEqual({
+      selectedStreamCode: "SCI",
+      selectedSubjectCode: "MATH",
+      selectedYear: 2024,
+      selectedExamId: "exam-1",
+      selectedSujetNumber: 2,
     });
   });
 
@@ -139,7 +209,34 @@ describe("admin-library helpers", () => {
     );
 
     expect(buildStudentPreviewHref(makeExam(), 1)).toBe(
-      "/app/browse/SCI/MATH/2024/exam-1/2",
+      "/student/browse/SCI/MATH/2024/exam-1/2",
     );
+  });
+
+  it("finds catalog entries and active revision drafts", () => {
+    const catalog = makeCatalog();
+    const stream = findAdminLibraryStream(catalog, "SCI");
+    const subject = findAdminLibrarySubject(stream, "MATH");
+    const yearEntry = findAdminLibraryYearEntry(subject, 2024);
+
+    expect(stream?.name).toBe("Sciences");
+    expect(subject?.name).toBe("Math");
+    expect(yearEntry?.year).toBe(2024);
+    expect(findSelectedAdminLibrarySujet(yearEntry, "exam-1", 2)?.label).toBe(
+      "Sujet 2",
+    );
+
+    expect(
+      buildActiveRevisionJobIdsByPaperId([
+        makeJob({ id: "job-1", published_paper_id: "paper-1" }),
+        makeJob({
+          id: "job-2",
+          published_paper_id: "paper-2",
+          status: "published",
+        }),
+      ]),
+    ).toEqual({
+      "paper-1": "job-1",
+    });
   });
 });

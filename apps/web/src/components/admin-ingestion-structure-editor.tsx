@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AdminIngestionAssetToolPanel,
   AdminIngestionNativeToolPanel,
@@ -81,6 +81,9 @@ export function AdminIngestionStructureEditor({
   focusRequest: IngestionEditorFocusRequest | null;
   onChange: (nextDraft: AdminIngestionDraft) => void;
 }) {
+  const [pendingInspectorFocusBlockId, setPendingInspectorFocusBlockId] =
+    useState<string | null>(null);
+
   useEffect(() => {
     const sanitizedDraft = sanitizeLegacyReviewDraft(draft);
 
@@ -320,6 +323,20 @@ export function AdminIngestionStructureEditor({
     openAssetToolPanel(block, mode);
   }
 
+  function handlePreviewBlockInsert(nodeId: string, insertIndex: number) {
+    const nextBlockId = addBlock({
+      nodeId,
+      insertIndex,
+    });
+
+    if (!nextBlockId) {
+      return;
+    }
+
+    setPendingInspectorScrollBlockId(nextBlockId);
+    setPendingInspectorFocusBlockId(nextBlockId);
+  }
+
   if (!activeVariant) {
     return null;
   }
@@ -327,13 +344,14 @@ export function AdminIngestionStructureEditor({
   return (
     <section className="admin-ingestion-editor" id="ingestion-structure-editor">
       <div className="admin-page-head ingestion-section-head">
-        <div>
+        <div className="admin-page-intro">
           <h2>Structure Editor</h2>
-          <p className="muted-text">
-            Review hierarchy, preview the student render, and edit selected
-            nodes without dropping into raw draft JSON. Drag the dividers to
-            resize the hierarchy, preview, and inspector panes.
-          </p>
+          <div className="admin-page-meta-row">
+            <span className="admin-page-meta-pill">
+              <strong>{activeVariant.nodes.length}</strong> nodes
+            </span>
+            <span className="admin-page-meta-pill">{activeVariant.code}</span>
+          </div>
         </div>
         <div className="block-item-actions">
           {draft.variants.map((variant) => (
@@ -358,12 +376,7 @@ export function AdminIngestionStructureEditor({
       <section className="admin-ingestion-editor-grid">
         <aside className="admin-tree-panel">
           <div className="admin-page-head ingestion-side-head">
-            <div>
-              <h3>Hierarchy</h3>
-              <p className="muted-text">
-                {activeVariant.nodes.length} nodes in {activeVariant.code}
-              </p>
-            </div>
+            <h3>Hierarchy</h3>
             <button
               type="button"
               className="btn-secondary"
@@ -452,13 +465,7 @@ export function AdminIngestionStructureEditor({
 
         <article className="admin-editor-panel ingestion-preview-panel">
           <div className="admin-page-head ingestion-side-head">
-            <div>
-              <h3>Rendered Preview</h3>
-              <p className="muted-text">
-                This uses the same rendering layer as the student-facing sujet
-                view.
-              </p>
-            </div>
+            <h3>Rendered Preview</h3>
           </div>
 
           <div className="ingestion-preview-surface">
@@ -474,6 +481,7 @@ export function AdminIngestionStructureEditor({
                 assetIssueCountById={assetIssueCountById}
                 onSelectNode={setSelectedNodeId}
                 onSelectBlock={handlePreviewBlockSelect}
+                onInsertBlock={handlePreviewBlockInsert}
                 onFocusSnippetTools={(nodeId, blockId) =>
                   focusSnippetTools(
                     nodeId,
@@ -497,13 +505,14 @@ export function AdminIngestionStructureEditor({
             selectedNode={selectedNode}
             selectedNodePath={selectedNodePath}
             selectedBlockId={selectedBlockId}
+            pendingFocusBlockId={pendingInspectorFocusBlockId}
             parentOptions={parentOptions}
             availableTopics={availableTopics}
             subjectCode={draft.exam.subjectCode}
             selectedStreamCodes={selectedStreamCodes}
             assets={draft.assets}
             blockIssueCountById={blockIssueCountById}
-            onAddBlock={addBlock}
+            onPendingFocusBlockIdChange={setPendingInspectorFocusBlockId}
             onUpdateSelectedNodeFields={updateSelectedNodeFields}
             onReparentSelectedNode={reparentSelectedNode}
             onSelectBlock={setSelectedBlockId}
@@ -529,7 +538,6 @@ export function AdminIngestionStructureEditor({
         <AdminIngestionToolPanelShell
           mode="snippet"
           title="Fix Text From Source"
-          description="Recover a missed sentence, paragraph, or formula from the scanned page without manually retyping it."
           disabled={activeToolPanelBusy}
           onClose={closeActiveToolPanel}
         >
@@ -552,8 +560,8 @@ export function AdminIngestionStructureEditor({
               setLiveSnippetCropBox(null);
               setSnippetCropBox(nextCropBox);
             }}
-            onRecoverSnippet={(mode) => {
-              void recoverSnippetIntoSelectedBlock(mode);
+            onRecoverSnippet={() => {
+              void recoverSnippetIntoSelectedBlock();
             }}
           />
         </AdminIngestionToolPanelShell>
@@ -563,7 +571,6 @@ export function AdminIngestionStructureEditor({
         <AdminIngestionToolPanelShell
           mode="native"
           title="Render Asset Natively"
-          description="Review the crop, then apply a stored draft or recover a native table, probability tree, or graph from the selected asset."
           disabled={activeToolPanelBusy}
           onClose={closeActiveToolPanel}
         >
@@ -601,7 +608,6 @@ export function AdminIngestionStructureEditor({
               ? "Edit Linked Asset"
               : "Create Linked Asset"
           }
-          description="Create or adjust the reviewed asset crop without leaving the block you are editing."
           disabled={activeToolPanelBusy}
           onClose={closeActiveToolPanel}
         >

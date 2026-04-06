@@ -52,7 +52,11 @@ Render will prompt for the blueprint values marked `sync: false`, including:
 - Web
 - Ingestion worker
 
-The worker is required for queued ingestion processing. Admin intake requests now enqueue jobs, and the worker drains them in the background.
+The worker is required for admin-queued ingestion processing. Admin intake
+requests enqueue jobs, and the worker drains them in the background.
+
+Bulk source scripts call the same ingestion engine directly for backfills, but
+they do not replace the worker for admin processing.
 
 ## Required Environment
 
@@ -72,6 +76,13 @@ The worker is required for queued ingestion processing. Admin intake requests no
 - `NEXT_PUBLIC_API_BASE_URL=/api/v1`
 - `API_UPSTREAM_URL=https://<your-api-host>/api/v1`
 - `NEXT_PUBLIC_ASSET_BASE_URL` when assets are served from a separate origin
+
+For local web development, keep these in `apps/web/.env.local` so Next.js can
+load them without custom filesystem fallbacks.
+
+For staging and production, prefer your hosting platform's environment-variable
+settings over committed `.env.production` files. Use `.env.production` only if
+you are intentionally managing env files outside the platform.
 
 ### Ingestion
 

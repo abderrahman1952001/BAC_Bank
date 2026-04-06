@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
 /* eslint-disable @next/next/no-img-element */
 
-import Link from 'next/link';
+import Link from "next/link";
 import type {
   AdminIngestionDraft,
   AdminIngestionJobResponse,
   AdminIngestionValidationIssue,
-} from '@/lib/admin';
-import { formatIssueLocation } from '@/lib/admin-ingestion-review';
+} from "@/lib/admin";
+import { formatIssueLocation } from "@/lib/admin-ingestion-review";
 import {
   INGESTION_STREAM_OPTIONS,
   INGESTION_SUBJECT_OPTIONS,
-} from '@/lib/ingestion-options';
+} from "@/lib/ingestion-options";
 
 type ExtractionSummary = {
   engine: string | null;
@@ -45,8 +45,8 @@ function ValidationIssueList({
           type="button"
           className={
             issue.id === focusedIssueId
-              ? 'validation-issue-button active'
-              : 'validation-issue-button'
+              ? "validation-issue-button active"
+              : "validation-issue-button"
           }
           onClick={() => {
             onIssueFocus(issue);
@@ -70,7 +70,10 @@ export function AdminIngestionReviewOverviewSection({
   correctionFile,
   actionBusy,
   attachingCorrection,
+  reviewNotes,
+  notesReadOnly,
   onIssueFocus,
+  onReviewNotesChange,
   onCorrectionFileChange,
   onAttachCorrection,
 }: {
@@ -83,7 +86,10 @@ export function AdminIngestionReviewOverviewSection({
   correctionFile: File | null;
   actionBusy: boolean;
   attachingCorrection: boolean;
+  reviewNotes: string;
+  notesReadOnly: boolean;
   onIssueFocus: (issue: AdminIngestionValidationIssue) => void;
+  onReviewNotesChange: (value: string) => void;
   onCorrectionFileChange: (file: File | null) => void;
   onAttachCorrection: () => void;
 }) {
@@ -95,87 +101,91 @@ export function AdminIngestionReviewOverviewSection({
     <>
       <div className="admin-workflow-grid">
         <article className="admin-workflow-card">
-          <h3>Status</h3>
-          <p>
-            <span className={`status-chip ${data.job.status}`}>{data.job.status}</span>
-          </p>
-          {workflow.awaiting_correction ? (
-            <p className="muted-text">Waiting for correction before processing.</p>
-          ) : null}
-          <p className="muted-text">Provider: {data.job.provider}</p>
+          <span className="admin-stat-label">Status</span>
+          <div className="admin-summary-stack">
+            <span className={`status-chip ${data.job.status}`}>
+              {data.job.status}
+            </span>
+            <strong>
+              {data.job.draft_kind === "revision" ? "Revision draft" : "Ingestion draft"}
+            </strong>
+            {workflow.awaiting_correction ? (
+              <span className="muted-text">Waiting for correction</span>
+            ) : null}
+          </div>
         </article>
         <article className="admin-workflow-card">
-          <h3>{isPublishedRevisionJob ? 'Revision Source' : 'Source Files'}</h3>
+          <span className="admin-stat-label">
+            {isPublishedRevisionJob ? "Revision Source" : "Source Files"}
+          </span>
           {isPublishedRevisionJob ? (
-            <>
-              <p>Published canonical paper</p>
-              <p>{publishedExams.length || 1} live offering(s)</p>
-              <p className="muted-text">
-                This revision draft starts from live content, so PDF processing and
-                crop recovery are intentionally unavailable.
-              </p>
-            </>
+            <div className="admin-summary-stack">
+              <strong>Published canonical paper</strong>
+              <span>{publishedExams.length || 1} live offering(s)</span>
+            </div>
           ) : (
-            <>
-              <p>{data.documents.length} documents</p>
-              <p>{sourcePageCount} rasterized pages</p>
-              <p className="muted-text">
-                Correction: {workflow.has_correction_document ? 'attached' : 'missing'}
-              </p>
-            </>
+            <div className="admin-summary-stack">
+              <strong>{data.documents.length} documents</strong>
+              <span>{sourcePageCount} rasterized pages</span>
+              <span className="muted-text">
+                Correction {workflow.has_correction_document ? "attached" : "missing"}
+              </span>
+            </div>
           )}
         </article>
         <article className="admin-workflow-card">
-          <h3>Draft Assets</h3>
-          <p>{draft.assets.length} reviewed asset regions</p>
-          <p className="muted-text">Publish only reads reviewed data from this draft.</p>
+          <span className="admin-stat-label">Draft Assets</span>
+          <div className="admin-summary-stack">
+            <strong>{draft.assets.length} reviewed regions</strong>
+            <span className="muted-text">Draft-backed only</span>
+          </div>
         </article>
         <article className="admin-workflow-card">
-          <h3>{isPublishedRevisionJob ? 'Imported Draft' : 'Extraction'}</h3>
+          <span className="admin-stat-label">
+            {isPublishedRevisionJob ? "Imported Draft" : "Extraction"}
+          </span>
           {isPublishedRevisionJob ? (
-            <>
-              <p>Loaded from the published paper hierarchy</p>
-              <p>
-                Exercises: <strong>{extractionSummary?.exerciseCount ?? 0}</strong> ·
-                Questions: <strong>{extractionSummary?.questionCount ?? 0}</strong>
-              </p>
-              <p className="muted-text">
-                The revision editor starts from the current live structure instead of
-                OCR output.
-              </p>
-            </>
+            <div className="admin-summary-stack">
+              <strong>Loaded from live structure</strong>
+              <span>
+                {extractionSummary?.exerciseCount ?? 0} exercises ·{" "}
+                {extractionSummary?.questionCount ?? 0} questions
+              </span>
+            </div>
           ) : (
-            <>
-              <p>
-                {extractionSummary?.engine ?? 'Unknown engine'}
-                {extractionSummary?.model ? ` · ${extractionSummary.model}` : ''}
-              </p>
-              <p>
-                Exercises: <strong>{extractionSummary?.exerciseCount ?? 0}</strong> ·
-                Questions: <strong>{extractionSummary?.questionCount ?? 0}</strong>
-              </p>
-              <p className="muted-text">
-                Assets: <strong>{extractionSummary?.assetCount ?? 0}</strong> ·
-                Uncertainties: <strong>{extractionSummary?.uncertaintyCount ?? 0}</strong>
-              </p>
-            </>
+            <div className="admin-summary-stack">
+              <strong>
+                {extractionSummary?.engine ?? "Unknown engine"}
+                {extractionSummary?.model
+                  ? ` · ${extractionSummary.model}`
+                  : ""}
+              </strong>
+              <span>
+                {extractionSummary?.exerciseCount ?? 0} exercises ·{" "}
+                {extractionSummary?.questionCount ?? 0} questions
+              </span>
+              <span className="muted-text">
+                {extractionSummary?.assetCount ?? 0} assets ·{" "}
+                {extractionSummary?.uncertaintyCount ?? 0} uncertainties
+              </span>
+            </div>
           )}
         </article>
         <article className="admin-workflow-card">
-          <h3>Validation</h3>
-          <p>
-            Errors: <strong>{validationSummary.errors.length}</strong> · Warnings:{' '}
-            <strong>{validationSummary.warnings.length}</strong>
-          </p>
-          <p className="muted-text">
-            Approval and publish are blocked until errors reach zero.
-          </p>
+          <span className="admin-stat-label">Validation</span>
+          <div className="admin-summary-stack">
+            <strong>
+              {validationSummary.errors.length} errors ·{" "}
+              {validationSummary.warnings.length} warnings
+            </strong>
+            <span className="muted-text">Errors must be zero to publish</span>
+          </div>
         </article>
         <article className="admin-workflow-card">
-          <h3>Published Offerings</h3>
+          <span className="admin-stat-label">Published Offerings</span>
           {publishedExams.length ? (
-            <>
-              <p>{publishedExams.length} stream offering(s)</p>
+            <div className="admin-summary-stack">
+              <strong>{publishedExams.length} stream offering(s)</strong>
               <div className="block-item-actions">
                 {publishedExams.map((exam) => (
                   <Link
@@ -183,31 +193,52 @@ export function AdminIngestionReviewOverviewSection({
                     href={`/admin/library?examId=${exam.id}`}
                     className="btn-secondary"
                   >
-                    {exam.is_primary ? `${exam.stream_code} · Primary` : exam.stream_code}
+                    {exam.stream_code}
                   </Link>
                 ))}
               </div>
-            </>
+            </div>
           ) : (
-            <p className="muted-text">
-              Publish creates one exam offering per selected paper stream.
-            </p>
+            <span className="muted-text">No live offerings yet</span>
           )}
         </article>
       </div>
+
+      <section className="admin-context-card">
+        <div className="admin-page-head ingestion-section-head">
+          <h2>Review Notes</h2>
+        </div>
+
+        <label className="field admin-form-wide">
+          <span>Reviewer Handoff</span>
+          <textarea
+            rows={6}
+            value={reviewNotes}
+            onChange={(event) => {
+              onReviewNotesChange(event.target.value);
+            }}
+            placeholder="Summarize reviewer context, known risks, or publication notes for the next admin."
+            disabled={notesReadOnly}
+          />
+        </label>
+      </section>
 
       {validationSummary.issues.length ? (
         <section className="admin-validation-issue-grid">
           <ValidationIssueList
             title="Blocking Validation Errors"
-            issues={validationSummary.issues.filter((issue) => issue.severity === 'error')}
+            issues={validationSummary.issues.filter(
+              (issue) => issue.severity === "error",
+            )}
             focusedIssueId={focusedIssueId}
             onIssueFocus={onIssueFocus}
             className="admin-validation-box"
           />
           <ValidationIssueList
             title="Validation Warnings"
-            issues={validationSummary.issues.filter((issue) => issue.severity === 'warning')}
+            issues={validationSummary.issues.filter(
+              (issue) => issue.severity === "warning",
+            )}
             focusedIssueId={focusedIssueId}
             onIssueFocus={onIssueFocus}
             className="admin-context-card"
@@ -225,13 +256,7 @@ export function AdminIngestionReviewOverviewSection({
       {workflow.awaiting_correction ? (
         <section className="admin-context-card">
           <div className="admin-page-head ingestion-section-head">
-            <div>
-              <h2>Waiting for Correction</h2>
-              <p className="muted-text">
-                Upload the correction PDF here, then process exam and correction
-                together in one pass.
-              </p>
-            </div>
+            <h2>Attach Correction</h2>
           </div>
 
           <div className="admin-form-grid">
@@ -254,7 +279,7 @@ export function AdminIngestionReviewOverviewSection({
               onClick={onAttachCorrection}
               disabled={actionBusy || !correctionFile}
             >
-              {attachingCorrection ? 'Uploading…' : 'Attach Correction PDF'}
+              {attachingCorrection ? "Uploading…" : "Attach Correction PDF"}
             </button>
           </div>
         </section>
@@ -269,27 +294,19 @@ export function AdminIngestionReviewMetadataSection({
   onYearChange,
   onSubjectCodeChange,
   onSessionTypeChange,
-  onPrimaryStreamCodeChange,
   onSelectedStreamCodesChange,
 }: {
   draft: AdminIngestionDraft;
   selectedStreamCodes: string[];
   onYearChange: (year: number) => void;
   onSubjectCodeChange: (subjectCode: string | null) => void;
-  onSessionTypeChange: (sessionType: 'NORMAL' | 'MAKEUP') => void;
-  onPrimaryStreamCodeChange: (streamCode: string | null) => void;
+  onSessionTypeChange: (sessionType: "NORMAL" | "MAKEUP") => void;
   onSelectedStreamCodesChange: (nextCodes: string[]) => void;
 }) {
   return (
     <section className="admin-form">
       <div className="admin-page-head ingestion-section-head">
-        <div>
-          <h2>Metadata Review</h2>
-          <p className="muted-text">
-            Keep paper metadata explicit before approval. Subject is controlled, and
-            shared-paper streams are tracked together here.
-          </p>
-        </div>
+        <h2>Metadata</h2>
       </div>
 
       <div className="admin-form-grid">
@@ -311,7 +328,7 @@ export function AdminIngestionReviewMetadataSection({
         <label className="field">
           <span>Subject Code</span>
           <select
-            value={draft.exam.subjectCode ?? ''}
+            value={draft.exam.subjectCode ?? ""}
             onChange={(event) => {
               onSubjectCodeChange(event.target.value || null);
             }}
@@ -330,7 +347,7 @@ export function AdminIngestionReviewMetadataSection({
           <select
             value={draft.exam.sessionType}
             onChange={(event) => {
-              onSessionTypeChange(event.target.value as 'NORMAL' | 'MAKEUP');
+              onSessionTypeChange(event.target.value as "NORMAL" | "MAKEUP");
             }}
           >
             <option value="NORMAL">Normal</option>
@@ -338,48 +355,34 @@ export function AdminIngestionReviewMetadataSection({
           </select>
         </label>
 
-        {selectedStreamCodes.length > 1 ? (
-          <label className="field">
-            <span>Primary Exam Offering Stream</span>
-            <select
-              value={draft.exam.streamCode ?? selectedStreamCodes[0]}
-              onChange={(event) => {
-                onPrimaryStreamCodeChange(event.target.value || null);
-              }}
-            >
-              {selectedStreamCodes.map((code) => (
-                <option key={code} value={code}>
-                  {code}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : (
-          <label className="field">
-            <span>Primary Exam Offering Stream</span>
-            <input value={draft.exam.streamCode ?? ''} readOnly />
-          </label>
-        )}
-
         <label className="field admin-form-wide">
           <span>Paper Streams</span>
           <div className="ingestion-stream-checkbox-grid">
             {INGESTION_STREAM_OPTIONS.map(([code, label]) => {
               const checked = selectedStreamCodes.includes(code);
+              const wouldClearLastSelected =
+                checked && selectedStreamCodes.length === 1;
 
               return (
                 <label
                   key={code}
                   className={
                     checked
-                      ? 'ingestion-stream-option active'
-                      : 'ingestion-stream-option'
+                      ? "ingestion-stream-option active"
+                      : "ingestion-stream-option"
                   }
                 >
                   <input
                     type="checkbox"
                     checked={checked}
                     onChange={(event) => {
+                      if (
+                        !event.target.checked &&
+                        wouldClearLastSelected
+                      ) {
+                        return;
+                      }
+
                       onSelectedStreamCodesChange(
                         event.target.checked
                           ? [...selectedStreamCodes, code]
@@ -396,9 +399,7 @@ export function AdminIngestionReviewMetadataSection({
             })}
           </div>
           <small className="muted-text">
-            These PDFs are the provenance of the shared paper. Publish creates one
-            exam offering per selected stream, and the primary stream keeps the
-            default job-level exam link stable.
+            At least one paper stream must remain selected.
           </small>
         </label>
       </div>
@@ -419,14 +420,20 @@ export function AdminIngestionReviewSourcesSection({
         {data.documents.length ? (
           data.documents.map((document) => (
             <article key={document.id} className="admin-context-card">
-              <h3>{document.kind === 'correction' ? 'Correction PDF' : 'Exam PDF'}</h3>
+              <h3>
+                {document.kind === "correction" ? "Correction PDF" : "Exam PDF"}
+              </h3>
               <p>{document.file_name}</p>
               <p className="muted-text">
                 {document.page_count ?? 0} pages
-                {document.source_url ? ` · ${document.source_url}` : ''}
+                {document.source_url ? ` · ${document.source_url}` : ""}
               </p>
               <p>
-                <a href={document.download_url} target="_blank" rel="noreferrer">
+                <a
+                  href={document.download_url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Open source PDF
                 </a>
               </p>
@@ -437,8 +444,8 @@ export function AdminIngestionReviewSourcesSection({
             <h3>No source PDFs attached</h3>
             <p className="muted-text">
               {isPublishedRevisionJob
-                ? 'This draft was created from the live published paper. Start a new ingestion job if you need source-page processing or crop-based asset recovery.'
-                : 'Attach and process the exam source files before reviewing this section.'}
+                ? "This draft was created from the live published paper. Start a new ingestion job if you need source-page processing or crop-based asset recovery."
+                : "Attach and process the exam source files before reviewing this section."}
             </p>
           </article>
         )}
@@ -446,12 +453,7 @@ export function AdminIngestionReviewSourcesSection({
 
       <section className="admin-context-card">
         <div className="admin-page-head ingestion-section-head">
-          <div>
-            <h2>Source Pages</h2>
-            <p className="muted-text">
-              Browse the rasterized pages separately from structure editing.
-            </p>
-          </div>
+          <h2>Source Pages</h2>
         </div>
 
         <div className="ingestion-page-list">
@@ -466,8 +468,8 @@ export function AdminIngestionReviewSourcesSection({
                   <div className="ingestion-section-head">
                     <div>
                       <strong>
-                        {document.kind === 'correction' ? 'Correction' : 'Exam'} page{' '}
-                        {page.page_number}
+                        {document.kind === "correction" ? "Correction" : "Exam"}{" "}
+                        page {page.page_number}
                       </strong>
                       <p className="muted-text">
                         {page.width} × {page.height}
@@ -488,8 +490,8 @@ export function AdminIngestionReviewSourcesSection({
           ) : (
             <p className="muted-text">
               {isPublishedRevisionJob
-                ? 'Published revisions do not include rasterized source pages.'
-                : 'No rasterized pages are available for this job yet.'}
+                ? "No source pages for published revisions."
+                : "No rasterized pages yet."}
             </p>
           )}
         </div>

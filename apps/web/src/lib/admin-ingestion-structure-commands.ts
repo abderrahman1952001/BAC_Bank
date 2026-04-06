@@ -17,6 +17,17 @@ import {
   type DraftNode,
 } from "@/lib/admin-ingestion-structure";
 
+function clampBlockInsertIndex(
+  blocks: DraftBlock[],
+  insertIndex: number | undefined,
+) {
+  if (!Number.isFinite(insertIndex)) {
+    return blocks.length;
+  }
+
+  return Math.min(Math.max(Math.trunc(insertIndex as number), 0), blocks.length);
+}
+
 export function addDraftNodeCommand(options: {
   draft: AdminIngestionDraft;
   variantCode: DraftVariantCode;
@@ -88,14 +99,23 @@ export function addDraftBlockCommand(options: {
   draft: AdminIngestionDraft;
   variantCode: DraftVariantCode;
   nodeId: string;
+  insertIndex?: number;
   makeBlockId: () => string;
 }) {
-  const { draft, variantCode, nodeId, makeBlockId } = options;
+  const { draft, variantCode, nodeId, insertIndex, makeBlockId } = options;
   const nextBlock = createDraftBlock(makeBlockId());
 
   return {
     draft: updateDraftVariantNodes(draft, variantCode, (nodes) =>
-      updateDraftNodeBlocks(nodes, nodeId, (blocks) => [...blocks, nextBlock]),
+      updateDraftNodeBlocks(nodes, nodeId, (blocks) => {
+        const nextInsertIndex = clampBlockInsertIndex(blocks, insertIndex);
+
+        return [
+          ...blocks.slice(0, nextInsertIndex),
+          nextBlock,
+          ...blocks.slice(nextInsertIndex),
+        ];
+      }),
     ),
     nextSelectedBlockId: nextBlock.id,
   };

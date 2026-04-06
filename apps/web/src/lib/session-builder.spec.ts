@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { FiltersResponse } from "@/lib/qbank";
 import {
   buildBuilderPlanText,
+  buildSessionBuilderViewModel,
   buildCreateSessionRequest,
   buildPreviewSessionRequest,
   buildSelectedTopicLabel,
@@ -52,7 +53,34 @@ const filters = {
     },
   ],
   years: [2025, 2024, 2023, 2022, 2021],
-  topics: [],
+  topics: [
+    {
+      code: "ALG",
+      name: "Algebra",
+      slug: "algebra",
+      parentCode: null,
+      displayOrder: 1,
+      isSelectable: true,
+      subject: {
+        code: "MATH",
+        name: "Mathematics",
+      },
+      streamCodes: ["SE", "TM"],
+    },
+    {
+      code: "FUNC",
+      name: "Functions",
+      slug: "functions",
+      parentCode: null,
+      displayOrder: 2,
+      isSelectable: true,
+      subject: {
+        code: "MATH",
+        name: "Mathematics",
+      },
+      streamCodes: ["SE"],
+    },
+  ],
   sessionTypes: ["NORMAL", "MAKEUP"],
 } satisfies FiltersResponse;
 
@@ -166,6 +194,38 @@ describe("session builder helpers", () => {
     ).toBe(
       "6 تمارين · 2 محاور · Sciences experimentales + Techniques mathematiques · بين 2022 و 2025 · عادية + استدراكية.",
     );
+  });
+
+  it("builds a builder view model from filters, stream defaults, and preview state", () => {
+    const viewModel = buildSessionBuilderViewModel({
+      filters,
+      userStreamCode: "SCI",
+      subjectCode: "MATH",
+      topicCodes: ["ALG"],
+      topicSelectionMode: "custom",
+      selectedStreamCodes: null,
+      yearMode: "3",
+      yearStart: null,
+      yearEnd: null,
+      sessionTypes: ["NORMAL"],
+      exerciseCount: 8,
+      preview: null,
+      previewLoading: false,
+    });
+
+    expect(viewModel.suggestedSubjects.map((subject) => subject.code)).toEqual([
+      "MATH",
+    ]);
+    expect(viewModel.defaultStreamCodes).toEqual(["SE"]);
+    expect(viewModel.effectiveStreamCodes).toEqual(["SE"]);
+    expect(viewModel.availableTopics.map((topic) => topic.code)).toEqual([
+      "ALG",
+      "FUNC",
+    ]);
+    expect(viewModel.selectedYears).toEqual([2025, 2024, 2023]);
+    expect(viewModel.selectedTopicLabel).toBe("Algebra");
+    expect(viewModel.builderReadyToPreview).toBe(true);
+    expect(viewModel.maxExerciseCount).toBe(20);
   });
 
   it("prioritizes zero-results guidance from narrowest filters outward", () => {

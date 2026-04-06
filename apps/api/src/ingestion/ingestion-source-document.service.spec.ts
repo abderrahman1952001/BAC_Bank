@@ -9,6 +9,7 @@ describe('IngestionSourceDocumentService', () => {
     sourceDocument: {
       create: jest.Mock;
       update: jest.Mock;
+      delete: jest.Mock;
     };
     sourcePage: {
       deleteMany: jest.Mock;
@@ -16,6 +17,7 @@ describe('IngestionSourceDocumentService', () => {
   };
   let storageClient: {
     putObject: jest.Mock;
+    deleteObject: jest.Mock;
   };
   let service: IngestionSourceDocumentService;
 
@@ -34,6 +36,7 @@ describe('IngestionSourceDocumentService', () => {
       sourceDocument: {
         create: jest.fn(),
         update: jest.fn(),
+        delete: jest.fn(),
       },
       sourcePage: {
         deleteMany: jest.fn(),
@@ -41,6 +44,7 @@ describe('IngestionSourceDocumentService', () => {
     };
     storageClient = {
       putObject: jest.fn().mockResolvedValue(undefined),
+      deleteObject: jest.fn().mockResolvedValue(undefined),
     };
     service = new IngestionSourceDocumentService(prisma as never);
   });
@@ -144,7 +148,13 @@ describe('IngestionSourceDocumentService', () => {
       sourceDocument: {
         id: 'doc-2',
         kind: SourceDocumentKind.CORRECTION,
-        pages: [{ id: 'page-1' }],
+        storageKey: 'bac/2023/documents/old-correction.pdf',
+        pages: [
+          {
+            id: 'page-1',
+            storageKey: 'bac/2023/pages/old-correction/page-001.png',
+          },
+        ],
       },
       upload: {
         buffer: pdfBuffer,
@@ -188,5 +198,49 @@ describe('IngestionSourceDocumentService', () => {
         storageKey: true,
       },
     });
+    expect(storageClient.deleteObject).toHaveBeenCalledTimes(2);
+    expect(storageClient.deleteObject.mock.calls).toEqual(
+      expect.arrayContaining([
+        ['bac/2023/pages/old-correction/page-001.png'],
+        ['bac/2023/documents/old-correction.pdf'],
+      ]),
+    );
+  });
+
+  it('deletes source documents from storage after removing their row', async () => {
+    prisma.sourceDocument.delete.mockResolvedValueOnce({
+      id: 'doc-9',
+    });
+
+    await service.deleteSourceDocument({
+      sourceDocument: {
+        id: 'doc-9',
+        storageKey: 'bac/2024/documents/exam.pdf',
+        pages: [
+          {
+            id: 'page-1',
+            storageKey: 'bac/2024/pages/exam/page-001.png',
+          },
+          {
+            id: 'page-2',
+            storageKey: 'bac/2024/pages/exam/page-002.png',
+          },
+        ],
+      },
+      storageClient: storageClient as never,
+    });
+
+    expect(prisma.sourceDocument.delete).toHaveBeenCalledWith({
+      where: {
+        id: 'doc-9',
+      },
+    });
+    expect(storageClient.deleteObject.mock.calls).toEqual(
+      expect.arrayContaining([
+        ['bac/2024/documents/exam.pdf'],
+        ['bac/2024/pages/exam/page-001.png'],
+        ['bac/2024/pages/exam/page-002.png'],
+      ]),
+    );
   });
 });

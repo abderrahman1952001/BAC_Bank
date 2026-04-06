@@ -4,6 +4,7 @@ import type { StudyExerciseModel } from "@/lib/study-surface";
 import {
   buildActiveExerciseTopics,
   buildPrimaryActionLabel,
+  buildSessionPlayerViewModel,
   buildQuestionStatePresentation,
   buildSessionGoalSummary,
   buildSessionMeta,
@@ -117,6 +118,8 @@ const session = {
   requestedExerciseCount: 3,
   exerciseCount: 2,
   progress: null,
+  createdAt: "2026-03-27T00:00:00.000Z",
+  updatedAt: "2026-03-28T00:00:00.000Z",
   filters: {
     years: [2025, 2024],
     streamCodes: ["SE", "TM"],
@@ -301,6 +304,37 @@ describe("session player helpers", () => {
         questions: [expect.objectContaining({ id: "q3", status: "skipped" })],
       }),
     ]);
+  });
+
+  it("builds a player view model from progress and motion state", () => {
+    const viewModel = buildSessionPlayerViewModel({
+      session,
+      exercises,
+      progress: {
+        activeExerciseId: "exercise-1",
+        activeQuestionId: "q2",
+        mode: "SOLVE",
+        questionStates: {
+          q1: { completed: true },
+          q2: { opened: true, solutionViewed: true },
+          q3: { skipped: true },
+        },
+        updatedAt: "2026-03-28T01:00:00.000Z",
+      },
+      questionMotion: {
+        phase: "out",
+        direction: "backward",
+      },
+    });
+
+    expect(viewModel.activeExercise?.id).toBe("exercise-1");
+    expect(viewModel.activeQuestion?.id).toBe("q2");
+    expect(viewModel.progressCounts.completedCount).toBe(1);
+    expect(viewModel.progressCounts.skippedCount).toBe(1);
+    expect(viewModel.currentQuestionPosition).toBe(2);
+    expect(viewModel.solutionVisible).toBe(true);
+    expect(viewModel.questionMotionClass).toBe("is-leaving-backward");
+    expect(viewModel.primaryActionLabel).toBe("السؤال التالي");
   });
 
   it("resolves adjacent, skipped, and unanswered question refs", () => {

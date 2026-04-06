@@ -4,6 +4,7 @@ import { SessionType, SourceDocumentKind } from '@prisma/client';
 export type CanonicalStorageContext = {
   year: number;
   streamCode: string | null;
+  familyCode?: string | null;
   subjectCode: string | null;
   sessionType: SessionType;
   qualifierKey?: string | null;
@@ -13,25 +14,20 @@ export function buildCanonicalDocumentFileName(
   context: CanonicalStorageContext,
   kind: SourceDocumentKind,
 ) {
-  const streamSegment = slugifySegment(context.streamCode ?? 'pending-stream');
+  const familySegment = slugifySegment(
+    context.familyCode ?? context.streamCode ?? 'pending-family',
+  );
   const subjectSegment = slugifySegment(
     context.subjectCode ?? 'pending-subject',
   );
-  const parts = ['bac', `${context.year}`, streamSegment, subjectSegment];
-
-  if (context.qualifierKey) {
-    const qualifierSegment = slugifySegment(context.qualifierKey);
-
-    if (
-      qualifierSegment !== streamSegment &&
-      qualifierSegment !== subjectSegment
-    ) {
-      parts.push(qualifierSegment);
-    }
-  }
-
-  parts.push(context.sessionType === SessionType.MAKEUP ? 'makeup' : 'normal');
-  parts.push(kind === SourceDocumentKind.CORRECTION ? 'correction' : 'exam');
+  const parts = [
+    'bac',
+    kind === SourceDocumentKind.CORRECTION ? 'correction' : 'exam',
+    subjectSegment,
+    familySegment,
+    `${context.year}`,
+    context.sessionType === SessionType.MAKEUP ? 'makeup' : 'normal',
+  ];
 
   return `${parts.join('-')}.pdf`;
 }

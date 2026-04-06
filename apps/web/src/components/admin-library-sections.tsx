@@ -14,7 +14,6 @@ type AdminLibraryFiltersRailProps = {
   selectedStreamCode: string;
   selectedSubjectCode: string;
   selectedYear: number | null;
-  selectionPrompt: string;
   onClearStream: () => void;
   onClearSubject: () => void;
   onClearYear: () => void;
@@ -25,7 +24,6 @@ type AdminLibraryFiltersRailProps = {
 
 type AdminLibraryContextStripProps = {
   browseContextTitle: string;
-  selectionPrompt: string;
   streamName: string | null;
   subjectName: string | null;
   selectedYear: number | null;
@@ -47,8 +45,9 @@ type AdminLibrarySujetsPanelProps = {
 type AdminLibraryPreviewPanelProps = {
   studentPreviewHref: string | null;
   startingRevision: boolean;
-  selectedExamId: string | null;
+  canStartRevision: boolean;
   onStartRevision: () => void;
+  hasActiveRevisionDraft: boolean;
   revisionError: string | null;
   loadingExam: boolean;
   examError: string | null;
@@ -64,7 +63,6 @@ export function AdminLibraryFiltersRail({
   selectedStreamCode,
   selectedSubjectCode,
   selectedYear,
-  selectionPrompt,
   onClearStream,
   onClearSubject,
   onClearYear,
@@ -75,9 +73,7 @@ export function AdminLibraryFiltersRail({
   return (
     <aside className="study-sidebar">
       <div className="study-sidebar-header">
-        <p className="page-kicker">Library Filters</p>
-        <h2>Published Catalog</h2>
-        <p>{selectionPrompt}</p>
+        <h2>Catalog</h2>
       </div>
 
       <div className="browse-filter-group">
@@ -125,7 +121,7 @@ export function AdminLibraryFiltersRail({
           ) : null}
         </div>
         {!stream ? (
-          <p className="muted-text">Choose a stream first.</p>
+          <p className="muted-text">Select a stream.</p>
         ) : (
           <div className="chip-grid">
             {stream.subjects.map((item) => (
@@ -160,9 +156,7 @@ export function AdminLibraryFiltersRail({
           ) : null}
         </div>
         {!subject ? (
-          <p className="muted-text">
-            Published years appear after you choose a subject.
-          </p>
+          <p className="muted-text">Select a subject.</p>
         ) : (
           <div className="browse-year-list">
             {subject.years.map((item) => (
@@ -189,7 +183,6 @@ export function AdminLibraryFiltersRail({
 
 export function AdminLibraryContextStrip({
   browseContextTitle,
-  selectionPrompt,
   streamName,
   subjectName,
   selectedYear,
@@ -198,9 +191,7 @@ export function AdminLibraryContextStrip({
   return (
     <section className="browse-context-strip">
       <div>
-        <p className="page-kicker">Current Focus</p>
         <h2>{browseContextTitle}</h2>
-        <p>{selectionPrompt}</p>
       </div>
       <div className="browse-context-pills">
         {streamName ? <span>{streamName}</span> : null}
@@ -226,14 +217,12 @@ export function AdminLibrarySujetsPanel({
   return (
     <section className="browse-panel">
       <div className="browse-panel-head">
-        <div>
-          <h2>Published Sujets</h2>
-          <p>
-            {subject && selectedYear
-              ? `${subject.name} · ${selectedYear} · ${sujetsCount} published sujet(s)`
-              : "Complete the selection in the left rail."}
-          </p>
-        </div>
+        <h2>Published Sujets</h2>
+        {subject && selectedYear ? (
+          <span className="admin-page-meta-pill">
+            <strong>{sujetsCount}</strong> sujet{sujetsCount === 1 ? "" : "s"}
+          </span>
+        ) : null}
       </div>
 
       {!stream || !subject || !selectedYear ? (
@@ -279,8 +268,9 @@ export function AdminLibrarySujetsPanel({
 export function AdminLibraryPreviewPanel({
   studentPreviewHref,
   startingRevision,
-  selectedExamId,
+  canStartRevision,
   onStartRevision,
+  hasActiveRevisionDraft,
   revisionError,
   loadingExam,
   examError,
@@ -291,12 +281,7 @@ export function AdminLibraryPreviewPanel({
   return (
     <section className="browse-panel browse-preview-panel">
       <div className="browse-panel-head">
-        <div>
-          <h2>Published Paper Preview</h2>
-          <p>
-            Review the live paper before you branch into a revision draft.
-          </p>
-        </div>
+        <h2>Paper Preview</h2>
         <div className="table-actions">
           {studentPreviewHref ? (
             <Link href={studentPreviewHref} className="btn-secondary">
@@ -307,9 +292,13 @@ export function AdminLibraryPreviewPanel({
             type="button"
             className="btn-primary"
             onClick={onStartRevision}
-            disabled={startingRevision || !selectedExamId}
+            disabled={startingRevision || !canStartRevision}
           >
-            {startingRevision ? "Opening…" : "Open Revision Workflow"}
+            {startingRevision
+              ? "Opening…"
+              : hasActiveRevisionDraft
+                ? "Resume Revision Draft"
+                : "Open Revision Draft"}
           </button>
         </div>
       </div>
@@ -341,15 +330,13 @@ export function AdminLibraryPreviewPanel({
             <div className="study-meta-row">
               <span className="study-meta-pill">
                 <strong>Session</strong>
-                <span>{formatPublishedSessionLabel(selectedExam.sessionType)}</span>
+                <span>
+                  {formatPublishedSessionLabel(selectedExam.sessionType)}
+                </span>
               </span>
               <span className="study-meta-pill">
                 <strong>Duration</strong>
                 <span>{selectedExam.durationMinutes} min</span>
-              </span>
-              <span className="study-meta-pill">
-                <strong>Total points</strong>
-                <span>{selectedExam.totalPoints}</span>
               </span>
             </div>
 
@@ -364,6 +351,13 @@ export function AdminLibraryPreviewPanel({
                 canonical paper, then sends you to the ingestion review editor
                 for validation and republishing.
               </p>
+              {hasActiveRevisionDraft ? (
+                <p className="muted-text">
+                  An active revision draft already exists for this paper, so
+                  opening it will resume that work instead of creating a second
+                  draft.
+                </p>
+              ) : null}
               {selectedExam.officialSourceReference ? (
                 <p className="muted-text">
                   Source reference: {selectedExam.officialSourceReference}

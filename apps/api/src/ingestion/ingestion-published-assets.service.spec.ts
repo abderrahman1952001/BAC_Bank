@@ -18,6 +18,10 @@ describe('IngestionPublishedAssetsService', () => {
     sourcePage: {
       findUnique: jest.Mock;
     };
+    media: {
+      findMany: jest.Mock;
+      deleteMany: jest.Mock;
+    };
   };
   let storageClient: {
     getObjectBuffer: jest.MockedFunction<(key: string) => Promise<Buffer>>;
@@ -121,6 +125,10 @@ describe('IngestionPublishedAssetsService', () => {
     prisma = {
       sourcePage: {
         findUnique: jest.fn(),
+      },
+      media: {
+        findMany: jest.fn(),
+        deleteMany: jest.fn(),
       },
     };
     storageClient = {
@@ -283,5 +291,136 @@ describe('IngestionPublishedAssetsService', () => {
         },
       },
     });
+  });
+
+  it('lists the currently published media attached to a paper', async () => {
+    const tx = {
+      media: {
+        findMany: jest.fn().mockResolvedValue([
+          {
+            id: 'media-1',
+            metadata: {
+              storageKey: 'published/assets/2024/paper-1/media-1.png',
+            },
+          },
+          {
+            id: 'media-2',
+            metadata: null,
+          },
+        ]),
+      },
+    };
+
+    await expect(
+      service.listPublishedMediaForPaper(tx as never, 'paper-1'),
+    ).resolves.toEqual([
+      {
+        id: 'media-1',
+        storageKey: 'published/assets/2024/paper-1/media-1.png',
+      },
+      {
+        id: 'media-2',
+        storageKey: null,
+      },
+    ]);
+
+    expect(tx.media.findMany).toHaveBeenCalledWith({
+      where: {
+        blocks: {
+          some: {
+            node: {
+              variant: {
+                paperId: 'paper-1',
+              },
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        metadata: true,
+      },
+    });
+  });
+
+  it('cleans up orphaned published media rows only after deleting their blobs', async () => {
+    prisma.media.findMany.mockResolvedValueOnce([
+      {
+        id: 'media-1',
+        metadata: {
+          storageKey: 'published/assets/2024/paper-1/media-1.png',
+        },
+      },
+      {
+        id: 'media-2',
+        metadata: null,
+      },
+    ]);
+
+    await service.cleanupOrphanedPublishedMedia({
+      candidates: [
+        {
+          id: 'media-1',
+          storageKey: 'published/assets/2024/paper-1/media-1.png',
+        },
+        {
+          id: 'media-2',
+          storageKey: null,
+        },
+      ],
+      storageClient: storageClient as never,
+    });
+
+    expect(prisma.media.findMany).toHaveBeenCalledWith({
+      where: {
+        id: {
+          in: ['media-1', 'media-2'],
+        },
+        blocks: {
+          none: {},
+        },
+      },
+      select: {
+        id: true,
+        metadata: true,
+      },
+    });
+    expect(storageClient.deleteObject).toHaveBeenCalledWith(
+      'published/assets/2024/paper-1/media-1.png',
+    );
+    expect(prisma.media.deleteMany).toHaveBeenCalledWith({
+      where: {
+        id: {
+          in: ['media-1', 'media-2'],
+        },
+        blocks: {
+          none: {},
+        },
+      },
+    });
+  });
+
+  it('keeps orphaned media rows when blob cleanup fails', async () => {
+    prisma.media.findMany.mockResolvedValueOnce([
+      {
+        id: 'media-1',
+        metadata: {
+          storageKey: 'published/assets/2024/paper-1/media-1.png',
+        },
+      },
+    ]);
+    storageClient.deleteObject.mockRejectedValueOnce(new Error('R2 down'));
+
+    await service.cleanupOrphanedPublishedMedia({
+      candidates: [
+        {
+          id: 'media-1',
+          storageKey: 'published/assets/2024/paper-1/media-1.png',
+        },
+      ],
+      storageClient: storageClient as never,
+    });
+
+    expect(prisma.media.deleteMany).not.toHaveBeenCalled();
   });
 });

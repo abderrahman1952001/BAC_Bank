@@ -1,0 +1,41 @@
+{
+  "name": "@bac-bank/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth.d.ts",
+      "default": "./dist/auth.js"
+    },
+    "./admin": {
+      "types": "./dist/admin.d.ts",
+      "default": "./dist/admin.js"
+    },
+    "./ingestion": {
+      "types": "./dist/ingestion.d.ts",
+      "default": "./dist/ingestion.js"
+    },
+    "./qbank": {
+      "types": "./dist/qbank.d.ts",
+      "default": "./dist/qbank.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "lint": "tsc --noEmit -p tsconfig.json",
+    "test": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,11 +1,12 @@
 "use client";
 
+import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuthSession } from "@/components/auth-provider";
-import { logoutUser } from "@/lib/client-auth";
 
 export function useSignOut() {
+  const clerk = useClerk();
   const router = useRouter();
   const { setSessionUser } = useAuthSession();
   const [isSigningOut, setIsSigningOut] = useState(false);
@@ -18,7 +19,7 @@ export function useSignOut() {
     setIsSigningOut(true);
 
     try {
-      await logoutUser();
+      await clerk.signOut();
     } finally {
       setSessionUser(null);
       router.replace("/auth");

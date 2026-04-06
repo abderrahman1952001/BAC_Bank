@@ -1,158 +1,96 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import {
-  AdminLibraryContextStrip,
   AdminLibraryFiltersRail,
   AdminLibraryPreviewPanel,
   AdminLibrarySujetsPanel,
-} from '@/components/admin-library-sections';
+} from "@/components/admin-library-sections";
+import { EmptyState } from "@/components/study-shell";
 import {
-  BrowseWorkspaceSkeleton,
-  EmptyState,
-} from '@/components/study-shell';
-import {
-  buildAdminLibraryContextTitle,
   buildAdminLibraryQuery,
   buildAdminLibrarySelectionPrompt,
   buildStudentPreviewHref,
-  normalizeCode,
-  parseSujetNumber,
-  parseYear,
-  resolveSelectionFromExamId,
-} from '@/lib/admin-library';
+  findAdminLibraryStream,
+  findAdminLibrarySubject,
+  findAdminLibraryYearEntry,
+  findSelectedAdminLibrarySujet,
+  reconcileAdminLibrarySubjectCode,
+  reconcileAdminLibrarySujetSelection,
+  reconcileAdminLibraryYear,
+  type AdminLibrarySelectionState,
+} from "@/lib/admin-library";
 import {
   AdminIngestionJobResponse,
   fetchAdminJson,
-} from '@/lib/admin';
-import {
-  API_BASE_URL,
-  CatalogResponse,
-  ExamResponse,
-  fetchJson,
-} from '@/lib/qbank';
+  parseAdminIngestionJobResponse,
+} from "@/lib/admin";
+import { type CatalogResponse, type ExamResponse } from "@/lib/qbank";
 
-export function AdminLibraryPage() {
+type AdminLibraryPageProps = {
+  initialSelection: AdminLibrarySelectionState;
+  initialCatalog?: CatalogResponse;
+  initialExam?: ExamResponse;
+  initialActiveRevisionJobIdsByPaperId?: Record<string, string>;
+};
+
+export function AdminLibraryPage({
+  initialSelection,
+  initialCatalog,
+  initialExam,
+  initialActiveRevisionJobIdsByPaperId,
+}: AdminLibraryPageProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const catalog = initialCatalog ?? null;
 
-  const streamParam = searchParams.get('stream');
-  const subjectParam = searchParams.get('subject');
-  const yearParam = searchParams.get('year');
-  const examParam = searchParams.get('examId');
-  const sujetParam = searchParams.get('sujet');
-
-  const [catalog, setCatalog] = useState<CatalogResponse | null>(null);
-  const [loadingCatalog, setLoadingCatalog] = useState(true);
-  const [catalogError, setCatalogError] = useState<string | null>(null);
-
-  const [selectedStreamCode, setSelectedStreamCode] = useState('');
-  const [selectedSubjectCode, setSelectedSubjectCode] = useState('');
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [selectedExamId, setSelectedExamId] = useState<string | null>(null);
-  const [selectedSujetNumber, setSelectedSujetNumber] = useState<number | null>(
-    null,
+  const [selectedStreamCode, setSelectedStreamCode] = useState(
+    initialSelection.selectedStreamCode,
   );
-
-  const [selectedExam, setSelectedExam] = useState<ExamResponse | null>(null);
-  const [loadingExam, setLoadingExam] = useState(false);
-  const [examError, setExamError] = useState<string | null>(null);
-
+  const [selectedSubjectCode, setSelectedSubjectCode] = useState(
+    initialSelection.selectedSubjectCode,
+  );
+  const [selectedYear, setSelectedYear] = useState<number | null>(
+    initialSelection.selectedYear,
+  );
+  const [selectedExamId, setSelectedExamId] = useState<string | null>(
+    initialSelection.selectedExamId,
+  );
+  const [selectedSujetNumber, setSelectedSujetNumber] = useState<number | null>(
+    initialSelection.selectedSujetNumber,
+  );
   const [startingRevision, setStartingRevision] = useState(false);
   const [revisionError, setRevisionError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setSelectedStreamCode(normalizeCode(streamParam));
-    setSelectedSubjectCode(normalizeCode(subjectParam));
-    setSelectedYear(parseYear(yearParam));
-    setSelectedExamId(examParam?.trim() || null);
-    setSelectedSujetNumber(parseSujetNumber(sujetParam));
-  }, [examParam, streamParam, subjectParam, sujetParam, yearParam]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadCatalog() {
-      setLoadingCatalog(true);
-      setCatalogError(null);
-
-      try {
-        const payload = await fetchJson<CatalogResponse>(
-          `${API_BASE_URL}/qbank/catalog`,
-          {
-            signal: controller.signal,
-          },
-        );
-
-        setCatalog(payload);
-      } catch (loadError) {
-        if (!(loadError instanceof Error) || loadError.name !== 'AbortError') {
-          setCatalogError('Failed to load the published library.');
-        }
-      } finally {
-        setLoadingCatalog(false);
-      }
-    }
-
-    void loadCatalog();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!catalog || !selectedExamId) {
-      return;
-    }
-
-    if (
-      selectedStreamCode &&
-      selectedSubjectCode &&
-      selectedYear !== null &&
-      selectedSujetNumber !== null
-    ) {
-      return;
-    }
-
-    const resolvedSelection = resolveSelectionFromExamId(
-      catalog,
-      selectedExamId,
-      selectedSujetNumber,
+  const [activeRevisionJobIdsByPaperId, setActiveRevisionJobIdsByPaperId] =
+    useState<Record<string, string>>(
+      initialActiveRevisionJobIdsByPaperId ?? {},
     );
 
-    if (!resolvedSelection) {
-      setSelectedExamId(null);
-      setSelectedSujetNumber(null);
-      return;
-    }
+  useEffect(() => {
+    setSelectedStreamCode(initialSelection.selectedStreamCode);
+    setSelectedSubjectCode(initialSelection.selectedSubjectCode);
+    setSelectedYear(initialSelection.selectedYear);
+    setSelectedExamId(initialSelection.selectedExamId);
+    setSelectedSujetNumber(initialSelection.selectedSujetNumber);
+  }, [initialSelection]);
 
-    setSelectedStreamCode(resolvedSelection.streamCode);
-    setSelectedSubjectCode(resolvedSelection.subjectCode);
-    setSelectedYear(resolvedSelection.year);
-    setSelectedSujetNumber(resolvedSelection.sujetNumber);
-  }, [
-    catalog,
-    selectedExamId,
-    selectedStreamCode,
-    selectedSubjectCode,
-    selectedSujetNumber,
-    selectedYear,
-  ]);
+  useEffect(() => {
+    setActiveRevisionJobIdsByPaperId(
+      initialActiveRevisionJobIdsByPaperId ?? {},
+    );
+  }, [initialActiveRevisionJobIdsByPaperId]);
 
   const stream = useMemo(
-    () => catalog?.streams.find((item) => item.code === selectedStreamCode) ?? null,
+    () => findAdminLibraryStream(catalog, selectedStreamCode),
     [catalog, selectedStreamCode],
   );
   const subject = useMemo(
-    () =>
-      stream?.subjects.find((item) => item.code === selectedSubjectCode) ?? null,
+    () => findAdminLibrarySubject(stream, selectedSubjectCode),
     [selectedSubjectCode, stream],
   );
   const yearEntry = useMemo(
-    () => subject?.years.find((item) => item.year === selectedYear) ?? null,
+    () => findAdminLibraryYearEntry(subject, selectedYear),
     [selectedYear, subject],
   );
 
@@ -161,12 +99,19 @@ export function AdminLibraryPage() {
       return;
     }
 
-    if (!selectedStreamCode) {
-      if (selectedExamId) {
-        return;
-      }
+    if (selectedStreamCode) {
+      return;
+    }
 
-      setSelectedSubjectCode('');
+    setSelectedSubjectCode("");
+    setSelectedYear(null);
+    setSelectedExamId(null);
+    setSelectedSujetNumber(null);
+  }, [catalog, selectedStreamCode]);
+
+  useEffect(() => {
+    if (!stream) {
+      setSelectedSubjectCode("");
       setSelectedYear(null);
       setSelectedExamId(null);
       setSelectedSujetNumber(null);
@@ -174,9 +119,9 @@ export function AdminLibraryPage() {
     }
 
     setSelectedSubjectCode((current) =>
-      current && stream?.subjects.some((item) => item.code === current) ? current : '',
+      reconcileAdminLibrarySubjectCode(stream, current),
     );
-  }, [catalog, selectedExamId, selectedStreamCode, stream]);
+  }, [stream]);
 
   useEffect(() => {
     if (!subject) {
@@ -186,54 +131,51 @@ export function AdminLibraryPage() {
       return;
     }
 
-    setSelectedYear((current) =>
-      current && subject.years.some((item) => item.year === current) ? current : null,
-    );
+    setSelectedYear((current) => reconcileAdminLibraryYear(subject, current));
   }, [subject]);
 
   useEffect(() => {
-    if (!yearEntry) {
-      setSelectedExamId(null);
-      setSelectedSujetNumber(null);
-      return;
-    }
-
-    const nextExamId =
-      selectedExamId &&
-      yearEntry.sujets.some((item) => item.examId === selectedExamId)
-        ? selectedExamId
-        : null;
-
-    setSelectedExamId(nextExamId);
-    setSelectedSujetNumber((current) => {
-      const currentIsValid =
-        current !== null &&
-        yearEntry.sujets.some(
-          (item) =>
-            item.examId === nextExamId && item.sujetNumber === current,
-        );
-
-      if (currentIsValid) {
-        return current;
-      }
-
-      return null;
-    });
-  }, [selectedExamId, yearEntry]);
-
-  const selectedSujet = useMemo(() => {
-    if (!yearEntry || !selectedExamId || !selectedSujetNumber) {
-      return null;
-    }
-
-    return (
-      yearEntry.sujets.find(
-        (item) =>
-          item.examId === selectedExamId &&
-          item.sujetNumber === selectedSujetNumber,
-      ) ?? null
+    const nextSelection = reconcileAdminLibrarySujetSelection(
+      yearEntry,
+      selectedExamId,
+      selectedSujetNumber,
     );
+
+    setSelectedExamId(nextSelection.selectedExamId);
+    setSelectedSujetNumber(nextSelection.selectedSujetNumber);
   }, [selectedExamId, selectedSujetNumber, yearEntry]);
+
+  const selectedSujet = useMemo(
+    () =>
+      findSelectedAdminLibrarySujet(
+        yearEntry,
+        selectedExamId,
+        selectedSujetNumber,
+      ),
+    [selectedExamId, selectedSujetNumber, yearEntry],
+  );
+  const serverPreviewKey =
+    initialSelection.selectedExamId && initialSelection.selectedSujetNumber
+      ? `${initialSelection.selectedExamId}:${initialSelection.selectedSujetNumber}`
+      : null;
+  const selectedPreviewKey = selectedSujet
+    ? `${selectedSujet.examId}:${selectedSujet.sujetNumber}`
+    : null;
+  const selectedExam =
+    selectedSujet &&
+    initialExam?.id === selectedSujet.examId &&
+    initialExam.selectedSujetNumber === selectedSujet.sujetNumber
+      ? initialExam
+      : null;
+  const loadingExam = Boolean(
+    selectedPreviewKey && selectedPreviewKey !== serverPreviewKey,
+  );
+  const examError =
+    selectedPreviewKey &&
+    selectedPreviewKey === serverPreviewKey &&
+    !selectedExam
+      ? "Failed to load the selected paper preview."
+      : null;
 
   useEffect(() => {
     const nextQuery = buildAdminLibraryQuery({
@@ -244,17 +186,20 @@ export function AdminLibraryPage() {
       selectedSujetNumber,
     });
     const currentQuery =
-      typeof window === 'undefined'
-        ? ''
-        : window.location.search.replace(/^\?/, '');
+      typeof window === "undefined"
+        ? ""
+        : window.location.search.replace(/^\?/, "");
 
     if (nextQuery === currentQuery) {
       return;
     }
 
-    router.replace(nextQuery ? `/admin/library?${nextQuery}` : '/admin/library', {
-      scroll: false,
-    });
+    router.replace(
+      nextQuery ? `/admin/library?${nextQuery}` : "/admin/library",
+      {
+        scroll: false,
+      },
+    );
   }, [
     router,
     selectedExamId,
@@ -264,48 +209,18 @@ export function AdminLibraryPage() {
     selectedYear,
   ]);
 
-  useEffect(() => {
-    if (!selectedSujet) {
-      setSelectedExam(null);
-      setExamError(null);
+  async function startRevision() {
+    const selectedPaperId = selectedExam?.paperId ?? null;
+    const existingRevisionJobId = selectedPaperId
+      ? activeRevisionJobIdsByPaperId[selectedPaperId] ?? null
+      : null;
+
+    if (existingRevisionJobId) {
+      router.push(`/admin/drafts/${existingRevisionJobId}`);
       return;
     }
 
-    const currentSujet = selectedSujet;
-    const controller = new AbortController();
-
-    async function loadSelectedExam() {
-      setLoadingExam(true);
-      setExamError(null);
-
-      try {
-        const payload = await fetchJson<ExamResponse>(
-          `${API_BASE_URL}/qbank/exams/${currentSujet.examId}?sujetNumber=${currentSujet.sujetNumber}`,
-          {
-            signal: controller.signal,
-          },
-        );
-
-        setSelectedExam(payload);
-      } catch (loadError) {
-        if (!(loadError instanceof Error) || loadError.name !== 'AbortError') {
-          setSelectedExam(null);
-          setExamError('Failed to load the selected paper preview.');
-        }
-      } finally {
-        setLoadingExam(false);
-      }
-    }
-
-    void loadSelectedExam();
-
-    return () => {
-      controller.abort();
-    };
-  }, [selectedSujet]);
-
-  async function startRevision() {
-    if (!selectedExamId) {
+    if (!selectedPaperId) {
       return;
     }
 
@@ -314,29 +229,34 @@ export function AdminLibraryPage() {
 
     try {
       const payload = await fetchAdminJson<AdminIngestionJobResponse>(
-        `/ingestion/exams/${selectedExamId}/revision`,
+        `/ingestion/papers/${selectedPaperId}/revision`,
         {
-          method: 'POST',
+          method: "POST",
         },
+        parseAdminIngestionJobResponse,
       );
 
-      router.push(`/admin/ingestion/${payload.job.id}`);
+      const publishedPaperId = payload.job.published_paper_id;
+
+      if (publishedPaperId) {
+        setActiveRevisionJobIdsByPaperId((current) => ({
+          ...current,
+          [publishedPaperId]: payload.job.id,
+        }));
+      }
+
+      router.push(`/admin/drafts/${payload.job.id}`);
     } catch (startError) {
       setRevisionError(
         startError instanceof Error
           ? startError.message
-          : 'Failed to open a published revision draft.',
+          : "Failed to open a published revision draft.",
       );
     } finally {
       setStartingRevision(false);
     }
   }
 
-  const browseContextTitle = buildAdminLibraryContextTitle({
-    streamName: stream?.name ?? null,
-    subjectName: subject?.name ?? null,
-    selectedYear,
-  });
   const sujetsCount = yearEntry?.sujets.length ?? 0;
   const selectionPrompt = buildAdminLibrarySelectionPrompt({
     hasStream: Boolean(stream),
@@ -348,11 +268,27 @@ export function AdminLibraryPage() {
     selectedExam,
     selectedSujet?.sujetNumber ?? null,
   );
+  const selectedPaperId = selectedExam?.paperId ?? null;
+  const activeRevisionJobId = selectedPaperId
+    ? activeRevisionJobIdsByPaperId[selectedPaperId] ?? null
+    : null;
 
-  if (loadingCatalog) {
+  if (!catalog) {
     return (
       <section className="panel">
-        <BrowseWorkspaceSkeleton />
+        <EmptyState
+          title="Published library unavailable"
+          description="Retry the page to load the published catalog."
+          action={
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => router.refresh()}
+            >
+              Retry
+            </button>
+          }
+        />
       </section>
     );
   }
@@ -360,98 +296,90 @@ export function AdminLibraryPage() {
   return (
     <section className="panel">
       <div className="admin-page-head">
-        <div>
-          <p className="page-kicker">Admin CMS</p>
-          <h1>Published Library</h1>
-          <p className="muted-text">
-            Browse live BAC offerings the same way students do, then open a
-            revision draft for the canonical paper behind them.
-          </p>
+        <div className="admin-page-intro">
+          <h1>Library</h1>
+          <div className="admin-page-meta-row">
+            {stream?.name ? (
+              <span className="admin-page-meta-pill">{stream.name}</span>
+            ) : null}
+            {subject?.name ? (
+              <span className="admin-page-meta-pill">{subject.name}</span>
+            ) : null}
+            {selectedYear ? (
+              <span className="admin-page-meta-pill">{selectedYear}</span>
+            ) : null}
+            {selectedSujet?.label ? (
+              <span className="admin-page-meta-pill">{selectedSujet.label}</span>
+            ) : null}
+            {!stream && !subject && !selectedYear && !selectedSujet ? (
+              <span className="admin-page-meta-pill">
+                <strong>{catalog.streams.length}</strong> streams
+              </span>
+            ) : null}
+          </div>
         </div>
         <div className="table-actions">
-          <Link href="/admin/ingestion" className="btn-secondary">
-            Open Ingestion
+          <Link href="/admin/drafts" className="btn-secondary">
+            Open Drafts
+          </Link>
+          <Link href="/admin/intake" className="btn-secondary">
+            Open Intake
           </Link>
         </div>
       </div>
 
-      {catalogError ? (
-        <EmptyState
-          title="Published library unavailable"
-          description={catalogError}
-          action={
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => window.location.reload()}
-            >
-              Retry
-            </button>
-          }
-        />
-      ) : (
-        <div className="browse-workspace">
-          <div className="browse-workspace-body">
-            <AdminLibraryFiltersRail
-              catalog={catalog}
+      <div className="browse-workspace">
+        <div className="browse-workspace-body">
+          <AdminLibraryFiltersRail
+            catalog={catalog}
+            stream={stream}
+            subject={subject}
+            selectedStreamCode={selectedStreamCode}
+            selectedSubjectCode={selectedSubjectCode}
+            selectedYear={selectedYear}
+            onClearStream={() => setSelectedStreamCode("")}
+            onClearSubject={() => setSelectedSubjectCode("")}
+            onClearYear={() => setSelectedYear(null)}
+            onSelectStream={setSelectedStreamCode}
+            onSelectSubject={setSelectedSubjectCode}
+            onSelectYear={setSelectedYear}
+          />
+
+          <div className="browse-main-column">
+            <AdminLibrarySujetsPanel
               stream={stream}
               subject={subject}
-              selectedStreamCode={selectedStreamCode}
-              selectedSubjectCode={selectedSubjectCode}
               selectedYear={selectedYear}
+              yearEntry={yearEntry}
+              sujetsCount={sujetsCount}
               selectionPrompt={selectionPrompt}
-              onClearStream={() => setSelectedStreamCode('')}
-              onClearSubject={() => setSelectedSubjectCode('')}
-              onClearYear={() => setSelectedYear(null)}
-              onSelectStream={setSelectedStreamCode}
-              onSelectSubject={setSelectedSubjectCode}
-              onSelectYear={setSelectedYear}
+              selectedExamId={selectedExamId}
+              selectedSujetNumber={selectedSujetNumber}
+              onSelectSujet={(examId, sujetNumber) => {
+                setSelectedExamId(examId);
+                setSelectedSujetNumber(sujetNumber);
+                setRevisionError(null);
+              }}
             />
 
-            <div className="browse-main-column">
-              <AdminLibraryContextStrip
-                browseContextTitle={browseContextTitle}
-                selectionPrompt={selectionPrompt}
-                streamName={stream?.name ?? null}
-                subjectName={subject?.name ?? null}
-                selectedYear={selectedYear}
-                selectedSujetLabel={selectedSujet?.label ?? null}
-              />
-
-              <AdminLibrarySujetsPanel
-                stream={stream}
-                subject={subject}
-                selectedYear={selectedYear}
-                yearEntry={yearEntry}
-                sujetsCount={sujetsCount}
-                selectionPrompt={selectionPrompt}
-                selectedExamId={selectedExamId}
-                selectedSujetNumber={selectedSujetNumber}
-                onSelectSujet={(examId, sujetNumber) => {
-                  setSelectedExamId(examId);
-                  setSelectedSujetNumber(sujetNumber);
-                  setRevisionError(null);
-                }}
-              />
-
-              <AdminLibraryPreviewPanel
-                studentPreviewHref={studentPreviewHref}
-                startingRevision={startingRevision}
-                selectedExamId={selectedExamId}
-                onStartRevision={() => {
-                  void startRevision();
-                }}
-                revisionError={revisionError}
-                loadingExam={loadingExam}
-                examError={examError}
-                selectedExam={selectedExam}
-                selectedSujetLabel={selectedSujet?.label ?? null}
-                onRetryPreview={() => window.location.reload()}
-              />
-            </div>
+            <AdminLibraryPreviewPanel
+              studentPreviewHref={studentPreviewHref}
+              startingRevision={startingRevision}
+              canStartRevision={Boolean(selectedExam?.paperId)}
+              onStartRevision={() => {
+                void startRevision();
+              }}
+              hasActiveRevisionDraft={Boolean(activeRevisionJobId)}
+              revisionError={revisionError}
+              loadingExam={loadingExam}
+              examError={examError}
+              selectedExam={selectedExam}
+              selectedSujetLabel={selectedSujet?.label ?? null}
+              onRetryPreview={() => router.refresh()}
+            />
           </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }

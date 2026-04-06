@@ -1,8 +1,17 @@
 import {
   formatSessionType,
   type FiltersResponse,
+  type SessionPreviewResponse,
   type SessionType,
 } from "@/lib/qbank";
+import {
+  buildTopicAncestorsByCode,
+  buildTopicDescendantsByCode,
+  buildTopicTree,
+  collectSelectableTopics,
+  countSelectableTopics,
+  type TopicTreeNode,
+} from "@/lib/topic-taxonomy";
 
 export const SESSION_BUILDER_STORAGE_KEY = "bac-bank:session-builder:v4";
 
@@ -44,6 +53,33 @@ export type BuilderZeroResultsGuidance = {
   description: string;
   actionLabel: string | null;
   action: BuilderZeroResultsGuidanceAction;
+};
+
+export type SessionBuilderViewModel = {
+  suggestedSubjects: FiltersResponse["subjects"];
+  selectedSubject: FiltersResponse["subjects"][number] | null;
+  availableStreams: FiltersResponse["streams"];
+  defaultStreamCodes: string[];
+  effectiveStreamCodes: string[];
+  availableTopics: FiltersResponse["topics"];
+  chapterTopics: TopicTreeNode<FiltersResponse["topics"][number]>[];
+  selectableSubtopicsByChapter: Array<{
+    chapter: TopicTreeNode<FiltersResponse["topics"][number]>;
+    subtopics: TopicTreeNode<FiltersResponse["topics"][number]>[];
+  }>;
+  topicDescendantsByCode: Map<string, string[]>;
+  topicAncestorsByCode: Map<string, string[]>;
+  selectedYears: number[];
+  topicSelectionComplete: boolean;
+  yearSelectionComplete: boolean;
+  builderReadyToPreview: boolean;
+  hasPreviewResults: boolean;
+  maxExerciseCount: number;
+  selectedTopicLabel: string;
+  selectedYearsLabel: string;
+  summaryText: string;
+  planText: string;
+  zeroResultsGuidance: BuilderZeroResultsGuidance | null;
 };
 
 export const SESSION_BUILDER_STEP_ITEMS = [
@@ -464,6 +500,161 @@ export function buildZeroResultsGuidance(input: {
     description: "غيّر المادة أو وسّع النطاق.",
     actionLabel: null,
     action: null,
+  };
+}
+
+export function buildSessionBuilderViewModel(input: {
+  filters: FiltersResponse | null;
+  userStreamCode?: string | null;
+  subjectCode: string;
+  topicCodes: string[];
+  topicSelectionMode: TopicSelectionMode;
+  selectedStreamCodes: string[] | null;
+  yearMode: BuilderYearMode;
+  yearStart: number | null;
+  yearEnd: number | null;
+  sessionTypes: SessionType[];
+  exerciseCount: number;
+  preview: SessionPreviewResponse | null;
+  previewLoading: boolean;
+}): SessionBuilderViewModel {
+  const suggestedSubjects = input.filters
+    ? input.filters.subjects.filter((subject) =>
+        subject.streams.some((stream) =>
+          streamMatchesUserStream(stream, input.userStreamCode),
+        ),
+      )
+    : [];
+
+  const selectedSubject =
+    input.filters?.subjects.find(
+      (subject) => subject.code === input.subjectCode,
+    ) ?? null;
+
+  const availableStreams =
+    input.filters && input.subjectCode
+      ? input.filters.streams.filter((stream) =>
+          stream.subjectCodes.includes(input.subjectCode),
+        )
+      : [];
+
+  const defaultStreamCodes = resolveDefaultStreamCodes(
+    availableStreams,
+    input.userStreamCode,
+  );
+  const effectiveStreamCodes =
+    input.selectedStreamCodes === null
+      ? defaultStreamCodes
+      : input.selectedStreamCodes;
+
+  const availableTopics =
+    input.filters && input.subjectCode
+      ? input.filters.topics.filter((topic) => {
+          if (topic.subject.code !== input.subjectCode) {
+            return false;
+          }
+
+          if (!effectiveStreamCodes.length) {
+            return true;
+          }
+
+          return effectiveStreamCodes.some((streamCode) =>
+            topic.streamCodes.includes(streamCode),
+          );
+        })
+      : [];
+
+  const topicTree = buildTopicTree(availableTopics);
+  const topicLookup = new Map(availableTopics.map((topic) => [topic.code, topic]));
+  const chapterTopics = topicTree.filter(
+    (topic) => topic.isSelectable || countSelectableTopics(topic.children) > 0,
+  );
+  const selectableSubtopicsByChapter = chapterTopics.map((chapter) => ({
+    chapter,
+    subtopics: collectSelectableTopics(chapter.children),
+  }));
+  const topicDescendantsByCode = buildTopicDescendantsByCode(topicTree);
+  const topicAncestorsByCode = buildTopicAncestorsByCode(topicTree);
+  const selectedYears = buildYearsFromRange(
+    input.filters?.years ?? [],
+    input.yearMode,
+    input.yearStart,
+    input.yearEnd,
+  );
+  const topicSelectionComplete =
+    input.topicSelectionMode === "all" || input.topicCodes.length > 0;
+  const yearSelectionComplete =
+    input.yearMode !== "custom" ||
+    (input.yearStart !== null && input.yearEnd !== null);
+  const builderReadyToPreview =
+    Boolean(input.subjectCode) &&
+    topicSelectionComplete &&
+    yearSelectionComplete;
+  const selectedTopicLabel = buildSelectedTopicLabel({
+    selectedSubjectName: selectedSubject?.name ?? null,
+    topicSelectionComplete,
+    topicSelectionMode: input.topicSelectionMode,
+    topicCodes: input.topicCodes,
+    topicLookup,
+  });
+  const selectedYearsLabel = buildSelectedYearsLabel(selectedYears);
+  const summaryText = buildBuilderSummaryText({
+    selectedSubjectName: selectedSubject?.name ?? null,
+    topicSelectionComplete,
+    yearSelectionComplete,
+    selectedTopicLabel,
+    selectedYearsLabel,
+  });
+  const planText = buildBuilderPlanText({
+    selectedSubjectName: selectedSubject?.name ?? null,
+    topicSelectionComplete,
+    yearSelectionComplete,
+    selectedTopicLabel,
+    selectedYearsLabel,
+    effectiveStreamCodes,
+    availableStreams,
+    previewMatchingExerciseCount: input.preview?.matchingExerciseCount,
+    exerciseCount: input.exerciseCount,
+    sessionTypes: input.sessionTypes,
+  });
+  const zeroResultsGuidance = buildZeroResultsGuidance({
+    builderReadyToPreview,
+    previewLoading: input.previewLoading,
+    previewMatchingExerciseCount: input.preview?.matchingExerciseCount,
+    topicSelectionMode: input.topicSelectionMode,
+    topicCodesLength: input.topicCodes.length,
+    effectiveStreamCodesLength: effectiveStreamCodes.length,
+    sessionTypesLength: input.sessionTypes.length,
+    totalYearsCount: input.filters?.years.length ?? 0,
+    selectedYearsLength: selectedYears.length,
+    yearMode: input.yearMode,
+  });
+
+  return {
+    suggestedSubjects,
+    selectedSubject,
+    availableStreams,
+    defaultStreamCodes,
+    effectiveStreamCodes,
+    availableTopics,
+    chapterTopics,
+    selectableSubtopicsByChapter,
+    topicDescendantsByCode,
+    topicAncestorsByCode,
+    selectedYears,
+    topicSelectionComplete,
+    yearSelectionComplete,
+    builderReadyToPreview,
+    hasPreviewResults: Boolean(input.preview?.matchingExerciseCount),
+    maxExerciseCount: Math.max(
+      1,
+      Math.min(20, input.preview?.maxSelectableExercises ?? 20),
+    ),
+    selectedTopicLabel,
+    selectedYearsLabel,
+    summaryText,
+    planText,
+    zeroResultsGuidance,
   };
 }
 

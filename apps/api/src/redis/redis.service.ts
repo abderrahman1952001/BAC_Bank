@@ -73,7 +73,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     } catch (error) {
       this.ready = false;
       this.client = null;
-      await client.disconnect().catch(() => undefined);
+      if (client.isOpen) {
+        await client.disconnect().catch(() => undefined);
+      }
 
       if (this.requireRedis) {
         throw error;
@@ -88,7 +90,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleDestroy() {
-    if (this.client) {
+    if (this.client?.isOpen) {
       await this.client.disconnect().catch(() => undefined);
     }
   }

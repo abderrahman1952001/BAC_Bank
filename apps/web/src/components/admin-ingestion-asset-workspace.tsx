@@ -224,17 +224,13 @@ export function AdminIngestionAssetWorkspace({
   return (
     <section className="admin-context-card">
       <div className="admin-page-head ingestion-section-head">
-        <div>
+        <div className="admin-page-intro">
           <h2>Asset Review</h2>
-          <p className="muted-text">
-            Review one asset at a time with a larger crop stage, live preview, and
-            direct source-page control.
-          </p>
-          <p className="muted-text">
-            Use crops as provenance: plain illustrations can stay as images, while
-            tables, trees, and graphs should usually be recovered into native blocks
-            from the Structure tab.
-          </p>
+          <div className="admin-page-meta-row">
+            <span className="admin-page-meta-pill">
+              <strong>{draft.assets.length}</strong> assets
+            </span>
+          </div>
         </div>
         <div className="block-item-actions">
           <button

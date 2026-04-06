@@ -14,7 +14,8 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'npm run build -w @bac-bank/web && npm run start -w @bac-bank/web',
+    command:
+      'PLAYWRIGHT_TEST_AUTH=true npm run build -w @bac-bank/web && PLAYWRIGHT_TEST_AUTH=true npm run start -w @bac-bank/web',
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

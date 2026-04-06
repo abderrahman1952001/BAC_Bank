@@ -1,73 +1,53 @@
+import {
+  parseAuthOptionsResponse,
+  parseAuthProfileUpdateRequest,
+  parseAuthSessionResponse,
+  type AuthOptionsResponse,
+  type AuthProfileUpdateRequest,
+  type AuthSubscriptionStatus,
+  type AuthSessionResponse,
+  type AuthUser,
+  type AuthUserRole,
+} from "@bac-bank/contracts/auth";
 import { fetchApiJson, withJsonRequest } from "@/lib/api-client";
 
-export type UserRole = "USER" | "ADMIN";
-
-export type AuthUser = {
-  id: string;
-  username: string;
-  email: string;
-  role: UserRole;
-  stream: {
-    code: string;
-    name: string;
-  } | null;
+export type UserRole = AuthUserRole;
+export type SubscriptionStatus = AuthSubscriptionStatus;
+export type {
+  AuthOptionsResponse,
+  AuthProfileUpdateRequest,
+  AuthSessionResponse,
+  AuthUser,
 };
 
-export type AuthSessionResponse = {
-  user: AuthUser;
-};
-
-export type AuthOptionsResponse = {
-  streams: Array<{
-    code: string;
-    name: string;
-  }>;
-};
-
-export type LoginPayload = {
-  email: string;
-  password: string;
-};
-
-export type RegisterPayload = {
-  username: string;
-  email: string;
-  password: string;
-  streamCode: string;
-};
-
-async function fetchAuth<T>(path: string, init?: RequestInit): Promise<T> {
-  return fetchApiJson<T>(
-    `/auth${path}`,
-    withJsonRequest(init),
+export function getAuthOptions() {
+  return fetchApiJson<AuthOptionsResponse>(
+    "/auth/options",
+    withJsonRequest(),
     "Authentication request failed.",
+    parseAuthOptionsResponse,
   );
 }
 
-export function getAuthOptions() {
-  return fetchAuth<AuthOptionsResponse>("/options");
-}
-
 export function getCurrentUser() {
-  return fetchAuth<AuthSessionResponse>("/me");
+  return fetchApiJson<AuthSessionResponse>(
+    "/auth/me",
+    withJsonRequest(),
+    "Authentication request failed.",
+    parseAuthSessionResponse,
+  );
 }
 
-export function registerUser(payload: RegisterPayload) {
-  return fetchAuth<AuthSessionResponse>("/register", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
+export function updateCurrentUserProfile(payload: AuthProfileUpdateRequest) {
+  const parsedPayload = parseAuthProfileUpdateRequest(payload);
 
-export function loginUser(payload: LoginPayload) {
-  return fetchAuth<AuthSessionResponse>("/login", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function logoutUser() {
-  await fetchAuth<{ success: boolean }>("/logout", {
-    method: "POST",
-  });
+  return fetchApiJson<AuthSessionResponse>(
+    "/auth/profile",
+    withJsonRequest({
+      method: "POST",
+      body: JSON.stringify(parsedPayload),
+    }),
+    "Authentication request failed.",
+    parseAuthSessionResponse,
+  );
 }

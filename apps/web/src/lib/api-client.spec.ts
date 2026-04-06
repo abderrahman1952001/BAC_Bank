@@ -9,7 +9,7 @@ import {
 
 describe("api client helpers", () => {
   it("prefixes relative API paths with the configured base URL", () => {
-    expect(createApiUrl("/auth/login")).toBe(`${API_BASE_URL}/auth/login`);
+    expect(createApiUrl("/auth/me")).toBe(`${API_BASE_URL}/auth/me`);
     expect(createApiUrl("qbank/catalog")).toBe(
       `${API_BASE_URL}/qbank/catalog`,
     );

@@ -1,5 +1,7 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api/v1";
 
+export type ApiJsonParser<T> = (value: unknown) => T;
+
 type ApiErrorPayload = {
   message?: string | string[];
 };
@@ -91,7 +93,10 @@ export async function fetchApiJson<T>(
   path: string,
   init?: RequestInit,
   fallbackMessage?: string,
+  parser?: ApiJsonParser<T>,
 ): Promise<T> {
   const response = await fetchApi(path, init, fallbackMessage);
-  return (await response.json()) as T;
+  const payload = (await response.json()) as unknown;
+
+  return parser ? parser(payload) : (payload as T);
 }

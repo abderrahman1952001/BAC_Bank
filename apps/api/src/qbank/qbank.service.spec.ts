@@ -6,6 +6,8 @@ import {
   PublicationStatus,
   SessionType,
 } from '@prisma/client';
+import { QbankExamActivityService } from './qbank-exam-activity.service';
+import { QbankPracticeSessionService } from './qbank-practice-session.service';
 import { QbankService } from './qbank.service';
 
 function makeSubjectSelection(streamCodes: string[]) {
@@ -457,7 +459,11 @@ describe('QbankService practice sessions', () => {
         Promise.resolve(callback(prisma)),
       ),
     };
-    service = new QbankService(prisma as never);
+    service = new QbankService(
+      prisma as never,
+      new QbankPracticeSessionService(prisma as never),
+      new QbankExamActivityService(prisma as never),
+    );
   });
 
   it('counts shared paper offerings in preview without duplicating exercise candidates', async () => {
@@ -528,9 +534,9 @@ describe('QbankService practice sessions', () => {
     ]);
     prisma.practiceSession.create.mockResolvedValue({ id: 'session-1' });
     prisma.practiceSessionExercise.createMany.mockResolvedValue({ count: 1 });
-    jest
-      .spyOn(service, 'getPracticeSessionById')
-      .mockResolvedValue({ id: 'session-1' } as never);
+    const getPracticeSessionByIdSpy = jest
+      .spyOn(QbankPracticeSessionService.prototype, 'getPracticeSessionById')
+      .mockResolvedValueOnce({ id: 'session-1' } as never);
 
     await service.createPracticeSession('user-1', {
       subjectCode: 'MATH',
@@ -538,6 +544,8 @@ describe('QbankService practice sessions', () => {
       exerciseCount: 1,
       streamCodes: ['SE'],
     });
+
+    getPracticeSessionByIdSpy.mockRestore();
 
     const sessionCreateCalls = prisma.practiceSession.create.mock
       .calls as unknown[][];

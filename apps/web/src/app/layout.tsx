@@ -1,5 +1,5 @@
-import { AuthProvider } from "@/components/auth-provider";
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Cairo, Tajawal } from "next/font/google";
 import "./globals.css";
 import { getThemeInitScript } from "@/lib/theme";
@@ -19,7 +19,7 @@ const tajawal = Tajawal({
 export const metadata: Metadata = {
   title: "BAC Bank | Premium Algerian BAC QBank",
   description:
-    "منصة مراجعة مميزة لطلبة البكالوريا في الجزائر: sujets منظمة وجلسات دراسة ذكية.",
+    "منصة مراجعة مميزة لطلبة البكالوريا في الجزائر: مواضيع منظمة وجلسات دراسة ذكية.",
 };
 
 export default function RootLayout({
@@ -33,8 +33,14 @@ export default function RootLayout({
         className={`${cairo.variable} ${tajawal.variable}`}
         suppressHydrationWarning
       >
-        <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
-        <AuthProvider>{children}</AuthProvider>
+        <ClerkProvider
+          afterSignOutUrl="/auth"
+          signInUrl="/auth/sign-in"
+          signUpUrl="/auth/sign-up"
+        >
+          <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
+          {children}
+        </ClerkProvider>
       </body>
     </html>
   );

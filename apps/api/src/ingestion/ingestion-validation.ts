@@ -52,18 +52,19 @@ export function validateIngestionDraft(
   const referencedAssetIds = new Set<string>();
   const revisionDraft = isPublishedRevisionDraft(draft);
 
-  if (!draft.exam.streamCode) {
+  if (resolveDraftPaperStreamCodes(draft).length === 0) {
     collector.error({
-      code: 'exam_stream_missing',
+      code: 'paper_streams_missing',
       target: 'exam',
-      message: 'Exam streamCode is required before approval or publication.',
+      message:
+        'At least one paper stream is required before approval or publication.',
       variantCode: null,
       nodeId: null,
       blockId: null,
       assetId: null,
       sourcePageId: null,
       pageNumber: null,
-      field: 'streamCode',
+      field: 'paperStreamCodes',
     });
   }
 
@@ -237,6 +238,46 @@ export function validateIngestionDraft(
     warnings: unique(collector.warnings),
     issues: collector.issues,
   };
+}
+
+function resolveDraftPaperStreamCodes(draft: IngestionDraft) {
+  const paperStreamCodes = readMetadataStringArray(
+    draft.exam.metadata,
+    'paperStreamCodes',
+  );
+
+  if (paperStreamCodes.length > 0) {
+    return paperStreamCodes;
+  }
+
+  return Array.from(
+    new Set(
+      [
+        draft.exam.streamCode?.trim().toUpperCase() ?? null,
+        ...readMetadataStringArray(draft.exam.metadata, 'sharedStreamCodes'),
+      ].filter((value): value is string => Boolean(value)),
+    ),
+  );
+}
+
+function readMetadataStringArray(
+  value: Record<string, unknown>,
+  field: string,
+) {
+  const raw = value[field];
+
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+
+  return Array.from(
+    new Set(
+      raw
+        .filter((entry): entry is string => typeof entry === 'string')
+        .map((entry) => entry.trim().toUpperCase())
+        .filter((entry) => entry.length > 0),
+    ),
+  );
 }
 
 function validateAsset(

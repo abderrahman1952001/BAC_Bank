@@ -1,21 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { AppNavbar } from '@/components/app-navbar';
+import { StudentNavbar } from '@/components/student-navbar';
 import {
-  BrowseWorkspaceSkeleton,
   EmptyState,
   StudyHeader,
   StudyShell,
   StudySidebar,
 } from '@/components/study-shell';
 import {
-  API_BASE_URL,
   CatalogResponse,
   ExamResponse,
-  fetchJson,
   formatSessionType,
 } from '@/lib/qbank';
 import {
@@ -33,6 +31,8 @@ import {
 
 export function BrowseWorkspace({
   initialSearch,
+  initialCatalog,
+  initialExam,
 }: {
   initialSearch?: {
     stream?: string;
@@ -41,64 +41,39 @@ export function BrowseWorkspace({
     examId?: string;
     sujet?: string;
   };
+  initialCatalog?: CatalogResponse;
+  initialExam?: ExamResponse;
 }) {
   const router = useRouter();
+  const serverSelection = useMemo(
+    () => buildInitialBrowseSelection(initialSearch),
+    [initialSearch],
+  );
+  const catalog = initialCatalog ?? null;
 
-  const [catalog, setCatalog] = useState<CatalogResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [selectedStreamCode, setSelectedStreamCode] = useState('');
-  const [selectedSubjectCode, setSelectedSubjectCode] = useState('');
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [selectedExamId, setSelectedExamId] = useState<string | null>(null);
-  const [selectedSujetNumber, setSelectedSujetNumber] = useState<number | null>(null);
-
-  const [selectedExam, setSelectedExam] = useState<ExamResponse | null>(null);
-  const [loadingExam, setLoadingExam] = useState(false);
-  const [examError, setExamError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const nextSelection = buildInitialBrowseSelection(initialSearch);
-
-    setSelectedStreamCode(nextSelection.selectedStreamCode);
-    setSelectedSubjectCode(nextSelection.selectedSubjectCode);
-    setSelectedYear(nextSelection.selectedYear);
-    setSelectedExamId(nextSelection.selectedExamId);
-    setSelectedSujetNumber(nextSelection.selectedSujetNumber);
-  }, [initialSearch]);
+  const [selectedStreamCode, setSelectedStreamCode] = useState(
+    serverSelection.selectedStreamCode,
+  );
+  const [selectedSubjectCode, setSelectedSubjectCode] = useState(
+    serverSelection.selectedSubjectCode,
+  );
+  const [selectedYear, setSelectedYear] = useState<number | null>(
+    serverSelection.selectedYear,
+  );
+  const [selectedExamId, setSelectedExamId] = useState<string | null>(
+    serverSelection.selectedExamId,
+  );
+  const [selectedSujetNumber, setSelectedSujetNumber] = useState<number | null>(
+    serverSelection.selectedSujetNumber,
+  );
 
   useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadCatalog() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const payload = await fetchJson<CatalogResponse>(
-          `${API_BASE_URL}/qbank/catalog`,
-          {
-            signal: controller.signal,
-          },
-        );
-
-        setCatalog(payload);
-      } catch (loadError) {
-        if (!(loadError instanceof Error) || loadError.name !== 'AbortError') {
-          setError('تعذر تحميل فهرس المواضيع.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    void loadCatalog();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
+    setSelectedStreamCode(serverSelection.selectedStreamCode);
+    setSelectedSubjectCode(serverSelection.selectedSubjectCode);
+    setSelectedYear(serverSelection.selectedYear);
+    setSelectedExamId(serverSelection.selectedExamId);
+    setSelectedSujetNumber(serverSelection.selectedSujetNumber);
+  }, [serverSelection]);
 
   const stream = useMemo(
     () => findBrowseStream(catalog, selectedStreamCode),
@@ -171,6 +146,28 @@ export function BrowseWorkspace({
       selectedSujetNumber,
     );
   }, [selectedExamId, selectedSujetNumber, yearEntry]);
+  const serverPreviewKey =
+    serverSelection.selectedExamId && serverSelection.selectedSujetNumber
+      ? `${serverSelection.selectedExamId}:${serverSelection.selectedSujetNumber}`
+      : null;
+  const selectedPreviewKey = selectedSujet
+    ? `${selectedSujet.examId}:${selectedSujet.sujetNumber}`
+    : null;
+  const selectedExam =
+    selectedSujet &&
+    initialExam?.id === selectedSujet.examId &&
+    initialExam.selectedSujetNumber === selectedSujet.sujetNumber
+      ? initialExam
+      : null;
+  const loadingExam = Boolean(
+    selectedPreviewKey && selectedPreviewKey !== serverPreviewKey,
+  );
+  const examError =
+    selectedPreviewKey &&
+    selectedPreviewKey === serverPreviewKey &&
+    !selectedExam
+      ? 'تعذر تحميل معاينة الموضوع المختار.'
+      : null;
 
   useEffect(() => {
     const nextQuery = buildBrowseQuery({
@@ -189,7 +186,7 @@ export function BrowseWorkspace({
       return;
     }
 
-    router.replace(nextQuery ? `/app/browse?${nextQuery}` : '/app/browse', {
+    router.replace(nextQuery ? `/student/browse?${nextQuery}` : '/student/browse', {
       scroll: false,
     });
   }, [
@@ -201,48 +198,7 @@ export function BrowseWorkspace({
     selectedYear,
   ]);
 
-  useEffect(() => {
-    if (!selectedSujet) {
-      setSelectedExam(null);
-      setExamError(null);
-      return;
-    }
-
-    const currentSujet = selectedSujet;
-
-    const controller = new AbortController();
-
-    async function loadSelectedExam() {
-      setLoadingExam(true);
-      setExamError(null);
-
-      try {
-        const payload = await fetchJson<ExamResponse>(
-          `${API_BASE_URL}/qbank/exams/${currentSujet.examId}?sujetNumber=${currentSujet.sujetNumber}`,
-          {
-            signal: controller.signal,
-          },
-        );
-
-        setSelectedExam(payload);
-      } catch (loadError) {
-        if (!(loadError instanceof Error) || loadError.name !== 'AbortError') {
-          setSelectedExam(null);
-          setExamError('تعذر تحميل معاينة الموضوع المختار.');
-        }
-      } finally {
-        setLoadingExam(false);
-      }
-    }
-
-    void loadSelectedExam();
-
-    return () => {
-      controller.abort();
-    };
-  }, [selectedSujet]);
-
-  const { selectedMeta, browseContextTitle, sujetsCount, selectionPrompt } =
+  const { selectedMeta, browseContextTitle, sujetsCount } =
     buildBrowseContext({
       stream,
       subject,
@@ -251,47 +207,61 @@ export function BrowseWorkspace({
       selectedSujet,
     });
 
-  if (loading) {
+  if (!catalog) {
     return (
       <StudyShell>
-        <AppNavbar />
-        <BrowseWorkspaceSkeleton />
+        <StudentNavbar />
+        <section className="student-main-frame student-main-frame-browse">
+          <EmptyState
+            title="تعذر تحميل مساحة التصفح"
+            description="أعد المحاولة."
+            action={
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => router.refresh()}
+              >
+                إعادة المحاولة
+              </button>
+            }
+          />
+        </section>
       </StudyShell>
     );
   }
 
-  if (!error && catalog && catalog.streams.length === 0) {
+  if (catalog.streams.length === 0) {
     return (
       <StudyShell>
-        <AppNavbar />
-        <StudyHeader
-          eyebrow="تصفح"
-          title="المواضيع"
-          meta={[]}
-        />
-        <EmptyState
-          title="لا توجد بيانات منشورة في هذه البيئة بعد"
-          description="بيئة staging تعمل، لكن فهرس الشعب والمواضيع ما زال فارغاً. شغّل البذور أولاً أو انشر بيانات تجريبية."
-        />
+        <StudentNavbar />
+        <section className="student-main-frame student-main-frame-browse">
+          <StudyHeader
+            title="المكتبة"
+          />
+          <EmptyState
+            title="لا توجد بيانات منشورة"
+            description="انشر بيانات أولاً."
+          />
+        </section>
       </StudyShell>
     );
   }
 
   return (
     <StudyShell>
-      <AppNavbar />
+      <StudentNavbar />
 
-      <StudyHeader
-        eyebrow="تصفح"
-        title="المواضيع"
-        meta={selectedMeta}
-      />
+      <section className="student-main-frame student-main-frame-browse">
+        <StudyHeader
+          title="المكتبة"
+          meta={selectedMeta}
+        />
 
-      {!error ? (
         <div className="browse-workspace">
           <div className="browse-workspace-body">
             <StudySidebar
-              title="الفلاتر"
+              className="browse-filter-sidebar"
+              title="التصفية"
             >
               <div className="browse-filter-group">
                 <div className="browse-filter-head">
@@ -307,7 +277,7 @@ export function BrowseWorkspace({
                   ) : null}
                 </div>
                 <div className="chip-grid">
-                  {(catalog?.streams ?? []).map((item) => (
+                  {catalog.streams.map((item) => (
                     <button
                       key={item.code}
                       type="button"
@@ -396,180 +366,166 @@ export function BrowseWorkspace({
               </div>
             </StudySidebar>
 
-            <div className="browse-main-column">
-              <section className="browse-context-strip">
-                <div>
-                  <h2>{browseContextTitle}</h2>
-                  <p>{selectionPrompt}</p>
-                </div>
-                <div className="browse-context-pills">
-                  {stream ? <span>{stream.name}</span> : null}
-                  {subject ? <span>{subject.name}</span> : null}
-                  {selectedYear ? <span>{selectedYear}</span> : null}
-                  {selectedSujet ? <span>{selectedSujet.label}</span> : null}
-                </div>
-              </section>
-
-              <section className="browse-panel">
-                <div className="browse-panel-head">
+              <div className="browse-main-column">
+                <motion.section
+                  className="browse-context-strip"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
+                >
                   <div>
-                    <h2>النتائج</h2>
-                    <p>
-                      {subject && selectedYear
-                        ? `${sujetsCount} موضوع`
-                        : selectionPrompt}
-                    </p>
+                    <h2>{browseContextTitle}</h2>
                   </div>
-                </div>
-
-                {!stream || !subject || !selectedYear ? (
-                  <EmptyState
-                    title="النتائج غير جاهزة"
-                    description={selectionPrompt}
-                  />
-                ) : yearEntry && yearEntry.sujets.length ? (
-                  <div className="browse-sujet-grid">
-                    {yearEntry.sujets.map((item) => {
-                      const isActive =
-                        item.examId === selectedExamId &&
-                        item.sujetNumber === selectedSujetNumber;
-
-                      return (
-                        <button
-                          key={`${item.examId}:${item.sujetNumber}`}
-                          type="button"
-                          className={
-                            isActive
-                              ? 'browse-sujet-card active'
-                              : 'browse-sujet-card'
-                          }
-                          onClick={() => {
-                            setSelectedExamId(item.examId);
-                            setSelectedSujetNumber(item.sujetNumber);
-                          }}
-                        >
-                          <div className="browse-sujet-card-top">
-                            <strong>{item.label}</strong>
-                            <span>{item.exerciseCount} تمارين</span>
-                          </div>
-                          <p>{formatSessionType(item.sessionType)}</p>
-                        </button>
-                      );
-                    })}
+                  <div className="browse-context-pills">
+                    {stream ? <span>{stream.name}</span> : null}
+                    {subject ? <span>{subject.name}</span> : null}
+                    {selectedYear ? <span>{selectedYear}</span> : null}
+                    {selectedSujet ? <span>{selectedSujet.label}</span> : null}
                   </div>
-                ) : (
-                  <EmptyState
-                    title="لا توجد مواضيع مطابقة"
-                    description="جرّب سنة أو مادة أخرى."
-                  />
-                )}
-              </section>
+                </motion.section>
 
-              <section className="browse-panel browse-preview-panel">
-                <div className="browse-panel-head">
-                  <div>
-                    <h2>المعاينة</h2>
-                    <p>{selectedSujet ? selectedSujet.label : 'اختر موضوعاً.'}</p>
-                  </div>
-                  {selectedSujet && stream && subject && selectedYear ? (
-                    <Link
-                      href={`/app/browse/${stream.code}/${subject.code}/${selectedYear}/${selectedSujet.examId}/${selectedSujet.sujetNumber}`}
-                      className="btn-primary"
-                    >
-                      افتح وضع الدراسة
-                    </Link>
-                  ) : null}
-                </div>
-
-                {loadingExam ? (
-                  <div className="browse-preview-layout">
-                    <div className="study-skeleton block" />
-                    <div className="study-skeleton block tall" />
-                  </div>
-                ) : examError ? (
-                  <EmptyState
-                    title="تعذر تحميل معاينة الموضوع"
-                    description={examError}
-                    action={
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        onClick={() => window.location.reload()}
-                      >
-                        حاول مجدداً
-                      </button>
-                    }
-                  />
-                ) : selectedExam ? (
-                  <div className="browse-preview-layout">
-                    <article className="browse-preview-summary">
-                      <div className="study-meta-row">
-                        <span className="study-meta-pill">
-                          <strong>النوع</strong>
-                          <span>{formatSessionType(selectedExam.sessionType)}</span>
-                        </span>
-                        <span className="study-meta-pill">
-                          <strong>المدة</strong>
-                          <span>{selectedExam.durationMinutes} دقيقة</span>
-                        </span>
-                        <span className="study-meta-pill">
-                          <strong>النقاط</strong>
-                          <span>{selectedExam.totalPoints}</span>
-                        </span>
-                      </div>
-
-                      <div className="browse-preview-copy">
-                        <h3>
-                          {selectedExam.selectedSujetLabel ?? selectedSujet?.label}
-                        </h3>
-                        <p>
-                          {selectedExam.subject.name} · {selectedExam.stream.name} ·{' '}
-                          {selectedExam.year}
-                        </p>
-                      </div>
-                    </article>
-
-                    <div className="browse-exercise-list">
-                      {selectedExam.exercises.map((exercise) => (
-                        <Link
-                          key={exercise.id}
-                          href={`/app/browse/${selectedExam.stream.code}/${selectedExam.subject.code}/${selectedExam.year}/${selectedExam.id}/${selectedExam.selectedSujetNumber ?? selectedSujet?.sujetNumber ?? 1}?exercise=${exercise.orderIndex}`}
-                          className="browse-exercise-card"
-                        >
-                          <div>
-                            <strong>التمرين {exercise.orderIndex}</strong>
-                            <span>{exercise.questionCount} أسئلة</span>
-                          </div>
-                          <p>{exercise.title ?? 'بدون عنوان إضافي'}</p>
-                        </Link>
-                      ))}
+                <motion.section
+                  className="browse-panel"
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.34, delay: 0.05, ease: [0.2, 0.8, 0.2, 1] }}
+                >
+                  <div className="browse-panel-head">
+                    <div>
+                      <h2>النتائج</h2>
+                      {subject && selectedYear ? <p>{sujetsCount} موضوع</p> : null}
                     </div>
                   </div>
-                ) : (
-                  <EmptyState
-                    title="اختر موضوعاً"
-                    description="ستظهر المعاينة هنا."
-                  />
-                )}
-              </section>
+
+                  {!stream || !subject || !selectedYear ? (
+                    <EmptyState title="حدّد الشعبة والمادة والسنة" />
+                  ) : yearEntry && yearEntry.sujets.length ? (
+                    <div className="browse-sujet-grid">
+                      {yearEntry.sujets.map((item) => {
+                        const isActive =
+                          item.examId === selectedExamId &&
+                          item.sujetNumber === selectedSujetNumber;
+
+                        return (
+                          <button
+                            key={`${item.examId}:${item.sujetNumber}`}
+                            type="button"
+                            className={
+                              isActive
+                                ? 'browse-sujet-card active'
+                                : 'browse-sujet-card'
+                            }
+                            onClick={() => {
+                              setSelectedExamId(item.examId);
+                              setSelectedSujetNumber(item.sujetNumber);
+                            }}
+                          >
+                            <div className="browse-sujet-card-top">
+                              <strong>{item.label}</strong>
+                              <span>{item.exerciseCount} تمارين</span>
+                            </div>
+                            <p>{formatSessionType(item.sessionType)}</p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <EmptyState
+                      title="لا توجد مواضيع مطابقة"
+                      description="غيّر النطاق."
+                    />
+                  )}
+                </motion.section>
+
+                <motion.section
+                  className="browse-panel browse-preview-panel"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.36, delay: 0.1, ease: [0.2, 0.8, 0.2, 1] }}
+                >
+                  <div className="browse-panel-head">
+                    <div>
+                      <h2>المعاينة</h2>
+                      {selectedSujet ? <p>{selectedSujet.label}</p> : null}
+                    </div>
+                    {selectedSujet && stream && subject && selectedYear ? (
+                      <Link
+                        href={`/student/browse/${stream.code}/${subject.code}/${selectedYear}/${selectedSujet.examId}/${selectedSujet.sujetNumber}`}
+                        className="btn-primary"
+                      >
+                        افتح وضع الدراسة
+                      </Link>
+                    ) : null}
+                  </div>
+
+                  {loadingExam ? (
+                    <div className="browse-preview-layout">
+                      <div className="study-skeleton block" />
+                      <div className="study-skeleton block tall" />
+                    </div>
+                  ) : examError ? (
+                    <EmptyState
+                      title="تعذر تحميل معاينة الموضوع"
+                      description={examError}
+                      action={
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          onClick={() => router.refresh()}
+                        >
+                          حاول مجدداً
+                        </button>
+                      }
+                    />
+                  ) : selectedExam ? (
+                    <div className="browse-preview-layout">
+                      <article className="browse-preview-summary">
+                        <div className="study-meta-row">
+                          <span className="study-meta-pill">
+                            <strong>النوع</strong>
+                            <span>{formatSessionType(selectedExam.sessionType)}</span>
+                          </span>
+                          <span className="study-meta-pill">
+                            <strong>المدة</strong>
+                            <span>{selectedExam.durationMinutes} دقيقة</span>
+                          </span>
+                        </div>
+
+                        <div className="browse-preview-copy">
+                          <h3>
+                            {selectedExam.selectedSujetLabel ?? selectedSujet?.label}
+                          </h3>
+                          <p>
+                            {selectedExam.subject.name} · {selectedExam.stream.name} ·{' '}
+                            {selectedExam.year}
+                          </p>
+                        </div>
+                      </article>
+
+                      <div className="browse-exercise-list">
+                        {selectedExam.exercises.map((exercise) => (
+                          <Link
+                            key={exercise.id}
+                            href={`/student/browse/${selectedExam.stream.code}/${selectedExam.subject.code}/${selectedExam.year}/${selectedExam.id}/${selectedExam.selectedSujetNumber ?? selectedSujet?.sujetNumber ?? 1}?exercise=${exercise.orderIndex}`}
+                            className="browse-exercise-card"
+                          >
+                            <div>
+                              <strong>التمرين {exercise.orderIndex}</strong>
+                              <span>{exercise.questionCount} أسئلة</span>
+                            </div>
+                            <p>{exercise.title ?? 'بدون عنوان إضافي'}</p>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <EmptyState title="اختر موضوعاً" />
+                  )}
+                </motion.section>
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <EmptyState
-          title="تعذر تحميل مساحة التصفح"
-          description={error}
-          action={
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => window.location.reload()}
-            >
-              إعادة المحاولة
-            </button>
-          }
-        />
-      )}
+      </section>
     </StudyShell>
   );
 }

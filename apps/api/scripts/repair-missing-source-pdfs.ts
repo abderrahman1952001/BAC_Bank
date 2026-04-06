@@ -2,10 +2,10 @@ import { createHash } from 'crypto';
 import {
   IngestionJobStatus,
   Prisma,
-  PrismaClient,
   SessionType,
   SourceDocumentKind,
 } from '@prisma/client';
+import type { IngestionOpsService } from '../src/ingestion/ingestion-ops.service';
 import {
   createEmptyDraft,
   normalizeIngestionDraft,
@@ -16,9 +16,7 @@ import {
   fileNameFromUrl,
   type EddirasaStorageContext,
 } from '../src/ingestion/eddirasa-normalization';
-import {
-  resolveAlternatePdfSource,
-} from '../src/ingestion/alternate-pdf-sources';
+import { resolveAlternatePdfSource } from '../src/ingestion/alternate-pdf-sources';
 import {
   fetchBufferWithRetry,
   mapWithConcurrency,
@@ -28,8 +26,11 @@ import {
   R2StorageClient,
   readR2ConfigFromEnv,
 } from '../src/ingestion/r2-storage';
+import type { PrismaService } from '../src/prisma/prisma.service';
+import { createIngestionScriptContext } from './ingestion-script-context';
 
-const prisma = new PrismaClient();
+let prisma: PrismaService;
+let ingestionOpsService: IngestionOpsService;
 const storageClient = new R2StorageClient(readR2ConfigFromEnv());
 const DEFAULT_MIN_YEAR = 2012;
 const DEFAULT_MAX_YEAR = 2025;
@@ -87,79 +88,90 @@ const splitCache = new Map<
 >();
 
 async function main() {
-  const options = parseCliOptions(process.argv.slice(2));
-  const jobs = await prisma.ingestionJob.findMany({
-    where: {
-      provider: 'eddirasa',
-      year: {
-        gte: options.minYear,
-        lte: options.maxYear,
-      },
-    },
-    orderBy: [{ year: 'asc' }, { createdAt: 'asc' }],
-    select: {
-      id: true,
-      label: true,
-      year: true,
-      provider: true,
-      streamCode: true,
-      subjectCode: true,
-      sessionType: true,
-      status: true,
-      minYear: true,
-      sourceListingUrl: true,
-      sourceExamPageUrl: true,
-      sourceCorrectionPageUrl: true,
-      draftJson: true,
-      metadata: true,
-      sourceDocuments: {
-        orderBy: {
-          kind: 'asc',
-        },
-        select: {
-          id: true,
-          kind: true,
+  const {
+    app,
+    prisma: prismaService,
+    ingestionOpsService: opsService,
+  } = await createIngestionScriptContext();
+  prisma = prismaService;
+  ingestionOpsService = opsService;
+
+  try {
+    const options = parseCliOptions(process.argv.slice(2));
+    const jobs = await prisma.ingestionJob.findMany({
+      where: {
+        provider: 'eddirasa',
+        year: {
+          gte: options.minYear,
+          lte: options.maxYear,
         },
       },
-    },
-  });
+      orderBy: [{ year: 'asc' }, { createdAt: 'asc' }],
+      select: {
+        id: true,
+        label: true,
+        year: true,
+        provider: true,
+        streamCode: true,
+        subjectCode: true,
+        sessionType: true,
+        status: true,
+        minYear: true,
+        sourceListingUrl: true,
+        sourceExamPageUrl: true,
+        sourceCorrectionPageUrl: true,
+        draftJson: true,
+        metadata: true,
+        sourceDocuments: {
+          orderBy: {
+            kind: 'asc',
+          },
+          select: {
+            id: true,
+            kind: true,
+          },
+        },
+      },
+    });
 
-  const candidates = jobs.filter(needsRepair).slice(
-    0,
-    options.limit ?? jobs.length,
-  );
+    const candidates = jobs
+      .filter(needsRepair)
+      .slice(0, options.limit ?? jobs.length);
 
-  let repairedJobs = 0;
-  let repairedDocuments = 0;
-  let skippedJobs = 0;
-  let failedJobs = 0;
+    let repairedJobs = 0;
+    let repairedDocuments = 0;
+    let skippedJobs = 0;
+    let failedJobs = 0;
 
-  await mapWithConcurrency(candidates, options.concurrency, async (job) => {
-    try {
-      const repaired = await repairJob(job);
-      if (repaired.documents === 0) {
-        skippedJobs += 1;
-        return;
+    await mapWithConcurrency(candidates, options.concurrency, async (job) => {
+      try {
+        const repaired = await repairJob(job);
+        if (repaired.documents === 0) {
+          skippedJobs += 1;
+          return;
+        }
+
+        repairedJobs += 1;
+        repairedDocuments += repaired.documents;
+        console.log(
+          `repaired ${job.year} job=${job.id} documents=${repaired.documents}`,
+        );
+      } catch (error) {
+        failedJobs += 1;
+        console.error(
+          `failed ${job.year} ${job.id}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
       }
+    });
 
-      repairedJobs += 1;
-      repairedDocuments += repaired.documents;
-      console.log(
-        `repaired ${job.year} job=${job.id} documents=${repaired.documents}`,
-      );
-    } catch (error) {
-      failedJobs += 1;
-      console.error(
-        `failed ${job.year} ${job.id}: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      );
-    }
-  });
-
-  console.log(
-    `done repairedJobs=${repairedJobs} repairedDocuments=${repairedDocuments} skippedJobs=${skippedJobs} failedJobs=${failedJobs} minYear=${options.minYear} maxYear=${options.maxYear}`,
-  );
+    console.log(
+      `done repairedJobs=${repairedJobs} repairedDocuments=${repairedDocuments} skippedJobs=${skippedJobs} failedJobs=${failedJobs} minYear=${options.minYear} maxYear=${options.maxYear}`,
+    );
+  } finally {
+    await app.close();
+  }
 }
 
 function parseCliOptions(argv: string[]): CliOptions {
@@ -186,7 +198,10 @@ function parseCliOptions(argv: string[]): CliOptions {
     }
 
     if (arg === '--concurrency' && argv[index + 1]) {
-      options.concurrency = parsePositiveInteger(argv[index + 1], '--concurrency');
+      options.concurrency = parsePositiveInteger(
+        argv[index + 1],
+        '--concurrency',
+      );
       index += 1;
       continue;
     }
@@ -235,7 +250,9 @@ function needsRepair(job: JobRecord) {
 async function repairJob(job: JobRecord) {
   const metadata = asRecord(job.metadata);
   const slug = readOptionalString(metadata?.slug);
-  const examPdfUrl = normalizeSourceUrl(readOptionalString(metadata?.examPdfUrl));
+  const examPdfUrl = normalizeSourceUrl(
+    readOptionalString(metadata?.examPdfUrl),
+  );
   const correctionPdfUrl = normalizeSourceUrl(
     readOptionalString(metadata?.correctionPdfUrl),
   );
@@ -289,15 +306,8 @@ async function repairJob(job: JobRecord) {
     sourcePdfRepairAt: new Date().toISOString(),
   };
 
-  await prisma.ingestionJob.update({
-    where: {
-      id: job.id,
-    },
-    data: {
-      status: IngestionJobStatus.DRAFT,
-      errorMessage: null,
-      draftJson: toJsonValue(draft),
-    },
+  await ingestionOpsService.resetToDraft(job.id, {
+    draft,
   });
 
   return {
@@ -421,7 +431,10 @@ async function resolveDocumentSource(input: {
     }
 
     if (fallback.split) {
-      const split = await getSplitPdf(fallback.url, fallback.split.subjectPageCount);
+      const split = await getSplitPdf(
+        fallback.url,
+        fallback.split.subjectPageCount,
+      );
 
       return input.documentKind === SourceDocumentKind.CORRECTION
         ? {
@@ -429,7 +442,9 @@ async function resolveDocumentSource(input: {
             provider: fallback.provider,
             buffer: split.correctionBuffer,
             pageCount:
-              split.correctionPageRange.end - split.correctionPageRange.start + 1,
+              split.correctionPageRange.end -
+              split.correctionPageRange.start +
+              1,
             splitPageRange: split.correctionPageRange,
             splitSourceUrl: fallback.url,
           }
@@ -551,15 +566,7 @@ function normalizeSourceUrl(value: string | null) {
   return value;
 }
 
-function toJsonValue(value: unknown) {
-  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
-}
-
-void main()
-  .catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+void main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

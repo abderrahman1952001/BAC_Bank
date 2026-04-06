@@ -131,20 +131,40 @@ export function useAdminIngestionStructureMutations(options: {
     );
   }
 
-  function addBlock() {
-    if (!activeVariant || !selectedNode) {
-      return;
+  function addBlock(options?: {
+    nodeId?: string;
+    insertIndex?: number;
+  }) {
+    if (!activeVariant) {
+      return null;
+    }
+
+    const targetNodeId = options?.nodeId ?? selectedNode?.id ?? null;
+
+    if (!targetNodeId) {
+      return null;
+    }
+
+    const targetNode =
+      activeVariant.nodes.find((node) => node.id === targetNodeId) ?? null;
+
+    if (!targetNode) {
+      return null;
     }
 
     const result = addDraftBlockCommand({
       draft,
       variantCode: activeVariant.code,
-      nodeId: selectedNode.id,
+      nodeId: targetNodeId,
+      insertIndex: options?.insertIndex ?? targetNode.blocks.length,
       makeBlockId: () => makeClientId("block"),
     });
 
     onChange(result.draft);
+    onSelectNodeId(targetNodeId);
     onSelectBlockId(result.nextSelectedBlockId);
+
+    return result.nextSelectedBlockId;
   }
 
   function moveBlock(blockId: string, direction: -1 | 1) {

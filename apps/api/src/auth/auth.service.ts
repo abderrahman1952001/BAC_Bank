@@ -1,40 +1,28 @@
 import {
   BadRequestException,
-  ConflictException,
   Injectable,
-  Logger,
-  OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Prisma, UserRole } from '@prisma/client';
-import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'crypto';
-import { promisify } from 'util';
-import {
-  AUTH_SESSION_COOKIE_NAME,
-  createAuthSessionToken,
-  readCookieValue,
-  serializeAuthSessionCookie,
-  serializeClearedAuthSessionCookie,
-  verifyAuthSessionToken,
-} from './auth-session';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
+import { createClerkClient, type User, verifyToken } from '@clerk/backend';
+import { Prisma, SubscriptionStatus, UserRole } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthenticatedUser } from './auth.types';
-import {
-  resolveAuthSessionSecret,
-  resolveBooleanFlag,
-} from '../runtime/runtime-config';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
-const scrypt = promisify(scryptCallback);
+type AuthenticateRequestInput = {
+  authorizationHeader?: string | string[] | null;
+  cookieHeader?: string | string[] | null;
+};
 
 type UserProfileRecord = Prisma.UserGetPayload<{
   select: {
     id: true;
+    clerkUserId: true;
     email: true;
     fullName: true;
     role: true;
+    subscriptionStatus: true;
     streamFamily: {
       select: {
         code: true;
@@ -51,21 +39,11 @@ type UserProfileRecord = Prisma.UserGetPayload<{
 }>;
 
 @Injectable()
-export class AuthService implements OnModuleInit {
-  private readonly logger = new Logger(AuthService.name);
-
+export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
   ) {}
-
-  async onModuleInit() {
-    if (!this.shouldBootstrapAdminOnStartup()) {
-      return;
-    }
-
-    await this.ensureBootstrapAdmin();
-  }
 
   async getRegistrationOptions() {
     const streamFamilies = await this.prisma.streamFamily.findMany({
@@ -81,124 +59,42 @@ export class AuthService implements OnModuleInit {
     };
   }
 
-  async register(payload: RegisterDto) {
-    const email = payload.email.trim().toLowerCase();
-    const existingUser = await this.prisma.user.findUnique({
-      where: { email },
-      select: { id: true },
-    });
+  async authenticateRequest(
+    input: AuthenticateRequestInput,
+  ): Promise<AuthenticatedUser> {
+    const token = this.readRequestToken(input);
 
-    if (existingUser) {
-      throw new ConflictException('An account already exists for this email.');
-    }
-
-    const streamSelection = await this.resolveUserStreamSelection(
-      payload.streamCode,
-    );
-    const passwordHash = await this.hashPassword(payload.password);
-
-    const createdUser = await this.prisma.user.create({
-      data: {
-        email,
-        fullName: payload.username.trim(),
-        passwordHash,
-        role: UserRole.USER,
-        streamFamilyId: streamSelection.streamFamilyId,
-        streamId: streamSelection.streamId,
-      },
-      select: this.userProfileSelect,
-    });
-
-    return await this.buildAuthResult(createdUser);
-  }
-
-  async login(payload: LoginDto) {
-    const user = await this.prisma.user.findUnique({
-      where: { email: payload.email.trim().toLowerCase() },
-      select: {
-        ...this.userProfileSelect,
-        passwordHash: true,
-      },
-    });
-
-    if (!user) {
-      throw new UnauthorizedException('Invalid email or password.');
-    }
-
-    const passwordMatches = await this.verifyPassword(
-      payload.password,
-      user.passwordHash,
-    );
-
-    if (!passwordMatches) {
-      throw new UnauthorizedException('Invalid email or password.');
-    }
-
-    const profile: UserProfileRecord = {
-      id: user.id,
-      email: user.email,
-      fullName: user.fullName,
-      role: user.role,
-      streamFamily: user.streamFamily,
-      stream: user.stream,
-    };
-
-    return await this.buildAuthResult(profile);
-  }
-
-  async authenticateRequest(cookieHeader?: string) {
-    const sessionPayload = this.readVerifiedSessionPayload(cookieHeader);
-    const persistedSession = await this.prisma.authSession.findUnique({
-      where: { id: sessionPayload.sid },
-      select: {
-        id: true,
-        userId: true,
-        expiresAt: true,
-        revokedAt: true,
-        user: {
-          select: {
-            id: true,
-            email: true,
-            role: true,
-          },
-        },
-      },
-    });
-
-    if (
-      !persistedSession ||
-      persistedSession.userId !== sessionPayload.sub ||
-      persistedSession.revokedAt ||
-      persistedSession.expiresAt.getTime() <= Date.now()
-    ) {
+    if (!token) {
       throw new UnauthorizedException('Authentication required.');
     }
 
-    return {
-      id: persistedSession.user.id,
-      email: persistedSession.user.email,
-      role: this.normalizeRole(persistedSession.user.role),
-      sessionId: persistedSession.id,
-    } satisfies AuthenticatedUser;
-  }
+    try {
+      const payload = await verifyToken(token, {
+        authorizedParties: this.getAuthorizedParties(),
+        secretKey: this.getClerkSecretKey(),
+      });
+      const clerkUserId =
+        typeof payload.sub === 'string' ? payload.sub.trim() : '';
 
-  async invalidateSession(cookieHeader?: string) {
-    const sessionPayload = this.tryReadVerifiedSessionPayload(cookieHeader);
+      if (!clerkUserId) {
+        throw new UnauthorizedException('Authentication required.');
+      }
 
-    if (!sessionPayload) {
-      return;
+      const user = await this.findOrProvisionUser(clerkUserId);
+
+      return {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        sessionId: typeof payload.sid === 'string' ? payload.sid : null,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+
+      throw new UnauthorizedException('Authentication required.');
     }
-
-    await this.prisma.authSession.updateMany({
-      where: {
-        id: sessionPayload.sid,
-        userId: sessionPayload.sub,
-        revokedAt: null,
-      },
-      data: {
-        revokedAt: new Date(),
-      },
-    });
   }
 
   async getUserProfile(userId: string) {
@@ -216,16 +112,33 @@ export class AuthService implements OnModuleInit {
     };
   }
 
-  createClearedSessionCookie() {
-    return serializeClearedAuthSessionCookie(this.isSecureCookieEnabled());
+  async updateCurrentUserProfile(userId: string, payload: UpdateProfileDto) {
+    const streamSelection = await this.resolveUserStreamSelection(
+      payload.streamCode,
+    );
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        fullName: payload.username.trim(),
+        streamFamilyId: streamSelection.streamFamilyId,
+        streamId: streamSelection.streamId,
+      },
+      select: this.userProfileSelect,
+    });
+
+    return {
+      user: this.mapUserProfile(updatedUser),
+    };
   }
 
   private get userProfileSelect() {
     return {
       id: true,
+      clerkUserId: true,
       email: true,
       fullName: true,
       role: true,
+      subscriptionStatus: true,
       streamFamily: {
         select: {
           code: true,
@@ -241,40 +154,131 @@ export class AuthService implements OnModuleInit {
     } satisfies Prisma.UserSelect;
   }
 
-  private async buildAuthResult(user: UserProfileRecord) {
-    const ttlSeconds = this.getSessionTtlSeconds(user.role);
-    const issuedAt = new Date();
-    const expiresAt = new Date(issuedAt.getTime() + ttlSeconds * 1000);
-    const persistedSession = await this.prisma.authSession.create({
-      data: {
-        userId: user.id,
-        expiresAt,
-      },
-      select: {
-        id: true,
-      },
+  private async findOrProvisionUser(clerkUserId: string) {
+    const existingByClerkId = await this.prisma.user.findUnique({
+      where: { clerkUserId },
+      select: this.userProfileSelect,
     });
-    const nowInSeconds = Math.floor(issuedAt.getTime() / 1000);
-    const role = this.normalizeRole(user.role);
-    const sessionToken = createAuthSessionToken(
-      {
-        sub: user.id,
-        sid: persistedSession.id,
-        role,
-        iat: nowInSeconds,
-        exp: Math.floor(expiresAt.getTime() / 1000),
-      },
-      this.getSessionSecret(),
-    );
 
-    return {
-      user: this.mapUserProfile(user),
-      cookie: serializeAuthSessionCookie(
-        sessionToken,
-        ttlSeconds,
-        this.isSecureCookieEnabled(),
-      ),
-    };
+    if (existingByClerkId) {
+      return this.ensureBootstrapAdminRole(existingByClerkId);
+    }
+
+    const clerkUser = await this.getClerkClient().users.getUser(clerkUserId);
+    const email = this.readPrimaryClerkEmail(clerkUser);
+    const existingByEmail = await this.prisma.user.findUnique({
+      where: { email },
+      select: this.userProfileSelect,
+    });
+    const fullName = this.resolveDisplayName(clerkUser, email);
+
+    if (existingByEmail) {
+      if (
+        existingByEmail.clerkUserId &&
+        existingByEmail.clerkUserId !== clerkUserId
+      ) {
+        throw new UnauthorizedException(
+          'This email is already linked to another account.',
+        );
+      }
+
+      const updatedUser = await this.prisma.user.update({
+        where: { id: existingByEmail.id },
+        data: {
+          clerkUserId,
+          fullName: existingByEmail.fullName ?? fullName,
+          role: this.resolveBootstrapRole(email, existingByEmail.role),
+        },
+        select: this.userProfileSelect,
+      });
+
+      return updatedUser;
+    }
+
+    return this.prisma.user.create({
+      data: {
+        clerkUserId,
+        email,
+        fullName,
+        role: this.resolveBootstrapRole(email),
+        subscriptionStatus: SubscriptionStatus.FREE,
+      },
+      select: this.userProfileSelect,
+    });
+  }
+
+  private async ensureBootstrapAdminRole(user: UserProfileRecord) {
+    const bootstrapRole = this.resolveBootstrapRole(user.email, user.role);
+
+    if (bootstrapRole === user.role) {
+      return user;
+    }
+
+    return this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        role: bootstrapRole,
+      },
+      select: this.userProfileSelect,
+    });
+  }
+
+  private resolveBootstrapRole(
+    email: string,
+    fallback: UserRole = UserRole.USER,
+  ) {
+    const normalizedBootstrapEmail = this.configService
+      .get<string>('AUTH_BOOTSTRAP_ADMIN_EMAIL')
+      ?.trim()
+      .toLowerCase();
+
+    if (
+      normalizedBootstrapEmail &&
+      email.trim().toLowerCase() === normalizedBootstrapEmail
+    ) {
+      return UserRole.ADMIN;
+    }
+
+    return fallback;
+  }
+
+  private resolveDisplayName(clerkUser: User, email: string) {
+    const fullName = clerkUser.fullName?.trim();
+
+    if (fullName) {
+      return fullName;
+    }
+
+    const username = clerkUser.username?.trim();
+
+    if (username) {
+      return username;
+    }
+
+    const firstName = clerkUser.firstName?.trim() ?? '';
+    const lastName = clerkUser.lastName?.trim() ?? '';
+    const joinedName = `${firstName} ${lastName}`.trim();
+
+    if (joinedName) {
+      return joinedName;
+    }
+
+    return email.split('@')[0] ?? 'Student';
+  }
+
+  private readPrimaryClerkEmail(clerkUser: User) {
+    const primaryEmail =
+      clerkUser.emailAddresses.find(
+        (emailAddress) => emailAddress.id === clerkUser.primaryEmailAddressId,
+      ) ?? clerkUser.emailAddresses[0];
+
+    const email = primaryEmail?.emailAddress?.trim().toLowerCase();
+
+    if (!email) {
+      throw new UnauthorizedException('A verified email is required.');
+    }
+
+    return email;
   }
 
   private mapUserProfile(user: UserProfileRecord) {
@@ -282,7 +286,7 @@ export class AuthService implements OnModuleInit {
 
     return {
       id: user.id,
-      username: user.fullName ?? user.email.split('@')[0] ?? 'Student',
+      username: user.fullName?.trim() || user.email.split('@')[0] || 'Student',
       email: user.email,
       role: this.normalizeRole(user.role),
       stream: selectedStream
@@ -291,11 +295,12 @@ export class AuthService implements OnModuleInit {
             name: selectedStream.name,
           }
         : null,
+      subscriptionStatus: user.subscriptionStatus,
     };
   }
 
-  private normalizeRole(role: UserRole): 'USER' | 'ADMIN' {
-    return role === UserRole.ADMIN ? 'ADMIN' : 'USER';
+  private normalizeRole(role: UserRole): 'STUDENT' | 'ADMIN' {
+    return role === UserRole.ADMIN ? 'ADMIN' : 'STUDENT';
   }
 
   private async resolveUserStreamSelection(streamCode: string) {
@@ -328,180 +333,72 @@ export class AuthService implements OnModuleInit {
     };
   }
 
-  private async hashPassword(password: string) {
-    const salt = randomBytes(16);
-    const derivedKey = (await scrypt(password, salt, 64)) as Buffer;
-
-    return `scrypt$${salt.toString('hex')}$${derivedKey.toString('hex')}`;
-  }
-
-  private async verifyPassword(password: string, storedHash: string) {
-    const [algorithm, saltHex, hashHex] = storedHash.split('$');
-
-    if (
-      algorithm !== 'scrypt' ||
-      typeof saltHex !== 'string' ||
-      typeof hashHex !== 'string'
-    ) {
-      return false;
-    }
-
-    const salt = Buffer.from(saltHex, 'hex');
-    const expectedHash = Buffer.from(hashHex, 'hex');
-    const candidateHash = (await scrypt(
-      password,
-      salt,
-      expectedHash.length,
-    )) as Buffer;
-
-    return timingSafeEqual(expectedHash, candidateHash);
-  }
-
-  private getSessionSecret() {
-    return resolveAuthSessionSecret({
-      nodeEnv: this.configService.get<string>('NODE_ENV'),
-      authSessionSecret: this.configService.get<string>('AUTH_SESSION_SECRET'),
-      legacyJwtSecret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+  private getClerkClient() {
+    return createClerkClient({
+      secretKey: this.getClerkSecretKey(),
     });
   }
 
-  private getSessionTtlSeconds(role: UserRole) {
-    if (role === UserRole.ADMIN) {
-      return (
-        this.readPositiveIntegerConfig('AUTH_ADMIN_SESSION_TTL_HOURS', 12) *
-        60 *
-        60
+  private getClerkSecretKey() {
+    const secretKey = this.configService.get<string>('CLERK_SECRET_KEY')?.trim();
+
+    if (!secretKey) {
+      throw new UnauthorizedException(
+        'Authentication provider is not configured.',
       );
     }
 
-    return (
-      this.readPositiveIntegerConfig('AUTH_SESSION_TTL_DAYS', 7) * 24 * 60 * 60
-    );
+    return secretKey;
   }
 
-  private isSecureCookieEnabled() {
-    return this.configService.get<string>('NODE_ENV') === 'production';
-  }
+  private getAuthorizedParties() {
+    const corsOrigin = this.configService.get<string>('CORS_ORIGIN');
 
-  private readPositiveIntegerConfig(name: string, fallback: number) {
-    const rawValue = this.configService.get<string>(name);
-    const parsedValue = rawValue ? Number.parseInt(rawValue, 10) : fallback;
-
-    if (!Number.isInteger(parsedValue) || parsedValue <= 0) {
-      return fallback;
+    if (!corsOrigin?.trim()) {
+      return undefined;
     }
 
-    return parsedValue;
+    const origins = corsOrigin
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean);
+
+    return origins.length > 0 ? origins : undefined;
   }
 
-  private readVerifiedSessionPayload(cookieHeader?: string) {
-    const sessionPayload = this.tryReadVerifiedSessionPayload(cookieHeader);
+  private readRequestToken(input: AuthenticateRequestInput) {
+    const authorizationHeader = this.readHeaderValue(input.authorizationHeader);
 
-    if (!sessionPayload) {
-      throw new UnauthorizedException('Authentication required.');
+    if (authorizationHeader?.toLowerCase().startsWith('bearer ')) {
+      return authorizationHeader.slice('bearer '.length).trim();
     }
 
-    return sessionPayload;
-  }
+    const cookieHeader = this.readHeaderValue(input.cookieHeader);
 
-  private tryReadVerifiedSessionPayload(cookieHeader?: string) {
-    const token = readCookieValue(cookieHeader, AUTH_SESSION_COOKIE_NAME);
-
-    if (!token) {
+    if (!cookieHeader) {
       return null;
     }
 
-    return verifyAuthSessionToken(token, this.getSessionSecret());
-  }
+    const sessionCookie = cookieHeader
+      .split(';')
+      .map((chunk) => chunk.trim())
+      .find((chunk) => chunk.startsWith('__session='));
 
-  private shouldBootstrapAdminOnStartup() {
-    return resolveBooleanFlag({
-      value: this.configService.get<string>('AUTH_BOOTSTRAP_ADMIN_ON_STARTUP'),
-      fallback: false,
-    });
-  }
-
-  private async ensureBootstrapAdmin() {
-    const email = this.configService
-      .get<string>('AUTH_BOOTSTRAP_ADMIN_EMAIL')
-      ?.trim()
-      .toLowerCase();
-    const password = this.configService.get<string>(
-      'AUTH_BOOTSTRAP_ADMIN_PASSWORD',
-    );
-
-    if (!email || !password) {
-      return;
+    if (!sessionCookie) {
+      return null;
     }
 
-    const username =
-      this.configService.get<string>('AUTH_BOOTSTRAP_ADMIN_USERNAME')?.trim() ||
-      'BAC Admin';
-    const streamCode =
-      this.configService
-        .get<string>('AUTH_BOOTSTRAP_ADMIN_STREAM_CODE')
-        ?.trim()
-        .toUpperCase() || 'SE';
-    const streamSelection = await this.resolveUserStreamSelection(streamCode);
-    const existingUser = await this.prisma.user.findUnique({
-      where: { email },
-      select: {
-        id: true,
-        role: true,
-        fullName: true,
-        streamFamilyId: true,
-        streamId: true,
-      },
-    });
+    const token = decodeURIComponent(sessionCookie.slice('__session='.length));
+    return token.trim() || null;
+  }
 
-    if (existingUser) {
-      const updateData: Prisma.UserUpdateInput = {};
-
-      if (existingUser.role !== UserRole.ADMIN) {
-        updateData.role = UserRole.ADMIN;
-      }
-
-      if (!existingUser.fullName) {
-        updateData.fullName = username;
-      }
-
-      if (!existingUser.streamFamilyId) {
-        updateData.streamFamily = {
-          connect: {
-            id: streamSelection.streamFamilyId,
-          },
-        };
-      }
-
-      if (!existingUser.streamId && streamSelection.streamId) {
-        updateData.stream = {
-          connect: {
-            id: streamSelection.streamId,
-          },
-        };
-      }
-
-      if (Object.keys(updateData).length > 0) {
-        await this.prisma.user.update({
-          where: { id: existingUser.id },
-          data: updateData,
-        });
-      }
-
-      return;
+  private readHeaderValue(
+    value?: string | string[] | null,
+  ): string | null {
+    if (Array.isArray(value)) {
+      return value[0]?.trim() || null;
     }
 
-    await this.prisma.user.create({
-      data: {
-        email,
-        fullName: username,
-        passwordHash: await this.hashPassword(password),
-        role: UserRole.ADMIN,
-        streamFamilyId: streamSelection.streamFamilyId,
-        streamId: streamSelection.streamId,
-      },
-    });
-
-    this.logger.log(`Bootstrapped admin account for ${email}.`);
+    return value?.trim() || null;
   }
 }

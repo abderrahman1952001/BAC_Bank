@@ -39,12 +39,14 @@ export function StudyExerciseStageCard({
   kicker,
   heading,
   badgeLabel,
+  headerActions,
   actions,
 }: {
   exercise: StudyExerciseModel;
   kicker: ReactNode;
   heading: ReactNode;
   badgeLabel?: string;
+  headerActions?: ReactNode;
   actions?: ReactNode;
 }) {
   return (
@@ -54,7 +56,16 @@ export function StudyExerciseStageCard({
           <p className="study-stage-kicker">{kicker}</p>
           <h2>{heading}</h2>
         </div>
-        {badgeLabel ? <span className="study-stage-badge">{badgeLabel}</span> : null}
+        {badgeLabel || headerActions ? (
+          <div className="study-stage-head-side">
+            {badgeLabel ? (
+              <span className="study-stage-badge">{badgeLabel}</span>
+            ) : null}
+            {headerActions ? (
+              <div className="study-stage-head-actions">{headerActions}</div>
+            ) : null}
+          </div>
+        ) : null}
       </div>
 
       {exercise.contextBlocks.length ? (

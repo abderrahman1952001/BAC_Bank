@@ -5,6 +5,7 @@ const publicApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api/v1";
 const publicApiOrigin = process.env.PUBLIC_API_BASE_URL ?? "";
 const apiUpstream = process.env.API_UPSTREAM_URL ?? "";
 const assetBaseUrl = process.env.NEXT_PUBLIC_ASSET_BASE_URL ?? "";
+const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
 const isProduction = process.env.NODE_ENV === "production";
 
 function toOrigin(value: string) {
@@ -15,7 +16,48 @@ function toOrigin(value: string) {
   }
 }
 
+function decodeBase64Url(value: string) {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized.padEnd(
+    normalized.length + ((4 - (normalized.length % 4)) % 4),
+    "=",
+  );
+
+  return Buffer.from(padded, "base64").toString("utf8");
+}
+
+function resolveClerkOriginFromPublishableKey(publishableKey: string) {
+  if (!publishableKey) {
+    return null;
+  }
+
+  const encodedHost = publishableKey.split("_").slice(2).join("_");
+
+  if (!encodedHost) {
+    return null;
+  }
+
+  try {
+    const decodedHost = decodeBase64Url(encodedHost)
+      .replace(/\$/g, "")
+      .trim();
+
+    if (!decodedHost) {
+      return null;
+    }
+
+    return new URL(`https://${decodedHost}`).origin;
+  } catch {
+    return null;
+  }
+}
+
 function buildContentSecurityPolicy() {
+  const scriptSources = new Set([
+    "'self'",
+    "'unsafe-inline'",
+    "https://challenges.cloudflare.com",
+  ]);
   const connectSources = new Set([
     "'self'",
     "https:",
@@ -33,6 +75,7 @@ function buildContentSecurityPolicy() {
     "blob:",
     "https:",
   ]);
+  const frameSources = new Set(["'self'", "https://challenges.cloudflare.com"]);
 
   const apiOrigin = toOrigin(
     isAbsoluteUrl(publicApiBaseUrl)
@@ -40,9 +83,17 @@ function buildContentSecurityPolicy() {
       : apiUpstream || publicApiOrigin,
   );
   const assetOrigin = toOrigin(assetBaseUrl);
+  const clerkOrigin = resolveClerkOriginFromPublishableKey(clerkPublishableKey);
+
+  if (clerkOrigin) {
+    scriptSources.add(clerkOrigin);
+    connectSources.add(clerkOrigin);
+  }
 
   if (apiOrigin) {
     connectSources.add(apiOrigin);
+    imageSources.add(apiOrigin);
+    mediaSources.add(apiOrigin);
   }
 
   if (assetOrigin) {
@@ -54,23 +105,19 @@ function buildContentSecurityPolicy() {
   if (!isProduction) {
     connectSources.add("http://localhost:3001");
     connectSources.add("http://127.0.0.1:3001");
-  }
-
-  const scriptSources = ["'self'", "'unsafe-inline'"];
-
-  if (!isProduction) {
-    scriptSources.push("'unsafe-eval'");
+    scriptSources.add("'unsafe-eval'");
   }
 
   const directives = [
     "default-src 'self'",
-    `script-src ${scriptSources.join(" ")}`,
+    `script-src ${[...scriptSources].join(" ")}`,
     "style-src 'self' 'unsafe-inline'",
     `connect-src ${[...connectSources].join(" ")}`,
     `img-src ${[...imageSources].join(" ")}`,
     `media-src ${[...mediaSources].join(" ")}`,
     "font-src 'self' data:",
     "worker-src 'self' blob:",
+    `frame-src ${[...frameSources].join(" ")}`,
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

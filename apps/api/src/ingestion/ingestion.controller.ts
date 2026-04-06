@@ -16,6 +16,10 @@ import type { Multipart, MultipartFile } from '@fastify/multipart';
 import type { FastifyReply } from 'fastify';
 import type { FastifyRequest } from 'fastify';
 import { AdminRoleGuard } from '../admin/admin.guard';
+import { ProcessIngestionJobDto } from './dto/process-ingestion-job.dto';
+import { RecoverAssetContentDto } from './dto/recover-asset-content.dto';
+import { RecoverSnippetContentDto } from './dto/recover-snippet-content.dto';
+import { UpdateIngestionJobDto } from './dto/update-ingestion-job.dto';
 import { IngestionService } from './ingestion.service';
 
 type MultipartRequest = FastifyRequest & {
@@ -43,7 +47,7 @@ export class IngestionController {
   @Patch('admin/ingestion/jobs/:jobId')
   updateJob(
     @Param('jobId', ParseUUIDPipe) jobId: string,
-    @Body() payload: Record<string, unknown>,
+    @Body() payload: UpdateIngestionJobDto,
   ) {
     return this.ingestionService.updateJob(jobId, payload);
   }
@@ -56,9 +60,9 @@ export class IngestionController {
   }
 
   @UseGuards(AdminRoleGuard)
-  @Post('admin/ingestion/exams/:examId/revision')
-  createPublishedRevisionJob(@Param('examId', ParseUUIDPipe) examId: string) {
-    return this.ingestionService.createPublishedRevisionJob(examId);
+  @Post('admin/ingestion/papers/:paperId/revision')
+  createPublishedRevisionJob(@Param('paperId', ParseUUIDPipe) paperId: string) {
+    return this.ingestionService.createPublishedRevisionJob(paperId);
   }
 
   @UseGuards(AdminRoleGuard)
@@ -81,7 +85,7 @@ export class IngestionController {
   @Post('admin/ingestion/jobs/:jobId/process')
   processJob(
     @Param('jobId', ParseUUIDPipe) jobId: string,
-    @Body() payload: Record<string, unknown> = {},
+    @Body() payload: ProcessIngestionJobDto = {},
   ) {
     return this.ingestionService.processJob(jobId, payload);
   }
@@ -97,7 +101,7 @@ export class IngestionController {
   recoverAssetContent(
     @Param('jobId', ParseUUIDPipe) jobId: string,
     @Param('assetId') assetId: string,
-    @Body() payload: Record<string, unknown> = {},
+    @Body() payload: RecoverAssetContentDto = {},
   ) {
     return this.ingestionService.recoverAssetContent(jobId, assetId, payload);
   }
@@ -106,7 +110,7 @@ export class IngestionController {
   @Post('admin/ingestion/jobs/:jobId/recover-snippet')
   recoverSnippetContent(
     @Param('jobId', ParseUUIDPipe) jobId: string,
-    @Body() payload: Record<string, unknown> = {},
+    @Body() payload: RecoverSnippetContentDto,
   ) {
     return this.ingestionService.recoverSnippetContent(jobId, payload);
   }
@@ -214,10 +218,6 @@ export class IngestionController {
 
     return {
       year: this.parseIntegerField(fields.get('year'), 'year'),
-      streamCode: this.parseRequiredField(
-        fields.get('stream_code'),
-        'stream_code',
-      ),
       subjectCode: this.parseRequiredField(
         fields.get('subject_code'),
         'subject_code',

@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { resolvePositiveInteger } from '../runtime/runtime-config';
 import { describeError, serializeLogEvent } from '../runtime/logging';
-import { IngestionService } from './ingestion.service';
+import { IngestionQueueService } from './ingestion-queue.service';
 
 const DEFAULT_QUEUE_POLL_INTERVAL_MS = resolvePositiveInteger({
   value: process.env.INGESTION_QUEUE_POLL_INTERVAL_MS,
@@ -24,7 +24,7 @@ export class IngestionWorkerService implements OnModuleDestroy {
   private heartbeatTimer: NodeJS.Timeout | null = null;
 
   constructor(
-    private readonly ingestionService: IngestionService,
+    private readonly queueService: IngestionQueueService,
     private readonly prisma: PrismaService,
   ) {}
 
@@ -43,7 +43,7 @@ export class IngestionWorkerService implements OnModuleDestroy {
     try {
       while (!this.stopRequested) {
         try {
-          const jobId = await this.ingestionService.runNextQueuedJob(workerId);
+          const jobId = await this.queueService.runNextQueuedJob(workerId);
 
           if (!jobId) {
             await sleep(DEFAULT_QUEUE_POLL_INTERVAL_MS);

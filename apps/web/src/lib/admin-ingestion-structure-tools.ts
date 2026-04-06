@@ -6,7 +6,7 @@ import type {
   DraftAssetClassification,
   DraftVariantCode,
 } from "@/lib/admin";
-import { fetchAdminJson } from "@/lib/admin";
+import { fetchAdminJson, parseAdminFiltersResponse } from "@/lib/admin";
 import {
   buildAssetToolDraft,
   makeDefaultAssetCropBox,
@@ -228,9 +228,13 @@ export function useAdminIngestionStructureTools(options: {
   useEffect(() => {
     const controller = new AbortController();
 
-    void fetchAdminJson<AdminFiltersResponse>("/filters", {
-      signal: controller.signal,
-    })
+    void fetchAdminJson<AdminFiltersResponse>(
+      "/filters",
+      {
+        signal: controller.signal,
+      },
+      parseAdminFiltersResponse,
+    )
       .then((payload) => {
         setFilters(payload);
       })

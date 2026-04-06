@@ -1,29 +1,129 @@
 import type {
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
-} from '@/lib/admin';
+} from "@/lib/admin";
 import {
   findStreamLabel,
   findSubjectLabel,
   INGESTION_STATUS_LABELS,
   INGESTION_STATUS_ORDER,
-} from '@/lib/ingestion-options';
+} from "@/lib/ingestion-options";
 
-const UNMAPPED_STREAM_KEY = 'UNMAPPED';
+export const ACTIVE_DRAFT_STATUS_ORDER = INGESTION_STATUS_ORDER.filter(
+  (status) => status !== "published",
+);
+export const DRAFT_KIND_LABELS = {
+  ingestion: "Ingestion",
+  revision: "Revision",
+} as const;
 
-export type JobStatusFilter = 'all' | AdminIngestionJobSummary['status'];
+export type JobStatusFilter = "all" | AdminIngestionJobSummary["status"];
+export type DraftKindFilter = "all" | AdminIngestionJobSummary["draft_kind"];
+
+type DraftKindLabels = typeof DRAFT_KIND_LABELS;
+type DraftKindKey = keyof DraftKindLabels;
+
+function isDraftKindKey(value: string): value is DraftKindKey {
+  return value === "ingestion" || value === "revision";
+}
+
+export function formatDraftKind(kind: AdminIngestionJobSummary["draft_kind"]) {
+  return DRAFT_KIND_LABELS[kind];
+}
+
+export function buildManualUploadTitle({
+  year,
+  subjectCode,
+  paperStreamCodes,
+}: {
+  year: number | string;
+  subjectCode: string;
+  paperStreamCodes: string[];
+}) {
+  const parts = [
+    typeof year === "number" ? String(year) : year.trim(),
+    subjectCode.trim().toUpperCase(),
+    ...normalizePaperStreamCodes(paperStreamCodes),
+  ].filter((value) => value.length > 0);
+
+  return parts.length ? `BAC ${parts.join(" · ")}` : "BAC";
+}
+
+export function buildDraftKindCounts(jobs: AdminIngestionJobSummary[]) {
+  const counts: Record<DraftKindFilter, number> = {
+    all: jobs.length,
+    ingestion: 0,
+    revision: 0,
+  };
+
+  for (const job of jobs) {
+    counts[job.draft_kind] += 1;
+  }
+
+  return counts;
+}
+
+export function filterJobs({
+  jobs,
+  jobQuery,
+  statusFilter,
+  draftKindFilter,
+}: {
+  jobs: AdminIngestionJobSummary[];
+  jobQuery: string;
+  statusFilter: JobStatusFilter;
+  draftKindFilter: DraftKindFilter;
+}) {
+  const query = jobQuery.trim().toLowerCase();
+
+  return jobs.filter((job) => {
+    if (statusFilter !== "all" && job.status !== statusFilter) {
+      return false;
+    }
+
+    if (draftKindFilter !== "all" && job.draft_kind !== draftKindFilter) {
+      return false;
+    }
+
+    if (!query) {
+      return true;
+    }
+
+    const draftKindWords = isDraftKindKey(job.draft_kind)
+      ? `${DRAFT_KIND_LABELS[job.draft_kind]} draft`
+      : "";
+
+    const searchText = [
+      job.label,
+      job.year,
+      ...job.stream_codes,
+      ...job.stream_codes.map((streamCode) => findStreamLabel(streamCode)),
+      job.subject_code,
+      findSubjectLabel(job.subject_code),
+      job.status,
+      draftKindWords,
+      job.workflow.awaiting_correction ? "waiting correction" : "",
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return searchText.includes(query);
+  });
+}
+
+const UNMAPPED_STREAM_GROUP_KEY = "UNMAPPED";
 
 export type StatusScopedFilter = {
-  streamKey: string | 'all';
-  year: number | 'all';
+  streamKey: string | "all";
+  year: number | "all";
 };
 
 export type AdminIngestionStatusGroup = {
-  status: AdminIngestionJobSummary['status'];
+  status: AdminIngestionJobSummary["status"];
   label: string;
   count: number;
-  activeStreamKey: string | 'all';
-  activeYear: number | 'all';
+  activeStreamKey: string | "all";
+  activeYear: number | "all";
   availableStreamGroups: Array<{
     streamKey: string;
     label: string;
@@ -43,12 +143,12 @@ export type AdminIngestionStatusGroup = {
   }>;
 };
 
-export function formatSession(session: AdminIngestionJobSummary['session']) {
-  if (session === 'rattrapage') {
-    return 'Rattrapage';
+export function formatSession(session: AdminIngestionJobSummary["session"]) {
+  if (session === "rattrapage") {
+    return "Rattrapage";
   }
 
-  return 'Normal';
+  return "Normal";
 }
 
 export function compareJobs(
@@ -102,43 +202,6 @@ export function buildStatusCounts(jobs: AdminIngestionJobSummary[]) {
   return counts;
 }
 
-export function filterJobs({
-  jobs,
-  jobQuery,
-  statusFilter,
-}: {
-  jobs: AdminIngestionJobSummary[];
-  jobQuery: string;
-  statusFilter: JobStatusFilter;
-}) {
-  const query = jobQuery.trim().toLowerCase();
-
-  return jobs.filter((job) => {
-    if (statusFilter !== 'all' && job.status !== statusFilter) {
-      return false;
-    }
-
-    if (!query) {
-      return true;
-    }
-
-    const searchText = [
-      job.label,
-      job.year,
-      job.stream_code,
-      findStreamLabel(job.stream_code),
-      job.subject_code,
-      findSubjectLabel(job.subject_code),
-      job.status,
-      job.workflow.awaiting_correction ? 'waiting correction' : '',
-    ]
-      .join(' ')
-      .toLowerCase();
-
-    return searchText.includes(query);
-  });
-}
-
 export function buildGroupedStatuses({
   filteredJobs,
   statusFilter,
@@ -147,11 +210,11 @@ export function buildGroupedStatuses({
   filteredJobs: AdminIngestionJobSummary[];
   statusFilter: JobStatusFilter;
   statusScopedFilters: Partial<
-    Record<AdminIngestionJobSummary['status'], StatusScopedFilter>
+    Record<AdminIngestionJobSummary["status"], StatusScopedFilter>
   >;
 }): AdminIngestionStatusGroup[] {
   const visibleStatuses =
-    statusFilter === 'all'
+    statusFilter === "all"
       ? INGESTION_STATUS_ORDER.filter((status) =>
           filteredJobs.some((job) => job.status === status),
         )
@@ -162,39 +225,39 @@ export function buildGroupedStatuses({
       .filter((job) => job.status === status)
       .sort(compareJobs);
     const availableStreamKeys = Array.from(
-      new Set(jobsForStatus.map((job) => resolveStreamKey(job.stream_code))),
+      new Set(jobsForStatus.map((job) => resolveStreamGroupKey(job.stream_codes))),
     ).sort((left, right) =>
-      resolveStreamLabel(left).localeCompare(resolveStreamLabel(right)),
+      resolveStreamGroupLabel(left).localeCompare(resolveStreamGroupLabel(right)),
     );
     const scopedFilter = statusScopedFilters[status];
     const activeStreamKey =
       scopedFilter?.streamKey &&
-      scopedFilter.streamKey !== 'all' &&
+      scopedFilter.streamKey !== "all" &&
       availableStreamKeys.includes(scopedFilter.streamKey)
         ? scopedFilter.streamKey
-        : 'all';
+        : "all";
     const streamFilteredJobs =
-      activeStreamKey === 'all'
+      activeStreamKey === "all"
         ? jobsForStatus
         : jobsForStatus.filter(
-            (job) => resolveStreamKey(job.stream_code) === activeStreamKey,
+            (job) => resolveStreamGroupKey(job.stream_codes) === activeStreamKey,
           );
     const availableYears = Array.from(
       new Set(streamFilteredJobs.map((job) => job.year)),
     ).sort((left, right) => right - left);
     const activeYear =
-      typeof scopedFilter?.year === 'number' &&
+      typeof scopedFilter?.year === "number" &&
       availableYears.includes(scopedFilter.year)
         ? scopedFilter.year
-        : 'all';
+        : "all";
     const scopedJobs =
-      activeYear === 'all'
+      activeYear === "all"
         ? streamFilteredJobs
         : streamFilteredJobs.filter((job) => job.year === activeYear);
     const streams = new Map<string, AdminIngestionJobSummary[]>();
 
     for (const job of scopedJobs) {
-      const streamKey = resolveStreamKey(job.stream_code);
+      const streamKey = resolveStreamGroupKey(job.stream_codes);
       const bucket = streams.get(streamKey) ?? [];
       bucket.push(job);
       streams.set(streamKey, bucket);
@@ -208,9 +271,9 @@ export function buildGroupedStatuses({
       activeYear,
       availableStreamGroups: availableStreamKeys.map((streamKey) => ({
         streamKey,
-        label: resolveStreamLabel(streamKey),
+        label: resolveStreamGroupLabel(streamKey),
         count: jobsForStatus.filter(
-          (job) => resolveStreamKey(job.stream_code) === streamKey,
+          (job) => resolveStreamGroupKey(job.stream_codes) === streamKey,
         ).length,
       })),
       availableYears: availableYears.map((year) => ({
@@ -229,7 +292,7 @@ export function buildGroupedStatuses({
 
           return {
             streamKey,
-            streamLabel: resolveStreamLabel(streamKey),
+            streamLabel: resolveStreamGroupLabel(streamKey),
             yearGroups: [...years.entries()]
               .sort((left, right) => right[0] - left[0])
               .map(([year, yearJobs]) => ({
@@ -238,7 +301,9 @@ export function buildGroupedStatuses({
               })),
           };
         })
-        .sort((left, right) => left.streamLabel.localeCompare(right.streamLabel)),
+        .sort((left, right) =>
+          left.streamLabel.localeCompare(right.streamLabel),
+        ),
     };
   });
 }
@@ -253,20 +318,20 @@ export function buildProcessJobActionState({
   const disabled =
     processingJobId === job.id ||
     !job.workflow.can_process ||
-    job.status === 'published' ||
-    job.status === 'queued' ||
-    job.status === 'processing';
+    job.status === "published" ||
+    job.status === "queued" ||
+    job.status === "processing";
   const label = job.workflow.awaiting_correction
-    ? 'Waiting'
+    ? "Waiting"
     : processingJobId === job.id
-      ? 'Processing…'
-      : job.status === 'queued'
-        ? 'Queued'
-        : job.status === 'processing'
-          ? 'Worker running…'
-          : job.workflow.review_started
-            ? 'Queue reprocess'
-            : 'Queue processing';
+      ? "Processing…"
+      : job.status === "queued"
+        ? "Queued"
+        : job.status === "processing"
+          ? "Worker running…"
+          : job.workflow.review_started || job.status === "failed"
+            ? "Re-run extraction"
+            : "Process";
 
   return {
     disabled,
@@ -274,14 +339,38 @@ export function buildProcessJobActionState({
   };
 }
 
-function resolveStreamKey(streamCode: string | null) {
-  return streamCode ?? UNMAPPED_STREAM_KEY;
-}
+export function formatPaperStreamCodes(streamCodes: string[]) {
+  const normalizedCodes = normalizePaperStreamCodes(streamCodes);
 
-function resolveStreamLabel(streamKey: string) {
-  if (streamKey === UNMAPPED_STREAM_KEY) {
-    return 'Unmapped stream';
+  if (normalizedCodes.length === 0) {
+    return "Unmapped streams";
   }
 
-  return findStreamLabel(streamKey);
+  return normalizedCodes.join(" + ");
+}
+
+function resolveStreamGroupKey(streamCodes: string[]) {
+  const normalizedCodes = normalizePaperStreamCodes(streamCodes);
+
+  return normalizedCodes.length
+    ? normalizedCodes.join("|")
+    : UNMAPPED_STREAM_GROUP_KEY;
+}
+
+function resolveStreamGroupLabel(streamKey: string) {
+  if (streamKey === UNMAPPED_STREAM_GROUP_KEY) {
+    return "Unmapped streams";
+  }
+
+  return formatPaperStreamCodes(streamKey.split("|"));
+}
+
+function normalizePaperStreamCodes(streamCodes: string[]) {
+  return Array.from(
+    new Set(
+      streamCodes
+        .map((streamCode) => streamCode.trim().toUpperCase())
+        .filter((streamCode) => streamCode.length > 0),
+    ),
+  );
 }

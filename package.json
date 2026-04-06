@@ -8,11 +8,13 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev -w @bac-bank/api",
-    "dev:all": "concurrently \"npm run dev -w @bac-bank/api\" \"npm run dev:worker -w @bac-bank/api\" \"npm run dev -w @bac-bank/web\"",
-    "dev:api": "npm run dev -w @bac-bank/api",
-    "dev:worker": "npm run dev:worker -w @bac-bank/api",
-    "dev:web": "npm run dev -w @bac-bank/web",
+    "build:contracts": "npm run build -w @bac-bank/contracts",
+    "dev:contracts": "npm run dev -w @bac-bank/contracts",
+    "dev": "npm run build:contracts && concurrently \"npm run dev:contracts\" \"npm run dev -w @bac-bank/api\"",
+    "dev:all": "npm run build:contracts && concurrently \"npm run dev:contracts\" \"npm run dev -w @bac-bank/api\" \"npm run dev:worker -w @bac-bank/api\" \"npm run dev -w @bac-bank/web\"",
+    "dev:api": "npm run build:contracts && concurrently \"npm run dev:contracts\" \"npm run dev -w @bac-bank/api\"",
+    "dev:worker": "npm run build:contracts && concurrently \"npm run dev:contracts\" \"npm run dev:worker -w @bac-bank/api\"",
+    "dev:web": "npm run build:contracts && concurrently \"npm run dev:contracts\" \"npm run dev -w @bac-bank/web\"",
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
     "release:check": "npm run prisma:generate -w @bac-bank/api && npm run prisma:validate -w @bac-bank/api && npm run lint && npm test && npm run build",

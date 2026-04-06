@@ -1,7 +1,41 @@
+import type { AdminIngestionJobSummary } from "@/lib/admin";
 import { type CatalogResponse, type ExamResponse } from "@/lib/qbank";
+
+export type AdminLibraryInitialSearch = {
+  stream?: string;
+  subject?: string;
+  year?: string;
+  examId?: string;
+  sujet?: string;
+};
+
+export type AdminLibrarySelectionState = {
+  selectedStreamCode: string;
+  selectedSubjectCode: string;
+  selectedYear: number | null;
+  selectedExamId: string | null;
+  selectedSujetNumber: number | null;
+};
+
+export type AdminLibraryStream = CatalogResponse["streams"][number];
+export type AdminLibrarySubject = AdminLibraryStream["subjects"][number];
+export type AdminLibraryYearEntry = AdminLibrarySubject["years"][number];
+export type AdminLibrarySujet = AdminLibraryYearEntry["sujets"][number];
 
 export function normalizeCode(value: string | null) {
   return value?.trim().toUpperCase() ?? "";
+}
+
+export function buildInitialAdminLibrarySelection(
+  initialSearch?: AdminLibraryInitialSearch,
+): AdminLibrarySelectionState {
+  return {
+    selectedStreamCode: normalizeCode(initialSearch?.stream ?? null),
+    selectedSubjectCode: normalizeCode(initialSearch?.subject ?? null),
+    selectedYear: parseYear(initialSearch?.year ?? null),
+    selectedExamId: initialSearch?.examId?.trim() || null,
+    selectedSujetNumber: parseSujetNumber(initialSearch?.sujet ?? null),
+  };
 }
 
 export function parseYear(value: string | null) {
@@ -26,6 +60,110 @@ export function formatPublishedSessionLabel(
   sessionType: "NORMAL" | "MAKEUP",
 ) {
   return sessionType === "MAKEUP" ? "Makeup" : "Normal";
+}
+
+export function findAdminLibraryStream(
+  catalog: CatalogResponse | null | undefined,
+  selectedStreamCode: string,
+): AdminLibraryStream | null {
+  return (
+    catalog?.streams.find((item) => item.code === selectedStreamCode) ?? null
+  );
+}
+
+export function findAdminLibrarySubject(
+  stream: AdminLibraryStream | null,
+  selectedSubjectCode: string,
+): AdminLibrarySubject | null {
+  return (
+    stream?.subjects.find((item) => item.code === selectedSubjectCode) ?? null
+  );
+}
+
+export function findAdminLibraryYearEntry(
+  subject: AdminLibrarySubject | null,
+  selectedYear: number | null,
+): AdminLibraryYearEntry | null {
+  return (
+    subject?.years.find((item) => item.year === selectedYear) ?? null
+  );
+}
+
+export function reconcileAdminLibrarySubjectCode(
+  stream: AdminLibraryStream | null,
+  selectedSubjectCode: string,
+): string {
+  if (!stream) {
+    return "";
+  }
+
+  return selectedSubjectCode &&
+    stream.subjects.some((item) => item.code === selectedSubjectCode)
+    ? selectedSubjectCode
+    : "";
+}
+
+export function reconcileAdminLibraryYear(
+  subject: AdminLibrarySubject | null,
+  selectedYear: number | null,
+): number | null {
+  if (!subject) {
+    return null;
+  }
+
+  return selectedYear && subject.years.some((item) => item.year === selectedYear)
+    ? selectedYear
+    : null;
+}
+
+export function reconcileAdminLibrarySujetSelection(
+  yearEntry: AdminLibraryYearEntry | null,
+  selectedExamId: string | null,
+  selectedSujetNumber: number | null,
+) {
+  if (!yearEntry) {
+    return {
+      selectedExamId: null,
+      selectedSujetNumber: null,
+    };
+  }
+
+  const nextExamId =
+    selectedExamId &&
+    yearEntry.sujets.some((item) => item.examId === selectedExamId)
+      ? selectedExamId
+      : null;
+  const nextSujetNumber =
+    selectedSujetNumber !== null &&
+    yearEntry.sujets.some(
+      (item) =>
+        item.examId === nextExamId && item.sujetNumber === selectedSujetNumber,
+    )
+      ? selectedSujetNumber
+      : null;
+
+  return {
+    selectedExamId: nextExamId,
+    selectedSujetNumber: nextSujetNumber,
+  };
+}
+
+export function findSelectedAdminLibrarySujet(
+  yearEntry: AdminLibraryYearEntry | null,
+  selectedExamId: string | null,
+  selectedSujetNumber: number | null,
+): AdminLibrarySujet | null {
+  if (!yearEntry || !selectedExamId || !selectedSujetNumber) {
+    return null;
+  }
+
+  return (
+    yearEntry.sujets.find(
+      (item) =>
+        item.examId === selectedExamId &&
+        item.sujetNumber === selectedSujetNumber,
+    ) ?? null
+  );
 }
 
 export function resolveSelectionFromExamId(
@@ -62,13 +200,103 @@ export function resolveSelectionFromExamId(
   return null;
 }
 
-export function buildAdminLibraryQuery(input: {
-  selectedStreamCode: string;
-  selectedSubjectCode: string;
-  selectedYear: number | null;
-  selectedExamId: string | null;
-  selectedSujetNumber: number | null;
-}) {
+export function resolveAdminLibraryInitialSelection(
+  catalog: CatalogResponse | null | undefined,
+  initialSelection: AdminLibrarySelectionState,
+): AdminLibrarySelectionState {
+  if (!catalog) {
+    return initialSelection;
+  }
+
+  let nextSelection = initialSelection;
+
+  if (
+    nextSelection.selectedExamId &&
+    (!nextSelection.selectedStreamCode ||
+      !nextSelection.selectedSubjectCode ||
+      nextSelection.selectedYear === null ||
+      nextSelection.selectedSujetNumber === null)
+  ) {
+    const resolvedSelection = resolveSelectionFromExamId(
+      catalog,
+      nextSelection.selectedExamId,
+      nextSelection.selectedSujetNumber,
+    );
+
+    if (resolvedSelection) {
+      nextSelection = {
+        ...nextSelection,
+        selectedStreamCode: resolvedSelection.streamCode,
+        selectedSubjectCode: resolvedSelection.subjectCode,
+        selectedYear: resolvedSelection.year,
+        selectedSujetNumber: resolvedSelection.sujetNumber,
+      };
+    }
+  }
+
+  const stream = findAdminLibraryStream(
+    catalog,
+    nextSelection.selectedStreamCode,
+  );
+
+  if (!stream) {
+    return {
+      selectedStreamCode: "",
+      selectedSubjectCode: "",
+      selectedYear: null,
+      selectedExamId: null,
+      selectedSujetNumber: null,
+    };
+  }
+
+  const selectedSubjectCode = reconcileAdminLibrarySubjectCode(
+    stream,
+    nextSelection.selectedSubjectCode,
+  );
+
+  if (!selectedSubjectCode) {
+    return {
+      selectedStreamCode: stream.code,
+      selectedSubjectCode: "",
+      selectedYear: null,
+      selectedExamId: null,
+      selectedSujetNumber: null,
+    };
+  }
+
+  const subject = findAdminLibrarySubject(stream, selectedSubjectCode);
+  const selectedYear = reconcileAdminLibraryYear(
+    subject,
+    nextSelection.selectedYear,
+  );
+
+  if (selectedYear === null) {
+    return {
+      selectedStreamCode: stream.code,
+      selectedSubjectCode,
+      selectedYear: null,
+      selectedExamId: null,
+      selectedSujetNumber: null,
+    };
+  }
+
+  const yearEntry = findAdminLibraryYearEntry(subject, selectedYear);
+  const selectedSujetSelection = reconcileAdminLibrarySujetSelection(
+    yearEntry,
+    nextSelection.selectedExamId,
+    nextSelection.selectedSujetNumber,
+  );
+
+  return {
+    selectedStreamCode: stream.code,
+    selectedSubjectCode,
+    selectedYear,
+    selectedExamId: selectedSujetSelection.selectedExamId,
+    selectedSujetNumber: selectedSujetSelection.selectedSujetNumber,
+  };
+}
+
+export function buildAdminLibraryQuery(input: AdminLibrarySelectionState) {
   const nextParams = new URLSearchParams();
 
   if (input.selectedStreamCode) {
@@ -145,5 +373,35 @@ export function buildStudentPreviewHref(
     return null;
   }
 
-  return `/app/browse/${selectedExam.stream.code}/${selectedExam.subject.code}/${selectedExam.year}/${selectedExam.id}/${selectedExam.selectedSujetNumber ?? selectedSujetNumber}`;
+  return `/student/browse/${selectedExam.stream.code}/${selectedExam.subject.code}/${selectedExam.year}/${selectedExam.id}/${selectedExam.selectedSujetNumber ?? selectedSujetNumber}`;
+}
+
+export function buildActiveRevisionJobIdsByPaperId(
+  jobs: AdminIngestionJobSummary[],
+): Record<string, string> {
+  return jobs.reduce<Record<string, string>>((accumulator, job) => {
+    if (
+      !job.published_paper_id ||
+      job.draft_kind !== "revision" ||
+      !isActiveRevisionDraft(job)
+    ) {
+      return accumulator;
+    }
+
+    if (!accumulator[job.published_paper_id]) {
+      accumulator[job.published_paper_id] = job.id;
+    }
+
+    return accumulator;
+  }, {});
+}
+
+function isActiveRevisionDraft(job: AdminIngestionJobSummary) {
+  return (
+    job.status === "draft" ||
+    job.status === "queued" ||
+    job.status === "processing" ||
+    job.status === "in_review" ||
+    job.status === "approved"
+  );
 }

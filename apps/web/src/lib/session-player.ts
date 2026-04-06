@@ -11,8 +11,10 @@ import {
   type StudyQuestionState,
 } from "@/lib/study";
 import {
+  canRevealStudyQuestionSolution,
   getStudyQuestionTopics,
   type StudyExerciseModel,
+  type StudyQuestionModel,
 } from "@/lib/study-surface";
 
 export type SessionQuestionRef = {
@@ -21,6 +23,32 @@ export type SessionQuestionRef = {
 };
 
 export type QuestionMotionDirection = "forward" | "backward";
+
+export type QuestionMotionState = {
+  phase: "out" | "in";
+  direction: QuestionMotionDirection;
+};
+
+export type SessionPlayerViewModel = {
+  allQuestionRefs: SessionQuestionRef[];
+  allQuestionIds: string[];
+  activeExercise: StudyExerciseModel | null;
+  activeQuestion: StudyQuestionModel | null;
+  progressCounts: ReturnType<typeof countStudyProgress>;
+  currentQuestionPosition: number;
+  activeQuestionState: StudyQuestionState | undefined;
+  solutionVisible: boolean;
+  canRevealSolution: boolean;
+  isLastQuestion: boolean;
+  progressPercent: number;
+  activeExerciseTopics: Array<{ code: string; name: string }>;
+  sessionMeta: Array<{ label: string; value: string }>;
+  navigatorExercises: ReturnType<typeof buildSessionNavigatorExercises>;
+  questionStatePresentation: ReturnType<typeof buildQuestionStatePresentation>;
+  primaryActionLabel: string;
+  questionMotionClass: string;
+  questionMotionLocked: boolean;
+};
 
 export function buildSessionQuestionRefs(
   exercises: StudyExerciseModel[],
@@ -250,6 +278,94 @@ export function buildSessionNavigatorExercises(input: {
   });
 }
 
+export function buildSessionPlayerViewModel(input: {
+  session: PracticeSessionResponse | null;
+  exercises: StudyExerciseModel[];
+  progress: StudyProgressSnapshot;
+  questionMotion: QuestionMotionState | null;
+}): SessionPlayerViewModel {
+  const allQuestionRefs = buildSessionQuestionRefs(input.exercises);
+  const allQuestionIds = allQuestionRefs.map((item) => item.questionId);
+  const activeExercise =
+    input.exercises.find(
+      (exercise) => exercise.id === input.progress.activeExerciseId,
+    ) ??
+    input.exercises[0] ??
+    null;
+  const activeQuestion =
+    activeExercise?.questions.find(
+      (question) => question.id === input.progress.activeQuestionId,
+    ) ??
+    activeExercise?.questions[0] ??
+    null;
+  const progressCounts = countStudyProgress(
+    allQuestionIds,
+    input.progress.questionStates,
+  );
+  const currentQuestionPosition = activeQuestion
+    ? allQuestionIds.findIndex((questionId) => questionId === activeQuestion.id) +
+      1
+    : 0;
+  const activeQuestionState = activeQuestion
+    ? input.progress.questionStates[activeQuestion.id]
+    : undefined;
+  const solutionVisible =
+    Boolean(activeQuestionState?.solutionViewed) ||
+    input.progress.mode === "REVIEW";
+  const canRevealSolution = canRevealStudyQuestionSolution(activeQuestion);
+  const isLastQuestion =
+    progressCounts.totalCount > 0 &&
+    currentQuestionPosition === progressCounts.totalCount;
+  const progressPercent =
+    (currentQuestionPosition / Math.max(progressCounts.totalCount, 1)) * 100;
+  const activeExerciseTopics = buildActiveExerciseTopics(activeExercise);
+  const sessionMeta = buildSessionMeta(input.session);
+  const navigatorExercises = buildSessionNavigatorExercises({
+    exercises: input.exercises,
+    questionStates: input.progress.questionStates,
+    activeQuestionId: activeQuestion?.id ?? null,
+  });
+  const questionStatePresentation = buildQuestionStatePresentation({
+    state: activeQuestionState,
+    solutionVisible,
+  });
+  const primaryActionLabel = buildPrimaryActionLabel({
+    solutionVisible,
+    canRevealSolution,
+    isLastQuestion,
+  });
+  const questionMotionClass = input.questionMotion
+    ? input.questionMotion.phase === "out"
+      ? input.questionMotion.direction === "forward"
+        ? "is-leaving-forward"
+        : "is-leaving-backward"
+      : input.questionMotion.direction === "forward"
+        ? "is-entering-forward"
+        : "is-entering-backward"
+    : "";
+
+  return {
+    allQuestionRefs,
+    allQuestionIds,
+    activeExercise,
+    activeQuestion,
+    progressCounts,
+    currentQuestionPosition,
+    activeQuestionState,
+    solutionVisible,
+    canRevealSolution,
+    isLastQuestion,
+    progressPercent,
+    activeExerciseTopics,
+    sessionMeta,
+    navigatorExercises,
+    questionStatePresentation,
+    primaryActionLabel,
+    questionMotionClass,
+    questionMotionLocked: Boolean(input.questionMotion),
+  };
+}
+
 export function buildQuestionStatePresentation(input: {
   state: StudyQuestionState | undefined;
   solutionVisible: boolean;
@@ -257,10 +373,10 @@ export function buildQuestionStatePresentation(input: {
   return input.state?.skipped
     ? { label: "متروك", tone: "danger" as const }
     : input.state?.completed
-      ? { label: "تمت المراجعة", tone: "success" as const }
+      ? { label: "مكتمل", tone: "success" as const }
       : input.solutionVisible
-        ? { label: "تم كشف الحل", tone: "accent" as const }
-        : { label: "جاهز للحل", tone: "brand" as const };
+        ? { label: "الحل ظاهر", tone: "accent" as const }
+        : { label: "جاهز", tone: "brand" as const };
 }
 
 export function buildPrimaryActionLabel(input: {
@@ -269,7 +385,7 @@ export function buildPrimaryActionLabel(input: {
   isLastQuestion: boolean;
 }) {
   return !input.solutionVisible && input.canRevealSolution
-    ? "إظهار الحل"
+    ? "الحل"
     : input.isLastQuestion
       ? "إنهاء الجلسة"
       : !input.solutionVisible && !input.canRevealSolution

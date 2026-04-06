@@ -21,7 +21,7 @@ import {
 
 function createDraft(): AdminIngestionDraft {
   return {
-    schema: "1",
+    schema: "bac_ingestion_draft/v1",
     exam: {
       year: 2025,
       streamCode: "SE",
@@ -130,6 +130,8 @@ const filters: AdminFiltersResponse = {
       name: "Techniques mathematiques",
     },
   ],
+  subjectFamilies: [],
+  streamFamilies: [],
   years: [2025],
   topics: [
     {

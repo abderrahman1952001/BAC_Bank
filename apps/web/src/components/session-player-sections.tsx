@@ -43,7 +43,6 @@ type SessionPlayerHeaderProps = {
 type SessionPlayerContextPaneProps = {
   session: PracticeSessionResponse;
   sessionMeta: Array<{ label: string; value: string }>;
-  sessionGoalSummary: string;
   activeExerciseTopics: Array<{ code: string; name: string }>;
   activeExercise: StudyExerciseModel;
 };
@@ -92,7 +91,7 @@ export function SessionPlayerHeader({
   return (
     <header className="theater-header">
       <div className="theater-header-left">
-        <Link href="/app" className="btn-ghost">
+        <Link href="/student" className="btn-ghost">
           إغلاق
         </Link>
       </div>
@@ -123,7 +122,6 @@ export function SessionPlayerHeader({
 export function SessionPlayerContextPane({
   session,
   sessionMeta,
-  sessionGoalSummary,
   activeExerciseTopics,
   activeExercise,
 }: SessionPlayerContextPaneProps) {
@@ -134,7 +132,7 @@ export function SessionPlayerContextPane({
           <p className="page-kicker">جلسة دراسة</p>
           <h1>{session.title ?? "جلسة تدريب مخصصة"}</h1>
           <p className="theater-session-copy">
-            {session.exerciseCount} تمارين · حفظ تلقائي.
+            {session.exerciseCount} تمارين
           </p>
           <div className="study-meta-row">
             {sessionMeta.map((item) => (
@@ -149,8 +147,7 @@ export function SessionPlayerContextPane({
           </div>
         </section>
 
-        <StudySectionCard tone="commentary" title="التركيز">
-          <p className="muted-text">{sessionGoalSummary}</p>
+        <StudySectionCard tone="commentary" title="المحاور">
           {activeExerciseTopics.length ? (
             <div className="topic-chip-row theater-context-topics">
               {activeExerciseTopics.slice(0, 8).map((topic) => (
@@ -247,16 +244,16 @@ export function SessionPlayerQuestionPane({
           </button>
 
           {!solutionVisible && progressMode !== "REVIEW" ? (
-            <button
-              type="button"
-              className="theater-subtle-action"
-              onClick={onSkipQuestion}
-              disabled={questionMotionLocked}
-            >
-              تخطي
-            </button>
-          ) : null}
-        </div>
+          <button
+            type="button"
+            className="theater-subtle-action"
+            onClick={onSkipQuestion}
+            disabled={questionMotionLocked}
+          >
+            تخطي
+          </button>
+        ) : null}
+      </div>
 
         {completionOpen ? (
           <StudySectionCard tone="commentary" title="الملخص">
@@ -303,7 +300,7 @@ export function SessionPlayerQuestionPane({
                   ? "العودة لوضع الحل"
                   : "فتح وضع المراجعة"}
               </button>
-              <Link href="/app" className="btn-primary">
+              <Link href="/student" className="btn-primary">
                 العودة للرئيسية
               </Link>
             </div>
@@ -347,7 +344,8 @@ export function SessionPlayerNavigatorModal({
 
           <div className="theater-modal-section">
             <StudyStateLegend includeSkipped />
-            <StudyKeyHint keys={["N", "P"]} label="التالي / السابق" />
+            <StudyKeyHint keys={["→", "←"]} label="تنقل" />
+            <StudyKeyHint keys={["S"]} label="الحل" />
           </div>
 
           <div className="theater-modal-actions">

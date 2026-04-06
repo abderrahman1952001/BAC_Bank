@@ -1,15 +1,5 @@
-export type TopicOption = {
-  code: string;
-  name: string;
-  parentCode: string | null;
-  displayOrder: number;
-  isSelectable: boolean;
-  subject: {
-    code: string;
-    name: string;
-  };
-  streamCodes: string[];
-};
+import type { TopicOption } from "@bac-bank/contracts/admin";
+export type { TopicOption } from "@bac-bank/contracts/admin";
 
 export type TopicTreeNode<T extends TopicOption = TopicOption> = T & {
   children: TopicTreeNode<T>[];
@@ -103,7 +93,10 @@ export function buildTopicDescendantsByCode<T extends TopicOption>(
   const descendantsByCode = new Map<string, string[]>();
 
   function walk(node: TopicTreeNode<T>): string[] {
-    const childCodes = node.children.flatMap((child) => [child.code, ...walk(child)]);
+    const childCodes = node.children.flatMap((child) => [
+      child.code,
+      ...walk(child),
+    ]);
     descendantsByCode.set(node.code, childCodes);
     return childCodes;
   }

@@ -175,7 +175,7 @@ The BAC ingestion workflow now uses a separate review layer before publication:
 - `source_documents`
 - `source_pages`
 
-Review in `/admin/ingestion/*` keeps imported PDFs, page PNGs, crop boxes, and draft JSON out of the live exam tables until an admin explicitly approves and publishes the job.
+Intake in `/admin/intake` and review in `/admin/drafts/*` keep imported PDFs, page PNGs, crop boxes, and draft JSON out of the live exam tables until an admin explicitly approves and publishes the job.
 If a paper is shared across streams, set `draft_json.exam.metadata.paperFamilyCode` before publication so multiple offerings attach to the same canonical paper.
 
 ## API Endpoints (MVP)
@@ -207,7 +207,7 @@ If a paper is shared across streams, set `draft_json.exam.metadata.paperFamilyCo
 
 - Production runbook: [docs/production-runbook.md](docs/production-runbook.md)
 - Migration SQL is generated in `apps/api/prisma/migrations`.
-- BAC intake overview: [docs/intake-pipeline.md](docs/intake-pipeline.md)
+- Admin ingestion workflow: [docs/admin-ingestion-workflow.md](docs/admin-ingestion-workflow.md)
 - Source intake command examples:
   - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage originals --min-year 2008`
   - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage pages --min-year 2008`
@@ -222,6 +222,6 @@ If a paper is shared across streams, set `draft_json.exam.metadata.paperFamilyCo
   - `--job-id a,b,c` lets `pages`, `ocr`, or `process` target exact ingestion jobs.
   - `--slug slug-a,slug-b` lets `originals`, `pages`, `ocr`, or `process` target exact Eddirasa exam slugs.
   - Uses `pdftoppm` to rasterize PDF pages into PNGs before uploading them to R2.
-  - Manual PDF intake is available in the admin UI at `/admin/ingestion`.
+  - Manual PDF intake is available in the admin UI at `/admin/intake`.
 - `npm run prisma:seed -w @bac-bank/api` now syncs base BAC taxonomy plus the mathematics topic list used by the practice/topic mapping flow.
 - In this environment, Docker daemon access may be restricted; migrations can still be generated from schema, then applied on a DB-enabled machine/CI.

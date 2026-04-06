@@ -23,7 +23,7 @@ export type StudyNavigatorExercise = {
 };
 
 export function StudyShell({ children }: { children: ReactNode }) {
-  return <main className="app-shell app-shell-study">{children}</main>;
+  return <main className="student-shell student-shell-study">{children}</main>;
 }
 
 export function StudyHeader({
@@ -70,14 +70,16 @@ export function StudySidebar({
   subtitle,
   children,
   footer,
+  className,
 }: {
   title: string;
   subtitle?: string;
   children: ReactNode;
   footer?: ReactNode;
+  className?: string;
 }) {
   return (
-    <aside className="study-sidebar">
+    <aside className={className ? `study-sidebar ${className}` : 'study-sidebar'}>
       <div className="study-sidebar-head">
         <h2>{title}</h2>
         {subtitle ? <p>{subtitle}</p> : null}
@@ -275,13 +277,13 @@ export function EmptyState({
   action,
 }: {
   title: string;
-  description: string;
+  description?: string;
   action?: ReactNode;
 }) {
   return (
     <div className="study-empty-state">
       <h3>{title}</h3>
-      <p>{description}</p>
+      {description ? <p>{description}</p> : null}
       {action ? <div className="study-empty-action">{action}</div> : null}
     </div>
   );

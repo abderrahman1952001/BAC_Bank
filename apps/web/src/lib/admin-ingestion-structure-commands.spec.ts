@@ -9,7 +9,7 @@ import {
 
 function createDraft(): AdminIngestionDraft {
   return {
-    schema: "1",
+    schema: "bac_ingestion_draft/v1",
     exam: {
       year: 2025,
       streamCode: "SE",
@@ -121,6 +121,33 @@ describe("admin ingestion structure commands", () => {
         type: "paragraph",
       }),
     );
+  });
+
+  it("inserts a block at the requested position", () => {
+    const draft = createDraft();
+    draft.variants[0]!.nodes[0]!.blocks.push({
+      id: "block-2",
+      role: "SOLUTION",
+      type: "paragraph",
+      value: "Follow-up",
+      assetId: null,
+      data: null,
+    });
+
+    const result = addDraftBlockCommand({
+      draft,
+      variantCode: "SUJET_1",
+      nodeId: "exercise-1",
+      insertIndex: 1,
+      makeBlockId: () => "block-new",
+    });
+
+    expect(result.nextSelectedBlockId).toBe("block-new");
+    expect(result.draft.variants[0]!.nodes[0]!.blocks.map((block) => block.id)).toEqual([
+      "block-1",
+      "block-new",
+      "block-2",
+    ]);
   });
 
   it("applies a preset to the targeted block", () => {

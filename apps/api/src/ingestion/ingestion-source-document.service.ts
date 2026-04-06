@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { Prisma, SourceDocumentKind } from '@prisma/client';
 import { execFile } from 'child_process';
 import { createHash } from 'crypto';
@@ -8,6 +8,7 @@ import path from 'path';
 import { promisify } from 'util';
 import { PrismaService } from '../prisma/prisma.service';
 import { R2StorageClient } from './r2-storage';
+import { deleteStorageKeysBestEffort } from './storage-cleanup';
 import {
   CanonicalStorageContext,
   buildCanonicalDocumentFileName,
@@ -22,16 +23,31 @@ export type IntakeUploadDocumentInput = {
   originalFileName: string;
 };
 
+export type IntakeSourceDocumentInput = {
+  buffer: Buffer;
+  fileName: string;
+  storageKey: string;
+  sourceUrl: string | null;
+  metadata: Prisma.InputJsonValue;
+  storageMetadata?: Record<string, string>;
+  mimeType?: string;
+  language?: string | null;
+};
+
 export type StoredSourceDocumentWithPages = {
   id: string;
   kind: SourceDocumentKind;
+  storageKey: string;
   pages: Array<{
     id: string;
+    storageKey: string;
   }>;
 };
 
 @Injectable()
 export class IngestionSourceDocumentService {
+  private readonly logger = new Logger(IngestionSourceDocumentService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   assertPdfUpload(upload: IntakeUploadDocumentInput, fieldName: string) {
@@ -50,7 +66,7 @@ export class IngestionSourceDocumentService {
   }
 
   async storeManualSourceDocument(input: {
-    jobId: string;
+    paperSourceId: string;
     kind: SourceDocumentKind;
     upload: IntakeUploadDocumentInput;
     context: CanonicalStorageContext;
@@ -63,30 +79,16 @@ export class IngestionSourceDocumentService {
       input.context,
       fileName,
     );
-    const pageCount = await this.readPdfPageCount(input.upload.buffer);
-    const sha256 = createHash('sha256')
-      .update(input.upload.buffer)
-      .digest('hex');
 
-    await input.storageClient.putObject({
-      key: storageKey,
-      body: input.upload.buffer,
-      contentType: 'application/pdf',
-      metadata: {
-        intakeMethod: 'manual-upload',
-      },
-    });
-
-    return this.prisma.sourceDocument.create({
-      data: {
-        jobId: input.jobId,
-        kind: input.kind,
-        storageKey,
+    return this.storeSourceDocument({
+      paperSourceId: input.paperSourceId,
+      kind: input.kind,
+      document: {
+        buffer: input.upload.buffer,
         fileName,
-        mimeType: 'application/pdf',
-        pageCount,
-        sha256,
+        storageKey,
         sourceUrl: null,
+        mimeType: 'application/pdf',
         language: 'ar',
         metadata: toJsonValue(
           this.buildManualSourceDocumentMetadata({
@@ -95,11 +97,11 @@ export class IngestionSourceDocumentService {
             now: input.now,
           }),
         ),
+        storageMetadata: {
+          intakeMethod: 'manual-upload',
+        },
       },
-      select: {
-        id: true,
-        storageKey: true,
-      },
+      storageClient: input.storageClient,
     });
   }
 
@@ -119,39 +121,14 @@ export class IngestionSourceDocumentService {
       input.context,
       fileName,
     );
-    const pageCount = await this.readPdfPageCount(input.upload.buffer);
-    const sha256 = createHash('sha256')
-      .update(input.upload.buffer)
-      .digest('hex');
-
-    await input.storageClient.putObject({
-      key: storageKey,
-      body: input.upload.buffer,
-      contentType: 'application/pdf',
-      metadata: {
-        intakeMethod: 'manual-upload',
-      },
-    });
-
-    if (input.sourceDocument.pages.length > 0) {
-      await this.prisma.sourcePage.deleteMany({
-        where: {
-          documentId: input.sourceDocument.id,
-        },
-      });
-    }
-
-    return this.prisma.sourceDocument.update({
-      where: {
-        id: input.sourceDocument.id,
-      },
-      data: {
-        storageKey,
+    return this.replaceSourceDocument({
+      sourceDocument: input.sourceDocument,
+      document: {
+        buffer: input.upload.buffer,
         fileName,
-        mimeType: 'application/pdf',
-        pageCount,
-        sha256,
+        storageKey,
         sourceUrl: null,
+        mimeType: 'application/pdf',
         language: 'ar',
         metadata: toJsonValue(
           this.buildManualSourceDocumentMetadata({
@@ -161,12 +138,145 @@ export class IngestionSourceDocumentService {
             replaced: true,
           }),
         ),
+        storageMetadata: {
+          intakeMethod: 'manual-upload',
+        },
+      },
+      storageClient: input.storageClient,
+    });
+  }
+
+  async storeSourceDocument(input: {
+    paperSourceId: string;
+    kind: SourceDocumentKind;
+    document: IntakeSourceDocumentInput;
+    storageClient: R2StorageClient;
+  }) {
+    const pageCount = await this.readPdfPageCount(input.document.buffer);
+    const sha256 = createHash('sha256')
+      .update(input.document.buffer)
+      .digest('hex');
+
+    await input.storageClient.putObject({
+      key: input.document.storageKey,
+      body: input.document.buffer,
+      contentType: input.document.mimeType ?? 'application/pdf',
+      metadata: input.document.storageMetadata,
+    });
+
+    return this.prisma.sourceDocument.create({
+      data: {
+        paperSourceId: input.paperSourceId,
+        kind: input.kind,
+        storageKey: input.document.storageKey,
+        fileName: input.document.fileName,
+        mimeType: input.document.mimeType ?? 'application/pdf',
+        pageCount,
+        sha256,
+        sourceUrl: input.document.sourceUrl,
+        language: input.document.language ?? 'ar',
+        metadata: input.document.metadata,
       },
       select: {
         id: true,
         storageKey: true,
       },
     });
+  }
+
+  async replaceSourceDocument(input: {
+    sourceDocument: StoredSourceDocumentWithPages;
+    document: IntakeSourceDocumentInput;
+    storageClient: R2StorageClient;
+  }) {
+    const pageCount = await this.readPdfPageCount(input.document.buffer);
+    const sha256 = createHash('sha256')
+      .update(input.document.buffer)
+      .digest('hex');
+
+    await input.storageClient.putObject({
+      key: input.document.storageKey,
+      body: input.document.buffer,
+      contentType: input.document.mimeType ?? 'application/pdf',
+      metadata: input.document.storageMetadata,
+    });
+
+    const obsoleteStorageKeys = input.sourceDocument.pages.map(
+      (page) => page.storageKey,
+    );
+
+    if (input.sourceDocument.storageKey !== input.document.storageKey) {
+      obsoleteStorageKeys.push(input.sourceDocument.storageKey);
+    }
+
+    if (input.sourceDocument.pages.length > 0) {
+      await this.prisma.sourcePage.deleteMany({
+        where: {
+          documentId: input.sourceDocument.id,
+        },
+      });
+    }
+
+    const updated = await this.prisma.sourceDocument.update({
+      where: {
+        id: input.sourceDocument.id,
+      },
+      data: {
+        storageKey: input.document.storageKey,
+        fileName: input.document.fileName,
+        mimeType: input.document.mimeType ?? 'application/pdf',
+        pageCount,
+        sha256,
+        sourceUrl: input.document.sourceUrl,
+        language: input.document.language ?? 'ar',
+        metadata: input.document.metadata,
+      },
+      select: {
+        id: true,
+        storageKey: true,
+      },
+    });
+
+    const { failedKeys } = await deleteStorageKeysBestEffort(
+      input.storageClient,
+      obsoleteStorageKeys,
+    );
+
+    if (failedKeys.length > 0) {
+      this.logger.warn(
+        `Failed to clean ${failedKeys.length} obsolete source document object(s) for ${input.sourceDocument.id}: ${failedKeys.join(', ')}`,
+      );
+    }
+
+    return updated;
+  }
+
+  async deleteSourceDocument(input: {
+    sourceDocument: Pick<
+      StoredSourceDocumentWithPages,
+      'id' | 'storageKey' | 'pages'
+    >;
+    storageClient: R2StorageClient;
+  }) {
+    await this.prisma.sourceDocument.delete({
+      where: {
+        id: input.sourceDocument.id,
+      },
+    });
+
+    const { failedKeys } = await deleteStorageKeysBestEffort(
+      input.storageClient,
+      [
+        input.sourceDocument.storageKey,
+        ...input.sourceDocument.pages.map((page) => page.storageKey),
+      ],
+    );
+
+    if (failedKeys.length > 0) {
+      this.logger.warn(
+        `Failed to clean ${failedKeys.length} deleted source document object(s) for ${input.sourceDocument.id}: ${failedKeys.join(', ')}`,
+      );
+    }
   }
 
   private buildManualSourceDocumentMetadata(input: {

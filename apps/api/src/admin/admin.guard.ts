@@ -13,9 +13,10 @@ export class AdminRoleGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
-    request.user = await this.authService.authenticateRequest(
-      request.headers.cookie,
-    );
+    request.user = await this.authService.authenticateRequest({
+      authorizationHeader: request.headers.authorization,
+      cookieHeader: request.headers.cookie,
+    });
 
     if (request.user.role !== 'ADMIN') {
       throw new ForbiddenException(

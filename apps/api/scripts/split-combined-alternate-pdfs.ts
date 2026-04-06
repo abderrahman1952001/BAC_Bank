@@ -1,10 +1,6 @@
 import { createHash } from 'crypto';
-import {
-  Prisma,
-  PrismaClient,
-  SessionType,
-  SourceDocumentKind,
-} from '@prisma/client';
+import { Prisma, SessionType, SourceDocumentKind } from '@prisma/client';
+import type { IngestionOpsService } from '../src/ingestion/ingestion-ops.service';
 import { normalizeIngestionDraft } from '../src/ingestion/ingestion.contract';
 import {
   buildCanonicalEddirasaDocumentFileName,
@@ -14,122 +10,136 @@ import {
 } from '../src/ingestion/eddirasa-normalization';
 import { resolveAlternatePdfSource } from '../src/ingestion/alternate-pdf-sources';
 import { splitCombinedPdf } from '../src/ingestion/pdf-split';
-import { R2StorageClient, readR2ConfigFromEnv } from '../src/ingestion/r2-storage';
+import {
+  R2StorageClient,
+  readR2ConfigFromEnv,
+} from '../src/ingestion/r2-storage';
+import type { PrismaService } from '../src/prisma/prisma.service';
+import { createIngestionScriptContext } from './ingestion-script-context';
 
-const prisma = new PrismaClient();
+let prisma: PrismaService;
+let ingestionOpsService: IngestionOpsService;
 const storageClient = new R2StorageClient(readR2ConfigFromEnv());
 
 async function main() {
-  const jobs = await prisma.ingestionJob.findMany({
-    select: {
-      id: true,
-      year: true,
-      streamCode: true,
-      subjectCode: true,
-      sessionType: true,
-      sourceExamPageUrl: true,
-      sourceCorrectionPageUrl: true,
-      metadata: true,
-      draftJson: true,
-      sourceDocuments: {
-        select: {
-          id: true,
-          kind: true,
-          pageCount: true,
-          storageKey: true,
-          sourceUrl: true,
-          metadata: true,
-        },
-      },
-    },
-  });
+  const {
+    app,
+    prisma: prismaService,
+    ingestionOpsService: opsService,
+  } = await createIngestionScriptContext();
+  prisma = prismaService;
+  ingestionOpsService = opsService;
 
-  let updated = 0;
-  let skipped = 0;
-
-  for (const job of jobs) {
-    const jobMetadata = asRecord(job.metadata);
-    const slug = typeof jobMetadata?.slug === 'string' ? jobMetadata.slug : null;
-    const alternate = resolveAlternatePdfSource(slug);
-
-    if (!alternate?.split) {
-      skipped += 1;
-      continue;
-    }
-
-    const examDocument = job.sourceDocuments.find(
-      (document) => document.kind === SourceDocumentKind.EXAM,
-    );
-    const correctionDocument = job.sourceDocuments.find(
-      (document) => document.kind === SourceDocumentKind.CORRECTION,
-    );
-
-    if (!examDocument || !correctionDocument) {
-      skipped += 1;
-      continue;
-    }
-
-    await prisma.sourcePage.deleteMany({
-      where: {
-        documentId: {
-          in: [examDocument.id, correctionDocument.id],
+  try {
+    const jobs = await prisma.ingestionJob.findMany({
+      select: {
+        id: true,
+        year: true,
+        streamCode: true,
+        subjectCode: true,
+        sessionType: true,
+        sourceExamPageUrl: true,
+        sourceCorrectionPageUrl: true,
+        metadata: true,
+        draftJson: true,
+        sourceDocuments: {
+          select: {
+            id: true,
+            kind: true,
+            pageCount: true,
+            storageKey: true,
+            sourceUrl: true,
+            metadata: true,
+          },
         },
       },
     });
 
-    const split = await splitCombinedPdf(
-      await storageClient.getObjectBuffer(examDocument.storageKey),
-      alternate.split.subjectPageCount,
-    );
-    const context: EddirasaStorageContext = {
-      year: job.year,
-      streamCode: job.streamCode,
-      subjectCode: job.subjectCode,
-      sessionType: job.sessionType ?? SessionType.NORMAL,
-      slug,
-    };
+    let updated = 0;
+    let skipped = 0;
 
-    const nextExam = await updateDocument({
-      document: examDocument,
-      documentKind: SourceDocumentKind.EXAM,
-      buffer: split.examBuffer,
-      pageCount: split.examPageRange.end - split.examPageRange.start + 1,
-      pageRange: split.examPageRange,
-      context,
-      sourcePageUrl: job.sourceExamPageUrl ?? job.sourceCorrectionPageUrl,
-      fallbackSourceUrl: alternate.url,
-    });
-    const nextCorrection = await updateDocument({
-      document: correctionDocument,
-      documentKind: SourceDocumentKind.CORRECTION,
-      buffer: split.correctionBuffer,
-      pageCount:
-        split.correctionPageRange.end - split.correctionPageRange.start + 1,
-      pageRange: split.correctionPageRange,
-      context,
-      sourcePageUrl: job.sourceCorrectionPageUrl ?? job.sourceExamPageUrl,
-      fallbackSourceUrl: alternate.url,
-    });
+    for (const job of jobs) {
+      const jobMetadata = asRecord(job.metadata);
+      const slug =
+        typeof jobMetadata?.slug === 'string' ? jobMetadata.slug : null;
+      const alternate = resolveAlternatePdfSource(slug);
 
-    const draft = normalizeIngestionDraft(job.draftJson);
-    draft.exam.metadata = sanitizeDraftMetadata(draft.exam.metadata);
-    draft.exam.examDocumentStorageKey = nextExam.storageKey;
-    draft.exam.correctionDocumentStorageKey = nextCorrection.storageKey;
+      if (!alternate?.split) {
+        skipped += 1;
+        continue;
+      }
 
-    await prisma.ingestionJob.update({
-      where: {
-        id: job.id,
-      },
-      data: {
-        draftJson: toJsonValue(draft),
-      },
-    });
+      const examDocument = job.sourceDocuments.find(
+        (document) => document.kind === SourceDocumentKind.EXAM,
+      );
+      const correctionDocument = job.sourceDocuments.find(
+        (document) => document.kind === SourceDocumentKind.CORRECTION,
+      );
 
-    updated += 1;
-    console.log(`split ${job.id} ${slug}`);
+      if (!examDocument || !correctionDocument) {
+        skipped += 1;
+        continue;
+      }
+
+      await prisma.sourcePage.deleteMany({
+        where: {
+          documentId: {
+            in: [examDocument.id, correctionDocument.id],
+          },
+        },
+      });
+
+      const split = await splitCombinedPdf(
+        await storageClient.getObjectBuffer(examDocument.storageKey),
+        alternate.split.subjectPageCount,
+      );
+      const context: EddirasaStorageContext = {
+        year: job.year,
+        streamCode: job.streamCode,
+        subjectCode: job.subjectCode,
+        sessionType: job.sessionType ?? SessionType.NORMAL,
+        slug,
+      };
+
+      const nextExam = await updateDocument({
+        document: examDocument,
+        documentKind: SourceDocumentKind.EXAM,
+        buffer: split.examBuffer,
+        pageCount: split.examPageRange.end - split.examPageRange.start + 1,
+        pageRange: split.examPageRange,
+        context,
+        sourcePageUrl: job.sourceExamPageUrl ?? job.sourceCorrectionPageUrl,
+        fallbackSourceUrl: alternate.url,
+      });
+      const nextCorrection = await updateDocument({
+        document: correctionDocument,
+        documentKind: SourceDocumentKind.CORRECTION,
+        buffer: split.correctionBuffer,
+        pageCount:
+          split.correctionPageRange.end - split.correctionPageRange.start + 1,
+        pageRange: split.correctionPageRange,
+        context,
+        sourcePageUrl: job.sourceCorrectionPageUrl ?? job.sourceExamPageUrl,
+        fallbackSourceUrl: alternate.url,
+      });
+
+      const draft = normalizeIngestionDraft(job.draftJson);
+      draft.exam.metadata = sanitizeDraftMetadata(draft.exam.metadata);
+      draft.exam.examDocumentStorageKey = nextExam.storageKey;
+      draft.exam.correctionDocumentStorageKey = nextCorrection.storageKey;
+
+      await ingestionOpsService.saveDraft(job.id, {
+        draft,
+      });
+
+      updated += 1;
+      console.log(`split ${job.id} ${slug}`);
+    }
+
+    console.log(`done updated=${updated} skipped=${skipped}`);
+  } finally {
+    await app.close();
   }
-
-  console.log(`done updated=${updated} skipped=${skipped}`);
 }
 
 async function updateDocument(input: {
@@ -229,15 +239,7 @@ function hashBuffer(buffer: Buffer) {
   return createHash('sha256').update(buffer).digest('hex');
 }
 
-function toJsonValue(value: unknown) {
-  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
-}
-
-void main()
-  .catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+void main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

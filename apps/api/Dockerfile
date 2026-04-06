@@ -27,4 +27,4 @@ COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "npm run prisma:migrate:deploy -w @bac-bank/api && npm run prisma:seed -w @bac-bank/api && node apps/api/dist/src/main.js"]
+CMD ["sh", "-c", "npm run prisma:migrate:deploy -w @bac-bank/api && npm run prisma:seed -w @bac-bank/api && node apps/api/dist/apps/api/src/main.js"]

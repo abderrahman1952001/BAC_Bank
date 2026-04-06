@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { execFile } from 'child_process';
 import { createHash } from 'crypto';
@@ -11,6 +11,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { mapWithConcurrency } from './intake-runtime';
 import { readPageNumberFromRasterFile } from './ingestion-raster-pages';
 import { R2StorageClient } from './r2-storage';
+import { deleteStorageKeysBestEffort } from './storage-cleanup';
 import { buildCanonicalPageStorageKey } from './storage-naming';
 
 const execFileAsync = promisify(execFile);
@@ -35,6 +36,8 @@ export type StoredSourceDocumentRecord = {
 
 @Injectable()
 export class IngestionStoredPageService {
+  private readonly logger = new Logger(IngestionStoredPageService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async ensureStoredPagesForDocument(input: {
@@ -72,14 +75,16 @@ export class IngestionStoredPageService {
       const existingPageMap = new Map(
         input.sourceDocument.pages.map((page) => [page.pageNumber, page]),
       );
+      const obsoleteStorageKeys: string[] = [];
 
       if (input.replaceExisting) {
         const nextPageNumbers = new Set(
           rasterizedPages.map((page) => page.pageNumber),
         );
-        const stalePageIds = input.sourceDocument.pages
-          .filter((page) => !nextPageNumbers.has(page.pageNumber))
-          .map((page) => page.id);
+        const stalePages = input.sourceDocument.pages.filter(
+          (page) => !nextPageNumbers.has(page.pageNumber),
+        );
+        const stalePageIds = stalePages.map((page) => page.id);
 
         if (stalePageIds.length > 0) {
           await this.prisma.sourcePage.deleteMany({
@@ -89,6 +94,9 @@ export class IngestionStoredPageService {
               },
             },
           });
+          obsoleteStorageKeys.push(
+            ...stalePages.map((page) => page.storageKey),
+          );
         }
       }
 
@@ -151,6 +159,10 @@ export class IngestionStoredPageService {
                 }),
               },
             });
+
+            if (existingPage.storageKey !== storageKey) {
+              obsoleteStorageKeys.push(existingPage.storageKey);
+            }
             return;
           }
 
@@ -169,6 +181,17 @@ export class IngestionStoredPageService {
           });
         },
       );
+
+      const { failedKeys } = await deleteStorageKeysBestEffort(
+        input.storageClient,
+        obsoleteStorageKeys,
+      );
+
+      if (failedKeys.length > 0) {
+        this.logger.warn(
+          `Failed to clean ${failedKeys.length} obsolete source page object(s) for ${input.sourceDocument.id}: ${failedKeys.join(', ')}`,
+        );
+      }
 
       return {
         pageCount: rasterizedPages.length,

@@ -2,6 +2,7 @@ import {
   CopyObjectCommand,
   DeleteObjectCommand,
   GetObjectCommand,
+  ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -125,6 +126,31 @@ export class R2StorageClient {
         Key: key,
       }),
     );
+  }
+
+  async listObjects(input?: {
+    prefix?: string;
+    continuationToken?: string;
+    maxKeys?: number;
+  }) {
+    const response = await this.client.send(
+      new ListObjectsV2Command({
+        Bucket: this.config.bucketName,
+        Prefix: input?.prefix,
+        ContinuationToken: input?.continuationToken,
+        MaxKeys: input?.maxKeys,
+      }),
+    );
+
+    return {
+      keys:
+        response.Contents?.map((entry) => entry.Key).filter(
+          (value): value is string =>
+            typeof value === 'string' && value.trim().length > 0,
+        ) ?? [],
+      nextContinuationToken: response.NextContinuationToken ?? null,
+      isTruncated: response.IsTruncated === true,
+    };
   }
 }
 

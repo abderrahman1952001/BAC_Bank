@@ -173,6 +173,11 @@ const SUBJECT_DESCRIPTOR_MAP: Record<string, SubjectDescriptor> = {
     qualifierKey: 'spanish',
     storageSubjectKey: 'SPANISH',
   },
+  espalol: {
+    subjectCode: 'SPANISH',
+    qualifierKey: 'spanish',
+    storageSubjectKey: 'SPANISH',
+  },
   espanol: {
     subjectCode: 'SPANISH',
     qualifierKey: 'spanish',
@@ -238,6 +243,7 @@ const SUBJECT_ALIASES: Record<string, string> = {
   allemand: 'GERMAN',
   german: 'GERMAN',
   espagnol: 'SPANISH',
+  espalol: 'SPANISH',
   spanish: 'SPANISH',
   italien: 'ITALIAN',
   italian: 'ITALIAN',
@@ -401,6 +407,10 @@ export function parseEddirasaSlug(
   const lastToken = tokens[tokens.length - 1];
 
   if (/^(19|20)\d{2}$/.test(lastToken ?? '')) {
+    tokens.pop();
+  }
+
+  while (/^\d+$/.test(tokens[tokens.length - 1] ?? '') && tokens.length > 1) {
     tokens.pop();
   }
 

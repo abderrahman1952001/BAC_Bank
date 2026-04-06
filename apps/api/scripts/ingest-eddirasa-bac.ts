@@ -1,33 +1,24 @@
-import { createHash } from 'crypto';
-import { execFile } from 'child_process';
-import { promises as fs } from 'fs';
-import os from 'os';
 import path from 'path';
-import { promisify } from 'util';
 import { CheerioAPI, load } from 'cheerio';
+import { NestFactory } from '@nestjs/core';
 import {
   IngestionJobStatus,
   Prisma,
-  PrismaClient,
   SessionType,
   SourceDocumentKind,
 } from '@prisma/client';
-import sharp from 'sharp';
 import {
   createEmptyDraft,
   normalizeIngestionDraft,
-  type DraftSourcePage,
 } from '../src/ingestion/ingestion.contract';
 import {
   fetchBufferWithRetry,
   fetchTextWithRetry,
   mapWithConcurrency,
-  retryWithBackoff,
 } from '../src/ingestion/intake-runtime';
 import {
   buildCanonicalEddirasaDocumentFileName,
   buildEddirasaDocumentStorageKey,
-  buildEddirasaPageStorageKey,
   deriveEddirasaMetadata,
   fileNameFromUrl,
   normalizeLookup,
@@ -37,21 +28,24 @@ import {
 } from '../src/ingestion/eddirasa-normalization';
 import { resolveAlternatePdfSource } from '../src/ingestion/alternate-pdf-sources';
 import {
-  extractDraftWithGemini,
   hasGeminiApiKeyConfigured,
-  hasGeminiExtraction,
   readDefaultGeminiMaxOutputTokens,
   readDefaultGeminiModel,
   readDefaultGeminiTemperature,
 } from '../src/ingestion/gemini-extractor';
+import { IngestionProcessingEngineService } from '../src/ingestion/ingestion-processing-engine.service';
+import { IngestionSourceIntakeService } from '../src/ingestion/ingestion-source-intake.service';
 import { splitCombinedPdf } from '../src/ingestion/pdf-split';
 import {
   R2StorageClient,
   readR2ConfigFromEnv,
 } from '../src/ingestion/r2-storage';
+import { AppModule } from '../src/app.module';
+import { PrismaService } from '../src/prisma/prisma.service';
 
-const execFileAsync = promisify(execFile);
-const prisma = new PrismaClient();
+let prisma: PrismaService;
+let sourceIntakeService: IngestionSourceIntakeService;
+let processingEngine: IngestionProcessingEngineService;
 let r2Client: R2StorageClient | null = null;
 
 const DEFAULT_LISTING_URL = 'https://eddirasa.com/bac-solutions/';
@@ -106,193 +100,194 @@ type PreparedCandidate = {
   candidate: ExamCandidate;
 };
 
-type StoredPageRecord = {
-  id: string;
-  documentId: string;
-  pageNumber: number;
-  storageKey: string;
-  width: number;
-  height: number;
-  sha256: string | null;
-  metadata: Prisma.JsonValue | null;
-};
-
-type StoredDocumentRecord = {
-  id: string;
-  kind: SourceDocumentKind;
-  storageKey: string;
-  fileName: string;
-  pageCount: number | null;
-  sha256: string | null;
-  sourceUrl: string | null;
-  metadata: Prisma.JsonValue | null;
-  pages: StoredPageRecord[];
-};
-
 type StoragePathContext = EddirasaStorageContext;
 
 async function main() {
   const options = parseCliOptions(process.argv.slice(2));
-  if (isPendingProcessingStage(options.stage)) {
-    const summary = await processPendingJobs(
-      options,
-      resolveProcessingStages(options.stage),
-    );
-    console.log(
-      `done stage=${options.stage} jobs=${summary.jobs} documents=${summary.documents} pages=${summary.pages} skipped=${summary.skipped} minYear=${options.minYear}`,
-    );
-    return;
-  }
+  const app = await NestFactory.createApplicationContext(AppModule, {
+    logger: ['error', 'warn'],
+  });
 
-  const examPageUrls = await crawlExamPageUrls(options.listingUrl);
-  const sortedUrls = examPageUrls.sort(compareYearPageUrls);
-  const candidatesToPrepare: ExamCandidate[] = [];
-  const preparedCandidates: PreparedCandidate[] = [];
+  prisma = app.get(PrismaService, { strict: false });
+  sourceIntakeService = app.get(IngestionSourceIntakeService, {
+    strict: false,
+  });
+  processingEngine = app.get(IngestionProcessingEngineService, {
+    strict: false,
+  });
 
-  let discovered = 0;
-  let uploaded = 0;
-  let skipped = 0;
-
-  outer: for (const pageUrl of sortedUrls) {
-    const pageYear = inferYear([getPathSlug(pageUrl), pageUrl]);
-
-    if (pageYear !== null && pageYear < options.minYear) {
-      console.log(`skip page ${pageUrl} year ${pageYear} < ${options.minYear}`);
-      continue;
-    }
-
-    if (pageYear !== null && options.maxYear !== null && pageYear > options.maxYear) {
-      console.log(`skip page ${pageUrl} year ${pageYear} > ${options.maxYear}`);
-      continue;
-    }
-
-    let candidates: ExamCandidate[];
-
-    try {
-      candidates = await extractCandidates(pageUrl);
-    } catch (error) {
-      skipped += 1;
-      console.error(`failed ${pageUrl}: ${describeError(error)}`);
-      continue;
-    }
-
-    for (const candidate of candidates) {
-      if (options.limit !== null && discovered >= options.limit) {
-        break outer;
-      }
-
-      if (!matchesCandidateFilters(candidate, options)) {
-        continue;
-      }
-
-      discovered += 1;
-
-      if (candidate.year < options.minYear) {
-        console.log(
-          `skip ${candidate.examPdfUrl} year ${candidate.year} < ${options.minYear}`,
-        );
-        skipped += 1;
-        continue;
-      }
-
-      if (options.maxYear !== null && candidate.year > options.maxYear) {
-        console.log(
-          `skip ${candidate.examPdfUrl} year ${candidate.year} > ${options.maxYear}`,
-        );
-        skipped += 1;
-        continue;
-      }
-
-      candidatesToPrepare.push(candidate);
-    }
-  }
-
-  if (options.dryRun) {
-    for (const candidate of candidatesToPrepare) {
-      console.log(
-        `dry-run stage=${options.stage} ${candidate.year} ${candidate.subjectCode ?? 'UNKNOWN'} ${candidate.streamCode ?? 'UNKNOWN'} ${candidate.examPdfUrl}`,
+  try {
+    if (isPendingProcessingStage(options.stage)) {
+      const summary = await processPendingJobs(
+        options,
+        resolveProcessingStage(options.stage),
       );
-      uploaded += 1;
+
+      if (
+        summary.skipped > 0 &&
+        (options.jobIds.length > 0 || options.slugs.length > 0)
+      ) {
+        throw new Error(
+          `stage=${options.stage} failed for ${summary.skipped} explicitly selected job(s).`,
+        );
+      }
+
+      console.log(
+        `done stage=${options.stage} jobs=${summary.jobs} documents=${summary.documents} pages=${summary.pages} skipped=${summary.skipped} minYear=${options.minYear}`,
+      );
+      return;
     }
-  } else {
-    const results = await mapWithConcurrency(
-      candidatesToPrepare,
-      options.jobConcurrency,
-      async (candidate) => {
-        try {
-          const prepared = await ensureOriginalsForCandidate(candidate, options);
 
-          return {
-            candidate,
-            prepared,
-            error: null,
-          };
-        } catch (error) {
-          return {
-            candidate,
-            prepared: null,
-            error,
-          };
-        }
-      },
-    );
+    const examPageUrls = await crawlExamPageUrls(options.listingUrl);
+    const sortedUrls = examPageUrls.sort(compareYearPageUrls);
+    const candidatesToPrepare: ExamCandidate[] = [];
+    const preparedCandidates: PreparedCandidate[] = [];
 
-    for (const result of results) {
-      if (result.error) {
-        skipped += 1;
-        console.error(
-          `failed ${result.candidate.examPdfUrl}: ${
-            result.error instanceof Error
-              ? result.error.message
-              : String(result.error)
-          }`,
+    let discovered = 0;
+    let uploaded = 0;
+    let skipped = 0;
+
+    outer: for (const pageUrl of sortedUrls) {
+      const pageYear = inferYear([getPathSlug(pageUrl), pageUrl]);
+
+      if (pageYear !== null && pageYear < options.minYear) {
+        console.log(
+          `skip page ${pageUrl} year ${pageYear} < ${options.minYear}`,
         );
         continue;
       }
 
-      if (!result.prepared) {
-        skipped += 1;
+      if (
+        pageYear !== null &&
+        options.maxYear !== null &&
+        pageYear > options.maxYear
+      ) {
+        console.log(`skip page ${pageUrl} year ${pageYear} > ${options.maxYear}`);
         continue;
       }
 
-      preparedCandidates.push(result.prepared);
-      uploaded += 1;
+      let candidates: ExamCandidate[];
+
+      try {
+        candidates = await extractCandidates(pageUrl);
+      } catch (error) {
+        skipped += 1;
+        console.error(`failed ${pageUrl}: ${describeError(error)}`);
+        continue;
+      }
+
+      for (const candidate of candidates) {
+        if (options.limit !== null && discovered >= options.limit) {
+          break outer;
+        }
+
+        if (!matchesCandidateFilters(candidate, options)) {
+          continue;
+        }
+
+        discovered += 1;
+
+        if (candidate.year < options.minYear) {
+          console.log(
+            `skip ${candidate.examPdfUrl} year ${candidate.year} < ${options.minYear}`,
+          );
+          skipped += 1;
+          continue;
+        }
+
+        if (options.maxYear !== null && candidate.year > options.maxYear) {
+          console.log(
+            `skip ${candidate.examPdfUrl} year ${candidate.year} > ${options.maxYear}`,
+          );
+          skipped += 1;
+          continue;
+        }
+
+        candidatesToPrepare.push(candidate);
+      }
     }
+
+    if (options.dryRun) {
+      for (const candidate of candidatesToPrepare) {
+        console.log(
+          `dry-run stage=${options.stage} ${candidate.year} ${candidate.subjectCode ?? 'UNKNOWN'} ${candidate.streamCode ?? 'UNKNOWN'} ${candidate.examPdfUrl}`,
+        );
+        uploaded += 1;
+      }
+    } else {
+      const results = await mapWithConcurrency(
+        candidatesToPrepare,
+        options.jobConcurrency,
+        async (candidate) => {
+          try {
+            const prepared = await ensureOriginalsForCandidate(candidate, options);
+
+            return {
+              candidate,
+              prepared,
+              error: null,
+            };
+          } catch (error) {
+            return {
+              candidate,
+              prepared: null,
+              error,
+            };
+          }
+        },
+      );
+
+      for (const result of results) {
+        if (result.error) {
+          skipped += 1;
+          console.error(
+            `failed ${result.candidate.examPdfUrl}: ${
+              result.error instanceof Error
+                ? result.error.message
+                : String(result.error)
+            }`,
+          );
+          continue;
+        }
+
+        if (!result.prepared) {
+          skipped += 1;
+          continue;
+        }
+
+        preparedCandidates.push(result.prepared);
+        uploaded += 1;
+      }
+    }
+
+    console.log(
+      `originals done discovered=${discovered} uploaded=${uploaded} skipped=${skipped} minYear=${options.minYear}`,
+    );
+
+    if (options.stage === 'originals' || options.dryRun) {
+      return;
+    }
+
+    const summary = await processPreparedCandidates(
+      preparedCandidates,
+      options,
+      resolveProcessingStage(options.stage),
+    );
+
+    console.log(
+      `done stage=${options.stage} discovered=${discovered} uploaded=${uploaded} jobs=${summary.jobs} documents=${summary.documents} pages=${summary.pages} skipped=${skipped + summary.skipped} minYear=${options.minYear}`,
+    );
+  } finally {
+    await app.close();
   }
-
-  console.log(
-    `originals done discovered=${discovered} uploaded=${uploaded} skipped=${skipped} minYear=${options.minYear}`,
-  );
-
-  if (options.stage === 'originals' || options.dryRun) {
-    return;
-  }
-
-  const summary = await processPreparedCandidates(
-    preparedCandidates,
-    options,
-    resolveProcessingStages(options.stage),
-  );
-
-  console.log(
-    `done stage=${options.stage} discovered=${discovered} uploaded=${uploaded} jobs=${summary.jobs} documents=${summary.documents} pages=${summary.pages} skipped=${skipped + summary.skipped} minYear=${options.minYear}`,
-  );
 }
 
 function isPendingProcessingStage(stage: CliOptions['stage']) {
   return stage === 'pages' || stage === 'ocr' || stage === 'process';
 }
 
-function resolveProcessingStages(stage: CliOptions['stage']) {
-  if (stage === 'pages') {
-    return ['pages'] as const;
-  }
-
-  if (stage === 'ocr') {
-    return ['ocr'] as const;
-  }
-
-  return ['pages', 'ocr'] as const;
+function resolveProcessingStage(stage: CliOptions['stage']) {
+  return stage === 'pages' ? 'pages' : 'review';
 }
 
 function matchesCandidateFilters(
@@ -381,28 +376,36 @@ async function ensureOriginalsForCandidate(
     return null;
   }
 
-  let jobId = existing?.id ?? null;
-  let draft =
+  const draft =
     existing && !options.replaceExisting
       ? normalizeIngestionDraft(existing.draftJson)
       : createDraftForCandidate(candidate, options);
 
   syncDraftWithCandidate(draft, candidate, options);
 
-  if (existing && options.replaceExisting) {
-    await prisma.ingestionJob.delete({
-      where: {
-        id: existing.id,
-      },
+  try {
+    const examDocument = await buildSourceDocumentInput({
+      candidate,
+      kind: SourceDocumentKind.EXAM,
+      documentUrl: candidate.examPdfUrl,
+      pageUrl: candidate.pageUrl,
     });
+    const correctionDocument = candidate.correctionPdfUrl
+      ? await buildSourceDocumentInput({
+          candidate,
+          kind: SourceDocumentKind.CORRECTION,
+          documentUrl: candidate.correctionPdfUrl,
+          pageUrl: candidate.correctionPageUrl ?? candidate.pageUrl,
+        })
+      : null;
 
-    jobId = null;
-    draft = createDraftForCandidate(candidate, options);
-  }
-
-  if (!jobId) {
-    const job = await prisma.ingestionJob.create({
-      data: {
+    const prepared = await sourceIntakeService.upsertExternalSourceJob({
+      externalExamUrl: candidate.examPdfUrl,
+      replaceExisting: options.replaceExisting,
+      storageClient: getR2Client(),
+      draft,
+      metadata: toJsonValue(buildJobMetadata(candidate)),
+      job: {
         label: candidate.title,
         provider: 'eddirasa',
         sourceListingUrl: options.listingUrl,
@@ -413,65 +416,28 @@ async function ensureOriginalsForCandidate(
         subjectCode: candidate.subjectCode,
         sessionType: candidate.sessionType,
         minYear: options.minYear,
-        status: IngestionJobStatus.DRAFT,
-        draftJson: toJsonValue(draft),
-        metadata: buildJobMetadata(candidate),
       },
-      select: {
-        id: true,
-      },
+      documents: correctionDocument
+        ? [examDocument, correctionDocument]
+        : [examDocument],
     });
 
-    jobId = job.id;
-  } else {
-    await persistDraft(jobId, draft, {
-      status: IngestionJobStatus.DRAFT,
-      errorMessage: null,
-    });
-  }
-
-  try {
-    await ensureOriginalDocument({
-      jobId,
-      documentKind: SourceDocumentKind.EXAM,
-      documentUrl: candidate.examPdfUrl,
-      pageUrl: candidate.pageUrl,
-      context: candidate,
-      draft,
-      replaceExisting: options.replaceExisting,
-    });
-
-    if (candidate.correctionPdfUrl) {
-      await ensureOriginalDocument({
-        jobId,
-        documentKind: SourceDocumentKind.CORRECTION,
-        documentUrl: candidate.correctionPdfUrl,
-        pageUrl: candidate.correctionPageUrl ?? candidate.pageUrl,
-        context: candidate,
-        draft,
-        replaceExisting: options.replaceExisting,
-      });
+    if (!prepared) {
+      console.log(
+        `skip locked existing ${candidate.examPdfUrl} status=${existing?.status ?? 'UNKNOWN'}`,
+      );
+      return null;
     }
-
-    await persistDraft(jobId, draft, {
-      status: IngestionJobStatus.DRAFT,
-      errorMessage: null,
-    });
 
     console.log(
       `originals ${candidate.year} ${candidate.subjectCode ?? 'UNKNOWN'} ${candidate.streamCode ?? 'UNKNOWN'} ${candidate.pageUrl}`,
     );
 
     return {
-      jobId,
+      jobId: prepared.jobId,
       candidate,
     };
   } catch (error) {
-    await persistDraft(jobId, draft, {
-      status: IngestionJobStatus.FAILED,
-      errorMessage: describeError(error),
-    });
-
     throw error;
   }
 }
@@ -479,7 +445,7 @@ async function ensureOriginalsForCandidate(
 async function processPreparedCandidates(
   candidates: PreparedCandidate[],
   options: CliOptions,
-  stages: ReadonlyArray<'pages' | 'ocr'>,
+  stage: 'pages' | 'review',
 ) {
   let jobs = 0;
   let documents = 0;
@@ -491,7 +457,7 @@ async function processPreparedCandidates(
     options.jobConcurrency,
     async (prepared) => {
       try {
-        return await processJobById(prepared.jobId, options, stages);
+        return await processJobById(prepared.jobId, options, stage);
       } catch (error) {
         console.error(
           `failed process ${prepared.candidate.examPdfUrl}: ${describeError(error)}`,
@@ -522,7 +488,7 @@ async function processPreparedCandidates(
 
 async function processPendingJobs(
   options: CliOptions,
-  stages: ReadonlyArray<'pages' | 'ocr'>,
+  stage: 'pages' | 'review',
 ) {
   const selectionWhere = buildJobSelectionWhere(options);
   const jobs = await prisma.ingestionJob.findMany({
@@ -557,7 +523,7 @@ async function processPendingJobs(
     options.jobConcurrency,
     async (job) => {
       try {
-        return await processJobById(job.id, options, stages);
+        return await processJobById(job.id, options, stage);
       } catch (error) {
         console.error(`failed process ${job.label}: ${describeError(error)}`);
         return null;
@@ -587,485 +553,22 @@ async function processPendingJobs(
 async function processJobById(
   jobId: string,
   options: CliOptions,
-  stages: ReadonlyArray<'pages' | 'ocr'>,
+  stage: 'pages' | 'review',
 ) {
-  const job = await prisma.ingestionJob.findUnique({
-    where: {
-      id: jobId,
-    },
-    select: {
-      id: true,
-      label: true,
-      status: true,
-      year: true,
-      streamCode: true,
-      subjectCode: true,
-      sessionType: true,
-      draftJson: true,
-      sourceDocuments: {
-        orderBy: {
-          kind: 'asc',
-        },
-        select: {
-          id: true,
-          kind: true,
-          storageKey: true,
-          fileName: true,
-          pageCount: true,
-          sha256: true,
-          sourceUrl: true,
-          metadata: true,
-          pages: {
-            orderBy: {
-              pageNumber: 'asc',
-            },
-            select: {
-              id: true,
-              documentId: true,
-              pageNumber: true,
-              storageKey: true,
-              width: true,
-              height: true,
-              sha256: true,
-              metadata: true,
-            },
-          },
-        },
-      },
-    },
+  const result = await processingEngine.runStage({
+    jobId,
+    replaceExisting: options.replaceExisting,
+    skipExtraction: stage === 'pages',
+    completionStatus:
+      stage === 'pages' ? IngestionJobStatus.DRAFT : IngestionJobStatus.IN_REVIEW,
+    geminiModel: options.geminiModel,
+    geminiMaxOutputTokens: options.geminiMaxOutputTokens,
+    geminiTemperature: options.geminiTemperature,
   });
 
-  if (!job) {
-    return null;
-  }
+  console.log(`${stage} job=${jobId}`);
 
-  const draft = normalizeIngestionDraft(job.draftJson);
-  const preferSourceRead = job.status === IngestionJobStatus.FAILED;
-  const context: StoragePathContext = {
-    year: job.year,
-    streamCode: job.streamCode,
-    subjectCode: job.subjectCode,
-    sessionType: job.sessionType ?? SessionType.NORMAL,
-    slug:
-      typeof draft.exam.metadata.slug === 'string'
-        ? draft.exam.metadata.slug
-        : null,
-  };
-
-  if (options.replaceExisting && stages.includes('pages')) {
-    await prisma.sourcePage.deleteMany({
-      where: {
-        documentId: {
-          in: job.sourceDocuments.map((document) => document.id),
-        },
-      },
-    });
-    draft.sourcePages = [];
-    draft.assets = [];
-  }
-
-  try {
-    const runsPages = stages.includes('pages');
-    const runsOcr = stages.includes('ocr');
-    const examDocument = job.sourceDocuments.find(
-      (document) => document.kind === SourceDocumentKind.EXAM,
-    );
-
-    if (!examDocument) {
-      throw new Error(`Missing EXAM source document for ${job.label}`);
-    }
-
-    const correctionDocument = job.sourceDocuments.find(
-      (document) => document.kind === SourceDocumentKind.CORRECTION,
-    );
-
-    let pageCount = 0;
-    const processedDocuments = correctionDocument ? 2 : 1;
-
-    if (runsPages) {
-      const rasterizedExam = await ensureStoredPagesForDocument({
-        sourceDocument: examDocument,
-        context,
-        replaceExisting: options.replaceExisting,
-        preferSourceRead,
-        rasterDpi: options.rasterDpi,
-        pageConcurrency: options.pageConcurrency,
-      });
-      pageCount += rasterizedExam.pageCount;
-
-      if (correctionDocument) {
-        const rasterizedCorrection = await ensureStoredPagesForDocument({
-          sourceDocument: correctionDocument,
-          context,
-          replaceExisting: options.replaceExisting,
-          preferSourceRead,
-          rasterDpi: options.rasterDpi,
-          pageConcurrency: options.pageConcurrency,
-        });
-        pageCount += rasterizedCorrection.pageCount;
-      }
-      // Exam and correction remain sequential per job; the large gain comes
-      // from bounded concurrency across jobs and pages.
-
-      draft.sourcePages = await loadDraftSourcePages(job.id);
-
-      if (!runsOcr) {
-        await persistDraft(job.id, draft, {
-          status: IngestionJobStatus.DRAFT,
-          errorMessage: null,
-        });
-
-        console.log(`pages ${job.label}`);
-
-        return {
-          documents: processedDocuments,
-          pages: pageCount,
-        };
-      }
-    }
-
-    const documentsForOcr = runsPages
-      ? await loadSourceDocumentsForJob(job.id)
-      : job.sourceDocuments;
-    draft.sourcePages = await loadDraftSourcePages(job.id);
-    const examDocumentForOcr = documentsForOcr.find(
-      (document) => document.kind === SourceDocumentKind.EXAM,
-    );
-
-    if (!examDocumentForOcr) {
-      throw new Error(`Missing EXAM source document for ${job.label}`);
-    }
-
-    const correctionDocumentForOcr = documentsForOcr.find(
-      (document) => document.kind === SourceDocumentKind.CORRECTION,
-    );
-
-    if (!options.replaceExisting && hasGeminiExtraction(draft)) {
-      console.log(`skip gemini ${job.label}`);
-      return {
-        documents: 0,
-        pages: 0,
-      };
-    }
-
-    const r2 = getR2Client();
-    const examBuffer = await readSourceDocumentBuffer(examDocumentForOcr, r2, {
-      preferSourceRead,
-    });
-    const correctionBuffer =
-      correctionDocumentForOcr !== undefined
-        ? await readSourceDocumentBuffer(correctionDocumentForOcr, r2, {
-            preferSourceRead,
-          })
-        : null;
-
-    await extractDraftWithGemini({
-      draft,
-      label: job.label,
-      model: options.geminiModel,
-      maxOutputTokens: options.geminiMaxOutputTokens,
-      temperature: options.geminiTemperature,
-      examDocument: {
-        fileName: examDocumentForOcr.fileName,
-        buffer: examBuffer,
-      },
-      correctionDocument:
-        correctionDocumentForOcr && correctionBuffer
-          ? {
-              fileName: correctionDocumentForOcr.fileName,
-              buffer: correctionBuffer,
-            }
-          : null,
-    });
-
-    await persistDraft(job.id, draft, {
-      status: IngestionJobStatus.DRAFT,
-      errorMessage: null,
-    });
-
-    console.log(`ocr ${job.label} backend=gemini`);
-
-    return {
-      documents: processedDocuments,
-      pages: draft.sourcePages.length,
-    };
-  } catch (error) {
-    await persistDraft(job.id, draft, {
-      status: IngestionJobStatus.FAILED,
-      errorMessage: describeError(error),
-    });
-
-    throw error;
-  }
-}
-
-async function ensureOriginalDocument(input: {
-  jobId: string;
-  documentKind: SourceDocumentKind;
-  documentUrl: string;
-  pageUrl: string;
-  context: StoragePathContext;
-  draft: ReturnType<typeof createEmptyDraft>;
-  replaceExisting: boolean;
-}) {
-  const existing = await prisma.sourceDocument.findFirst({
-    where: {
-      jobId: input.jobId,
-      kind: input.documentKind,
-    },
-    select: {
-      id: true,
-      storageKey: true,
-    },
-  });
-
-  if (existing && !input.replaceExisting) {
-    applyDocumentToDraft(
-      input.draft,
-      input.documentKind,
-      existing.id,
-      existing.storageKey,
-    );
-    return existing;
-  }
-
-  const r2 = getR2Client();
-  const source = await resolveOriginalPdfSource({
-    context: input.context,
-    requestedUrl: input.documentUrl,
-    documentKind: input.documentKind,
-  });
-  const fileBuffer = source.buffer;
-  const sha256 = hashBuffer(fileBuffer);
-  const fileName = buildCanonicalEddirasaDocumentFileName(
-    input.context,
-    input.documentKind,
-  );
-  const sourceFileName =
-    fileNameFromUrl(input.documentUrl) ??
-    fileNameFromUrl(source.sourceUrl) ??
-    'document.pdf';
-  const storageKey = buildDocumentStorageKey(input.context, fileName);
-
-  await r2.putObject({
-    key: storageKey,
-    body: fileBuffer,
-    contentType: 'application/pdf',
-    metadata: {
-      sourcePageUrl: input.pageUrl,
-    },
-  });
-
-  const sourceDocument = existing
-    ? await prisma.sourceDocument.update({
-        where: {
-          id: existing.id,
-        },
-        data: {
-          storageKey,
-          fileName,
-          mimeType: 'application/pdf',
-          pageCount: source.pageCount,
-          sha256,
-          sourceUrl: source.sourceUrl,
-          language: 'ar',
-          metadata: {
-            sourcePageUrl: input.pageUrl,
-            originalSourceUrl: input.documentUrl,
-            originalSourceFileName: sourceFileName,
-            alternateSourceProvider: source.provider,
-            splitPageRangeStart: source.splitPageRange?.start ?? null,
-            splitPageRangeEnd: source.splitPageRange?.end ?? null,
-            alternateCombinedPdfUrl: source.splitSourceUrl,
-            uploadedAt: new Date().toISOString(),
-          },
-        },
-        select: {
-          id: true,
-          storageKey: true,
-        },
-      })
-    : await prisma.sourceDocument.create({
-        data: {
-          jobId: input.jobId,
-          kind: input.documentKind,
-          storageKey,
-          fileName,
-          mimeType: 'application/pdf',
-          pageCount: source.pageCount,
-          sha256,
-          sourceUrl: source.sourceUrl,
-          language: 'ar',
-          metadata: {
-            sourcePageUrl: input.pageUrl,
-            originalSourceUrl: input.documentUrl,
-            originalSourceFileName: sourceFileName,
-            alternateSourceProvider: source.provider,
-            splitPageRangeStart: source.splitPageRange?.start ?? null,
-            splitPageRangeEnd: source.splitPageRange?.end ?? null,
-            alternateCombinedPdfUrl: source.splitSourceUrl,
-            uploadedAt: new Date().toISOString(),
-          },
-        },
-        select: {
-          id: true,
-          storageKey: true,
-        },
-      });
-
-  applyDocumentToDraft(
-    input.draft,
-    input.documentKind,
-    sourceDocument.id,
-    sourceDocument.storageKey,
-  );
-
-  return sourceDocument;
-}
-
-async function ensureStoredPagesForDocument(input: {
-  sourceDocument: StoredDocumentRecord;
-  context: StoragePathContext;
-  replaceExisting: boolean;
-  preferSourceRead: boolean;
-  rasterDpi: number;
-  pageConcurrency: number;
-}): Promise<{ pageCount: number }> {
-  if (
-    !input.replaceExisting &&
-    input.sourceDocument.pageCount !== null &&
-    input.sourceDocument.pages.length === input.sourceDocument.pageCount
-  ) {
-    return {
-      pageCount: input.sourceDocument.pageCount,
-    };
-  }
-
-  const r2 = getR2Client();
-  const pdfBuffer = await readSourceDocumentBuffer(input.sourceDocument, r2, {
-    preferSourceRead: input.preferSourceRead,
-  });
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'bac-ingest-'));
-  const pdfPath = path.join(tempDir, input.sourceDocument.fileName);
-
-  try {
-    await fs.writeFile(pdfPath, pdfBuffer);
-    const rasterizedPages = await rasterizePdf(
-      pdfPath,
-      tempDir,
-      input.rasterDpi,
-    );
-
-    if (input.sourceDocument.pageCount !== rasterizedPages.length) {
-      const documentMetadata = asRecord(input.sourceDocument.metadata);
-
-      await prisma.sourceDocument.update({
-        where: {
-          id: input.sourceDocument.id,
-        },
-        data: {
-          pageCount: rasterizedPages.length,
-          metadata: {
-            ...(documentMetadata ?? {}),
-            rasterDpi: input.rasterDpi,
-            processedAt: new Date().toISOString(),
-          },
-        },
-      });
-    }
-
-    const existingPageMap = input.replaceExisting
-      ? new Map<number, StoredPageRecord>()
-      : new Map(
-          input.sourceDocument.pages.map((page) => [page.pageNumber, page]),
-        );
-
-    await mapWithConcurrency(
-      rasterizedPages,
-      input.pageConcurrency,
-      async (page) => {
-        const pageStorageKey = buildPageStorageKey(
-          input.context,
-          input.sourceDocument.fileName,
-          page.pageNumber,
-        );
-        const existingPage = existingPageMap.get(page.pageNumber) ?? null;
-        const pageBuffer = await fs.readFile(page.filePath);
-        const pageSha256 = hashBuffer(pageBuffer);
-
-        if (
-          !existingPage ||
-          input.replaceExisting ||
-          existingPage.storageKey !== pageStorageKey
-        ) {
-          await r2.putObject({
-            key: pageStorageKey,
-            body: pageBuffer,
-            contentType: 'image/png',
-          });
-        }
-
-        const pageMetadata = existingPage
-          ? asRecord(existingPage.metadata)
-          : null;
-        if (existingPage) {
-          await prisma.sourcePage.update({
-            where: {
-              id: existingPage.id,
-            },
-            data: {
-              storageKey: pageStorageKey,
-              width: page.width,
-              height: page.height,
-              sha256: pageSha256,
-              metadata: {
-                ...(pageMetadata ?? {}),
-                rasterDpi: input.rasterDpi,
-              },
-            },
-            select: {
-              id: true,
-              documentId: true,
-              pageNumber: true,
-              width: true,
-              height: true,
-            },
-          });
-          return;
-        }
-
-        await prisma.sourcePage.create({
-          data: {
-            documentId: input.sourceDocument.id,
-            pageNumber: page.pageNumber,
-            storageKey: pageStorageKey,
-            width: page.width,
-            height: page.height,
-            sha256: pageSha256,
-            metadata: {
-              rasterDpi: input.rasterDpi,
-            },
-          },
-          select: {
-            id: true,
-            documentId: true,
-            pageNumber: true,
-            width: true,
-            height: true,
-          },
-        });
-      },
-    );
-
-    return {
-      pageCount: rasterizedPages.length,
-    };
-  } finally {
-    await fs.rm(tempDir, {
-      recursive: true,
-      force: true,
-    });
-  }
+  return result.summary;
 }
 
 function createDraftForCandidate(
@@ -1126,138 +629,50 @@ function buildJobMetadata(candidate: ExamCandidate) {
   };
 }
 
-async function persistDraft(
-  jobId: string,
-  draft: ReturnType<typeof createEmptyDraft>,
-  input: {
-    status: IngestionJobStatus;
-    errorMessage: string | null;
-  },
-) {
-  await prisma.ingestionJob.update({
-    where: {
-      id: jobId,
-    },
-    data: {
-      label: draft.exam.title,
-      provider: draft.exam.provider,
-      sourceListingUrl: draft.exam.sourceListingUrl,
-      sourceExamPageUrl: draft.exam.sourceExamPageUrl,
-      sourceCorrectionPageUrl: draft.exam.sourceCorrectionPageUrl,
-      minYear: draft.exam.minYear,
-      status: input.status,
-      errorMessage: input.errorMessage,
-      draftJson: toJsonValue(draft),
-      year: draft.exam.year,
-      streamCode: draft.exam.streamCode,
-      subjectCode: draft.exam.subjectCode,
-      sessionType:
-        draft.exam.sessionType === 'MAKEUP'
-          ? SessionType.MAKEUP
-          : SessionType.NORMAL,
-    },
+async function buildSourceDocumentInput(input: {
+  candidate: ExamCandidate;
+  kind: SourceDocumentKind;
+  documentUrl: string;
+  pageUrl: string;
+}) {
+  const source = await resolveOriginalPdfSource({
+    context: input.candidate,
+    requestedUrl: input.documentUrl,
+    documentKind: input.kind,
   });
-}
-
-function applyDocumentToDraft(
-  draft: ReturnType<typeof createEmptyDraft>,
-  kind: SourceDocumentKind,
-  documentId: string,
-  storageKey: string,
-) {
-  if (kind === SourceDocumentKind.EXAM) {
-    draft.exam.examDocumentId = documentId;
-    draft.exam.examDocumentStorageKey = storageKey;
-    return;
-  }
-
-  draft.exam.correctionDocumentId = documentId;
-  draft.exam.correctionDocumentStorageKey = storageKey;
-}
-
-async function loadSourceDocumentsForJob(
-  jobId: string,
-): Promise<StoredDocumentRecord[]> {
-  return prisma.sourceDocument.findMany({
-    where: {
-      jobId,
-    },
-    orderBy: {
-      kind: 'asc',
-    },
-    select: {
-      id: true,
-      kind: true,
-      storageKey: true,
-      fileName: true,
-      pageCount: true,
-      sha256: true,
-      sourceUrl: true,
-      metadata: true,
-      pages: {
-        orderBy: {
-          pageNumber: 'asc',
-        },
-        select: {
-          id: true,
-          documentId: true,
-          pageNumber: true,
-          storageKey: true,
-          width: true,
-          height: true,
-          sha256: true,
-          metadata: true,
-        },
-      },
-    },
-  });
-}
-
-async function loadDraftSourcePages(jobId: string): Promise<DraftSourcePage[]> {
-  const documents = await prisma.sourceDocument.findMany({
-    where: {
-      jobId,
-    },
-    orderBy: {
-      kind: 'asc',
-    },
-    select: {
-      id: true,
-      kind: true,
-      pages: {
-        orderBy: {
-          pageNumber: 'asc',
-        },
-        select: {
-          id: true,
-          documentId: true,
-          pageNumber: true,
-          width: true,
-          height: true,
-        },
-      },
-    },
-  });
-
-  return documents.flatMap((document) =>
-    document.pages.map((page) => ({
-      id: page.id,
-      documentId: page.documentId,
-      documentKind:
-        document.kind === SourceDocumentKind.CORRECTION ? 'CORRECTION' : 'EXAM',
-      pageNumber: page.pageNumber,
-      width: page.width,
-      height: page.height,
-    })),
+  const fileName = buildCanonicalEddirasaDocumentFileName(
+    input.candidate,
+    input.kind,
   );
-}
+  const sourceFileName =
+    fileNameFromUrl(input.documentUrl) ??
+    fileNameFromUrl(source.sourceUrl) ??
+    'document.pdf';
 
-function asRecord(value: Prisma.JsonValue | null) {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return null;
-  }
-
-  return value as Record<string, unknown>;
+  return {
+    kind: input.kind,
+    document: {
+      buffer: source.buffer,
+      fileName,
+      storageKey: buildDocumentStorageKey(input.candidate, fileName),
+      sourceUrl: source.sourceUrl,
+      mimeType: 'application/pdf',
+      language: 'ar',
+      metadata: toJsonValue({
+        sourcePageUrl: input.pageUrl,
+        originalSourceUrl: input.documentUrl,
+        originalSourceFileName: sourceFileName,
+        alternateSourceProvider: source.provider,
+        splitPageRangeStart: source.splitPageRange?.start ?? null,
+        splitPageRangeEnd: source.splitPageRange?.end ?? null,
+        alternateCombinedPdfUrl: source.splitSourceUrl,
+        uploadedAt: new Date().toISOString(),
+      }),
+      storageMetadata: {
+        sourcePageUrl: input.pageUrl,
+      },
+    },
+  };
 }
 
 async function resolveOriginalPdfSource(input: {
@@ -1333,106 +748,12 @@ async function resolveOriginalPdfSource(input: {
   }
 }
 
-async function readSourceDocumentBuffer(
-  sourceDocument: StoredDocumentRecord,
-  r2: R2StorageClient,
-  input?: {
-    preferSourceRead?: boolean;
-  },
-) {
-  if (input?.preferSourceRead && sourceDocument.sourceUrl) {
-    return readSourceDocumentBufferFromSource(sourceDocument, r2);
-  }
-
-  try {
-    return await retryWithBackoff(
-      () => r2.getObjectBuffer(sourceDocument.storageKey),
-      3,
-      `R2 get ${sourceDocument.storageKey}`,
-    );
-  } catch (error) {
-    if (!sourceDocument.sourceUrl) {
-      throw error;
-    }
-
-    console.warn(
-      `fall back to source download for ${sourceDocument.fileName}: ${describeError(error)}`,
-    );
-
-    return readSourceDocumentBufferFromSource(sourceDocument, r2);
-  }
-}
-
-async function readSourceDocumentBufferFromSource(
-  sourceDocument: StoredDocumentRecord,
-  r2: R2StorageClient,
-) {
-  if (!sourceDocument.sourceUrl) {
-    throw new Error(`Missing sourceUrl for ${sourceDocument.fileName}`);
-  }
-
-  const buffer = await fetchBuffer(sourceDocument.sourceUrl);
-
-  try {
-    await r2.putObject({
-      key: sourceDocument.storageKey,
-      body: buffer,
-      contentType: 'application/pdf',
-    });
-  } catch (refreshError) {
-    console.warn(
-      `failed to refresh R2 object ${sourceDocument.storageKey}: ${describeError(refreshError)}`,
-    );
-  }
-
-  return buffer;
-}
-
 function getR2Client() {
   if (!r2Client) {
     r2Client = new R2StorageClient(readR2ConfigFromEnv());
   }
 
   return r2Client;
-}
-
-async function rasterizePdf(
-  pdfPath: string,
-  outputDir: string,
-  rasterDpi: number,
-) {
-  const prefix = path.join(outputDir, 'page');
-
-  await execFileAsync('pdftoppm', [
-    '-r',
-    `${rasterDpi}`,
-    '-png',
-    pdfPath,
-    prefix,
-  ]);
-
-  const files = (await fs.readdir(outputDir))
-    .filter((fileName) => /^page-\d+\.png$/.test(fileName))
-    .sort(
-      (left, right) =>
-        pageNumberFromFileName(left) - pageNumberFromFileName(right),
-    );
-
-  const pages = [];
-
-  for (const fileName of files) {
-    const filePath = path.join(outputDir, fileName);
-    const metadata = await sharp(filePath).metadata();
-
-    pages.push({
-      filePath,
-      pageNumber: pageNumberFromFileName(fileName),
-      width: metadata.width ?? 0,
-      height: metadata.height ?? 0,
-    });
-  }
-
-  return pages;
 }
 
 type PdfEntry = {
@@ -2120,19 +1441,6 @@ function buildDocumentStorageKey(
   return buildEddirasaDocumentStorageKey(context, fileName);
 }
 
-function buildPageStorageKey(
-  context: StoragePathContext,
-  documentFileName: string,
-  pageNumber: number,
-) {
-  return buildEddirasaPageStorageKey(context, documentFileName, pageNumber);
-}
-
-function pageNumberFromFileName(fileName: string) {
-  const match = fileName.match(/-(\d+)\.png$/);
-  return match ? Number.parseInt(match[1], 10) : 0;
-}
-
 async function fetchText(url: string) {
   return fetchTextWithRetry(url, {
     userAgent: 'BAC Bank ingestion bot/1.0',
@@ -2161,10 +1469,6 @@ function describeError(error: unknown) {
 
   const fallback = String(error).trim();
   return fallback || 'Unknown error';
-}
-
-function hashBuffer(buffer: Buffer) {
-  return createHash('sha256').update(buffer).digest('hex');
 }
 
 function toAbsoluteUrl(href: string, baseUrl: string) {

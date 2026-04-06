@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import type { ComponentProps, ReactNode } from "react";
 import { StudySectionCard } from "@/components/study-content";
 import { StudyQuestionPanel } from "@/components/study-question-panel";
@@ -16,10 +20,12 @@ import {
 } from "@/components/study-shell";
 import { type ExamResponse, formatSessionType } from "@/lib/qbank";
 import {
+  describeStudyQuestionState,
   type StudyQuestionState,
   type StudyQuestionStateDescriptor,
 } from "@/lib/study";
 import {
+  canRevealStudyQuestionSolution,
   getStudyQuestionTopics,
   type StudyExerciseModel,
   type StudyQuestionModel,
@@ -39,8 +45,8 @@ type SujetProgressCounts = {
 type SujetViewerHeaderActionsProps = {
   backToBrowseHref: string;
   progressMode: "SOLVE" | "REVIEW";
-  onEnterFocusMode: () => void;
   onSetMode: (mode: "SOLVE" | "REVIEW") => void;
+  adminAction?: ReactNode;
 };
 
 type SujetViewerHeaderProgressProps = {
@@ -53,17 +59,16 @@ type SujetViewerStandardLayoutProps = {
   exercises: StudyExerciseModel[];
   activeExerciseIndex: number;
   activeExercise: StudyExerciseModel;
-  activeQuestion: StudyQuestionModel;
-  activeQuestionIndex: number;
-  activeQuestionStateDescriptor: StudyQuestionStateDescriptor;
-  activeQuestionState: StudyQuestionState | undefined;
-  solutionVisible: boolean;
+  activeQuestionId: string;
   progressMode: "SOLVE" | "REVIEW";
+  questionStates: Record<string, StudyQuestionState>;
   navigatorExercises: NavigatorExercises;
-  exerciseAction: ReactNode;
-  questionActions: ReactNode;
+  exerciseHeaderActions: ReactNode;
   onSelectExercise: (exerciseId: string) => void;
   onSelectQuestion: (exerciseId: string, questionId: string) => void;
+  onToggleQuestionComplete: (exerciseId: string, questionId: string) => void;
+  onToggleQuestionSolution: (exerciseId: string, questionId: string) => void;
+  isQuestionSolutionVisible: (questionId: string) => boolean;
 };
 
 type SujetViewerFocusHeaderProps = {
@@ -115,17 +120,15 @@ type SujetViewerFocusNavigatorModalProps = {
 export function SujetViewerHeaderActions({
   backToBrowseHref,
   progressMode,
-  onEnterFocusMode,
   onSetMode,
+  adminAction,
 }: SujetViewerHeaderActionsProps) {
   return (
     <div className="study-toggle-row">
       <Link href={backToBrowseHref} className="btn-secondary">
-        العودة للتصفح
+        العودة
       </Link>
-      <button type="button" className="btn-secondary" onClick={onEnterFocusMode}>
-        وضع التركيز
-      </button>
+      {adminAction}
       <button
         type="button"
         className={
@@ -135,7 +138,7 @@ export function SujetViewerHeaderActions({
         }
         onClick={() => onSetMode("SOLVE")}
       >
-        وضع الحل
+        حل
       </button>
       <button
         type="button"
@@ -146,7 +149,7 @@ export function SujetViewerHeaderActions({
         }
         onClick={() => onSetMode("REVIEW")}
       >
-        وضع المراجعة
+        مراجعة
       </button>
     </div>
   );
@@ -159,16 +162,16 @@ export function SujetViewerHeaderProgress({
   return (
     <div className="study-progress-grid">
       <StudyProgressBar
-        label="تقدم الموضوع"
-        detail={`${progressCounts.completedCount} من ${progressCounts.totalCount} منجزة`}
+        label="التقدم"
+        detail={`${progressCounts.completedCount}/${progressCounts.totalCount}`}
         value={
           (progressCounts.completedCount / Math.max(progressCounts.totalCount, 1)) *
           100
         }
       />
       <StudyProgressBar
-        label="الموضع الحالي"
-        detail={`السؤال ${currentQuestionPosition} من ${progressCounts.totalCount}`}
+        label="الموضع"
+        detail={`${currentQuestionPosition}/${progressCounts.totalCount}`}
         value={
           (currentQuestionPosition / Math.max(progressCounts.totalCount, 1)) * 100
         }
@@ -182,34 +185,37 @@ export function SujetViewerStandardLayout({
   exercises,
   activeExerciseIndex,
   activeExercise,
-  activeQuestion,
-  activeQuestionIndex,
-  activeQuestionStateDescriptor,
-  activeQuestionState,
-  solutionVisible,
+  activeQuestionId,
   progressMode,
+  questionStates,
   navigatorExercises,
-  exerciseAction,
-  questionActions,
+  exerciseHeaderActions,
   onSelectExercise,
   onSelectQuestion,
+  onToggleQuestionComplete,
+  onToggleQuestionSolution,
+  isQuestionSolutionVisible,
 }: SujetViewerStandardLayoutProps) {
   return (
     <div className="study-layout">
       <StudySidebar
+        className="study-sidebar-exam"
         title="الموضوع"
         subtitle={`${activeExerciseIndex + 1} / ${exercises.length}`}
         footer={
           <div className="study-sidebar-footer-stack">
             <StudyStateLegend />
-            <StudyKeyHint keys={["N", "P"]} label="التالي / السابق" />
+            <div className="study-action-row-tight">
+              <StudyKeyHint keys={["→", "←"]} label="تنقل" />
+              <StudyKeyHint keys={["S"]} label="الحل" />
+            </div>
           </div>
         }
       >
         <StudyNavigator
           exercises={navigatorExercises}
           activeExerciseId={activeExercise.id}
-          activeQuestionId={activeQuestion.id}
+          activeQuestionId={activeQuestionId}
           onSelectExercise={onSelectExercise}
           onSelectQuestion={onSelectQuestion}
         />
@@ -226,31 +232,101 @@ export function SujetViewerStandardLayout({
             </>
           }
           badgeLabel={`${activeExercise.questions.length} أسئلة`}
-          actions={exerciseAction}
+          headerActions={exerciseHeaderActions}
         />
 
-        <StudyQuestionPanel
-          key={`${activeExercise.id}:${activeQuestion.id}`}
-          title={activeQuestion.label}
-          subtitle={`التمرين ${activeExercise.displayOrder}`}
-          stateLabel={activeQuestionStateDescriptor.label}
-          stateTone={activeQuestionStateDescriptor.tone}
-          positionLabel={`${activeQuestionIndex + 1}/${activeExercise.questions.length}`}
-          pointsLabel={`${activeQuestion.points} ن`}
-          modeLabel={progressMode === "REVIEW" ? "مراجعة" : undefined}
-          solutionViewed={Boolean(activeQuestionState?.solutionViewed)}
-          topics={getStudyQuestionTopics(activeQuestion).map((topic) => ({
-            key: `${activeQuestion.id}-${topic.code}`,
-            label: topic.name,
-          }))}
-          actions={questionActions}
-        >
-          <StudyQuestionPromptContent question={activeQuestion} />
-        </StudyQuestionPanel>
+        <div className="study-question-stack">
+          {activeExercise.questions.map((question, questionIndex) => {
+            const questionState = questionStates[question.id];
+            const isActive = question.id === activeQuestionId;
+            const stateDescriptor = describeStudyQuestionState(
+              questionState,
+              isActive,
+            );
+            const solutionVisible = isQuestionSolutionVisible(question.id);
+            const canRevealSolution = canRevealStudyQuestionSolution(question);
 
-        {solutionVisible ? (
-          <StudyQuestionSolutionStack question={activeQuestion} />
-        ) : null}
+            return (
+              <article
+                key={`${activeExercise.id}:${question.id}`}
+                id={`study-question-${question.id}`}
+                className={
+                  isActive
+                    ? "study-question-stack-item is-active"
+                    : "study-question-stack-item"
+                }
+              >
+                <StudyQuestionPanel
+                  title={question.label}
+                  subtitle={`التمرين ${activeExercise.displayOrder}`}
+                  isActive={isActive}
+                  stateLabel={stateDescriptor.label}
+                  stateTone={stateDescriptor.tone}
+                  positionLabel={`${questionIndex + 1}/${activeExercise.questions.length}`}
+                  pointsLabel={`${question.points} ن`}
+                  modeLabel={progressMode === "REVIEW" ? "مراجعة" : undefined}
+                  solutionViewed={Boolean(questionState?.solutionViewed)}
+                  topics={getStudyQuestionTopics(question).map((topic) => ({
+                    key: `${question.id}-${topic.code}`,
+                    label: topic.name,
+                  }))}
+                  actions={
+                    <>
+                      <button
+                        type="button"
+                        className="btn-secondary"
+                        onClick={() =>
+                          onToggleQuestionComplete(activeExercise.id, question.id)
+                        }
+                      >
+                        {questionState?.completed ? "إلغاء الإنجاز" : "تم"}
+                      </button>
+                      {progressMode === "SOLVE" && canRevealSolution ? (
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          onClick={() =>
+                            onToggleQuestionSolution(activeExercise.id, question.id)
+                          }
+                        >
+                          {solutionVisible ? (
+                            <>
+                              <EyeOff size={16} aria-hidden="true" />
+                              إخفاء الحل
+                            </>
+                          ) : (
+                            <>
+                              <Eye size={16} aria-hidden="true" />
+                              إظهار الحل
+                            </>
+                          )}
+                        </button>
+                      ) : null}
+                    </>
+                  }
+                >
+                  <StudyQuestionPromptContent question={question} />
+                </StudyQuestionPanel>
+
+                <AnimatePresence initial={false}>
+                  {solutionVisible ? (
+                    <motion.div
+                      className="study-inline-solution-motion"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.24, ease: [0.4, 0, 0.2, 1] }}
+                    >
+                      <div className="study-inline-solution-inner">
+                        <StudyQuestionSolutionStack question={question} />
+                      </div>
+                    </motion.div>
+                  ) : null}
+                </AnimatePresence>
+              </article>
+            );
+          })}
+        </div>
       </section>
     </div>
   );
@@ -268,7 +344,7 @@ export function SujetViewerFocusHeader({
     <header className="theater-header">
       <div className="theater-header-left">
         <button type="button" className="btn-ghost" onClick={onExitFocusMode}>
-          العرض العادي
+          عادي
         </button>
       </div>
 
@@ -317,8 +393,7 @@ export function SujetViewerFocusContextPane({
           <p className="page-kicker">موضوع رسمي</p>
           <h1>{exam.selectedSujetLabel ?? `الموضوع ${sujetNumber}`}</h1>
           <p className="theater-session-copy">
-            {formatSessionType(exam.sessionType)} · {totalQuestionCount} أسئلة ·
-            تنقل حر داخل الموضوع.
+            {formatSessionType(exam.sessionType)} · {totalQuestionCount} أسئلة
           </p>
           <div className="study-meta-row">
             <span className="study-meta-pill">
@@ -336,12 +411,7 @@ export function SujetViewerFocusContextPane({
           </div>
         </section>
 
-        <StudySectionCard tone="commentary" title="الوضع الحالي">
-          <p className="muted-text">
-            {progressMode === "REVIEW"
-              ? "أنت في وضع المراجعة، لذلك يظهر الحل مباشرة للسؤال الحالي."
-              : "أنت في وضع الحل، ويمكنك التنقل بين الأسئلة مع إبقاء خريطة الموضوع مخفية حتى تحتاجها."}
-          </p>
+        <StudySectionCard tone="commentary" title="الوضع">
           {activeExerciseTopics.length ? (
             <div className="topic-chip-row theater-context-topics">
               {activeExerciseTopics.slice(0, 8).map((topic) => (
@@ -422,8 +492,8 @@ export function SujetViewerFocusQuestionPane({
                 label: topic.name,
               }))}
               keyboardHint={{
-                keys: ["N", "P"],
-                label: "التالي / السابق",
+                keys: ["→", "←"],
+                label: "تنقل",
               }}
             >
               <StudyQuestionPromptContent question={activeQuestion} />
@@ -479,7 +549,8 @@ export function SujetViewerFocusNavigatorModal({
 
           <div className="study-action-row">
             <StudyStateLegend />
-            <StudyKeyHint keys={["N", "P"]} label="التالي / السابق" />
+            <StudyKeyHint keys={["→", "←"]} label="تنقل" />
+            <StudyKeyHint keys={["S"]} label="الحل" />
           </div>
 
           <div className="theater-modal-actions">
@@ -506,7 +577,7 @@ export function SujetViewerFocusNavigatorModal({
               مراجعة
             </button>
             <button type="button" className="btn-secondary" onClick={onExitFocusMode}>
-              العرض العادي
+              عادي
             </button>
           </div>
 

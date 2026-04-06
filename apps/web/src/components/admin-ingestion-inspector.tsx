@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { TopicTagPicker } from "@/components/topic-tag-picker";
 import type { DraftBlockRole, DraftBlockType } from "@/lib/admin";
 import {
@@ -41,13 +42,14 @@ export function AdminIngestionInspector({
   selectedNode,
   selectedNodePath,
   selectedBlockId,
+  pendingFocusBlockId,
   parentOptions,
   availableTopics,
   subjectCode,
   selectedStreamCodes,
   assets,
   blockIssueCountById,
-  onAddBlock,
+  onPendingFocusBlockIdChange,
   onUpdateSelectedNodeFields,
   onReparentSelectedNode,
   onSelectBlock,
@@ -63,13 +65,14 @@ export function AdminIngestionInspector({
   selectedNode: DraftNode | null;
   selectedNodePath: DraftNode[];
   selectedBlockId: string | null;
+  pendingFocusBlockId: string | null;
   parentOptions: DraftNode[];
   availableTopics: TopicOption[];
   subjectCode: string | null;
   selectedStreamCodes: string[];
   assets: DraftAsset[];
   blockIssueCountById: Map<string, number>;
-  onAddBlock: () => void;
+  onPendingFocusBlockIdChange: (blockId: string | null) => void;
   onUpdateSelectedNodeFields: (patch: Partial<DraftNode>) => void;
   onReparentSelectedNode: (parentId: string | null) => void;
   onSelectBlock: (blockId: string) => void;
@@ -88,20 +91,49 @@ export function AdminIngestionInspector({
   ) => void;
   onOpenAssetToolPanel: (block: DraftBlock, mode: "create" | "edit") => void;
 }) {
+  useEffect(() => {
+    if (!pendingFocusBlockId) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      const container = document.getElementById(
+        `inspector-block-${pendingFocusBlockId}`,
+      );
+      const target = container?.querySelector<HTMLElement>(
+        "[data-primary-block-input='true'], textarea, input, select",
+      );
+
+      if (!target) {
+        return;
+      }
+
+      target.focus();
+
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement
+      ) {
+        target.select();
+      }
+
+      onPendingFocusBlockIdChange(null);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [
+    onPendingFocusBlockIdChange,
+    pendingFocusBlockId,
+    selectedBlockId,
+    selectedNode,
+  ]);
+
   return (
     <>
       <div className="admin-page-head ingestion-side-head">
-        <div>
-          <h3>Inspector</h3>
-          <p className="muted-text">
-            Edit the selected node, then adjust blocks and source-linked assets.
-          </p>
-        </div>
-        {selectedNode ? (
-          <button type="button" className="btn-secondary" onClick={onAddBlock}>
-            Add Block
-          </button>
-        ) : null}
+        <h3>Inspector</h3>
       </div>
 
       {selectedNode ? (
@@ -401,6 +433,7 @@ export function AdminIngestionInspector({
                       <label className="field">
                         <span>Heading level</span>
                         <input
+                          data-primary-block-input="true"
                           type="number"
                           min="1"
                           max="6"
@@ -422,6 +455,7 @@ export function AdminIngestionInspector({
                       <label className="field">
                         <span>Language</span>
                         <input
+                          data-primary-block-input="true"
                           value={block.meta?.language ?? ""}
                           onChange={(event) => {
                             onUpdateBlock(block.id, {
@@ -439,6 +473,7 @@ export function AdminIngestionInspector({
                       <label className="field admin-form-wide">
                         <span>Rows</span>
                         <textarea
+                          data-primary-block-input="true"
                           key={`${block.id}:${formatRows(block.data)}`}
                           rows={5}
                           defaultValue={formatRows(block.data)}
@@ -466,6 +501,7 @@ export function AdminIngestionInspector({
                                 : "Content"}
                         </span>
                         <textarea
+                          data-primary-block-input="true"
                           rows={block.type === "code" ? 7 : 4}
                           value={block.value}
                           onChange={(event) => {

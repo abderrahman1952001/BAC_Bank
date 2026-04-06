@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import type {
+  AdminDashboardResponse,
+  AdminFiltersResponse,
+} from '@bac-bank/contracts/admin';
 import { ExamNodeType, PublicationStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -6,7 +10,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class AdminReferenceService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getDashboard() {
+  async getDashboard(): Promise<AdminDashboardResponse> {
     const [
       totalExams,
       totalExercises,
@@ -89,7 +93,7 @@ export class AdminReferenceService {
     };
   }
 
-  async getFilters() {
+  async getFilters(): Promise<AdminFiltersResponse> {
     const [subjects, streams, years, topics] = await Promise.all([
       this.prisma.subject.findMany({
         select: {

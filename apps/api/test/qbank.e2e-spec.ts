@@ -31,8 +31,15 @@ describe('QBank routes (e2e)', () => {
     getExamById: jest.fn(),
     getFilters: jest.fn(),
     getPracticeSessionById: jest.fn(),
+    listRecentExamActivities: jest.fn().mockResolvedValue({
+      data: [],
+    }),
     listRecentPracticeSessions: jest.fn(),
     previewPracticeSession: jest.fn(),
+    upsertExamActivity: jest.fn().mockResolvedValue({
+      id: 'activity-123',
+      lastOpenedAt: new Date().toISOString(),
+    }),
     updatePracticeSessionProgress: jest.fn().mockResolvedValue({
       id: 'session-123',
       progress: null,
@@ -100,6 +107,45 @@ describe('QBank routes (e2e)', () => {
         subjectCode: 'MATHEMATICS',
         years: [2024, 2023],
         exerciseCount: 6,
+      }),
+    );
+  });
+
+  it(`/${API_GLOBAL_PREFIX}/qbank/exam-activities lists recent opened exams`, async () => {
+    await request(app.getHttpServer())
+      .get(`/${API_GLOBAL_PREFIX}/qbank/exam-activities?limit=5`)
+      .set('Cookie', 'bb_session=test-token')
+      .expect(200);
+
+    expect(qbankService.listRecentExamActivities).toHaveBeenCalledWith(
+      'user-1',
+      5,
+    );
+  });
+
+  it(`/${API_GLOBAL_PREFIX}/qbank/exams/:id/activity validates and stores exam activity`, async () => {
+    await request(app.getHttpServer())
+      .post(
+        `/${API_GLOBAL_PREFIX}/qbank/exams/11111111-1111-1111-1111-111111111111/activity`,
+      )
+      .set('Cookie', 'bb_session=test-token')
+      .set('Origin', 'http://localhost:3000')
+      .send({
+        sujetNumber: '2',
+        totalQuestionCount: '10',
+        completedQuestionCount: '4',
+        openedQuestionCount: '7',
+      })
+      .expect(201);
+
+    expect(qbankService.upsertExamActivity).toHaveBeenCalledWith(
+      'user-1',
+      '11111111-1111-1111-1111-111111111111',
+      expect.objectContaining({
+        sujetNumber: 2,
+        totalQuestionCount: 10,
+        completedQuestionCount: 4,
+        openedQuestionCount: 7,
       }),
     );
   });

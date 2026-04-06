@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 import {
   buildApiUpstreamRequestUrl,
@@ -6,6 +7,10 @@ import {
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const DEFAULT_API_PROXY_TIMEOUT_MS = 8_000;
+export const INGESTION_API_PROXY_TIMEOUT_MS = 120_000;
+export const SAFE_API_PROXY_RETRY_COUNT = 2;
+const SAFE_API_PROXY_RETRY_DELAYS_MS = [200, 500];
 
 async function proxyRequest(request: NextRequest) {
   const upstreamBaseUrl = resolveApiUpstreamBaseUrl({
@@ -25,10 +30,18 @@ async function proxyRequest(request: NextRequest) {
   });
   const requestHeaders = new Headers(request.headers);
   const requestUrl = new URL(request.url);
+  const { getToken } = await auth();
+  const token = await getToken();
 
   requestHeaders.delete("host");
   requestHeaders.delete("content-length");
-  requestHeaders.set("x-forwarded-host", request.headers.get("host") ?? requestUrl.host);
+  if (token && !requestHeaders.has("authorization")) {
+    requestHeaders.set("authorization", `Bearer ${token}`);
+  }
+  requestHeaders.set(
+    "x-forwarded-host",
+    request.headers.get("host") ?? requestUrl.host,
+  );
   requestHeaders.set("x-forwarded-proto", requestUrl.protocol.replace(":", ""));
 
   const requestBody =
@@ -37,13 +50,11 @@ async function proxyRequest(request: NextRequest) {
       : await request.arrayBuffer();
 
   try {
-    const upstreamResponse = await fetch(upstreamUrl, {
-      method: request.method,
-      headers: requestHeaders,
-      body: requestBody,
-      signal: AbortSignal.timeout(8000),
-      cache: "no-store",
-      redirect: "manual",
+    const upstreamResponse = await fetchApiUpstreamWithRetry({
+      request,
+      upstreamUrl,
+      requestHeaders,
+      requestBody,
     });
     const responseHeaders = new Headers();
     responseHeaders.set("x-bac-api-proxy", "route-handler");
@@ -81,6 +92,101 @@ async function proxyRequest(request: NextRequest) {
       },
     });
   }
+}
+
+async function fetchApiUpstreamWithRetry(input: {
+  request: NextRequest;
+  upstreamUrl: URL;
+  requestHeaders: Headers;
+  requestBody?: ArrayBuffer;
+}) {
+  const retryCount = resolveApiProxyRetryCount(input.request.method);
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= retryCount; attempt += 1) {
+    try {
+      return await fetch(input.upstreamUrl, {
+        method: input.request.method,
+        headers: input.requestHeaders,
+        body: input.requestBody,
+        signal: AbortSignal.timeout(resolveApiProxyTimeoutMs(input.request.url)),
+        cache: "no-store",
+        redirect: "manual",
+      });
+    } catch (error) {
+      lastError = error;
+
+      if (
+        attempt >= retryCount ||
+        !shouldRetryApiProxyRequest(input.request.method, error)
+      ) {
+        throw error;
+      }
+
+      await sleep(SAFE_API_PROXY_RETRY_DELAYS_MS[attempt] ?? 500);
+    }
+  }
+
+  throw lastError;
+}
+
+export function resolveApiProxyRetryCount(requestMethod: string) {
+  return isSafeApiProxyMethod(requestMethod) ? SAFE_API_PROXY_RETRY_COUNT : 0;
+}
+
+export function isSafeApiProxyMethod(requestMethod: string) {
+  const normalizedMethod = requestMethod.trim().toUpperCase();
+  return (
+    normalizedMethod === "GET" ||
+    normalizedMethod === "HEAD" ||
+    normalizedMethod === "OPTIONS"
+  );
+}
+
+export function shouldRetryApiProxyRequest(
+  requestMethod: string,
+  error: unknown,
+) {
+  if (!isSafeApiProxyMethod(requestMethod)) {
+    return false;
+  }
+
+  if (error instanceof DOMException && error.name === "TimeoutError") {
+    return false;
+  }
+
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.trim().toLowerCase();
+
+  return (
+    message.includes("fetch failed") ||
+    message.includes("network") ||
+    message.includes("socket") ||
+    message.includes("econnrefused")
+  );
+}
+
+function sleep(milliseconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
+export function resolveApiProxyTimeoutMs(requestUrl: string) {
+  const pathname = new URL(requestUrl).pathname;
+
+  if (
+    pathname === "/api/v1/admin/ingestion/jobs" ||
+    pathname.startsWith("/api/v1/admin/ingestion/") ||
+    pathname.startsWith("/api/v1/ingestion/")
+  ) {
+    return INGESTION_API_PROXY_TIMEOUT_MS;
+  }
+
+  return DEFAULT_API_PROXY_TIMEOUT_MS;
 }
 
 export const GET = proxyRequest;

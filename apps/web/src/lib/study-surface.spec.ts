@@ -10,10 +10,10 @@ describe("study surface helpers", () => {
   it("builds study exercises from exam hierarchy data", () => {
     const exam = {
       id: "exam-1",
+      paperId: "paper-1",
       year: 2026,
       sessionType: "NORMAL",
       durationMinutes: 210,
-      totalPoints: 40,
       officialSourceReference: null,
       stream: {
         code: "SE",

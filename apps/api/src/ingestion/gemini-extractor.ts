@@ -103,7 +103,7 @@ type GeminiExtractionInput = {
   } | null;
 };
 
-type GeminiCropRecoveryMode = 'text' | 'latex' | 'table' | 'tree' | 'graph';
+type GeminiCropRecoveryMode = 'text' | 'table' | 'tree' | 'graph';
 
 type GeminiCropRecoveryInput = {
   label: string;
@@ -147,10 +147,15 @@ Stay faithful to the scanned pages. Do not summarize and do not invent missing t
 
 Extraction rules:
 - Organize content by variant (SUJET_1 / SUJET_2), then by exercise, then by question.
+- When the exam explicitly contains two variants/topics (for example "الموضوع الأول" and "الموضوع الثاني"), extract both variants in the same JSON response.
+- Do not omit a second variant because of length, convenience, or a desire to simplify the response.
 - Put statement text in contextBlocks or promptBlocks.
 - Put correction text in solutionBlocks.
 - Treat the correction PDF as the primary source of truth for solutionBlocks.
 - Preserve correction content and ordering as closely as possible to the PDF. Do not rewrite away, compress, or omit correction text that is visibly present.
+- Never drop visible exam or correction content just because it feels repetitive, obvious, or implied.
+- Additions are allowed only as short clarifying bridges when the PDF gives a bare final result or an extremely compressed step, and those additions must remain clearly additive.
+- Additive clarification must never replace, paraphrase away, or contradict visible PDF content.
 - You may add short clarifying context only when it is necessary to make the extracted structure readable, but any additions must stay additive and must not replace or remove existing correction content.
 - Keep order exactly as it appears in the PDFs.
 - Use paragraph blocks for normal text.
@@ -161,7 +166,7 @@ Extraction rules:
 - For every asset, include the document kind (EXAM or CORRECTION) and the 1-based page number inside that document.
 - Attach asset IDs to the nearest exercise or question using assetIds.
 - When an asset is clearly a simple table or probability tree, include a native JSON draft for it in the asset.native field. Use asset.native.type = "table" with data.rows for tables, or asset.native.type = "tree" with data.kind = "probability_tree" and data.probabilityTree for trees.
-- If you cannot confidently locate a second variant, return only SUJET_1.
+- Return only SUJET_1 only when the PDF genuinely contains a single variant or when a second variant is truly absent or unreadable.
 - If you are uncertain about wording, structure, or an asset mapping, keep the closest faithful result and explain the issue in uncertainties.
 `.trim();
 
@@ -940,11 +945,7 @@ function buildGeminiCropRecoveryPrompt(input: GeminiCropRecoveryInput) {
 
   if (input.mode === 'text') {
     parts.push(
-      'Recover the visible snippet as faithful readable text. Use type "paragraph" for normal text and type "latex" only if the crop is mostly a standalone formula or formula-heavy line. Keep inline math inside $...$ when practical.',
-    );
-  } else if (input.mode === 'latex') {
-    parts.push(
-      'Recover the visible snippet as LaTeX. Return type "latex" and put the exact display expression in value.',
+      'Recover the visible snippet as faithful readable text. Preserve formulas accurately. Use type "paragraph" for prose, labels, and mixed text, and use type "latex" when the crop is best represented as a standalone formula or a formula-heavy line. Keep inline math inside $...$ when practical, and prefer valid LaTeX whenever math notation needs it.',
     );
   } else if (input.mode === 'table') {
     parts.push(
@@ -1005,10 +1006,6 @@ function normalizeRecoveredBlockType(
   value: unknown,
   mode: GeminiCropRecoveryMode,
 ): DraftBlockType {
-  if (mode === 'latex') {
-    return 'latex';
-  }
-
   if (mode === 'table') {
     return 'table';
   }
@@ -1383,7 +1380,9 @@ function buildGeminiPrompt(draft: IngestionDraft, label: string) {
     `Current session type: ${draft.exam.sessionType}`,
     `Current title: ${draft.exam.title}`,
     `Return exercises and questions exactly in order.`,
-    `For solutionBlocks, stay especially faithful to the correction PDF: preserve visible correction content and only add minimal clarifying context when necessary.`,
+    `For solutionBlocks, stay especially faithful to the correction PDF.`,
+    `Do not drop, compress, or silently rewrite visible correction content.`,
+    `You may add only minimal clarifying context when the PDF gives a bare result or a very compressed step, and that clarification must remain additive.`,
     `Use assetIds to connect assets to the nearest exercise or question.`,
     `Page numbers for assets must be 1-based within the referenced EXAM or CORRECTION document.`,
     `Do not invent crop boxes. The review UI will handle crops later.`,

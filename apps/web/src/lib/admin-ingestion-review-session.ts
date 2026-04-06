@@ -1,12 +1,85 @@
-import { useEffect, useRef, useState } from 'react';
-import type { AdminIngestionDraft, AdminIngestionJobResponse } from '@/lib/admin';
-import { fetchAdmin, fetchAdminJson } from '@/lib/admin';
-import { buildReviewSessionSnapshot } from '@/lib/admin-ingestion-review';
+import { useEffect, useRef, useState } from "react";
+import type { UpdateIngestionJobPayload } from "@bac-bank/contracts/ingestion";
+import type {
+  AdminIngestionDraft,
+  AdminIngestionJobResponse,
+} from "@/lib/admin";
+import {
+  fetchAdmin,
+  fetchAdminJson,
+  parseAdminIngestionJobResponse,
+  parseUpdateIngestionJobPayload,
+} from "@/lib/admin";
+import {
+  buildProcessConfirmationMessage,
+  buildProcessRequestPayload,
+} from "@/lib/admin-ingestion-review";
 
-type ReviewJobStatus = AdminIngestionJobResponse['job']['status'];
+type ReviewJobStatus = AdminIngestionJobResponse["job"]["status"];
 
-export function hasActiveReviewWorker(jobStatus: ReviewJobStatus | null | undefined) {
-  return jobStatus === 'queued' || jobStatus === 'processing';
+export function hasActiveReviewWorker(
+  jobStatus: ReviewJobStatus | null | undefined,
+) {
+  return jobStatus === "queued" || jobStatus === "processing";
+}
+
+function coerceInteger(value: unknown, fallback?: number): number | undefined {
+  if (typeof value === "number" && Number.isInteger(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+
+    if (/^-?\d+$/u.test(trimmed)) {
+      return Number.parseInt(trimmed, 10);
+    }
+  }
+
+  return fallback;
+}
+
+export function normalizeReviewDraftForAutosave(
+  draft: AdminIngestionDraft | null,
+  fallback?: {
+    year?: number;
+    minYear?: number;
+  },
+) {
+  if (!draft) {
+    return null;
+  }
+
+  const year = coerceInteger(draft.exam.year, fallback?.year);
+  const minYear = coerceInteger(draft.exam.minYear, fallback?.minYear);
+
+  if (
+    typeof year === "number" &&
+    typeof minYear === "number" &&
+    year === draft.exam.year &&
+    minYear === draft.exam.minYear
+  ) {
+    return draft;
+  }
+
+  return {
+    ...draft,
+    exam: {
+      ...draft.exam,
+      year: year ?? fallback?.year ?? 0,
+      minYear: minYear ?? fallback?.minYear ?? year ?? 0,
+    },
+  };
+}
+
+export function hasUnsavedReviewSessionChanges({
+  localRevision,
+  lastSavedRevision,
+}: {
+  localRevision: number;
+  lastSavedRevision: number | null;
+}) {
+  return lastSavedRevision !== null && localRevision !== lastSavedRevision;
 }
 
 export function buildAppliedReviewPayloadState({
@@ -20,19 +93,29 @@ export function buildAppliedReviewPayloadState({
   currentDraft: AdminIngestionDraft | null;
   currentReviewNotes: string;
 }) {
-  const nextReviewNotes = payload.job.review_notes ?? '';
-  const nextSnapshot = buildReviewSessionSnapshot(payload.draft_json, nextReviewNotes);
+  const nextReviewNotes = payload.job.review_notes ?? "";
+  const normalizedServerDraft = normalizeReviewDraftForAutosave(
+    payload.draft_json,
+    {
+      year: payload.job.year,
+      minYear: payload.job.min_year,
+    },
+  );
+  const preservedLocalReviewSession =
+    preserveLocalReviewSession && currentDraft !== null;
 
   return {
     data: payload,
-    draft:
-      preserveLocalReviewSession && currentDraft
-        ? currentDraft
-        : payload.draft_json,
-    reviewNotes: preserveLocalReviewSession
+    draft: preservedLocalReviewSession
+      ? normalizeReviewDraftForAutosave(currentDraft, {
+          year: payload.job.year,
+          minYear: payload.job.min_year,
+        })
+      : normalizedServerDraft,
+    reviewNotes: preservedLocalReviewSession
       ? currentReviewNotes
       : nextReviewNotes,
-    lastSavedSnapshot: nextSnapshot,
+    preservedLocalReviewSession,
     lastSavedAt: payload.job.updated_at,
     clearCorrectionFile: payload.workflow.has_correction_document,
   };
@@ -40,57 +123,53 @@ export function buildAppliedReviewPayloadState({
 
 export function resolveReviewSavePlan({
   draft,
-  snapshot,
+  hasUnsavedChanges,
   jobStatus,
   hasData,
-  lastSavedSnapshot,
 }: {
   draft: AdminIngestionDraft | null;
-  snapshot: string | null;
+  hasUnsavedChanges: boolean;
   jobStatus: ReviewJobStatus | null | undefined;
   hasData: boolean;
-  lastSavedSnapshot: string | null;
 }) {
-  if (!draft || !snapshot) {
-    return 'missing' as const;
+  if (!draft) {
+    return "missing" as const;
   }
 
   if (hasActiveReviewWorker(jobStatus)) {
-    return 'blocked' as const;
+    return "blocked" as const;
   }
 
-  if (snapshot === lastSavedSnapshot && hasData) {
-    return 'unchanged' as const;
+  if (jobStatus === "published") {
+    return "frozen" as const;
   }
 
-  return 'save' as const;
+  if (!hasUnsavedChanges && hasData) {
+    return "unchanged" as const;
+  }
+
+  return "save" as const;
 }
 
 export function shouldWarnBeforeUnload({
-  snapshot,
-  lastSavedSnapshot,
+  hasUnsavedChanges,
   hasSaveInFlight,
 }: {
-  snapshot: string | null;
-  lastSavedSnapshot: string | null;
+  hasUnsavedChanges: boolean;
   hasSaveInFlight: boolean;
 }) {
-  return Boolean(
-    snapshot && (snapshot !== lastSavedSnapshot || hasSaveInFlight),
-  );
+  return hasUnsavedChanges || hasSaveInFlight;
 }
 
 export function shouldScheduleReviewAutosave({
-  reviewSessionSnapshot,
-  lastSavedSnapshot,
+  hasUnsavedChanges,
   saving,
   autosaving,
   processing,
   jobStatus,
   attachingCorrection,
 }: {
-  reviewSessionSnapshot: string | null;
-  lastSavedSnapshot: string | null;
+  hasUnsavedChanges: boolean;
   saving: boolean;
   autosaving: boolean;
   processing: boolean;
@@ -98,9 +177,7 @@ export function shouldScheduleReviewAutosave({
   attachingCorrection: boolean;
 }) {
   if (
-    !reviewSessionSnapshot ||
-    !lastSavedSnapshot ||
-    reviewSessionSnapshot === lastSavedSnapshot ||
+    !hasUnsavedChanges ||
     saving ||
     autosaving ||
     processing ||
@@ -109,29 +186,74 @@ export function shouldScheduleReviewAutosave({
     return false;
   }
 
+  if (jobStatus === "published") {
+    return false;
+  }
+
   return !hasActiveReviewWorker(jobStatus);
 }
 
 export function shouldTriggerQueuedReviewAutosave({
   queuedAutosave,
-  latestSnapshot,
-  lastSavedSnapshot,
+  hasUnsavedChanges,
 }: {
   queuedAutosave: boolean;
-  latestSnapshot: string | null;
-  lastSavedSnapshot: string | null;
+  hasUnsavedChanges: boolean;
 }) {
-  return Boolean(
-    queuedAutosave ||
-      (latestSnapshot && latestSnapshot !== lastSavedSnapshot),
-  );
+  return queuedAutosave || hasUnsavedChanges;
 }
 
-export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
-  const [data, setData] = useState<AdminIngestionJobResponse | null>(null);
-  const [draft, setDraft] = useState<AdminIngestionDraft | null>(null);
-  const [reviewNotes, setReviewNotes] = useState('');
-  const [loading, setLoading] = useState(true);
+export function buildInitialReviewSessionState(
+  initialPayload?: AdminIngestionJobResponse,
+) {
+  if (!initialPayload) {
+    return {
+      data: null,
+      draft: null,
+      reviewNotes: "",
+      loading: true,
+      localRevision: 0,
+      lastSavedRevision: null,
+      lastSavedAt: null,
+    };
+  }
+
+  const applied = buildAppliedReviewPayloadState({
+    payload: initialPayload,
+    preserveLocalReviewSession: false,
+    currentDraft: null,
+    currentReviewNotes: "",
+  });
+
+  return {
+    data: applied.data,
+    draft: applied.draft,
+    reviewNotes: applied.reviewNotes,
+    loading: false,
+    localRevision: 1,
+    lastSavedRevision: 1,
+    lastSavedAt: applied.lastSavedAt,
+  };
+}
+
+export function useAdminIngestionReviewSession({
+  jobId,
+  initialPayload,
+}: {
+  jobId: string;
+  initialPayload?: AdminIngestionJobResponse;
+}) {
+  const initialState = buildInitialReviewSessionState(initialPayload);
+  const [data, setData] = useState<AdminIngestionJobResponse | null>(
+    initialState.data,
+  );
+  const [draft, setDraft] = useState<AdminIngestionDraft | null>(
+    initialState.draft,
+  );
+  const [reviewNotesState, setReviewNotesState] = useState(
+    initialState.reviewNotes,
+  );
+  const [loading, setLoading] = useState(initialState.loading);
   const [saving, setSaving] = useState(false);
   const [autosaving, setAutosaving] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -139,27 +261,66 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [autosaveError, setAutosaveError] = useState<string | null>(null);
-  const [lastSavedSnapshot, setLastSavedSnapshot] = useState<string | null>(null);
-  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
+  const [localRevision, setLocalRevision] = useState(
+    initialState.localRevision,
+  );
+  const [lastSavedRevision, setLastSavedRevision] = useState<number | null>(
+    initialState.lastSavedRevision,
+  );
+  const [lastSavedAt, setLastSavedAt] = useState<string | Date | null>(
+    initialState.lastSavedAt,
+  );
   const [correctionFile, setCorrectionFile] = useState<File | null>(null);
-  const latestDraftRef = useRef<AdminIngestionDraft | null>(null);
-  const latestReviewNotesRef = useRef('');
+  const latestDraftRef = useRef<AdminIngestionDraft | null>(initialState.draft);
+  const latestReviewNotesRef = useRef(initialState.reviewNotes);
+  const localRevisionRef = useRef(initialState.localRevision);
   const autosaveTimerRef = useRef<number | null>(null);
-  const saveInFlightRef = useRef<Promise<AdminIngestionJobResponse> | null>(null);
+  const saveInFlightRef = useRef<Promise<AdminIngestionJobResponse> | null>(
+    null,
+  );
   const queuedAutosaveRef = useRef(false);
-  const lastSavedSnapshotRef = useRef<string | null>(null);
+  const lastSavedRevisionRef = useRef<number | null>(
+    initialState.lastSavedRevision,
+  );
+  const hydratedInitialPayloadJobIdRef = useRef<string | null>(
+    initialPayload?.job.id ?? null,
+  );
 
-  useEffect(() => {
-    latestDraftRef.current = draft;
-  }, [draft]);
+  function setCurrentRevision(nextRevision: number) {
+    localRevisionRef.current = nextRevision;
+    setLocalRevision(nextRevision);
+  }
 
-  useEffect(() => {
-    latestReviewNotesRef.current = reviewNotes;
-  }, [reviewNotes]);
+  function setSavedRevision(nextRevision: number | null) {
+    lastSavedRevisionRef.current = nextRevision;
+    setLastSavedRevision(nextRevision);
+  }
+
+  function bumpLocalRevision() {
+    const nextRevision = localRevisionRef.current + 1;
+    setCurrentRevision(nextRevision);
+    return nextRevision;
+  }
+
+  function replaceLocalReviewSession(
+    nextDraft: AdminIngestionDraft | null,
+    nextReviewNotes: string,
+  ) {
+    latestDraftRef.current = nextDraft;
+    latestReviewNotesRef.current = nextReviewNotes;
+    setDraft(nextDraft);
+    setReviewNotesState(nextReviewNotes);
+    const nextRevision = localRevisionRef.current + 1;
+    setCurrentRevision(nextRevision);
+    setSavedRevision(nextRevision);
+  }
 
   function applyPayload(
     payload: AdminIngestionJobResponse,
-    options?: { preserveLocalReviewSession?: boolean },
+    options?: {
+      preserveLocalReviewSession?: boolean;
+      savedRevision?: number | null;
+    },
   ) {
     const applied = buildAppliedReviewPayloadState({
       payload,
@@ -169,24 +330,41 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
     });
 
     setData(applied.data);
-    lastSavedSnapshotRef.current = applied.lastSavedSnapshot;
-    setLastSavedSnapshot(applied.lastSavedSnapshot);
     setLastSavedAt(applied.lastSavedAt);
     setAutosaveError(null);
-    setDraft(applied.draft);
-    setReviewNotes(applied.reviewNotes);
 
     if (applied.clearCorrectionFile) {
       setCorrectionFile(null);
     }
+
+    if (applied.preservedLocalReviewSession) {
+      setSavedRevision(options?.savedRevision ?? localRevisionRef.current);
+      return;
+    }
+
+    replaceLocalReviewSession(applied.draft, applied.reviewNotes);
   }
 
   useEffect(() => {
+    if (initialPayload?.job.id === jobId) {
+      if (hydratedInitialPayloadJobIdRef.current !== jobId) {
+        setError(null);
+        setNotice(null);
+        applyPayload(initialPayload);
+        hydratedInitialPayloadJobIdRef.current = jobId;
+      }
+
+      setLoading(false);
+      return;
+    }
+
+    hydratedInitialPayloadJobIdRef.current = null;
     const controller = new AbortController();
 
     async function loadJob() {
       setLoading(true);
       setError(null);
+      setNotice(null);
 
       try {
         const payload = await fetchAdminJson<AdminIngestionJobResponse>(
@@ -194,12 +372,13 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
           {
             signal: controller.signal,
           },
+          parseAdminIngestionJobResponse,
         );
 
         applyPayload(payload);
       } catch (loadError) {
-        if (!(loadError instanceof Error) || loadError.name !== 'AbortError') {
-          setError('Failed to load ingestion job.');
+        if (!(loadError instanceof Error) || loadError.name !== "AbortError") {
+          setError("Failed to load ingestion job.");
         }
       } finally {
         setLoading(false);
@@ -211,7 +390,9 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
     return () => {
       controller.abort();
     };
-  }, [jobId]);
+    // Loading is keyed by job id; we intentionally avoid depending on the recreated applyPayload helper.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialPayload, jobId]);
 
   useEffect(() => {
     return () => {
@@ -223,27 +404,24 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      const snapshot = buildReviewSessionSnapshot(
-        latestDraftRef.current,
-        latestReviewNotesRef.current,
-      );
-
       if (
         shouldWarnBeforeUnload({
-          snapshot,
-          lastSavedSnapshot: lastSavedSnapshotRef.current,
+          hasUnsavedChanges: hasUnsavedReviewSessionChanges({
+            localRevision: localRevisionRef.current,
+            lastSavedRevision: lastSavedRevisionRef.current,
+          }),
           hasSaveInFlight: Boolean(saveInFlightRef.current),
         })
       ) {
         event.preventDefault();
-        event.returnValue = '';
+        event.returnValue = "";
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -253,7 +431,11 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
     }
 
     const intervalId = window.setInterval(() => {
-      void fetchAdminJson<AdminIngestionJobResponse>(`/ingestion/jobs/${jobId}`)
+      void fetchAdminJson<AdminIngestionJobResponse>(
+        `/ingestion/jobs/${jobId}`,
+        undefined,
+        parseAdminIngestionJobResponse,
+      )
         .then((payload) => {
           applyPayload(payload);
         })
@@ -263,11 +445,15 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
     return () => {
       window.clearInterval(intervalId);
     };
+    // Polling is keyed by job status and id; we intentionally avoid depending on the recreated applyPayload helper.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.job.status, jobId]);
 
   async function refreshJob() {
     const payload = await fetchAdminJson<AdminIngestionJobResponse>(
       `/ingestion/jobs/${jobId}`,
+      undefined,
+      parseAdminIngestionJobResponse,
     );
     applyPayload(payload);
     return payload;
@@ -275,22 +461,57 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
   async function saveDraft(options?: { autosave?: boolean }) {
     const autosave = options?.autosave ?? false;
-    const draftToSave = latestDraftRef.current;
+    const draftToSave = normalizeReviewDraftForAutosave(
+      latestDraftRef.current,
+      {
+        year: data?.job.year,
+        minYear: data?.job.min_year,
+      },
+    );
     const reviewNotesToSave = latestReviewNotesRef.current;
-    const snapshotToSave = buildReviewSessionSnapshot(draftToSave, reviewNotesToSave);
+    const revisionToSave = localRevisionRef.current;
     const savePlan = resolveReviewSavePlan({
       draft: draftToSave,
-      snapshot: snapshotToSave,
+      hasUnsavedChanges: hasUnsavedReviewSessionChanges({
+        localRevision: revisionToSave,
+        lastSavedRevision: lastSavedRevisionRef.current,
+      }),
       jobStatus: data?.job.status,
       hasData: Boolean(data),
-      lastSavedSnapshot: lastSavedSnapshotRef.current,
     });
 
-    if (savePlan === 'missing') {
-      throw new Error('Draft is not loaded yet.');
+    if (savePlan === "missing") {
+      throw new Error("Draft is not loaded yet.");
     }
 
-    if (savePlan === 'blocked' || savePlan === 'unchanged') {
+    if (savePlan === "blocked") {
+      if (!autosave) {
+        setError(
+          "Queued or active ingestion jobs cannot be edited until processing finishes.",
+        );
+        setNotice(null);
+      }
+
+      return data;
+    }
+
+    if (savePlan === "frozen") {
+      if (!autosave) {
+        setError(
+          "Published ingestion jobs are frozen. Start a revision from the live library to make further changes.",
+        );
+        setNotice(null);
+      }
+
+      return data;
+    }
+
+    if (savePlan === "unchanged") {
+      if (!autosave) {
+        setError(null);
+        setNotice("All changes are already saved.");
+      }
+
       return data;
     }
 
@@ -322,31 +543,35 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
     const request = (async () => {
       try {
+        const body: UpdateIngestionJobPayload = parseUpdateIngestionJobPayload({
+          draft_json: draftToSave ?? undefined,
+          review_notes: reviewNotesToSave,
+        });
         const payload = await fetchAdminJson<AdminIngestionJobResponse>(
           `/ingestion/jobs/${jobId}`,
           {
-            method: 'PATCH',
-            body: JSON.stringify({
-              draft_json: draftToSave,
-              review_notes: reviewNotesToSave,
-            }),
+            method: "PATCH",
+            body: JSON.stringify(body),
           },
+          parseAdminIngestionJobResponse,
         );
 
         saveSucceeded = true;
 
-        const latestSnapshot = buildReviewSessionSnapshot(
-          latestDraftRef.current,
-          latestReviewNotesRef.current,
-        );
-        const preserveLocalReviewSession = latestSnapshot !== snapshotToSave;
+        const preserveLocalReviewSession =
+          localRevisionRef.current !== revisionToSave;
 
         applyPayload(payload, {
           preserveLocalReviewSession,
+          savedRevision: revisionToSave,
         });
 
         if (!autosave) {
-          setNotice('Draft saved.');
+          setNotice(
+            data?.job.draft_kind === "revision"
+              ? "Revision saved."
+              : "Draft saved.",
+          );
         }
 
         if (preserveLocalReviewSession) {
@@ -358,7 +583,7 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
         const detail =
           saveError instanceof Error
             ? saveError.message
-            : 'Failed to save draft.';
+            : "Failed to save draft.";
 
         if (autosave) {
           setAutosaveError(detail);
@@ -377,16 +602,15 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
         }
 
         if (saveSucceeded) {
-          const latestSnapshot = buildReviewSessionSnapshot(
-            latestDraftRef.current,
-            latestReviewNotesRef.current,
-          );
+          const latestHasUnsavedChanges = hasUnsavedReviewSessionChanges({
+            localRevision: localRevisionRef.current,
+            lastSavedRevision: lastSavedRevisionRef.current,
+          });
 
           if (
             shouldTriggerQueuedReviewAutosave({
               queuedAutosave: queuedAutosaveRef.current,
-              latestSnapshot,
-              lastSavedSnapshot: lastSavedSnapshotRef.current,
+              hasUnsavedChanges: latestHasUnsavedChanges,
             }) &&
             !saveInFlightRef.current
           ) {
@@ -407,7 +631,10 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
     return request;
   }
 
-  const reviewSessionSnapshot = buildReviewSessionSnapshot(draft, reviewNotes);
+  const hasUnsavedChanges = hasUnsavedReviewSessionChanges({
+    localRevision,
+    lastSavedRevision,
+  });
   const autosaveDelay = autosaveError ? 5000 : 1400;
 
   useEffect(() => {
@@ -418,8 +645,7 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
     if (
       !shouldScheduleReviewAutosave({
-        reviewSessionSnapshot,
-        lastSavedSnapshot,
+        hasUnsavedChanges,
         saving,
         autosaving,
         processing,
@@ -443,39 +669,35 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
         autosaveTimerRef.current = null;
       }
     };
-  // Autosave should react to review-session changes, not to the recreated save helper identity.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Autosave should react to review-session changes, not to the recreated save helper identity.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     attachingCorrection,
     autosaveDelay,
     autosaving,
     data?.job.status,
-    lastSavedSnapshot,
+    hasUnsavedChanges,
     processing,
-    reviewSessionSnapshot,
     saving,
   ]);
 
   async function processJob(
     workflow: Pick<
-      AdminIngestionJobResponse['workflow'],
-      'can_process' | 'review_started'
+      AdminIngestionJobResponse["workflow"],
+      "can_process" | "review_started"
     >,
   ) {
     if (!workflow.can_process) {
-      setError('Add the correction PDF before processing this job.');
+      setError("Add the correction PDF before processing this job.");
       return;
     }
 
-    const forceReprocess =
-      workflow.review_started &&
-      !window.confirm(
-        'Reprocessing will rerun extraction and can replace reviewed draft edits. Continue?',
-      )
-        ? null
-        : workflow.review_started;
+    const confirmationMessage = buildProcessConfirmationMessage({
+      workflow,
+      jobStatus: data?.job.status ?? "draft",
+    });
 
-    if (forceReprocess === null) {
+    if (confirmationMessage && !window.confirm(confirmationMessage)) {
       return;
     }
 
@@ -487,22 +709,26 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
       const payload = await fetchAdminJson<AdminIngestionJobResponse>(
         `/ingestion/jobs/${jobId}/process`,
         {
-          method: 'POST',
-          body: JSON.stringify({
-            force_reprocess: forceReprocess,
-          }),
+          method: "POST",
+          body: JSON.stringify(
+            buildProcessRequestPayload({
+              workflow,
+              jobStatus: data?.job.status ?? "draft",
+            }),
+          ),
         },
+        parseAdminIngestionJobResponse,
       );
 
       applyPayload(payload);
       setNotice(
-        'Background processing queued. This page will refresh automatically when the worker updates the draft.',
+        "Background processing queued. This page will refresh automatically when the worker updates the draft.",
       );
     } catch (processError) {
       setError(
         processError instanceof Error
           ? processError.message
-          : 'Failed to process source PDFs.',
+          : "Failed to process source PDFs.",
       );
     } finally {
       setProcessing(false);
@@ -511,7 +737,7 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
   async function attachCorrection() {
     if (!correctionFile) {
-      setError('Choose a correction PDF before uploading it.');
+      setError("Choose a correction PDF before uploading it.");
       return;
     }
 
@@ -521,20 +747,21 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
     try {
       const payload = new FormData();
-      payload.set('correction_pdf', correctionFile);
+      payload.set("correction_pdf", correctionFile);
       const response = await fetchAdmin(`/ingestion/jobs/${jobId}/correction`, {
-        method: 'POST',
+        method: "POST",
         body: payload,
       });
-      const nextPayload =
-        (await response.json()) as AdminIngestionJobResponse;
+      const nextPayload = parseAdminIngestionJobResponse(
+        await response.json(),
+      );
       applyPayload(nextPayload);
-      setNotice('Correction PDF attached. The job can now be processed.');
+      setNotice("Correction PDF attached. The job can now be processed.");
     } catch (attachError) {
       setError(
         attachError instanceof Error
           ? attachError.message
-          : 'Failed to attach correction PDF.',
+          : "Failed to attach correction PDF.",
       );
     } finally {
       setAttachingCorrection(false);
@@ -543,7 +770,24 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
   async function approveJob() {
     try {
-      await saveDraft();
+      const savedPayload = await saveDraft();
+      const status = savedPayload?.job.status ?? data?.job.status;
+
+      if (status === "published") {
+        setError(
+          "Published ingestion jobs are frozen. Start a revision from the live library to make further changes.",
+        );
+        return;
+      }
+
+      if (status === "approved") {
+        setNotice(
+          data?.job.draft_kind === "revision"
+            ? "Revision already approved."
+            : "Draft already approved.",
+        );
+        return;
+      }
     } catch {
       return;
     }
@@ -556,17 +800,22 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
       const payload = await fetchAdminJson<AdminIngestionJobResponse>(
         `/ingestion/jobs/${jobId}/approve`,
         {
-          method: 'POST',
+          method: "POST",
         },
+        parseAdminIngestionJobResponse,
       );
 
       applyPayload(payload);
-      setNotice('Draft approved.');
+      setNotice(
+        data?.job.draft_kind === "revision"
+          ? "Revision approved."
+          : "Draft approved.",
+      );
     } catch (approveError) {
       setError(
         approveError instanceof Error
           ? approveError.message
-          : 'Failed to approve draft.',
+          : "Failed to approve draft.",
       );
     } finally {
       setSaving(false);
@@ -575,12 +824,22 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
 
   async function approveAndPublish() {
     if (!data) {
-      setError('Ingestion job is not loaded yet.');
+      setError("Ingestion job is not loaded yet.");
       return;
     }
 
+    let status = data.job.status;
+
     try {
-      await saveDraft();
+      const savedPayload = await saveDraft();
+      status = savedPayload?.job.status ?? data.job.status;
+
+      if (status === "published") {
+        setError(
+          "Published ingestion jobs are frozen. Start a revision from the live library to make further changes.",
+        );
+        return;
+      }
     } catch {
       return;
     }
@@ -590,35 +849,34 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
     setNotice(null);
 
     try {
-      let status = data.job.status;
-
-      if (status !== 'approved' && status !== 'published') {
+      if (status !== "approved") {
         const approvedPayload = await fetchAdminJson<AdminIngestionJobResponse>(
           `/ingestion/jobs/${jobId}/approve`,
           {
-            method: 'POST',
+            method: "POST",
           },
+          parseAdminIngestionJobResponse,
         );
         applyPayload(approvedPayload);
         status = approvedPayload.job.status;
       }
 
-      if (status === 'approved' || status === 'published') {
+      if (status === "approved") {
         await fetchAdminJson(`/ingestion/jobs/${jobId}/publish`, {
-          method: 'POST',
+          method: "POST",
         });
         await refreshJob();
         setNotice(
-          status === 'published'
-            ? 'Draft published to live exam tables.'
-            : 'Draft approved and published to live exam tables.',
+          data.job.draft_kind === "revision"
+            ? "Revision approved and published to live exam tables."
+            : "Draft approved and published to live exam tables.",
         );
       }
     } catch (publishError) {
       setError(
         publishError instanceof Error
           ? publishError.message
-          : 'Failed to approve and publish draft.',
+          : "Failed to approve and publish draft.",
       );
     } finally {
       setSaving(false);
@@ -626,17 +884,27 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
   }
 
   function syncDraft(nextDraft: AdminIngestionDraft) {
+    latestDraftRef.current = nextDraft;
     setDraft(nextDraft);
+    bumpLocalRevision();
   }
 
   function updateDraft(
     mutator: (current: AdminIngestionDraft) => AdminIngestionDraft,
   ) {
-    if (!draft) {
+    const currentDraft = latestDraftRef.current;
+
+    if (!currentDraft) {
       return;
     }
 
-    syncDraft(mutator(draft));
+    syncDraft(mutator(currentDraft));
+  }
+
+  function setReviewNotes(nextReviewNotes: string) {
+    latestReviewNotesRef.current = nextReviewNotes;
+    setReviewNotesState(nextReviewNotes);
+    bumpLocalRevision();
   }
 
   return {
@@ -650,10 +918,10 @@ export function useAdminIngestionReviewSession({ jobId }: { jobId: string }) {
     error,
     notice,
     autosaveError,
-    lastSavedSnapshot,
+    hasUnsavedChanges,
     lastSavedAt,
     correctionFile,
-    reviewNotes,
+    reviewNotes: reviewNotesState,
     setReviewNotes,
     setCorrectionFile,
     syncDraft,

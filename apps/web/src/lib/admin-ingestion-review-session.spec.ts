@@ -1,31 +1,37 @@
-import { describe, expect, it } from 'vitest';
-import type { AdminIngestionDraft, AdminIngestionJobResponse } from '@/lib/admin';
+import { describe, expect, it } from "vitest";
+import type {
+  AdminIngestionDraft,
+  AdminIngestionJobResponse,
+} from "@/lib/admin";
 import {
   buildAppliedReviewPayloadState,
+  buildInitialReviewSessionState,
+  hasUnsavedReviewSessionChanges,
   hasActiveReviewWorker,
+  normalizeReviewDraftForAutosave,
   resolveReviewSavePlan,
   shouldScheduleReviewAutosave,
   shouldTriggerQueuedReviewAutosave,
   shouldWarnBeforeUnload,
-} from './admin-ingestion-review-session';
+} from "./admin-ingestion-review-session";
 
 function createDraft(): AdminIngestionDraft {
   return {
-    schema: '1',
+    schema: "bac_ingestion_draft/v1",
     exam: {
       year: 2025,
-      streamCode: 'SE',
-      subjectCode: 'MATHEMATICS',
-      sessionType: 'NORMAL',
-      provider: 'manual',
-      title: 'BAC 2025 Mathematics SE',
+      streamCode: "SE",
+      subjectCode: "MATHEMATICS",
+      sessionType: "NORMAL",
+      provider: "manual",
+      title: "BAC 2025 Mathematics SE",
       minYear: 2008,
       sourceListingUrl: null,
       sourceExamPageUrl: null,
       sourceCorrectionPageUrl: null,
-      examDocumentId: 'doc-exam',
+      examDocumentId: "doc-exam",
       correctionDocumentId: null,
-      examDocumentStorageKey: 'exam.pdf',
+      examDocumentStorageKey: "exam.pdf",
       correctionDocumentStorageKey: null,
       metadata: {},
     },
@@ -38,22 +44,22 @@ function createDraft(): AdminIngestionDraft {
 function createPayload(): AdminIngestionJobResponse {
   return {
     job: {
-      id: 'job-1',
-      label: 'BAC 2025 Mathematics SE',
-      provider: 'manual',
+      id: "job-1",
+      label: "BAC 2025 Mathematics SE",
+      draft_kind: "ingestion",
+      provider: "manual",
       year: 2025,
-      stream_code: 'SE',
-      subject_code: 'MATHEMATICS',
-      session: 'normal',
+      stream_codes: ["SE"],
+      subject_code: "MATHEMATICS",
+      session: "normal",
       min_year: 2008,
-      status: 'draft',
-      review_notes: 'Server notes',
+      status: "draft",
+      review_notes: "Server notes",
       error_message: null,
-      published_exam_id: null,
       published_paper_id: null,
       published_exams: [],
-      created_at: '2026-03-29T09:00:00.000Z',
-      updated_at: '2026-03-29T10:00:00.000Z',
+      created_at: "2026-03-29T09:00:00.000Z",
+      updated_at: "2026-03-29T10:00:00.000Z",
     },
     workflow: {
       has_exam_document: true,
@@ -64,7 +70,7 @@ function createPayload(): AdminIngestionJobResponse {
     },
     documents: [],
     draft_json: createDraft(),
-    asset_preview_base_url: 'https://example.com/assets',
+    asset_preview_base_url: "https://example.com/assets",
     validation: {
       errors: [],
       warnings: [],
@@ -75,59 +81,63 @@ function createPayload(): AdminIngestionJobResponse {
   };
 }
 
-describe('admin ingestion review session helpers', () => {
-  it('detects worker-active statuses and save plans', () => {
+describe("admin ingestion review session helpers", () => {
+  it("detects worker-active statuses and save plans", () => {
     const draft = createDraft();
 
-    expect(hasActiveReviewWorker('queued')).toBe(true);
-    expect(hasActiveReviewWorker('processing')).toBe(true);
-    expect(hasActiveReviewWorker('draft')).toBe(false);
+    expect(hasActiveReviewWorker("queued")).toBe(true);
+    expect(hasActiveReviewWorker("processing")).toBe(true);
+    expect(hasActiveReviewWorker("draft")).toBe(false);
 
     expect(
       resolveReviewSavePlan({
         draft: null,
-        snapshot: null,
-        jobStatus: 'draft',
+        hasUnsavedChanges: false,
+        jobStatus: "draft",
         hasData: false,
-        lastSavedSnapshot: null,
       }),
-    ).toBe('missing');
+    ).toBe("missing");
     expect(
       resolveReviewSavePlan({
         draft,
-        snapshot: '{"draft":1}',
-        jobStatus: 'processing',
+        hasUnsavedChanges: true,
+        jobStatus: "processing",
         hasData: true,
-        lastSavedSnapshot: null,
       }),
-    ).toBe('blocked');
+    ).toBe("blocked");
     expect(
       resolveReviewSavePlan({
         draft,
-        snapshot: '{"draft":1}',
-        jobStatus: 'draft',
+        hasUnsavedChanges: false,
+        jobStatus: "draft",
         hasData: true,
-        lastSavedSnapshot: '{"draft":1}',
       }),
-    ).toBe('unchanged');
+    ).toBe("unchanged");
     expect(
       resolveReviewSavePlan({
         draft,
-        snapshot: '{"draft":2}',
-        jobStatus: 'draft',
+        hasUnsavedChanges: true,
+        jobStatus: "published",
         hasData: true,
-        lastSavedSnapshot: '{"draft":1}',
       }),
-    ).toBe('save');
+    ).toBe("frozen");
+    expect(
+      resolveReviewSavePlan({
+        draft,
+        hasUnsavedChanges: true,
+        jobStatus: "draft",
+        hasData: true,
+      }),
+    ).toBe("save");
   });
 
-  it('applies payloads while optionally preserving local review session changes', () => {
+  it("applies payloads while optionally preserving local review session changes", () => {
     const payload = createPayload();
     const localDraft = {
       ...createDraft(),
       exam: {
         ...createDraft().exam,
-        title: 'Local title',
+        title: "Local title",
       },
     };
 
@@ -136,11 +146,12 @@ describe('admin ingestion review session helpers', () => {
         payload,
         preserveLocalReviewSession: false,
         currentDraft: localDraft,
-        currentReviewNotes: 'Local notes',
+        currentReviewNotes: "Local notes",
       }),
     ).toMatchObject({
       draft: payload.draft_json,
-      reviewNotes: 'Server notes',
+      reviewNotes: "Server notes",
+      preservedLocalReviewSession: false,
       lastSavedAt: payload.job.updated_at,
       clearCorrectionFile: true,
     });
@@ -150,51 +161,103 @@ describe('admin ingestion review session helpers', () => {
         payload,
         preserveLocalReviewSession: true,
         currentDraft: localDraft,
-        currentReviewNotes: 'Local notes',
+        currentReviewNotes: "Local notes",
       }),
     ).toMatchObject({
       draft: localDraft,
-      reviewNotes: 'Local notes',
+      reviewNotes: "Local notes",
+      preservedLocalReviewSession: true,
       lastSavedAt: payload.job.updated_at,
       clearCorrectionFile: true,
     });
   });
 
-  it('evaluates before-unload, autosave, and queued autosave rules', () => {
+  it("builds initial review session state from a server payload", () => {
+    expect(buildInitialReviewSessionState()).toMatchObject({
+      data: null,
+      draft: null,
+      reviewNotes: "",
+      loading: true,
+      localRevision: 0,
+      lastSavedRevision: null,
+      lastSavedAt: null,
+    });
+
+    expect(buildInitialReviewSessionState(createPayload())).toMatchObject({
+      data: createPayload(),
+      draft: createPayload().draft_json,
+      reviewNotes: "Server notes",
+      loading: false,
+      localRevision: 1,
+      lastSavedRevision: 1,
+      lastSavedAt: createPayload().job.updated_at,
+    });
+  });
+
+  it("normalizes legacy string year values before autosave", () => {
+    const malformedDraft = {
+      ...createDraft(),
+      exam: {
+        ...createDraft().exam,
+        year: "2025",
+        minYear: "2008",
+      },
+    } as unknown as AdminIngestionDraft;
+
+    expect(
+      normalizeReviewDraftForAutosave(malformedDraft, {
+        year: 2025,
+        minYear: 2008,
+      }),
+    ).toMatchObject({
+      exam: {
+        year: 2025,
+        minYear: 2008,
+      },
+    });
+  });
+
+  it("evaluates before-unload, autosave, and queued autosave rules", () => {
     expect(
       shouldWarnBeforeUnload({
-        snapshot: '{"draft":1}',
-        lastSavedSnapshot: '{"draft":1}',
+        hasUnsavedChanges: false,
         hasSaveInFlight: false,
       }),
     ).toBe(false);
     expect(
       shouldWarnBeforeUnload({
-        snapshot: '{"draft":2}',
-        lastSavedSnapshot: '{"draft":1}',
+        hasUnsavedChanges: true,
         hasSaveInFlight: false,
       }),
     ).toBe(true);
 
     expect(
       shouldScheduleReviewAutosave({
-        reviewSessionSnapshot: '{"draft":2}',
-        lastSavedSnapshot: '{"draft":1}',
+        hasUnsavedChanges: true,
         saving: false,
         autosaving: false,
         processing: false,
-        jobStatus: 'draft',
+        jobStatus: "draft",
         attachingCorrection: false,
       }),
     ).toBe(true);
     expect(
       shouldScheduleReviewAutosave({
-        reviewSessionSnapshot: '{"draft":2}',
-        lastSavedSnapshot: '{"draft":1}',
+        hasUnsavedChanges: true,
         saving: false,
         autosaving: false,
         processing: false,
-        jobStatus: 'queued',
+        jobStatus: "queued",
+        attachingCorrection: false,
+      }),
+    ).toBe(false);
+    expect(
+      shouldScheduleReviewAutosave({
+        hasUnsavedChanges: true,
+        saving: false,
+        autosaving: false,
+        processing: false,
+        jobStatus: "published",
         attachingCorrection: false,
       }),
     ).toBe(false);
@@ -202,15 +265,34 @@ describe('admin ingestion review session helpers', () => {
     expect(
       shouldTriggerQueuedReviewAutosave({
         queuedAutosave: false,
-        latestSnapshot: '{"draft":2}',
-        lastSavedSnapshot: '{"draft":1}',
+        hasUnsavedChanges: true,
       }),
     ).toBe(true);
     expect(
       shouldTriggerQueuedReviewAutosave({
         queuedAutosave: false,
-        latestSnapshot: '{"draft":1}',
-        lastSavedSnapshot: '{"draft":1}',
+        hasUnsavedChanges: false,
+      }),
+    ).toBe(false);
+  });
+
+  it("tracks unsaved state from local and saved revisions", () => {
+    expect(
+      hasUnsavedReviewSessionChanges({
+        localRevision: 4,
+        lastSavedRevision: 4,
+      }),
+    ).toBe(false);
+    expect(
+      hasUnsavedReviewSessionChanges({
+        localRevision: 5,
+        lastSavedRevision: 4,
+      }),
+    ).toBe(true);
+    expect(
+      hasUnsavedReviewSessionChanges({
+        localRevision: 1,
+        lastSavedRevision: null,
       }),
     ).toBe(false);
   });

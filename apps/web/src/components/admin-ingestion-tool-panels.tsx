@@ -36,7 +36,7 @@ export function AdminIngestionToolPanelShell({
 }: {
   mode: "snippet" | "native" | "asset";
   title: string;
-  description: string;
+  description?: string;
   disabled: boolean;
   onClose: () => void;
   children: ReactNode;
@@ -64,7 +64,7 @@ export function AdminIngestionToolPanelShell({
                   : "Asset Builder"}
             </p>
             <h2>{title}</h2>
-            <p className="muted-text">{description}</p>
+            {description ? <p className="muted-text">{description}</p> : null}
           </div>
 
           <div className="block-item-actions">
@@ -118,7 +118,7 @@ export function AdminIngestionSnippetToolPanel({
   onSnippetSourcePageChange: (sourcePageId: string) => void;
   onSnippetCropPreviewChange: (cropBox: CropBox | null) => void;
   onSnippetCropChange: (cropBox: CropBox) => void;
-  onRecoverSnippet: (mode: "text" | "latex") => void;
+  onRecoverSnippet: () => void;
 }) {
   return (
     <div className="ingestion-tool-layout">
@@ -138,7 +138,7 @@ export function AdminIngestionSnippetToolPanel({
         ) : (
           <section className="admin-context-card">
             <p className="muted-text">
-              Select a source page to start cropping the missed sentence or
+              Select a source page to start cropping the missed text or
               formula.
             </p>
           </section>
@@ -228,30 +228,14 @@ export function AdminIngestionSnippetToolPanel({
               disabled={
                 !selectedBlock || !snippetCropBox || snippetRecoveryMode !== null
               }
-              onClick={() => {
-                onRecoverSnippet("text");
-              }}
+              onClick={onRecoverSnippet}
             >
-              {snippetRecoveryMode === "text" ? "Recovering…" : "Recover Text"}
-            </button>
-            <button
-              type="button"
-              className="btn-secondary"
-              disabled={
-                !selectedBlock || !snippetCropBox || snippetRecoveryMode !== null
-              }
-              onClick={() => {
-                onRecoverSnippet("latex");
-              }}
-            >
-              {snippetRecoveryMode === "latex"
-                ? "Recovering…"
-                : "Recover LaTeX"}
+              {snippetRecoveryMode !== null ? "Recovering…" : "Recover Text"}
             </button>
           </div>
           <p className="muted-text">
-            This is for OCR mistakes and missed lines only. The cropped snippet
-            is temporary and does not create a permanent asset.
+            This is for OCR mistakes, missed lines, and formulas only. The
+            cropped snippet is temporary and does not create a permanent asset.
           </p>
           {snippetRecoveryError ? (
             <p className="error-text">{snippetRecoveryError}</p>

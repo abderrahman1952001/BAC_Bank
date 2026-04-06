@@ -1,9 +1,10 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 import type {
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
-} from '@/lib/admin';
+} from "@/lib/admin";
 import {
+  buildManualUploadTitle,
   buildGroupedStatuses,
   buildProcessJobActionState,
   buildStatusCounts,
@@ -11,21 +12,22 @@ import {
   filterJobs,
   formatSession,
   toJobSummary,
-} from './admin-ingestion-page';
+} from "./admin-ingestion-page";
 
 function createJobSummary(
   overrides: Partial<AdminIngestionJobSummary> = {},
 ): AdminIngestionJobSummary {
   const base: AdminIngestionJobSummary = {
-    id: 'job-1',
-    label: 'BAC 2025 Mathematics SE',
-    provider: 'manual',
+    id: "job-1",
+    label: "BAC 2025 Mathematics SE",
+    draft_kind: "ingestion",
+    provider: "manual",
     year: 2025,
-    stream_code: 'SE',
-    subject_code: 'MATHEMATICS',
-    session: 'normal',
+    stream_codes: ["SE"],
+    subject_code: "MATHEMATICS",
+    session: "normal",
     min_year: 2008,
-    status: 'draft',
+    status: "draft",
     source_document_count: 2,
     source_page_count: 6,
     workflow: {
@@ -35,11 +37,10 @@ function createJobSummary(
       can_process: true,
       review_started: false,
     },
-    published_exam_id: null,
     published_paper_id: null,
     published_exams: [],
-    created_at: '2026-03-29T09:00:00.000Z',
-    updated_at: '2026-03-29T10:00:00.000Z',
+    created_at: "2026-03-29T09:00:00.000Z",
+    updated_at: "2026-03-29T10:00:00.000Z",
   };
 
   return {
@@ -50,47 +51,57 @@ function createJobSummary(
   };
 }
 
-describe('admin ingestion page helpers', () => {
-  it('formats sessions and compares jobs by year then recency', () => {
+describe("admin ingestion page helpers", () => {
+  it("builds default manual-upload titles from selected metadata", () => {
+    expect(
+      buildManualUploadTitle({
+        year: 2026,
+        subjectCode: "mathematics",
+        paperStreamCodes: [" se ", "tm"],
+      }),
+    ).toBe("BAC 2026 · MATHEMATICS · SE · TM");
+  });
+
+  it("formats sessions and compares jobs by year then recency", () => {
     const newer = createJobSummary({
-      id: 'job-newer',
-      updated_at: '2026-03-29T11:00:00.000Z',
+      id: "job-newer",
+      updated_at: "2026-03-29T11:00:00.000Z",
     });
     const older = createJobSummary({
-      id: 'job-older',
-      updated_at: '2026-03-29T08:00:00.000Z',
+      id: "job-older",
+      updated_at: "2026-03-29T08:00:00.000Z",
     });
     const olderYear = createJobSummary({
-      id: 'job-old-year',
+      id: "job-old-year",
       year: 2024,
-      updated_at: '2026-03-29T12:00:00.000Z',
+      updated_at: "2026-03-29T12:00:00.000Z",
     });
 
-    expect(formatSession('rattrapage')).toBe('Rattrapage');
-    expect(formatSession('normal')).toBe('Normal');
+    expect(formatSession("rattrapage")).toBe("Rattrapage");
+    expect(formatSession("normal")).toBe("Normal");
     expect(compareJobs(newer, older)).toBeLessThan(0);
     expect(compareJobs(newer, olderYear)).toBeLessThan(0);
   });
 
-  it('maps ingestion job responses to summaries with document and page totals', () => {
+  it("maps ingestion job responses to summaries with document and page totals", () => {
     const payload: AdminIngestionJobResponse = {
       job: {
-        id: 'job-1',
-        label: 'BAC 2025 Mathematics SE',
-        provider: 'manual',
+        id: "job-1",
+        label: "BAC 2025 Mathematics SE",
+        draft_kind: "ingestion",
+        provider: "manual",
         year: 2025,
-        stream_code: 'SE',
-        subject_code: 'MATHEMATICS',
-        session: 'normal',
+        stream_codes: ["SE"],
+        subject_code: "MATHEMATICS",
+        session: "normal",
         min_year: 2008,
-        status: 'draft',
+        status: "draft",
         review_notes: null,
         error_message: null,
-        published_exam_id: null,
         published_paper_id: null,
         published_exams: [],
-        created_at: '2026-03-29T09:00:00.000Z',
-        updated_at: '2026-03-29T10:00:00.000Z',
+        created_at: "2026-03-29T09:00:00.000Z",
+        updated_at: "2026-03-29T10:00:00.000Z",
       },
       workflow: {
         has_exam_document: true,
@@ -101,77 +112,77 @@ describe('admin ingestion page helpers', () => {
       },
       documents: [
         {
-          id: 'doc-exam',
-          kind: 'exam',
-          file_name: 'exam.pdf',
-          mime_type: 'application/pdf',
+          id: "doc-exam",
+          kind: "exam",
+          file_name: "exam.pdf",
+          mime_type: "application/pdf",
           page_count: 2,
           sha256: null,
           source_url: null,
-          storage_key: 'exam.pdf',
-          download_url: 'https://example.com/exam.pdf',
+          storage_key: "exam.pdf",
+          download_url: "https://example.com/exam.pdf",
           pages: [
             {
-              id: 'page-1',
+              id: "page-1",
               page_number: 1,
               width: 1000,
               height: 1400,
-              image_url: 'https://example.com/page-1.jpg',
+              image_url: "https://example.com/page-1.jpg",
             },
             {
-              id: 'page-2',
+              id: "page-2",
               page_number: 2,
               width: 1000,
               height: 1400,
-              image_url: 'https://example.com/page-2.jpg',
+              image_url: "https://example.com/page-2.jpg",
             },
           ],
         },
         {
-          id: 'doc-correction',
-          kind: 'correction',
-          file_name: 'correction.pdf',
-          mime_type: 'application/pdf',
+          id: "doc-correction",
+          kind: "correction",
+          file_name: "correction.pdf",
+          mime_type: "application/pdf",
           page_count: 1,
           sha256: null,
           source_url: null,
-          storage_key: 'correction.pdf',
-          download_url: 'https://example.com/correction.pdf',
+          storage_key: "correction.pdf",
+          download_url: "https://example.com/correction.pdf",
           pages: [
             {
-              id: 'page-3',
+              id: "page-3",
               page_number: 1,
               width: 1000,
               height: 1400,
-              image_url: 'https://example.com/page-3.jpg',
+              image_url: "https://example.com/page-3.jpg",
             },
           ],
         },
       ],
       draft_json: {
-        schema: '1',
+        schema: "bac_ingestion_draft/v1",
         exam: {
           year: 2025,
-          streamCode: 'SE',
-          subjectCode: 'MATHEMATICS',
-          sessionType: 'NORMAL',
-          provider: 'manual',
-          title: 'BAC 2025 Mathematics SE',
+          streamCode: "SE",
+          subjectCode: "MATHEMATICS",
+          sessionType: "NORMAL",
+          provider: "manual",
+          title: "BAC 2025 Mathematics SE",
           minYear: 2008,
           sourceListingUrl: null,
           sourceExamPageUrl: null,
           sourceCorrectionPageUrl: null,
-          examDocumentId: 'doc-exam',
-          correctionDocumentId: 'doc-correction',
-          examDocumentStorageKey: 'exam.pdf',
-          correctionDocumentStorageKey: 'correction.pdf',
+          examDocumentId: "doc-exam",
+          correctionDocumentId: "doc-correction",
+          examDocumentStorageKey: "exam.pdf",
+          correctionDocumentStorageKey: "correction.pdf",
           metadata: {},
         },
         sourcePages: [],
         assets: [],
         variants: [],
       },
-      asset_preview_base_url: 'https://example.com/assets',
+      asset_preview_base_url: "https://example.com/assets",
       validation: {
         errors: [],
         warnings: [],
@@ -182,18 +193,18 @@ describe('admin ingestion page helpers', () => {
     };
 
     expect(toJobSummary(payload)).toMatchObject({
-      id: 'job-1',
+      id: "job-1",
       source_document_count: 2,
       source_page_count: 3,
       workflow: payload.workflow,
     });
   });
 
-  it('counts and filters jobs by status and searchable metadata', () => {
+  it("counts and filters jobs by status and searchable metadata", () => {
     const jobs = [
       createJobSummary({
-        id: 'job-1',
-        status: 'draft',
+        id: "job-1",
+        status: "draft",
         workflow: {
           has_exam_document: true,
           has_correction_document: false,
@@ -203,12 +214,12 @@ describe('admin ingestion page helpers', () => {
         },
       }),
       createJobSummary({
-        id: 'job-2',
-        label: 'BAC 2024 Physics M',
+        id: "job-2",
+        label: "BAC 2024 Physics M",
         year: 2024,
-        stream_code: 'M',
-        subject_code: 'PHYSICS',
-        status: 'queued',
+        stream_codes: ["M"],
+        subject_code: "PHYSICS",
+        status: "queued",
       }),
     ];
 
@@ -220,72 +231,89 @@ describe('admin ingestion page helpers', () => {
     expect(
       filterJobs({
         jobs,
-        jobQuery: 'waiting correction',
-        statusFilter: 'all',
+        jobQuery: "waiting correction",
+        statusFilter: "all",
+        draftKindFilter: "all",
       }).map((job) => job.id),
-    ).toEqual(['job-1']);
+    ).toEqual(["job-1"]);
     expect(
       filterJobs({
         jobs,
-        jobQuery: 'math',
-        statusFilter: 'draft',
+        jobQuery: "math",
+        statusFilter: "draft",
+        draftKindFilter: "all",
       }).map((job) => job.id),
-    ).toEqual(['job-1']);
+    ).toEqual(["job-1"]);
+    expect(
+      filterJobs({
+        jobs: [
+          ...jobs,
+          createJobSummary({
+            id: "job-3",
+            draft_kind: "revision",
+            label: "Revision draft",
+          }),
+        ],
+        jobQuery: "",
+        statusFilter: "all",
+        draftKindFilter: "revision",
+      }).map((job) => job.id),
+    ).toEqual(["job-3"]);
   });
 
-  it('builds grouped status sections with scoped stream and year filters', () => {
+  it("builds grouped status sections with scoped stream and year filters", () => {
     const jobs = [
       createJobSummary({
-        id: 'job-se-2025',
-        status: 'draft',
-        stream_code: 'SE',
+        id: "job-se-2025",
+        status: "draft",
+        stream_codes: ["SE"],
         year: 2025,
-        updated_at: '2026-03-29T11:00:00.000Z',
+        updated_at: "2026-03-29T11:00:00.000Z",
       }),
       createJobSummary({
-        id: 'job-se-2024',
-        status: 'draft',
-        stream_code: 'SE',
+        id: "job-se-2024",
+        status: "draft",
+        stream_codes: ["SE"],
         year: 2024,
-        updated_at: '2026-03-29T09:00:00.000Z',
+        updated_at: "2026-03-29T09:00:00.000Z",
       }),
       createJobSummary({
-        id: 'job-unmapped',
-        label: 'Fallback',
-        status: 'draft',
-        stream_code: null,
+        id: "job-unmapped",
+        label: "Fallback",
+        status: "draft",
+        stream_codes: [],
         year: 2025,
-        updated_at: '2026-03-29T10:00:00.000Z',
+        updated_at: "2026-03-29T10:00:00.000Z",
       }),
       createJobSummary({
-        id: 'job-approved',
-        label: 'Approved',
-        status: 'approved',
+        id: "job-approved",
+        label: "Approved",
+        status: "approved",
         year: 2025,
       }),
     ];
 
     const grouped = buildGroupedStatuses({
       filteredJobs: jobs,
-      statusFilter: 'all',
+      statusFilter: "all",
       statusScopedFilters: {
         draft: {
-          streamKey: 'SE',
+          streamKey: "SE",
           year: 2025,
         },
       },
     });
 
-    expect(grouped.map((group) => group.status)).toEqual(['draft', 'approved']);
+    expect(grouped.map((group) => group.status)).toEqual(["draft", "approved"]);
     expect(grouped[0]?.availableStreamGroups).toEqual([
       {
-        streamKey: 'SE',
-        label: 'Sciences expérimentales',
+        streamKey: "SE",
+        label: "SE",
         count: 2,
       },
       {
-        streamKey: 'UNMAPPED',
-        label: 'Unmapped stream',
+        streamKey: "UNMAPPED",
+        label: "Unmapped streams",
         count: 1,
       },
     ]);
@@ -301,8 +329,8 @@ describe('admin ingestion page helpers', () => {
     ]);
     expect(grouped[0]?.streamGroups).toEqual([
       {
-        streamKey: 'SE',
-        streamLabel: 'Sciences expérimentales',
+        streamKey: "SE",
+        streamLabel: "SE",
         yearGroups: [
           {
             year: 2025,
@@ -313,11 +341,11 @@ describe('admin ingestion page helpers', () => {
     ]);
   });
 
-  it('builds process action labels and disabled states from job workflow', () => {
+  it("builds process action labels and disabled states from job workflow", () => {
     expect(
       buildProcessJobActionState({
         job: createJobSummary({
-          id: 'job-awaiting',
+          id: "job-awaiting",
           workflow: {
             has_exam_document: true,
             has_correction_document: false,
@@ -330,13 +358,13 @@ describe('admin ingestion page helpers', () => {
       }),
     ).toEqual({
       disabled: true,
-      label: 'Waiting',
+      label: "Waiting",
     });
 
     expect(
       buildProcessJobActionState({
         job: createJobSummary({
-          id: 'job-processing',
+          id: "job-processing",
           workflow: {
             has_exam_document: true,
             has_correction_document: true,
@@ -345,17 +373,17 @@ describe('admin ingestion page helpers', () => {
             review_started: true,
           },
         }),
-        processingJobId: 'job-processing',
+        processingJobId: "job-processing",
       }),
     ).toEqual({
       disabled: true,
-      label: 'Processing…',
+      label: "Processing…",
     });
 
     expect(
       buildProcessJobActionState({
         job: createJobSummary({
-          id: 'job-reprocess',
+          id: "job-reprocess",
           workflow: {
             has_exam_document: true,
             has_correction_document: true,
@@ -368,7 +396,47 @@ describe('admin ingestion page helpers', () => {
       }),
     ).toEqual({
       disabled: false,
-      label: 'Queue reprocess',
+      label: "Re-run extraction",
+    });
+
+    expect(
+      buildProcessJobActionState({
+        job: createJobSummary({
+          id: "job-process",
+          status: "draft",
+          workflow: {
+            has_exam_document: true,
+            has_correction_document: true,
+            awaiting_correction: false,
+            can_process: true,
+            review_started: false,
+          },
+        }),
+        processingJobId: null,
+      }),
+    ).toEqual({
+      disabled: false,
+      label: "Process",
+    });
+
+    expect(
+      buildProcessJobActionState({
+        job: createJobSummary({
+          id: "job-failed",
+          status: "failed",
+          workflow: {
+            has_exam_document: true,
+            has_correction_document: true,
+            awaiting_correction: false,
+            can_process: true,
+            review_started: false,
+          },
+        }),
+        processingJobId: null,
+      }),
+    ).toEqual({
+      disabled: false,
+      label: "Re-run extraction",
     });
   });
 });

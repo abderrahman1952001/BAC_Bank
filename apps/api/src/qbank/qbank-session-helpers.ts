@@ -3,6 +3,7 @@ import {
   BlockType,
   ExamNodeType,
   ExamVariantCode,
+  MediaType,
   Prisma,
   PublicationStatus,
   SessionType,
@@ -20,7 +21,7 @@ export type HierarchyBlockPayload = {
   media: {
     id: string;
     url: string;
-    type: string;
+    type: MediaType;
     metadata: Prisma.JsonValue | null;
   } | null;
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { StudyHierarchyBlockView } from "@/components/study-content";
 import {
   buildPreviewBlocks,
@@ -118,6 +119,33 @@ function AdminIngestionHierarchyTreeNode({
   );
 }
 
+function AdminIngestionPreviewInsertControl({
+  label,
+  onInsert,
+}: {
+  label: string;
+  onInsert: () => void;
+}) {
+  return (
+    <div className="ingestion-preview-insert">
+      <span className="ingestion-preview-insert-line" aria-hidden="true" />
+      <button
+        type="button"
+        className="ingestion-preview-insert-button"
+        aria-label={label}
+        onClick={(event) => {
+          event.stopPropagation();
+          onInsert();
+        }}
+      >
+        <span aria-hidden="true">+</span>
+        <span>{label}</span>
+      </button>
+      <span className="ingestion-preview-insert-line" aria-hidden="true" />
+    </div>
+  );
+}
+
 export function AdminIngestionRenderedPreview({
   rootNodes,
   childrenByParent,
@@ -129,6 +157,7 @@ export function AdminIngestionRenderedPreview({
   assetIssueCountById,
   onSelectNode,
   onSelectBlock,
+  onInsertBlock,
   onFocusSnippetTools,
   onFocusNativeTools,
   onOpenAssetToolPanel,
@@ -143,6 +172,7 @@ export function AdminIngestionRenderedPreview({
   assetIssueCountById: Map<string, number>;
   onSelectNode: (nodeId: string) => void;
   onSelectBlock: (nodeId: string, blockId: string) => void;
+  onInsertBlock: (nodeId: string, insertIndex: number) => void;
   onFocusSnippetTools: (nodeId: string, blockId: string) => void;
   onFocusNativeTools: (nodeId: string, blockId: string, assetId: string) => void;
   onOpenAssetToolPanel: (
@@ -165,6 +195,7 @@ export function AdminIngestionRenderedPreview({
       assetIssueCountById={assetIssueCountById}
       onSelectNode={onSelectNode}
       onSelectBlock={onSelectBlock}
+      onInsertBlock={onInsertBlock}
       onFocusSnippetTools={onFocusSnippetTools}
       onFocusNativeTools={onFocusNativeTools}
       onOpenAssetToolPanel={onOpenAssetToolPanel}
@@ -183,6 +214,7 @@ function AdminIngestionRenderedPreviewNode({
   assetIssueCountById,
   onSelectNode,
   onSelectBlock,
+  onInsertBlock,
   onFocusSnippetTools,
   onFocusNativeTools,
   onOpenAssetToolPanel,
@@ -197,6 +229,7 @@ function AdminIngestionRenderedPreviewNode({
   assetIssueCountById: Map<string, number>;
   onSelectNode: (nodeId: string) => void;
   onSelectBlock: (nodeId: string, blockId: string) => void;
+  onInsertBlock: (nodeId: string, insertIndex: number) => void;
   onFocusSnippetTools: (nodeId: string, blockId: string) => void;
   onFocusNativeTools: (nodeId: string, blockId: string, assetId: string) => void;
   onOpenAssetToolPanel: (
@@ -239,6 +272,12 @@ function AdminIngestionRenderedPreviewNode({
 
       {node.blocks.length ? (
         <div className="ingestion-preview-block-list">
+          <AdminIngestionPreviewInsertControl
+            label="Add block"
+            onInsert={() => {
+              onInsertBlock(node.id, 0);
+            }}
+          />
           {node.blocks.map((block, index) => {
             const previewBlock = previewBlocks[index];
             const asset = block.assetId ? (assetById.get(block.assetId) ?? null) : null;
@@ -257,90 +296,103 @@ function AdminIngestionRenderedPreviewNode({
               (asset ? (assetIssueCountById.get(asset.id) ?? 0) : 0);
 
             return (
-              <article
-                key={block.id}
-                id={`preview-block-${block.id}`}
-                className={
-                  block.id === selectedBlockId
-                    ? "ingestion-preview-block-card selected"
-                    : "ingestion-preview-block-card"
-                }
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onSelectBlock(node.id, block.id);
-                }}
-              >
-                <div className="ingestion-preview-block-head">
-                  <div>
-                    <strong>
-                      Block {index + 1} · {block.role}
-                    </strong>
-                    <small>
-                      {block.type}
-                      {asset ? ` · ${asset.classification}` : ""}
-                    </small>
+              <Fragment key={block.id}>
+                <article
+                  id={`preview-block-${block.id}`}
+                  className={
+                    block.id === selectedBlockId
+                      ? "ingestion-preview-block-card selected"
+                      : "ingestion-preview-block-card"
+                  }
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onSelectBlock(node.id, block.id);
+                  }}
+                >
+                  <div className="ingestion-preview-block-head">
+                    <div>
+                      <strong>
+                        Block {index + 1} · {block.role}
+                      </strong>
+                      <small>
+                        {block.type}
+                        {asset ? ` · ${asset.classification}` : ""}
+                      </small>
+                    </div>
+                    <div className="block-item-actions">
+                      {issueCount > 0 ? (
+                        <span className="ingestion-issue-pill">{issueCount}</span>
+                      ) : null}
+                      {canFixFromSource ? (
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onFocusSnippetTools(node.id, block.id);
+                          }}
+                        >
+                          Fix Text
+                        </button>
+                      ) : null}
+                      {asset ? (
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onFocusNativeTools(node.id, block.id, asset.id);
+                          }}
+                        >
+                          Native Render
+                        </button>
+                      ) : null}
+                      {canLinkAsset ? (
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onOpenAssetToolPanel(
+                              node.id,
+                              block.id,
+                              block,
+                              asset ? "edit" : "create",
+                            );
+                          }}
+                        >
+                          {asset ? "Edit Asset" : "New Asset"}
+                        </button>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="block-item-actions">
-                    {issueCount > 0 ? (
-                      <span className="ingestion-issue-pill">{issueCount}</span>
-                    ) : null}
-                    {canFixFromSource ? (
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          onFocusSnippetTools(node.id, block.id);
-                        }}
-                      >
-                        Fix Text
-                      </button>
-                    ) : null}
-                    {asset ? (
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          onFocusNativeTools(node.id, block.id, asset.id);
-                        }}
-                      >
-                        Native Render
-                      </button>
-                    ) : null}
-                    {canLinkAsset ? (
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          onOpenAssetToolPanel(
-                            node.id,
-                            block.id,
-                            block,
-                            asset ? "edit" : "create",
-                          );
-                        }}
-                      >
-                        {asset ? "Edit Asset" : "New Asset"}
-                      </button>
-                    ) : null}
-                  </div>
-                </div>
 
-                {previewBlock ? (
-                  <StudyHierarchyBlockView
-                    block={previewBlock}
-                    blockKey={`${node.id}-${block.id}-${index}`}
-                    compact
-                  />
-                ) : null}
-              </article>
+                  {previewBlock ? (
+                    <StudyHierarchyBlockView
+                      block={previewBlock}
+                      blockKey={`${node.id}-${block.id}-${index}`}
+                      compact
+                    />
+                  ) : null}
+                </article>
+
+                <AdminIngestionPreviewInsertControl
+                  label="Add block"
+                  onInsert={() => {
+                    onInsertBlock(node.id, index + 1);
+                  }}
+                />
+              </Fragment>
             );
           })}
         </div>
       ) : (
-        <p className="muted-text">No blocks yet.</p>
+        <AdminIngestionPreviewInsertControl
+          label="Add first block"
+          onInsert={() => {
+            onInsertBlock(node.id, 0);
+          }}
+        />
       )}
 
       {children.length ? (
@@ -358,6 +410,7 @@ function AdminIngestionRenderedPreviewNode({
               assetIssueCountById={assetIssueCountById}
               onSelectNode={onSelectNode}
               onSelectBlock={onSelectBlock}
+              onInsertBlock={onInsertBlock}
               onFocusSnippetTools={onFocusSnippetTools}
               onFocusNativeTools={onFocusNativeTools}
               onOpenAssetToolPanel={onOpenAssetToolPanel}

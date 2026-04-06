@@ -1,4 +1,5 @@
-import { Prisma, PrismaClient, SessionType, SourceDocumentKind } from '@prisma/client';
+import { Prisma, SessionType, SourceDocumentKind } from '@prisma/client';
+import type { IngestionOpsService } from '../src/ingestion/ingestion-ops.service';
 import { normalizeIngestionDraft } from '../src/ingestion/ingestion.contract';
 import {
   buildCanonicalEddirasaDocumentFileName,
@@ -6,98 +7,119 @@ import {
   deriveEddirasaMetadata,
   type EddirasaStorageContext,
 } from '../src/ingestion/eddirasa-normalization';
-import { R2StorageClient, readR2ConfigFromEnv } from '../src/ingestion/r2-storage';
+import {
+  R2StorageClient,
+  readR2ConfigFromEnv,
+} from '../src/ingestion/r2-storage';
+import type { PrismaService } from '../src/prisma/prisma.service';
+import { createIngestionScriptContext } from './ingestion-script-context';
 
-const prisma = new PrismaClient();
+let prisma: PrismaService;
+let ingestionOpsService: IngestionOpsService;
 const storageClient = new R2StorageClient(readR2ConfigFromEnv());
 const DEFAULT_MIN_YEAR = 2008;
 
 async function main() {
-  const options = parseCliOptions(process.argv.slice(2));
-  const jobs = await prisma.ingestionJob.findMany({
-    where: {
-      provider: 'eddirasa',
-      year: {
-        gte: options.minYear,
-      },
-    },
-    orderBy: [{ year: 'desc' }, { createdAt: 'asc' }],
-    select: {
-      id: true,
-      label: true,
-      year: true,
-      streamCode: true,
-      subjectCode: true,
-      sessionType: true,
-      draftJson: true,
-      metadata: true,
-      sourceDocuments: {
-        orderBy: {
-          kind: 'asc',
+  const {
+    app,
+    prisma: prismaService,
+    ingestionOpsService: opsService,
+  } = await createIngestionScriptContext();
+  prisma = prismaService;
+  ingestionOpsService = opsService;
+
+  try {
+    const options = parseCliOptions(process.argv.slice(2));
+    const jobs = await prisma.ingestionJob.findMany({
+      where: {
+        provider: 'eddirasa',
+        year: {
+          gte: options.minYear,
         },
-        select: {
-          id: true,
-          kind: true,
-          storageKey: true,
-          fileName: true,
-          sourceUrl: true,
-          metadata: true,
-          pages: {
-            select: {
-              id: true,
+      },
+      orderBy: [{ year: 'desc' }, { createdAt: 'asc' }],
+      select: {
+        id: true,
+        label: true,
+        year: true,
+        streamCode: true,
+        subjectCode: true,
+        sessionType: true,
+        draftJson: true,
+        metadata: true,
+        sourceDocuments: {
+          orderBy: {
+            kind: 'asc',
+          },
+          select: {
+            id: true,
+            kind: true,
+            storageKey: true,
+            fileName: true,
+            sourceUrl: true,
+            metadata: true,
+            pages: {
+              select: {
+                id: true,
+              },
+              take: 1,
             },
-            take: 1,
           },
         },
       },
-    },
-  });
+    });
 
-  let updatedJobs = 0;
-  let movedDocuments = 0;
-  let failedJobs = 0;
+    let updatedJobs = 0;
+    let movedDocuments = 0;
+    let failedJobs = 0;
 
-  for (const job of jobs) {
-    try {
-      const summary = await repairJob(job, options);
-      updatedJobs += 1;
-      movedDocuments += summary.movedDocuments;
-    } catch (error) {
-      failedJobs += 1;
-      console.error(
-        `failed ${job.id}: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      );
+    for (const job of jobs) {
+      try {
+        const summary = await repairJob(job, options);
+        updatedJobs += 1;
+        movedDocuments += summary.movedDocuments;
+      } catch (error) {
+        failedJobs += 1;
+        console.error(
+          `failed ${job.id}: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      }
     }
-  }
 
-  console.log(
-    `done jobs=${updatedJobs} documents=${movedDocuments} failed=${failedJobs} minYear=${options.minYear} onlyUnrasterized=${options.onlyUnrasterized}`,
-  );
+    console.log(
+      `done jobs=${updatedJobs} documents=${movedDocuments} failed=${failedJobs} minYear=${options.minYear} onlyUnrasterized=${options.onlyUnrasterized}`,
+    );
+  } finally {
+    await app.close();
+  }
 }
 
-async function repairJob(job: {
-  id: string;
-  label: string;
-  year: number;
-  streamCode: string | null;
-  subjectCode: string | null;
-  sessionType: SessionType | null;
-  draftJson: Prisma.JsonValue;
-  metadata: Prisma.JsonValue | null;
-  sourceDocuments: Array<{
+async function repairJob(
+  job: {
     id: string;
-    kind: SourceDocumentKind;
-    storageKey: string;
-    fileName: string;
-    sourceUrl: string | null;
+    label: string;
+    year: number;
+    streamCode: string | null;
+    subjectCode: string | null;
+    sessionType: SessionType | null;
+    draftJson: Prisma.JsonValue;
     metadata: Prisma.JsonValue | null;
-    pages: Array<{
+    sourceDocuments: Array<{
       id: string;
+      kind: SourceDocumentKind;
+      storageKey: string;
+      fileName: string;
+      sourceUrl: string | null;
+      metadata: Prisma.JsonValue | null;
+      pages: Array<{
+        id: string;
+      }>;
     }>;
-  }>;
-}, options: { onlyUnrasterized: boolean }) {
+  },
+  options: { onlyUnrasterized: boolean },
+) {
   if (
     options.onlyUnrasterized &&
     job.sourceDocuments.some((document) => document.pages.length > 0)
@@ -209,19 +231,11 @@ async function repairJob(job: {
     namingRepairAt: new Date().toISOString(),
   };
 
-  await prisma.ingestionJob.update({
-    where: {
-      id: job.id,
-    },
-    data: {
-      label: nextLabel,
-      streamCode: derived.streamCode,
-      subjectCode: derived.subjectCode,
-      draftJson: toJsonValue(draft),
-      metadata: {
-        ...(metadata ?? {}),
-        slug: derived.sourceSlug ?? rawSlug,
-      },
+  await ingestionOpsService.saveDraft(job.id, {
+    draft,
+    metadata: {
+      ...(metadata ?? {}),
+      slug: derived.sourceSlug ?? rawSlug,
     },
   });
 
@@ -257,7 +271,10 @@ function parseCliOptions(argv: string[]) {
   return options;
 }
 
-async function readDocumentBuffer(storageKey: string, sourceUrl: string | null) {
+async function readDocumentBuffer(
+  storageKey: string,
+  sourceUrl: string | null,
+) {
   try {
     return await storageClient.getObjectBuffer(storageKey);
   } catch (error) {
@@ -297,11 +314,7 @@ function buildLabel(
     parts.push(streamCode);
   }
 
-  const tail = existingLabel
-    .split(' · ')
-    .slice(3)
-    .join(' · ')
-    .trim();
+  const tail = existingLabel.split(' · ').slice(3).join(' · ').trim();
 
   if (tail) {
     parts.push(tail);
@@ -322,15 +335,7 @@ function asRecord(value: Prisma.JsonValue | null) {
   return value as Record<string, unknown>;
 }
 
-function toJsonValue(value: unknown) {
-  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
-}
-
-void main()
-  .catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+void main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

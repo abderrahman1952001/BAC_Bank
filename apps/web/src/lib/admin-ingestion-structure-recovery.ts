@@ -163,7 +163,7 @@ export function useAdminIngestionStructureRecovery(options: {
     }
   }
 
-  async function recoverSnippetIntoSelectedBlock(mode: "text" | "latex") {
+  async function recoverSnippetIntoSelectedBlock() {
     if (
       !selectedNode ||
       !selectedBlock ||
@@ -176,6 +176,8 @@ export function useAdminIngestionStructureRecovery(options: {
       return;
     }
 
+    const mode: AdminIngestionRecoveryMode = "text";
+
     setSnippetRecoveryMode(mode);
     setSnippetRecoveryError(null);
     setSnippetRecoveryNotice(null);
@@ -187,7 +189,6 @@ export function useAdminIngestionStructureRecovery(options: {
         {
           method: "POST",
           body: JSON.stringify({
-            mode,
             source_page_id: snippetSourcePage.id,
             crop_box: snippetCropBox,
             label: selectedBlock.id,

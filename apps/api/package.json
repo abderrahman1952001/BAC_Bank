@@ -8,13 +8,13 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "dev": "nest start --watch",
+    "start": "nest start --entryFile apps/api/src/main --sourceRoot .",
+    "dev": "nest start --watch --entryFile apps/api/src/main --sourceRoot .",
     "dev:worker": "ts-node --transpile-only src/worker.ts",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/src/main.js",
-    "start:worker": "node dist/src/worker.js",
+    "start:dev": "nest start --watch --entryFile apps/api/src/main --sourceRoot .",
+    "start:debug": "nest start --debug --watch --entryFile apps/api/src/main --sourceRoot .",
+    "start:prod": "node dist/apps/api/src/main.js",
+    "start:worker": "node dist/apps/api/src/worker.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "jest",
@@ -23,14 +23,17 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "intake:source:eddirasa": "ts-node --transpile-only scripts/ingest-eddirasa-bac.ts",
+    "ops:se-stem-backfill": "ts-node --transpile-only scripts/se-stem-backfill.ts",
     "intake:storage:audit": "ts-node --transpile-only scripts/audit-bac-storage.ts",
     "intake:storage:readability": "ts-node --transpile-only scripts/repair-source-document-readability.ts",
     "ingest:eddirasa": "ts-node --transpile-only scripts/ingest-eddirasa-bac.ts",
     "repair:eddirasa-storage": "ts-node --transpile-only scripts/repair-eddirasa-storage.ts",
     "repair:source-document-readability": "ts-node --transpile-only scripts/repair-source-document-readability.ts",
     "normalize:page-storage-keys": "ts-node --transpile-only scripts/normalize-page-storage-keys.ts",
+    "normalize:eddirasa-year": "node -r ts-node/register/transpile-only -r tsconfig-paths/register scripts/normalize-eddirasa-year.js",
     "audit:bac-storage": "ts-node --transpile-only scripts/audit-bac-storage.ts",
     "audit:canonical-completeness": "ts-node --transpile-only scripts/audit-canonical-completeness.ts",
+    "cleanup:r2:orphans": "ts-node --transpile-only scripts/cleanup-orphaned-r2-objects.ts",
     "prisma:generate": "prisma generate",
     "prisma:validate": "DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@localhost:5432/bac_bank?schema=public} prisma validate --schema prisma/schema.prisma",
     "prisma:migrate:dev": "prisma migrate dev",
@@ -42,6 +45,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.914.0",
+    "@bac-bank/contracts": "0.1.0",
+    "@clerk/backend": "^3.2.4",
     "@fastify/helmet": "^13.0.2",
     "@fastify/multipart": "^9.4.0",
     "@google/genai": "^1.46.0",
@@ -97,6 +102,10 @@
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1",
+      "^@bac-bank/contracts/(.*)$": "<rootDir>/../../../packages/contracts/src/$1"
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
