@@ -188,6 +188,7 @@ Prefer tightening an existing boundary over rewriting the system.
 When touching messy code, improve the local seam if you can do so safely.
 Do not spread the mess into new files.
 Do not create a parallel system just to avoid understanding the current one.
+When changing something with a new thing, do the clean up and dont left the repo mid-old mid-nex, unless the user asks for preservation.
 
 ## Pause before high-blast-radius changes
 

@@ -651,8 +651,12 @@ export class IngestionDraftIntakeService {
       return 'SOLUTION';
     }
 
-    if (role === BlockRole.HINT || role === BlockRole.RUBRIC) {
+    if (role === BlockRole.HINT) {
       return 'HINT';
+    }
+
+    if (role === BlockRole.RUBRIC) {
+      return 'RUBRIC';
     }
 
     if (role === BlockRole.META) {

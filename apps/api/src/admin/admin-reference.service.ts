@@ -4,11 +4,15 @@ import type {
   AdminFiltersResponse,
 } from '@bac-bank/contracts/admin';
 import { ExamNodeType, PublicationStatus } from '@prisma/client';
+import { CatalogCurriculumService } from '../catalog/catalog-curriculum.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AdminReferenceService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly catalogCurriculumService: CatalogCurriculumService,
+  ) {}
 
   async getDashboard(): Promise<AdminDashboardResponse> {
     const [
@@ -112,6 +116,11 @@ export class AdminReferenceService {
         },
       }),
       this.prisma.stream.findMany({
+        where: {
+          subjectMappings: {
+            some: {},
+          },
+        },
         select: {
           code: true,
           name: true,
@@ -136,36 +145,7 @@ export class AdminReferenceService {
           year: 'desc',
         },
       }),
-      this.prisma.topic.findMany({
-        select: {
-          code: true,
-          name: true,
-          displayOrder: true,
-          isSelectable: true,
-          studentLabel: true,
-          parent: {
-            select: {
-              code: true,
-            },
-          },
-          subject: {
-            select: {
-              code: true,
-              name: true,
-              streamMappings: {
-                select: {
-                  stream: {
-                    select: {
-                      code: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-        orderBy: [{ subject: { name: 'asc' } }, { name: 'asc' }],
-      }),
+      this.catalogCurriculumService.listActiveFilterTopics(),
     ]);
 
     return {
@@ -204,11 +184,7 @@ export class AdminReferenceService {
           code: topic.subject.code,
           name: topic.subject.name,
         },
-        streamCodes: Array.from(
-          new Set(
-            topic.subject.streamMappings.map((mapping) => mapping.stream.code),
-          ),
-        ).sort((a, b) => a.localeCompare(b)),
+        streamCodes: topic.streamCodes,
       })),
     };
   }

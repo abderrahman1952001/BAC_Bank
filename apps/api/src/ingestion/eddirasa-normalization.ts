@@ -458,23 +458,33 @@ export function parseEddirasaSlug(
 
   if (suffixStreamCode) {
     const descriptor = resolveSubjectDescriptor(tokens.slice(0, -1));
+    const normalizedSuffixStreamCode =
+      suffixStreamCode === 'LE'
+        ? resolveForeignLanguageStreamCode(descriptor?.subjectCode ?? null) ??
+          suffixStreamCode
+        : suffixStreamCode;
 
     if (descriptor) {
       return {
         sourceSlug,
         coreSlug,
-        streamCode: suffixStreamCode,
+        streamCode: normalizedSuffixStreamCode,
         subjectCode: descriptor.subjectCode,
         qualifierKey: descriptor.qualifierKey ?? null,
-        storageStreamKey: suffixStreamCode,
+        storageStreamKey: normalizedSuffixStreamCode,
         storageSubjectKey:
           descriptor.storageSubjectKey ?? descriptor.subjectCode,
       };
     }
   }
 
-  const streamCode = resolveStreamPrefix(prefix);
-  const descriptor = resolveSubjectDescriptor(streamCode ? rest : tokens);
+  const rawStreamCode = resolveStreamPrefix(prefix);
+  const descriptor = resolveSubjectDescriptor(rawStreamCode ? rest : tokens);
+  const streamCode =
+    rawStreamCode === 'LE'
+      ? resolveForeignLanguageStreamCode(descriptor?.subjectCode ?? null) ??
+        rawStreamCode
+      : rawStreamCode;
 
   return {
     sourceSlug,
@@ -520,6 +530,19 @@ export function buildEddirasaPageStorageKey(
   pageNumber: number,
 ) {
   return buildCanonicalPageStorageKey(context, documentFileName, pageNumber);
+}
+
+function resolveForeignLanguageStreamCode(subjectCode: string | null) {
+  switch (subjectCode) {
+    case 'GERMAN':
+      return 'LE_GERMAN';
+    case 'SPANISH':
+      return 'LE_SPANISH';
+    case 'ITALIAN':
+      return 'LE_ITALIAN';
+    default:
+      return null;
+  }
 }
 
 function resolveStreamPrefix(prefix: string) {

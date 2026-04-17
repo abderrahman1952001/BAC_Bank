@@ -8,7 +8,37 @@ import {
 } from './../src/app-setup';
 import { AuthController } from './../src/auth/auth.controller';
 import { AuthService } from './../src/auth/auth.service';
-import { SessionAuthGuard } from './../src/auth/session-auth.guard';
+import { ClerkAuthGuard } from './../src/auth/clerk-auth.guard';
+
+const freeStudyEntitlements = {
+  tier: 'FREE',
+  capabilities: {
+    topicDrill: true,
+    mixedDrill: true,
+    weakPointDrill: false,
+    paperSimulation: true,
+    aiExplanation: false,
+    weakPointInsight: false,
+  },
+  quotas: {
+    drillStarts: {
+      monthlyLimit: 5,
+      used: 0,
+      remaining: 5,
+      exhausted: false,
+      nearLimit: false,
+      resetsAt: '2026-04-30T23:00:00.000Z',
+    },
+    simulationStarts: {
+      monthlyLimit: 1,
+      used: 0,
+      remaining: 1,
+      exhausted: false,
+      nearLimit: false,
+      resetsAt: '2026-04-30T23:00:00.000Z',
+    },
+  },
+};
 
 describe('Auth routes (e2e)', () => {
   let app: NestFastifyApplication;
@@ -17,10 +47,9 @@ describe('Auth routes (e2e)', () => {
       id: 'user-1',
       email: 'student@example.com',
       role: 'USER',
-      sessionId: 'sess_123',
     }),
     getRegistrationOptions: jest.fn(() => ({
-      streams: [],
+      streamFamilies: [],
     })),
     getUserProfile: jest.fn((userId: string) => ({
       user: {
@@ -30,6 +59,7 @@ describe('Auth routes (e2e)', () => {
         stream: null,
         subscriptionStatus: 'FREE',
         username: 'Student',
+        studyEntitlements: freeStudyEntitlements,
       },
     })),
     updateCurrentUserProfile: jest.fn((userId: string) => ({
@@ -43,6 +73,7 @@ describe('Auth routes (e2e)', () => {
         },
         subscriptionStatus: 'FREE',
         username: 'Student',
+        studyEntitlements: freeStudyEntitlements,
       },
     })),
   };
@@ -53,7 +84,7 @@ describe('Auth routes (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
       providers: [
-        SessionAuthGuard,
+        ClerkAuthGuard,
         {
           provide: AuthService,
           useValue: authService,
@@ -80,14 +111,18 @@ describe('Auth routes (e2e)', () => {
       .expect(200);
 
     expect(response.body).toEqual({
-      streams: [],
+      streamFamilies: [],
     });
   });
 
-  it(`/${API_GLOBAL_PREFIX}/auth/logout rejects cookie-authenticated writes without origin metadata`, () => {
+  it(`/${API_GLOBAL_PREFIX}/auth/profile rejects cookie-authenticated writes without origin metadata`, () => {
     return request(app.getHttpServer())
-      .post(`/${API_GLOBAL_PREFIX}/auth/logout`)
+      .post(`/${API_GLOBAL_PREFIX}/auth/profile`)
       .set('Cookie', '__session=test-token')
+      .send({
+        username: 'Student',
+        streamCode: 'SE',
+      })
       .expect(403);
   });
 

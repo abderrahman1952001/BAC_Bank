@@ -2,594 +2,577 @@
 
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
-import type { ComponentProps, ReactNode } from "react";
-import { StudySectionCard } from "@/components/study-content";
-import { StudyQuestionPanel } from "@/components/study-question-panel";
+import type { ReactNode } from "react";
+import { StudyHierarchyBlocks } from "@/components/study-content";
 import {
-  StudyExerciseStageCard,
   StudyQuestionPromptContent,
   StudyQuestionSolutionStack,
 } from "@/components/study-stage";
 import {
-  StudyKeyHint,
-  StudyNavigator,
-  StudyProgressBar,
-  StudySidebar,
-  StudyStateLegend,
-} from "@/components/study-shell";
-import { type ExamResponse, formatSessionType } from "@/lib/qbank";
-import {
-  describeStudyQuestionState,
-  type StudyQuestionState,
-  type StudyQuestionStateDescriptor,
-} from "@/lib/study";
+  type ExamHierarchyBlock,
+  type ExamHierarchyNode,
+  type ExamResponse,
+  formatSessionType,
+} from "@/lib/study-api";
 import {
   canRevealStudyQuestionSolution,
-  getStudyQuestionTopics,
   type StudyExerciseModel,
   type StudyQuestionModel,
 } from "@/lib/study-surface";
 
-type NavigatorExercises = ComponentProps<typeof StudyNavigator>["exercises"];
-
-type SujetProgressCounts = {
-  totalCount: number;
-  completedCount: number;
-  skippedCount: number;
-  solutionViewedCount: number;
-  openedCount: number;
-  unansweredCount: number;
+export type SujetVariantLink = {
+  href: string;
+  label: string;
+  isActive: boolean;
 };
 
-type SujetViewerHeaderActionsProps = {
-  backToBrowseHref: string;
-  progressMode: "SOLVE" | "REVIEW";
-  onSetMode: (mode: "SOLVE" | "REVIEW") => void;
-  adminAction?: ReactNode;
+export type SujetExerciseTab = {
+  id: string;
+  label: string;
+  isActive: boolean;
+  onSelect: () => void;
 };
 
-type SujetViewerHeaderProgressProps = {
-  progressCounts: SujetProgressCounts;
-  currentQuestionPosition: number;
-};
+export function formatSujetLabel(
+  sujetNumber: 1 | 2,
+  label: string | null | undefined,
+) {
+  const trimmedLabel = label?.trim();
 
-type SujetViewerStandardLayoutProps = {
-  exam: ExamResponse;
-  exercises: StudyExerciseModel[];
-  activeExerciseIndex: number;
-  activeExercise: StudyExerciseModel;
-  activeQuestionId: string;
-  progressMode: "SOLVE" | "REVIEW";
-  questionStates: Record<string, StudyQuestionState>;
-  navigatorExercises: NavigatorExercises;
-  exerciseHeaderActions: ReactNode;
-  onSelectExercise: (exerciseId: string) => void;
-  onSelectQuestion: (exerciseId: string, questionId: string) => void;
-  onToggleQuestionComplete: (exerciseId: string, questionId: string) => void;
-  onToggleQuestionSolution: (exerciseId: string, questionId: string) => void;
-  isQuestionSolutionVisible: (questionId: string) => boolean;
-};
+  if (
+    !trimmedLabel ||
+    /^sujet\s*\d+$/i.test(trimmedLabel) ||
+    /^subject\s*\d+$/i.test(trimmedLabel)
+  ) {
+    return sujetNumber === 2 ? "الموضوع الثاني" : "الموضوع الأول";
+  }
 
-type SujetViewerFocusHeaderProps = {
-  backToBrowseHref: string;
-  currentQuestionPosition: number;
-  totalQuestionCount: number;
-  progressPercent: number;
-  onExitFocusMode: () => void;
-  onOpenNavigator: () => void;
-};
-
-type SujetViewerFocusContextPaneProps = {
-  exam: ExamResponse;
-  sujetNumber: string;
-  progressMode: "SOLVE" | "REVIEW";
-  totalQuestionCount: number;
-  activeExerciseTopics: Array<{ code: string; name: string }>;
-  activeExercise: StudyExerciseModel;
-  exerciseAction: ReactNode;
-  onSetMode: (mode: "SOLVE" | "REVIEW") => void;
-};
-
-type SujetViewerFocusQuestionPaneProps = {
-  activeExercise: StudyExerciseModel;
-  activeQuestion: StudyQuestionModel;
-  activeQuestionStateDescriptor: StudyQuestionStateDescriptor;
-  activeQuestionState: StudyQuestionState | undefined;
-  progressMode: "SOLVE" | "REVIEW";
-  currentQuestionPosition: number;
-  totalQuestionCount: number;
-  solutionVisible: boolean;
-  questionActions: ReactNode;
-};
-
-type SujetViewerFocusNavigatorModalProps = {
-  exam: ExamResponse;
-  sujetNumber: string;
-  progressMode: "SOLVE" | "REVIEW";
-  navigatorExercises: NavigatorExercises;
-  activeExerciseId: string;
-  activeQuestionId: string;
-  onClose: () => void;
-  onExitFocusMode: () => void;
-  onSetMode: (mode: "SOLVE" | "REVIEW") => void;
-  onSelectExercise: (exerciseId: string) => void;
-  onSelectQuestion: (exerciseId: string, questionId: string) => void;
-};
-
-export function SujetViewerHeaderActions({
-  backToBrowseHref,
-  progressMode,
-  onSetMode,
-  adminAction,
-}: SujetViewerHeaderActionsProps) {
-  return (
-    <div className="study-toggle-row">
-      <Link href={backToBrowseHref} className="btn-secondary">
-        العودة
-      </Link>
-      {adminAction}
-      <button
-        type="button"
-        className={
-          progressMode === "SOLVE"
-            ? "study-toggle-button active"
-            : "study-toggle-button"
-        }
-        onClick={() => onSetMode("SOLVE")}
-      >
-        حل
-      </button>
-      <button
-        type="button"
-        className={
-          progressMode === "REVIEW"
-            ? "study-toggle-button active"
-            : "study-toggle-button"
-        }
-        onClick={() => onSetMode("REVIEW")}
-      >
-        مراجعة
-      </button>
-    </div>
-  );
+  return trimmedLabel;
 }
 
-export function SujetViewerHeaderProgress({
-  progressCounts,
-  currentQuestionPosition,
-}: SujetViewerHeaderProgressProps) {
-  return (
-    <div className="study-progress-grid">
-      <StudyProgressBar
-        label="التقدم"
-        detail={`${progressCounts.completedCount}/${progressCounts.totalCount}`}
-        value={
-          (progressCounts.completedCount / Math.max(progressCounts.totalCount, 1)) *
-          100
-        }
-      />
-      <StudyProgressBar
-        label="الموضع"
-        detail={`${currentQuestionPosition}/${progressCounts.totalCount}`}
-        value={
-          (currentQuestionPosition / Math.max(progressCounts.totalCount, 1)) * 100
-        }
-      />
-    </div>
-  );
-}
-
-export function SujetViewerStandardLayout({
+export function SujetViewerHero({
   exam,
-  exercises,
-  activeExerciseIndex,
-  activeExercise,
-  activeQuestionId,
-  progressMode,
-  questionStates,
-  navigatorExercises,
-  exerciseHeaderActions,
-  onSelectExercise,
-  onSelectQuestion,
-  onToggleQuestionComplete,
-  onToggleQuestionSolution,
-  isQuestionSolutionVisible,
-}: SujetViewerStandardLayoutProps) {
+  backToLibraryHref,
+  simulationAction,
+}: {
+  exam: ExamResponse;
+  backToLibraryHref: string;
+  simulationAction?: ReactNode;
+}) {
+  const selectedSujetNumber = exam.selectedSujetNumber ?? 1;
+  const sujetLabel = formatSujetLabel(
+    selectedSujetNumber,
+    exam.selectedSujetLabel,
+  );
+
   return (
-    <div className="study-layout">
-      <StudySidebar
-        className="study-sidebar-exam"
-        title="الموضوع"
-        subtitle={`${activeExerciseIndex + 1} / ${exercises.length}`}
-        footer={
-          <div className="study-sidebar-footer-stack">
-            <StudyStateLegend />
-            <div className="study-action-row-tight">
-              <StudyKeyHint keys={["→", "←"]} label="تنقل" />
-              <StudyKeyHint keys={["S"]} label="الحل" />
+    <header className="sujet-browser-hero">
+      <div className="sujet-browser-hero-top">
+        <Link href={backToLibraryHref} className="btn-ghost">
+          العودة إلى المكتبة
+        </Link>
+        <span className="sujet-browser-collection">BAC Bank Archive</span>
+      </div>
+
+      <div className="sujet-browser-masthead">
+        <div className="sujet-browser-title-block">
+          <span className="sujet-browser-kicker">
+            بكالوريا {exam.year} · {exam.stream.name}
+          </span>
+          <span className="sujet-browser-paper-label">{sujetLabel}</span>
+          <div className="sujet-browser-title-stack">
+            <span className="sujet-browser-subject-name">{exam.subject.name}</span>
+            <span className="sujet-browser-title-detail">
+              نسخة رقمية للتصفح فقط
+            </span>
+          </div>
+        </div>
+
+        <div className="sujet-browser-side-cluster">
+          <div className="sujet-browser-meta-grid" aria-label="بيانات الموضوع">
+            <div className="sujet-browser-meta-item">
+              <span>الدورة</span>
+              <strong>{formatSessionType(exam.sessionType)}</strong>
+            </div>
+            <div className="sujet-browser-meta-item">
+              <span>المدة</span>
+              <strong>{exam.durationMinutes} دقيقة</strong>
+            </div>
+            <div className="sujet-browser-meta-item">
+              <span>التمارين</span>
+              <strong>{exam.exerciseCount}</strong>
             </div>
           </div>
-        }
-      >
-        <StudyNavigator
-          exercises={navigatorExercises}
-          activeExerciseId={activeExercise.id}
-          activeQuestionId={activeQuestionId}
-          onSelectExercise={onSelectExercise}
-          onSelectQuestion={onSelectQuestion}
-        />
-      </StudySidebar>
 
-      <section className="study-stage">
-        <StudyExerciseStageCard
-          exercise={activeExercise}
-          kicker={`${exam.subject.name} · ${exam.stream.name} · ${exam.year}`}
-          heading={
-            <>
-              التمرين {activeExercise.displayOrder}
-              {activeExercise.title ? ` · ${activeExercise.title}` : ""}
-            </>
-          }
-          badgeLabel={`${activeExercise.questions.length} أسئلة`}
-          headerActions={exerciseHeaderActions}
-        />
-
-        <div className="study-question-stack">
-          {activeExercise.questions.map((question, questionIndex) => {
-            const questionState = questionStates[question.id];
-            const isActive = question.id === activeQuestionId;
-            const stateDescriptor = describeStudyQuestionState(
-              questionState,
-              isActive,
-            );
-            const solutionVisible = isQuestionSolutionVisible(question.id);
-            const canRevealSolution = canRevealStudyQuestionSolution(question);
-
-            return (
-              <article
-                key={`${activeExercise.id}:${question.id}`}
-                id={`study-question-${question.id}`}
-                className={
-                  isActive
-                    ? "study-question-stack-item is-active"
-                    : "study-question-stack-item"
-                }
-              >
-                <StudyQuestionPanel
-                  title={question.label}
-                  subtitle={`التمرين ${activeExercise.displayOrder}`}
-                  isActive={isActive}
-                  stateLabel={stateDescriptor.label}
-                  stateTone={stateDescriptor.tone}
-                  positionLabel={`${questionIndex + 1}/${activeExercise.questions.length}`}
-                  pointsLabel={`${question.points} ن`}
-                  modeLabel={progressMode === "REVIEW" ? "مراجعة" : undefined}
-                  solutionViewed={Boolean(questionState?.solutionViewed)}
-                  topics={getStudyQuestionTopics(question).map((topic) => ({
-                    key: `${question.id}-${topic.code}`,
-                    label: topic.name,
-                  }))}
-                  actions={
-                    <>
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        onClick={() =>
-                          onToggleQuestionComplete(activeExercise.id, question.id)
-                        }
-                      >
-                        {questionState?.completed ? "إلغاء الإنجاز" : "تم"}
-                      </button>
-                      {progressMode === "SOLVE" && canRevealSolution ? (
-                        <button
-                          type="button"
-                          className="btn-secondary"
-                          onClick={() =>
-                            onToggleQuestionSolution(activeExercise.id, question.id)
-                          }
-                        >
-                          {solutionVisible ? (
-                            <>
-                              <EyeOff size={16} aria-hidden="true" />
-                              إخفاء الحل
-                            </>
-                          ) : (
-                            <>
-                              <Eye size={16} aria-hidden="true" />
-                              إظهار الحل
-                            </>
-                          )}
-                        </button>
-                      ) : null}
-                    </>
-                  }
-                >
-                  <StudyQuestionPromptContent question={question} />
-                </StudyQuestionPanel>
-
-                <AnimatePresence initial={false}>
-                  {solutionVisible ? (
-                    <motion.div
-                      className="study-inline-solution-motion"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.24, ease: [0.4, 0, 0.2, 1] }}
-                    >
-                      <div className="study-inline-solution-inner">
-                        <StudyQuestionSolutionStack question={question} />
-                      </div>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-    </div>
-  );
-}
-
-export function SujetViewerFocusHeader({
-  backToBrowseHref,
-  currentQuestionPosition,
-  totalQuestionCount,
-  progressPercent,
-  onExitFocusMode,
-  onOpenNavigator,
-}: SujetViewerFocusHeaderProps) {
-  return (
-    <header className="theater-header">
-      <div className="theater-header-left">
-        <button type="button" className="btn-ghost" onClick={onExitFocusMode}>
-          عادي
-        </button>
-      </div>
-
-      <div className="theater-header-center">
-        <div className="theater-progress-container">
-          <span className="theater-progress-text">
-            السؤال {currentQuestionPosition} من {totalQuestionCount}
-          </span>
-          <div className="theater-progress-track" aria-hidden="true">
-            <div
-              className="theater-progress-fill"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="theater-header-right">
-        <div className="study-action-row">
-          <Link href={backToBrowseHref} className="btn-secondary">
-            التصفح
-          </Link>
-          <button type="button" className="btn-secondary" onClick={onOpenNavigator}>
-            الخريطة
-          </button>
+          {simulationAction ? (
+            <div className="sujet-browser-actions">{simulationAction}</div>
+          ) : null}
         </div>
       </div>
     </header>
   );
 }
 
-export function SujetViewerFocusContextPane({
-  exam,
-  sujetNumber,
-  progressMode,
-  totalQuestionCount,
-  activeExerciseTopics,
-  activeExercise,
-  exerciseAction,
-  onSetMode,
-}: SujetViewerFocusContextPaneProps) {
+export function SujetViewerNavigator({
+  variantLinks,
+  exerciseTabs,
+}: {
+  variantLinks: SujetVariantLink[];
+  exerciseTabs: SujetExerciseTab[];
+}) {
   return (
-    <aside className="theater-context-pane">
-      <div className="theater-pane-shell">
-        <section className="theater-session-intro">
-          <p className="page-kicker">موضوع رسمي</p>
-          <h1>{exam.selectedSujetLabel ?? `الموضوع ${sujetNumber}`}</h1>
-          <p className="theater-session-copy">
-            {formatSessionType(exam.sessionType)} · {totalQuestionCount} أسئلة
-          </p>
-          <div className="study-meta-row">
-            <span className="study-meta-pill">
-              <strong>المادة</strong>
-              <span>{exam.subject.name}</span>
-            </span>
-            <span className="study-meta-pill">
-              <strong>الشعبة</strong>
-              <span>{exam.stream.name}</span>
-            </span>
-            <span className="study-meta-pill">
-              <strong>السنة</strong>
-              <span>{exam.year}</span>
-            </span>
+    <section className="sujet-browser-nav">
+      {variantLinks.length > 1 ? (
+        <div className="sujet-browser-nav-group">
+          <span className="sujet-browser-nav-label">الموضوع</span>
+          <div className="sujet-browser-pill-row">
+            {variantLinks.map((variant) => (
+              <Link
+                key={variant.href}
+                href={variant.href}
+                className={
+                  variant.isActive
+                    ? "sujet-browser-pill sujet-browser-pill-link active"
+                    : "sujet-browser-pill sujet-browser-pill-link"
+                }
+              >
+                {variant.label}
+              </Link>
+            ))}
           </div>
-        </section>
+        </div>
+      ) : null}
 
-        <StudySectionCard tone="commentary" title="الوضع">
-          {activeExerciseTopics.length ? (
-            <div className="topic-chip-row theater-context-topics">
-              {activeExerciseTopics.slice(0, 8).map((topic) => (
-                <span key={`${activeExercise.id}:${topic.code}`}>{topic.name}</span>
-              ))}
-            </div>
-          ) : null}
-          <div className="study-action-row">
+      <div className="sujet-browser-nav-group">
+        <span className="sujet-browser-nav-label">التمارين</span>
+        <div className="sujet-browser-pill-row">
+          {exerciseTabs.map((exercise) => (
             <button
+              key={exercise.id}
               type="button"
               className={
-                progressMode === "SOLVE"
-                  ? "study-toggle-button active"
-                  : "study-toggle-button"
+                exercise.isActive
+                  ? "sujet-browser-pill active"
+                  : "sujet-browser-pill"
               }
-              onClick={() => onSetMode("SOLVE")}
+              onClick={exercise.onSelect}
             >
-              حل
+              {exercise.label}
             </button>
-            <button
-              type="button"
-              className={
-                progressMode === "REVIEW"
-                  ? "study-toggle-button active"
-                  : "study-toggle-button"
-              }
-              onClick={() => onSetMode("REVIEW")}
-            >
-              مراجعة
-            </button>
-          </div>
-        </StudySectionCard>
-
-        <StudyExerciseStageCard
-          exercise={activeExercise}
-          kicker={`${exam.subject.name} · ${exam.stream.name} · ${exam.year}`}
-          heading={
-            <>
-              التمرين {activeExercise.displayOrder}
-              {activeExercise.title ? ` · ${activeExercise.title}` : ""}
-            </>
-          }
-          badgeLabel={`${activeExercise.questions.length} أسئلة`}
-          actions={exerciseAction}
-        />
+          ))}
+        </div>
       </div>
-    </aside>
+    </section>
   );
 }
 
-export function SujetViewerFocusQuestionPane({
-  activeExercise,
-  activeQuestion,
-  activeQuestionStateDescriptor,
-  activeQuestionState,
-  progressMode,
-  currentQuestionPosition,
-  totalQuestionCount,
-  solutionVisible,
-  questionActions,
-}: SujetViewerFocusQuestionPaneProps) {
-  return (
-    <main className="theater-question-pane">
-      <div className="theater-pane-shell theater-question-shell">
-        <div className="theater-question-deck">
-          <div key={`${activeExercise.id}:${activeQuestion.id}`} className="theater-question-card">
-            <StudyQuestionPanel
-              title={activeQuestion.label}
-              subtitle={`التمرين ${activeExercise.displayOrder}`}
-              stateLabel={activeQuestionStateDescriptor.label}
-              stateTone={activeQuestionStateDescriptor.tone}
-              positionLabel={`${currentQuestionPosition}/${totalQuestionCount}`}
-              pointsLabel={`${activeQuestion.points} ن`}
-              modeLabel={progressMode === "REVIEW" ? "مراجعة" : undefined}
-              solutionViewed={Boolean(activeQuestionState?.solutionViewed)}
-              topics={getStudyQuestionTopics(activeQuestion).map((topic) => ({
-                key: `${activeQuestion.id}-${topic.code}`,
-                label: topic.name,
-              }))}
-              keyboardHint={{
-                keys: ["→", "←"],
-                label: "تنقل",
-              }}
-            >
-              <StudyQuestionPromptContent question={activeQuestion} />
-            </StudyQuestionPanel>
+function getPromptBlocks(blocks: ExamHierarchyBlock[]) {
+  return blocks
+    .filter((block) => block.role === "PROMPT" || block.role === "STEM")
+    .sort((left, right) => left.orderIndex - right.orderIndex);
+}
 
-            <div
-              className={`solution-reveal-wrapper${solutionVisible ? " is-open" : ""}`}
-            >
-              <div className="solution-reveal-inner">
-                <StudyQuestionSolutionStack question={activeQuestion} />
-              </div>
-            </div>
+function formatNodeLabel(
+  node: ExamHierarchyNode,
+  question: StudyQuestionModel | null,
+) {
+  if (question?.label?.trim()) {
+    return question.label.trim();
+  }
+
+  if (node.label?.trim()) {
+    return node.label.trim();
+  }
+
+  if (node.nodeType === "SUBQUESTION") {
+    return `الفقرة ${node.orderIndex}`;
+  }
+
+  if (node.nodeType === "PART") {
+    return `الجزء ${node.orderIndex}`;
+  }
+
+  return `السؤال ${node.orderIndex}`;
+}
+
+function QuestionSolutionToggle({
+  question,
+  revealedSolutions,
+  onToggleQuestionSolution,
+}: {
+  question: StudyQuestionModel;
+  revealedSolutions: Record<string, boolean>;
+  onToggleQuestionSolution: (questionId: string) => void;
+}) {
+  const canRevealSolution = canRevealStudyQuestionSolution(question);
+  const isSolutionOpen = Boolean(revealedSolutions[question.id]);
+
+  if (!canRevealSolution) {
+    return null;
+  }
+
+  return (
+    <button
+      type="button"
+      className="sujet-question-solution-toggle"
+      onClick={() => onToggleQuestionSolution(question.id)}
+    >
+      {isSolutionOpen ? (
+        <>
+          <EyeOff size={16} aria-hidden="true" />
+          إخفاء الحل
+        </>
+      ) : (
+        <>
+          <Eye size={16} aria-hidden="true" />
+          إظهار الحل
+        </>
+      )}
+    </button>
+  );
+}
+
+function SujetViewerStructuredQuestionNode({
+  node,
+  depth,
+  question,
+  revealedSolutions,
+  onToggleQuestionSolution,
+  renderChildNode,
+}: {
+  node: ExamHierarchyNode;
+  depth: number;
+  question: StudyQuestionModel | null;
+  revealedSolutions: Record<string, boolean>;
+  onToggleQuestionSolution: (questionId: string) => void;
+  renderChildNode: (child: ExamHierarchyNode, depth: number) => ReactNode;
+}) {
+  const promptBlocks = question?.promptBlocks ?? getPromptBlocks(node.blocks);
+  const points = question?.points ?? node.maxPoints ?? 0;
+  const isSolutionOpen = question ? Boolean(revealedSolutions[question.id]) : false;
+
+  return (
+    <div
+      className={`sujet-paper-question-row${
+        node.nodeType === "SUBQUESTION" ? " is-subquestion" : ""
+      }`}
+      style={depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined}
+    >
+      <div className="sujet-paper-question-head">
+        <div className="sujet-paper-question-meta">
+          <div className="sujet-paper-question-index sujet-paper-question-index-label">
+            {formatNodeLabel(node, question)}
           </div>
+          {points > 0 ? (
+            <span className="sujet-paper-question-points">{points} نقاط</span>
+          ) : null}
         </div>
 
-        {questionActions ? (
-          <div className="theater-actions-bar">{questionActions}</div>
+        {question ? (
+          <QuestionSolutionToggle
+            question={question}
+            revealedSolutions={revealedSolutions}
+            onToggleQuestionSolution={onToggleQuestionSolution}
+          />
         ) : null}
       </div>
-    </main>
+
+      {promptBlocks.length ? (
+        <div className="sujet-paper-question-body">
+          {question ? (
+            <StudyQuestionPromptContent question={question} />
+          ) : (
+            <StudyHierarchyBlocks blocks={promptBlocks} />
+          )}
+        </div>
+      ) : null}
+
+      {node.children.length ? (
+        <div className="sujet-paper-node-children">
+          {node.children.map((child) => renderChildNode(child, depth + 1))}
+        </div>
+      ) : null}
+
+      {question && isSolutionOpen ? (
+        <div className="sujet-paper-solution">
+          <StudyQuestionSolutionStack question={question} />
+        </div>
+      ) : null}
+    </div>
   );
 }
 
-export function SujetViewerFocusNavigatorModal({
-  exam,
-  sujetNumber,
-  progressMode,
-  navigatorExercises,
-  activeExerciseId,
-  activeQuestionId,
-  onClose,
-  onExitFocusMode,
-  onSetMode,
-  onSelectExercise,
-  onSelectQuestion,
-}: SujetViewerFocusNavigatorModalProps) {
+function SujetViewerStructuredBranchNode({
+  node,
+  depth,
+  renderChildNode,
+}: {
+  node: ExamHierarchyNode;
+  depth: number;
+  renderChildNode: (child: ExamHierarchyNode, depth: number) => ReactNode;
+}) {
+  const promptBlocks = getPromptBlocks(node.blocks);
+  const label = formatNodeLabel(node, null);
+
   return (
-    <div className="navigator-modal-backdrop" onClick={onClose}>
-      <aside
-        className="navigator-modal-content"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="theater-modal-stack">
-          <div className="study-stage-head">
-            <div>
-              <p className="page-kicker">خريطة الموضوع</p>
-              <h2>{exam.selectedSujetLabel ?? `الموضوع ${sujetNumber}`}</h2>
-            </div>
-            <button type="button" className="btn-ghost" onClick={onClose}>
-              إغلاق
-            </button>
-          </div>
+    <section
+      className="sujet-paper-branch"
+      style={depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined}
+    >
+      <div className="sujet-paper-branch-head">
+        <h3 className="sujet-paper-branch-label">{label}</h3>
+        {node.maxPoints && node.maxPoints > 0 ? (
+          <span className="sujet-paper-question-points">
+            {node.maxPoints} نقاط
+          </span>
+        ) : null}
+      </div>
 
-          <div className="study-action-row">
-            <StudyStateLegend />
-            <StudyKeyHint keys={["→", "←"]} label="تنقل" />
-            <StudyKeyHint keys={["S"]} label="الحل" />
-          </div>
-
-          <div className="theater-modal-actions">
-            <button
-              type="button"
-              className={
-                progressMode === "SOLVE"
-                  ? "study-toggle-button active"
-                  : "study-toggle-button"
-              }
-              onClick={() => onSetMode("SOLVE")}
-            >
-              حل
-            </button>
-            <button
-              type="button"
-              className={
-                progressMode === "REVIEW"
-                  ? "study-toggle-button active"
-                  : "study-toggle-button"
-              }
-              onClick={() => onSetMode("REVIEW")}
-            >
-              مراجعة
-            </button>
-            <button type="button" className="btn-secondary" onClick={onExitFocusMode}>
-              عادي
-            </button>
-          </div>
-
-          <StudyNavigator
-            exercises={navigatorExercises}
-            activeExerciseId={activeExerciseId}
-            activeQuestionId={activeQuestionId}
-            onSelectExercise={onSelectExercise}
-            onSelectQuestion={onSelectQuestion}
-          />
+      {promptBlocks.length ? (
+        <div className="sujet-paper-branch-body">
+          <StudyHierarchyBlocks blocks={promptBlocks} />
         </div>
-      </aside>
-    </div>
+      ) : null}
+
+      {node.children.length ? (
+        <div className="sujet-paper-node-children">
+          {node.children.map((child) => renderChildNode(child, depth + 1))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function SujetViewerStructuredContextNode({
+  node,
+  depth,
+}: {
+  node: ExamHierarchyNode;
+  depth: number;
+}) {
+  const promptBlocks = getPromptBlocks(node.blocks);
+
+  if (!promptBlocks.length) {
+    return null;
+  }
+
+  return (
+    <section
+      className="sujet-paper-context sujet-paper-context-inline"
+      style={depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined}
+    >
+      {node.label?.trim() ? (
+        <p className="sujet-paper-context-label">{node.label.trim()}</p>
+      ) : null}
+      <StudyHierarchyBlocks blocks={promptBlocks} />
+    </section>
+  );
+}
+
+function SujetViewerStructuredExerciseBody({
+  exercise,
+  revealedSolutions,
+  onToggleQuestionSolution,
+}: {
+  exercise: StudyExerciseModel;
+  revealedSolutions: Record<string, boolean>;
+  onToggleQuestionSolution: (questionId: string) => void;
+}) {
+  if (!exercise.hierarchyNode) {
+    return null;
+  }
+
+  const exerciseIntroBlocks = getPromptBlocks(exercise.hierarchyNode.blocks);
+  const questionsById = new Map(
+    exercise.questions.map((question) => [question.id, question] as const),
+  );
+
+  const renderNode = (node: ExamHierarchyNode, depth = 0): ReactNode => {
+    if (node.nodeType === "PART") {
+      return (
+        <SujetViewerStructuredBranchNode
+          key={node.id}
+          node={node}
+          depth={depth}
+          renderChildNode={renderNode}
+        />
+      );
+    }
+
+    if (node.nodeType === "CONTEXT") {
+      return (
+        <SujetViewerStructuredContextNode key={node.id} node={node} depth={depth} />
+      );
+    }
+
+    if (node.nodeType === "QUESTION" || node.nodeType === "SUBQUESTION") {
+      return (
+        <SujetViewerStructuredQuestionNode
+          key={node.id}
+          node={node}
+          depth={depth}
+          question={questionsById.get(node.id) ?? null}
+          revealedSolutions={revealedSolutions}
+          onToggleQuestionSolution={onToggleQuestionSolution}
+          renderChildNode={renderNode}
+        />
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <>
+      {exerciseIntroBlocks.length ? (
+        <div className="sujet-paper-context">
+          <StudyHierarchyBlocks blocks={exerciseIntroBlocks} />
+        </div>
+      ) : null}
+
+      <div className="sujet-paper-structure">
+        {exercise.hierarchyNode.children.map((node) => renderNode(node))}
+      </div>
+    </>
+  );
+}
+
+function SujetViewerFlatExerciseBody({
+  exercise,
+  revealedSolutions,
+  onToggleQuestionSolution,
+}: {
+  exercise: StudyExerciseModel;
+  revealedSolutions: Record<string, boolean>;
+  onToggleQuestionSolution: (questionId: string) => void;
+}) {
+  return (
+    <>
+      {exercise.contextBlocks.length ? (
+        <div className="sujet-paper-context">
+          <StudyHierarchyBlocks blocks={exercise.contextBlocks} />
+        </div>
+      ) : null}
+
+      <div className="sujet-paper-question-list">
+        {exercise.questions.map((question, index) => {
+          const canRevealSolution = canRevealStudyQuestionSolution(question);
+          const isSolutionOpen = Boolean(revealedSolutions[question.id]);
+
+          return (
+            <div
+              key={`${exercise.id}:${question.id}`}
+              className="sujet-paper-question-row"
+            >
+              <div className="sujet-paper-question-head">
+                <div className="sujet-paper-question-meta">
+                  <div className="sujet-paper-question-index">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  {question.points > 0 ? (
+                    <span className="sujet-paper-question-points">
+                      {question.points} نقاط
+                    </span>
+                  ) : null}
+                </div>
+
+                {canRevealSolution ? (
+                  <button
+                    type="button"
+                    className="sujet-question-solution-toggle"
+                    onClick={() => onToggleQuestionSolution(question.id)}
+                  >
+                    {isSolutionOpen ? (
+                      <>
+                        <EyeOff size={16} aria-hidden="true" />
+                        إخفاء الحل
+                      </>
+                    ) : (
+                      <>
+                        <Eye size={16} aria-hidden="true" />
+                        إظهار الحل
+                      </>
+                    )}
+                  </button>
+                ) : null}
+              </div>
+
+              <div className="sujet-paper-question-body">
+                <StudyQuestionPromptContent question={question} />
+              </div>
+
+              {isSolutionOpen ? (
+                <div className="sujet-paper-solution">
+                  <StudyQuestionSolutionStack question={question} />
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+export function SujetViewerExercisePaper({
+  exam,
+  exercise,
+  revealedSolutions,
+  onToggleQuestionSolution,
+  exerciseAction,
+}: {
+  exam: ExamResponse;
+  exercise: StudyExerciseModel;
+  revealedSolutions: Record<string, boolean>;
+  onToggleQuestionSolution: (questionId: string) => void;
+  exerciseAction?: ReactNode;
+}) {
+  const selectedSujetNumber = exam.selectedSujetNumber ?? 1;
+  const exerciseNumber = String(exercise.displayOrder).padStart(2, "0");
+
+  return (
+    <section className="sujet-paper-shell">
+      <article className="sujet-paper-sheet">
+        <div className="sujet-paper-head">
+          <div className="sujet-paper-head-copy">
+            <p className="sujet-paper-kicker">
+              {formatSujetLabel(selectedSujetNumber, exam.selectedSujetLabel)}
+            </p>
+            <div className="sujet-paper-exercise-line">
+              <span className="sujet-paper-serial">{exerciseNumber}</span>
+              <span className="sujet-paper-exercise-label">
+                التمرين {exercise.displayOrder}
+              </span>
+            </div>
+          </div>
+
+          <div className="sujet-paper-head-side">
+            <div className="sujet-paper-badges">
+              {exercise.totalPoints > 0 ? (
+                <span>{exercise.totalPoints} نقاط</span>
+              ) : null}
+              <span>{exercise.questions.length} أسئلة</span>
+            </div>
+            {exerciseAction ? (
+              <div className="sujet-paper-actions">{exerciseAction}</div>
+            ) : null}
+          </div>
+        </div>
+
+        {exercise.hierarchyNode ? (
+          <SujetViewerStructuredExerciseBody
+            exercise={exercise}
+            revealedSolutions={revealedSolutions}
+            onToggleQuestionSolution={onToggleQuestionSolution}
+          />
+        ) : (
+          <SujetViewerFlatExerciseBody
+            exercise={exercise}
+            revealedSolutions={revealedSolutions}
+            onToggleQuestionSolution={onToggleQuestionSolution}
+          />
+        )}
+      </article>
+    </section>
   );
 }

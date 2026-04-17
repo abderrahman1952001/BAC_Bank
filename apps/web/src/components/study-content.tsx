@@ -14,7 +14,7 @@ import {
 import {
   ExamHierarchyBlock,
   toAssetUrl,
-} from '@/lib/qbank';
+} from '@/lib/study-api';
 
 const INLINE_MATH_REGEX = /\$\$([\s\S]+?)\$\$|\$([^\n$]+?)\$|`([^`\n]+?)`/g;
 

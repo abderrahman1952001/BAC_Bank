@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AdminRoleGuard } from '../admin/admin.guard';
+import { CatalogModule } from '../catalog/catalog.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { IngestionController } from './ingestion.controller';
 import { IngestionDraftIntakeService } from './ingestion-draft-intake.service';
@@ -20,7 +21,7 @@ import { IngestionService } from './ingestion.service';
 import { IngestionWorkerService } from './ingestion-worker.service';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, CatalogModule],
   controllers: [IngestionController],
   providers: [
     IngestionService,

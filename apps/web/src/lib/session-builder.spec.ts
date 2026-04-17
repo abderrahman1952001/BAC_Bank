@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { FiltersResponse } from "@/lib/qbank";
+import type { FiltersResponse } from "@/lib/study-api";
 import {
   buildBuilderPlanText,
   buildSessionBuilderViewModel,
@@ -132,12 +132,14 @@ describe("session builder helpers", () => {
       buildPreviewSessionRequest({
         subjectCode: "MATH",
         topicCodes: ["ALG"],
+        topicSelectionMode: "custom",
         effectiveStreamCodes: [],
         selectedYears: [2025, 2024],
         sessionTypes: ["NORMAL"],
       }),
     ).toEqual({
       subjectCode: "MATH",
+      kind: "TOPIC_DRILL",
       topicCodes: ["ALG"],
       streamCodes: undefined,
       years: [2025, 2024],
@@ -149,19 +151,23 @@ describe("session builder helpers", () => {
         title: "  Calculus sprint  ",
         subjectCode: "MATH",
         topicCodes: ["ALG"],
+        topicSelectionMode: "custom",
         effectiveStreamCodes: ["SE"],
         selectedYears: [2025],
         sessionTypes: [],
         exerciseCount: 8,
+        timingEnabled: true,
       }),
     ).toEqual({
       title: "Calculus sprint",
       subjectCode: "MATH",
+      kind: "TOPIC_DRILL",
       topicCodes: ["ALG"],
       streamCodes: ["SE"],
       years: [2025],
       sessionTypes: [],
       exerciseCount: 8,
+      timingEnabled: true,
     });
   });
 

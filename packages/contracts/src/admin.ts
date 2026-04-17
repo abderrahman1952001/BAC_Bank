@@ -97,7 +97,7 @@ export type AdminBootstrapResponse = {
   imported_exercises: number;
   imported_questions: number;
   skipped_existing_exams: number;
-  total_qbank_exams: number;
+  total_published_exams: number;
 };
 
 export type AdminExercise = {

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import {
+  type AdminIngestionActiveOperation,
   type AdminIngestionJobListResponse,
   type AdminIngestionJobResponse,
   type AdminIngestionPublishedExam,
@@ -27,6 +28,7 @@ import {
   canApproveIngestionJob,
   canPublishIngestionJob,
 } from './ingestion-workflow';
+import { readIngestionWorkerRequest } from './ingestion-process-request';
 import { validateIngestionDraft } from './ingestion-validation';
 import { R2StorageClient, readR2ConfigFromEnv } from './r2-storage';
 
@@ -129,13 +131,17 @@ export class IngestionReadService {
           year: draft.exam.year,
           stream_codes: this.resolveDraftStreamCodes(
             draft,
-            job.paperSource.streamMappings.map((mapping) => mapping.stream.code),
+            job.paperSource.streamMappings.map(
+              (mapping) => mapping.stream.code,
+            ),
           ),
           subject_code: draft.exam.subjectCode,
           session:
             draft.exam.sessionType === 'MAKEUP' ? 'rattrapage' : 'normal',
           min_year: draft.exam.minYear,
           status: this.fromIngestionStatus(job.status),
+          review_notes: job.reviewNotes,
+          error_message: job.errorMessage,
           source_document_count: job.sourceDocuments.length,
           source_page_count: job.sourceDocuments.reduce(
             (sum, document) => sum + document.pages.length,
@@ -144,6 +150,7 @@ export class IngestionReadService {
           workflow: this.buildWorkflowState({
             provider: draft.exam.provider,
             status: job.status,
+            metadata: job.metadata,
             sourceDocuments: job.sourceDocuments,
           }),
           published_paper_id: job.publishedPaperId,
@@ -449,6 +456,7 @@ export class IngestionReadService {
           };
         }>;
       } | null;
+      metadata: Prisma.JsonValue | null;
       createdAt: Date;
       updatedAt: Date;
       sourceDocuments: Array<{
@@ -475,6 +483,7 @@ export class IngestionReadService {
     const workflow = this.buildWorkflowState({
       provider: draft.exam.provider,
       status: job.status,
+      metadata: job.metadata,
       sourceDocuments: job.sourceDocuments,
     });
     const requiresSourceDocuments = !this.isPublishedRevisionProvider(
@@ -549,6 +558,7 @@ export class IngestionReadService {
   private buildWorkflowState(job: {
     provider: string;
     status: IngestionJobStatus;
+    metadata: Prisma.JsonValue | null;
     sourceDocuments: Array<{
       kind: SourceDocumentKind;
     }>;
@@ -557,6 +567,10 @@ export class IngestionReadService {
       job.status === IngestionJobStatus.IN_REVIEW ||
       job.status === IngestionJobStatus.APPROVED ||
       job.status === IngestionJobStatus.PUBLISHED;
+    const activeOperation = this.resolveActiveOperation(
+      job.status,
+      job.metadata,
+    );
 
     if (this.isPublishedRevisionProvider(job.provider)) {
       return {
@@ -565,6 +579,7 @@ export class IngestionReadService {
         awaiting_correction: false,
         can_process: false,
         review_started: reviewStarted,
+        active_operation: activeOperation,
       };
     }
 
@@ -586,7 +601,24 @@ export class IngestionReadService {
         job.status !== IngestionJobStatus.PROCESSING &&
         job.status !== IngestionJobStatus.PUBLISHED,
       review_started: reviewStarted,
+      active_operation: activeOperation,
     };
+  }
+
+  private resolveActiveOperation(
+    status: IngestionJobStatus,
+    metadata: Prisma.JsonValue | null,
+  ): AdminIngestionActiveOperation {
+    if (
+      status !== IngestionJobStatus.QUEUED &&
+      status !== IngestionJobStatus.PROCESSING
+    ) {
+      return 'idle';
+    }
+
+    return readIngestionWorkerRequest(metadata).action === 'publish'
+      ? 'publishing'
+      : 'processing';
   }
 
   private isPublishedRevisionProvider(provider: string) {

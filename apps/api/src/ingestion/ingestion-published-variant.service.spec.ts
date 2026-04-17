@@ -4,9 +4,15 @@ import { type IngestionDraft } from './ingestion.contract';
 
 describe('IngestionPublishedVariantService', () => {
   let service: IngestionPublishedVariantService;
+  let catalogCurriculumService: {
+    resolveSubjectCurriculumScope: jest.Mock;
+  };
   let tx: {
     topic: {
       findMany: jest.Mock;
+    };
+    examNodeSkill: {
+      createMany: jest.Mock;
     };
     examVariant: {
       create: jest.Mock;
@@ -97,10 +103,23 @@ describe('IngestionPublishedVariantService', () => {
   } satisfies IngestionDraft;
 
   beforeEach(() => {
-    service = new IngestionPublishedVariantService();
+    catalogCurriculumService = {
+      resolveSubjectCurriculumScope: jest.fn().mockResolvedValue({
+        subjectId: 'subject-1',
+        subjectCode: 'MATH',
+        allowedStreamCodes: ['SE'],
+        curriculumIds: ['curriculum-1'],
+      }),
+    };
+    service = new IngestionPublishedVariantService(
+      catalogCurriculumService as never,
+    );
     tx = {
       topic: {
         findMany: jest.fn(),
+      },
+      examNodeSkill: {
+        createMany: jest.fn().mockResolvedValue(undefined),
       },
       examVariant: {
         create: jest.fn().mockResolvedValue(undefined),
@@ -135,9 +154,47 @@ describe('IngestionPublishedVariantService', () => {
     ).rejects.toThrow(
       new BadRequestException('Invalid topic codes for MATH: FUNC.'),
     );
+    expect(tx.topic.findMany).toHaveBeenCalledWith({
+      where: {
+        subjectId: 'subject-1',
+        curriculumId: {
+          in: ['curriculum-1'],
+        },
+        code: {
+          in: ['ALG', 'FUNC'],
+        },
+      },
+      select: {
+        id: true,
+        code: true,
+      },
+    });
   });
 
   it('creates published variants, nodes, topics, and blocks with structured metadata', async () => {
+    tx.topic.findMany.mockResolvedValueOnce([
+      {
+        id: 'topic-1',
+        skillMappings: [
+          {
+            skillId: 'skill-1',
+            weight: 1,
+            isPrimary: true,
+          },
+        ],
+      },
+      {
+        id: 'topic-2',
+        skillMappings: [
+          {
+            skillId: 'skill-2',
+            weight: 0.75,
+            isPrimary: false,
+          },
+        ],
+      },
+    ]);
+
     await service.createPublishedVariants({
       tx: tx as never,
       jobId: 'job-1',
@@ -205,6 +262,32 @@ describe('IngestionPublishedVariantService', () => {
         {
           nodeId: 'node-exercise-1',
           topicId: 'topic-1',
+        },
+      ],
+      skipDuplicates: true,
+    });
+    expect(tx.examNodeSkill.createMany).toHaveBeenNthCalledWith(1, {
+      data: [
+        {
+          nodeId: 'node-exercise-1',
+          skillId: 'skill-1',
+          weight: 1,
+          isPrimary: true,
+          source: 'TOPIC_DERIVED',
+          confidence: 1,
+        },
+      ],
+      skipDuplicates: true,
+    });
+    expect(tx.examNodeSkill.createMany).toHaveBeenNthCalledWith(2, {
+      data: [
+        {
+          nodeId: 'node-question-1',
+          skillId: 'skill-2',
+          weight: 0.75,
+          isPrimary: false,
+          source: 'TOPIC_DERIVED',
+          confidence: 1,
         },
       ],
       skipDuplicates: true,

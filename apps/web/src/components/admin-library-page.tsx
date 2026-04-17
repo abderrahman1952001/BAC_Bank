@@ -27,7 +27,7 @@ import {
   fetchAdminJson,
   parseAdminIngestionJobResponse,
 } from "@/lib/admin";
-import { type CatalogResponse, type ExamResponse } from "@/lib/qbank";
+import { type CatalogResponse, type ExamResponse } from "@/lib/study-api";
 
 type AdminLibraryPageProps = {
   initialSelection: AdminLibrarySelectionState;
@@ -328,8 +328,8 @@ export function AdminLibraryPage({
         </div>
       </div>
 
-      <div className="browse-workspace">
-        <div className="browse-workspace-body">
+      <div className="library-workspace">
+        <div className="library-workspace-body">
           <AdminLibraryFiltersRail
             catalog={catalog}
             stream={stream}
@@ -345,7 +345,7 @@ export function AdminLibraryPage({
             onSelectYear={setSelectedYear}
           />
 
-          <div className="browse-main-column">
+          <div className="library-main-column">
             <AdminLibrarySujetsPanel
               stream={stream}
               subject={subject}

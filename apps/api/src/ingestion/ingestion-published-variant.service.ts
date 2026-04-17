@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   BlockRole,
   BlockType as PrismaBlockType,
+  ExamNodeSkillSource,
   ExamNodeType,
   ExamVariantCode,
   Prisma,
@@ -15,23 +16,49 @@ import {
   DraftVariantCode,
   IngestionDraft,
 } from './ingestion.contract';
+import { CatalogCurriculumService } from '../catalog/catalog-curriculum.service';
 import { groupDraftNodesByParent } from './ingestion-draft-graph';
 
 @Injectable()
 export class IngestionPublishedVariantService {
+  constructor(
+    private readonly catalogCurriculumService: CatalogCurriculumService,
+  ) {}
+
   async buildSubjectTopicIdMap(
     tx: Prisma.TransactionClient,
     subjectId: string,
     topicCodes: string[],
     subjectCode: string | null,
+    streamCodes: string[] = [],
+    years: number[] = [],
   ) {
     if (!topicCodes.length) {
       return new Map<string, string>();
     }
 
+    const subjectScope =
+      subjectCode === null
+        ? null
+        : await this.catalogCurriculumService.resolveSubjectCurriculumScope(
+            {
+              subjectCode,
+              streamCodes,
+              years,
+            },
+            tx,
+          );
+
     const topics = await tx.topic.findMany({
       where: {
         subjectId,
+        ...(subjectScope?.curriculumIds.length
+          ? {
+              curriculumId: {
+                in: subjectScope.curriculumIds,
+              },
+            }
+          : {}),
         code: {
           in: topicCodes,
         },
@@ -65,6 +92,10 @@ export class IngestionPublishedVariantService {
     createId?: () => string;
   }) {
     const createId = input.createId ?? randomUUID;
+    const skillMappingsByTopicId = await this.listSkillMappingsByTopicId(
+      input.tx,
+      Array.from(input.topicIdsByCode.values()),
+    );
 
     for (const variant of input.draft.variants) {
       const variantId = createId();
@@ -90,6 +121,7 @@ export class IngestionPublishedVariantService {
         nodesByParent,
         assetMediaIds: input.assetMediaIds,
         topicIdsByCode: input.topicIdsByCode,
+        skillMappingsByTopicId,
         createId,
       });
     }
@@ -102,6 +134,14 @@ export class IngestionPublishedVariantService {
     nodesByParent: Map<string | null, DraftNode[]>;
     assetMediaIds: Map<string, string>;
     topicIdsByCode: Map<string, string>;
+    skillMappingsByTopicId: Map<
+      string,
+      Array<{
+        skillId: string;
+        weight: Prisma.Decimal;
+        isPrimary: boolean;
+      }>
+    >;
     parentId?: string | null;
     createId: () => string;
   }) {
@@ -132,11 +172,17 @@ export class IngestionPublishedVariantService {
         node.blocks,
         input.assetMediaIds,
       );
-      await this.createNodeTopics(
+      const topicIds = await this.createNodeTopics(
         input.tx,
         nodeId,
         node.topicCodes,
         input.topicIdsByCode,
+      );
+      await this.createNodeSkills(
+        input.tx,
+        nodeId,
+        topicIds,
+        input.skillMappingsByTopicId,
       );
       await this.createVariantNodes({
         ...input,
@@ -153,24 +199,127 @@ export class IngestionPublishedVariantService {
     topicIdsByCode: Map<string, string>,
   ) {
     if (!topicCodes.length) {
+      return [] as string[];
+    }
+
+    const topicIds = topicCodes.map((code) => {
+      const topicId = topicIdsByCode.get(code);
+
+      if (!topicId) {
+        throw new BadRequestException(`Unknown topic code ${code}.`);
+      }
+
+      return topicId;
+    });
+
+    await tx.examNodeTopic.createMany({
+      data: topicIds.map((topicId) => ({
+        nodeId,
+        topicId,
+      })),
+      skipDuplicates: true,
+    });
+
+    return topicIds;
+  }
+
+  private async createNodeSkills(
+    tx: Prisma.TransactionClient,
+    nodeId: string,
+    topicIds: string[],
+    skillMappingsByTopicId: Map<
+      string,
+      Array<{
+        skillId: string;
+        weight: Prisma.Decimal;
+        isPrimary: boolean;
+      }>
+    >,
+  ) {
+    if (!topicIds.length) {
       return;
     }
 
-    await tx.examNodeTopic.createMany({
-      data: topicCodes.map((code) => {
-        const topicId = topicIdsByCode.get(code);
+    const aggregatedSkills = new Map<
+      string,
+      {
+        skillId: string;
+        weight: number;
+        isPrimary: boolean;
+      }
+    >();
 
-        if (!topicId) {
-          throw new BadRequestException(`Unknown topic code ${code}.`);
+    for (const topicId of topicIds) {
+      for (const mapping of skillMappingsByTopicId.get(topicId) ?? []) {
+        const existing = aggregatedSkills.get(mapping.skillId);
+
+        if (existing) {
+          existing.weight += Number(mapping.weight);
+          existing.isPrimary ||= mapping.isPrimary;
+          continue;
         }
 
-        return {
-          nodeId,
-          topicId,
-        };
-      }),
+        aggregatedSkills.set(mapping.skillId, {
+          skillId: mapping.skillId,
+          weight: Number(mapping.weight),
+          isPrimary: mapping.isPrimary,
+        });
+      }
+    }
+
+    if (!aggregatedSkills.size) {
+      return;
+    }
+
+    await tx.examNodeSkill.createMany({
+      data: Array.from(aggregatedSkills.values()).map((mapping) => ({
+        nodeId,
+        skillId: mapping.skillId,
+        weight: mapping.weight,
+        isPrimary: mapping.isPrimary,
+        source: ExamNodeSkillSource.TOPIC_DERIVED,
+        confidence: 1,
+      })),
       skipDuplicates: true,
     });
+  }
+
+  private async listSkillMappingsByTopicId(
+    tx: Prisma.TransactionClient,
+    topicIds: string[],
+  ) {
+    if (!topicIds.length) {
+      return new Map<
+        string,
+        Array<{
+          skillId: string;
+          weight: Prisma.Decimal;
+          isPrimary: boolean;
+        }>
+      >();
+    }
+
+    const topics = await tx.topic.findMany({
+      where: {
+        id: {
+          in: topicIds,
+        },
+      },
+      select: {
+        id: true,
+        skillMappings: {
+          select: {
+            skillId: true,
+            weight: true,
+            isPrimary: true,
+          },
+        },
+      },
+    });
+
+    return new Map(
+      topics.map((topic) => [topic.id, topic.skillMappings]),
+    );
   }
 
   private async createNodeBlocks(
@@ -267,6 +416,10 @@ export class IngestionPublishedVariantService {
 
     if (value === 'HINT') {
       return BlockRole.HINT;
+    }
+
+    if (value === 'RUBRIC') {
+      return BlockRole.RUBRIC;
     }
 
     if (value === 'META') {

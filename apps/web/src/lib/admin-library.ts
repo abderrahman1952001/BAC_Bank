@@ -1,5 +1,6 @@
 import type { AdminIngestionJobSummary } from "@/lib/admin";
-import { type CatalogResponse, type ExamResponse } from "@/lib/qbank";
+import { type CatalogResponse, type ExamResponse } from "@/lib/study-api";
+import { buildStudentLibraryExamRoute } from "@/lib/student-routes";
 
 export type AdminLibraryInitialSearch = {
   stream?: string;
@@ -373,7 +374,13 @@ export function buildStudentPreviewHref(
     return null;
   }
 
-  return `/student/browse/${selectedExam.stream.code}/${selectedExam.subject.code}/${selectedExam.year}/${selectedExam.id}/${selectedExam.selectedSujetNumber ?? selectedSujetNumber}`;
+  return buildStudentLibraryExamRoute({
+    streamCode: selectedExam.stream.code,
+    subjectCode: selectedExam.subject.code,
+    year: selectedExam.year,
+    examId: selectedExam.id,
+    sujetNumber: selectedExam.selectedSujetNumber ?? selectedSujetNumber,
+  });
 }
 
 export function buildActiveRevisionJobIdsByPaperId(

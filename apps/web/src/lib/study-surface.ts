@@ -4,8 +4,8 @@ import {
   ExamHierarchyBlock,
   ExamHierarchyNode,
   ExamResponse,
-  PracticeSessionResponse,
-} from "@/lib/qbank";
+  StudySessionResponse,
+} from "@/lib/study-api";
 
 export type StudyTopicTag = {
   code: string;
@@ -40,14 +40,16 @@ export type StudyQuestionModel = {
 
 export type StudyExerciseModel = {
   id: string;
+  exerciseNodeId: string;
   orderIndex: number;
   displayOrder: number;
   title: string | null;
   totalPoints: number;
   contextBlocks: ExamHierarchyBlock[];
+  hierarchyNode?: ExamHierarchyNode | null;
   sourceExam: {
     year: number;
-    sessionType: PracticeSessionResponse["exercises"][number]["exam"]["sessionType"];
+    sessionType: StudySessionResponse["exercises"][number]["exam"]["sessionType"];
     subject: {
       code: string;
       name: string;
@@ -154,11 +156,13 @@ export function buildStudyExercisesFromExam(
 
     return {
       id: exercise.id,
+      exerciseNodeId: exercise.id,
       orderIndex: exercise.orderIndex || index + 1,
       displayOrder: exercise.orderIndex || index + 1,
       title: exercise.label || null,
       totalPoints,
       contextBlocks: getExerciseContextBlocks(exercise),
+      hierarchyNode: exercise,
       sourceExam,
       questions,
     };
@@ -166,15 +170,17 @@ export function buildStudyExercisesFromExam(
 }
 
 export function buildStudyExercisesFromSessionExercises(
-  exercises: PracticeSessionResponse["exercises"],
+  exercises: StudySessionResponse["exercises"],
 ): StudyExerciseModel[] {
   return exercises.map((exercise) => ({
     id: exercise.id,
+    exerciseNodeId: exercise.hierarchy.exerciseNodeId,
     orderIndex: exercise.orderIndex,
     displayOrder: exercise.sessionOrder,
     title: exercise.hierarchy.exerciseLabel ?? exercise.title,
     totalPoints: exercise.totalPoints,
     contextBlocks: exercise.hierarchy.contextBlocks,
+    hierarchyNode: null,
     sourceExam: exercise.exam,
     questions: exercise.hierarchy.questions.map((question) => ({
       id: question.id,

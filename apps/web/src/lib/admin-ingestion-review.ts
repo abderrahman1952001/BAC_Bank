@@ -195,6 +195,7 @@ export function buildIssueCountBySection(
 
 export function buildReviewActionState({
   job,
+  workflow,
   saving,
   autosaving,
   autosaveError,
@@ -204,6 +205,7 @@ export function buildReviewActionState({
   attachingCorrection,
 }: {
   job: Pick<AdminIngestionJobResponse["job"], "status" | "draft_kind">;
+  workflow: Pick<AdminIngestionJobResponse["workflow"], "active_operation">;
   saving: boolean;
   autosaving: boolean;
   autosaveError: string | null;
@@ -216,8 +218,15 @@ export function buildReviewActionState({
   const actionBusy =
     saving || processing || attachingCorrection || workerActive;
   const isRevisionDraft = job.draft_kind === "revision";
-  const primaryActionLabel =
-    job.status === "published"
+  const isPublishing =
+    workerActive && workflow.active_operation === "publishing";
+  const primaryActionLabel = isPublishing
+    ? job.status === "queued"
+      ? "Publish queued"
+      : isRevisionDraft
+        ? "Publishing Revision…"
+        : "Publishing…"
+    : job.status === "published"
       ? isRevisionDraft
         ? "Published Revision"
         : "Published"
@@ -287,7 +296,7 @@ export function buildProcessActionLabel({
 }: {
   workflow: Pick<
     AdminIngestionJobResponse["workflow"],
-    "awaiting_correction" | "review_started"
+    "active_operation" | "awaiting_correction" | "review_started"
   >;
   jobStatus: AdminIngestionJobResponse["job"]["status"];
   processing: boolean;
@@ -301,11 +310,15 @@ export function buildProcessActionLabel({
   }
 
   if (jobStatus === "queued") {
-    return "Queued";
+    return workflow.active_operation === "publishing"
+      ? "Publish queued"
+      : "Queued";
   }
 
   if (jobStatus === "processing") {
-    return "Worker running…";
+    return workflow.active_operation === "publishing"
+      ? "Publishing…"
+      : "Worker running…";
   }
 
   if (shouldUseDestructiveExtractionProcess({ workflow, jobStatus })) {

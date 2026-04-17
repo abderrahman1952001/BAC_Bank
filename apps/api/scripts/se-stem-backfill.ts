@@ -187,7 +187,7 @@ type RootExerciseEntry = {
 };
 
 async function main() {
-  await loadRepoEnv();
+  await loadApiEnv();
   const {
     app,
     prisma: prismaService,
@@ -203,7 +203,9 @@ async function main() {
     const geminiKeys = loadGeminiKeys();
 
     if (geminiKeys.length === 0) {
-      throw new Error('No Gemini API keys were found in .env.');
+      throw new Error(
+        'No Gemini API keys were found in apps/api/.env, apps/api/.env.local, or the current shell.',
+      );
     }
 
     const topicOptionsBySubject = await loadTopicOptionsBySubject();
@@ -504,27 +506,71 @@ async function main() {
   }
 }
 
-async function loadRepoEnv() {
-  const repoRoot = path.resolve(__dirname, '../../..');
-  const envPath = path.join(repoRoot, '.env');
-  const raw = await fs.readFile(envPath, 'utf8');
+async function loadApiEnv() {
+  const apiRoot = path.resolve(__dirname, '..');
+  const envFiles = [
+    path.join(apiRoot, '.env'),
+    path.join(apiRoot, '.env.local'),
+  ];
+  const initialEnvKeys = new Set(Object.keys(process.env));
 
-  for (const line of raw.split(/\r?\n/)) {
-    const trimmed = line.trim();
+  for (const envPath of envFiles) {
+    let raw: string;
 
-    if (!trimmed || trimmed.startsWith('#')) {
-      continue;
+    try {
+      raw = await fs.readFile(envPath, 'utf8');
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        continue;
+      }
+
+      throw error;
     }
 
-    const separatorIndex = trimmed.indexOf('=');
-    if (separatorIndex < 0) {
-      continue;
-    }
+    for (const line of raw.split(/\r?\n/)) {
+      const trimmed = line.trim();
 
-    const key = trimmed.slice(0, separatorIndex).trim();
-    const value = trimmed.slice(separatorIndex + 1).trim();
+      if (!trimmed || trimmed.startsWith('#')) {
+        continue;
+      }
 
-    if (!process.env[key]) {
+      const source = trimmed.startsWith('export ')
+        ? trimmed.slice('export '.length).trimStart()
+        : trimmed;
+      const separatorIndex = source.indexOf('=');
+
+      if (separatorIndex < 0) {
+        continue;
+      }
+
+      const key = source.slice(0, separatorIndex).trim();
+
+      if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(key) || initialEnvKeys.has(key)) {
+        continue;
+      }
+
+      let value = source.slice(separatorIndex + 1).trim();
+
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        const quote = value[0];
+        value = value.slice(1, -1);
+
+        if (quote === '"') {
+          value = value
+            .replace(/\\n/g, '\n')
+            .replace(/\\r/g, '\r')
+            .replace(/\\t/g, '\t');
+        }
+      } else {
+        const commentMatch = value.match(/^(.*?)\s+#.*$/);
+        if (commentMatch) {
+          value = commentMatch[1].trimEnd();
+        }
+      }
+
       process.env[key] = value;
     }
   }

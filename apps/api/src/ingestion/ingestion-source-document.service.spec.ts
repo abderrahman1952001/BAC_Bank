@@ -87,11 +87,11 @@ describe('IngestionSourceDocumentService', () => {
   it('stores manual source documents with canonical keys and upload metadata', async () => {
     prisma.sourceDocument.create.mockResolvedValueOnce({
       id: 'doc-1',
-      storageKey: 'bac/2024/documents/bac-2024-se-math-normal-exam.pdf',
+      storageKey: 'bac/2024/documents/bac-exam-math-se-2024-normal.pdf',
     });
 
     await service.storeManualSourceDocument({
-      jobId: 'job-1',
+      paperSourceId: 'paper-source-1',
       kind: SourceDocumentKind.EXAM,
       upload: {
         buffer: pdfBuffer,
@@ -105,7 +105,7 @@ describe('IngestionSourceDocumentService', () => {
     });
 
     expect(storageClient.putObject).toHaveBeenCalledWith({
-      key: 'bac/2024/documents/bac-2024-se-math-normal-exam.pdf',
+      key: 'bac/2024/documents/bac-exam-math-se-2024-normal.pdf',
       body: pdfBuffer,
       contentType: 'application/pdf',
       metadata: {
@@ -114,10 +114,10 @@ describe('IngestionSourceDocumentService', () => {
     });
     expect(prisma.sourceDocument.create).toHaveBeenCalledWith({
       data: {
-        jobId: 'job-1',
+        paperSourceId: 'paper-source-1',
         kind: SourceDocumentKind.EXAM,
-        storageKey: 'bac/2024/documents/bac-2024-se-math-normal-exam.pdf',
-        fileName: 'bac-2024-se-math-normal-exam.pdf',
+        storageKey: 'bac/2024/documents/bac-exam-math-se-2024-normal.pdf',
+        fileName: 'bac-exam-math-se-2024-normal.pdf',
         mimeType: 'application/pdf',
         pageCount: null,
         sha256: createHash('sha256').update(pdfBuffer).digest('hex'),
@@ -141,7 +141,7 @@ describe('IngestionSourceDocumentService', () => {
   it('replaces correction documents and clears stored pages before updating metadata', async () => {
     prisma.sourceDocument.update.mockResolvedValueOnce({
       id: 'doc-2',
-      storageKey: 'bac/2024/documents/bac-2024-se-math-normal-correction.pdf',
+      storageKey: 'bac/2024/documents/bac-correction-math-se-2024-normal.pdf',
     });
 
     await service.replaceManualSourceDocument({
@@ -177,8 +177,8 @@ describe('IngestionSourceDocumentService', () => {
         id: 'doc-2',
       },
       data: {
-        storageKey: 'bac/2024/documents/bac-2024-se-math-normal-correction.pdf',
-        fileName: 'bac-2024-se-math-normal-correction.pdf',
+        storageKey: 'bac/2024/documents/bac-correction-math-se-2024-normal.pdf',
+        fileName: 'bac-correction-math-se-2024-normal.pdf',
         mimeType: 'application/pdf',
         pageCount: null,
         sha256: createHash('sha256').update(pdfBuffer).digest('hex'),

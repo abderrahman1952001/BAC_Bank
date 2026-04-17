@@ -23,7 +23,7 @@ export default function SignUpPage() {
 
         <article className="auth-card">
           <SignUp
-            forceRedirectUrl="/auth"
+            forceRedirectUrl="/post-auth"
             path="/auth/sign-up"
             routing="path"
             signInUrl="/auth/sign-in"

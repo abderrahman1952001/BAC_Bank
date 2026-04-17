@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { PracticeSessionResponse } from "@/lib/qbank";
+import type { StudySessionResponse } from "@/lib/study-api";
 import type { StudyExerciseModel } from "@/lib/study-surface";
 import {
   buildActiveExerciseTopics,
@@ -21,6 +21,7 @@ import {
 const exercises: StudyExerciseModel[] = [
   {
     id: "exercise-1",
+    exerciseNodeId: "exercise-1",
     orderIndex: 1,
     displayOrder: 1,
     title: "Exercise 1",
@@ -77,6 +78,7 @@ const exercises: StudyExerciseModel[] = [
   },
   {
     id: "exercise-2",
+    exerciseNodeId: "exercise-2",
     orderIndex: 2,
     displayOrder: 2,
     title: "Exercise 2",
@@ -114,10 +116,20 @@ const exercises: StudyExerciseModel[] = [
 const session = {
   id: "session-1",
   title: "Focused training",
+  family: "DRILL",
+  kind: "TOPIC_DRILL",
   status: "IN_PROGRESS",
+  sourceExamId: null,
   requestedExerciseCount: 3,
   exerciseCount: 2,
+  durationMinutes: null,
+  timingEnabled: false,
   progress: null,
+  startedAt: "2026-03-27T00:00:00.000Z",
+  deadlineAt: null,
+  submittedAt: null,
+  completedAt: null,
+  lastInteractedAt: "2026-03-28T00:00:00.000Z",
   createdAt: "2026-03-27T00:00:00.000Z",
   updatedAt: "2026-03-28T00:00:00.000Z",
   filters: {
@@ -158,7 +170,11 @@ const session = {
       stream: exercise.sourceExam!.stream,
     },
   })),
-} satisfies PracticeSessionResponse;
+  pedagogy: {
+    supportStyle: "LOGIC_HEAVY",
+    weakPointIntro: null,
+  },
+} satisfies StudySessionResponse;
 
 describe("session player helpers", () => {
   it("builds question refs and repairs progress using the freshest snapshot", () => {
@@ -175,6 +191,9 @@ describe("session player helpers", () => {
             completed: false,
             skipped: false,
             solutionViewed: false,
+            timeSpentSeconds: 0,
+            reflection: null,
+            diagnosis: null,
           },
         ],
         summary: {
@@ -183,6 +202,7 @@ describe("session player helpers", () => {
           skippedQuestionCount: 0,
           unansweredQuestionCount: 3,
           solutionViewedCount: 0,
+          trackedTimeSeconds: 0,
         },
         updatedAt: "2026-03-27T00:00:00.000Z",
       },
@@ -194,6 +214,7 @@ describe("session player helpers", () => {
           q2: {
             opened: false,
             completed: true,
+            timeSpentSeconds: 0,
           },
         },
         updatedAt: "2026-03-28T00:00:00.000Z",
@@ -207,8 +228,8 @@ describe("session player helpers", () => {
       { exerciseId: "exercise-2", questionId: "q3" },
     ]);
     expect(progress.activeExerciseId).toBe("exercise-1");
-    expect(progress.activeQuestionId).toBe("q2");
-    expect(progress.questionStates.q2?.opened).toBe(true);
+    expect(progress.activeQuestionId).toBe("q1");
+    expect(progress.questionStates.q2?.opened).toBe(false);
     expect(progress.questionStates.q2?.completed).toBe(true);
   });
 
@@ -232,21 +253,28 @@ describe("session player helpers", () => {
   });
 
   it("builds progress payloads with derived counts", () => {
-    expect(
-      buildSessionProgressUpdateRequest(
-        {
-          activeExerciseId: "exercise-1",
-          activeQuestionId: "q2",
-          mode: "REVIEW",
-          questionStates: {
-            q1: { opened: true, completed: true },
-            q2: { opened: true, skipped: true, solutionViewed: true },
+    const request = buildSessionProgressUpdateRequest(
+      {
+        activeExerciseId: "exercise-1",
+        activeQuestionId: "q2",
+        mode: "REVIEW",
+        questionStates: {
+          q1: { opened: true, completed: true },
+          q2: {
+            opened: true,
+            skipped: true,
+            solutionViewed: true,
+            timeSpentSeconds: 0,
+            reflection: "HARD",
+            diagnosis: "METHOD",
           },
-          updatedAt: "2026-03-28T01:00:00.000Z",
         },
-        ["q1", "q2", "q3"],
-      ),
-    ).toMatchObject({
+        updatedAt: "2026-03-28T01:00:00.000Z",
+      },
+      ["q1", "q2", "q3"],
+    );
+
+    expect(request).toMatchObject({
       activeExerciseId: "exercise-1",
       activeQuestionId: "q2",
       mode: "REVIEW",
@@ -255,10 +283,18 @@ describe("session player helpers", () => {
       skippedQuestionCount: 1,
       solutionViewedCount: 1,
     });
+    expect(request.questionStates).toContainEqual(
+      expect.objectContaining({
+        questionId: "q2",
+        reflection: "HARD",
+        diagnosis: "METHOD",
+      }),
+    );
   });
 
   it("builds session meta and goal summaries from saved filters", () => {
     expect(buildSessionMeta(session)).toEqual([
+      { label: "النمط", value: "تدريب بالمحاور" },
       { label: "المادة", value: "Mathematics" },
       { label: "الشعب", value: "عدة شعب" },
       { label: "السنوات", value: "2024 - 2025" },
@@ -280,9 +316,9 @@ describe("session player helpers", () => {
         exercises,
         activeQuestionId: "q2",
         questionStates: {
-          q1: { completed: true },
-          q2: { opened: true, solutionViewed: true },
-          q3: { skipped: true },
+          q1: { completed: true, timeSpentSeconds: 0 },
+          q2: { opened: true, solutionViewed: true, timeSpentSeconds: 0 },
+          q3: { skipped: true, timeSpentSeconds: 0 },
         },
       }),
     ).toEqual([
@@ -315,9 +351,9 @@ describe("session player helpers", () => {
         activeQuestionId: "q2",
         mode: "SOLVE",
         questionStates: {
-          q1: { completed: true },
-          q2: { opened: true, solutionViewed: true },
-          q3: { skipped: true },
+          q1: { completed: true, timeSpentSeconds: 0 },
+          q2: { opened: true, solutionViewed: true, timeSpentSeconds: 0 },
+          q3: { skipped: true, timeSpentSeconds: 0 },
         },
         updatedAt: "2026-03-28T01:00:00.000Z",
       },
@@ -334,7 +370,7 @@ describe("session player helpers", () => {
     expect(viewModel.currentQuestionPosition).toBe(2);
     expect(viewModel.solutionVisible).toBe(true);
     expect(viewModel.questionMotionClass).toBe("is-leaving-backward");
-    expect(viewModel.primaryActionLabel).toBe("السؤال التالي");
+    expect(viewModel.primaryActionLabel).toBe("اختر تقييمك");
   });
 
   it("resolves adjacent, skipped, and unanswered question refs", () => {
@@ -358,8 +394,8 @@ describe("session player helpers", () => {
       findFirstUnansweredQuestionRef({
         allQuestionIds: ["q1", "q2", "q3"],
         questionStates: {
-          q1: { completed: true },
-          q2: { skipped: true },
+          q1: { completed: true, timeSpentSeconds: 0 },
+          q2: { skipped: true, timeSpentSeconds: 0 },
         },
         allQuestionRefs,
       }),
@@ -368,7 +404,7 @@ describe("session player helpers", () => {
       findFirstSkippedQuestionRef({
         allQuestionIds: ["q1", "q2", "q3"],
         questionStates: {
-          q2: { skipped: true },
+          q2: { skipped: true, timeSpentSeconds: 0 },
         },
         allQuestionRefs,
       }),
@@ -387,8 +423,10 @@ describe("session player helpers", () => {
     });
     expect(
       buildPrimaryActionLabel({
+        isActiveSimulation: false,
         solutionVisible: false,
         canRevealSolution: false,
+        requiresReflection: false,
         isLastQuestion: false,
       }),
     ).toBe("متابعة إلى السؤال التالي");

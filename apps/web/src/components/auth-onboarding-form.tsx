@@ -2,27 +2,45 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import type { AuthStreamOption, AuthUser } from "@bac-bank/contracts/auth";
+import type {
+  AuthStreamFamilyOption,
+  AuthUser,
+} from "@bac-bank/contracts/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getPostAuthRoute } from "@/lib/auth-routing";
 import { updateCurrentUserProfile } from "@/lib/client-auth";
 
 type AuthOnboardingFormProps = {
   initialUser: AuthUser;
-  streams: AuthStreamOption[];
+  streamFamilies: AuthStreamFamilyOption[];
 };
 
 export function AuthOnboardingForm({
   initialUser,
-  streams,
+  streamFamilies,
 }: AuthOnboardingFormProps) {
   const router = useRouter();
+  const initialFamilyCode =
+    streamFamilies.find((family) =>
+      family.streams.some((stream) => stream.code === initialUser.stream?.code),
+    )?.code ??
+    streamFamilies[0]?.code ??
+    "";
+  const initialFamily =
+    streamFamilies.find((family) => family.code === initialFamilyCode) ?? null;
+  const initialStreamCode =
+    initialUser.stream?.code ??
+    initialFamily?.streams.find((stream) => stream.isDefault)?.code ??
+    (initialFamily?.streams.length === 1 ? initialFamily.streams[0]?.code : "") ??
+    "";
   const [username, setUsername] = useState(initialUser.username);
-  const [streamCode, setStreamCode] = useState(
-    initialUser.stream?.code ?? streams[0]?.code ?? "",
-  );
+  const [streamFamilyCode, setStreamFamilyCode] = useState(initialFamilyCode);
+  const [streamCode, setStreamCode] = useState(initialStreamCode);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const selectedFamily =
+    streamFamilies.find((family) => family.code === streamFamilyCode) ?? null;
+  const requiresLeafSelection = (selectedFamily?.streams.length ?? 0) > 1;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -82,21 +100,56 @@ export function AuthOnboardingForm({
               <span>الشعبة</span>
               <select
                 required
-                value={streamCode}
+                value={streamFamilyCode}
                 onChange={(event) => {
-                  setStreamCode(event.target.value);
+                  const nextFamilyCode = event.target.value;
+                  const nextFamily =
+                    streamFamilies.find(
+                      (family) => family.code === nextFamilyCode,
+                    ) ?? null;
+                  const nextStreamCode =
+                    nextFamily?.streams.find((stream) => stream.isDefault)
+                      ?.code ??
+                    (nextFamily?.streams.length === 1
+                      ? nextFamily.streams[0]?.code
+                      : "") ??
+                    "";
+
+                  setStreamFamilyCode(nextFamilyCode);
+                  setStreamCode(nextStreamCode);
                 }}
               >
                 <option value="" disabled>
                   اختر الشعبة
                 </option>
-                {streams.map((stream) => (
-                  <option key={stream.code} value={stream.code}>
-                    {stream.name}
+                {streamFamilies.map((family) => (
+                  <option key={family.code} value={family.code}>
+                    {family.name}
                   </option>
                 ))}
               </select>
             </label>
+            {requiresLeafSelection ? (
+              <label>
+                <span>المسار</span>
+                <select
+                  required
+                  value={streamCode}
+                  onChange={(event) => {
+                    setStreamCode(event.target.value);
+                  }}
+                >
+                  <option value="" disabled>
+                    اختر المسار
+                  </option>
+                  {selectedFamily?.streams.map((stream) => (
+                    <option key={stream.code} value={stream.code}>
+                      {stream.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
             {submitError ? <p className="auth-feedback">{submitError}</p> : null}
             <button
               type="submit"

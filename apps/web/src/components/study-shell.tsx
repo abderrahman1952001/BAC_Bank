@@ -289,26 +289,6 @@ export function EmptyState({
   );
 }
 
-export function BrowseWorkspaceSkeleton() {
-  return (
-    <div className="browse-workspace browse-workspace-loading">
-      <div className="study-skeleton block" />
-      <div className="browse-workspace-body">
-        <div className="study-skeleton sidebar" />
-        <div className="browse-main-column">
-          <div className="study-skeleton block" />
-          <div className="browse-skeleton-grid">
-            <div className="study-skeleton panel tall" />
-            <div className="study-skeleton panel tall" />
-            <div className="study-skeleton panel tall" />
-          </div>
-          <div className="study-skeleton panel tall" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function SessionPreviewSkeleton() {
   return (
     <div className="builder-preview-stack" aria-hidden="true">

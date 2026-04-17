@@ -5,8 +5,17 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClerkClient, type User, verifyToken } from '@clerk/backend';
-import { Prisma, SubscriptionStatus, UserRole } from '@prisma/client';
+import {
+  StudySessionFamily,
+  Prisma,
+  SubscriptionStatus,
+  UserRole,
+} from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import {
+  buildStudyEntitlements,
+  getStudyMonthlyQuotaWindow,
+} from '../study/study-entitlements';
 import { AuthenticatedUser } from './auth.types';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
@@ -23,12 +32,6 @@ type UserProfileRecord = Prisma.UserGetPayload<{
     fullName: true;
     role: true;
     subscriptionStatus: true;
-    streamFamily: {
-      select: {
-        code: true;
-        name: true;
-      };
-    };
     stream: {
       select: {
         code: true;
@@ -51,11 +54,30 @@ export class AuthService {
       select: {
         code: true,
         name: true,
+        pathways: {
+          where: {
+            subjectMappings: {
+              some: {},
+            },
+          },
+          orderBy: { createdAt: 'asc' },
+          select: {
+            code: true,
+            name: true,
+            isDefault: true,
+          },
+        },
       },
     });
 
     return {
-      streams: streamFamilies,
+      streamFamilies: streamFamilies
+        .filter((family) => family.pathways.length > 0)
+        .map((family) => ({
+          code: family.code,
+          name: family.name,
+          streams: family.pathways,
+        })),
     };
   }
 
@@ -86,7 +108,6 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
-        sessionId: typeof payload.sid === 'string' ? payload.sid : null,
       };
     } catch (error) {
       if (error instanceof UnauthorizedException) {
@@ -108,7 +129,7 @@ export class AuthService {
     }
 
     return {
-      user: this.mapUserProfile(user),
+      user: await this.mapUserProfile(user),
     };
   }
 
@@ -120,14 +141,13 @@ export class AuthService {
       where: { id: userId },
       data: {
         fullName: payload.username.trim(),
-        streamFamilyId: streamSelection.streamFamilyId,
         streamId: streamSelection.streamId,
       },
       select: this.userProfileSelect,
     });
 
     return {
-      user: this.mapUserProfile(updatedUser),
+      user: await this.mapUserProfile(updatedUser),
     };
   }
 
@@ -139,12 +159,6 @@ export class AuthService {
       fullName: true,
       role: true,
       subscriptionStatus: true,
-      streamFamily: {
-        select: {
-          code: true,
-          name: true,
-        },
-      },
       stream: {
         select: {
           code: true,
@@ -281,22 +295,55 @@ export class AuthService {
     return email;
   }
 
-  private mapUserProfile(user: UserProfileRecord) {
-    const selectedStream = user.streamFamily ?? user.stream;
+  private async mapUserProfile(user: UserProfileRecord) {
+    const [drillStartsUsed, simulationStartsUsed] =
+      await this.readMonthlySessionStartUsage(user.id);
 
     return {
       id: user.id,
       username: user.fullName?.trim() || user.email.split('@')[0] || 'Student',
       email: user.email,
       role: this.normalizeRole(user.role),
-      stream: selectedStream
+      stream: user.stream
         ? {
-            code: selectedStream.code,
-            name: selectedStream.name,
+            code: user.stream.code,
+            name: user.stream.name,
           }
         : null,
       subscriptionStatus: user.subscriptionStatus,
+      studyEntitlements: buildStudyEntitlements({
+        subscriptionStatus: user.subscriptionStatus,
+        drillStartsUsed,
+        simulationStartsUsed,
+      }),
     };
+  }
+
+  private async readMonthlySessionStartUsage(userId: string) {
+    const quotaWindow = getStudyMonthlyQuotaWindow();
+
+    return Promise.all([
+      this.prisma.studySession.count({
+        where: {
+          userId,
+          family: StudySessionFamily.DRILL,
+          createdAt: {
+            gte: quotaWindow.startsAt,
+            lt: quotaWindow.resetsAt,
+          },
+        },
+      }),
+      this.prisma.studySession.count({
+        where: {
+          userId,
+          family: StudySessionFamily.SIMULATION,
+          createdAt: {
+            gte: quotaWindow.startsAt,
+            lt: quotaWindow.resetsAt,
+          },
+        },
+      }),
+    ]);
   }
 
   private normalizeRole(role: UserRole): 'STUDENT' | 'ADMIN' {
@@ -305,31 +352,19 @@ export class AuthService {
 
   private async resolveUserStreamSelection(streamCode: string) {
     const normalizedCode = streamCode.trim().toUpperCase();
-    const streamFamily = await this.prisma.streamFamily.findUnique({
+    const stream = await this.prisma.stream.findUnique({
       where: { code: normalizedCode },
       select: {
         id: true,
-        pathways: {
-          orderBy: { createdAt: 'asc' },
-          select: {
-            id: true,
-            isDefault: true,
-          },
-        },
       },
     });
 
-    if (!streamFamily) {
+    if (!stream) {
       throw new BadRequestException('Selected stream is invalid.');
     }
 
-    const defaultPathway =
-      streamFamily.pathways.find((pathway) => pathway.isDefault) ??
-      (streamFamily.pathways.length === 1 ? streamFamily.pathways[0] : null);
-
     return {
-      streamFamilyId: streamFamily.id,
-      streamId: defaultPathway?.id ?? null,
+      streamId: stream.id,
     };
   }
 

@@ -3,31 +3,31 @@ import { ThemeToggle } from '@/components/theme-toggle';
 
 const highlights = [
   {
-    label: 'الفهرسة',
-    value: 'Sujet 1 · Sujet 2',
+    label: 'المكتبة',
+    value: 'مواضيع منظمة حسب الشعبة والسنة',
   },
   {
-    label: 'القارئ',
-    value: 'Exercise -> Question',
+    label: 'التدريب',
+    value: 'جلسات موجهة حسب الهدف',
   },
   {
-    label: 'الجلسات',
-    value: 'Builder سريع',
+    label: 'المساحة',
+    value: 'تقدم محفوظ ونشاط حديث',
   },
 ];
 
 const surfaces = [
   {
-    title: 'تصفح',
-    detail: 'شعبة، مادة، سنة',
+    title: 'المكتبة',
+    detail: 'شعبة، مادة، سنة، موضوع',
   },
   {
-    title: 'جلسة',
-    detail: 'محاور، سنوات، حجم',
+    title: 'التدريب',
+    detail: 'جلسات موجهة بالمحاور والسنوات',
   },
   {
-    title: 'دراسة',
-    detail: 'تنقل هادئ وحفظ تلقائي',
+    title: 'مساحتي',
+    detail: 'استكمال التعلم وحفظ تلقائي',
   },
 ];
 
@@ -51,9 +51,9 @@ export function LandingPage() {
 
       <section className="landing-hero" id="start">
         <div className="landing-hero-copy">
-          <p className="landing-eyebrow">Algerian BAC QBank</p>
-          <h1>بنك البكالوريا بواجهة هادئة وواضحة.</h1>
-          <p>اختيار سريع. قراءة نظيفة. دراسة بلا ضجيج.</p>
+          <p className="landing-eyebrow">Algerian BAC Platform</p>
+          <h1>منصة البكالوريا الجزائرية للمراجعة والتدريب.</h1>
+          <p>مكتبة منظمة. تدريب موجه. ومساحة شخصية تحفظ تقدمك.</p>
           <div className="landing-actions">
             <Link href="/auth" className="btn-primary">
               إنشاء حساب
@@ -85,8 +85,8 @@ export function LandingPage() {
 
       <section className="landing-cta">
         <div>
-          <h2>ادخل مباشرة إلى المذاكرة</h2>
-          <p>حساب واحد. موضوع أو جلسة. والباقي واضح.</p>
+          <h2>ابدأ من المكتبة أو من التدريب</h2>
+          <p>حساب واحد. مكتبة كاملة. تدريب محفوظ. ومساحة شخصية واضحة.</p>
         </div>
         <div className="landing-actions">
           <Link href="/auth" className="btn-primary">

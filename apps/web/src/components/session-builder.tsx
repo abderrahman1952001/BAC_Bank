@@ -16,18 +16,32 @@ import {
   StudyHeader,
   StudyShell,
 } from "@/components/study-shell";
-import type { FiltersResponse } from "@/lib/qbank";
+import type { FiltersResponse } from "@/lib/study-api";
 import { useSessionBuilder } from "@/lib/use-session-builder";
 
 export function SessionBuilder({
   initialFilters,
+  initialSelection,
 }: {
   initialFilters?: FiltersResponse;
+  initialSelection?: {
+    subjectCode?: string;
+    topicCodes?: string[];
+  };
 }) {
   const router = useRouter();
   const [refreshingFilters, startRefreshingFilters] = useTransition();
   const { user } = useAuthSession();
   const userStreamCode = user?.stream?.code ?? null;
+  const studyEntitlements = user?.studyEntitlements ?? null;
+  const drillQuota = studyEntitlements?.quotas.drillStarts ?? null;
+  const simulationQuota = studyEntitlements?.quotas.simulationStarts ?? null;
+  const drillStartBlocked = Boolean(drillQuota?.exhausted);
+  const drillStartBlockedMessage = drillQuota?.exhausted
+    ? `وصلت إلى الحد الشهري لجلسات التدريب. يتجدد في ${new Date(
+        drillQuota.resetsAt,
+      ).toLocaleDateString("ar-DZ")}.`
+    : null;
   const {
     filters,
     previewLoading,
@@ -42,6 +56,7 @@ export function SessionBuilder({
     yearEnd,
     sessionTypes,
     exerciseCount,
+    timingEnabled,
     advancedOpen,
     currentStep,
     stepMotionDirection,
@@ -60,6 +75,7 @@ export function SessionBuilder({
     selectedTopicLabel,
     selectedYearsLabel,
     planText,
+    sessionKindLabel,
     selectedYears,
     zeroResultsGuidance,
     maxExerciseCount,
@@ -77,17 +93,51 @@ export function SessionBuilder({
     toggleTopic,
     toggleSessionType,
     setExerciseCount,
+    setTimingEnabled,
     setTitle,
     triggerZeroResultsAction,
     createSession,
-  } = useSessionBuilder(userStreamCode, initialFilters);
+  } = useSessionBuilder(userStreamCode, initialFilters, initialSelection);
 
   return (
     <StudyShell>
       <StudentNavbar />
 
       <section className="student-main-frame student-main-frame-builder">
-        <StudyHeader title="بناء جلسة مخصصة" />
+        <StudyHeader title="إعداد جلسة تدريب" />
+
+        {studyEntitlements ? (
+          <section className="builder-preview-card builder-preview-summary-card">
+            <h3>الخطة الحالية</h3>
+            <p>
+              {studyEntitlements.tier === "PREMIUM"
+                ? "Premium · تدريب غير محدود مع طبقات الدعم المتقدمة."
+                : "Free · التدريب يُدار بحصص شهرية منفصلة للدريل والمحاكاة."}
+            </p>
+            <div className="study-meta-row">
+              {drillQuota ? (
+                <span className="study-meta-pill">
+                  <strong>الدريل</strong>
+                  <span>
+                    {drillQuota.monthlyLimit === null
+                      ? "غير محدود"
+                      : `${drillQuota.remaining}/${drillQuota.monthlyLimit}`}
+                  </span>
+                </span>
+              ) : null}
+              {simulationQuota ? (
+                <span className="study-meta-pill">
+                  <strong>المحاكاة</strong>
+                  <span>
+                    {simulationQuota.monthlyLimit === null
+                      ? "غير محدود"
+                      : `${simulationQuota.remaining}/${simulationQuota.monthlyLimit}`}
+                  </span>
+                </span>
+              ) : null}
+            </div>
+          </section>
+        ) : null}
 
         {!filters ? (
           <EmptyState
@@ -194,15 +244,20 @@ export function SessionBuilder({
                       maxExerciseCount={maxExerciseCount}
                       advancedOpen={advancedOpen}
                       title={title}
+                      timingEnabled={timingEnabled}
                       previewLoading={previewLoading}
                       preview={preview}
                       selectedYears={selectedYears}
                       planText={planText}
+                      sessionKindLabel={sessionKindLabel}
                       zeroResultsGuidance={zeroResultsGuidance}
+                      startBlocked={drillStartBlocked}
+                      startBlockedMessage={drillStartBlockedMessage}
                       creating={creating}
                       onBack={() => goToWizardStep(3)}
                       onReturnToYears={() => goToWizardStep(3)}
                       onSelectExerciseCount={setExerciseCount}
+                      onSetTimingEnabled={setTimingEnabled}
                       onToggleAdvanced={toggleAdvancedOpen}
                       onTitleChange={setTitle}
                       onZeroResultsAction={triggerZeroResultsAction}

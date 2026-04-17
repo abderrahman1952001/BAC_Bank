@@ -10,6 +10,11 @@ Scripts may discover sources, batch work, audit storage, or queue jobs, but
 they must call the shared ingestion services instead of reimplementing
 rasterization, extraction, review state transitions, or publish logic.
 
+Structure and notation normalization rules for draft hierarchy, labels, and
+block presentation live in:
+
+- `docs/ingestion-structure-normalization.md`
+
 ## Canonical Data Model
 
 ### `paper_sources`
@@ -227,6 +232,15 @@ fix obvious issues:
 - misleading asset crops
 - bad points
 - bad topic tags
+- broken or missing scientific/math notation
+- standalone formulas that should be `latex` blocks
+- mixed prose that should keep notation inline with `$...$`
+- short visible labels that should be `heading` blocks
+- duplicated structural chrome inside block text
+- ugly OCR spacing or punctuation that harms readability
+
+Use `docs/ingestion-structure-normalization.md` during this pass, not operator
+habit.
 
 ### 5. Optional Scripted Review
 

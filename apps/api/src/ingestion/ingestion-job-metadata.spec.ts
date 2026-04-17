@@ -6,7 +6,7 @@ import {
 } from './ingestion-job-metadata';
 
 describe('ingestion job metadata helpers', () => {
-  it('projects canonical row metadata from the draft exam payload', () => {
+  it('projects the ingestion job label from the draft exam payload', () => {
     expect(
       projectIngestionJobMetadataFromDraft({
         schema: 'bac_ingestion_draft/v1',
@@ -33,15 +33,6 @@ describe('ingestion job metadata helpers', () => {
       }),
     ).toEqual({
       label: '2025 Mathematics',
-      provider: 'manual_upload',
-      sourceListingUrl: 'https://example.com/listing',
-      sourceExamPageUrl: 'https://example.com/exam',
-      sourceCorrectionPageUrl: 'https://example.com/correction',
-      year: 2025,
-      streamCode: 'SE',
-      subjectCode: 'MATH',
-      sessionType: SessionType.MAKEUP,
-      minYear: 2008,
     });
   });
 

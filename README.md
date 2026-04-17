@@ -1,50 +1,31 @@
 # BAC Bank
 
-BAC Bank is a mobile-first QBank platform for Algerian BAC students.
+BAC Bank is a study platform for Algerian BAC students. The product direction is no longer a narrow question bank: the platform is organized around a student library, guided training flows, a personal study space, and an admin ingestion pipeline for canonical BAC content.
 
-This repository is a monorepo with:
+## Documentation Map
 
-- `apps/api`: NestJS + Fastify + Prisma API
-- `apps/web`: Next.js web app (PWA-ready foundation)
+- Product and UX source of truth: [BAC-platform-architecture-workbench.md](./BAC-platform-architecture-workbench.md)
+- Production and operational runbook: [docs/production-runbook.md](./docs/production-runbook.md)
+- Admin ingestion workflow: [docs/admin-ingestion-workflow.md](./docs/admin-ingestion-workflow.md)
 
-## Current MVP Scope
+Use the README for repo orientation and local setup.
+Use the workbench for the latest product spec, pedagogy rules, UX expectations, and target model direction.
 
-- Normalized BAC taxonomy:
-  - Top-level `stream_families` / `subject_families` plus leaf `streams` / `subjects`
-  - Year-aware stream-to-subject rules for common vs stream-specific subjects
-- Canonical BAC paper storage:
-  - One canonical `paper` can be shared by multiple stream-facing `exam` offerings
-  - Browse and admin routes still address stream/year/subject exam offerings
-- Session-based practice workflow:
-  - Build a session for one subject with guided filters (stream/year/topic/session type)
-  - Live preview of matching exercise count while filtering
-  - Generate a curated set of exercises
-  - Solve exercises one-by-one with per-question answer/explanation reveal
-- Record question attempts
+## Monorepo Structure
 
-## Build Order (Recommended)
+- `apps/web`: Next.js web app for students and admins
+- `apps/api`: NestJS + Fastify API, workers, and Prisma runtime
+- `packages/contracts`: shared runtime-validated contracts and parsers
+- `docs`: operational and workflow documentation
 
-1. **Foundation and Infra**
-   - Monorepo setup
-   - Postgres/Redis services
-   - Environment contracts
-2. **Database and Core API**
-   - Normalized QBank schema
-   - Query/filter endpoints
-   - Attempt tracking
-3. **Admin Ingestion Pipeline**
-   - Upload PDFs
-   - Convert/capture question content as Markdown
-   - Attach assets (graphs, tables, images)
-   - Tag topic metadata and publish papers
-4. **Student Practice App**
-   - Filter UI and practice flow
-   - Question detail with official correction
-   - Progress and analytics basics
-5. **Hardening and Scale**
-   - Caching strategy
-   - Monitoring and alerts
-   - Security hardening and rate limiting
+## Current App Surfaces
+
+- `/student/my-space`: recent activity, continued training, and personal context
+- `/student/my-space/roadmaps/:subjectCode`: deeper subject roadmap with node actions and open review work
+- `/student/library`: official BAC sujets organized by stream, subject, and year
+- `/student/training`: guided training-session builder and training player
+- `/admin/intake`: manual source intake and draft workflow entry
+- `/admin/drafts/*`: admin review and publication flow for extracted content
 
 ## Local Setup
 
@@ -54,20 +35,24 @@ This repository is a monorepo with:
 npm install
 ```
 
-2. Copy env file:
+2. Copy the app-local environment files:
 
 ```bash
-cp .env.example .env
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
 ```
 
-3. Start infrastructure (if Docker access is available):
+Do not set `NODE_ENV` inside these files. Next.js and Nest should decide that
+from the command you run (`dev`, `build`, `start`).
+
+3. Start local infrastructure if Docker is available:
 
 ```bash
 npm run db:up
 ```
 
-This also starts Adminer on `http://localhost:8080` (PostgreSQL UI).
-PostgreSQL is exposed on host port `5433` to avoid collisions with local PostgreSQL installs.
+This starts PostgreSQL, Redis, and Adminer on `http://localhost:8080`.
+PostgreSQL is exposed on host port `5433` to avoid collisions with local installs.
 
 4. Generate Prisma client:
 
@@ -75,153 +60,86 @@ PostgreSQL is exposed on host port `5433` to avoid collisions with local Postgre
 npm run prisma:generate -w @bac-bank/api
 ```
 
-5. Apply migrations (requires PostgreSQL access):
+5. Apply migrations:
 
 ```bash
 npm run prisma:migrate:dev -w @bac-bank/api
 ```
 
-6. Run apps:
+6. Run the platform locally:
 
 ```bash
 npm run dev:all
 ```
 
-- The ingestion worker is included in `npm run dev:all`.
-- You can also run it separately with:
-
-```bash
-npm run dev:worker
-```
-
+- Web app: `http://localhost:3000`
 - API base URL: `http://localhost:3001/api/v1`
-- Web app URL: `http://localhost:3000`
+- Worker is included in `npm run dev:all`
+- You can also run it separately with `npm run dev:worker`
 
-## Database Table + Field Management
+## Common Commands
 
-### Browse all tables and edit records
+- `npm run dev:all`: run contracts, API, worker, and web together
+- `npm run dev:api`: run contracts and API
+- `npm run dev:web`: run contracts and web
+- `npm run db:up`: start PostgreSQL, Redis, and Adminer
+- `npm run db:down`: stop local infrastructure
+- `npm run db:migrate -- --name <change>`: create and apply a Prisma migration
+- `npm run release:check`: generate Prisma client, validate schema, lint, test, and build
 
-1. Start DB services:
+## Schema And Contracts
 
-```bash
-npm run db:up
-```
+- Prisma schema source of truth: `apps/api/prisma/schema.prisma`
+- Shared runtime contracts: `packages/contracts`
+- API routes live under `/api/v1`
+- The workbench keeps the latest product and model intent; the README intentionally does not duplicate that full spec.
 
-2. Open Adminer: `http://localhost:8080`
-3. Login with:
-   - System: `PostgreSQL`
-   - Server: `postgres`
-   - Username: `bac_user`
-   - Password: `bac_password`
-   - Database: `bac_bank`
+## Database Editing And Migrations
 
-You can browse all tables and edit row data from the UI.
-
-### Edit data with Prisma Studio
+Open Prisma Studio:
 
 ```bash
 npm run db:studio
 ```
 
-Prisma Studio opens a table editor for all Prisma models.
+Recommended schema workflow:
 
-### Add or update DB fields for the app (recommended flow)
-
-1. Update model fields in `apps/api/prisma/schema.prisma`.
-2. Create/apply migration:
+1. Update `apps/api/prisma/schema.prisma`
+2. Create and apply a migration:
 
 ```bash
 npm run db:migrate -- --name describe_change
 ```
 
-3. Restart API if needed.
+3. Restart the API if needed
 
-For quick local prototyping without a migration file, you can use:
+For quick local-only prototyping, you can use:
 
 ```bash
 npm run prisma:db:push -w @bac-bank/api
 ```
 
-Use migrations for real app changes so schema stays reproducible.
+Use real migrations for shared or durable changes so the schema stays reproducible.
 
-If your API runs on the host machine (not in Docker), use:
+If the API is running on the host machine instead of Docker, use:
 
 ```env
 DATABASE_URL=postgresql://bac_user:bac_password@localhost:5433/bac_bank?schema=public
 ```
 
-## Admin CMS Data Model
-
-The live content model is split into browse-facing offerings and canonical paper content:
-
-- `stream_families`
-- `streams`
-- `subject_families`
-- `subjects`
-- `papers`
-- `exams`
-- `exam_variants`
-- `exam_nodes`
-- `exam_node_blocks`
-
-`streams` and `subjects` are the leaf pathway / paper-subject identities used by exam offerings.
-`stream_families` and `subject_families` hold the top-level BAC taxonomy above them.
-`exams` are the stream-facing offering rows (`year + stream + subject + session`).
-`papers` own the shared hierarchy and allow one BAC sujet to be reused across multiple streams when the official paper is common.
-
-The BAC ingestion workflow now uses a separate review layer before publication:
-
-- `ingestion_jobs`
-- `source_documents`
-- `source_pages`
-
-Intake in `/admin/intake` and review in `/admin/drafts/*` keep imported PDFs, page PNGs, crop boxes, and draft JSON out of the live exam tables until an admin explicitly approves and publishes the job.
-If a paper is shared across streams, set `draft_json.exam.metadata.paperFamilyCode` before publication so multiple offerings attach to the same canonical paper.
-
-## API Endpoints (MVP)
-
-- `GET /api/v1/health`
-- `GET /api/v1/health/live`
-- `GET /api/v1/health/ready`
-- `GET /api/v1/qbank/filters`
-- `GET /api/v1/qbank/questions`
-- `GET /api/v1/qbank/questions/:id`
-- `GET /api/v1/qbank/sessions?limit=8`
-- `POST /api/v1/qbank/sessions/preview`
-- `POST /api/v1/qbank/sessions`
-- `GET /api/v1/qbank/sessions/:id`
-- `POST /api/v1/qbank/questions/:id/attempts`
-- `POST /api/v1/admin/exams/bootstrap`
-- `GET /api/v1/admin/ingestion/jobs`
-- `GET /api/v1/admin/ingestion/jobs/:jobId`
-- `POST /api/v1/admin/ingestion/intake/manual`
-- `PATCH /api/v1/admin/ingestion/jobs/:jobId`
-- `POST /api/v1/admin/ingestion/jobs/:jobId/approve`
-- `POST /api/v1/admin/ingestion/jobs/:jobId/publish`
-- `GET /api/v1/ingestion/documents/:documentId/file`
-- `GET /api/v1/ingestion/pages/:pageId/image`
-- `GET /api/v1/ingestion/jobs/:jobId/assets/:assetId/preview`
-- `GET /api/v1/ingestion/media/:mediaId`
-
 ## Notes
 
-- Production runbook: [docs/production-runbook.md](docs/production-runbook.md)
-- Migration SQL is generated in `apps/api/prisma/migrations`.
-- Admin ingestion workflow: [docs/admin-ingestion-workflow.md](docs/admin-ingestion-workflow.md)
-- Source intake command examples:
+- Prisma migrations live in `apps/api/prisma/migrations`
+- Source intake examples:
   - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage originals --min-year 2008`
   - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage pages --min-year 2008`
   - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage ocr --ocr-backend gemini --job-id <job-id>`
-  - Requires `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ACCOUNT_ID`, `R2_BUCKET_NAME`, `R2_ENDPOINT`, and `PUBLIC_API_BASE_URL`.
-  - Gemini is the extraction backend. The current default model is `gemini-3-flash-preview`. Set `GEMINI_API_KEY` or `GOOGLE_API_KEY` before running `ocr` or `process`.
-  - `--gemini-model gemini-3-flash-preview`, `--gemini-max-output-tokens 65535`, and `--gemini-temperature 1` override the Gemini 3 generation config.
-  - `--stage originals` stores original PDFs in R2 and records `source_documents`.
-  - `--stage pages` rasterizes PDFs, uploads PNG page images to R2, and creates/updates `source_pages`.
-  - `--stage ocr` reuses the stored originals/pages and updates `draft_json` with Gemini extraction.
   - `--stage process` remains as a compatibility shortcut for `pages + ocr` on already uploaded originals.
   - `--job-id a,b,c` lets `pages`, `ocr`, or `process` target exact ingestion jobs.
   - `--slug slug-a,slug-b` lets `originals`, `pages`, `ocr`, or `process` target exact Eddirasa exam slugs.
   - Uses `pdftoppm` to rasterize PDF pages into PNGs before uploading them to R2.
   - Manual PDF intake is available in the admin UI at `/admin/intake`.
-- `npm run prisma:seed -w @bac-bank/api` now syncs base BAC taxonomy plus the mathematics topic list used by the practice/topic mapping flow.
+- `npm run prisma:seed -w @bac-bank/api` syncs base taxonomy, active curricula, starter topic trees, first skill mappings, and default roadmap shells.
 - In this environment, Docker daemon access may be restricted; migrations can still be generated from schema, then applied on a DB-enabled machine/CI.
+- The repo root `.env` is no longer part of the app setup. Keep web env in
+  `apps/web/.env.local` and API env in `apps/api/.env` or `apps/api/.env.local`.

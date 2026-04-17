@@ -22,5 +22,10 @@ export default async function OnboardingPage() {
     parseAuthOptionsResponse,
   );
 
-  return <AuthOnboardingForm initialUser={user} streams={payload.streams} />;
+  return (
+    <AuthOnboardingForm
+      initialUser={user}
+      streamFamilies={payload.streamFamilies}
+    />
+  );
 }

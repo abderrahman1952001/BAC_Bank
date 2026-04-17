@@ -12,6 +12,7 @@ import {
 import { motion } from "motion/react";
 import { useAuthSession } from "@/components/auth-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { STUDENT_MY_SPACE_ROUTE } from "@/lib/student-routes";
 import { useSignOut } from "@/components/use-sign-out";
 
 const navItems = [
@@ -103,7 +104,7 @@ export function AdminNavbar() {
         <div className="admin-nav-actions">
           <ThemeToggle />
           <Link
-            href="/student"
+            href={STUDENT_MY_SPACE_ROUTE}
             className="admin-icon-button"
             aria-label="Open student app"
             title="Student app"

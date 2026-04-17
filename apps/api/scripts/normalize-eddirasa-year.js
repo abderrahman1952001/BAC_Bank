@@ -54,13 +54,18 @@ const TECHNICAL_STREAM_CODES = [
   'MT_MECH',
   'MT_PROC',
 ];
+const FOREIGN_LANGUAGE_STREAM_CODES = [
+  'LE_GERMAN',
+  'LE_SPANISH',
+  'LE_ITALIAN',
+];
 const SECTION_STREAMS = [
   [/علوم تجريبية/, ['SE']],
   [/شعبة رياضيات/, ['M']],
   [/آداب.?وفلسفة/, ['LP']],
   [/تقني رياضي/, TECHNICAL_STREAM_CODES],
   [/تسيير.?واقتصاد/, ['GE']],
-  [/لغات أجنبية/, ['LE']],
+  [/لغات أجنبية/, FOREIGN_LANGUAGE_STREAM_CODES],
 ];
 const TECH_SUBJECTS = new Set([
   'TECHNOLOGY_CIVIL',
@@ -74,14 +79,29 @@ const STREAM_CODE_TO_FAMILY = {
   GE: 'ge',
   LP: 'lp',
   LE: 'le',
+  LE_GERMAN: 'le-german',
+  LE_SPANISH: 'le-spanish',
+  LE_ITALIAN: 'le-italian',
   MT_CIVIL: 'mt-civil',
   MT_ELEC: 'mt-elec',
   MT_MECH: 'mt-mech',
   MT_PROC: 'mt-proc',
 };
 const STREAM_ORDER = new Map(
-  ['SE', 'M', 'MT_CIVIL', 'MT_ELEC', 'MT_MECH', 'MT_PROC', 'GE', 'LP', 'LE']
-    .map((code, index) => [code, index]),
+  [
+    'SE',
+    'M',
+    'MT_CIVIL',
+    'MT_ELEC',
+    'MT_MECH',
+    'MT_PROC',
+    'GE',
+    'LP',
+    'LE',
+    'LE_GERMAN',
+    'LE_SPANISH',
+    'LE_ITALIAN',
+  ].map((code, index) => [code, index]),
 );
 
 let app;
@@ -1471,7 +1491,7 @@ function buildFamilyCode(streamCodes) {
     ...TECHNICAL_STREAM_CODES,
     'GE',
     'LP',
-    'LE',
+    ...FOREIGN_LANGUAGE_STREAM_CODES,
   ]).join(',');
   const seMTmGe = normalizeStreamCodes([
     'SE',
@@ -1484,7 +1504,7 @@ function buildFamilyCode(streamCodes) {
   const tmGe = normalizeStreamCodes([...TECHNICAL_STREAM_CODES, 'GE']).join(',');
   const tm = normalizeStreamCodes(TECHNICAL_STREAM_CODES).join(',');
   const mTm = normalizeStreamCodes(['M', ...TECHNICAL_STREAM_CODES]).join(',');
-  const lpLe = normalizeStreamCodes(['LP', 'LE']).join(',');
+  const lpLe = normalizeStreamCodes(['LP', ...FOREIGN_LANGUAGE_STREAM_CODES]).join(',');
 
   if (key === all) {
     return 'all';

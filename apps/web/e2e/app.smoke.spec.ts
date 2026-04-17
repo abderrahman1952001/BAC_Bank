@@ -5,9 +5,10 @@ import {
   playwrightTestAdminUser,
   playwrightTestAuthOptions,
   playwrightTestFilters,
-  playwrightTestPracticeSession,
+  playwrightTestStudySession,
   playwrightTestPreview,
   playwrightTestStudentUser,
+  playwrightTestWeakPointInsights,
 } from '../src/lib/playwright-test-fixtures';
 
 function jsonResponse(route: Route, body: unknown, status = 200) {
@@ -49,7 +50,7 @@ async function installMockApi(
       return jsonResponse(route, playwrightTestAuthOptions);
     }
 
-    if (path === '/api/v1/qbank/sessions' && method === 'GET') {
+    if (path === '/api/v1/study/sessions' && method === 'GET') {
       return jsonResponse(route, {
         data: [
           {
@@ -66,13 +67,14 @@ async function installMockApi(
               skippedQuestionCount: 0,
               unansweredQuestionCount: 2,
               solutionViewedCount: 1,
+              trackedTimeSeconds: 0,
             },
           },
         ],
       });
     }
 
-    if (path === '/api/v1/qbank/exam-activities' && method === 'GET') {
+    if (path === '/api/v1/study/exam-activities' && method === 'GET') {
       return jsonResponse(route, {
         data: [
           {
@@ -101,23 +103,27 @@ async function installMockApi(
       });
     }
 
-    if (path === '/api/v1/qbank/filters') {
+    if (path === '/api/v1/study/filters') {
       return jsonResponse(route, playwrightTestFilters);
     }
 
-    if (path === '/api/v1/qbank/sessions/preview' && method === 'POST') {
+    if (path === '/api/v1/study/sessions/preview' && method === 'POST') {
       return jsonResponse(route, playwrightTestPreview);
     }
 
-    if (path === '/api/v1/qbank/sessions' && method === 'POST') {
+    if (path === '/api/v1/study/weak-points' && method === 'GET') {
+      return jsonResponse(route, playwrightTestWeakPointInsights);
+    }
+
+    if (path === '/api/v1/study/sessions' && method === 'POST') {
       return jsonResponse(route, { id: 'session-123' }, 201);
     }
 
-    if (path === '/api/v1/qbank/sessions/session-123' && method === 'GET') {
-      return jsonResponse(route, playwrightTestPracticeSession);
+    if (path === '/api/v1/study/sessions/session-123' && method === 'GET') {
+      return jsonResponse(route, playwrightTestStudySession);
     }
 
-    if (path === '/api/v1/qbank/sessions/session-123/progress' && method === 'POST') {
+    if (path === '/api/v1/study/sessions/session-123/progress' && method === 'POST') {
       progressWrites += 1;
       return jsonResponse(route, {
         id: 'session-123',
@@ -133,6 +139,9 @@ async function installMockApi(
               completed: false,
               skipped: false,
               solutionViewed: true,
+              timeSpentSeconds: 0,
+              reflection: null,
+              diagnosis: null,
             },
           ],
           summary: {
@@ -141,6 +150,7 @@ async function installMockApi(
             skippedQuestionCount: 0,
             unansweredQuestionCount: 1,
             solutionViewedCount: 1,
+            trackedTimeSeconds: 0,
           },
           updatedAt: '2026-03-28T12:01:00.000Z',
         },
@@ -148,7 +158,7 @@ async function installMockApi(
       });
     }
 
-    if (path === '/api/v1/qbank/exams/exam-1/activity' && method === 'POST') {
+    if (path === '/api/v1/study/exams/exam-1/activity' && method === 'POST') {
       return jsonResponse(route, {
         id: 'activity-1',
         lastOpenedAt: '2026-03-30T08:30:00.000Z',
@@ -210,13 +220,20 @@ test('shows the custom auth entry links', async ({ page }) => {
   await expect(page.getByText('متاح الآن: البريد الإلكتروني وكلمة المرور أو Google.')).toBeVisible();
 });
 
-test('creates a session from the builder and persists browser progress', async ({ page }) => {
+test('redirects an authenticated student away from auth', async ({ page }) => {
+  await installPlaywrightSession(page, 'student');
+  await page.goto('/auth');
+
+  await expect(page).toHaveURL(/\/student\/my-space(?:\?.*)?$/);
+});
+
+test('creates a session from training and persists browser progress', async ({ page }) => {
   await installPlaywrightSession(page, 'student');
   const mockApi = await installMockApi(page, {
     sessionUser: playwrightTestStudentUser,
   });
 
-  await page.goto('/student/sessions/new');
+  await page.goto('/student/training');
 
   await page.getByRole('button', { name: 'Mathematics' }).click();
   await page.getByRole('button', { name: 'كل المحاور' }).click();
@@ -225,7 +242,7 @@ test('creates a session from the builder and persists browser progress', async (
   await expect(page.getByTestId('session-builder-create')).toBeEnabled();
   await page.getByTestId('session-builder-create').click();
 
-  await expect(page).toHaveURL(/\/student\/sessions\/session-123(?:\?.*)?$/);
+  await expect(page).toHaveURL(/\/student\/training\/session-123(?:\?.*)?$/);
   await expect(page.getByRole('heading', { name: 'Focused training' })).toBeVisible();
 
   const writesBeforeAction = mockApi.getProgressWrites();

@@ -19,7 +19,6 @@ describe('Ingestion admin routes (e2e)', () => {
       id: 'admin-1',
       email: 'admin@example.com',
       role: 'ADMIN',
-      sessionId: 'session-1',
     }),
   };
   const ingestionService = {
@@ -47,6 +46,7 @@ describe('Ingestion admin routes (e2e)', () => {
         has_correction_document: true,
         has_exam_document: true,
         review_started: false,
+        active_operation: 'idle',
       },
       documents: [],
       draft_json: {
@@ -82,7 +82,50 @@ describe('Ingestion admin routes (e2e)', () => {
       asset_preview_base_url: '',
     }),
     publishJob: jest.fn().mockResolvedValue({
-      success: true,
+      job: {
+        id: 'job-1',
+        status: 'queued',
+      },
+      workflow: {
+        awaiting_correction: false,
+        can_process: false,
+        has_correction_document: true,
+        has_exam_document: true,
+        review_started: true,
+        active_operation: 'publishing',
+      },
+      documents: [],
+      draft_json: {
+        assets: [],
+        exam: {
+          correctionDocumentId: 'doc-2',
+          correctionDocumentStorageKey: 'correction.pdf',
+          examDocumentId: 'doc-1',
+          examDocumentStorageKey: 'exam.pdf',
+          metadata: {},
+          minYear: 2024,
+          provider: 'manual_upload',
+          sessionType: 'NORMAL',
+          sourceCorrectionPageUrl: null,
+          sourceExamPageUrl: null,
+          sourceListingUrl: null,
+          streamCode: 'SE',
+          subjectCode: 'MATHEMATICS',
+          title: 'Queued Publish Job',
+          year: 2024,
+        },
+        schema: 'bac_ingestion_draft/v1',
+        sourcePages: [],
+        variants: [],
+      },
+      validation: {
+        can_approve: false,
+        can_publish: false,
+        errors: [],
+        issues: [],
+        warnings: [],
+      },
+      asset_preview_base_url: '',
     }),
     recoverAssetContent: jest.fn(),
     recoverSnippetContent: jest.fn(),
@@ -152,8 +195,8 @@ describe('Ingestion admin routes (e2e)', () => {
       .expect(403);
   });
 
-  it(`/${API_GLOBAL_PREFIX}/admin/ingestion/jobs/:jobId/publish publishes approved jobs`, async () => {
-    await request(app.getHttpServer())
+  it(`/${API_GLOBAL_PREFIX}/admin/ingestion/jobs/:jobId/publish queues background publication`, async () => {
+    const response = await request(app.getHttpServer())
       .post(
         `/${API_GLOBAL_PREFIX}/admin/ingestion/jobs/11111111-1111-1111-1111-111111111111/publish`,
       )
@@ -161,6 +204,9 @@ describe('Ingestion admin routes (e2e)', () => {
       .set('Origin', 'http://localhost:3000')
       .expect(201);
 
+    const body = response.body as { job: { status: string } };
+
+    expect(body.job.status).toBe('queued');
     expect(ingestionService.publishJob).toHaveBeenCalled();
   });
 });

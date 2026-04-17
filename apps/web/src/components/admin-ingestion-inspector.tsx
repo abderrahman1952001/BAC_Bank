@@ -35,6 +35,7 @@ const BLOCK_ROLE_OPTIONS: DraftBlockRole[] = [
   "PROMPT",
   "SOLUTION",
   "HINT",
+  "RUBRIC",
   "META",
 ];
 

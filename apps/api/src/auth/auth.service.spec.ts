@@ -11,18 +11,52 @@ jest.mock('@clerk/backend', () => ({
 
 const mockedCreateClerkClient = jest.mocked(createClerkClient);
 const mockedVerifyToken = jest.mocked(verifyToken);
+const freeStudyEntitlements = {
+  tier: 'FREE',
+  capabilities: {
+    topicDrill: true,
+    mixedDrill: true,
+    weakPointDrill: false,
+    paperSimulation: true,
+    aiExplanation: false,
+    weakPointInsight: false,
+  },
+  quotas: {
+    drillStarts: {
+      monthlyLimit: 5,
+      used: 0,
+      remaining: 5,
+      exhausted: false,
+      nearLimit: false,
+      resetsAt: '2026-04-30T23:00:00.000Z',
+    },
+    simulationStarts: {
+      monthlyLimit: 1,
+      used: 0,
+      remaining: 1,
+      exhausted: false,
+      nearLimit: false,
+      resetsAt: '2026-04-30T23:00:00.000Z',
+    },
+  },
+};
 
 describe('AuthService', () => {
   let configService: Pick<ConfigService, 'get'>;
   let prisma: {
     streamFamily: {
       findMany: jest.Mock;
+    };
+    stream: {
       findUnique: jest.Mock;
     };
     user: {
       create: jest.Mock;
       findUnique: jest.Mock;
       update: jest.Mock;
+    };
+    studySession: {
+      count: jest.Mock;
     };
   };
   let service: AuthService;
@@ -40,12 +74,17 @@ describe('AuthService', () => {
     prisma = {
       streamFamily: {
         findMany: jest.fn(),
+      },
+      stream: {
         findUnique: jest.fn(),
       },
       user: {
         create: jest.fn(),
         findUnique: jest.fn(),
         update: jest.fn(),
+      },
+      studySession: {
+        count: jest.fn().mockResolvedValue(0),
       },
     };
 
@@ -70,7 +109,6 @@ describe('AuthService', () => {
       fullName: 'Student Example',
       role: UserRole.USER,
       subscriptionStatus: SubscriptionStatus.FREE,
-      streamFamily: null,
       stream: null,
     });
     mockedCreateClerkClient.mockReturnValue({
@@ -99,7 +137,6 @@ describe('AuthService', () => {
       id: 'user-1',
       email: 'student@example.com',
       role: UserRole.USER,
-      sessionId: 'sess_123',
     });
 
     expect(mockedVerifyToken).toHaveBeenCalledWith('test-token', {
@@ -132,7 +169,6 @@ describe('AuthService', () => {
         fullName: 'Admin',
         role: UserRole.ADMIN,
         subscriptionStatus: SubscriptionStatus.FREE,
-        streamFamily: null,
         stream: null,
       });
     prisma.user.update.mockResolvedValueOnce({
@@ -142,7 +178,6 @@ describe('AuthService', () => {
       fullName: 'Admin',
       role: UserRole.ADMIN,
       subscriptionStatus: SubscriptionStatus.FREE,
-      streamFamily: null,
       stream: null,
     });
     mockedCreateClerkClient.mockReturnValue({
@@ -183,9 +218,8 @@ describe('AuthService', () => {
   });
 
   it('updates the current user profile with username and stream selection', async () => {
-    prisma.streamFamily.findUnique.mockResolvedValueOnce({
-      id: 'family-1',
-      pathways: [{ id: 'stream-1', isDefault: true }],
+    prisma.stream.findUnique.mockResolvedValueOnce({
+      id: 'stream-1',
     });
     prisma.user.update.mockResolvedValueOnce({
       id: 'user-1',
@@ -194,11 +228,10 @@ describe('AuthService', () => {
       fullName: 'Sara',
       role: UserRole.USER,
       subscriptionStatus: SubscriptionStatus.FREE,
-      streamFamily: {
+      stream: {
         code: 'SE',
         name: 'Sciences experimentales',
       },
-      stream: null,
     });
 
     await expect(
@@ -217,6 +250,7 @@ describe('AuthService', () => {
           name: 'Sciences experimentales',
         },
         subscriptionStatus: 'FREE',
+        studyEntitlements: freeStudyEntitlements,
       },
     });
   });

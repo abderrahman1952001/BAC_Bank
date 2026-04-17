@@ -1,5 +1,3 @@
-import { InternalServerErrorException } from '@nestjs/common';
-
 export const DEFAULT_DEV_CORS_ORIGINS = [
   'http://localhost:3000',
   'http://127.0.0.1:3000',
@@ -14,12 +12,6 @@ type TrustedOriginOptions = CorsOptions & {
   publicApiBaseUrl?: string;
 };
 
-type SessionSecretOptions = {
-  nodeEnv?: string;
-  authSessionSecret?: string;
-  legacyJwtSecret?: string;
-};
-
 type BooleanFlagOptions = {
   value?: string | null;
   fallback?: boolean;
@@ -31,12 +23,6 @@ type PositiveIntegerOptions = {
   min?: number;
 };
 
-const PLACEHOLDER_SECRET_PATTERNS = [
-  'change_this',
-  'replace_with',
-  'placeholder',
-  'example',
-];
 const TRUE_BOOLEAN_FLAG_VALUES = new Set(['1', 'true', 'yes', 'on']);
 const FALSE_BOOLEAN_FLAG_VALUES = new Set(['0', 'false', 'no', 'off']);
 
@@ -212,61 +198,4 @@ export function isTrustedRequestOrigin(input: {
   }
 
   return normalizeOrigin(input.requestOrigin) === normalizedSourceOrigin;
-}
-
-export function resolveAuthSessionSecret({
-  nodeEnv,
-  authSessionSecret,
-  legacyJwtSecret,
-}: SessionSecretOptions) {
-  const primarySecret = authSessionSecret?.trim();
-
-  if (primarySecret) {
-    return validateSessionSecret(primarySecret, nodeEnv, 'AUTH_SESSION_SECRET');
-  }
-
-  const legacySecret = legacyJwtSecret?.trim();
-
-  if (legacySecret) {
-    return validateSessionSecret(legacySecret, nodeEnv, 'JWT_ACCESS_SECRET');
-  }
-
-  throw new InternalServerErrorException(
-    'Auth session secret is not configured. Set AUTH_SESSION_SECRET.',
-  );
-}
-
-export function validateSessionSecret(
-  secret: string,
-  nodeEnv?: string,
-  source = 'Auth session secret',
-) {
-  const trimmedSecret = secret.trim();
-
-  if (!trimmedSecret) {
-    throw new InternalServerErrorException(`${source} is not configured.`);
-  }
-
-  if (!isProductionEnvironment(nodeEnv)) {
-    return trimmedSecret;
-  }
-
-  const normalized = trimmedSecret.toLowerCase();
-  const looksLikePlaceholder = PLACEHOLDER_SECRET_PATTERNS.some((pattern) =>
-    normalized.includes(pattern),
-  );
-
-  if (looksLikePlaceholder) {
-    throw new InternalServerErrorException(
-      `${source} must not use a placeholder value in production.`,
-    );
-  }
-
-  if (trimmedSecret.length < 32) {
-    throw new InternalServerErrorException(
-      `${source} must be at least 32 characters in production.`,
-    );
-  }
-
-  return trimmedSecret;
 }

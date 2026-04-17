@@ -447,6 +447,7 @@ export function AdminIngestionAssetWorkspace({
                         | 'PROMPT'
                         | 'SOLUTION'
                         | 'HINT'
+                        | 'RUBRIC'
                         | 'META',
                     }));
                   }}
@@ -454,6 +455,7 @@ export function AdminIngestionAssetWorkspace({
                   <option value="PROMPT">Prompt</option>
                   <option value="SOLUTION">Solution</option>
                   <option value="HINT">Hint</option>
+                  <option value="RUBRIC">Rubric</option>
                   <option value="META">Meta</option>
                 </select>
               </label>

@@ -12,26 +12,6 @@ envVarGroups:
         value: "true"
       - key: TRUST_PROXY
         value: "true"
-      - key: AUTH_SESSION_SECRET
-        generateValue: true
-      - key: JWT_ACCESS_SECRET
-        generateValue: true
-      - key: AUTH_SESSION_TTL_DAYS
-        value: "7"
-      - key: AUTH_ADMIN_SESSION_TTL_HOURS
-        value: "12"
-      - key: AUTH_RATE_LIMIT_WINDOW_MS
-        value: "900000"
-      - key: AUTH_LOGIN_RATE_LIMIT_MAX_PER_IP
-        value: "20"
-      - key: AUTH_LOGIN_RATE_LIMIT_MAX_PER_EMAIL
-        value: "8"
-      - key: AUTH_REGISTER_RATE_LIMIT_MAX_PER_IP
-        value: "10"
-      - key: AUTH_REGISTER_RATE_LIMIT_MAX_PER_EMAIL
-        value: "4"
-      - key: AUTH_BOOTSTRAP_ADMIN_ON_STARTUP
-        value: "false"
       - key: HEALTH_WORKER_STALE_MS
         value: "45000"
       - key: INGESTION_MIN_YEAR
@@ -78,6 +58,10 @@ services:
           type: keyvalue
           name: bac-bank-redis
           property: connectionString
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: AUTH_BOOTSTRAP_ADMIN_EMAIL
+        sync: false
       - key: CORS_ORIGIN
         sync: false
       - key: PUBLIC_API_BASE_URL
@@ -122,6 +106,8 @@ services:
           type: keyvalue
           name: bac-bank-redis
           property: connectionString
+      - key: CLERK_SECRET_KEY
+        sync: false
       - key: PUBLIC_API_BASE_URL
         sync: false
       - key: GEMINI_API_KEY
@@ -155,6 +141,10 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
       - key: API_UPSTREAM_URL
         sync: false
       - key: NEXT_PUBLIC_API_BASE_URL

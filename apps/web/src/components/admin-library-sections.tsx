@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/study-shell";
 import { formatPublishedSessionLabel } from "@/lib/admin-library";
-import { type CatalogResponse, type ExamResponse } from "@/lib/qbank";
+import { type CatalogResponse, type ExamResponse } from "@/lib/study-api";
 
 type StreamOption = CatalogResponse["streams"][number];
 type SubjectOption = StreamOption["subjects"][number];
@@ -20,14 +20,6 @@ type AdminLibraryFiltersRailProps = {
   onSelectStream: (streamCode: string) => void;
   onSelectSubject: (subjectCode: string) => void;
   onSelectYear: (year: number) => void;
-};
-
-type AdminLibraryContextStripProps = {
-  browseContextTitle: string;
-  streamName: string | null;
-  subjectName: string | null;
-  selectedYear: number | null;
-  selectedSujetLabel: string | null;
 };
 
 type AdminLibrarySujetsPanelProps = {
@@ -76,13 +68,13 @@ export function AdminLibraryFiltersRail({
         <h2>Catalog</h2>
       </div>
 
-      <div className="browse-filter-group">
-        <div className="browse-filter-head">
+      <div className="library-filter-group">
+        <div className="library-filter-head">
           <h3>Stream</h3>
           {selectedStreamCode ? (
             <button
               type="button"
-              className="browse-clear-button"
+              className="library-clear-button"
               onClick={onClearStream}
             >
               Clear
@@ -107,13 +99,13 @@ export function AdminLibraryFiltersRail({
         </div>
       </div>
 
-      <div className="browse-filter-group">
-        <div className="browse-filter-head">
+      <div className="library-filter-group">
+        <div className="library-filter-head">
           <h3>Subject</h3>
           {selectedSubjectCode ? (
             <button
               type="button"
-              className="browse-clear-button"
+              className="library-clear-button"
               onClick={onClearSubject}
             >
               Clear
@@ -142,13 +134,13 @@ export function AdminLibraryFiltersRail({
         )}
       </div>
 
-      <div className="browse-filter-group">
-        <div className="browse-filter-head">
+      <div className="library-filter-group">
+        <div className="library-filter-head">
           <h3>Year</h3>
           {selectedYear ? (
             <button
               type="button"
-              className="browse-clear-button"
+              className="library-clear-button"
               onClick={onClearYear}
             >
               Clear
@@ -158,15 +150,15 @@ export function AdminLibraryFiltersRail({
         {!subject ? (
           <p className="muted-text">Select a subject.</p>
         ) : (
-          <div className="browse-year-list">
+          <div className="library-year-list">
             {subject.years.map((item) => (
               <button
                 key={item.year}
                 type="button"
                 className={
                   item.year === selectedYear
-                    ? "browse-year-button active"
-                    : "browse-year-button"
+                    ? "library-year-button active"
+                    : "library-year-button"
                 }
                 onClick={() => onSelectYear(item.year)}
               >
@@ -178,28 +170,6 @@ export function AdminLibraryFiltersRail({
         )}
       </div>
     </aside>
-  );
-}
-
-export function AdminLibraryContextStrip({
-  browseContextTitle,
-  streamName,
-  subjectName,
-  selectedYear,
-  selectedSujetLabel,
-}: AdminLibraryContextStripProps) {
-  return (
-    <section className="browse-context-strip">
-      <div>
-        <h2>{browseContextTitle}</h2>
-      </div>
-      <div className="browse-context-pills">
-        {streamName ? <span>{streamName}</span> : null}
-        {subjectName ? <span>{subjectName}</span> : null}
-        {selectedYear ? <span>{selectedYear}</span> : null}
-        {selectedSujetLabel ? <span>{selectedSujetLabel}</span> : null}
-      </div>
-    </section>
   );
 }
 
@@ -215,8 +185,8 @@ export function AdminLibrarySujetsPanel({
   onSelectSujet,
 }: AdminLibrarySujetsPanelProps) {
   return (
-    <section className="browse-panel">
-      <div className="browse-panel-head">
+    <section className="library-panel">
+      <div className="library-panel-head">
         <h2>Published Sujets</h2>
         {subject && selectedYear ? (
           <span className="admin-page-meta-pill">
@@ -231,7 +201,7 @@ export function AdminLibrarySujetsPanel({
           description={selectionPrompt}
         />
       ) : yearEntry && yearEntry.sujets.length ? (
-        <div className="browse-sujet-grid">
+        <div className="library-sujet-grid">
           {yearEntry.sujets.map((item) => {
             const isActive =
               item.examId === selectedExamId &&
@@ -242,11 +212,11 @@ export function AdminLibrarySujetsPanel({
                 key={`${item.examId}:${item.sujetNumber}`}
                 type="button"
                 className={
-                  isActive ? "browse-sujet-card active" : "browse-sujet-card"
+                  isActive ? "library-sujet-card active" : "library-sujet-card"
                 }
                 onClick={() => onSelectSujet(item.examId, item.sujetNumber)}
               >
-                <div className="browse-sujet-card-top">
+                <div className="library-sujet-card-top">
                   <strong>{item.label}</strong>
                   <span>{item.exerciseCount} exercises</span>
                 </div>
@@ -279,8 +249,8 @@ export function AdminLibraryPreviewPanel({
   onRetryPreview,
 }: AdminLibraryPreviewPanelProps) {
   return (
-    <section className="browse-panel browse-preview-panel">
-      <div className="browse-panel-head">
+    <section className="library-panel library-preview-panel">
+      <div className="library-panel-head">
         <h2>Paper Preview</h2>
         <div className="table-actions">
           {studentPreviewHref ? (
@@ -306,7 +276,7 @@ export function AdminLibraryPreviewPanel({
       {revisionError ? <p className="error-text">{revisionError}</p> : null}
 
       {loadingExam ? (
-        <div className="browse-preview-layout">
+        <div className="library-preview-layout">
           <div className="study-skeleton block" />
           <div className="study-skeleton block tall" />
         </div>
@@ -325,8 +295,8 @@ export function AdminLibraryPreviewPanel({
           }
         />
       ) : selectedExam ? (
-        <div className="browse-preview-layout">
-          <article className="browse-preview-summary">
+        <div className="library-preview-layout">
+          <article className="library-preview-summary">
             <div className="study-meta-row">
               <span className="study-meta-pill">
                 <strong>Session</strong>
@@ -340,7 +310,7 @@ export function AdminLibraryPreviewPanel({
               </span>
             </div>
 
-            <div className="browse-preview-copy">
+            <div className="library-preview-copy">
               <h3>{selectedExam.selectedSujetLabel ?? selectedSujetLabel}</h3>
               <p>
                 {selectedExam.subject.name} · {selectedExam.stream.name} ·{" "}
@@ -366,9 +336,9 @@ export function AdminLibraryPreviewPanel({
             </div>
           </article>
 
-          <div className="browse-exercise-list">
+          <div className="library-exercise-list">
             {selectedExam.exercises.map((exercise) => (
-              <article key={exercise.id} className="browse-exercise-card">
+              <article key={exercise.id} className="library-exercise-card">
                 <div>
                   <strong>Exercise {exercise.orderIndex}</strong>
                   <span>{exercise.questionCount} questions</span>

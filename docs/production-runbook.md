@@ -65,20 +65,29 @@ they do not replace the worker for admin processing.
 - `DATABASE_URL`
 - `REDIS_URL`
 - `REDIS_REQUIRED=true`
-- `AUTH_SESSION_SECRET`
+- `CLERK_SECRET_KEY`
 - `CORS_ORIGIN`
 - `PUBLIC_API_BASE_URL`
 - `TRUST_PROXY`
 - `HEALTH_WORKER_STALE_MS`
+- `AUTH_BOOTSTRAP_ADMIN_EMAIL` if you want one email auto-promoted to admin
 
 ### Web
 
+- `CLERK_SECRET_KEY`
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
 - `NEXT_PUBLIC_API_BASE_URL=/api/v1`
 - `API_UPSTREAM_URL=https://<your-api-host>/api/v1`
 - `NEXT_PUBLIC_ASSET_BASE_URL` when assets are served from a separate origin
 
 For local web development, keep these in `apps/web/.env.local` so Next.js can
-load them without custom filesystem fallbacks.
+load them with its default conventions.
+
+For local API development, keep API variables in `apps/api/.env` or
+`apps/api/.env.local`.
+
+Do not put `NODE_ENV` in local `.env` files. Let the process mode come from the
+runtime command and hosting platform.
 
 For staging and production, prefer your hosting platform's environment-variable
 settings over committed `.env.production` files. Use `.env.production` only if
@@ -103,8 +112,8 @@ you are intentionally managing env files outside the platform.
 5. Run smoke tests:
    - `GET /api/v1/health/live`
    - `GET /api/v1/health/ready`
-   - login
-   - create a practice session
+   - Clerk sign-in
+   - open a library sujet and start a training session
    - queue an ingestion job
    - verify the worker advances queued ingestion jobs to `processing` and then `in_review` or `failed`
 
@@ -128,7 +137,7 @@ Before public launch, rehearse this on a non-production environment:
 1. Take a PostgreSQL backup.
 2. Restore it into a clean database.
 3. Point the API at the restored database.
-4. Verify auth, browse, sessions, and admin ingestion pages still work.
+4. Verify auth, library, training, and admin ingestion pages still work.
 5. Verify Redis-backed rate limits recover cleanly after Redis restarts.
 
 ## Monitoring Baseline

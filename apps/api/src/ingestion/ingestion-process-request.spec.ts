@@ -1,10 +1,11 @@
 import { BadRequestException } from '@nestjs/common';
 import { IngestionJobStatus } from '@prisma/client';
 import {
+  buildIngestionPublishRequest,
   buildIngestionProcessRequest,
-  readIngestionProcessRequest,
-  withIngestionProcessRequestMetadata,
-  withoutIngestionProcessRequestMetadata,
+  readIngestionWorkerRequest,
+  withIngestionWorkerRequestMetadata,
+  withoutIngestionWorkerRequestMetadata,
 } from './ingestion-process-request';
 
 describe('ingestion process request helpers', () => {
@@ -19,11 +20,33 @@ describe('ingestion process request helpers', () => {
         queuedAt: '2026-03-28T13:00:00.000Z',
       }),
     ).toEqual({
+      action: 'process',
       forceReprocess: false,
       replaceExisting: true,
       skipExtraction: false,
       queuedAt: '2026-03-28T13:00:00.000Z',
     });
+  });
+
+  it('builds publish requests for approved jobs only', () => {
+    expect(
+      buildIngestionPublishRequest({
+        jobStatus: IngestionJobStatus.APPROVED,
+        queuedAt: '2026-03-28T13:30:00.000Z',
+      }),
+    ).toEqual({
+      action: 'publish',
+      forceReprocess: false,
+      replaceExisting: false,
+      skipExtraction: false,
+      queuedAt: '2026-03-28T13:30:00.000Z',
+    });
+
+    expect(() =>
+      buildIngestionPublishRequest({
+        jobStatus: IngestionJobStatus.DRAFT,
+      }),
+    ).toThrow('Approve the ingestion job before publishing it.');
   });
 
   it('blocks reviewed or failed jobs unless force reprocess is set', () => {
@@ -53,9 +76,10 @@ describe('ingestion process request helpers', () => {
   });
 
   it('reads and updates processing metadata consistently', () => {
-    const stored = readIngestionProcessRequest({
+    const stored = readIngestionWorkerRequest({
       other: 'value',
-      processingRequest: {
+      workerRequest: {
+        action: 'publish',
         forceReprocess: true,
         replaceExisting: true,
         skipExtraction: false,
@@ -64,13 +88,14 @@ describe('ingestion process request helpers', () => {
     });
 
     expect(stored).toEqual({
+      action: 'publish',
       forceReprocess: true,
       replaceExisting: true,
       skipExtraction: false,
       queuedAt: '2026-03-28T14:00:00.000Z',
     });
     expect(
-      withIngestionProcessRequestMetadata(
+      withIngestionWorkerRequestMetadata(
         {
           provider: 'manual_upload',
         },
@@ -78,26 +103,31 @@ describe('ingestion process request helpers', () => {
       ),
     ).toEqual({
       provider: 'manual_upload',
-      processingRequest: stored,
+      workerRequest: stored,
     });
     expect(
-      withoutIngestionProcessRequestMetadata({
+      withoutIngestionWorkerRequestMetadata({
         provider: 'manual_upload',
-        processingRequest: stored,
+        workerRequest: stored,
       }),
     ).toEqual({
       provider: 'manual_upload',
     });
   });
 
-  it('falls back to a safe default when processing metadata is absent or malformed', () => {
-    const fallback = readIngestionProcessRequest({
+  it('falls back to safe defaults for malformed or legacy metadata', () => {
+    const fallback = readIngestionWorkerRequest({
+      workerRequest: 'invalid',
+    });
+    const legacyFallback = readIngestionWorkerRequest({
       processingRequest: 'invalid',
     });
 
+    expect(fallback.action).toBe('process');
     expect(fallback.forceReprocess).toBe(false);
     expect(fallback.replaceExisting).toBe(false);
     expect(fallback.skipExtraction).toBe(false);
     expect(typeof fallback.queuedAt).toBe('string');
+    expect(legacyFallback.action).toBe('process');
   });
 });

@@ -1,5 +1,10 @@
-import { dateLikeSchema, jsonRecordSchema, parseContract, z } from "./shared.js";
-import type { SessionType as QBankSessionType } from "./qbank.js";
+import {
+  dateLikeSchema,
+  jsonRecordSchema,
+  parseContract,
+  z,
+} from "./shared.js";
+import type { SessionType as StudySessionType } from "./study.js";
 
 export const INGESTION_DRAFT_SCHEMA = "bac_ingestion_draft/v1";
 
@@ -13,7 +18,7 @@ export type AdminIngestionStatus =
   | "failed";
 export type AdminIngestionDraftKind = "ingestion" | "revision";
 export type DraftVariantCode = "SUJET_1" | "SUJET_2";
-export type DraftBlockRole = "PROMPT" | "SOLUTION" | "HINT" | "META";
+export type DraftBlockRole = "PROMPT" | "SOLUTION" | "HINT" | "RUBRIC" | "META";
 export type DraftBlockType =
   | "paragraph"
   | "latex"
@@ -34,7 +39,7 @@ export type DraftAssetNativeSuggestionStatus =
 export type DraftAssetNativeSuggestionSource =
   | "gemini_initial"
   | "crop_recovery";
-export type DraftSessionType = QBankSessionType;
+export type DraftSessionType = StudySessionType;
 export type DraftDocumentKind = "EXAM" | "CORRECTION";
 export type AdminIngestionSession = "normal" | "rattrapage";
 export type AdminIngestionDocumentKind = "exam" | "correction";
@@ -138,12 +143,18 @@ export type AdminIngestionPublishedExam = {
   stream_name: string;
 };
 
+export type AdminIngestionActiveOperation =
+  | "idle"
+  | "processing"
+  | "publishing";
+
 export type AdminIngestionWorkflow = {
   has_exam_document: boolean;
   has_correction_document: boolean;
   awaiting_correction: boolean;
   can_process: boolean;
   review_started: boolean;
+  active_operation: AdminIngestionActiveOperation;
 };
 
 export type AdminIngestionJobSummary = {
@@ -238,11 +249,7 @@ export type AdminIngestionJobResponse = {
   validation: AdminIngestionValidation;
 };
 
-export type AdminIngestionRecoveryMode =
-  | "text"
-  | "table"
-  | "tree"
-  | "graph";
+export type AdminIngestionRecoveryMode = "text" | "table" | "tree" | "graph";
 
 export type AdminIngestionRecoveryResponse = {
   asset: {
@@ -286,6 +293,9 @@ export type PublishIngestionJobResponse = {
   published_exam_ids: string[];
 };
 
+export const adminIngestionActiveOperationSchema: z.ZodType<AdminIngestionActiveOperation> =
+  z.enum(["idle", "processing", "publishing"]);
+
 export const adminIngestionStatusSchema: z.ZodType<AdminIngestionStatus> =
   z.enum([
     "draft",
@@ -309,6 +319,7 @@ export const draftBlockRoleSchema: z.ZodType<DraftBlockRole> = z.enum([
   "PROMPT",
   "SOLUTION",
   "HINT",
+  "RUBRIC",
   "META",
 ]);
 
@@ -478,7 +489,10 @@ export function normalizeIngestionDraft(value: unknown): IngestionDraft {
         examRaw.sessionType === "MAKEUP"
           ? "MAKEUP"
           : ("NORMAL" as DraftSessionType),
-      provider: readNonEmptyString(examRaw.provider, "draft_json.exam.provider"),
+      provider: readNonEmptyString(
+        examRaw.provider,
+        "draft_json.exam.provider",
+      ),
       title: readNonEmptyString(examRaw.title, "draft_json.exam.title"),
       minYear: readInteger(examRaw.minYear, "draft_json.exam.minYear"),
       sourceListingUrl: normalizeOptionalString(examRaw.sourceListingUrl),
@@ -487,7 +501,9 @@ export function normalizeIngestionDraft(value: unknown): IngestionDraft {
         examRaw.sourceCorrectionPageUrl,
       ),
       examDocumentId: normalizeOptionalString(examRaw.examDocumentId),
-      correctionDocumentId: normalizeOptionalString(examRaw.correctionDocumentId),
+      correctionDocumentId: normalizeOptionalString(
+        examRaw.correctionDocumentId,
+      ),
       examDocumentStorageKey: normalizeOptionalString(
         examRaw.examDocumentStorageKey,
       ),
@@ -590,7 +606,10 @@ function normalizeNodes(value: unknown): DraftNode[] {
     .filter((entry): entry is DraftNode => Boolean(entry));
 }
 
-function normalizeNode(value: unknown, fallbackIndex: number): DraftNode | null {
+function normalizeNode(
+  value: unknown,
+  fallbackIndex: number,
+): DraftNode | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     return null;
   }
@@ -793,6 +812,7 @@ function normalizeBlockRole(value: unknown): DraftBlockRole | null {
     value === "PROMPT" ||
     value === "SOLUTION" ||
     value === "HINT" ||
+    value === "RUBRIC" ||
     value === "META"
   ) {
     return value;
@@ -974,22 +994,29 @@ const adminIngestionPublishedExamSchema: z.ZodType<AdminIngestionPublishedExam> 
     stream_name: z.string(),
   });
 
-const adminIngestionWorkflowSchema: z.ZodType<AdminIngestionWorkflow> = z.object(
-  {
+const adminIngestionWorkflowSchema: z.ZodType<AdminIngestionWorkflow> =
+  z.object({
     has_exam_document: z.boolean(),
     has_correction_document: z.boolean(),
     awaiting_correction: z.boolean(),
     can_process: z.boolean(),
     review_started: z.boolean(),
-  },
-);
+    active_operation: adminIngestionActiveOperationSchema,
+  });
 
 const adminIngestionValidationIssueSchema: z.ZodType<AdminIngestionValidationIssue> =
   z.object({
     id: z.string(),
     severity: z.enum(["error", "warning"]),
     code: z.string(),
-    target: z.enum(["exam", "variant", "node", "block", "asset", "source_page"]),
+    target: z.enum([
+      "exam",
+      "variant",
+      "node",
+      "block",
+      "asset",
+      "source_page",
+    ]),
     message: z.string(),
     variantCode: draftVariantCodeSchema.nullable(),
     nodeId: z.string().nullable(),
@@ -1009,8 +1036,8 @@ const adminIngestionValidationSchema: z.ZodType<AdminIngestionValidation> =
     can_publish: z.boolean(),
   });
 
-const adminIngestionDocumentSchema: z.ZodType<AdminIngestionDocument> = z.object(
-  {
+const adminIngestionDocumentSchema: z.ZodType<AdminIngestionDocument> =
+  z.object({
     id: z.string(),
     kind: adminIngestionDocumentKindSchema,
     file_name: z.string(),
@@ -1029,8 +1056,7 @@ const adminIngestionDocumentSchema: z.ZodType<AdminIngestionDocument> = z.object
         image_url: z.string(),
       }),
     ),
-  },
-);
+  });
 
 const adminIngestionJobSchema = z.object({
   id: z.string(),
@@ -1052,10 +1078,24 @@ const adminIngestionJobSchema = z.object({
 });
 
 const adminIngestionJobSummarySchema: z.ZodType<AdminIngestionJobSummary> =
-  adminIngestionJobSchema.extend({
+  z.object({
+    id: z.string(),
+    label: z.string(),
+    draft_kind: adminIngestionDraftKindSchema,
+    provider: z.string(),
+    year: z.number(),
+    stream_codes: z.array(z.string()),
+    subject_code: z.string().nullable(),
+    session: adminIngestionSessionSchema.nullable(),
+    min_year: z.number(),
+    status: adminIngestionStatusSchema,
     source_document_count: z.number(),
     source_page_count: z.number(),
     workflow: adminIngestionWorkflowSchema,
+    published_paper_id: z.string().nullable(),
+    published_exams: z.array(adminIngestionPublishedExamSchema),
+    created_at: dateLikeSchema,
+    updated_at: dateLikeSchema,
   });
 
 export const adminIngestionJobListResponseSchema: z.ZodType<AdminIngestionJobListResponse> =

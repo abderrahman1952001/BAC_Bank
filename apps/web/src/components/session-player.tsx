@@ -2,23 +2,39 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { EmptyState } from "@/components/study-shell";
+import { useAuthSession } from "@/components/auth-provider";
+import { StudyReviewOutcomeActions } from "@/components/study-review-outcome-actions";
+import { StudyExerciseStateActions } from "@/components/study-exercise-state-actions";
+import { StudyReviewQueueActions } from "@/components/study-review-queue-actions";
 import {
   SessionPlayerContextPane,
   SessionPlayerHeader,
   SessionPlayerNavigatorModal,
   SessionPlayerQuestionPane,
 } from "@/components/session-player-sections";
-import type { PracticeSessionResponse } from "@/lib/qbank";
+import type {
+  StudentExerciseStateResponse,
+  StudySessionResponse,
+} from "@/lib/study-api";
+import {
+  fetchStudyQuestionAiExplanation,
+  type StudyQuestionAiExplanationResponse,
+} from "@/lib/study-api";
+import { resolveSessionSupportStyle } from "@/lib/study-pedagogy";
+import { STUDENT_MY_SPACE_ROUTE } from "@/lib/student-routes";
+import { useStudentExerciseStates } from "@/lib/use-student-exercise-states";
 import { useSessionPlayer } from "@/lib/use-session-player";
 
 export function SessionPlayer({
   sessionId,
   initialSession,
+  initialExerciseStates,
 }: {
   sessionId: string;
-  initialSession?: PracticeSessionResponse;
+  initialSession?: StudySessionResponse;
+  initialExerciseStates?: StudentExerciseStateResponse[];
 }) {
   const sessionSeedKey = `${sessionId}:${initialSession?.id ?? "missing"}:${initialSession?.updatedAt ?? "initial"}`;
 
@@ -27,6 +43,7 @@ export function SessionPlayer({
       key={sessionSeedKey}
       sessionId={sessionId}
       initialSession={initialSession}
+      initialExerciseStates={initialExerciseStates}
     />
   );
 }
@@ -34,23 +51,35 @@ export function SessionPlayer({
 function SessionPlayerScreen({
   sessionId,
   initialSession,
+  initialExerciseStates,
 }: {
   sessionId: string;
-  initialSession?: PracticeSessionResponse;
+  initialSession?: StudySessionResponse;
+  initialExerciseStates?: StudentExerciseStateResponse[];
 }) {
+  const [weakPointIntroDismissed, setWeakPointIntroDismissed] = useState(false);
   const router = useRouter();
   const [refreshingSession, startRefreshingSession] = useTransition();
+  const { user } = useAuthSession();
+  const [aiExplanation, setAiExplanation] =
+    useState<StudyQuestionAiExplanationResponse | null>(null);
+  const [aiExplanationLoading, setAiExplanationLoading] = useState(false);
+  const [aiExplanationError, setAiExplanationError] = useState<string | null>(null);
   const {
     session,
     error,
     progress,
     completionOpen,
+    exerciseCheckpointSummary,
     showNavigator,
     activeExercise,
     activeQuestion,
     progressCounts,
     currentQuestionPosition,
     progressPercent,
+    remainingTimeMs,
+    isActiveSimulation,
+    canToggleMode,
     sessionMeta,
     activeExerciseTopics,
     navigatorExercises,
@@ -58,8 +87,11 @@ function SessionPlayerScreen({
     questionStatePresentation,
     activeQuestionState,
     solutionVisible,
+    canRevealSolution,
+    requiresReflection,
     questionMotionLocked,
     primaryActionLabel,
+    primaryActionDisabled,
     openNavigator,
     closeNavigator,
     selectExercise,
@@ -69,15 +101,38 @@ function SessionPlayerScreen({
     goToFirstUnanswered,
     goToFirstSkipped,
     handlePrimaryAction,
+    continueAfterExerciseCheckpoint,
+    closeExerciseCheckpoint,
+    showQuestionHint,
+    showQuestionMethod,
+    setQuestionReflection,
+    setQuestionDiagnosis,
     skipCurrentQuestion,
   } = useSessionPlayer(sessionId, initialSession);
+  const {
+    exerciseStatesById,
+    pendingExerciseIds,
+    error: exerciseStateError,
+    toggleBookmark,
+    toggleFlag,
+  } = useStudentExerciseStates({
+    exerciseNodeIds:
+      session?.exercises.map((exercise) => exercise.hierarchy.exerciseNodeId) ?? [],
+    initialStates: initialExerciseStates,
+  });
+
+  useEffect(() => {
+    setAiExplanation(null);
+    setAiExplanationError(null);
+    setAiExplanationLoading(false);
+  }, [activeQuestion?.id, session?.id, solutionVisible]);
 
   if (!session || !activeExercise || !activeQuestion) {
     return (
       <div className="theater-mode theater-mode-empty">
         <header className="theater-header">
           <div className="theater-header-left">
-            <Link href="/student" className="btn-ghost">
+            <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-ghost">
               إغلاق
             </Link>
           </div>
@@ -103,8 +158,8 @@ function SessionPlayerScreen({
                 >
                   {refreshingSession ? "جارٍ التحديث..." : "إعادة المحاولة"}
                 </button>
-                <Link href="/student" className="btn-secondary">
-                  العودة للرئيسية
+                <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-secondary">
+                  العودة إلى مساحتي
                 </Link>
               </div>
             }
@@ -114,12 +169,63 @@ function SessionPlayerScreen({
     );
   }
 
+  const showReviewQueueActions =
+    progress.mode === "REVIEW" &&
+    solutionVisible &&
+    Boolean(
+      activeQuestionState?.reflection === "MISSED" ||
+        activeQuestionState?.reflection === "HARD" ||
+        activeQuestionState?.skipped ||
+        activeQuestionState?.solutionViewed,
+    );
+  const supportStyle = resolveSessionSupportStyle(session);
+  const shouldShowWeakPointIntro =
+    !weakPointIntroDismissed &&
+    session.kind === "WEAK_POINT_DRILL" &&
+    Boolean(session.pedagogy.weakPointIntro) &&
+    progressCounts.completedCount === 0 &&
+    progressCounts.skippedCount === 0 &&
+    progressCounts.solutionViewedCount === 0 &&
+    currentQuestionPosition <= 1;
+  const canRequestAiExplanation = Boolean(
+    user?.studyEntitlements.capabilities.aiExplanation &&
+      solutionVisible &&
+      !isActiveSimulation &&
+      activeQuestion.solutionBlocks.length,
+  );
+
+  async function handleOpenAiExplanation() {
+    if (!session || !activeQuestion || !canRequestAiExplanation || aiExplanationLoading) {
+      return;
+    }
+
+    setAiExplanationLoading(true);
+    setAiExplanationError(null);
+
+    try {
+      const response = await fetchStudyQuestionAiExplanation(
+        session.id,
+        activeQuestion.id,
+      );
+      setAiExplanation(response);
+    } catch (requestError) {
+      setAiExplanationError(
+        requestError instanceof Error
+          ? requestError.message
+          : "تعذر تحميل الشرح الإضافي.",
+      );
+    } finally {
+      setAiExplanationLoading(false);
+    }
+  }
+
   return (
     <div className="theater-mode">
       <SessionPlayerHeader
         currentQuestionPosition={currentQuestionPosition}
         totalQuestionCount={progressCounts.totalCount}
         progressPercent={progressPercent}
+        remainingTimeMs={remainingTimeMs}
         onOpenNavigator={openNavigator}
       />
 
@@ -129,6 +235,18 @@ function SessionPlayerScreen({
           sessionMeta={sessionMeta}
           activeExerciseTopics={activeExerciseTopics}
           activeExercise={activeExercise}
+          exerciseActions={
+            <StudyExerciseStateActions
+              state={exerciseStatesById[activeExercise.exerciseNodeId]}
+              pending={pendingExerciseIds[activeExercise.exerciseNodeId]}
+              onToggleBookmark={() => {
+                void toggleBookmark(activeExercise.exerciseNodeId);
+              }}
+              onToggleFlag={() => {
+                void toggleFlag(activeExercise.exerciseNodeId);
+              }}
+            />
+          }
         />
 
         <SessionPlayerQuestionPane
@@ -138,23 +256,79 @@ function SessionPlayerScreen({
           questionStatePresentation={questionStatePresentation}
           currentQuestionPosition={currentQuestionPosition}
           progressCounts={progressCounts}
+          sessionFamily={session.family}
+          sessionStatus={session.status}
           progressMode={progress.mode}
           activeQuestionState={activeQuestionState}
           solutionVisible={solutionVisible}
+          canRevealSolution={canRevealSolution}
+          requiresReflection={requiresReflection}
+          supportStyle={supportStyle}
           questionMotionLocked={questionMotionLocked}
           primaryActionLabel={primaryActionLabel}
+          primaryActionDisabled={primaryActionDisabled}
           completionOpen={completionOpen}
+          exerciseCheckpointSummary={exerciseCheckpointSummary}
+          remainingTimeMs={remainingTimeMs}
           onPrimaryAction={handlePrimaryAction}
+          onContinueAfterExerciseCheckpoint={continueAfterExerciseCheckpoint}
+          onPauseAfterExerciseCheckpoint={() => {
+            closeExerciseCheckpoint();
+            router.push(STUDENT_MY_SPACE_ROUTE);
+          }}
+          onOpenHint={showQuestionHint}
+          onOpenMethod={showQuestionMethod}
           onSkipQuestion={skipCurrentQuestion}
           onGoToFirstUnanswered={goToFirstUnanswered}
           onGoToFirstSkipped={goToFirstSkipped}
           onToggleMode={toggleMode}
+          onSetQuestionReflection={setQuestionReflection}
+          onSetQuestionDiagnosis={setQuestionDiagnosis}
+          canRequestAiExplanation={canRequestAiExplanation}
+          aiExplanation={aiExplanation}
+          aiExplanationLoading={aiExplanationLoading}
+          aiExplanationError={aiExplanationError}
+          onRequestAiExplanation={() => {
+            void handleOpenAiExplanation();
+          }}
+          weakPointIntro={
+            shouldShowWeakPointIntro ? session.pedagogy.weakPointIntro : null
+          }
+          onDismissWeakPointIntro={() => setWeakPointIntroDismissed(true)}
+          reviewQueueActions={
+            showReviewQueueActions ? (
+              <>
+                <StudyReviewOutcomeActions
+                  exerciseNodeId={activeExercise.exerciseNodeId}
+                  questionNodeId={activeQuestion.id}
+                  labels={{
+                    CORRECT: "ثبتها اليوم",
+                    INCORRECT: "ما زالت تحتاج",
+                  }}
+                  refreshAfterUpdate={false}
+                />
+                <StudyReviewQueueActions
+                  exerciseNodeId={activeExercise.exerciseNodeId}
+                  questionNodeId={activeQuestion.id}
+                  statuses={["SNOOZED"]}
+                  labels={{
+                    SNOOZED: "ذكّرني لاحقاً",
+                  }}
+                  refreshAfterUpdate={false}
+                />
+              </>
+            ) : undefined
+          }
         />
       </div>
+
+      {exerciseStateError ? <p className="error-text">{exerciseStateError}</p> : null}
 
       {showNavigator ? (
         <SessionPlayerNavigatorModal
           sessionTitle={session.title}
+          sessionFamily={session.family}
+          sessionStatus={session.status}
           progressMode={progress.mode}
           progressCounts={progressCounts}
           navigatorExercises={navigatorExercises}
@@ -162,6 +336,7 @@ function SessionPlayerScreen({
           activeQuestionId={activeQuestion.id}
           onClose={closeNavigator}
           onSetMode={setMode}
+          canToggleMode={canToggleMode}
           onGoToFirstUnanswered={goToFirstUnanswered}
           onGoToFirstSkipped={goToFirstSkipped}
           onSelectExercise={selectExercise}

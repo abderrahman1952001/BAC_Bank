@@ -1,7 +1,10 @@
 import { BadRequestException } from '@nestjs/common';
 import { IngestionJobStatus, Prisma } from '@prisma/client';
 
-export type IngestionProcessRequest = {
+export type IngestionWorkerAction = 'process' | 'publish';
+
+export type IngestionWorkerRequest = {
+  action: IngestionWorkerAction;
   forceReprocess: boolean;
   replaceExisting: boolean;
   skipExtraction: boolean;
@@ -15,13 +18,14 @@ export function buildIngestionProcessRequest(input: {
   jobStatus: IngestionJobStatus;
   isPublishedRevision: boolean;
   queuedAt?: string;
-}): IngestionProcessRequest {
+}): IngestionWorkerRequest {
   const processRequest = {
+    action: 'process' as const,
     forceReprocess: input.forceReprocess,
     replaceExisting: input.replaceExisting,
     skipExtraction: input.skipExtraction,
     queuedAt: input.queuedAt ?? new Date().toISOString(),
-  } satisfies IngestionProcessRequest;
+  } satisfies IngestionWorkerRequest;
 
   if (
     !processRequest.forceReprocess &&
@@ -47,24 +51,46 @@ export function buildIngestionProcessRequest(input: {
   return processRequest;
 }
 
-export function readIngestionProcessRequest(
+export function buildIngestionPublishRequest(input: {
+  jobStatus: IngestionJobStatus;
+  queuedAt?: string;
+}): IngestionWorkerRequest {
+  if (input.jobStatus !== IngestionJobStatus.APPROVED) {
+    throw new BadRequestException(
+      'Approve the ingestion job before publishing it.',
+    );
+  }
+
+  return {
+    action: 'publish',
+    forceReprocess: false,
+    replaceExisting: false,
+    skipExtraction: false,
+    queuedAt: input.queuedAt ?? new Date().toISOString(),
+  } satisfies IngestionWorkerRequest;
+}
+
+export function readIngestionWorkerRequest(
   metadata: Prisma.JsonValue | null,
-): IngestionProcessRequest {
+): IngestionWorkerRequest {
   const metadataRecord = asJsonRecord(metadata);
-  const rawValue = metadataRecord?.processingRequest;
+  const rawValue =
+    metadataRecord?.workerRequest ?? metadataRecord?.processingRequest;
 
   if (!rawValue || typeof rawValue !== 'object' || Array.isArray(rawValue)) {
     return {
+      action: 'process',
       forceReprocess: false,
       replaceExisting: false,
       skipExtraction: false,
       queuedAt: new Date().toISOString(),
-    } satisfies IngestionProcessRequest;
+    } satisfies IngestionWorkerRequest;
   }
 
   const rawRecord = rawValue as Record<string, unknown>;
 
   return {
+    action: rawRecord.action === 'publish' ? 'publish' : 'process',
     forceReprocess: rawRecord.forceReprocess === true,
     replaceExisting: rawRecord.replaceExisting === true,
     skipExtraction: rawRecord.skipExtraction === true,
@@ -72,20 +98,23 @@ export function readIngestionProcessRequest(
       typeof rawRecord.queuedAt === 'string'
         ? rawRecord.queuedAt
         : new Date().toISOString(),
-  } satisfies IngestionProcessRequest;
+  } satisfies IngestionWorkerRequest;
 }
 
-export function withIngestionProcessRequestMetadata(
+export function withIngestionWorkerRequestMetadata(
   metadata: Prisma.JsonValue | null,
-  processRequest: IngestionProcessRequest,
+  workerRequest: IngestionWorkerRequest,
 ) {
-  return {
+  const nextMetadata = {
     ...(asJsonRecord(metadata) ?? {}),
-    processingRequest: processRequest,
-  };
+    workerRequest,
+  } as Record<string, unknown>;
+
+  delete nextMetadata.processingRequest;
+  return nextMetadata;
 }
 
-export function withoutIngestionProcessRequestMetadata(
+export function withoutIngestionWorkerRequestMetadata(
   metadata: Prisma.JsonValue | null,
 ) {
   const metadataRecord = asJsonRecord(metadata);
@@ -95,6 +124,7 @@ export function withoutIngestionProcessRequestMetadata(
   }
 
   const rest = { ...metadataRecord };
+  delete rest.workerRequest;
   delete rest.processingRequest;
   return rest;
 }

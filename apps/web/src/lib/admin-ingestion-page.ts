@@ -9,9 +9,7 @@ import {
   INGESTION_STATUS_ORDER,
 } from "@/lib/ingestion-options";
 
-export const ACTIVE_DRAFT_STATUS_ORDER = INGESTION_STATUS_ORDER.filter(
-  (status) => status !== "published",
-);
+export const BROWSABLE_DRAFT_STATUS_ORDER = INGESTION_STATUS_ORDER;
 export const DRAFT_KIND_LABELS = {
   ingestion: "Ingestion",
   revision: "Revision",
@@ -225,9 +223,13 @@ export function buildGroupedStatuses({
       .filter((job) => job.status === status)
       .sort(compareJobs);
     const availableStreamKeys = Array.from(
-      new Set(jobsForStatus.map((job) => resolveStreamGroupKey(job.stream_codes))),
+      new Set(
+        jobsForStatus.map((job) => resolveStreamGroupKey(job.stream_codes)),
+      ),
     ).sort((left, right) =>
-      resolveStreamGroupLabel(left).localeCompare(resolveStreamGroupLabel(right)),
+      resolveStreamGroupLabel(left).localeCompare(
+        resolveStreamGroupLabel(right),
+      ),
     );
     const scopedFilter = statusScopedFilters[status];
     const activeStreamKey =
@@ -240,7 +242,8 @@ export function buildGroupedStatuses({
       activeStreamKey === "all"
         ? jobsForStatus
         : jobsForStatus.filter(
-            (job) => resolveStreamGroupKey(job.stream_codes) === activeStreamKey,
+            (job) =>
+              resolveStreamGroupKey(job.stream_codes) === activeStreamKey,
           );
     const availableYears = Array.from(
       new Set(streamFilteredJobs.map((job) => job.year)),
@@ -326,9 +329,13 @@ export function buildProcessJobActionState({
     : processingJobId === job.id
       ? "Processing…"
       : job.status === "queued"
-        ? "Queued"
+        ? job.workflow.active_operation === "publishing"
+          ? "Publish queued"
+          : "Queued"
         : job.status === "processing"
-          ? "Worker running…"
+          ? job.workflow.active_operation === "publishing"
+            ? "Publishing…"
+            : "Worker running…"
           : job.workflow.review_started || job.status === "failed"
             ? "Re-run extraction"
             : "Process";

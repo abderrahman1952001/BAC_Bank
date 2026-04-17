@@ -15,6 +15,10 @@ describe('IngestionSourceIntakeService', () => {
     storeSourceDocument: jest.Mock;
     deleteSourceDocument: jest.Mock;
   };
+  let paperSourceService: {
+    buildFamilyCode: jest.Mock;
+    upsertPaperSource: jest.Mock;
+  };
   let service: IngestionSourceIntakeService;
 
   beforeEach(() => {
@@ -30,8 +34,15 @@ describe('IngestionSourceIntakeService', () => {
       storeSourceDocument: jest.fn(),
       deleteSourceDocument: jest.fn(),
     };
+    paperSourceService = {
+      buildFamilyCode: jest.fn().mockReturnValue('se'),
+      upsertPaperSource: jest.fn().mockResolvedValue({
+        id: 'paper-source-1',
+      }),
+    };
     service = new IngestionSourceIntakeService(
       prisma as never,
+      paperSourceService as never,
       sourceDocumentService as never,
     );
   });
@@ -80,6 +91,7 @@ describe('IngestionSourceIntakeService', () => {
 
     expect(prisma.ingestionJob.update).not.toHaveBeenCalled();
     expect(prisma.ingestionJob.create).not.toHaveBeenCalled();
+    expect(paperSourceService.upsertPaperSource).toHaveBeenCalled();
     expect(sourceDocumentService.storeSourceDocument).not.toHaveBeenCalled();
   });
 });

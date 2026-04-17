@@ -12,36 +12,37 @@ import {
 import { motion } from "motion/react";
 import { useAuthSession } from "@/components/auth-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  STUDENT_LIBRARY_ROUTE,
+  STUDENT_MY_SPACE_ROUTE,
+  STUDENT_TRAINING_ROUTE,
+  isStudentSurfaceActive,
+} from "@/lib/student-routes";
 import { useSignOut } from "@/components/use-sign-out";
 
 const baseNavItems = [
   {
-    href: "/student",
-    label: "الرئيسية",
-    shortLabel: "الرئيسية",
+    href: STUDENT_MY_SPACE_ROUTE,
+    label: "مساحتي",
+    shortLabel: "مساحتي",
     icon: House,
+    surface: "mySpace" as const,
   },
   {
-    href: "/student/browse",
+    href: STUDENT_LIBRARY_ROUTE,
     label: "المكتبة",
     shortLabel: "المكتبة",
     icon: BookOpen,
+    surface: "library" as const,
   },
   {
-    href: "/student/sessions/new",
-    label: "تدريب مخصص",
+    href: STUDENT_TRAINING_ROUTE,
+    label: "التدريب",
     shortLabel: "تدريب",
     icon: PenTool,
+    surface: "training" as const,
   },
 ];
-
-function isLinkActive(pathname: string, href: string): boolean {
-  if (href === "/student") {
-    return pathname === "/student";
-  }
-
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
 
 export function StudentNavbar() {
   const pathname = usePathname();
@@ -69,7 +70,7 @@ export function StudentNavbar() {
     <>
       <aside className="student-navbar" aria-label="التنقل الرئيسي">
         <div className="student-navbar-top">
-          <Link href="/student" className="student-brand">
+          <Link href={STUDENT_MY_SPACE_ROUTE} className="student-brand">
             <span className="student-brand-text">BAC Bank</span>
             <span className="student-brand-badge" aria-hidden="true">
               {userInitial}
@@ -79,7 +80,10 @@ export function StudentNavbar() {
 
         <nav className="student-nav-links">
           {navItems.map((item) => {
-            const isActive = isLinkActive(pathname, item.href);
+            const isActive =
+              "surface" in item
+                ? isStudentSurfaceActive(pathname, item.surface)
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
 
             return (
@@ -134,7 +138,10 @@ export function StudentNavbar() {
 
       <nav className="student-bottom-nav" aria-label="التنقل السفلي">
         {navItems.map((item) => {
-          const isActive = isLinkActive(pathname, item.href);
+          const isActive =
+            "surface" in item
+              ? isStudentSurfaceActive(pathname, item.surface)
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
           const Icon = item.icon;
 
           return (
@@ -155,8 +162,8 @@ export function StudentNavbar() {
                     type: "spring",
                     stiffness: 340,
                     damping: 30,
-                    }}
-                  />
+                  }}
+                />
               ) : null}
               <span className="student-bottom-link-icon" aria-hidden="true">
                 <Icon size={18} strokeWidth={2.1} />

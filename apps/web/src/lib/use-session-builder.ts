@@ -11,8 +11,9 @@ import {
   parseSessionPreviewResponse,
   type SessionPreviewResponse,
   type SessionType,
-} from "@/lib/qbank";
+} from "@/lib/study-api";
 import {
+  buildBuilderSessionKindLabel,
   buildCreateSessionRequest,
   buildPreviewSessionRequest,
   buildSessionBuilderViewModel,
@@ -25,6 +26,7 @@ import {
   type BuilderYearMode,
   type TopicSelectionMode,
 } from "@/lib/session-builder";
+import { buildStudentTrainingSessionRoute } from "@/lib/student-routes";
 import { toggleExclusiveTopicSelection } from "@/lib/topic-taxonomy";
 
 function readInitialYearStart(filters?: FiltersResponse) {
@@ -38,18 +40,28 @@ function readInitialYearEnd(filters?: FiltersResponse) {
 export function useSessionBuilder(
   userStreamCode?: string | null,
   initialFilters?: FiltersResponse,
+  initialSelection?: {
+    subjectCode?: string;
+    topicCodes?: string[];
+  },
 ) {
   const router = useRouter();
   const filters = initialFilters ?? null;
+  const initialTopicCodes = initialSelection?.topicCodes ?? [];
+  const hasInitialSelection =
+    Boolean(initialSelection?.subjectCode) || initialTopicCodes.length > 0;
   const [previewLoading, setPreviewLoading] = useState(false);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [title, setTitle] = useState("");
-  const [subjectCode, setSubjectCode] = useState("");
-  const [topicCodes, setTopicCodes] = useState<string[]>([]);
-  const [topicSelectionMode, setTopicSelectionMode] =
-    useState<TopicSelectionMode>(null);
+  const [subjectCode, setSubjectCode] = useState(
+    initialSelection?.subjectCode ?? "",
+  );
+  const [topicCodes, setTopicCodes] = useState<string[]>(initialTopicCodes);
+  const [topicSelectionMode, setTopicSelectionMode] = useState<TopicSelectionMode>(
+    initialTopicCodes.length > 0 ? "custom" : null,
+  );
   const [selectedStreamCodes, setSelectedStreamCodes] = useState<
     string[] | null
   >(null);
@@ -61,9 +73,16 @@ export function useSessionBuilder(
     readInitialYearEnd(initialFilters),
   );
   const [sessionTypes, setSessionTypes] = useState<SessionType[]>([]);
-  const [exerciseCount, setExerciseCount] = useState(8);
+  const [exerciseCount, setExerciseCount] = useState(2);
+  const [timingEnabled, setTimingEnabled] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState<BuilderStep>(1);
+  const [currentStep, setCurrentStep] = useState<BuilderStep>(
+    initialTopicCodes.length > 0
+      ? 3
+      : initialSelection?.subjectCode
+        ? 2
+        : 1,
+  );
   const [stepMotionDirection, setStepMotionDirection] = useState<
     "forward" | "backward"
   >("forward");
@@ -154,6 +173,11 @@ export function useSessionBuilder(
       return;
     }
 
+    if (hasInitialSelection) {
+      setPreferencesReady(true);
+      return;
+    }
+
     try {
       const raw = window.localStorage.getItem(SESSION_BUILDER_STORAGE_KEY);
 
@@ -198,12 +222,16 @@ export function useSessionBuilder(
       if (typeof restored.exerciseCount === "number") {
         setExerciseCount(restored.exerciseCount);
       }
+
+      if (typeof restored.timingEnabled === "boolean") {
+        setTimingEnabled(restored.timingEnabled);
+      }
     } catch {
       return;
     } finally {
       setPreferencesReady(true);
     }
-  }, [filters, preferencesReady, userStreamCode]);
+  }, [filters, hasInitialSelection, preferencesReady, userStreamCode]);
 
   useEffect(() => {
     if (!filters) {
@@ -301,7 +329,7 @@ export function useSessionBuilder(
 
       try {
         const payload = await fetchJson<SessionPreviewResponse>(
-          `${API_BASE_URL}/qbank/sessions/preview`,
+          `${API_BASE_URL}/study/sessions/preview`,
           {
             method: "POST",
             headers: {
@@ -312,6 +340,7 @@ export function useSessionBuilder(
               buildPreviewSessionRequest({
                 subjectCode,
                 topicCodes,
+                topicSelectionMode,
                 effectiveStreamCodes,
                 selectedYears,
                 sessionTypes,
@@ -349,6 +378,7 @@ export function useSessionBuilder(
     sessionTypes,
     subjectCode,
     topicCodes,
+    topicSelectionMode,
     viewModel.builderReadyToPreview,
   ]);
 
@@ -376,6 +406,7 @@ export function useSessionBuilder(
           yearEnd,
           sessionTypes,
           exerciseCount,
+          timingEnabled,
         }),
       ),
     );
@@ -388,6 +419,7 @@ export function useSessionBuilder(
     subjectCode,
     topicCodes,
     topicSelectionMode,
+    timingEnabled,
     yearEnd,
     yearMode,
     yearStart,
@@ -488,7 +520,7 @@ export function useSessionBuilder(
     try {
       const startedAt = Date.now();
       const payload = await fetchJson<CreateSessionResponse>(
-        `${API_BASE_URL}/qbank/sessions`,
+        `${API_BASE_URL}/study/sessions`,
         {
           method: "POST",
           headers: {
@@ -499,10 +531,12 @@ export function useSessionBuilder(
               title,
               subjectCode,
               topicCodes,
+              topicSelectionMode,
               effectiveStreamCodes: viewModel.effectiveStreamCodes,
               selectedYears: viewModel.selectedYears,
               sessionTypes,
               exerciseCount,
+              timingEnabled,
             }),
           ),
         },
@@ -517,7 +551,7 @@ export function useSessionBuilder(
         );
       }
 
-      router.push(`/student/sessions/${payload.id}`);
+      router.push(buildStudentTrainingSessionRoute(payload.id));
     } catch (submitError) {
       setError(
         submitError instanceof Error
@@ -544,6 +578,7 @@ export function useSessionBuilder(
     yearEnd,
     sessionTypes,
     exerciseCount,
+    timingEnabled,
     advancedOpen,
     currentStep,
     stepMotionDirection,
@@ -563,6 +598,10 @@ export function useSessionBuilder(
     selectedYearsLabel: viewModel.selectedYearsLabel,
     summaryText: viewModel.summaryText,
     planText: viewModel.planText,
+    sessionKindLabel: buildBuilderSessionKindLabel(
+      topicSelectionMode,
+      topicCodes,
+    ),
     selectedYears: viewModel.selectedYears,
     zeroResultsGuidance: viewModel.zeroResultsGuidance,
     maxExerciseCount: viewModel.maxExerciseCount,
@@ -581,6 +620,7 @@ export function useSessionBuilder(
     toggleSessionType: (type: SessionType) =>
       setSessionTypes((current) => toggleInList(current, type)),
     setExerciseCount,
+    setTimingEnabled,
     setTitle,
     triggerZeroResultsAction: handleZeroResultsGuidanceAction,
     createSession: handleCreateSession,

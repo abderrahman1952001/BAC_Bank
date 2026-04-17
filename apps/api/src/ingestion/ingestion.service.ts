@@ -4,7 +4,6 @@ import type {
   AdminIngestionJobResponse,
   AdminIngestionRecoveryResponse,
   AdminIngestionSnippetRecoveryResponse,
-  PublishIngestionJobResponse,
 } from '@bac-bank/contracts/ingestion';
 import { ProcessIngestionJobDto } from './dto/process-ingestion-job.dto';
 import { RecoverAssetContentDto } from './dto/recover-asset-content.dto';
@@ -15,7 +14,6 @@ import {
   CreateManualUploadJobInput,
   IngestionDraftIntakeService,
 } from './ingestion-draft-intake.service';
-import { IngestionPublicationService } from './ingestion-publication.service';
 import { IngestionQueueService } from './ingestion-queue.service';
 import { IngestionReadService } from './ingestion-read.service';
 import { IngestionRecoveryService } from './ingestion-recovery.service';
@@ -25,7 +23,6 @@ import { IngestionReviewService } from './ingestion-review.service';
 export class IngestionService {
   constructor(
     private readonly draftIntakeService: IngestionDraftIntakeService,
-    private readonly publicationService: IngestionPublicationService,
     private readonly queueService: IngestionQueueService,
     private readonly readService: IngestionReadService,
     private readonly recoveryService: IngestionRecoveryService,
@@ -81,8 +78,8 @@ export class IngestionService {
     return this.reviewService.approveJob(jobId);
   }
 
-  async publishJob(jobId: string): Promise<PublishIngestionJobResponse> {
-    return this.publicationService.publishJob(jobId);
+  async publishJob(jobId: string): Promise<AdminIngestionJobResponse> {
+    return this.queueService.publishJob(jobId);
   }
 
   async getDocumentFile(documentId: string) {

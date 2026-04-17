@@ -2,15 +2,14 @@ import {
   Body,
   Controller,
   Get,
-  HttpCode,
-  Post,
   Req,
+  Post,
   UseGuards,
 } from '@nestjs/common';
 import type { AuthenticatedRequest } from './auth.types';
 import { AuthService } from './auth.service';
+import { ClerkAuthGuard } from './clerk-auth.guard';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { SessionAuthGuard } from './session-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -21,21 +20,13 @@ export class AuthController {
     return this.authService.getRegistrationOptions();
   }
 
-  @HttpCode(200)
-  @Post('logout')
-  logout() {
-    return {
-      success: true,
-    };
-  }
-
-  @UseGuards(SessionAuthGuard)
+  @UseGuards(ClerkAuthGuard)
   @Get('me')
   getMe(@Req() request: AuthenticatedRequest) {
     return this.authService.getUserProfile(request.user!.id);
   }
 
-  @UseGuards(SessionAuthGuard)
+  @UseGuards(ClerkAuthGuard)
   @Post('profile')
   updateProfile(
     @Req() request: AuthenticatedRequest,

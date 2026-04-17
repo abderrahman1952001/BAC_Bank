@@ -12,6 +12,9 @@ const STREAM_RANK: Record<string, number> = {
   GE: 40,
   LP: 50,
   LE: 60,
+  LE_GERMAN: 61,
+  LE_SPANISH: 62,
+  LE_ITALIAN: 63,
   ARTS: 70,
 };
 

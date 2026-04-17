@@ -1,16 +1,48 @@
-import type {
-  AuthOptionsResponse,
-  AuthUser,
-} from "@bac-bank/contracts/auth";
+import type { AuthOptionsResponse, AuthUser } from "@bac-bank/contracts/auth";
 import type {
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
 } from "@bac-bank/contracts/ingestion";
 import type {
+  CatalogResponse,
   FiltersResponse,
-  PracticeSessionResponse,
+  MyMistakesResponse,
+  RecentExerciseStatesResponse,
+  StudyRoadmapsResponse,
+  StudySessionResponse,
   SessionPreviewResponse,
-} from "@bac-bank/contracts/qbank";
+  WeakPointInsightsResponse,
+} from "@bac-bank/contracts/study";
+
+const playwrightFreeStudyEntitlements = {
+  tier: "FREE",
+  capabilities: {
+    topicDrill: true,
+    mixedDrill: true,
+    weakPointDrill: false,
+    paperSimulation: true,
+    aiExplanation: false,
+    weakPointInsight: false,
+  },
+  quotas: {
+    drillStarts: {
+      monthlyLimit: 5,
+      used: 1,
+      remaining: 4,
+      exhausted: false,
+      nearLimit: false,
+      resetsAt: "2026-04-30T23:00:00.000Z",
+    },
+    simulationStarts: {
+      monthlyLimit: 1,
+      used: 0,
+      remaining: 1,
+      exhausted: false,
+      nearLimit: false,
+      resetsAt: "2026-04-30T23:00:00.000Z",
+    },
+  },
+} satisfies AuthUser["studyEntitlements"];
 
 export const playwrightTestStudentUser = {
   id: "student-test-user",
@@ -22,6 +54,7 @@ export const playwrightTestStudentUser = {
     name: "Sciences experimentales",
   },
   subscriptionStatus: "FREE",
+  studyEntitlements: playwrightFreeStudyEntitlements,
 } satisfies AuthUser;
 
 export const playwrightTestAdminUser = {
@@ -34,13 +67,21 @@ export const playwrightTestAdminUser = {
     name: "Sciences experimentales",
   },
   subscriptionStatus: "FREE",
+  studyEntitlements: playwrightFreeStudyEntitlements,
 } satisfies AuthUser;
 
 export const playwrightTestAuthOptions = {
-  streams: [
+  streamFamilies: [
     {
       code: "SE",
       name: "Sciences experimentales",
+      streams: [
+        {
+          code: "SE",
+          name: "Sciences experimentales",
+          isDefault: true,
+        },
+      ],
     },
   ],
 } satisfies AuthOptionsResponse;
@@ -87,13 +128,58 @@ export const playwrightTestFilters = {
   sessionTypes: ["NORMAL", "MAKEUP"],
 } satisfies FiltersResponse;
 
+export const playwrightTestCatalog = {
+  streams: [
+    {
+      code: "SE",
+      name: "Sciences experimentales",
+      subjects: [
+        {
+          code: "MATH",
+          name: "Mathematics",
+          years: [
+            {
+              year: 2025,
+              sujets: [
+                {
+                  examId: "exam-1",
+                  sujetNumber: 1,
+                  label: "Sujet 1",
+                  sessionType: "NORMAL",
+                  exerciseCount: 4,
+                },
+              ],
+            },
+            {
+              year: 2024,
+              sujets: [
+                {
+                  examId: "exam-2",
+                  sujetNumber: 2,
+                  label: "Sujet 2",
+                  sessionType: "MAKEUP",
+                  exerciseCount: 3,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+} satisfies CatalogResponse;
+
 export const playwrightTestPreview = {
+  sessionFamily: "DRILL",
+  sessionKind: "TOPIC_DRILL",
   subjectCode: "MATH",
   streamCode: "SE",
   streamCodes: ["SE"],
   years: [2025, 2024],
   topicCodes: ["ALG"],
   sessionTypes: ["NORMAL"],
+  sourceExamId: null,
+  durationMinutes: null,
   matchingExerciseCount: 3,
   matchingSujetCount: 2,
   sampleExercises: [
@@ -173,12 +259,204 @@ export const playwrightTestPreview = {
   maxSelectableExercises: 12,
 } satisfies SessionPreviewResponse;
 
-export const playwrightTestPracticeSession = {
+export const playwrightTestRecentExerciseStates = {
+  data: [],
+} satisfies RecentExerciseStatesResponse;
+
+export const playwrightTestMyMistakes = {
+  data: [],
+} satisfies MyMistakesResponse;
+
+export const playwrightTestWeakPointInsights = {
+  enabled: false,
+  data: [],
+} satisfies WeakPointInsightsResponse;
+
+export const playwrightTestStudyRoadmaps = {
+  data: [
+    {
+      id: "roadmap-math",
+      title: "Math roadmap",
+      description: "A guided revision route for mathematics.",
+      subject: {
+        code: "MATH",
+        name: "Mathematics",
+      },
+      curriculum: {
+        code: "GENERAL",
+        title: "Mathematics",
+      },
+      totalNodeCount: 3,
+      solidNodeCount: 1,
+      needsReviewNodeCount: 1,
+      inProgressNodeCount: 0,
+      notStartedNodeCount: 1,
+      openReviewItemCount: 1,
+      progressPercent: 42,
+      updatedAt: "2026-04-09T10:00:00.000Z",
+      nextAction: {
+        type: "TOPIC_DRILL",
+        label: "Review Algebra",
+        topicCode: "ALG",
+        topicName: "Algebra",
+      },
+      sections: [
+        {
+          id: "roadmap-section-1",
+          code: "FOUNDATION",
+          title: "Foundations",
+          description: "Stabilize the highest-return chapters first.",
+          orderIndex: 1,
+          nodes: [
+            {
+              id: "roadmap-node-1",
+              title: "Algebra",
+              description: "Start with the chapter that most needs attention.",
+              topicCode: "ALG",
+              topicName: "Algebra",
+              orderIndex: 1,
+              estimatedSessions: 3,
+              isOptional: false,
+              sectionId: "roadmap-section-1",
+              recommendedPreviousNodeId: null,
+              recommendedPreviousNodeTitle: null,
+              status: "NEEDS_REVIEW",
+              progressPercent: 25,
+              weaknessScore: 7,
+              attemptedQuestions: 5,
+              correctCount: 2,
+              incorrectCount: 2,
+              lastSeenAt: "2026-04-09T10:00:00.000Z",
+            },
+            {
+              id: "roadmap-node-2",
+              title: "Geometry",
+              description: "Lock in your proofs and visual reasoning.",
+              topicCode: "GEO",
+              topicName: "Geometry",
+              orderIndex: 2,
+              estimatedSessions: 2,
+              isOptional: false,
+              sectionId: "roadmap-section-1",
+              recommendedPreviousNodeId: "roadmap-node-1",
+              recommendedPreviousNodeTitle: "Algebra",
+              status: "SOLID",
+              progressPercent: 100,
+              weaknessScore: 1,
+              attemptedQuestions: 9,
+              correctCount: 8,
+              incorrectCount: 1,
+              lastSeenAt: "2026-04-01T10:00:00.000Z",
+            },
+          ],
+        },
+        {
+          id: "roadmap-section-2",
+          code: "CONSOLIDATION",
+          title: "Consolidation",
+          description: "Finish with the chapters you have not opened yet.",
+          orderIndex: 2,
+          nodes: [
+            {
+              id: "roadmap-node-3",
+              title: "Analysis",
+              description: "Build enough momentum here before a full mock.",
+              topicCode: "ANL",
+              topicName: "Analysis",
+              orderIndex: 3,
+              estimatedSessions: 2,
+              isOptional: false,
+              sectionId: "roadmap-section-2",
+              recommendedPreviousNodeId: "roadmap-node-2",
+              recommendedPreviousNodeTitle: "Geometry",
+              status: "NOT_STARTED",
+              progressPercent: 0,
+              weaknessScore: 0,
+              attemptedQuestions: 0,
+              correctCount: 0,
+              incorrectCount: 0,
+              lastSeenAt: null,
+            },
+          ],
+        },
+      ],
+      nodes: [
+        {
+          id: "roadmap-node-1",
+          title: "Algebra",
+          description: "Start with the chapter that most needs attention.",
+          topicCode: "ALG",
+          topicName: "Algebra",
+          orderIndex: 1,
+          estimatedSessions: 3,
+          isOptional: false,
+          sectionId: "roadmap-section-1",
+          recommendedPreviousNodeId: null,
+          recommendedPreviousNodeTitle: null,
+          status: "NEEDS_REVIEW",
+          progressPercent: 25,
+          weaknessScore: 7,
+          attemptedQuestions: 5,
+          correctCount: 2,
+          incorrectCount: 2,
+          lastSeenAt: "2026-04-09T10:00:00.000Z",
+        },
+        {
+          id: "roadmap-node-2",
+          title: "Geometry",
+          description: "Lock in your proofs and visual reasoning.",
+          topicCode: "GEO",
+          topicName: "Geometry",
+          orderIndex: 2,
+          estimatedSessions: 2,
+          isOptional: false,
+          sectionId: "roadmap-section-1",
+          recommendedPreviousNodeId: "roadmap-node-1",
+          recommendedPreviousNodeTitle: "Algebra",
+          status: "SOLID",
+          progressPercent: 100,
+          weaknessScore: 1,
+          attemptedQuestions: 9,
+          correctCount: 8,
+          incorrectCount: 1,
+          lastSeenAt: "2026-04-01T10:00:00.000Z",
+        },
+        {
+          id: "roadmap-node-3",
+          title: "Analysis",
+          description: "Build enough momentum here before a full mock.",
+          topicCode: "ANL",
+          topicName: "Analysis",
+          orderIndex: 3,
+          estimatedSessions: 2,
+          isOptional: false,
+          sectionId: "roadmap-section-2",
+          recommendedPreviousNodeId: "roadmap-node-2",
+          recommendedPreviousNodeTitle: "Geometry",
+          status: "NOT_STARTED",
+          progressPercent: 0,
+          weaknessScore: 0,
+          attemptedQuestions: 0,
+          correctCount: 0,
+          incorrectCount: 0,
+          lastSeenAt: null,
+        },
+      ],
+    },
+  ],
+} satisfies StudyRoadmapsResponse;
+
+export const playwrightTestStudySession = {
   id: "session-123",
   title: "Focused training",
+  family: "DRILL",
+  kind: "TOPIC_DRILL",
   status: "IN_PROGRESS",
+  sourceExamId: null,
   requestedExerciseCount: 3,
   exerciseCount: 1,
+  durationMinutes: null,
+  timingEnabled: false,
   filters: {
     years: [2025, 2024],
     streamCodes: ["SE"],
@@ -187,6 +465,15 @@ export const playwrightTestPracticeSession = {
     sessionTypes: ["NORMAL"],
   },
   progress: null,
+  pedagogy: {
+    supportStyle: "LOGIC_HEAVY",
+    weakPointIntro: null,
+  },
+  startedAt: "2026-03-28T12:00:00.000Z",
+  deadlineAt: null,
+  submittedAt: null,
+  completedAt: null,
+  lastInteractedAt: "2026-03-28T12:00:00.000Z",
   createdAt: "2026-03-28T12:00:00.000Z",
   updatedAt: "2026-03-28T12:00:00.000Z",
   exercises: [
@@ -250,7 +537,7 @@ export const playwrightTestPracticeSession = {
       },
     },
   ],
-} satisfies PracticeSessionResponse;
+} satisfies StudySessionResponse;
 
 export const playwrightTestAdminJobSummary = {
   id: "job-1",
@@ -271,6 +558,7 @@ export const playwrightTestAdminJobSummary = {
     awaiting_correction: false,
     can_process: true,
     review_started: false,
+    active_operation: "idle",
   },
   published_paper_id: null,
   published_exams: [],

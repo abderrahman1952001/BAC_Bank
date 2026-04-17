@@ -6,7 +6,7 @@ import type {
   AdminIngestionJobSummary,
 } from "@/lib/admin";
 import {
-  ACTIVE_DRAFT_STATUS_ORDER,
+  BROWSABLE_DRAFT_STATUS_ORDER,
   buildProcessJobActionState,
   formatPaperStreamCodes,
   formatDraftKind,
@@ -551,7 +551,7 @@ export function AdminIngestionJobBrowserSection({
           All
           <span>{statusCounts.all}</span>
         </button>
-        {ACTIVE_DRAFT_STATUS_ORDER.map((status) => (
+        {BROWSABLE_DRAFT_STATUS_ORDER.map((status) => (
           <button
             key={status}
             type="button"

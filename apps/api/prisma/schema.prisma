@@ -12,15 +12,108 @@ enum SessionType {
   MAKEUP
 }
 
-enum PracticeSessionStatus {
+enum StudySessionStatus {
   CREATED
   IN_PROGRESS
   COMPLETED
+  EXPIRED
+}
+
+enum StudySessionFamily {
+  DRILL
+  SIMULATION
+}
+
+enum StudySessionKind {
+  TOPIC_DRILL
+  MIXED_DRILL
+  WEAK_POINT_DRILL
+  PAPER_SIMULATION
+}
+
+enum StudySessionResumeMode {
+  SOLVE
+  REVIEW
+}
+
+enum StudyQuestionAnswerState {
+  UNSEEN
+  OPENED
+  ANSWERED
+  REVEALED
+  SKIPPED
+}
+
+enum StudyQuestionResultStatus {
+  CORRECT
+  PARTIAL
+  INCORRECT
+  UNKNOWN
+}
+
+enum StudyQuestionDiagnosis {
+  CONCEPT
+  METHOD
+  CALCULATION
+  TIME_PRESSURE
+}
+
+enum StudyQuestionEvaluationMode {
+  AUTO
+  MANUAL
+  SELF_ASSESSED
+  UNGRADED
+}
+
+enum StudyQuestionReflection {
+  MISSED
+  HARD
+  MEDIUM
+  EASY
+}
+
+enum StudentMasteryBucket {
+  NEW
+  WATCH
+  WEAK
+  RECOVERING
+  SOLID
+}
+
+enum StudyReviewQueueReasonType {
+  MISSED
+  HARD
+  SKIPPED
+  REVEALED
+  FLAGGED
+}
+
+enum StudyReviewQueueStatus {
+  OPEN
+  DONE
+  SNOOZED
+  REMOVED
+}
+
+enum StudyReviewOutcome {
+  CORRECT
+  INCORRECT
+}
+
+enum TopicKind {
+  UNIT
+  TOPIC
+  SUBTOPIC
 }
 
 enum PublicationStatus {
   DRAFT
   PUBLISHED
+}
+
+enum ExamNodeSkillSource {
+  TOPIC_DERIVED
+  MANUAL_REVIEW
 }
 
 enum IngestionJobStatus {
@@ -97,7 +190,6 @@ model StreamFamily {
   slug        String?  @unique
   description String?  @db.Text
   pathways    Stream[]
-  users       User[]
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -105,20 +197,21 @@ model StreamFamily {
 }
 
 model Stream {
-  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  familyId            String              @map("family_id") @db.Uuid
-  code                String              @unique
+  id                  String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  familyId            String                    @map("family_id") @db.Uuid
+  code                String                    @unique
   name                String
-  slug                String?             @unique
-  description         String?             @db.Text
-  isDefault           Boolean             @default(false) @map("is_default")
-  family              StreamFamily        @relation(fields: [familyId], references: [id], onDelete: Restrict)
+  slug                String?                   @unique
+  description         String?                   @db.Text
+  isDefault           Boolean                   @default(false) @map("is_default")
+  family              StreamFamily              @relation(fields: [familyId], references: [id], onDelete: Restrict)
   subjectMappings     StreamSubject[]
+  curriculumMappings  SubjectCurriculumStream[]
   exams               Exam[]
   paperSourceMappings PaperSourceStream[]
   users               User[]
-  createdAt           DateTime            @default(now()) @map("created_at")
-  updatedAt           DateTime            @updatedAt @map("updated_at")
+  createdAt           DateTime                  @default(now()) @map("created_at")
+  updatedAt           DateTime                  @updatedAt @map("updated_at")
 
   @@index([familyId])
   @@index([familyId, isDefault])
@@ -139,25 +232,64 @@ model SubjectFamily {
 }
 
 model Subject {
-  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  familyId       String          @map("family_id") @db.Uuid
-  code           String          @unique
+  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  familyId       String              @map("family_id") @db.Uuid
+  code           String              @unique
   name           String
-  slug           String?         @unique
-  description    String?         @db.Text
-  isDefault      Boolean         @default(false) @map("is_default")
-  family         SubjectFamily   @relation(fields: [familyId], references: [id], onDelete: Restrict)
+  slug           String?             @unique
+  description    String?             @db.Text
+  isDefault      Boolean             @default(false) @map("is_default")
+  family         SubjectFamily       @relation(fields: [familyId], references: [id], onDelete: Restrict)
   streamMappings StreamSubject[]
-  exams          Exam[]          @relation("SubjectExams")
-  papers         Paper[]         @relation("SubjectPapers")
+  exams          Exam[]              @relation("SubjectExams")
+  papers         Paper[]             @relation("SubjectPapers")
   paperSources   PaperSource[]
+  curricula      SubjectCurriculum[]
   topics         Topic[]
-  createdAt      DateTime        @default(now()) @map("created_at")
-  updatedAt      DateTime        @updatedAt @map("updated_at")
+  skills         Skill[]
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
 
   @@index([familyId])
   @@index([familyId, isDefault])
   @@map("subjects")
+}
+
+model SubjectCurriculum {
+  id             String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId      String                    @map("subject_id") @db.Uuid
+  code           String
+  familyCode     String                    @default("legacy") @map("family_code")
+  title          String
+  validFromYear  Int                       @default(0) @map("valid_from_year")
+  validToYear    Int?                      @map("valid_to_year")
+  isActive       Boolean                   @default(true) @map("is_active")
+  subject        Subject                   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  streamMappings SubjectCurriculumStream[]
+  topics         Topic[]
+  skills         Skill[]
+  roadmaps       SubjectRoadmap[]
+  createdAt      DateTime                  @default(now()) @map("created_at")
+  updatedAt      DateTime                  @updatedAt @map("updated_at")
+
+  @@unique([subjectId, code])
+  @@index([subjectId, isActive])
+  @@index([subjectId, familyCode])
+  @@index([subjectId, validFromYear, validToYear])
+  @@map("subject_curricula")
+}
+
+model SubjectCurriculumStream {
+  curriculumId String            @map("curriculum_id") @db.Uuid
+  streamId     String            @map("stream_id") @db.Uuid
+  createdAt    DateTime          @default(now()) @map("created_at")
+  curriculum   SubjectCurriculum @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  stream       Stream            @relation(fields: [streamId], references: [id], onDelete: Restrict)
+
+  @@id([curriculumId, streamId])
+  @@index([streamId])
+  @@index([curriculumId])
+  @@map("subject_curriculum_streams")
 }
 
 model StreamSubject {
@@ -239,21 +371,22 @@ model Paper {
 }
 
 model Exam {
-  id               String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  year             Int
-  streamId         String                    @map("stream_id") @db.Uuid
-  subjectId        String                    @map("subject_id") @db.Uuid
-  sessionType      SessionType               @map("session_type")
-  paperId          String                    @map("paper_id") @db.Uuid
-  isPublished      Boolean                   @default(false) @map("is_published")
-  stream           Stream                    @relation(fields: [streamId], references: [id], onDelete: Restrict)
-  subject          Subject                   @relation("SubjectExams", fields: [subjectId], references: [id], onDelete: Restrict)
-  paper            Paper                     @relation(fields: [paperId], references: [id], onDelete: Restrict)
-  ingestionJobs    IngestionJob[]            @relation("IngestionJobPublishedExam")
-  sessionExercises PracticeSessionExercise[]
-  activities       ExamActivity[]
-  createdAt        DateTime                  @default(now()) @map("created_at")
-  updatedAt        DateTime                  @updatedAt @map("updated_at")
+  id                    String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  year                  Int
+  streamId              String                 @map("stream_id") @db.Uuid
+  subjectId             String                 @map("subject_id") @db.Uuid
+  sessionType           SessionType            @map("session_type")
+  paperId               String                 @map("paper_id") @db.Uuid
+  isPublished           Boolean                @default(false) @map("is_published")
+  stream                Stream                 @relation(fields: [streamId], references: [id], onDelete: Restrict)
+  subject               Subject                @relation("SubjectExams", fields: [subjectId], references: [id], onDelete: Restrict)
+  paper                 Paper                  @relation(fields: [paperId], references: [id], onDelete: Restrict)
+  ingestionJobs         IngestionJob[]         @relation("IngestionJobPublishedExam")
+  studySessionExercises StudySessionExercise[]
+  sourceStudySessions   StudySession[]         @relation("StudySessionSourceExam")
+  activities            ExamActivity[]
+  createdAt             DateTime               @default(now()) @map("created_at")
+  updatedAt             DateTime               @updatedAt @map("updated_at")
 
   @@unique([year, streamId, subjectId, sessionType])
   @@index([year, streamId, subjectId])
@@ -279,23 +412,28 @@ model ExamVariant {
 }
 
 model ExamNode {
-  id               String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  variantId        String                    @map("variant_id") @db.Uuid
-  parentId         String?                   @map("parent_id") @db.Uuid
-  nodeType         ExamNodeType              @map("node_type")
-  orderIndex       Int                       @map("order_index")
-  label            String?
-  maxPoints        Decimal?                  @map("max_points") @db.Decimal(6, 2)
-  status           PublicationStatus         @default(DRAFT)
-  metadata         Json?
-  variant          ExamVariant               @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  parent           ExamNode?                 @relation("ExamNodeHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
-  children         ExamNode[]                @relation("ExamNodeHierarchy")
-  blocks           ExamNodeBlock[]
-  topicMappings    ExamNodeTopic[]
-  sessionExercises PracticeSessionExercise[]
-  createdAt        DateTime                  @default(now()) @map("created_at")
-  updatedAt        DateTime                  @updatedAt @map("updated_at")
+  id                       String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  variantId                String                   @map("variant_id") @db.Uuid
+  parentId                 String?                  @map("parent_id") @db.Uuid
+  nodeType                 ExamNodeType             @map("node_type")
+  orderIndex               Int                      @map("order_index")
+  label                    String?
+  maxPoints                Decimal?                 @map("max_points") @db.Decimal(6, 2)
+  status                   PublicationStatus        @default(DRAFT)
+  metadata                 Json?
+  variant                  ExamVariant              @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  parent                   ExamNode?                @relation("ExamNodeHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children                 ExamNode[]               @relation("ExamNodeHierarchy")
+  blocks                   ExamNodeBlock[]
+  topicMappings            ExamNodeTopic[]
+  skillMappings            ExamNodeSkill[]
+  studySessionExercises    StudySessionExercise[]
+  studySessionQuestions    StudySessionQuestion[]
+  studentExerciseStates    StudentExerciseState[]
+  reviewQuestionQueueItems StudentReviewQueueItem[] @relation("StudyReviewQueueQuestionNode")
+  reviewExerciseQueueItems StudentReviewQueueItem[] @relation("StudyReviewQueueExerciseNode")
+  createdAt                DateTime                 @default(now()) @map("created_at")
+  updatedAt                DateTime                 @updatedAt @map("updated_at")
 
   @@unique([variantId, parentId, orderIndex])
   @@index([variantId, nodeType])
@@ -324,30 +462,147 @@ model ExamNodeBlock {
 }
 
 model Topic {
-  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subjectId      String           @map("subject_id") @db.Uuid
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId      String               @map("subject_id") @db.Uuid
+  curriculumId   String               @map("curriculum_id") @db.Uuid
   code           String
   name           String
   slug           String
-  parentId       String?          @map("parent_id") @db.Uuid
-  displayOrder   Int              @default(0) @map("display_order")
-  isSelectable   Boolean          @default(true) @map("is_selectable")
-  studentLabel   String?          @map("student_label")
-  subject        Subject          @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  parent         Topic?           @relation("TopicHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
-  children       Topic[]          @relation("TopicHierarchy")
+  parentId       String?              @map("parent_id") @db.Uuid
+  kind           TopicKind            @default(SUBTOPIC)
+  depth          Int                  @default(0)
+  path           String               @db.Text
+  displayOrder   Int                  @default(0) @map("display_order")
+  isSelectable   Boolean              @default(true) @map("is_selectable")
+  studentLabel   String?              @map("student_label")
+  subject        Subject              @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  curriculum     SubjectCurriculum    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  parent         Topic?               @relation("TopicHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children       Topic[]              @relation("TopicHierarchy")
   examNodeTopics ExamNodeTopic[]
+  skillMappings  TopicSkill[]
   topicStats     UserTopicStats[]
-  createdAt      DateTime         @default(now()) @map("created_at")
-  updatedAt      DateTime         @updatedAt @map("updated_at")
+  studentRollups StudentTopicRollup[]
+  roadmapNodes   RoadmapNode[]
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
 
-  @@unique([subjectId, code])
-  @@unique([subjectId, slug])
-  @@unique([subjectId, parentId, name])
+  @@unique([curriculumId, code])
+  @@unique([curriculumId, slug])
+  @@unique([curriculumId, parentId, name])
   @@index([subjectId])
-  @@index([subjectId, displayOrder])
+  @@index([curriculumId])
+  @@index([curriculumId, displayOrder])
+  @@index([curriculumId, path])
   @@index([parentId])
   @@map("topics")
+}
+
+model SubjectRoadmap {
+  id           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  curriculumId String            @map("curriculum_id") @db.Uuid
+  code         String
+  title        String
+  description  String?           @db.Text
+  version      Int               @default(1)
+  isActive     Boolean           @default(true) @map("is_active")
+  curriculum   SubjectCurriculum @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  sections     RoadmapSection[]
+  nodes        RoadmapNode[]
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+
+  @@unique([curriculumId, code])
+  @@index([curriculumId, isActive])
+  @@map("subject_roadmaps")
+}
+
+model RoadmapSection {
+  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roadmapId   String         @map("roadmap_id") @db.Uuid
+  code        String
+  title       String
+  description String?        @db.Text
+  orderIndex  Int            @map("order_index")
+  roadmap     SubjectRoadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  nodes       RoadmapNode[]
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  @@unique([roadmapId, code])
+  @@unique([roadmapId, orderIndex])
+  @@index([roadmapId, orderIndex])
+  @@map("roadmap_sections")
+}
+
+model RoadmapNode {
+  id                               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  roadmapId                        String          @map("roadmap_id") @db.Uuid
+  sectionId                        String?         @map("section_id") @db.Uuid
+  topicId                          String          @map("topic_id") @db.Uuid
+  title                            String
+  description                      String?         @db.Text
+  orderIndex                       Int             @map("order_index")
+  parentRoadmapNodeId              String?         @map("parent_roadmap_node_id") @db.Uuid
+  recommendedPreviousRoadmapNodeId String?         @map("recommended_previous_roadmap_node_id") @db.Uuid
+  estimatedSessions                Int?            @map("estimated_sessions")
+  isOptional                       Boolean         @default(false) @map("is_optional")
+  roadmap                          SubjectRoadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  section                          RoadmapSection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  topic                            Topic           @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  parent                           RoadmapNode?    @relation("RoadmapNodeHierarchy", fields: [parentRoadmapNodeId], references: [id], onDelete: SetNull)
+  children                         RoadmapNode[]   @relation("RoadmapNodeHierarchy")
+  recommendedPrevious              RoadmapNode?    @relation("RoadmapNodeRecommendation", fields: [recommendedPreviousRoadmapNodeId], references: [id], onDelete: SetNull)
+  recommendedNext                  RoadmapNode[]   @relation("RoadmapNodeRecommendation")
+  createdAt                        DateTime        @default(now()) @map("created_at")
+  updatedAt                        DateTime        @updatedAt @map("updated_at")
+
+  @@unique([roadmapId, topicId])
+  @@unique([roadmapId, orderIndex])
+  @@index([sectionId])
+  @@index([topicId])
+  @@index([parentRoadmapNodeId])
+  @@index([recommendedPreviousRoadmapNodeId])
+  @@map("roadmap_nodes")
+}
+
+model Skill {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId      String               @map("subject_id") @db.Uuid
+  curriculumId   String               @map("curriculum_id") @db.Uuid
+  code           String
+  name           String
+  slug           String
+  description    String?              @db.Text
+  displayOrder   Int                  @default(0) @map("display_order")
+  isAssessable   Boolean              @default(true) @map("is_assessable")
+  subject        Subject              @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  curriculum     SubjectCurriculum    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  topicMappings  TopicSkill[]
+  nodeMappings   ExamNodeSkill[]
+  studentRollups StudentSkillRollup[]
+  createdAt      DateTime             @default(now()) @map("created_at")
+  updatedAt      DateTime             @updatedAt @map("updated_at")
+
+  @@unique([curriculumId, code])
+  @@unique([curriculumId, slug])
+  @@index([subjectId])
+  @@index([curriculumId])
+  @@index([curriculumId, displayOrder])
+  @@map("skills")
+}
+
+model TopicSkill {
+  topicId   String  @map("topic_id") @db.Uuid
+  skillId   String  @map("skill_id") @db.Uuid
+  weight    Decimal @default(1) @db.Decimal(4, 2)
+  isPrimary Boolean @default(false) @map("is_primary")
+  topic     Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([topicId, skillId])
+  @@index([skillId])
+  @@map("topic_skills")
 }
 
 model ExamNodeTopic {
@@ -361,44 +616,47 @@ model ExamNodeTopic {
   @@map("exam_node_topics")
 }
 
-model User {
-  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  clerkUserId      String?           @unique @map("clerk_user_id")
-  email            String            @unique
-  fullName         String?           @map("full_name")
-  passwordHash     String?           @map("password_hash")
-  role             UserRole          @default(USER)
-  subscriptionStatus SubscriptionStatus @default(FREE) @map("subscription_status")
-  streamFamilyId   String?           @map("stream_family_id") @db.Uuid
-  streamId         String?           @map("stream_id") @db.Uuid
-  streamFamily     StreamFamily?     @relation(fields: [streamFamilyId], references: [id], onDelete: SetNull)
-  stream           Stream?           @relation(fields: [streamId], references: [id], onDelete: SetNull)
-  authSessions     AuthSession[]
-  topicStats       UserTopicStats[]
-  uploadedMedia    Media[]           @relation("UserUploadedMedia")
-  practiceSessions PracticeSession[]
-  examActivities   ExamActivity[]
-  createdAt        DateTime          @default(now()) @map("created_at")
-  updatedAt        DateTime          @updatedAt @map("updated_at")
+model ExamNodeSkill {
+  nodeId     String              @map("node_id") @db.Uuid
+  skillId    String              @map("skill_id") @db.Uuid
+  weight     Decimal             @default(1) @db.Decimal(4, 2)
+  isPrimary  Boolean             @default(false) @map("is_primary")
+  source     ExamNodeSkillSource @default(TOPIC_DERIVED)
+  confidence Decimal?            @db.Decimal(4, 2)
+  reviewedAt DateTime?           @map("reviewed_at")
+  node       ExamNode            @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  skill      Skill               @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  createdAt  DateTime            @default(now()) @map("created_at")
+  updatedAt  DateTime            @updatedAt @map("updated_at")
 
-  @@index([streamFamilyId])
-  @@index([streamId])
-  @@map("users")
+  @@id([nodeId, skillId])
+  @@index([skillId])
+  @@index([source])
+  @@map("exam_node_skills")
 }
 
-model AuthSession {
-  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String    @map("user_id") @db.Uuid
-  expiresAt DateTime  @map("expires_at")
-  revokedAt DateTime? @map("revoked_at")
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
+model User {
+  id                 String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerkUserId        String?                  @unique @map("clerk_user_id")
+  email              String                   @unique
+  fullName           String?                  @map("full_name")
+  role               UserRole                 @default(USER)
+  subscriptionStatus SubscriptionStatus       @default(FREE) @map("subscription_status")
+  streamId           String?                  @map("stream_id") @db.Uuid
+  stream             Stream?                  @relation(fields: [streamId], references: [id], onDelete: SetNull)
+  topicStats         UserTopicStats[]
+  topicRollups       StudentTopicRollup[]
+  skillRollups       StudentSkillRollup[]
+  uploadedMedia      Media[]                  @relation("UserUploadedMedia")
+  studySessions      StudySession[]
+  examActivities     ExamActivity[]
+  exerciseStates     StudentExerciseState[]
+  reviewQueueItems   StudentReviewQueueItem[]
+  createdAt          DateTime                 @default(now()) @map("created_at")
+  updatedAt          DateTime                 @updatedAt @map("updated_at")
 
-  @@index([expiresAt])
-  @@index([userId, createdAt])
-  @@index([userId, revokedAt])
-  @@map("auth_sessions")
+  @@index([streamId])
+  @@map("users")
 }
 
 model Media {
@@ -540,37 +798,191 @@ model ExamActivity {
   @@map("exam_activities")
 }
 
-model PracticeSession {
-  id                     String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId                 String?                   @map("user_id") @db.Uuid
-  title                  String?
-  requestedExerciseCount Int                       @default(6) @map("requested_exercise_count")
-  filtersJson            Json?                     @map("filters_json")
-  progressJson           Json?                     @map("progress_json")
-  status                 PracticeSessionStatus     @default(CREATED)
-  user                   User?                     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  exercises              PracticeSessionExercise[]
-  createdAt              DateTime                  @default(now()) @map("created_at")
-  updatedAt              DateTime                  @updatedAt @map("updated_at")
+model StudentTopicRollup {
+  userId             String               @map("user_id") @db.Uuid
+  topicId            String               @map("topic_id") @db.Uuid
+  attemptedQuestions Int                  @default(0) @map("attempted_questions")
+  correctCount       Int                  @default(0) @map("correct_count")
+  incorrectCount     Int                  @default(0) @map("incorrect_count")
+  revealedCount      Int                  @default(0) @map("revealed_count")
+  skippedCount       Int                  @default(0) @map("skipped_count")
+  hardCount          Int                  @default(0) @map("hard_count")
+  missedCount        Int                  @default(0) @map("missed_count")
+  lastSeenAt         DateTime?            @map("last_seen_at")
+  weaknessScore      Decimal              @default(0) @map("weakness_score") @db.Decimal(8, 2)
+  masteryBucket      StudentMasteryBucket @default(NEW) @map("mastery_bucket")
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic              Topic                @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
 
-  @@index([userId, createdAt])
-  @@index([status, createdAt])
-  @@map("practice_sessions")
+  @@id([userId, topicId])
+  @@index([topicId])
+  @@index([userId, masteryBucket])
+  @@index([userId, weaknessScore])
+  @@index([userId, lastSeenAt])
+  @@map("student_topic_rollups")
 }
 
-model PracticeSessionExercise {
-  sessionId      String          @map("session_id") @db.Uuid
-  exerciseNodeId String          @map("exercise_node_id") @db.Uuid
-  examId         String?         @map("exam_id") @db.Uuid
-  orderIndex     Int             @map("order_index")
-  session        PracticeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  exerciseNode   ExamNode        @relation(fields: [exerciseNodeId], references: [id], onDelete: Cascade)
-  exam           Exam?           @relation(fields: [examId], references: [id], onDelete: SetNull)
-  createdAt      DateTime        @default(now()) @map("created_at")
+model StudentSkillRollup {
+  userId             String               @map("user_id") @db.Uuid
+  skillId            String               @map("skill_id") @db.Uuid
+  attemptedQuestions Int                  @default(0) @map("attempted_questions")
+  correctCount       Int                  @default(0) @map("correct_count")
+  incorrectCount     Int                  @default(0) @map("incorrect_count")
+  revealedCount      Int                  @default(0) @map("revealed_count")
+  skippedCount       Int                  @default(0) @map("skipped_count")
+  hardCount          Int                  @default(0) @map("hard_count")
+  missedCount        Int                  @default(0) @map("missed_count")
+  lastSeenAt         DateTime?            @map("last_seen_at")
+  weaknessScore      Decimal              @default(0) @map("weakness_score") @db.Decimal(8, 2)
+  masteryBucket      StudentMasteryBucket @default(NEW) @map("mastery_bucket")
+  user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill              Skill                @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  createdAt          DateTime             @default(now()) @map("created_at")
+  updatedAt          DateTime             @updatedAt @map("updated_at")
 
-  @@id([sessionId, exerciseNodeId])
+  @@id([userId, skillId])
+  @@index([skillId])
+  @@index([userId, masteryBucket])
+  @@index([userId, weaknessScore])
+  @@index([userId, lastSeenAt])
+  @@map("student_skill_rollups")
+}
+
+model StudentExerciseState {
+  userId         String    @map("user_id") @db.Uuid
+  exerciseNodeId String    @map("exercise_node_id") @db.Uuid
+  bookmarkedAt   DateTime? @map("bookmarked_at")
+  flaggedAt      DateTime? @map("flagged_at")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseNode   ExamNode  @relation(fields: [exerciseNodeId], references: [id], onDelete: Cascade)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@id([userId, exerciseNodeId])
+  @@index([exerciseNodeId])
+  @@index([userId, updatedAt])
+  @@index([userId, flaggedAt])
+  @@index([userId, bookmarkedAt])
+  @@map("student_exercise_states")
+}
+
+model StudentReviewQueueItem {
+  id                String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String                     @map("user_id") @db.Uuid
+  identityKey       String                     @map("identity_key")
+  questionNodeId    String?                    @map("question_node_id") @db.Uuid
+  exerciseNodeId    String                     @map("exercise_node_id") @db.Uuid
+  reasonType        StudyReviewQueueReasonType @map("reason_type")
+  status            StudyReviewQueueStatus     @default(OPEN)
+  dueAt             DateTime?                  @map("due_at")
+  successStreak     Int                        @default(0) @map("success_streak")
+  lastReviewedAt    DateTime?                  @map("last_reviewed_at")
+  lastReviewOutcome StudyReviewOutcome?        @map("last_review_outcome")
+  priorityScore     Decimal                    @default(0) @map("priority_score") @db.Decimal(8, 2)
+  user              User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionNode      ExamNode?                  @relation("StudyReviewQueueQuestionNode", fields: [questionNodeId], references: [id], onDelete: Cascade)
+  exerciseNode      ExamNode                   @relation("StudyReviewQueueExerciseNode", fields: [exerciseNodeId], references: [id], onDelete: Cascade)
+  createdAt         DateTime                   @default(now()) @map("created_at")
+  lastPromotedAt    DateTime                   @map("last_promoted_at")
+  statusUpdatedAt   DateTime                   @default(now()) @map("status_updated_at")
+  updatedAt         DateTime                   @updatedAt @map("updated_at")
+
+  @@unique([userId, identityKey])
+  @@index([questionNodeId])
+  @@index([exerciseNodeId])
+  @@index([userId, priorityScore])
+  @@index([userId, lastPromotedAt])
+  @@index([userId, status, priorityScore])
+  @@index([userId, status, lastPromotedAt])
+  @@index([userId, status, dueAt])
+  @@map("student_review_queue_items")
+}
+
+model StudySession {
+  id                     String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                 String?                @map("user_id") @db.Uuid
+  title                  String?
+  family                 StudySessionFamily     @default(DRILL)
+  kind                   StudySessionKind       @default(MIXED_DRILL)
+  sourceExamId           String?                @map("source_exam_id") @db.Uuid
+  requestedExerciseCount Int                    @default(6) @map("requested_exercise_count")
+  durationMinutes        Int?                   @map("duration_minutes")
+  timingEnabled          Boolean                @default(false) @map("timing_enabled")
+  filtersJson            Json?                  @map("filters_json")
+  resumeMode             StudySessionResumeMode @default(SOLVE) @map("resume_mode")
+  status                 StudySessionStatus     @default(CREATED)
+  startedAt              DateTime?              @map("started_at")
+  deadlineAt             DateTime?              @map("deadline_at")
+  submittedAt            DateTime?              @map("submitted_at")
+  completedAt            DateTime?              @map("completed_at")
+  lastInteractedAt       DateTime?              @map("last_interacted_at")
+  activeExerciseNodeId   String?                @map("active_exercise_node_id") @db.Uuid
+  activeQuestionNodeId   String?                @map("active_question_node_id") @db.Uuid
+  user                   User?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceExam             Exam?                  @relation("StudySessionSourceExam", fields: [sourceExamId], references: [id], onDelete: SetNull)
+  exercises              StudySessionExercise[]
+  createdAt              DateTime               @default(now()) @map("created_at")
+  updatedAt              DateTime               @updatedAt @map("updated_at")
+
+  @@index([userId, createdAt])
+  @@index([userId, family, createdAt])
+  @@index([userId, lastInteractedAt])
+  @@index([sourceExamId])
+  @@index([status, createdAt])
+  @@map("study_sessions")
+}
+
+model StudySessionExercise {
+  id               String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId        String                 @map("session_id") @db.Uuid
+  exerciseNodeId   String                 @map("exercise_node_id") @db.Uuid
+  examId           String?                @map("exam_id") @db.Uuid
+  orderIndex       Int                    @map("order_index")
+  firstOpenedAt    DateTime?              @map("first_opened_at")
+  lastInteractedAt DateTime?              @map("last_interacted_at")
+  completedAt      DateTime?              @map("completed_at")
+  session          StudySession           @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exerciseNode     ExamNode               @relation(fields: [exerciseNodeId], references: [id], onDelete: Cascade)
+  exam             Exam?                  @relation(fields: [examId], references: [id], onDelete: SetNull)
+  sessionQuestions StudySessionQuestion[]
+  createdAt        DateTime               @default(now()) @map("created_at")
+  updatedAt        DateTime               @updatedAt @map("updated_at")
+
+  @@unique([sessionId, exerciseNodeId])
   @@unique([sessionId, orderIndex])
   @@index([exerciseNodeId])
   @@index([examId])
-  @@map("practice_session_exercises")
+  @@map("study_session_exercises")
+}
+
+model StudySessionQuestion {
+  id                String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionExerciseId String                      @map("session_exercise_id") @db.Uuid
+  questionNodeId    String                      @map("question_node_id") @db.Uuid
+  sequenceIndex     Int                         @map("sequence_index")
+  answerState       StudyQuestionAnswerState    @default(UNSEEN) @map("answer_state")
+  resultStatus      StudyQuestionResultStatus   @default(UNKNOWN) @map("result_status")
+  evaluationMode    StudyQuestionEvaluationMode @default(UNGRADED) @map("evaluation_mode")
+  firstOpenedAt     DateTime?                   @map("first_opened_at")
+  lastInteractedAt  DateTime?                   @map("last_interacted_at")
+  completedAt       DateTime?                   @map("completed_at")
+  skippedAt         DateTime?                   @map("skipped_at")
+  solutionViewedAt  DateTime?                   @map("solution_viewed_at")
+  timeSpentSeconds  Int                         @default(0) @map("time_spent_seconds")
+  revealCount       Int                         @default(0) @map("reveal_count")
+  reflection        StudyQuestionReflection?
+  diagnosis         StudyQuestionDiagnosis?
+  answerPayloadJson Json?                       @map("answer_payload_json")
+  finalizedAt       DateTime?                   @map("finalized_at")
+  sessionExercise   StudySessionExercise        @relation(fields: [sessionExerciseId], references: [id], onDelete: Cascade)
+  questionNode      ExamNode                    @relation(fields: [questionNodeId], references: [id], onDelete: Cascade)
+  createdAt         DateTime                    @default(now()) @map("created_at")
+  updatedAt         DateTime                    @updatedAt @map("updated_at")
+
+  @@unique([sessionExerciseId, questionNodeId])
+  @@unique([sessionExerciseId, sequenceIndex])
+  @@index([questionNodeId])
+  @@map("study_session_questions")
 }

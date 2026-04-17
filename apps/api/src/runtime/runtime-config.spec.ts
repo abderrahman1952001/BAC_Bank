@@ -1,10 +1,8 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import {
   buildRequestOriginFromHeaders,
   DEFAULT_DEV_CORS_ORIGINS,
   extractRequestSourceOrigin,
   isTrustedRequestOrigin,
-  resolveAuthSessionSecret,
   resolveBooleanFlag,
   resolveCorsOrigins,
   resolvePositiveInteger,
@@ -96,46 +94,6 @@ describe('runtime config helpers', () => {
           forwardedProto: 'https',
         }),
       ).toBe('https://api.bacbank.example');
-    });
-  });
-
-  describe('resolveAuthSessionSecret', () => {
-    it('prefers AUTH_SESSION_SECRET when provided', () => {
-      expect(
-        resolveAuthSessionSecret({
-          nodeEnv: 'development',
-          authSessionSecret: 'dev-secret',
-          legacyJwtSecret: 'legacy-secret',
-        }),
-      ).toBe('dev-secret');
-    });
-
-    it('falls back to the legacy JWT secret when needed', () => {
-      expect(
-        resolveAuthSessionSecret({
-          nodeEnv: 'development',
-          authSessionSecret: '   ',
-          legacyJwtSecret: 'legacy-secret',
-        }),
-      ).toBe('legacy-secret');
-    });
-
-    it('rejects placeholder secrets in production', () => {
-      expect(() =>
-        resolveAuthSessionSecret({
-          nodeEnv: 'production',
-          authSessionSecret: 'change_this_auth_session_secret',
-        }),
-      ).toThrow(InternalServerErrorException);
-    });
-
-    it('rejects short secrets in production', () => {
-      expect(() =>
-        resolveAuthSessionSecret({
-          nodeEnv: 'production',
-          authSessionSecret: 'short-secret',
-        }),
-      ).toThrow('AUTH_SESSION_SECRET must be at least 32 characters');
     });
   });
 

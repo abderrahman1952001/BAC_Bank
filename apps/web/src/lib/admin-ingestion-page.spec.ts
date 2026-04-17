@@ -36,6 +36,7 @@ function createJobSummary(
       awaiting_correction: false,
       can_process: true,
       review_started: false,
+      active_operation: "idle",
     },
     published_paper_id: null,
     published_exams: [],
@@ -109,6 +110,7 @@ describe("admin ingestion page helpers", () => {
         awaiting_correction: false,
         can_process: true,
         review_started: false,
+        active_operation: "idle",
       },
       documents: [
         {
@@ -211,6 +213,7 @@ describe("admin ingestion page helpers", () => {
           awaiting_correction: true,
           can_process: false,
           review_started: false,
+          active_operation: "idle",
         },
       }),
       createJobSummary({
@@ -221,12 +224,20 @@ describe("admin ingestion page helpers", () => {
         subject_code: "PHYSICS",
         status: "queued",
       }),
+      createJobSummary({
+        id: "job-3",
+        label: "BAC 2023 SVT SE",
+        year: 2023,
+        subject_code: "NATURAL_SCIENCES",
+        status: "published",
+      }),
     ];
 
     expect(buildStatusCounts(jobs)).toMatchObject({
-      all: 2,
+      all: 3,
       draft: 1,
       queued: 1,
+      published: 1,
     });
     expect(
       filterJobs({
@@ -249,7 +260,7 @@ describe("admin ingestion page helpers", () => {
         jobs: [
           ...jobs,
           createJobSummary({
-            id: "job-3",
+            id: "job-4",
             draft_kind: "revision",
             label: "Revision draft",
           }),
@@ -258,7 +269,7 @@ describe("admin ingestion page helpers", () => {
         statusFilter: "all",
         draftKindFilter: "revision",
       }).map((job) => job.id),
-    ).toEqual(["job-3"]);
+    ).toEqual(["job-4"]);
   });
 
   it("builds grouped status sections with scoped stream and year filters", () => {
@@ -291,6 +302,12 @@ describe("admin ingestion page helpers", () => {
         status: "approved",
         year: 2025,
       }),
+      createJobSummary({
+        id: "job-published",
+        label: "Published",
+        status: "published",
+        year: 2024,
+      }),
     ];
 
     const grouped = buildGroupedStatuses({
@@ -304,7 +321,11 @@ describe("admin ingestion page helpers", () => {
       },
     });
 
-    expect(grouped.map((group) => group.status)).toEqual(["draft", "approved"]);
+    expect(grouped.map((group) => group.status)).toEqual([
+      "draft",
+      "approved",
+      "published",
+    ]);
     expect(grouped[0]?.availableStreamGroups).toEqual([
       {
         streamKey: "SE",
@@ -352,6 +373,7 @@ describe("admin ingestion page helpers", () => {
             awaiting_correction: true,
             can_process: false,
             review_started: false,
+            active_operation: "idle",
           },
         }),
         processingJobId: null,
@@ -371,6 +393,7 @@ describe("admin ingestion page helpers", () => {
             awaiting_correction: false,
             can_process: true,
             review_started: true,
+            active_operation: "idle",
           },
         }),
         processingJobId: "job-processing",
@@ -390,6 +413,7 @@ describe("admin ingestion page helpers", () => {
             awaiting_correction: false,
             can_process: true,
             review_started: true,
+            active_operation: "idle",
           },
         }),
         processingJobId: null,
@@ -410,6 +434,7 @@ describe("admin ingestion page helpers", () => {
             awaiting_correction: false,
             can_process: true,
             review_started: false,
+            active_operation: "idle",
           },
         }),
         processingJobId: null,
@@ -430,6 +455,7 @@ describe("admin ingestion page helpers", () => {
             awaiting_correction: false,
             can_process: true,
             review_started: false,
+            active_operation: "idle",
           },
         }),
         processingJobId: null,
@@ -437,6 +463,27 @@ describe("admin ingestion page helpers", () => {
     ).toEqual({
       disabled: false,
       label: "Re-run extraction",
+    });
+
+    expect(
+      buildProcessJobActionState({
+        job: createJobSummary({
+          id: "job-publish",
+          status: "processing",
+          workflow: {
+            has_exam_document: true,
+            has_correction_document: true,
+            awaiting_correction: false,
+            can_process: false,
+            review_started: true,
+            active_operation: "publishing",
+          },
+        }),
+        processingJobId: null,
+      }),
+    ).toEqual({
+      disabled: true,
+      label: "Publishing…",
     });
   });
 });

@@ -1,4 +1,8 @@
-import { formatSessionType, type PracticeSessionResponse } from "@/lib/qbank";
+import {
+  formatStudySessionKind,
+  formatSessionType,
+  type StudySessionResponse,
+} from "@/lib/study-api";
 import {
   buildEmptyStudyProgress,
   chooseFreshestStudyProgress,
@@ -16,6 +20,7 @@ import {
   type StudyExerciseModel,
   type StudyQuestionModel,
 } from "@/lib/study-surface";
+import { formatStudyDuration } from "@/lib/study-time";
 
 export type SessionQuestionRef = {
   exerciseId: string;
@@ -39,6 +44,9 @@ export type SessionPlayerViewModel = {
   activeQuestionState: StudyQuestionState | undefined;
   solutionVisible: boolean;
   canRevealSolution: boolean;
+  requiresReflection: boolean;
+  isActiveSimulation: boolean;
+  canToggleMode: boolean;
   isLastQuestion: boolean;
   progressPercent: number;
   activeExerciseTopics: Array<{ code: string; name: string }>;
@@ -46,8 +54,24 @@ export type SessionPlayerViewModel = {
   navigatorExercises: ReturnType<typeof buildSessionNavigatorExercises>;
   questionStatePresentation: ReturnType<typeof buildQuestionStatePresentation>;
   primaryActionLabel: string;
+  primaryActionDisabled: boolean;
   questionMotionClass: string;
   questionMotionLocked: boolean;
+};
+
+export type ExerciseCheckpointSummary = {
+  exerciseId: string;
+  title: string;
+  totalTimeSeconds: number;
+  counts: {
+    totalCount: number;
+    completedCount: number;
+    skippedCount: number;
+    solutionViewedCount: number;
+    missedCount: number;
+    hardCount: number;
+  };
+  insights: string[];
 };
 
 export function buildSessionQuestionRefs(
@@ -65,7 +89,7 @@ export function resolveSessionPlayerProgress(input: {
   exercises: StudyExerciseModel[];
   localProgress: StudyProgressSnapshot | null | undefined;
   remoteProgress:
-    | PracticeSessionResponse["progress"]
+    | StudySessionResponse["progress"]
     | StudyProgressSnapshot
     | null
     | undefined;
@@ -91,11 +115,29 @@ export function resolveSessionPlayerProgress(input: {
   const activeExercise =
     input.exercises.find((exercise) => exercise.id === activeExerciseId) ??
     firstExercise;
-  const activeQuestionId = activeExercise.questions.some(
+  const requestedActiveQuestionId = activeExercise.questions.some(
     (question) => question.id === mergedProgress.activeQuestionId,
   )
     ? mergedProgress.activeQuestionId
     : (activeExercise.questions[0]?.id ?? firstQuestionId);
+  const allQuestionIds = buildSessionQuestionRefs(input.exercises).map(
+    (item) => item.questionId,
+  );
+  const firstUnansweredQuestionId =
+    mergedProgress.mode === "SOLVE"
+      ? getFirstUnansweredQuestionId(allQuestionIds, mergedProgress.questionStates)
+      : null;
+  const requestedActiveQuestionState = requestedActiveQuestionId
+    ? mergedProgress.questionStates[requestedActiveQuestionId]
+    : undefined;
+  const activeQuestionId =
+    requestedActiveQuestionId &&
+    requestedActiveQuestionState &&
+    (requestedActiveQuestionState.completed ||
+      requestedActiveQuestionState.skipped) &&
+    firstUnansweredQuestionId
+      ? firstUnansweredQuestionId
+      : requestedActiveQuestionId;
 
   return {
     ...mergedProgress,
@@ -136,7 +178,7 @@ export function buildSessionProgressUpdateRequest(
 }
 
 export function buildSessionMeta(
-  session: PracticeSessionResponse | null,
+  session: StudySessionResponse | null,
 ): Array<{ label: string; value: string }> {
   if (!session?.exercises.length) {
     return [];
@@ -149,8 +191,8 @@ export function buildSessionMeta(
   const yearValues = Array.from(
     new Set(session.exercises.map((exercise) => exercise.exam.year)),
   ).sort((a, b) => b - a);
-
-  return [
+  const meta = [
+    { label: "النمط", value: formatStudySessionKind(session.kind) },
     { label: "المادة", value: firstExercise.exam.subject.name },
     {
       label: "الشعب",
@@ -163,15 +205,32 @@ export function buildSessionMeta(
           ? `${yearValues[yearValues.length - 1]} - ${yearValues[0]}`
           : String(yearValues[0]),
     },
-    { label: "الحفظ", value: "تلقائي" },
   ];
+
+  if (session.durationMinutes) {
+    meta.push({ label: "المدة", value: `${session.durationMinutes} دقيقة` });
+  }
+
+  if (session.timingEnabled) {
+    meta.push({ label: "الوقت النشط", value: "مفعل" });
+  }
+
+  meta.push({ label: "الحفظ", value: "تلقائي" });
+
+  return meta;
 }
 
 export function buildSessionGoalSummary(
-  session: PracticeSessionResponse | null,
+  session: StudySessionResponse | null,
 ): string {
+  if (session?.family === "SIMULATION") {
+    return session.durationMinutes
+      ? `محاكاة رسمية كاملة بزمن محدد قدره ${session.durationMinutes} دقيقة.`
+      : "محاكاة رسمية كاملة بزمن محدد.";
+  }
+
   if (!session?.filters) {
-    return "جلسة تدريب مخصصة من مجموعة تمارين مطابقة لنفس الهدف.";
+    return "جلسة تدريب مبنية من تمارين مطابقة لنفس الهدف.";
   }
 
   const parts: string[] = [];
@@ -278,8 +337,82 @@ export function buildSessionNavigatorExercises(input: {
   });
 }
 
+export function buildExerciseCheckpointSummary(input: {
+  exercise: StudyExerciseModel;
+  questionStates: Record<string, StudyQuestionState>;
+  timingEnabled: boolean;
+}) : ExerciseCheckpointSummary {
+  const questionIds = input.exercise.questions.map((question) => question.id);
+  const counts = countStudyProgress(questionIds, input.questionStates);
+  const totalTimeSeconds = questionIds.reduce(
+    (total, questionId) => total + (input.questionStates[questionId]?.timeSpentSeconds ?? 0),
+    0,
+  );
+  const longestQuestion = input.exercise.questions.reduce<StudyQuestionModel | null>(
+    (current, question) => {
+      if (!current) {
+        return question;
+      }
+
+      const currentDuration =
+        input.questionStates[current.id]?.timeSpentSeconds ?? 0;
+      const nextDuration = input.questionStates[question.id]?.timeSpentSeconds ?? 0;
+
+      return nextDuration > currentDuration ? question : current;
+    },
+    null,
+  );
+  const missedCount = questionIds.filter(
+    (questionId) => input.questionStates[questionId]?.reflection === "MISSED",
+  ).length;
+  const hardCount = questionIds.filter(
+    (questionId) => input.questionStates[questionId]?.reflection === "HARD",
+  ).length;
+  const insights: string[] = [];
+
+  if (missedCount > 0) {
+    insights.push(`ما زال ${missedCount} سؤال يحتاج علاجاً مباشراً داخل هذا التمرين.`);
+  } else if (hardCount > 0) {
+    insights.push(`أنهيت التمرين لكن ${hardCount} سؤال بقي في خانة الصعب.`);
+  } else if (counts.solutionViewedCount > 0) {
+    insights.push(
+      `اعتمدت على الحل الرسمي في ${counts.solutionViewedCount} سؤال من هذا التمرين.`,
+    );
+  } else {
+    insights.push("أنهيت هذا التمرين بسلاسة جيدة.");
+  }
+
+  if (
+    input.timingEnabled &&
+    totalTimeSeconds > 0 &&
+    longestQuestion &&
+    (input.questionStates[longestQuestion.id]?.timeSpentSeconds ?? 0) > 0
+  ) {
+    insights.push(
+      `أطول توقف كان عند ${longestQuestion.label} (${formatStudyDuration(
+        input.questionStates[longestQuestion.id]?.timeSpentSeconds ?? 0,
+      )}).`,
+    );
+  }
+
+  return {
+    exerciseId: input.exercise.id,
+    title: `التمرين ${input.exercise.displayOrder}`,
+    totalTimeSeconds,
+    counts: {
+      totalCount: counts.totalCount,
+      completedCount: counts.completedCount,
+      skippedCount: counts.skippedCount,
+      solutionViewedCount: counts.solutionViewedCount,
+      missedCount,
+      hardCount,
+    },
+    insights,
+  };
+}
+
 export function buildSessionPlayerViewModel(input: {
-  session: PracticeSessionResponse | null;
+  session: StudySessionResponse | null;
   exercises: StudyExerciseModel[];
   progress: StudyProgressSnapshot;
   questionMotion: QuestionMotionState | null;
@@ -309,10 +442,21 @@ export function buildSessionPlayerViewModel(input: {
   const activeQuestionState = activeQuestion
     ? input.progress.questionStates[activeQuestion.id]
     : undefined;
+  const isActiveSimulation =
+    input.session?.family === "SIMULATION" &&
+    input.session.status !== "COMPLETED" &&
+    input.session.status !== "EXPIRED" &&
+    input.progress.mode !== "REVIEW";
   const solutionVisible =
     Boolean(activeQuestionState?.solutionViewed) ||
     input.progress.mode === "REVIEW";
-  const canRevealSolution = canRevealStudyQuestionSolution(activeQuestion);
+  const canRevealSolution =
+    !isActiveSimulation && canRevealStudyQuestionSolution(activeQuestion);
+  const requiresReflection =
+    input.session?.family === "DRILL" &&
+    input.progress.mode !== "REVIEW" &&
+    solutionVisible &&
+    activeQuestionState?.reflection == null;
   const isLastQuestion =
     progressCounts.totalCount > 0 &&
     currentQuestionPosition === progressCounts.totalCount;
@@ -330,8 +474,10 @@ export function buildSessionPlayerViewModel(input: {
     solutionVisible,
   });
   const primaryActionLabel = buildPrimaryActionLabel({
+    isActiveSimulation,
     solutionVisible,
     canRevealSolution,
+    requiresReflection,
     isLastQuestion,
   });
   const questionMotionClass = input.questionMotion
@@ -354,6 +500,9 @@ export function buildSessionPlayerViewModel(input: {
     activeQuestionState,
     solutionVisible,
     canRevealSolution,
+    requiresReflection,
+    isActiveSimulation,
+    canToggleMode: input.session?.family !== "SIMULATION",
     isLastQuestion,
     progressPercent,
     activeExerciseTopics,
@@ -361,6 +510,7 @@ export function buildSessionPlayerViewModel(input: {
     navigatorExercises,
     questionStatePresentation,
     primaryActionLabel,
+    primaryActionDisabled: requiresReflection,
     questionMotionClass,
     questionMotionLocked: Boolean(input.questionMotion),
   };
@@ -380,12 +530,22 @@ export function buildQuestionStatePresentation(input: {
 }
 
 export function buildPrimaryActionLabel(input: {
+  isActiveSimulation: boolean;
   solutionVisible: boolean;
   canRevealSolution: boolean;
+  requiresReflection: boolean;
   isLastQuestion: boolean;
 }) {
+  if (input.requiresReflection) {
+    return "اختر تقييمك";
+  }
+
+  if (input.isActiveSimulation) {
+    return input.isLastQuestion ? "سلّم المحاكاة" : "السؤال التالي";
+  }
+
   return !input.solutionVisible && input.canRevealSolution
-    ? "الحل"
+    ? "الحل الرسمي"
     : input.isLastQuestion
       ? "إنهاء الجلسة"
       : !input.solutionVisible && !input.canRevealSolution

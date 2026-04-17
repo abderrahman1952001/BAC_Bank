@@ -97,6 +97,7 @@ export function AdminIngestionReviewPage({
     awaiting_correction: false,
     can_process: false,
     review_started: false,
+    active_operation: "idle",
   };
   const formattedLastSavedAt = useMemo(
     () => formatAutosaveTimestamp(lastSavedAt),
@@ -160,6 +161,7 @@ export function AdminIngestionReviewPage({
 
   const reviewActionState = buildReviewActionState({
     job: data.job,
+    workflow,
     saving,
     autosaving,
     autosaveError,

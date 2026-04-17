@@ -16,7 +16,7 @@ import {
   formatSessionType,
   type SessionPreviewResponse,
   type SessionType,
-} from "@/lib/qbank";
+} from "@/lib/study-api";
 import {
   countSelectableTopics,
   type TopicTreeNode,
@@ -96,15 +96,20 @@ type SessionBuilderReviewStepProps = {
   maxExerciseCount: number;
   advancedOpen: boolean;
   title: string;
+  timingEnabled: boolean;
   previewLoading: boolean;
   preview: SessionPreviewResponse | null;
   selectedYears: number[];
   planText: string;
+  sessionKindLabel: string;
   zeroResultsGuidance: BuilderZeroResultsGuidance | null;
+  startBlocked: boolean;
+  startBlockedMessage: string | null;
   creating: boolean;
   onBack: () => void;
   onReturnToYears: () => void;
   onSelectExerciseCount: (count: number) => void;
+  onSetTimingEnabled: (enabled: boolean) => void;
   onToggleAdvanced: () => void;
   onTitleChange: (title: string) => void;
   onZeroResultsAction: () => void;
@@ -557,15 +562,20 @@ export function SessionBuilderReviewStep({
   maxExerciseCount,
   advancedOpen,
   title,
+  timingEnabled,
   previewLoading,
   preview,
   selectedYears,
   planText,
+  sessionKindLabel,
   zeroResultsGuidance,
+  startBlocked,
+  startBlockedMessage,
   creating,
   onBack,
   onReturnToYears,
   onSelectExerciseCount,
+  onSetTimingEnabled,
   onToggleAdvanced,
   onTitleChange,
   onZeroResultsAction,
@@ -587,6 +597,7 @@ export function SessionBuilderReviewStep({
         {selectedSubject ? <span>{selectedSubject.name}</span> : null}
         {topicSelectionComplete ? <span>{selectedTopicLabel}</span> : null}
         {builderReadyToPreview ? <span>{selectedYearsLabel}</span> : null}
+        <span>{sessionKindLabel}</span>
       </div>
 
       <div className="builder-size-grid">
@@ -622,7 +633,7 @@ export function SessionBuilderReviewStep({
             <div className="builder-subsection">
               <h3>عدد مخصص</h3>
               <div className="chip-grid">
-                {[4, 6, 8, 10, 12].map((count) => (
+                {[1, 2, 3, 4, 6].map((count) => (
                   <button
                     key={count}
                     type="button"
@@ -656,6 +667,27 @@ export function SessionBuilderReviewStep({
         ) : null}
       </section>
 
+      <section className="builder-preview-card">
+        <h3>تحليل الوقت</h3>
+        <p>اختياري. عند التفعيل سنعرض لك ملاحظات وصفية قصيرة بعد كل تمرين.</p>
+        <div className="chip-grid">
+          <button
+            type="button"
+            className={timingEnabled ? "choice-chip active" : "choice-chip"}
+            onClick={() => onSetTimingEnabled(true)}
+          >
+            فعّل التتبع
+          </button>
+          <button
+            type="button"
+            className={!timingEnabled ? "choice-chip active" : "choice-chip"}
+            onClick={() => onSetTimingEnabled(false)}
+          >
+            بدون تتبع
+          </button>
+        </div>
+      </section>
+
       {previewLoading && !preview ? (
         <section className="builder-assembling-state">
           <span className="builder-loading-orb" aria-hidden="true" />
@@ -679,6 +711,13 @@ export function SessionBuilderReviewStep({
               {zeroResultsGuidance.actionLabel}
             </button>
           ) : null}
+        </section>
+      ) : null}
+
+      {startBlocked && startBlockedMessage ? (
+        <section className="builder-wizard-alert" role="status">
+          <h3>البدء غير متاح حالياً</h3>
+          <p>{startBlockedMessage}</p>
         </section>
       ) : null}
 
@@ -707,6 +746,7 @@ export function SessionBuilderReviewStep({
             <>
               <section className="builder-preview-card builder-preview-summary-card">
                 <h3>الخطة</h3>
+                <p>{sessionKindLabel}</p>
                 <p>{planText}</p>
               </section>
 
@@ -778,6 +818,7 @@ export function SessionBuilderReviewStep({
           onClick={onCreateSession}
           disabled={
             !builderReadyToPreview ||
+            startBlocked ||
             creating ||
             previewLoading ||
             !preview?.matchingExerciseCount

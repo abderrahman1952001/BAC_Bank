@@ -4,7 +4,7 @@ import {
   buildStudyExercisesFromSessionExercises,
   canRevealStudyQuestionSolution,
 } from "./study-surface";
-import type { ExamResponse, PracticeSessionResponse } from "./qbank";
+import type { ExamResponse, StudySessionResponse } from "./study-api";
 
 describe("study surface helpers", () => {
   it("builds study exercises from exam hierarchy data", () => {
@@ -152,6 +152,7 @@ describe("study surface helpers", () => {
     expect(exercise.displayOrder).toBe(2);
     expect(exercise.totalPoints).toBe(8);
     expect(exercise.contextBlocks).toHaveLength(2);
+    expect(exercise.hierarchyNode?.id).toBe("exercise-1");
     expect(exercise.questions).toHaveLength(2);
     expect(exercise.questions[0]?.label).toBe("السؤال 1");
     expect(exercise.questions[0]?.topics.map((topic) => topic.code)).toEqual([
@@ -202,11 +203,12 @@ describe("study surface helpers", () => {
           },
         },
       },
-    ] satisfies PracticeSessionResponse["exercises"];
+    ] satisfies StudySessionResponse["exercises"];
 
     const [exercise] = buildStudyExercisesFromSessionExercises(sessionExercises);
 
     expect(exercise.displayOrder).toBe(4);
+    expect(exercise.hierarchyNode).toBeNull();
     expect(exercise.questions[0]?.label).toBe("Q1");
     expect(canRevealStudyQuestionSolution(exercise.questions[0])).toBe(false);
   });

@@ -8,9 +8,9 @@ import {
   findSelectedAdminLibrarySujet,
   resolveAdminLibraryInitialSelection,
 } from "@/lib/admin-library";
-import type { ExamResponse } from "@/lib/qbank";
+import type { ExamResponse } from "@/lib/study-api";
 import { fetchServerAdminIngestionJobs } from "@/lib/server-admin";
-import { fetchServerCatalog, fetchServerExam } from "@/lib/server-qbank";
+import { fetchServerCatalog, fetchServerExam } from "@/lib/server-study-api";
 
 type AdminLibraryRouteProps = {
   searchParams: Promise<{

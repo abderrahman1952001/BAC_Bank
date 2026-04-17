@@ -53,24 +53,27 @@ export function AdminDraftsPage({ initialJobs }: AdminDraftsPageProps) {
     setError(initialJobs ? null : "Failed to load drafts.");
   }, [initialJobs]);
 
-  const activeDrafts = useMemo(
-    () => jobs.filter((job) => job.status !== "published"),
-    [jobs],
-  );
+  useEffect(() => {
+    if (initialJobs) {
+      return;
+    }
+
+    void refreshJobs(true);
+  }, [initialJobs]);
 
   const hasActiveProcessingJobs = useMemo(
     () =>
-      activeDrafts.some(
+      jobs.some(
         (job) => job.status === "queued" || job.status === "processing",
       ),
-    [activeDrafts],
+    [jobs],
   );
   const processingCount = useMemo(
     () =>
-      activeDrafts.filter(
+      jobs.filter(
         (job) => job.status === "queued" || job.status === "processing",
       ).length,
-    [activeDrafts],
+    [jobs],
   );
 
   useEffect(() => {
@@ -88,29 +91,43 @@ export function AdminDraftsPage({ initialJobs }: AdminDraftsPageProps) {
   }, [hasActiveProcessingJobs]);
 
   useEffect(() => {
-    if (statusFilter === "published") {
-      setStatusFilter("all");
+    function handleWindowFocus() {
+      void refreshJobs();
     }
-  }, [statusFilter]);
+
+    function handleVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        void refreshJobs();
+      }
+    }
+
+    window.addEventListener("focus", handleWindowFocus);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("focus", handleWindowFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const draftKindCounts = useMemo(
-    () => buildDraftKindCounts(activeDrafts),
-    [activeDrafts],
+    () => buildDraftKindCounts(jobs),
+    [jobs],
   );
   const statusCounts = useMemo(
-    () => buildStatusCounts(activeDrafts),
-    [activeDrafts],
+    () => buildStatusCounts(jobs),
+    [jobs],
   );
 
   const filteredJobs = useMemo(
     () =>
       filterJobs({
-        jobs: activeDrafts,
+        jobs,
         jobQuery,
         statusFilter,
         draftKindFilter,
       }),
-    [activeDrafts, draftKindFilter, jobQuery, statusFilter],
+    [draftKindFilter, jobQuery, jobs, statusFilter],
   );
 
   const groupedStatuses = useMemo(
@@ -227,7 +244,10 @@ export function AdminDraftsPage({ initialJobs }: AdminDraftsPageProps) {
           <h1>Drafts</h1>
           <div className="admin-page-meta-row">
             <span className="admin-page-meta-pill">
-              <strong>{activeDrafts.length}</strong> active
+              <strong>{jobs.length}</strong> total
+            </span>
+            <span className="admin-page-meta-pill">
+              <strong>{statusCounts.published}</strong> published
             </span>
             <span className="admin-page-meta-pill">
               <strong>{draftKindCounts.ingestion}</strong> ingestion

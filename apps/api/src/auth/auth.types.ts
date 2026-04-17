@@ -5,7 +5,6 @@ export type AuthenticatedUser = {
   id: string;
   email: string;
   role: UserRole;
-  sessionId: string | null;
 };
 
 export type AuthenticatedRequest = FastifyRequest & {

@@ -67,6 +67,7 @@ function createPayload(): AdminIngestionJobResponse {
       awaiting_correction: false,
       can_process: true,
       review_started: false,
+      active_operation: "idle",
     },
     documents: [],
     draft_json: createDraft(),

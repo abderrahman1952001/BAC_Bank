@@ -1,0 +1,24 @@
+Extract the attached BAC exam and correction into structured JSON for ingestion.
+Current label: {{label}}
+Known year: {{year}}
+Current inferred stream code: {{streamCode}}
+Current inferred subject code: {{subjectCode}}
+Current session type: {{sessionType}}
+Current title: {{title}}
+Both the exam PDF and the official correction PDF are attached in every request.
+Return exercises and questions exactly in order.
+Do not drop any visible content from the exam PDF.
+For solutionBlocks, stay especially faithful to the correction PDF.
+Do not drop, compress, or silently rewrite visible correction content.
+Do not paraphrase away visible exam or correction text just to make it shorter.
+You may add only minimal clarifying context to corrections when the PDF gives a bare result or a very compressed step, and that clarification must remain additive.
+When useful, you may add short hintBlocks that help a student start before viewing the official answer, but those hints must stay brief, non-spoiling, and must never replace solutionBlocks.
+Put visible barème and point-allocation details from the correction into rubricBlocks for the matching question, preserving exact values and splits with precision.
+Use paragraph blocks for prose and mixed prose plus inline notation, latex blocks for standalone formulas or formula-heavy lines, and heading blocks for short visible headings or labels when the PDF clearly separates them.
+Preserve scientific and mathematical notation faithfully. Use inline $...$ when practical for notation inside prose, and prefer valid LaTeX for subscripts, superscripts, charges, exponents, scientific notation, indexed variables, pH expressions, chemical formulas, and units with powers.
+Do not force every plain number, ordinary unit, or plain scientific name into LaTeX when normal paragraph text is clearer.
+Clean obvious OCR spacing and punctuation issues when that improves readability without changing meaning.
+Use assetIds to connect assets to the nearest exercise or question.
+Page numbers for assets must be 1-based within the referenced EXAM or CORRECTION document.
+Do not invent crop boxes. The review UI will handle crops later.
+If a field is unknown, omit it instead of guessing.

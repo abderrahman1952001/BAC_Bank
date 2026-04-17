@@ -172,6 +172,9 @@ describe("admin ingestion review helpers", () => {
           status: "draft",
           draft_kind: "ingestion",
         },
+        workflow: {
+          active_operation: "idle",
+        },
         saving: false,
         autosaving: false,
         autosaveError: null,
@@ -197,6 +200,9 @@ describe("admin ingestion review helpers", () => {
           status: "published",
           draft_kind: "revision",
         },
+        workflow: {
+          active_operation: "idle",
+        },
         saving: false,
         autosaving: false,
         autosaveError: null,
@@ -218,6 +224,7 @@ describe("admin ingestion review helpers", () => {
     expect(
       buildProcessActionLabel({
         workflow: {
+          active_operation: "idle",
           awaiting_correction: true,
           review_started: false,
         },
@@ -228,6 +235,7 @@ describe("admin ingestion review helpers", () => {
     expect(
       buildProcessActionLabel({
         workflow: {
+          active_operation: "idle",
           awaiting_correction: false,
           review_started: true,
         },
@@ -238,6 +246,7 @@ describe("admin ingestion review helpers", () => {
     expect(
       buildProcessActionLabel({
         workflow: {
+          active_operation: "idle",
           awaiting_correction: false,
           review_started: false,
         },
@@ -248,6 +257,7 @@ describe("admin ingestion review helpers", () => {
     expect(
       buildProcessActionLabel({
         workflow: {
+          active_operation: "idle",
           awaiting_correction: false,
           review_started: false,
         },
@@ -255,6 +265,17 @@ describe("admin ingestion review helpers", () => {
         processing: false,
       }),
     ).toBe("Process");
+    expect(
+      buildProcessActionLabel({
+        workflow: {
+          active_operation: "publishing",
+          awaiting_correction: false,
+          review_started: true,
+        },
+        jobStatus: "processing",
+        processing: false,
+      }),
+    ).toBe("Publishing…");
     expect(
       buildProcessConfirmationMessage({
         workflow: {

@@ -8,7 +8,7 @@ import type {
   DraftBlockType,
   DraftVariantCode,
 } from "@/lib/admin";
-import type { ExamHierarchyBlock } from "@/lib/qbank";
+import type { ExamHierarchyBlock } from "@/lib/study-api";
 
 export type DraftVariant = AdminIngestionDraft["variants"][number];
 export type DraftNode = AdminIngestionDraft["variants"][number]["nodes"][number];

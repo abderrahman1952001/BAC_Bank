@@ -19,6 +19,9 @@ describe('AdminReferenceService', () => {
       findMany: jest.Mock;
     };
   };
+  let catalogCurriculumService: {
+    listActiveFilterTopics: jest.Mock;
+  };
   let service: AdminReferenceService;
 
   beforeEach(() => {
@@ -40,7 +43,13 @@ describe('AdminReferenceService', () => {
         findMany: jest.fn(),
       },
     };
-    service = new AdminReferenceService(prisma as never);
+    catalogCurriculumService = {
+      listActiveFilterTopics: jest.fn().mockResolvedValue([]),
+    };
+    service = new AdminReferenceService(
+      prisma as never,
+      catalogCurriculumService as never,
+    );
   });
 
   it('builds admin dashboard totals and workflow counts', async () => {
@@ -124,36 +133,20 @@ describe('AdminReferenceService', () => {
       { year: 2025 },
       { year: 2024 },
     ]);
-    prisma.topic.findMany.mockResolvedValueOnce([
+    catalogCurriculumService.listActiveFilterTopics.mockResolvedValueOnce([
       {
         code: 'ALG',
         name: 'Algebra',
         displayOrder: 1,
         isSelectable: true,
         studentLabel: 'الجبر',
+        streamCodes: ['SE', 'TM'],
         parent: {
           code: 'MATH_ROOT',
         },
         subject: {
           code: 'MATH',
           name: 'Mathematics',
-          streamMappings: [
-            {
-              stream: {
-                code: 'TM',
-              },
-            },
-            {
-              stream: {
-                code: 'SE',
-              },
-            },
-            {
-              stream: {
-                code: 'TM',
-              },
-            },
-          ],
         },
       },
     ]);

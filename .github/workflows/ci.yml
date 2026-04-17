@@ -36,7 +36,8 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/bac_bank?schema=public
       REDIS_URL: redis://localhost:6379
       REDIS_REQUIRED: "true"
-      AUTH_SESSION_SECRET: ci-session-secret
+      CLERK_SECRET_KEY: sk_test_example
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_ZXhhbXBsZS5jbGVyay5hY2NvdW50cy5kZXYk
       CORS_ORIGIN: http://localhost:3000
       PUBLIC_API_BASE_URL: http://localhost:4000
       NEXT_PUBLIC_API_BASE_URL: http://localhost:4000/api/v1

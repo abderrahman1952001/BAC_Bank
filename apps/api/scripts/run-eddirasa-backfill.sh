@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="/home/abderrahman/BAC_Bank"
-API_DIR="$ROOT_DIR/apps/api"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+API_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+ROOT_DIR="$(cd "$API_DIR/../.." && pwd)"
 TS_NODE_BIN="$ROOT_DIR/node_modules/.bin/ts-node"
 YEARS=("${@}")
 MAX_PARALLEL="${MAX_PARALLEL:-3}"
@@ -20,9 +21,18 @@ run_year() {
   local year="$1"
   (
     set -euo pipefail
-    set -a
-    source "$ROOT_DIR/.env" >/dev/null 2>&1
-    set +a
+    if [ -f "$API_DIR/.env" ]; then
+      set -a
+      source "$API_DIR/.env" >/dev/null 2>&1
+      set +a
+    fi
+
+    if [ -f "$API_DIR/.env.local" ]; then
+      set -a
+      source "$API_DIR/.env.local" >/dev/null 2>&1
+      set +a
+    fi
+
     export INGESTION_DETAIL_PAGE_CONCURRENCY="$DETAIL_PAGE_CONCURRENCY"
     cd "$API_DIR"
     local log_file="/tmp/eddirasa_detached_$year.log"

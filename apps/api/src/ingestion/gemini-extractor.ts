@@ -36,6 +36,7 @@ type GeminiStructuredQuestion = {
   promptBlocks: GeminiStructuredBlock[];
   solutionBlocks: GeminiStructuredBlock[];
   hintBlocks: GeminiStructuredBlock[];
+  rubricBlocks: GeminiStructuredBlock[];
   assetIds: string[];
 };
 
@@ -97,10 +98,10 @@ type GeminiExtractionInput = {
     fileName: string;
     buffer: Buffer;
   };
-  correctionDocument?: {
+  correctionDocument: {
     fileName: string;
     buffer: Buffer;
-  } | null;
+  };
 };
 
 type GeminiCropRecoveryMode = 'text' | 'table' | 'tree' | 'graph';
@@ -143,25 +144,43 @@ const GEMINI_SYSTEM_INSTRUCTION = `
 You extract structured Algerian BAC exam content from scanned exam and correction PDFs.
 
 Return strict JSON only. Do not wrap the response in Markdown or code fences.
-Stay faithful to the scanned pages. Do not summarize and do not invent missing text.
+Stay maximally faithful to the scanned pages. Do not summarize, compress, simplify, or invent missing text.
 
 Extraction rules:
 - Organize content by variant (SUJET_1 / SUJET_2), then by exercise, then by question.
 - When the exam explicitly contains two variants/topics (for example "الموضوع الأول" and "الموضوع الثاني"), extract both variants in the same JSON response.
 - Do not omit a second variant because of length, convenience, or a desire to simplify the response.
+- The attached exam PDF and correction PDF are both authoritative source documents for this response.
+- Never drop visible content from the exam PDF.
+- Never drop visible content from the correction PDF.
+- If text, formulas, numbered items, answer conditions, notes, tables, diagrams, graphs, or correction steps are visibly present in the PDFs, they must appear somewhere in the JSON in the correct nearby exercise/question and in the same relative order.
+- Do not silently merge separate visible items into a shorter paraphrase.
 - Put statement text in contextBlocks or promptBlocks.
 - Put correction text in solutionBlocks.
-- Treat the correction PDF as the primary source of truth for solutionBlocks.
+- Put visible grading rules, scoring notes, barème details, and point distributions from the correction PDF in rubricBlocks for the matching question.
+- Map rubric details to the most specific matching question whenever possible.
+- Preserve exact point values and score splits from the correction PDF, including values such as 0.25, 0.5, 0.75, 1, and any visible breakdown across sub-steps or sub-parts.
+- Do not round, simplify, merge, or reinterpret rubric allocations.
+- Treat the exam PDF as the source of truth for contextBlocks and promptBlocks.
+- Treat the correction PDF as the primary source of truth for solutionBlocks and rubricBlocks.
+- Preserve exam content and ordering as closely as possible to the PDF. Do not rewrite away, compress, or omit exam text that is visibly present.
 - Preserve correction content and ordering as closely as possible to the PDF. Do not rewrite away, compress, or omit correction text that is visibly present.
-- Never drop visible exam or correction content just because it feels repetitive, obvious, or implied.
-- Additions are allowed only as short clarifying bridges when the PDF gives a bare final result or an extremely compressed step, and those additions must remain clearly additive.
-- Additive clarification must never replace, paraphrase away, or contradict visible PDF content.
-- You may add short clarifying context only when it is necessary to make the extracted structure readable, but any additions must stay additive and must not replace or remove existing correction content.
+- Never drop visible exam or correction content just because it feels repetitive, obvious, implied, or low-value.
+- Do not add new content to the exam statement beyond minimal connective wording required to fit the JSON structure.
+- For corrections, additions are allowed only as short clarifying bridges when the PDF gives a bare final result or an extremely compressed step, and those additions must remain clearly additive.
+- Additive clarification in corrections must never replace, paraphrase away, or contradict visible PDF content.
+- Any clarifying addition in corrections must be shorter than the preserved source content around it and must not remove any visible correction step.
 - Keep order exactly as it appears in the PDFs.
-- Use paragraph blocks for normal text.
-- Use latex blocks only for standalone formulas or formula-heavy lines.
-- Use heading blocks only for short headings.
-- Preserve Arabic text and math notation as faithfully as possible. Inline math should stay inside $...$ when practical.
+- Use paragraph blocks for normal text and for mixed prose plus inline notation.
+- Use latex blocks for standalone formulas, equations, reactions, or other formula-heavy lines.
+- Use heading blocks for short visible headings or labels when the PDF clearly separates them, such as ملاحظة, تعليل, استنتاج, or similar short cues.
+- Preserve Arabic text and scientific/math notation as faithfully as possible.
+- When prose contains meaningful notation, keep it inline inside paragraph blocks using $...$ when practical.
+- Prefer valid LaTeX for notation whose meaning depends on formatting, including subscripts, superscripts, charges, exponents, scientific notation, indexed variables, pH expressions, chemical formulas, and units with powers such as $mm^3$, $Ca^{2+}$, $Cl^-$, $CO_2$, or $10^{-3}$.
+- Clean obvious OCR whitespace and punctuation issues when that improves readability without changing meaning.
+- Do not force every plain number, ordinary unit, or plain scientific name into LaTeX when normal paragraph text is clearer.
+- When useful, you may add short student-facing hintBlocks for a question before the official answer. These hints must be brief, non-spoiling, and derived from the visible question and correction. Hints are optional additive guidance and must never replace, remove, or weaken any official solution content.
+- Prefer rubricBlocks for point allocation text instead of mixing that content into hintBlocks.
 - Detect meaningful visual assets that matter for solving or understanding the exam: graphs, tables, trees, diagrams, and other images.
 - For every asset, include the document kind (EXAM or CORRECTION) and the 1-based page number inside that document.
 - Attach asset IDs to the nearest exercise or question using assetIds.
@@ -246,6 +265,7 @@ const GEMINI_RESPONSE_SCHEMA = {
                       'promptBlocks',
                       'solutionBlocks',
                       'hintBlocks',
+                      'rubricBlocks',
                       'assetIds',
                     ],
                     properties: {
@@ -301,6 +321,22 @@ const GEMINI_RESPONSE_SCHEMA = {
                           },
                         },
                       },
+                      rubricBlocks: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          additionalProperties: false,
+                          required: ['type', 'text'],
+                          properties: {
+                            type: {
+                              type: 'string',
+                              enum: ['paragraph', 'latex', 'heading'],
+                            },
+                            text: { type: 'string' },
+                            caption: { type: 'string' },
+                          },
+                        },
+                      },
                       assetIds: {
                         type: 'array',
                         items: { type: 'string' },
@@ -341,7 +377,7 @@ const GEMINI_RESPONSE_SCHEMA = {
           },
           role: {
             type: 'string',
-            enum: ['PROMPT', 'SOLUTION', 'HINT'],
+            enum: ['PROMPT', 'SOLUTION', 'HINT', 'RUBRIC'],
           },
           classification: {
             type: 'string',
@@ -555,6 +591,10 @@ export async function extractDraftWithGemini(
     throw new Error('Gemini extraction requires populated draft.sourcePages.');
   }
 
+  if (!input.correctionDocument) {
+    throw new Error('Gemini extraction requires a correction PDF.');
+  }
+
   const ai = new GoogleGenAI({
     apiKey,
   });
@@ -586,36 +626,28 @@ export async function extractDraftWithGemini(
       ),
     ];
 
-    if (input.correctionDocument) {
-      const correctionPath = path.join(
-        tempDir,
-        sanitizeFileName(input.correctionDocument.fileName),
-      );
-      await fs.writeFile(correctionPath, input.correctionDocument.buffer);
+    const correctionPath = path.join(
+      tempDir,
+      sanitizeFileName(input.correctionDocument.fileName),
+    );
+    await fs.writeFile(correctionPath, input.correctionDocument.buffer);
 
-      const uploadedCorrection = await ai.files.upload({
-        file: correctionPath,
-        config: {
-          mimeType: 'application/pdf',
-        },
-      });
-      uploadedFiles.push(uploadedCorrection);
+    const uploadedCorrection = await ai.files.upload({
+      file: correctionPath,
+      config: {
+        mimeType: 'application/pdf',
+      },
+    });
+    uploadedFiles.push(uploadedCorrection);
 
-      const readyCorrection = await waitForFileReady(ai, uploadedCorrection);
-      promptParts.push(
-        createPartFromText('Official correction PDF:'),
-        createPartFromUri(
-          readyCorrection.uri ?? '',
-          readyCorrection.mimeType ?? 'application/pdf',
-        ),
-      );
-    } else {
-      promptParts.push(
-        createPartFromText(
-          'No correction PDF was provided. Keep solutionBlocks empty unless the exam PDF itself contains corrections.',
-        ),
-      );
-    }
+    const readyCorrection = await waitForFileReady(ai, uploadedCorrection);
+    promptParts.push(
+      createPartFromText('Official correction PDF:'),
+      createPartFromUri(
+        readyCorrection.uri ?? '',
+        readyCorrection.mimeType ?? 'application/pdf',
+      ),
+    );
 
     const response = await ai.models.generateContent({
       model: input.model,
@@ -869,6 +901,13 @@ function buildDraftVariantFromGemini(
             'HINT',
             uncertainties,
           ),
+          ...toDraftTextBlocks(question.rubricBlocks, 'RUBRIC'),
+          ...toDraftAssetBlocks(
+            question.assetIds,
+            assetMap,
+            'RUBRIC',
+            uncertainties,
+          ),
         ],
       });
     }
@@ -945,7 +984,7 @@ function buildGeminiCropRecoveryPrompt(input: GeminiCropRecoveryInput) {
 
   if (input.mode === 'text') {
     parts.push(
-      'Recover the visible snippet as faithful readable text. Preserve formulas accurately. Use type "paragraph" for prose, labels, and mixed text, and use type "latex" when the crop is best represented as a standalone formula or a formula-heavy line. Keep inline math inside $...$ when practical, and prefer valid LaTeX whenever math notation needs it.',
+      'Recover the visible snippet as faithful readable text. Preserve formulas and scientific notation accurately. Use type "paragraph" for prose, short labels, and mixed text, and use type "latex" when the crop is best represented as a standalone formula, equation, reaction, or formula-heavy line. Keep inline math inside $...$ when practical, prefer valid LaTeX for subscripts, superscripts, charges, exponents, scientific notation, indexed variables, pH expressions, chemical formulas, and units with powers, and clean obvious OCR spacing or punctuation issues without changing meaning. Do not force plain numbers or plain scientific names into LaTeX when ordinary text is clearer.',
     );
   } else if (input.mode === 'table') {
     parts.push(
@@ -1143,6 +1182,7 @@ function normalizeGeminiQuestion(
     promptBlocks: normalizeGeminiBlocks(raw.promptBlocks),
     solutionBlocks: normalizeGeminiBlocks(raw.solutionBlocks),
     hintBlocks: normalizeGeminiBlocks(raw.hintBlocks),
+    rubricBlocks: normalizeGeminiBlocks(raw.rubricBlocks),
     assetIds: normalizeStringArray(raw.assetIds),
   };
 }
@@ -1302,7 +1342,12 @@ function normalizeBlockType(value: unknown): DraftBlockType | null {
 }
 
 function normalizeBlockRole(value: unknown): DraftBlockRole | null {
-  if (value === 'PROMPT' || value === 'SOLUTION' || value === 'HINT') {
+  if (
+    value === 'PROMPT' ||
+    value === 'SOLUTION' ||
+    value === 'HINT' ||
+    value === 'RUBRIC'
+  ) {
     return value;
   }
 
@@ -1379,10 +1424,19 @@ function buildGeminiPrompt(draft: IngestionDraft, label: string) {
     `Current inferred subject code: ${draft.exam.subjectCode ?? 'unknown'}`,
     `Current session type: ${draft.exam.sessionType}`,
     `Current title: ${draft.exam.title}`,
+    `Both the exam PDF and the official correction PDF are attached in every request.`,
     `Return exercises and questions exactly in order.`,
+    `Do not drop any visible content from the exam PDF.`,
     `For solutionBlocks, stay especially faithful to the correction PDF.`,
     `Do not drop, compress, or silently rewrite visible correction content.`,
-    `You may add only minimal clarifying context when the PDF gives a bare result or a very compressed step, and that clarification must remain additive.`,
+    `Do not paraphrase away visible exam or correction text just to make it shorter.`,
+    `You may add only minimal clarifying context to corrections when the PDF gives a bare result or a very compressed step, and that clarification must remain additive.`,
+    `When useful, you may add short hintBlocks that help a student start before viewing the official answer, but those hints must stay brief, non-spoiling, and must never replace solutionBlocks.`,
+    `Put visible barème and point-allocation details from the correction into rubricBlocks for the matching question, preserving exact values and splits with precision.`,
+    `Use paragraph blocks for prose and mixed prose plus inline notation, latex blocks for standalone formulas or formula-heavy lines, and heading blocks for short visible headings or labels when the PDF clearly separates them.`,
+    `Preserve scientific and mathematical notation faithfully. Use inline $...$ when practical for notation inside prose, and prefer valid LaTeX for subscripts, superscripts, charges, exponents, scientific notation, indexed variables, pH expressions, chemical formulas, and units with powers.`,
+    `Do not force every plain number, ordinary unit, or plain scientific name into LaTeX when normal paragraph text is clearer.`,
+    `Clean obvious OCR spacing and punctuation issues when that improves readability without changing meaning.`,
     `Use assetIds to connect assets to the nearest exercise or question.`,
     `Page numbers for assets must be 1-based within the referenced EXAM or CORRECTION document.`,
     `Do not invent crop boxes. The review UI will handle crops later.`,

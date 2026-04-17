@@ -449,16 +449,6 @@ export function useAdminIngestionReviewSession({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.job.status, jobId]);
 
-  async function refreshJob() {
-    const payload = await fetchAdminJson<AdminIngestionJobResponse>(
-      `/ingestion/jobs/${jobId}`,
-      undefined,
-      parseAdminIngestionJobResponse,
-    );
-    applyPayload(payload);
-    return payload;
-  }
-
   async function saveDraft(options?: { autosave?: boolean }) {
     const autosave = options?.autosave ?? false;
     const draftToSave = normalizeReviewDraftForAutosave(
@@ -752,9 +742,7 @@ export function useAdminIngestionReviewSession({
         method: "POST",
         body: payload,
       });
-      const nextPayload = parseAdminIngestionJobResponse(
-        await response.json(),
-      );
+      const nextPayload = parseAdminIngestionJobResponse(await response.json());
       applyPayload(nextPayload);
       setNotice("Correction PDF attached. The job can now be processed.");
     } catch (attachError) {
@@ -862,14 +850,18 @@ export function useAdminIngestionReviewSession({
       }
 
       if (status === "approved") {
-        await fetchAdminJson(`/ingestion/jobs/${jobId}/publish`, {
-          method: "POST",
-        });
-        await refreshJob();
+        const queuedPayload = await fetchAdminJson<AdminIngestionJobResponse>(
+          `/ingestion/jobs/${jobId}/publish`,
+          {
+            method: "POST",
+          },
+          parseAdminIngestionJobResponse,
+        );
+        applyPayload(queuedPayload);
         setNotice(
           data.job.draft_kind === "revision"
-            ? "Revision approved and published to live exam tables."
-            : "Draft approved and published to live exam tables.",
+            ? "Background publication queued. This page will refresh automatically when the worker publishes the revision."
+            : "Background publication queued. This page will refresh automatically when the worker publishes the draft.",
         );
       }
     } catch (publishError) {

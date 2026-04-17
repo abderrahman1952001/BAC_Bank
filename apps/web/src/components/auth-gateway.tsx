@@ -1,9 +1,63 @@
 "use client";
 
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
+import { startTransition, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { getCurrentUser } from "@/lib/client-auth";
+import { getPostAuthRoute } from "@/lib/auth-routing";
 
 export function AuthGateway() {
+  const router = useRouter();
+  const { isLoaded, userId } = useAuth();
+  const [isCompletingSignIn, setIsCompletingSignIn] = useState(false);
+  const [authFeedback, setAuthFeedback] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!isLoaded || !userId) {
+      setIsCompletingSignIn(false);
+      return;
+    }
+
+    let isActive = true;
+
+    async function completeSignIn() {
+      setIsCompletingSignIn(true);
+      setAuthFeedback(null);
+
+      try {
+        const payload = await getCurrentUser();
+
+        if (!isActive) {
+          return;
+        }
+
+        startTransition(() => {
+          router.replace(getPostAuthRoute(payload.user));
+          router.refresh();
+        });
+      } catch (error) {
+        if (!isActive) {
+          return;
+        }
+
+        setAuthFeedback(
+          error instanceof Error
+            ? error.message
+            : "تم تسجيل الدخول لكن تعذر إكمال توجيهك الآن. حدّث الصفحة وحاول مرة أخرى.",
+        );
+        setIsCompletingSignIn(false);
+      }
+    }
+
+    void completeSignIn();
+
+    return () => {
+      isActive = false;
+    };
+  }, [isLoaded, router, userId]);
+
   return (
     <main className="auth-page">
       <section className="auth-layout">
@@ -39,6 +93,7 @@ export function AuthGateway() {
               href="/auth/sign-up"
               className="btn-primary"
               data-testid="auth-register-link"
+              aria-disabled={isCompletingSignIn}
             >
               إنشاء حساب
             </Link>
@@ -46,11 +101,14 @@ export function AuthGateway() {
               href="/auth/sign-in"
               className="btn-secondary"
               data-testid="auth-login-link"
+              aria-disabled={isCompletingSignIn}
             >
               تسجيل الدخول
             </Link>
             <p className="auth-feedback">
-              متاح الآن: البريد الإلكتروني وكلمة المرور أو Google.
+              {isCompletingSignIn
+                ? "تم تسجيل الدخول. جارٍ نقلك إلى حسابك..."
+                : authFeedback ?? "متاح الآن: البريد الإلكتروني وكلمة المرور أو Google."}
             </p>
           </div>
         </article>

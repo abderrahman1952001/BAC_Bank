@@ -1,19 +1,26 @@
 import {
-  PracticeSessionProgress,
-  PracticeStudyMode,
-} from '@/lib/qbank';
+  StudyQuestionDiagnosis,
+  StudyQuestionReflection,
+  StudySessionProgress,
+  StudySessionMode,
+} from '@/lib/study-api';
 
 export type StudyQuestionState = {
   opened?: boolean;
   completed?: boolean;
   skipped?: boolean;
   solutionViewed?: boolean;
+  timeSpentSeconds?: number;
+  reflection?: StudyQuestionReflection | null;
+  diagnosis?: StudyQuestionDiagnosis | null;
+  hintViewed?: boolean;
+  methodViewed?: boolean;
 };
 
 export type StudyProgressSnapshot = {
   activeExerciseId: string | null;
   activeQuestionId: string | null;
-  mode: PracticeStudyMode;
+  mode: StudySessionMode;
   questionStates: Record<string, StudyQuestionState>;
   updatedAt: string;
 };
@@ -31,7 +38,7 @@ export type StudyQuestionStateDescriptor = {
 };
 
 export function buildEmptyStudyProgress(
-  mode: PracticeStudyMode = 'SOLVE',
+  mode: StudySessionMode = 'SOLVE',
 ): StudyProgressSnapshot {
   return {
     activeExerciseId: null,
@@ -43,7 +50,7 @@ export function buildEmptyStudyProgress(
 }
 
 export function normalizeStudyProgress(
-  value: PracticeSessionProgress | StudyProgressSnapshot | null | undefined,
+  value: StudySessionProgress | StudyProgressSnapshot | null | undefined,
 ): StudyProgressSnapshot | null {
   if (!value) {
     return null;
@@ -69,6 +76,9 @@ export function normalizeStudyProgress(
         completed: item.completed,
         skipped: item.skipped,
         solutionViewed: item.solutionViewed,
+        timeSpentSeconds: item.timeSpentSeconds,
+        reflection: item.reflection,
+        diagnosis: item.diagnosis,
       },
     ]),
   );
@@ -85,13 +95,16 @@ export function normalizeStudyProgress(
 export function serializeStudyProgress(
   snapshot: StudyProgressSnapshot,
   allQuestionIds: string[],
-): PracticeSessionProgress {
+): StudySessionProgress {
   const questionStates = allQuestionIds.map((questionId) => ({
     questionId,
     opened: Boolean(snapshot.questionStates[questionId]?.opened),
     completed: Boolean(snapshot.questionStates[questionId]?.completed),
     skipped: Boolean(snapshot.questionStates[questionId]?.skipped),
     solutionViewed: Boolean(snapshot.questionStates[questionId]?.solutionViewed),
+    timeSpentSeconds: snapshot.questionStates[questionId]?.timeSpentSeconds ?? 0,
+    reflection: snapshot.questionStates[questionId]?.reflection ?? null,
+    diagnosis: snapshot.questionStates[questionId]?.diagnosis ?? null,
   }));
 
   const completedQuestionCount = questionStates.filter(
@@ -101,6 +114,10 @@ export function serializeStudyProgress(
   const solutionViewedCount = questionStates.filter(
     (item) => item.solutionViewed,
   ).length;
+  const trackedTimeSeconds = questionStates.reduce(
+    (total, item) => total + item.timeSpentSeconds,
+    0,
+  );
 
   return {
     activeExerciseId: snapshot.activeExerciseId,
@@ -116,6 +133,7 @@ export function serializeStudyProgress(
         0,
       ),
       solutionViewedCount,
+      trackedTimeSeconds,
     },
     updatedAt: snapshot.updatedAt,
   };
@@ -156,6 +174,34 @@ export function describeStudyQuestionState(
   }
 
   if (state?.completed) {
+    if (state.reflection === 'MISSED') {
+      return {
+        label: 'فاتني',
+        tone: 'danger',
+      };
+    }
+
+    if (state.reflection === 'HARD') {
+      return {
+        label: 'صعب',
+        tone: 'warning',
+      };
+    }
+
+    if (state.reflection === 'MEDIUM') {
+      return {
+        label: 'متحكم فيه',
+        tone: 'accent',
+      };
+    }
+
+    if (state.reflection === 'EASY') {
+      return {
+        label: 'سهل',
+        tone: 'success',
+      };
+    }
+
     return {
       label: 'منجز',
       tone: 'success',
@@ -198,6 +244,10 @@ export function countStudyProgress(
   const openedCount = allQuestionIds.filter(
     (questionId) => questionStates[questionId]?.opened,
   ).length;
+  const trackedTimeSeconds = allQuestionIds.reduce(
+    (total, questionId) => total + (questionStates[questionId]?.timeSpentSeconds ?? 0),
+    0,
+  );
 
   return {
     totalCount: allQuestionIds.length,
@@ -205,6 +255,7 @@ export function countStudyProgress(
     skippedCount,
     solutionViewedCount,
     openedCount,
+    trackedTimeSeconds,
     unansweredCount: Math.max(
       allQuestionIds.length - completedCount - skippedCount,
       0,
@@ -256,7 +307,7 @@ export function readLocalStudyProgress(
     }
 
     return normalizeStudyProgress(
-      JSON.parse(raw) as StudyProgressSnapshot | PracticeSessionProgress,
+      JSON.parse(raw) as StudyProgressSnapshot | StudySessionProgress,
     );
   } catch {
     return null;

@@ -1,17 +1,20 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import type { AdminIngestionJobResponse } from '@bac-bank/contracts/ingestion';
-import { IngestionJobStatus } from '@prisma/client';
+import { IngestionJobStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { resolvePositiveInteger } from '../runtime/runtime-config';
 import { ProcessIngestionJobDto } from './dto/process-ingestion-job.dto';
 import { isPublishedRevisionProvider } from './ingestion.constants';
 import {
+  buildIngestionPublishRequest,
   buildIngestionProcessRequest,
-  IngestionProcessRequest,
-  readIngestionProcessRequest,
-  withIngestionProcessRequestMetadata,
+  type IngestionWorkerRequest,
+  readIngestionWorkerRequest,
+  withIngestionWorkerRequestMetadata,
+  withoutIngestionWorkerRequestMetadata,
 } from './ingestion-process-request';
 import { IngestionProcessingEngineService } from './ingestion-processing-engine.service';
+import { IngestionPublicationService } from './ingestion-publication.service';
 import { IngestionReadService } from './ingestion-read.service';
 
 const DEFAULT_PROCESSING_LEASE_MS = resolvePositiveInteger({
@@ -28,6 +31,7 @@ export class IngestionQueueService {
     private readonly prisma: PrismaService,
     private readonly readService: IngestionReadService,
     private readonly processingEngine: IngestionProcessingEngineService,
+    private readonly publicationService: IngestionPublicationService,
   ) {}
 
   async processJob(
@@ -35,6 +39,7 @@ export class IngestionQueueService {
     payload: ProcessIngestionJobDto = {},
   ): Promise<AdminIngestionJobResponse> {
     const job = await this.readService.findJobOrThrow(jobId);
+    const activeWorkerRequest = readIngestionWorkerRequest(job.metadata);
 
     if (job.status === IngestionJobStatus.PUBLISHED) {
       throw new BadRequestException(
@@ -44,13 +49,17 @@ export class IngestionQueueService {
 
     if (job.status === IngestionJobStatus.QUEUED) {
       throw new BadRequestException(
-        'This ingestion job is already queued for processing.',
+        activeWorkerRequest.action === 'publish'
+          ? 'This ingestion job is already queued for publication.'
+          : 'This ingestion job is already queued for processing.',
       );
     }
 
     if (job.status === IngestionJobStatus.PROCESSING) {
       throw new BadRequestException(
-        'This ingestion job is already being processed by a worker.',
+        activeWorkerRequest.action === 'publish'
+          ? 'This ingestion job is already being published by a worker.'
+          : 'This ingestion job is already being processed by a worker.',
       );
     }
 
@@ -64,23 +73,51 @@ export class IngestionQueueService {
     });
     const queuedAt = new Date(processRequest.queuedAt);
 
-    await this.prisma.ingestionJob.update({
-      where: {
-        id: jobId,
-      },
-      data: {
-        status: IngestionJobStatus.QUEUED,
-        errorMessage: null,
-        processingRequestedAt: queuedAt,
-        processingStartedAt: null,
-        processingFinishedAt: null,
-        processingLeaseExpiresAt: null,
-        processingWorkerId: null,
-        metadata: withIngestionProcessRequestMetadata(job.metadata, processRequest),
-      },
-    });
+    return this.queueWorkerRequest(
+      jobId,
+      job.metadata,
+      processRequest,
+      queuedAt,
+    );
+  }
 
-    return this.readService.getJob(jobId);
+  async publishJob(jobId: string): Promise<AdminIngestionJobResponse> {
+    const job = await this.readService.findJobOrThrow(jobId);
+    const activeWorkerRequest = readIngestionWorkerRequest(job.metadata);
+
+    if (job.status === IngestionJobStatus.PUBLISHED) {
+      throw new BadRequestException(
+        'Published ingestion jobs are frozen. Start a revision from the live library to make further changes.',
+      );
+    }
+
+    if (job.status === IngestionJobStatus.QUEUED) {
+      throw new BadRequestException(
+        activeWorkerRequest.action === 'publish'
+          ? 'This ingestion job is already queued for publication.'
+          : 'This ingestion job is already queued for processing.',
+      );
+    }
+
+    if (job.status === IngestionJobStatus.PROCESSING) {
+      throw new BadRequestException(
+        activeWorkerRequest.action === 'publish'
+          ? 'This ingestion job is already being published by a worker.'
+          : 'This ingestion job is already being processed by a worker.',
+      );
+    }
+
+    const publishRequest = buildIngestionPublishRequest({
+      jobStatus: job.status,
+    });
+    const queuedAt = new Date(publishRequest.queuedAt);
+
+    return this.queueWorkerRequest(
+      jobId,
+      job.metadata,
+      publishRequest,
+      queuedAt,
+    );
   }
 
   async runNextQueuedJob(workerId: string) {
@@ -98,7 +135,7 @@ export class IngestionQueueService {
     try {
       await this.processQueuedJob(
         claimedJob.id,
-        readIngestionProcessRequest(claimedJob.metadata),
+        readIngestionWorkerRequest(claimedJob.metadata),
       );
       return claimedJob.id;
     } finally {
@@ -108,15 +145,28 @@ export class IngestionQueueService {
 
   private async processQueuedJob(
     jobId: string,
-    processRequest: IngestionProcessRequest,
+    workerRequest: IngestionWorkerRequest,
   ) {
+    if (workerRequest.action === 'publish') {
+      return this.publishQueuedJob(jobId);
+    }
+
     return this.processingEngine.runStage(
       this.processingEngine.buildStageInput(
         jobId,
-        processRequest,
+        workerRequest,
         IngestionJobStatus.IN_REVIEW,
       ),
     );
+  }
+
+  private async publishQueuedJob(jobId: string) {
+    try {
+      return await this.publicationService.publishQueuedJob(jobId);
+    } catch (error) {
+      await this.restoreApprovedStatusAfterPublishFailure(jobId, error);
+      throw error;
+    }
   }
 
   private async claimNextQueuedJob(workerId: string) {
@@ -224,5 +274,63 @@ export class IngestionQueueService {
 
   private readBooleanFlag(value: unknown) {
     return value === true || value === 'true' || value === 1 || value === '1';
+  }
+
+  private async queueWorkerRequest(
+    jobId: string,
+    metadata: Prisma.JsonValue | null,
+    workerRequest: IngestionWorkerRequest,
+    queuedAt: Date,
+  ) {
+    await this.prisma.ingestionJob.update({
+      where: {
+        id: jobId,
+      },
+      data: {
+        status: IngestionJobStatus.QUEUED,
+        errorMessage: null,
+        processingRequestedAt: queuedAt,
+        processingStartedAt: null,
+        processingFinishedAt: null,
+        processingLeaseExpiresAt: null,
+        processingWorkerId: null,
+        metadata: this.toJsonValue(
+          withIngestionWorkerRequestMetadata(metadata, workerRequest),
+        ),
+      },
+    });
+
+    return this.readService.getJob(jobId);
+  }
+
+  private async restoreApprovedStatusAfterPublishFailure(
+    jobId: string,
+    error: unknown,
+  ) {
+    const job = await this.readService.findJobOrThrow(jobId);
+
+    if (job.status === IngestionJobStatus.PUBLISHED) {
+      return;
+    }
+
+    await this.prisma.ingestionJob.update({
+      where: {
+        id: jobId,
+      },
+      data: {
+        status: IngestionJobStatus.APPROVED,
+        errorMessage: error instanceof Error ? error.message : String(error),
+        processingFinishedAt: new Date(),
+        processingLeaseExpiresAt: null,
+        processingWorkerId: null,
+        metadata: this.toJsonValue(
+          withoutIngestionWorkerRequestMetadata(job.metadata),
+        ),
+      },
+    });
+  }
+
+  private toJsonValue(value: unknown): Prisma.InputJsonValue {
+    return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
   }
 }

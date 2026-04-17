@@ -23,8 +23,11 @@ import {
 } from './ingestion-published-assets.service';
 import { IngestionPublishedVariantService } from './ingestion-published-variant.service';
 import { IngestionReadService } from './ingestion-read.service';
+import {
+  readIngestionWorkerRequest,
+  withoutIngestionWorkerRequestMetadata,
+} from './ingestion-process-request';
 import { validateIngestionDraft } from './ingestion-validation';
-import { canPublishIngestionJob } from './ingestion-workflow';
 import { IngestionPaperSourceService } from './ingestion-paper-source.service';
 import { R2StorageClient, readR2ConfigFromEnv } from './r2-storage';
 
@@ -41,12 +44,16 @@ export class IngestionPublicationService {
     private readonly publishedVariantService: IngestionPublishedVariantService,
   ) {}
 
-  async publishJob(jobId: string): Promise<PublishIngestionJobResponse> {
+  async publishQueuedJob(jobId: string): Promise<PublishIngestionJobResponse> {
     const job = await this.readService.findJobOrThrow(jobId);
+    const workerRequest = readIngestionWorkerRequest(job.metadata);
 
-    if (!canPublishIngestionJob(job.status)) {
+    if (
+      job.status !== IngestionJobStatus.PROCESSING ||
+      workerRequest.action !== 'publish'
+    ) {
       throw new BadRequestException(
-        'Approve the ingestion job before publishing it.',
+        'This ingestion job must be claimed by a worker before publication starts.',
       );
     }
 
@@ -402,6 +409,8 @@ export class IngestionPublicationService {
             subject.id,
             collectDraftTopicCodes(draft),
             draft.exam.subjectCode,
+            draft.exam.streamCode ? [draft.exam.streamCode] : [],
+            [draft.exam.year],
           );
 
         for (const preparedAsset of preparedAssets) {
@@ -441,7 +450,14 @@ export class IngestionPublicationService {
             publishedAt: new Date(),
             publishedExamId: null,
             publishedPaperId: paperId,
+            errorMessage: null,
+            processingFinishedAt: new Date(),
+            processingLeaseExpiresAt: null,
+            processingWorkerId: null,
             draftJson: toJsonValue(draft),
+            metadata: toJsonValue(
+              withoutIngestionWorkerRequestMetadata(job.metadata),
+            ),
           },
         });
 
@@ -524,7 +540,10 @@ export class IngestionPublicationService {
       parts.push(`Correction PDF key: ${correctionDocument.storageKey}`);
     }
 
-    const sourceReference = readJsonString(draft.exam.metadata, 'sourceReference');
+    const sourceReference = readJsonString(
+      draft.exam.metadata,
+      'sourceReference',
+    );
 
     if (sourceReference) {
       parts.push(`Source reference: ${sourceReference}`);

@@ -61,12 +61,10 @@ describe('IngestionOpsService', () => {
         id: 'job-1',
       },
       data: expect.objectContaining({
+        draftJson: draft,
         reviewNotes: 'updated notes',
         errorMessage: null,
         label: 'BAC 2025 Mathematics',
-        year: 2025,
-        streamCode: 'SE',
-        subjectCode: 'MATHEMATICS',
       }),
     });
     expect(result).toEqual({ job: { id: 'job-1' } });

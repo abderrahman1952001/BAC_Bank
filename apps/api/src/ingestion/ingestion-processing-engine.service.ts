@@ -12,8 +12,8 @@ import {
 import { projectIngestionJobMetadataFromDraft } from './ingestion-job-metadata';
 import { IngestionReadService } from './ingestion-read.service';
 import {
-  IngestionProcessRequest,
-  withoutIngestionProcessRequestMetadata,
+  IngestionWorkerRequest,
+  withoutIngestionWorkerRequestMetadata,
 } from './ingestion-process-request';
 import { IngestionStoredPageService } from './ingestion-stored-page.service';
 import { readR2ConfigFromEnv, R2StorageClient } from './r2-storage';
@@ -137,6 +137,12 @@ export class IngestionProcessingEngineService {
             (document) => document.kind === SourceDocumentKind.CORRECTION,
           ) ?? null;
 
+        if (!correctionDocumentForExtraction) {
+          throw new BadRequestException(
+            'Add the correction PDF before processing this job.',
+          );
+        }
+
         draft = await extractDraftWithGemini({
           draft,
           label: refreshedJob.label,
@@ -152,16 +158,13 @@ export class IngestionProcessingEngineService {
               this.getStorageClient(),
             ),
           },
-          correctionDocument:
-            correctionDocumentForExtraction !== null
-              ? {
-                  fileName: correctionDocumentForExtraction.fileName,
-                  buffer: await this.storedPageService.readSourceDocumentBuffer(
-                    correctionDocumentForExtraction,
-                    this.getStorageClient(),
-                  ),
-                }
-              : null,
+          correctionDocument: {
+            fileName: correctionDocumentForExtraction.fileName,
+            buffer: await this.storedPageService.readSourceDocumentBuffer(
+              correctionDocumentForExtraction,
+              this.getStorageClient(),
+            ),
+          },
         });
       }
 
@@ -191,7 +194,7 @@ export class IngestionProcessingEngineService {
           draftJson: toJsonValue(draft),
           metadata: toJsonValue(
             input.clearProcessingRequestMetadata
-              ? withoutIngestionProcessRequestMetadata(refreshedJob.metadata)
+              ? withoutIngestionWorkerRequestMetadata(refreshedJob.metadata)
               : (refreshedJob.metadata ?? {}),
           ),
         },
@@ -225,7 +228,7 @@ export class IngestionProcessingEngineService {
           processingWorkerId: null,
           metadata: toJsonValue(
             input.clearProcessingRequestMetadata
-              ? withoutIngestionProcessRequestMetadata(job.metadata)
+              ? withoutIngestionWorkerRequestMetadata(job.metadata)
               : (job.metadata ?? {}),
           ),
         },
@@ -237,13 +240,13 @@ export class IngestionProcessingEngineService {
 
   buildStageInput(
     jobId: string,
-    processRequest: IngestionProcessRequest,
+    workerRequest: IngestionWorkerRequest,
     completionStatus: CompletionStatus,
   ) {
     return {
       jobId,
-      replaceExisting: processRequest.replaceExisting,
-      skipExtraction: processRequest.skipExtraction,
+      replaceExisting: workerRequest.replaceExisting,
+      skipExtraction: workerRequest.skipExtraction,
       completionStatus,
       clearProcessingRequestMetadata: true,
     };

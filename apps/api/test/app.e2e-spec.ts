@@ -15,7 +15,6 @@ describe('App (e2e)', () => {
 
   beforeAll(async () => {
     process.env.PRISMA_CONNECT_ON_STARTUP = 'false';
-    process.env.AUTH_BOOTSTRAP_ADMIN_ON_STARTUP = 'false';
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],

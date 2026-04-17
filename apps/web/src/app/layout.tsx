@@ -17,9 +17,9 @@ const tajawal = Tajawal({
 });
 
 export const metadata: Metadata = {
-  title: "BAC Bank | Premium Algerian BAC QBank",
+  title: "BAC Bank | Algerian BAC Study Platform",
   description:
-    "منصة مراجعة مميزة لطلبة البكالوريا في الجزائر: مواضيع منظمة وجلسات دراسة ذكية.",
+    "منصة البكالوريا الجزائرية للمكتبة، التدريب، وتتبع التقدم في مساحة واحدة.",
 };
 
 export default function RootLayout({

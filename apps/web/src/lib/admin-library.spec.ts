@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { AdminIngestionJobSummary } from "@/lib/admin";
-import type { CatalogResponse, ExamResponse } from "@/lib/qbank";
+import type { CatalogResponse, ExamResponse } from "@/lib/study-api";
 import {
   buildActiveRevisionJobIdsByPaperId,
   buildAdminLibraryContextTitle,
@@ -101,6 +101,7 @@ function makeJob(
       awaiting_correction: false,
       can_process: true,
       review_started: false,
+      active_operation: "idle",
     },
     published_paper_id: "paper-1",
     published_exams: [],
@@ -209,7 +210,7 @@ describe("admin-library helpers", () => {
     );
 
     expect(buildStudentPreviewHref(makeExam(), 1)).toBe(
-      "/student/browse/SCI/MATH/2024/exam-1/2",
+      "/student/library/SCI/MATH/2024/exam-1/2",
     );
   });
 

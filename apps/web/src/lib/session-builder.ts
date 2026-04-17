@@ -1,9 +1,11 @@
 import {
+  formatStudySessionKind,
   formatSessionType,
   type FiltersResponse,
+  type StudySessionKind,
   type SessionPreviewResponse,
   type SessionType,
-} from "@/lib/qbank";
+} from "@/lib/study-api";
 import {
   buildTopicAncestorsByCode,
   buildTopicDescendantsByCode,
@@ -13,7 +15,7 @@ import {
   type TopicTreeNode,
 } from "@/lib/topic-taxonomy";
 
-export const SESSION_BUILDER_STORAGE_KEY = "bac-bank:session-builder:v4";
+export const SESSION_BUILDER_STORAGE_KEY = "bac-bank:session-builder:v5";
 
 export type BuilderYearMode = "3" | "5" | "8" | "all" | "custom";
 export type TopicSelectionMode = "all" | "custom" | null;
@@ -30,6 +32,7 @@ export type StoredSessionBuilderPreferences = {
   yearEnd?: number | null;
   sessionTypes?: SessionType[];
   exerciseCount?: number;
+  timingEnabled?: boolean;
 };
 
 export type StreamWithFamily = {
@@ -107,22 +110,22 @@ export const SESSION_BUILDER_STEP_ITEMS = [
 
 export const SESSION_BUILDER_SIZE_OPTIONS = [
   {
-    value: 4,
-    label: "4",
-    description: "سريعة",
-    helper: "خفيفة",
+    value: 1,
+    label: "1",
+    description: "مركزة",
+    helper: "تمرين واحد",
   },
   {
-    value: 8,
-    label: "8",
-    description: "قياسية",
-    helper: "الأكثر توازناً",
+    value: 2,
+    label: "2",
+    description: "متوازنة",
+    helper: "الأكثر واقعية",
   },
   {
-    value: 12,
-    label: "12",
-    description: "مكثفة",
-    helper: "أطول",
+    value: 3,
+    label: "3",
+    description: "أعمق",
+    helper: "لجلسة أطول",
   },
 ];
 
@@ -205,11 +208,14 @@ export function resolveStoredSessionBuilderState(
     yearEnd?: number | null;
     sessionTypes: SessionType[];
     exerciseCount?: number;
+    timingEnabled?: boolean;
   } = {
     topicCodes: Array.isArray(saved.topicCodes) ? saved.topicCodes : [],
     sessionTypes: Array.isArray(saved.sessionTypes)
       ? saved.sessionTypes.filter((type) => filters.sessionTypes.includes(type))
       : [],
+    timingEnabled:
+      typeof saved.timingEnabled === "boolean" ? saved.timingEnabled : undefined,
   };
 
   if (
@@ -264,12 +270,14 @@ export function resolveStoredSessionBuilderState(
 export function buildPreviewSessionRequest(input: {
   subjectCode: string;
   topicCodes: string[];
+  topicSelectionMode: TopicSelectionMode;
   effectiveStreamCodes: string[];
   selectedYears: number[];
   sessionTypes: SessionType[];
 }) {
   return {
     subjectCode: input.subjectCode,
+    kind: resolveBuilderSessionKind(input.topicSelectionMode, input.topicCodes),
     topicCodes: input.topicCodes,
     streamCodes: input.effectiveStreamCodes.length
       ? input.effectiveStreamCodes
@@ -283,14 +291,17 @@ export function buildCreateSessionRequest(input: {
   title: string;
   subjectCode: string;
   topicCodes: string[];
+  topicSelectionMode: TopicSelectionMode;
   effectiveStreamCodes: string[];
   selectedYears: number[];
   sessionTypes: SessionType[];
   exerciseCount: number;
+  timingEnabled: boolean;
 }) {
   return {
     title: input.title.trim() || undefined,
     subjectCode: input.subjectCode,
+    kind: resolveBuilderSessionKind(input.topicSelectionMode, input.topicCodes),
     topicCodes: input.topicCodes,
     streamCodes: input.effectiveStreamCodes.length
       ? input.effectiveStreamCodes
@@ -298,7 +309,26 @@ export function buildCreateSessionRequest(input: {
     years: input.selectedYears,
     sessionTypes: input.sessionTypes,
     exerciseCount: input.exerciseCount,
+    timingEnabled: input.timingEnabled,
   };
+}
+
+export function resolveBuilderSessionKind(
+  topicSelectionMode: TopicSelectionMode,
+  topicCodes: string[],
+): StudySessionKind {
+  return topicSelectionMode === "custom" && topicCodes.length > 0
+    ? "TOPIC_DRILL"
+    : "MIXED_DRILL";
+}
+
+export function buildBuilderSessionKindLabel(
+  topicSelectionMode: TopicSelectionMode,
+  topicCodes: string[],
+) {
+  return formatStudySessionKind(
+    resolveBuilderSessionKind(topicSelectionMode, topicCodes),
+  );
 }
 
 export function buildStoredSessionBuilderPreferences(input: {
@@ -311,6 +341,7 @@ export function buildStoredSessionBuilderPreferences(input: {
   yearEnd: number | null;
   sessionTypes: SessionType[];
   exerciseCount: number;
+  timingEnabled: boolean;
 }): StoredSessionBuilderPreferences {
   return {
     subjectCode: input.subjectCode || undefined,
@@ -326,6 +357,7 @@ export function buildStoredSessionBuilderPreferences(input: {
     yearEnd: input.yearEnd,
     sessionTypes: input.sessionTypes,
     exerciseCount: input.exerciseCount,
+    timingEnabled: input.timingEnabled,
   };
 }
 
