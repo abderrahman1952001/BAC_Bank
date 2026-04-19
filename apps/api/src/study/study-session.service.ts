@@ -7,8 +7,6 @@ import {
 import { randomUUID } from 'crypto';
 import type {
   CreateSessionResponse,
-  StudyReviewReasonType,
-  StudySessionProgress,
   StudySessionResponse,
   RecentStudySessionsResponse,
   SessionPreviewResponse,
@@ -20,10 +18,6 @@ import {
   SubscriptionStatus,
   Prisma,
   PublicationStatus,
-  SessionType,
-  StudyQuestionAnswerState,
-  StudyQuestionDiagnosis,
-  StudyQuestionReflection,
   StudySessionResumeMode,
   StudySessionStatus,
 } from '@prisma/client';
@@ -36,80 +30,47 @@ import {
   getStudyMonthlyQuotaWindow,
   resolveStudySessionFamilyFromKind,
 } from './study-entitlements';
+import { UpdateStudySessionProgressDto } from './dto/update-study-session-progress.dto';
 import {
-  StudySessionMode,
-  UpdateStudySessionProgressDto,
-} from './dto/update-study-session-progress.dto';
-import {
-  buildHierarchyExerciseSummaries,
-  buildStudySessionSearchCorpus,
-  buildSessionExerciseHierarchyPayload,
-  collectHierarchyQuestionItemsForSession,
-  type ExamVariantWithNodes,
-  getSessionTypeRank,
-  getSujetLabel,
-  type HierarchyNodePayload,
-  mapVariantHierarchy,
-  pickRepresentativeExamOffering,
-  pushStudySessionExamOffering,
-  sortStudySessionExamOfferings,
-  toStudySessionExamOffering,
-  toSujetNumberFromVariantCode,
   type StudySessionExerciseCandidate,
-  type StudySessionExamOffering,
   type SujetNumber,
 } from './study-session-helpers';
-import { SESSION_YEAR_MAX, SESSION_YEAR_MIN } from './session-year-range';
+import { buildStudySessionExerciseCandidates } from './study-session-candidates';
+import { buildStudySessionResponseExercises } from './study-session-details';
 import {
-  buildCommonTrapMessage,
-  extractPromptPreview,
-  getFallbackPedagogyRules,
-  resolveStudySupportStyle,
-  toPedagogyRule,
-} from './study-pedagogy';
+  applyWeakPointTopicCodes,
+  assertValidStudySessionStreamCodes,
+  buildResolvedStudySessionFilters,
+  inferStudySessionKindFromTopicCodes,
+  normalizeRequestedStudySessionFilters,
+  resolveStudySessionTopicMatchCodes,
+  type ResolvedStudySessionFilters,
+} from './study-session-filters';
+import {
+  buildStudySessionFiltersSnapshot,
+  buildStudySessionPreviewResponse,
+  selectStudySessionExercises,
+} from './study-session-planning';
+import {
+  buildOfficialSimulationPlan,
+  buildOfficialSimulationPreviewResponse,
+  buildOfficialSimulationFiltersSnapshot,
+  buildOfficialSimulationSessionTitle,
+  assertOfficialSimulationExamMatchesRequest,
+  assertOfficialSimulationRequested,
+  type OfficialSimulationPlan,
+} from './study-session-simulation';
+import { SESSION_YEAR_MAX, SESSION_YEAR_MIN } from './session-year-range';
+import { resolveEffectiveStudySessionStatus } from './study-session-state';
+import { buildStudySessionProgressUpdateDraft } from './study-session-progress-update';
+import {
+  buildStudySessionResponse,
+  resolveStudySessionPedagogyContext,
+} from './study-session-response';
+import { buildRecentStudySessionsResponse } from './study-session-summary';
+import { buildWeakPointIntro as buildWeakPointIntroPayload } from './study-session-weak-point';
 import { StudyReadModelService } from './study-read-model.service';
 import { StudyWeakPointService } from './study-weak-point.service';
-
-const DEFAULT_PREVIEW_SUJETS_LIMIT = 80;
-
-type StudySessionProgressSnapshot = StudySessionProgress;
-
-type StoredStudySessionQuestionRow = {
-  questionId: string;
-  sequenceIndex: number;
-  answerState: StudyQuestionAnswerState;
-  reflection: StudyQuestionReflection | null;
-  diagnosis: StudyQuestionDiagnosis | null;
-  firstOpenedAt: Date | null;
-  lastInteractedAt: Date | null;
-  completedAt: Date | null;
-  skippedAt: Date | null;
-  solutionViewedAt: Date | null;
-  timeSpentSeconds: number;
-  revealCount: number;
-};
-
-type RequestedStudySessionQuestionState = {
-  questionId: string;
-  opened?: boolean;
-  completed?: boolean;
-  skipped?: boolean;
-  solutionViewed?: boolean;
-  timeSpentSeconds?: number;
-  reflection?: StudyQuestionReflection;
-  diagnosis?: StudyQuestionDiagnosis;
-};
-
-type StoredStudySessionExerciseRow = {
-  id: string;
-  exerciseNodeId: string;
-  orderIndex: number;
-  firstOpenedAt: Date | null;
-  lastInteractedAt: Date | null;
-  completedAt: Date | null;
-  createdAt: Date;
-  sessionQuestions: StoredStudySessionQuestionRow[];
-};
 
 type PlannedStudySessionExercise = {
   id: string;
@@ -128,26 +89,6 @@ type ResolvedStudySessionMode = {
   kind: StudySessionKind;
   sourceExamId: string | null;
   sourceSujetNumber: SujetNumber | null;
-};
-
-type OfficialSimulationPlan = {
-  sourceExam: {
-    id: string;
-    year: number;
-    sessionType: SessionType;
-    durationMinutes: number;
-    stream: {
-      code: string;
-      name: string;
-    };
-    subject: {
-      code: string;
-      name: string;
-    };
-  };
-  sujetNumber: SujetNumber;
-  sujetLabel: string;
-  exercises: StudySessionExerciseCandidate[];
 };
 
 @Injectable()
@@ -183,7 +124,6 @@ export class StudySessionService {
         sourceExamId: true,
         requestedExerciseCount: true,
         durationMinutes: true,
-        timingEnabled: true,
         startedAt: true,
         deadlineAt: true,
         completedAt: true,
@@ -218,47 +158,7 @@ export class StudySessionService {
       },
     });
 
-    return {
-      data: sessions.map((session) => ({
-        id: session.id,
-        title: session.title,
-        family: session.family,
-        kind: session.kind,
-        status: this.resolveEffectiveSessionStatus(session),
-        sourceExamId: session.sourceExamId,
-        requestedExerciseCount: session.requestedExerciseCount,
-        exerciseCount: session._count.exercises,
-        durationMinutes: session.durationMinutes,
-        startedAt: session.startedAt?.toISOString() ?? null,
-        deadlineAt: session.deadlineAt?.toISOString() ?? null,
-        completedAt: session.completedAt?.toISOString() ?? null,
-        lastInteractedAt: session.lastInteractedAt?.toISOString() ?? null,
-        createdAt: session.createdAt.toISOString(),
-        updatedAt: session.updatedAt.toISOString(),
-        progressSummary: this.buildStudySessionProgress({
-          resumeMode: StudySessionResumeMode.SOLVE,
-          activeExerciseId: null,
-          activeQuestionId: null,
-          sessionQuestions: session.exercises.flatMap((exercise) =>
-            (exercise.sessionQuestions ?? []).map((question) => ({
-              questionId: question.questionNodeId,
-              sequenceIndex: question.sequenceIndex,
-              answerState: question.answerState,
-              reflection: question.reflection,
-              diagnosis: question.diagnosis,
-              firstOpenedAt: question.firstOpenedAt,
-              lastInteractedAt: question.lastInteractedAt,
-              completedAt: question.completedAt,
-              skippedAt: question.skippedAt,
-              solutionViewedAt: question.solutionViewedAt,
-              timeSpentSeconds: question.timeSpentSeconds,
-              revealCount: question.revealCount,
-            })),
-          ),
-          updatedAt: session.updatedAt,
-        }).summary,
-      })),
-    };
+    return buildRecentStudySessionsResponse(sessions);
   }
 
   async previewStudySession(
@@ -275,146 +175,20 @@ export class StudySessionService {
       await this.ensureWeakPointAccess(userId);
     }
 
-    const filters = await this.resolveStudySessionFilters(userId, payload, sessionMode);
+    const filters = await this.resolveStudySessionFilters(
+      userId,
+      payload,
+      sessionMode,
+    );
     const matchingExercises =
       await this.listStudySessionExerciseCandidates(filters);
-    const matchingExerciseCount = matchingExercises.length;
 
-    const matchingSujetsMap = new Map<
-      string,
-      {
-        examId: string;
-        year: number;
-        stream: {
-          code: string;
-          name: string;
-        };
-        subject: {
-          code: string;
-          name: string;
-        };
-        sessionType: SessionType;
-        sujetNumber: SujetNumber;
-        sujetLabel: string;
-        matchingExerciseCount: number;
-      }
-    >();
-    const yearsDistributionMap = new Map<number, number>();
-    const streamsDistributionMap = new Map<
-      string,
-      {
-        stream: {
-          code: string;
-          name: string;
-        };
-        matchingExerciseCount: number;
-      }
-    >();
-
-    for (const exercise of matchingExercises) {
-      for (const exam of exercise.examOfferings) {
-        yearsDistributionMap.set(
-          exam.year,
-          (yearsDistributionMap.get(exam.year) ?? 0) + 1,
-        );
-
-        const streamEntry = streamsDistributionMap.get(exam.stream.code);
-        if (streamEntry) {
-          streamEntry.matchingExerciseCount += 1;
-        } else {
-          streamsDistributionMap.set(exam.stream.code, {
-            stream: exam.stream,
-            matchingExerciseCount: 1,
-          });
-        }
-
-        const key = `${exam.id}:${exercise.sujetNumber}`;
-        const current = matchingSujetsMap.get(key);
-
-        if (current) {
-          current.matchingExerciseCount += 1;
-          continue;
-        }
-
-        matchingSujetsMap.set(key, {
-          examId: exam.id,
-          year: exam.year,
-          stream: exam.stream,
-          subject: exam.subject,
-          sessionType: exam.sessionType,
-          sujetNumber: exercise.sujetNumber,
-          sujetLabel: exercise.sujetLabel,
-          matchingExerciseCount: 1,
-        });
-      }
-    }
-
-    const matchingSujetEntries = Array.from(matchingSujetsMap.values()).sort(
-      (a, b) => {
-        if (a.year !== b.year) {
-          return b.year - a.year;
-        }
-
-        const streamOrder = a.stream.name.localeCompare(b.stream.name);
-        if (streamOrder !== 0) {
-          return streamOrder;
-        }
-
-        if (a.sujetNumber !== b.sujetNumber) {
-          return a.sujetNumber - b.sujetNumber;
-        }
-
-        return (
-          getSessionTypeRank(a.sessionType) - getSessionTypeRank(b.sessionType)
-        );
-      },
-    );
-
-    const matchingSujets = matchingSujetEntries.slice(
-      0,
-      DEFAULT_PREVIEW_SUJETS_LIMIT,
-    );
-    const sampleExercises = matchingExercises.slice(0, 6).map((exercise) => ({
-      exerciseNodeId: exercise.exerciseNodeId,
-      orderIndex: exercise.orderIndex,
-      title: exercise.title,
-      questionCount: exercise.questionCount,
-      examId: exercise.sourceExam.id,
-      year: exercise.sourceExam.year,
-      stream: exercise.sourceExam.stream,
-      subject: exercise.sourceExam.subject,
-      sessionType: exercise.sourceExam.sessionType,
-      sujetNumber: exercise.sujetNumber,
-      sujetLabel: exercise.sujetLabel,
-    }));
-
-    return {
+    return buildStudySessionPreviewResponse({
       sessionFamily: sessionMode.family,
       sessionKind: sessionMode.kind,
-      subjectCode: filters.subjectCode,
-      streamCode:
-        filters.streamCodes.length === 1 ? filters.streamCodes[0] : null,
-      streamCodes: filters.streamCodes,
-      years: filters.years,
-      topicCodes: filters.topicCodes,
-      sessionTypes: filters.sessionTypes,
-      sourceExamId: null,
-      durationMinutes: null,
-      matchingExerciseCount,
-      matchingSujetCount: matchingSujetEntries.length,
-      matchingSujets,
-      sampleExercises,
-      yearsDistribution: Array.from(yearsDistributionMap.entries())
-        .map(([year, count]) => ({
-          year,
-          matchingExerciseCount: count,
-        }))
-        .sort((a, b) => b.year - a.year),
-      streamsDistribution: Array.from(streamsDistributionMap.values()).sort(
-        (a, b) => b.matchingExerciseCount - a.matchingExerciseCount,
-      ),
-      maxSelectableExercises: Math.min(20, matchingExerciseCount),
-    };
+      filters,
+      matchingExercises,
+    });
   }
 
   async createStudySession(
@@ -429,10 +203,12 @@ export class StudySessionService {
       return this.createOfficialPaperSimulation(userId, payload, sessionMode);
     }
 
-    const filters = await this.resolveStudySessionFilters(userId, payload, sessionMode);
-    const exerciseCount = filters.exerciseCount;
-    const candidates =
-      await this.listStudySessionExerciseCandidates(filters);
+    const filters = await this.resolveStudySessionFilters(
+      userId,
+      payload,
+      sessionMode,
+    );
+    const candidates = await this.listStudySessionExerciseCandidates(filters);
 
     if (!candidates.length) {
       throw new NotFoundException(
@@ -440,22 +216,11 @@ export class StudySessionService {
       );
     }
 
-    const selected = filters.exerciseNodeIds.length
-      ? filters.exerciseNodeIds
-          .map((exerciseNodeId) =>
-            candidates.find((candidate) => candidate.exerciseNodeId === exerciseNodeId),
-          )
-          .filter(
-            (candidate): candidate is StudySessionExerciseCandidate =>
-              candidate !== undefined,
-          )
-      : this.pickRandom(candidates, Math.min(exerciseCount, candidates.length));
-
-    if (filters.exerciseNodeIds.length && selected.length !== filters.exerciseNodeIds.length) {
-      throw new NotFoundException(
-        'One or more selected exercises are no longer available.',
-      );
-    }
+    const selected = selectStudySessionExercises({
+      filters,
+      candidates,
+      pickRandom: (items, count) => this.pickRandom(items, count),
+    });
 
     const plannedExercises = this.planStudySessionExercises(
       selected.map((exercise, index) => ({
@@ -465,17 +230,7 @@ export class StudySessionService {
       })),
     );
 
-    const filtersSnapshot: Prisma.InputJsonObject = {
-      years: filters.years,
-      streamCode:
-        filters.streamCodes.length === 1 ? filters.streamCodes[0] : null,
-      streamCodes: filters.streamCodes,
-      subjectCode: filters.subjectCode,
-      topicCodes: filters.topicCodes,
-      sessionTypes: filters.sessionTypes,
-      search: filters.search ?? null,
-      exerciseNodeIds: filters.exerciseNodeIds,
-    };
+    const filtersSnapshot = buildStudySessionFiltersSnapshot(filters);
 
     const created = await this.prisma.$transaction(async (tx) => {
       const session = await tx.studySession.create({
@@ -693,131 +448,34 @@ export class StudySessionService {
           },
         })
       : [];
-    const exerciseByNodeId = new Map<
-      string,
-      {
-        exercise: HierarchyNodePayload;
-        fallbackExam: StudySessionExamOffering | null;
-      }
-    >();
-
-    for (const variant of variants) {
-      const hierarchy = mapVariantHierarchy(variant as ExamVariantWithNodes);
-      const representativeExam = pickRepresentativeExamOffering(
-        variant.paper.offerings,
-      );
-
-      for (const exercise of hierarchy.exercises) {
-        exerciseByNodeId.set(exercise.id, {
-          exercise,
-          fallbackExam: representativeExam,
-        });
-      }
-    }
-
-    const responseExercises = session.exercises.map((entry) => {
-      const linkedExercise = exerciseByNodeId.get(entry.exerciseNode.id);
-
-      if (!linkedExercise) {
-        throw new NotFoundException(
-          `Study session ${id} references missing hierarchy exercise ${entry.exerciseNode.id}.`,
-        );
-      }
-
-      const questions = collectHierarchyQuestionItemsForSession(
-        linkedExercise.exercise.children,
-        0,
-        linkedExercise.exercise.topics,
-      );
-      const totalPoints =
-        linkedExercise.exercise.maxPoints ??
-        questions.reduce((sum, question) => sum + question.points, 0);
-      const hierarchy = buildSessionExerciseHierarchyPayload(
-        linkedExercise.exercise,
-        questions,
-      );
-      const exam = entry.exam ?? linkedExercise.fallbackExam;
-
-      if (!exam) {
-        throw new NotFoundException(
-          `Study session ${id} references missing exam context for exercise ${entry.exerciseNode.id}.`,
-        );
-      }
-
-      return {
-        sessionOrder: entry.orderIndex,
-        id: linkedExercise.exercise.id,
-        orderIndex: linkedExercise.exercise.orderIndex,
-        title: linkedExercise.exercise.label || null,
-        totalPoints,
-        hierarchy,
-        exam,
-        questionCount: questions.length,
-      };
+    const responseExercises = buildStudySessionResponseExercises({
+      sessionId: id,
+      entries: session.exercises,
+      variants,
     });
-    const sessionSubjectCode =
-      responseExercises[0]?.exam.subject.code ?? storedFilters?.subjectCode ?? null;
-    const supportStyle = resolveStudySupportStyle(sessionSubjectCode);
+    const pedagogyContext = resolveStudySessionPedagogyContext({
+      storedFilters,
+      responseExercises,
+    });
     const pedagogy = {
-      supportStyle,
+      supportStyle: pedagogyContext.supportStyle,
       weakPointIntro: await this.buildWeakPointIntro({
         userId,
         sessionKind: session.kind,
-        subjectCode: sessionSubjectCode,
+        subjectCode: pedagogyContext.subjectCode,
         topicCodes: storedFilters?.topicCodes ?? [],
         exercises: responseExercises,
-        supportStyle,
+        supportStyle: pedagogyContext.supportStyle,
       }),
     } satisfies StudySessionResponse['pedagogy'];
 
-    return {
-      timingEnabled: session.timingEnabled,
-      id: session.id,
-      title: session.title,
-      family: session.family,
-      kind: session.kind,
-      status: this.resolveEffectiveSessionStatus(session),
-      sourceExamId: session.sourceExamId,
-      requestedExerciseCount: session.requestedExerciseCount,
-      exerciseCount: session.exercises.length,
-      durationMinutes: session.durationMinutes,
-      filters: storedFilters,
-      progress: this.buildStudySessionProgress({
-        resumeMode:
-          session.family === StudySessionFamily.SIMULATION &&
-          this.resolveEffectiveSessionStatus(session) === StudySessionStatus.EXPIRED
-            ? StudySessionResumeMode.REVIEW
-            : session.resumeMode,
-        activeExerciseId: session.activeExerciseNodeId,
-        activeQuestionId: session.activeQuestionNodeId,
-        sessionQuestions: session.exercises.flatMap((exercise) =>
-          (exercise.sessionQuestions ?? []).map((question) => ({
-            questionId: question.questionNodeId,
-            sequenceIndex: question.sequenceIndex,
-            answerState: question.answerState,
-            reflection: question.reflection,
-            diagnosis: question.diagnosis,
-            firstOpenedAt: question.firstOpenedAt,
-            lastInteractedAt: question.lastInteractedAt,
-            completedAt: question.completedAt,
-            skippedAt: question.skippedAt,
-            solutionViewedAt: question.solutionViewedAt,
-            timeSpentSeconds: question.timeSpentSeconds,
-            revealCount: question.revealCount,
-          })),
-        ),
-        updatedAt: session.updatedAt,
-      }),
-      pedagogy,
-      startedAt: session.startedAt?.toISOString() ?? null,
-      deadlineAt: session.deadlineAt?.toISOString() ?? null,
-      submittedAt: session.submittedAt?.toISOString() ?? null,
-      completedAt: session.completedAt?.toISOString() ?? null,
-      lastInteractedAt: session.lastInteractedAt?.toISOString() ?? null,
-      createdAt: session.createdAt.toISOString(),
-      updatedAt: session.updatedAt.toISOString(),
-      exercises: responseExercises,
-    };
+    return buildStudySessionResponse({
+      session,
+      storedFilters,
+      responseExercises,
+      supportStyle: pedagogy.supportStyle,
+      weakPointIntro: pedagogy.weakPointIntro,
+    });
   }
 
   async updateStudySessionProgress(
@@ -875,7 +533,7 @@ export class StudySessionService {
       throw new NotFoundException(`Study session ${id} not found`);
     }
 
-    const effectiveStatus = this.resolveEffectiveSessionStatus(existingSession);
+    const effectiveStatus = resolveEffectiveStudySessionStatus(existingSession);
 
     if (effectiveStatus === StudySessionStatus.EXPIRED) {
       if (existingSession.status !== StudySessionStatus.EXPIRED) {
@@ -892,218 +550,17 @@ export class StudySessionService {
     }
 
     const now = new Date();
-    const requestedMode =
-      payload.mode === StudySessionMode.REVIEW
-        ? StudySessionResumeMode.REVIEW
-        : payload.mode === StudySessionMode.SOLVE
-          ? StudySessionResumeMode.SOLVE
-          : existingSession.resumeMode;
-    const exercisesByNodeId = new Map(
-      existingSession.exercises.map((exercise) => [
-        exercise.exerciseNodeId,
-        exercise,
-      ]),
-    );
-    const questionsById = new Map<
-      string,
-      {
-        exerciseNodeId: string;
-        question: StoredStudySessionQuestionRow;
-      }
-    >();
-
-    for (const exercise of existingSession.exercises) {
-      for (const question of exercise.sessionQuestions) {
-        questionsById.set(question.questionNodeId, {
-          exerciseNodeId: exercise.exerciseNodeId,
-          question: {
-            questionId: question.questionNodeId,
-            sequenceIndex: question.sequenceIndex,
-            answerState: question.answerState,
-            reflection: question.reflection,
-            diagnosis: question.diagnosis,
-            firstOpenedAt: question.firstOpenedAt,
-            lastInteractedAt: question.lastInteractedAt,
-            completedAt: question.completedAt,
-            skippedAt: question.skippedAt,
-            solutionViewedAt: question.solutionViewedAt,
-            timeSpentSeconds: question.timeSpentSeconds,
-            revealCount: question.revealCount,
-          },
-        });
-      }
-    }
-
-    if (payload.activeExerciseId && !exercisesByNodeId.has(payload.activeExerciseId)) {
-      throw new BadRequestException(
-        'The active exercise does not belong to this study session.',
-      );
-    }
-
-    if (payload.activeQuestionId && !questionsById.has(payload.activeQuestionId)) {
-      throw new BadRequestException(
-        'The active question does not belong to this study session.',
-      );
-    }
-
-    if (payload.activeExerciseId && payload.activeQuestionId) {
-      const questionOwner = questionsById.get(payload.activeQuestionId);
-      if (questionOwner && questionOwner.exerciseNodeId !== payload.activeExerciseId) {
-        throw new BadRequestException(
-          'The active question does not belong to the selected exercise.',
-        );
-      }
-    }
-
-    const payloadQuestionStates = new Map(
-      (payload.questionStates ?? []).map((questionState) => {
-        if (!questionsById.has(questionState.questionId)) {
-          throw new BadRequestException(
-            'One or more question states do not belong to this study session.',
-          );
-        }
-
-        return [questionState.questionId, questionState] as const;
-      }),
-    );
-    const allowReviewSignals =
-      existingSession.family !== StudySessionFamily.SIMULATION ||
-      effectiveStatus === StudySessionStatus.COMPLETED;
-    const nextExercises = existingSession.exercises.map((exercise) => ({
-      id: exercise.id,
-      exerciseNodeId: exercise.exerciseNodeId,
-      orderIndex: exercise.orderIndex,
-      firstOpenedAt: exercise.firstOpenedAt,
-      lastInteractedAt: exercise.lastInteractedAt,
-      completedAt: exercise.completedAt,
-      createdAt: exercise.createdAt,
-      sessionQuestions: (exercise.sessionQuestions ?? []).map((question) =>
-        this.resolveNextStudySessionQuestionState({
-          current: {
-            questionId: question.questionNodeId,
-            sequenceIndex: question.sequenceIndex,
-            answerState: question.answerState,
-            reflection: question.reflection,
-            diagnosis: question.diagnosis,
-            firstOpenedAt: question.firstOpenedAt,
-            lastInteractedAt: question.lastInteractedAt,
-            completedAt: question.completedAt,
-            skippedAt: question.skippedAt,
-            solutionViewedAt: question.solutionViewedAt,
-            timeSpentSeconds: question.timeSpentSeconds,
-            revealCount: question.revealCount,
-          },
-          requested: payloadQuestionStates.get(question.questionNodeId),
-          now,
-          becameActive:
-            payload.activeQuestionId === question.questionNodeId &&
-            existingSession.activeQuestionNodeId !== question.questionNodeId,
-          allowSolutionReveal: allowReviewSignals,
-          allowReflection: allowReviewSignals,
-          allowDiagnosis: allowReviewSignals,
-          timingEnabled: existingSession.timingEnabled,
-        }),
-      ),
-    }));
-    let progress = this.buildStudySessionProgress({
-      resumeMode: requestedMode,
-      activeExerciseId: payload.activeExerciseId ?? null,
-      activeQuestionId: payload.activeQuestionId ?? null,
-      sessionQuestions: nextExercises.flatMap((exercise) =>
-        exercise.sessionQuestions,
-      ),
-      updatedAt: now,
-    });
-    const status = this.deriveStudySessionStatusFromProgress(
+    const {
       progress,
-      existingSession.family,
-      existingSession.deadlineAt,
+      status,
+      resolvedResumeMode,
+      changedQuestions,
+      changedExercises,
+    } = buildStudySessionProgressUpdateDraft({
+      existingSession,
+      payload,
+      effectiveStatus,
       now,
-      Boolean(existingSession.startedAt),
-    );
-    if (
-      existingSession.family === StudySessionFamily.SIMULATION &&
-      requestedMode === StudySessionResumeMode.REVIEW &&
-      status !== StudySessionStatus.COMPLETED &&
-      status !== StudySessionStatus.EXPIRED
-    ) {
-      throw new ForbiddenException(
-        'Simulation review is available only after submission or expiry.',
-      );
-    }
-    const resolvedResumeMode =
-      existingSession.family === StudySessionFamily.SIMULATION &&
-      (status === StudySessionStatus.COMPLETED ||
-        status === StudySessionStatus.EXPIRED)
-        ? StudySessionResumeMode.REVIEW
-        : requestedMode;
-
-    if (resolvedResumeMode !== requestedMode) {
-      progress = this.buildStudySessionProgress({
-        resumeMode: resolvedResumeMode,
-        activeExerciseId: payload.activeExerciseId ?? null,
-        activeQuestionId: payload.activeQuestionId ?? null,
-        sessionQuestions: nextExercises.flatMap((exercise) =>
-          exercise.sessionQuestions,
-        ),
-        updatedAt: now,
-      });
-    }
-    const currentQuestionRowsById = new Map(
-      existingSession.exercises.flatMap((exercise) =>
-        (exercise.sessionQuestions ?? []).map((question) => [
-          question.questionNodeId,
-          {
-            questionId: question.questionNodeId,
-            sequenceIndex: question.sequenceIndex,
-            answerState: question.answerState,
-            reflection: question.reflection,
-            diagnosis: question.diagnosis,
-            firstOpenedAt: question.firstOpenedAt,
-            lastInteractedAt: question.lastInteractedAt,
-            completedAt: question.completedAt,
-            skippedAt: question.skippedAt,
-            solutionViewedAt: question.solutionViewedAt,
-            timeSpentSeconds: question.timeSpentSeconds,
-            revealCount: question.revealCount,
-          } satisfies StoredStudySessionQuestionRow,
-        ]),
-      ),
-    );
-    const changedQuestions = nextExercises.flatMap((exercise) =>
-      exercise.sessionQuestions
-        .filter((question) =>
-          this.hasStudySessionQuestionStateChanged(
-            currentQuestionRowsById.get(question.questionId) ?? question,
-            question,
-          ),
-        )
-        .map((question) => ({
-          sessionExerciseId: exercise.id,
-          question,
-        })),
-    );
-    const nextExerciseStates = nextExercises.map((exercise) => ({
-      exerciseId: exercise.id,
-      ...this.buildStudySessionExerciseState(exercise),
-    }));
-    const changedExercises = nextExerciseStates.filter((exerciseState) => {
-      const current = existingSession.exercises.find(
-        (exercise) => exercise.id === exerciseState.exerciseId,
-      );
-
-      if (!current) {
-        return true;
-      }
-
-      return (
-        this.dateOrNullToIso(current.firstOpenedAt) !==
-          this.dateOrNullToIso(exerciseState.firstOpenedAt) ||
-        this.dateOrNullToIso(current.lastInteractedAt) !==
-          this.dateOrNullToIso(exerciseState.lastInteractedAt) ||
-        this.dateOrNullToIso(current.completedAt) !==
-          this.dateOrNullToIso(exerciseState.completedAt)
-      );
     });
 
     const session = await this.prisma.$transaction(async (tx) => {
@@ -1127,8 +584,7 @@ export class StudySessionService {
               solutionViewedAt: question.solutionViewedAt,
               timeSpentSeconds: question.timeSpentSeconds,
               revealCount: question.revealCount,
-              finalizedAt:
-                question.completedAt ?? question.skippedAt ?? null,
+              finalizedAt: question.completedAt ?? question.skippedAt ?? null,
             },
           }),
         ),
@@ -1168,12 +624,12 @@ export class StudySessionService {
                 : null,
           completedAt:
             status === StudySessionStatus.COMPLETED
-              ? existingSession.completedAt ?? now
+              ? (existingSession.completedAt ?? now)
               : null,
           submittedAt:
             existingSession.family === StudySessionFamily.SIMULATION &&
             status === StudySessionStatus.COMPLETED
-              ? existingSession.submittedAt ?? now
+              ? (existingSession.submittedAt ?? now)
               : existingSession.submittedAt,
           status,
         },
@@ -1262,24 +718,11 @@ export class StudySessionService {
       return null;
     }
 
-    const topicOrder = new Map(
-      requestedTopicCodes.map((topicCode, index) => [topicCode, index]),
-    );
-    const orderedTopics = [...topics].sort((left, right) => {
-      const leftIndex = topicOrder.get(left.code) ?? Number.MAX_SAFE_INTEGER;
-      const rightIndex = topicOrder.get(right.code) ?? Number.MAX_SAFE_INTEGER;
-
-      if (leftIndex !== rightIndex) {
-        return leftIndex - rightIndex;
-      }
-
-      return left.displayOrder - right.displayOrder;
-    });
     const topicRollups = await this.prisma.studentTopicRollup.findMany({
       where: {
         userId: input.userId,
         topicId: {
-          in: orderedTopics.map((topic) => topic.id),
+          in: topics.map((topic) => topic.id),
         },
       },
       select: {
@@ -1290,136 +733,13 @@ export class StudySessionService {
         revealedCount: true,
       },
     });
-    const rollupsByTopicId = new Map(
-      topicRollups.map((rollup) => [rollup.topicId, rollup]),
-    );
-    const reasonTotals = [
-      {
-        reason: 'MISSED',
-        count: orderedTopics.reduce(
-          (sum, topic) => sum + (rollupsByTopicId.get(topic.id)?.missedCount ?? 0),
-          0,
-        ),
-      },
-      {
-        reason: 'HARD',
-        count: orderedTopics.reduce(
-          (sum, topic) => sum + (rollupsByTopicId.get(topic.id)?.hardCount ?? 0),
-          0,
-        ),
-      },
-      {
-        reason: 'SKIPPED',
-        count: orderedTopics.reduce(
-          (sum, topic) => sum + (rollupsByTopicId.get(topic.id)?.skippedCount ?? 0),
-          0,
-        ),
-      },
-      {
-        reason: 'REVEALED',
-        count: orderedTopics.reduce(
-          (sum, topic) => sum + (rollupsByTopicId.get(topic.id)?.revealedCount ?? 0),
-          0,
-        ),
-      },
-    ] satisfies Array<{ reason: StudyReviewReasonType; count: number }>;
-    const dominantReason = [...reasonTotals].sort(
-      (left, right) => right.count - left.count,
-    )[0];
-    const keyRules = Array.from(
-      new Set(
-        orderedTopics.flatMap((topic) =>
-          [...topic.skillMappings]
-            .sort((left, right) => {
-              if (left.isPrimary !== right.isPrimary) {
-                return left.isPrimary ? -1 : 1;
-              }
-
-              const weightDelta = Number(right.weight) - Number(left.weight);
-
-              if (weightDelta !== 0) {
-                return weightDelta;
-              }
-
-              return left.skill.displayOrder - right.skill.displayOrder;
-            })
-            .map((mapping) =>
-              toPedagogyRule({
-                skillName: mapping.skill.name,
-                description: mapping.skill.description,
-              }),
-            ),
-        ),
-      ),
-    )
-      .filter(Boolean)
-      .slice(0, 3);
-    const paddedRules = [...keyRules];
-
-    for (const fallbackRule of getFallbackPedagogyRules(input.supportStyle)) {
-      if (paddedRules.length >= 3) {
-        break;
-      }
-
-      if (!paddedRules.includes(fallbackRule)) {
-        paddedRules.push(fallbackRule);
-      }
-    }
-
-    const prerequisiteTopics = Array.from(
-      new Map(
-        orderedTopics
-          .map((topic) => topic.parent)
-          .filter((topic): topic is NonNullable<typeof topic> => Boolean(topic))
-          .map((topic) => [
-            topic.code,
-            {
-              code: topic.code,
-              name: topic.studentLabel ?? topic.name,
-            },
-          ]),
-      ).values(),
-    );
-    const starterExercise = input.exercises[0];
-    const starterQuestion = starterExercise?.hierarchy.questions[0] ?? null;
-
-    return {
-      title:
-        orderedTopics.length === 1
-          ? `بطاقة علاج سريعة: ${orderedTopics[0].studentLabel ?? orderedTopics[0].name}`
-          : 'بطاقة علاج سريعة للمحاور الأضعف',
-      topicCodes: orderedTopics.map((topic) => topic.code),
-      topics: orderedTopics.map((topic) => ({
-        code: topic.code,
-        name: topic.studentLabel ?? topic.name,
-      })),
-      prerequisiteTopics,
-      keyRules: paddedRules,
-      commonTrap: buildCommonTrapMessage({
-        supportStyle: input.supportStyle,
-        dominantReason:
-          dominantReason && dominantReason.count > 0 ? dominantReason.reason : null,
-      }),
-      dominantReason:
-        dominantReason && dominantReason.count > 0 ? dominantReason.reason : null,
-      starterExercise: starterExercise
-        ? {
-            exerciseNodeId: starterExercise.hierarchy.exerciseNodeId,
-            exerciseTitle: starterExercise.hierarchy.exerciseLabel ?? starterExercise.title,
-            questionId: starterQuestion?.id ?? null,
-            questionLabel: starterQuestion?.label ?? null,
-            promptPreview: starterQuestion
-              ? extractPromptPreview(starterQuestion.promptBlocks)
-              : null,
-            source: {
-              year: starterExercise.exam.year,
-              sessionType: starterExercise.exam.sessionType,
-              subject: starterExercise.exam.subject,
-              stream: starterExercise.exam.stream,
-            },
-          }
-        : null,
-    };
+    return buildWeakPointIntroPayload({
+      requestedTopicCodes,
+      topics,
+      topicRollups,
+      exercises: input.exercises,
+      supportStyle: input.supportStyle,
+    });
   }
 
   private resolveStudySessionMode(
@@ -1431,11 +751,8 @@ export class StudySessionService {
       requestedKind ??
       (requestedFamily === StudySessionFamily.SIMULATION
         ? StudySessionKind.PAPER_SIMULATION
-        : (payload.topicCodes?.length ?? 0) > 0
-          ? StudySessionKind.TOPIC_DRILL
-          : StudySessionKind.MIXED_DRILL);
-    const family =
-      requestedFamily ?? resolveStudySessionFamilyFromKind(kind);
+        : inferStudySessionKindFromTopicCodes(payload.topicCodes ?? []));
+    const family = requestedFamily ?? resolveStudySessionFamilyFromKind(kind);
 
     if (resolveStudySessionFamilyFromKind(kind) !== family) {
       throw new BadRequestException(
@@ -1472,7 +789,7 @@ export class StudySessionService {
     const [drillStartsUsed, simulationStartsUsed] =
       await this.readMonthlySessionStartUsage(userId);
     const entitlements = buildStudyEntitlements({
-      subscriptionStatus: user.subscriptionStatus as SubscriptionStatus,
+      subscriptionStatus: user.subscriptionStatus,
       drillStartsUsed,
       simulationStartsUsed,
     });
@@ -1506,7 +823,6 @@ export class StudySessionService {
         `Your monthly ${sessionLabel} quota is exhausted until ${quotaBucket.resetsAt}.`,
       );
     }
-
   }
 
   private async readMonthlySessionStartUsage(userId: string) {
@@ -1545,58 +861,11 @@ export class StudySessionService {
       sessionMode,
     );
 
-    return {
+    return buildOfficialSimulationPreviewResponse({
       sessionFamily: sessionMode.family,
       sessionKind: sessionMode.kind,
-      subjectCode: simulationPlan.sourceExam.subject.code,
-      streamCode: simulationPlan.sourceExam.stream.code,
-      streamCodes: [simulationPlan.sourceExam.stream.code],
-      years: [simulationPlan.sourceExam.year],
-      topicCodes: [],
-      sessionTypes: [simulationPlan.sourceExam.sessionType],
-      sourceExamId: simulationPlan.sourceExam.id,
-      durationMinutes: simulationPlan.sourceExam.durationMinutes,
-      matchingExerciseCount: simulationPlan.exercises.length,
-      matchingSujetCount: 1,
-      sampleExercises: simulationPlan.exercises.slice(0, 6).map((exercise) => ({
-        exerciseNodeId: exercise.exerciseNodeId,
-        orderIndex: exercise.orderIndex,
-        title: exercise.title,
-        questionCount: exercise.questionCount,
-        examId: simulationPlan.sourceExam.id,
-        year: simulationPlan.sourceExam.year,
-        stream: simulationPlan.sourceExam.stream,
-        subject: simulationPlan.sourceExam.subject,
-        sessionType: simulationPlan.sourceExam.sessionType,
-        sujetNumber: simulationPlan.sujetNumber,
-        sujetLabel: simulationPlan.sujetLabel,
-      })),
-      matchingSujets: [
-        {
-          examId: simulationPlan.sourceExam.id,
-          year: simulationPlan.sourceExam.year,
-          stream: simulationPlan.sourceExam.stream,
-          subject: simulationPlan.sourceExam.subject,
-          sessionType: simulationPlan.sourceExam.sessionType,
-          sujetNumber: simulationPlan.sujetNumber,
-          sujetLabel: simulationPlan.sujetLabel,
-          matchingExerciseCount: simulationPlan.exercises.length,
-        },
-      ],
-      yearsDistribution: [
-        {
-          year: simulationPlan.sourceExam.year,
-          matchingExerciseCount: simulationPlan.exercises.length,
-        },
-      ],
-      streamsDistribution: [
-        {
-          stream: simulationPlan.sourceExam.stream,
-          matchingExerciseCount: simulationPlan.exercises.length,
-        },
-      ],
-      maxSelectableExercises: simulationPlan.exercises.length,
-    };
+      simulationPlan,
+    });
   }
 
   private async createOfficialPaperSimulation(
@@ -1613,17 +882,12 @@ export class StudySessionService {
       now,
       simulationPlan.sourceExam.durationMinutes,
     );
-    const filtersSnapshot: Prisma.InputJsonObject = {
-      years: [simulationPlan.sourceExam.year],
-      streamCode: simulationPlan.sourceExam.stream.code,
-      streamCodes: [simulationPlan.sourceExam.stream.code],
-      subjectCode: simulationPlan.sourceExam.subject.code,
-      topicCodes: [],
-      sessionTypes: [simulationPlan.sourceExam.sessionType],
-    };
-    const sessionTitle =
-      payload.title?.trim() ||
-      `محاكاة ${simulationPlan.sourceExam.subject.name} · ${simulationPlan.sourceExam.year} · ${simulationPlan.sujetLabel}`;
+    const filtersSnapshot =
+      buildOfficialSimulationFiltersSnapshot(simulationPlan);
+    const sessionTitle = buildOfficialSimulationSessionTitle({
+      requestedTitle: payload.title,
+      simulationPlan,
+    });
     const plannedExercises = this.planStudySessionExercises(
       simulationPlan.exercises.map((exercise, index) => ({
         exercise,
@@ -1665,11 +929,7 @@ export class StudySessionService {
     payload: CreateStudySessionDto,
     sessionMode: ResolvedStudySessionMode,
   ): Promise<OfficialSimulationPlan> {
-    if (!sessionMode.sourceExamId) {
-      throw new BadRequestException(
-        'An official paper simulation requires a source exam.',
-      );
-    }
+    assertOfficialSimulationRequested(sessionMode.sourceExamId);
 
     const exam = await this.prisma.exam.findUnique({
       where: { id: sessionMode.sourceExamId },
@@ -1759,190 +1019,24 @@ export class StudySessionService {
       },
     });
 
-    if (!exam || !exam.isPublished) {
-      throw new NotFoundException('The selected official paper was not found.');
-    }
+    assertOfficialSimulationExamMatchesRequest({
+      payload,
+      exam,
+    });
 
-    if (exam.subject.code !== payload.subjectCode.trim().toUpperCase()) {
-      throw new BadRequestException(
-        'The selected official paper does not match the requested subject.',
-      );
-    }
-
-    if (
-      payload.years?.length &&
-      !payload.years.some((year) => year === exam.year)
-    ) {
-      throw new BadRequestException(
-        'The selected official paper falls outside the requested year range.',
-      );
-    }
-
-    if (
-      payload.streamCode &&
-      payload.streamCode.trim().toUpperCase() !== exam.stream.code
-    ) {
-      throw new BadRequestException(
-        'The selected official paper does not match the requested stream.',
-      );
-    }
-
-    if (
-      payload.streamCodes?.length &&
-      !payload.streamCodes
-        .map((streamCode) => streamCode.trim().toUpperCase())
-        .includes(exam.stream.code)
-    ) {
-      throw new BadRequestException(
-        'The selected official paper does not match the requested stream.',
-      );
-    }
-
-    if (
-      payload.sessionTypes?.length &&
-      !payload.sessionTypes.includes(exam.sessionType)
-    ) {
-      throw new BadRequestException(
-        'The selected official paper does not match the requested session type.',
-      );
-    }
-
-    const publishedVariants = exam.paper.variants
-      .map((variant) => ({
-        variant,
-        sujetNumber: toSujetNumberFromVariantCode(variant.code),
-      }))
-      .filter(
-        (
-          entry,
-        ): entry is {
-          variant: (typeof exam.paper.variants)[number];
-          sujetNumber: SujetNumber;
-        } => entry.sujetNumber !== null,
-      );
-    const selectedVariantEntry = sessionMode.sourceSujetNumber
-      ? publishedVariants.find(
-          (entry) => entry.sujetNumber === sessionMode.sourceSujetNumber,
-        )
-      : publishedVariants.length === 1
-        ? publishedVariants[0]
-        : null;
-
-    if (!selectedVariantEntry) {
-      throw new BadRequestException(
-        'Select the sujet number for the official paper simulation.',
-      );
-    }
-
-    const hierarchy = mapVariantHierarchy(
-      selectedVariantEntry.variant as ExamVariantWithNodes,
-    );
-    const exercises = hierarchy.exercises
-      .map((exercise) => {
-        const questions = collectHierarchyQuestionItemsForSession(
-          exercise.children,
-          0,
-          exercise.topics,
-        );
-
-        if (!questions.length) {
-          return null;
-        }
-
-        const totalPoints =
-          exercise.maxPoints ??
-          questions.reduce((sum, question) => sum + question.points, 0);
-
-        return {
-          exerciseNodeId: exercise.id,
-          orderIndex: exercise.orderIndex,
-          title: exercise.label || null,
-          totalPoints,
-          questionCount: questions.length,
-          questions: questions.map((question, questionIndex) => ({
-            questionNodeId: question.id,
-            sequenceIndex: questionIndex + 1,
-          })),
-          sujetNumber: selectedVariantEntry.sujetNumber,
-          sujetLabel:
-            selectedVariantEntry.variant.title ||
-            getSujetLabel(selectedVariantEntry.sujetNumber),
-          variantId: selectedVariantEntry.variant.id,
-          variantCode: selectedVariantEntry.variant.code,
-          variantTitle: selectedVariantEntry.variant.title,
-          sourceExam: toStudySessionExamOffering(exam),
-          examOfferings: [toStudySessionExamOffering(exam)],
-          searchableText: buildStudySessionSearchCorpus(exercise, questions),
-        } satisfies StudySessionExerciseCandidate;
-      })
-      .filter(
-        (exercise): exercise is StudySessionExerciseCandidate =>
-          exercise !== null,
-      );
-
-    if (!exercises.length) {
-      throw new NotFoundException(
-        'The selected official paper does not contain published exercises yet.',
-      );
-    }
-
-    return {
-      sourceExam: {
-        id: exam.id,
-        year: exam.year,
-        sessionType: exam.sessionType,
-        durationMinutes: exam.paper.durationMinutes,
-        stream: exam.stream,
-        subject: exam.subject,
-      },
-      sujetNumber: selectedVariantEntry.sujetNumber,
-      sujetLabel:
-        selectedVariantEntry.variant.title ||
-        getSujetLabel(selectedVariantEntry.sujetNumber),
-      exercises,
-    };
-  }
-
-  private resolveEffectiveSessionStatus(
-    session: {
-      family: StudySessionFamily;
-      status: StudySessionStatus;
-      deadlineAt: Date | null;
-    },
-    now = new Date(),
-  ) {
-    if (
-      session.status === StudySessionStatus.COMPLETED ||
-      session.status === StudySessionStatus.EXPIRED
-    ) {
-      return session.status;
-    }
-
-    if (
-      session.family === StudySessionFamily.SIMULATION &&
-      session.deadlineAt &&
-      session.deadlineAt.getTime() <= now.getTime()
-    ) {
-      return StudySessionStatus.EXPIRED;
-    }
-
-    return session.status;
+    return buildOfficialSimulationPlan({
+      exam,
+      requestedSujetNumber: sessionMode.sourceSujetNumber,
+    });
   }
 
   private addMinutes(date: Date, minutes: number) {
     return new Date(date.getTime() + minutes * 60 * 1000);
   }
 
-  private async listStudySessionExerciseCandidates(filters: {
-    years: number[];
-    streamCodes: string[];
-    subjectCode: string;
-    topicCodes: string[];
-    topicMatchCodes: string[];
-    sessionTypes: SessionType[];
-    search?: string;
-    exerciseNodeIds: string[];
-  }): Promise<StudySessionExerciseCandidate[]> {
+  private async listStudySessionExerciseCandidates(
+    filters: ResolvedStudySessionFilters,
+  ): Promise<StudySessionExerciseCandidate[]> {
     const exams = await this.prisma.exam.findMany({
       where: {
         isPublished: true,
@@ -2053,129 +1147,9 @@ export class StudySessionService {
       },
     });
 
-    const candidateMap = new Map<string, StudySessionExerciseCandidate>();
-
-    for (const exam of exams) {
-      const examOffering = toStudySessionExamOffering(exam);
-
-      for (const variant of exam.paper.variants) {
-        const sujetNumber = toSujetNumberFromVariantCode(variant.code);
-
-        if (!sujetNumber) {
-          continue;
-        }
-
-        const hierarchy = mapVariantHierarchy(variant as ExamVariantWithNodes);
-
-        for (const exercise of hierarchy.exercises) {
-          if (
-            filters.exerciseNodeIds.length &&
-            !filters.exerciseNodeIds.includes(exercise.id)
-          ) {
-            continue;
-          }
-
-          const existingCandidate = candidateMap.get(exercise.id);
-
-          if (existingCandidate) {
-            pushStudySessionExamOffering(
-              existingCandidate.examOfferings,
-              examOffering,
-            );
-            continue;
-          }
-
-          const questions = collectHierarchyQuestionItemsForSession(
-            exercise.children,
-            0,
-            exercise.topics,
-          );
-
-          if (!questions.length) {
-            continue;
-          }
-
-          const searchableText = buildStudySessionSearchCorpus(exercise, questions);
-
-          if (
-            filters.topicMatchCodes.length &&
-            !questions.some((question) =>
-              question.topics.some((topic) =>
-                filters.topicMatchCodes.includes(topic.code),
-              ),
-            )
-          ) {
-            continue;
-          }
-
-          if (
-            filters.search &&
-            !searchableText.includes(filters.search.trim().toLowerCase())
-          ) {
-            continue;
-          }
-
-          const totalPoints =
-            exercise.maxPoints ??
-            questions.reduce((sum, question) => sum + question.points, 0);
-
-          candidateMap.set(exercise.id, {
-            exerciseNodeId: exercise.id,
-            orderIndex: exercise.orderIndex,
-            title: exercise.label || null,
-            totalPoints,
-            questionCount: questions.length,
-            questions: questions.map((question, questionIndex) => ({
-              questionNodeId: question.id,
-              sequenceIndex: questionIndex + 1,
-            })),
-            sujetNumber,
-            sujetLabel: variant.title || getSujetLabel(sujetNumber),
-            variantId: variant.id,
-            variantCode: variant.code,
-            variantTitle: variant.title,
-            sourceExam: examOffering,
-            examOfferings: [examOffering],
-            searchableText,
-          } satisfies StudySessionExerciseCandidate);
-        }
-      }
-    }
-
-    const candidates = Array.from(candidateMap.values());
-
-    for (const candidate of candidates) {
-      candidate.examOfferings = sortStudySessionExamOfferings(
-        candidate.examOfferings,
-      );
-      candidate.sourceExam = candidate.examOfferings[0] ?? candidate.sourceExam;
-    }
-
-    return candidates.sort((a, b) => {
-      if (a.sourceExam.year !== b.sourceExam.year) {
-        return b.sourceExam.year - a.sourceExam.year;
-      }
-
-      const streamOrder = a.sourceExam.stream.name.localeCompare(
-        b.sourceExam.stream.name,
-      );
-      if (streamOrder !== 0) {
-        return streamOrder;
-      }
-
-      if (a.sujetNumber !== b.sujetNumber) {
-        return a.sujetNumber - b.sujetNumber;
-      }
-
-      const sessionRankDelta =
-        getSessionTypeRank(a.sourceExam.sessionType) -
-        getSessionTypeRank(b.sourceExam.sessionType);
-
-      if (sessionRankDelta !== 0) {
-        return sessionRankDelta;
-      }
-
-      return a.orderIndex - b.orderIndex;
+    return buildStudySessionExerciseCandidates({
+      exams,
+      filters,
     });
   }
 
@@ -2183,29 +1157,16 @@ export class StudySessionService {
     userId: string,
     payload: CreateStudySessionDto,
     sessionMode: ResolvedStudySessionMode,
-  ) {
-    const years = this.uniqueNumbers(payload.years).filter(
-      (year) => year >= SESSION_YEAR_MIN && year <= SESSION_YEAR_MAX,
-    );
-    const subjectCode = payload.subjectCode.trim().toUpperCase();
-    const streamCodes = this.uniqueCodes([
-      ...(payload.streamCodes ?? []),
-      ...(payload.streamCode ? [payload.streamCode] : []),
-    ]);
-    let topicCodes = this.uniqueCodes(payload.topicCodes);
-    const exerciseNodeIds = Array.from(new Set(payload.exerciseNodeIds ?? []));
-    let topicMatchCodes = topicCodes;
-    const sessionTypes = this.uniqueSessionTypes(payload.sessionTypes);
-    const search = payload.search?.trim() || undefined;
-    const exerciseCount =
-      exerciseNodeIds.length > 0
-        ? exerciseNodeIds.length
-        : (payload.exerciseCount ?? 6);
+  ): Promise<ResolvedStudySessionFilters> {
+    let normalizedRequest = normalizeRequestedStudySessionFilters(payload, {
+      min: SESSION_YEAR_MIN,
+      max: SESSION_YEAR_MAX,
+    });
     const subjectScope =
       await this.catalogCurriculumService.resolveSubjectCurriculumScope({
-        subjectCode,
-        streamCodes,
-        years,
+        subjectCode: normalizedRequest.subjectCode,
+        streamCodes: normalizedRequest.streamCodes,
+        years: normalizedRequest.years,
       });
 
     if (!subjectScope) {
@@ -2215,7 +1176,7 @@ export class StudySessionService {
     if (sessionMode.kind === StudySessionKind.WEAK_POINT_DRILL) {
       const weakPointTarget =
         await this.studyWeakPointService.resolveWeakPointTarget(userId, {
-          subjectCode,
+          subjectCode: normalizedRequest.subjectCode,
         });
 
       if (!weakPointTarget?.topicCodes.length) {
@@ -2224,25 +1185,19 @@ export class StudySessionService {
         );
       }
 
-      topicCodes = weakPointTarget.topicCodes;
-      topicMatchCodes = weakPointTarget.topicCodes;
-    }
-
-    const allowedStreamCodes = Array.from(
-      new Set(subjectScope.allowedStreamCodes),
-    );
-
-    const invalidStreamCodes = streamCodes.filter(
-      (streamCode) => !allowedStreamCodes.includes(streamCode),
-    );
-
-    if (invalidStreamCodes.length) {
-      throw new BadRequestException(
-        'The selected stream is not available for this subject.',
+      normalizedRequest = applyWeakPointTopicCodes(
+        normalizedRequest,
+        weakPointTarget.topicCodes,
       );
     }
 
-    if (topicCodes.length) {
+    assertValidStudySessionStreamCodes(
+      normalizedRequest.streamCodes,
+      subjectScope.allowedStreamCodes,
+    );
+    let topicMatchCodes = normalizedRequest.topicMatchCodes;
+
+    if (normalizedRequest.topicCodes.length) {
       const subjectTopics = await this.prisma.topic.findMany({
         where: {
           subjectId: subjectScope.subjectId,
@@ -2259,36 +1214,27 @@ export class StudySessionService {
           },
         },
       });
-      const subjectTopicCodes = new Set(
-        subjectTopics.map((topic) => topic.code),
-      );
-
-      if (!topicCodes.every((code) => subjectTopicCodes.has(code))) {
-        throw new BadRequestException(
-          'One or more selected topics are invalid for this subject.',
-        );
-      }
-
-      topicMatchCodes = this.expandTopicCodesToDescendants(
-        subjectTopics.map((topic) => ({
+      topicMatchCodes = resolveStudySessionTopicMatchCodes({
+        topicCodes: normalizedRequest.topicCodes,
+        subjectTopicCodes: subjectTopics.map((topic) => topic.code),
+        topicTree: subjectTopics.map((topic) => ({
           code: topic.code,
           parentCode: topic.parent?.code ?? null,
         })),
-        topicCodes,
-      );
+      });
     }
 
-    return {
-      years,
-      streamCodes,
-      subjectCode: subjectScope.subjectCode,
-      topicCodes,
+    return buildResolvedStudySessionFilters({
+      normalizedRequest,
+      subjectScope: {
+        subjectId: subjectScope.subjectId,
+        subjectCode: subjectScope.subjectCode,
+        allowedStreamCodes: subjectScope.allowedStreamCodes,
+        curriculumIds: subjectScope.curriculumIds,
+      },
+      topicCodes: normalizedRequest.topicCodes,
       topicMatchCodes,
-      sessionTypes,
-      search,
-      exerciseCount,
-      exerciseNodeIds,
-    };
+    });
   }
 
   private async ensureWeakPointAccess(userId: string) {
@@ -2367,378 +1313,6 @@ export class StudySessionService {
     await tx.studySessionQuestion.createMany({
       data: sessionQuestions,
     });
-  }
-
-  private buildStudySessionProgress(input: {
-    resumeMode: StudySessionResumeMode;
-    activeExerciseId: string | null;
-    activeQuestionId: string | null;
-    sessionQuestions: StoredStudySessionQuestionRow[];
-    updatedAt: Date;
-  }): StudySessionProgress {
-    const questionStates = [...input.sessionQuestions]
-      .sort((a, b) => {
-        if (a.sequenceIndex !== b.sequenceIndex) {
-          return a.sequenceIndex - b.sequenceIndex;
-        }
-
-        return a.questionId.localeCompare(b.questionId);
-      })
-      .map((question) => this.toStudySessionProgressQuestionState(question));
-    const completedQuestionCount = questionStates.filter(
-      (question) => question.completed,
-    ).length;
-    const skippedQuestionCount = questionStates.filter(
-      (question) => question.skipped,
-    ).length;
-    const solutionViewedCount = questionStates.filter(
-      (question) => question.solutionViewed,
-    ).length;
-    const trackedTimeSeconds = questionStates.reduce(
-      (total, question) => total + question.timeSpentSeconds,
-      0,
-    );
-
-    return {
-      activeExerciseId: input.activeExerciseId,
-      activeQuestionId: input.activeQuestionId,
-      mode:
-        input.resumeMode === StudySessionResumeMode.REVIEW
-          ? StudySessionMode.REVIEW
-          : StudySessionMode.SOLVE,
-      questionStates,
-      summary: {
-        totalQuestionCount: questionStates.length,
-        completedQuestionCount,
-        skippedQuestionCount,
-        unansweredQuestionCount: Math.max(
-          questionStates.length - completedQuestionCount - skippedQuestionCount,
-          0,
-        ),
-        solutionViewedCount,
-        trackedTimeSeconds,
-      },
-      updatedAt: input.updatedAt.toISOString(),
-    };
-  }
-
-  private toStudySessionProgressQuestionState(
-    question: StoredStudySessionQuestionRow,
-  ): StudySessionProgressSnapshot['questionStates'][number] {
-    return {
-      questionId: question.questionId,
-      opened: this.isStudySessionQuestionOpened(question),
-      completed: question.completedAt !== null,
-      skipped: question.skippedAt !== null,
-      solutionViewed:
-        question.solutionViewedAt !== null || question.revealCount > 0,
-      timeSpentSeconds: question.timeSpentSeconds,
-      reflection: question.reflection,
-      diagnosis: question.diagnosis,
-    };
-  }
-
-  private isStudySessionQuestionOpened(question: StoredStudySessionQuestionRow) {
-    return (
-      question.firstOpenedAt !== null ||
-      question.answerState !== StudyQuestionAnswerState.UNSEEN
-    );
-  }
-
-  private resolveNextStudySessionQuestionState(input: {
-    current: StoredStudySessionQuestionRow;
-    requested: RequestedStudySessionQuestionState | undefined;
-    now: Date;
-    becameActive: boolean;
-    allowSolutionReveal: boolean;
-    allowReflection: boolean;
-    allowDiagnosis: boolean;
-    timingEnabled: boolean;
-  }): StoredStudySessionQuestionRow {
-    if (!input.requested && !input.becameActive) {
-      return input.current;
-    }
-
-    const currentProgress = this.toStudySessionProgressQuestionState(
-      input.current,
-    );
-    const desiredCompleted = Boolean(input.requested?.completed);
-    const desiredSkipped = Boolean(input.requested?.skipped) && !desiredCompleted;
-    const desiredSolutionViewed =
-      (input.allowSolutionReveal && Boolean(input.requested?.solutionViewed)) ||
-      currentProgress.solutionViewed;
-    const desiredReflection =
-      !input.allowReflection
-        ? input.current.reflection
-        : input.requested?.reflection === undefined
-        ? input.current.reflection
-        : input.requested.reflection;
-    const requestedDiagnosis = input.requested?.diagnosis;
-    const diagnosisAllowed =
-      input.allowDiagnosis &&
-      desiredReflection === StudyQuestionReflection.MISSED;
-    const desiredDiagnosis = diagnosisAllowed
-      ? requestedDiagnosis === undefined
-        ? input.current.diagnosis
-        : requestedDiagnosis
-      : null;
-    const desiredTimeSpentSeconds = input.timingEnabled
-      ? Math.max(
-          input.current.timeSpentSeconds,
-          input.requested?.timeSpentSeconds ?? input.current.timeSpentSeconds,
-        )
-      : input.current.timeSpentSeconds;
-    const desiredOpened =
-      currentProgress.opened ||
-      Boolean(input.requested?.opened) ||
-      desiredCompleted ||
-      desiredSkipped ||
-      desiredSolutionViewed ||
-      input.becameActive;
-    const stateChanged =
-      currentProgress.opened !== desiredOpened ||
-      currentProgress.completed !== desiredCompleted ||
-      currentProgress.skipped !== desiredSkipped ||
-      currentProgress.solutionViewed !== desiredSolutionViewed ||
-      currentProgress.timeSpentSeconds !== desiredTimeSpentSeconds ||
-      currentProgress.reflection !== desiredReflection ||
-      currentProgress.diagnosis !== desiredDiagnosis;
-    const touchedAt =
-      stateChanged || input.becameActive
-        ? input.now
-        : input.current.lastInteractedAt;
-
-    return {
-      ...input.current,
-      answerState: desiredSkipped
-        ? StudyQuestionAnswerState.SKIPPED
-        : desiredCompleted
-          ? StudyQuestionAnswerState.ANSWERED
-          : desiredSolutionViewed
-            ? StudyQuestionAnswerState.REVEALED
-            : desiredOpened
-              ? StudyQuestionAnswerState.OPENED
-              : StudyQuestionAnswerState.UNSEEN,
-      reflection: desiredReflection,
-      diagnosis: desiredDiagnosis,
-      firstOpenedAt: desiredOpened
-        ? input.current.firstOpenedAt ?? input.now
-        : null,
-      lastInteractedAt: touchedAt,
-      completedAt: desiredCompleted
-        ? input.current.completedAt ?? input.now
-        : null,
-      skippedAt: desiredSkipped ? input.current.skippedAt ?? input.now : null,
-      solutionViewedAt: desiredSolutionViewed
-        ? input.current.solutionViewedAt ?? input.now
-        : null,
-      timeSpentSeconds: desiredTimeSpentSeconds,
-      revealCount: desiredSolutionViewed
-        ? Math.max(input.current.revealCount, 1)
-        : 0,
-    };
-  }
-
-  private hasStudySessionQuestionStateChanged(
-    current: StoredStudySessionQuestionRow,
-    next: StoredStudySessionQuestionRow,
-  ) {
-    return (
-      current.answerState !== next.answerState ||
-      current.reflection !== next.reflection ||
-      current.diagnosis !== next.diagnosis ||
-      current.timeSpentSeconds !== next.timeSpentSeconds ||
-      this.dateOrNullToIso(current.firstOpenedAt) !==
-        this.dateOrNullToIso(next.firstOpenedAt) ||
-      this.dateOrNullToIso(current.lastInteractedAt) !==
-        this.dateOrNullToIso(next.lastInteractedAt) ||
-      this.dateOrNullToIso(current.completedAt) !==
-        this.dateOrNullToIso(next.completedAt) ||
-      this.dateOrNullToIso(current.skippedAt) !==
-        this.dateOrNullToIso(next.skippedAt) ||
-      this.dateOrNullToIso(current.solutionViewedAt) !==
-        this.dateOrNullToIso(next.solutionViewedAt) ||
-      current.revealCount !== next.revealCount
-    );
-  }
-
-  private buildStudySessionExerciseState(
-    exercise: StoredStudySessionExerciseRow,
-  ) {
-    const firstOpenedAt = exercise.sessionQuestions.reduce<Date | null>(
-      (current, question) => {
-        if (!question.firstOpenedAt) {
-          return current;
-        }
-
-        if (!current || question.firstOpenedAt.getTime() < current.getTime()) {
-          return question.firstOpenedAt;
-        }
-
-        return current;
-      },
-      null,
-    );
-    const lastInteractedAt = exercise.sessionQuestions.reduce<Date | null>(
-      (current, question) => {
-        if (!question.lastInteractedAt) {
-          return current;
-        }
-
-        if (!current || question.lastInteractedAt.getTime() > current.getTime()) {
-          return question.lastInteractedAt;
-        }
-
-        return current;
-      },
-      null,
-    );
-    const resolvedQuestions = exercise.sessionQuestions.filter(
-      (question) => question.completedAt || question.skippedAt,
-    );
-    const completedAt =
-      exercise.sessionQuestions.length > 0 &&
-      resolvedQuestions.length === exercise.sessionQuestions.length
-        ? resolvedQuestions.reduce<Date | null>((current, question) => {
-            const resolvedAt = question.completedAt ?? question.skippedAt;
-
-            if (!resolvedAt) {
-              return current;
-            }
-
-            if (!current || resolvedAt.getTime() > current.getTime()) {
-              return resolvedAt;
-            }
-
-            return current;
-          }, null)
-        : null;
-
-    return {
-      firstOpenedAt,
-      lastInteractedAt,
-      completedAt,
-    };
-  }
-
-  private dateOrNullToIso(value: Date | null) {
-    return value?.toISOString() ?? null;
-  }
-
-  private deriveStudySessionStatusFromProgress(
-    progress: StudySessionProgressSnapshot,
-    family: StudySessionFamily,
-    deadlineAt: Date | null,
-    now = new Date(),
-    hasStarted = false,
-  ): StudySessionStatus {
-    if (
-      family === StudySessionFamily.SIMULATION &&
-      deadlineAt &&
-      deadlineAt.getTime() <= now.getTime()
-    ) {
-      return StudySessionStatus.EXPIRED;
-    }
-
-    const hasActivity =
-      Boolean(progress.activeExerciseId) ||
-      Boolean(progress.activeQuestionId) ||
-      progress.mode === StudySessionMode.REVIEW ||
-      progress.questionStates.some(
-        (state) =>
-          state.opened ||
-          state.completed ||
-          state.skipped ||
-          state.solutionViewed,
-      ) ||
-      progress.summary.completedQuestionCount > 0 ||
-      progress.summary.skippedQuestionCount > 0 ||
-      progress.summary.solutionViewedCount > 0;
-
-    if (
-      progress.summary.totalQuestionCount > 0 &&
-      progress.summary.unansweredQuestionCount === 0
-    ) {
-      return StudySessionStatus.COMPLETED;
-    }
-
-    if (hasActivity) {
-      return StudySessionStatus.IN_PROGRESS;
-    }
-
-    if (hasStarted) {
-      return StudySessionStatus.IN_PROGRESS;
-    }
-
-    return StudySessionStatus.CREATED;
-  }
-
-  private expandTopicCodesToDescendants(
-    topics: Array<{
-      code: string;
-      parentCode: string | null;
-    }>,
-    selectedCodes: string[],
-  ): string[] {
-    if (!selectedCodes.length) {
-      return [];
-    }
-
-    const childrenByParent = new Map<string | null, string[]>();
-
-    for (const topic of topics) {
-      const bucket = childrenByParent.get(topic.parentCode) ?? [];
-      bucket.push(topic.code);
-      childrenByParent.set(topic.parentCode, bucket);
-    }
-
-    const expanded = new Set<string>(selectedCodes);
-    const queue = [...selectedCodes];
-
-    while (queue.length) {
-      const currentCode = queue.shift();
-
-      if (!currentCode) {
-        continue;
-      }
-
-      for (const childCode of childrenByParent.get(currentCode) ?? []) {
-        if (expanded.has(childCode)) {
-          continue;
-        }
-
-        expanded.add(childCode);
-        queue.push(childCode);
-      }
-    }
-
-    return Array.from(expanded);
-  }
-
-  private uniqueCodes(input?: string[]): string[] {
-    if (!input?.length) {
-      return [];
-    }
-
-    return Array.from(new Set(input.map((item) => item.trim().toUpperCase())));
-  }
-
-  private uniqueNumbers(input?: number[]): number[] {
-    if (!input?.length) {
-      return [];
-    }
-
-    return Array.from(
-      new Set(input.filter((item) => Number.isInteger(item))),
-    ).sort((a, b) => b - a);
-  }
-
-  private uniqueSessionTypes(input?: SessionType[]): SessionType[] {
-    if (!input?.length) {
-      return [];
-    }
-
-    return Array.from(new Set(input));
   }
 
   private pickRandom<T>(items: T[], count: number): T[] {

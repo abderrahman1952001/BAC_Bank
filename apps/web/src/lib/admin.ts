@@ -4,8 +4,16 @@ import {
   type ApiJsonParser,
   withJsonRequest,
 } from "@/lib/api-client";
+import {
+  parseAdminBillingSettingsResponse,
+  parseAdminFiltersResponse,
+  parseUpdateAdminBillingSettingsRequest,
+} from "@bac-bank/contracts/admin";
 import type { BlockType, ContentBlock } from "@bac-bank/contracts/admin";
 export type {
+  AdminBillingFeeResponsibility,
+  AdminBillingSettings,
+  AdminBillingSettingsResponse,
   AdminBootstrapResponse,
   AdminExam,
   AdminExamExercisesResponse,
@@ -19,8 +27,13 @@ export type {
   ExerciseEditorResponse,
   QuestionNode,
   TopicOption,
+  UpdateAdminBillingSettingsRequest,
 } from "@bac-bank/contracts/admin";
-export { parseAdminFiltersResponse } from "@bac-bank/contracts/admin";
+export {
+  parseAdminBillingSettingsResponse,
+  parseAdminFiltersResponse,
+  parseUpdateAdminBillingSettingsRequest,
+};
 export type {
   AdminIngestionDraft,
   AdminIngestionDraftKind,
@@ -72,6 +85,21 @@ export async function fetchAdminJson<T>(
     withAdminInit(init),
     "Admin request failed.",
     parser,
+  );
+}
+
+export async function updateAdminBillingSettings(
+  payload: import("@bac-bank/contracts/admin").UpdateAdminBillingSettingsRequest,
+) {
+  return fetchAdminJson<
+    import("@bac-bank/contracts/admin").AdminBillingSettingsResponse
+  >(
+    "/billing/settings",
+    {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    },
+    parseAdminBillingSettingsResponse,
   );
 }
 

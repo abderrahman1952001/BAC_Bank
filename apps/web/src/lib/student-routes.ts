@@ -1,6 +1,7 @@
 export const STUDENT_MY_SPACE_ROUTE = "/student/my-space";
 export const STUDENT_LIBRARY_ROUTE = "/student/library";
 export const STUDENT_TRAINING_ROUTE = "/student/training";
+export const STUDENT_BILLING_ROUTE = "/student/billing";
 export const STUDENT_TRAINING_DRILL_ROUTE = "/student/training/drill";
 export const STUDENT_TRAINING_SIMULATION_ROUTE = "/student/training/simulation";
 export const STUDENT_TRAINING_WEAK_POINTS_ROUTE = "/student/training/weak-points";
@@ -9,6 +10,7 @@ const studentSurfaceRoutes = {
   mySpace: STUDENT_MY_SPACE_ROUTE,
   library: STUDENT_LIBRARY_ROUTE,
   training: STUDENT_TRAINING_ROUTE,
+  billing: STUDENT_BILLING_ROUTE,
 } as const;
 
 export type StudentSurface = keyof typeof studentSurfaceRoutes;

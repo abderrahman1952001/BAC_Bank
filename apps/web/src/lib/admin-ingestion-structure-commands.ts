@@ -12,10 +12,12 @@ import {
   updateDraftBlockData,
   updateDraftNodeBlocks,
   updateDraftVariantNodes,
-  type DraftBlock,
-  type DraftBlockPreset,
-  type DraftNode,
-} from "@/lib/admin-ingestion-structure";
+} from "@/lib/admin-ingestion-structure-tree";
+import type {
+  DraftBlock,
+  DraftBlockPreset,
+  DraftNode,
+} from "@/lib/admin-ingestion-structure-shared";
 
 function clampBlockInsertIndex(
   blocks: DraftBlock[],

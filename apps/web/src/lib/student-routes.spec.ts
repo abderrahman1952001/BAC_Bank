@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  STUDENT_BILLING_ROUTE,
   STUDENT_LIBRARY_ROUTE,
   STUDENT_MY_SPACE_ROUTE,
   STUDENT_TRAINING_ROUTE,
@@ -35,6 +36,8 @@ describe("student route helpers", () => {
     expect(isStudentSurfaceActive("/student/practice/new", "training")).toBe(
       false,
     );
+    expect(isStudentSurfaceActive(STUDENT_BILLING_ROUTE, "billing")).toBe(true);
+    expect(isStudentSurfaceActive("/student/payments", "billing")).toBe(false);
   });
 
   it("builds query routes without empty values", () => {

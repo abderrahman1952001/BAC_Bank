@@ -12,15 +12,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  adminer:
-    image: adminer:4-standalone
-    container_name: bac-adminer
-    restart: unless-stopped
-    depends_on:
-      - postgres
-    ports:
-      - "8080:8080"
-
   redis:
     image: redis:7-alpine
     container_name: bac-redis

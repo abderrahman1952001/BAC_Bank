@@ -11,11 +11,13 @@ import {
   applyNativeSuggestionToDraftBlock,
   applyRecoveredAssetToDraft,
   applyRecoveredSnippetToDraft,
-  type DraftAsset,
-  type DraftBlock,
-  type DraftNode,
   type SnippetRecoveryAction,
-} from "@/lib/admin-ingestion-structure";
+} from "@/lib/admin-ingestion-structure-assets";
+import type {
+  DraftAsset,
+  DraftBlock,
+  DraftNode,
+} from "@/lib/admin-ingestion-structure-shared";
 
 export function resolveRecoveredAssetNotice(keepsAsset: boolean) {
   return keepsAsset

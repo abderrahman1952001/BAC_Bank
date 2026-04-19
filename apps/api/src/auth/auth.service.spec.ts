@@ -109,6 +109,7 @@ describe('AuthService', () => {
       fullName: 'Student Example',
       role: UserRole.USER,
       subscriptionStatus: SubscriptionStatus.FREE,
+      subscriptionEndsAt: null,
       stream: null,
     });
     mockedCreateClerkClient.mockReturnValue({
@@ -169,6 +170,7 @@ describe('AuthService', () => {
         fullName: 'Admin',
         role: UserRole.ADMIN,
         subscriptionStatus: SubscriptionStatus.FREE,
+        subscriptionEndsAt: null,
         stream: null,
       });
     prisma.user.update.mockResolvedValueOnce({
@@ -178,6 +180,7 @@ describe('AuthService', () => {
       fullName: 'Admin',
       role: UserRole.ADMIN,
       subscriptionStatus: SubscriptionStatus.FREE,
+      subscriptionEndsAt: null,
       stream: null,
     });
     mockedCreateClerkClient.mockReturnValue({
@@ -228,6 +231,7 @@ describe('AuthService', () => {
       fullName: 'Sara',
       role: UserRole.USER,
       subscriptionStatus: SubscriptionStatus.FREE,
+      subscriptionEndsAt: null,
       stream: {
         code: 'SE',
         name: 'Sciences experimentales',
@@ -250,6 +254,7 @@ describe('AuthService', () => {
           name: 'Sciences experimentales',
         },
         subscriptionStatus: 'FREE',
+        subscriptionEndsAt: null,
         studyEntitlements: freeStudyEntitlements,
       },
     });

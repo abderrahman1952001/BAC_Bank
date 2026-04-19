@@ -1,0 +1,2905 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "exercises": [
+        {
+          "orderIndex": 1,
+          "title": "التمرين الأول: (06 نقاط)",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "تُسَيِّر الوكالة الفضائية الجزائرية (ASAL) خمسة أقمار اصطناعية نذكر منها:"
+            },
+            {
+              "type": "paragraph",
+              "text": "– ألسات 1، ألسات 2 المُصمَّمان للأبحاث العلمية ومراقبة الطقس ورصد واستشعار الزلازل والكوارث الطبيعية."
+            },
+            {
+              "type": "paragraph",
+              "text": "– ألكوم سات 1 المُخَصَّص لتوفير خدمات الاتصالات والانترنت وبث القنوات الإذاعية والتلفزيونية."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التمرين إلى دراسة حركة مركز عطالة قمر اصطناعي (S) حول الأرض وتحديد بعض المقادير الفيزيائية المميزة للقمر الاصطناعي ألكوم سات 1."
+            },
+            {
+              "type": "heading",
+              "text": "معطيات:"
+            },
+            {
+              "type": "paragraph",
+              "text": "– نعتبر الأرض كروية الشكل: مركزها $o$ ونصف قطرها $R_T = 6380 km$ ، كتلتها $M_T = 6 \\times 10^{24} kg$"
+            },
+            {
+              "type": "paragraph",
+              "text": "– ثابت الجذب العام: $G = 6,67 \\times 10^{-11} (SI)$"
+            },
+            {
+              "type": "paragraph",
+              "text": "– تنجز الأرض دورة كاملة حول محورها خلال مدة $T_0 \\approx 24h$"
+            },
+            {
+              "type": "heading",
+              "text": "I -/ دراسة حركة قمر اصطناعي (S) ."
+            },
+            {
+              "type": "paragraph",
+              "text": "1. نعتبر قمرا اصطناعيا نقطة مادية كتلتها $m_s$ على ارتفاع $h$ من سطح الأرض في حركة دائرية نصف قطرها $r$ ويخضع فقط لقوة جذب الأرض."
+            }
+          ],
+          "assetIds": [
+            "s1_ex1_image1",
+            "s1_ex1_graph1",
+            "s1_ex1_corr_fig1"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1.1. اقترح المرجع المناسب لدراسة حركة $(S)$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المرجع المناسب لدراسة حركة $(S)$ : مرجع جيو مركزي"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.1. اكتب بدلالة $G$ ، $M_T$ ، $m_s$ و $r$ عبارة شدة $\\vec{F}_{T/S}$ قوة جذب الأرض للقمر $(S)$ ثم مثّلها كيفيا."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "كتابة عبارة شدة $\\vec{F}_{T/S}$ بدلالة $G$ ، $M_T$ ، $m_s$ و $r$ ثم تمثيلها كيفيا:"
+                },
+                {
+                  "type": "latex",
+                  "text": "F_{T/S} = G \\cdot \\frac{M_T \\cdot m_s}{r^2}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25×2"
+                }
+              ],
+              "assetIds": [
+                "s1_ex1_corr_fig1"
+              ]
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.1. باستعمال التحليل البُعدي، حدّد بُعد الثابت $G$ ثم استنتج وحدته في الجملة الدولية $(SI)$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تحديد بعد الثابت $G$ و وحدته في $(SI)$ :"
+                },
+                {
+                  "type": "latex",
+                  "text": "G = \\frac{F \\cdot r^2}{M_T \\cdot m_s} \\implies [G] = \\frac{[f] \\cdot [r]^2}{[m]^2}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "أي $[G] = \\frac{[m] \\cdot \\frac{[l]}{[t]^2} \\cdot [l]^2}{[m]^2} \\implies [G] = \\frac{[l]^3}{[m] \\cdot [t]^2}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ومنه بعد الثابت $G$ هو $[G] = L^3 \\cdot T^{-2} \\cdot M^{-1}$ فتكون وحدته في الجملة الدولية هي $m^3 \\cdot s^{-2} \\cdot Kg^{-1}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. بتطبيق القانون الثاني لنيوتن:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1.2. بيّن أنّ حركة مركز عطالة $(S)$ دائرية منتظمة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "طبيعة حركة $(S)$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تطبيق القانون الثاني لنيوتن: $\\vec{F}_{T/S} = m_s \\cdot \\vec{a}_G$ و منه $\\vec{a} = \\frac{\\vec{F}_{T/S}}{m_s}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "فتسارع الحركة ناظمي وشدته ثابتة $(a = \\frac{F_{T/S}}{m_s} = G \\frac{M_T}{r^2})$ إذن الحركة دائرية منتظمة."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "( تقبل الإجابات التالية : - بالإسقاط على المحور المماسي نجد $a_t = \\frac{dv}{dt} = 0 \\implies$ السرعة ثابتة و المسار دائري و منه الحركة دائرية منتظمة"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "- بالإسقاط على المحور الناظمي ، تبيان أن السرعة ثابتة ومنه الحركة دائرية منتظمة"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.2. جِدْ عبارة كل من السرعة المدارية $v$ والدور $T$ للقمر $(S)$ بدلالة $G$، $M_T$ و $r$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة $v$ و $T$ بدلالة $G$، $M_T$ و $r$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "*بالتعويض في القانون الثاني لنيوتن عبارة $F_{T/S}$ و $a_n = \\frac{v^2}{r}$ نجد $v = \\sqrt{\\frac{GM_T}{r}}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* بتعويض عبارة $v$ نجد $T = \\frac{2\\pi r}{v}$ نجد $T = 2\\pi \\sqrt{\\frac{r^3}{GM_T}}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.2. اذكر نص القانون الثالث لكبلر ثم أثبت العلاقة المُعبِّرة عنه بالنسبة لمركز عطالة $(S)$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تذكير القانون الثالث لكبر و اثبات علاقته:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* \" إن مربع الدور لمدار كوكب يتناسب مع مكعب البعد المتوسط للكوكب عن الشمس \""
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* من عبارة الدور نجد $\\frac{T^2}{r^3} = \\frac{4\\pi^2}{GM_T}$ وهي نسبة ثابتة."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. يُمثّل بيان (الشكل 1) تغيرات التسارع $a$ لمركز عطالة القمر $(S)$ بدلالة مقلوب مُربع نصف قطر مساره $\\frac{1}{r^2}$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1.3. جِدْ عبارة التسارع $a$ لمركز عطالة $(S)$ بالشكل $a = A \\cdot \\frac{1}{r^2}$ حيث $A$ ثابت يطلب إيجاد عبارته."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة التسارع $a$ بالشكل $a = A \\cdot \\frac{1}{r^2}$ ، ثم إيجاد عبارة $A$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "من عبارة القانون الثاني لنيوتن $a = \\frac{F_{T/S}}{m_s} = G \\cdot M_T \\cdot \\frac{1}{r^2}$ بالتطابق نجد $A = G M_T$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.3. تحقّق من قيمة كتلة الأرض $M_T$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التحقق من قيمة كتلة الأرض $M_T$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "معادلة البيان: $a = A \\cdot \\frac{1}{r^2}$ حيث $A$ معامل توجيه البيان"
+                },
+                {
+                  "type": "latex",
+                  "text": "A = \\frac{(0,20 - 0,10)}{(5 - 2,5) \\times 10^{-16}} = 4 \\times 10^{14} m^3 \\cdot s^{-2}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالتطابق مع العلاقة النظرية نجد $M_T = \\frac{A}{G}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نجد القيمة $M_T = \\frac{4 \\times 10^{14}}{6,67 \\times 10^{-11}} \\implies M_T \\approx 6 \\times 10^{24} kg$ (ت.ع)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "II -/ حساب بعض المقادير المميزة للقمر ألكوم سات 1."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تم اطلاق القمر الاصطناعي ألكوم سات 1 في مداره سنة 2017 على ارتفاع $h = 35,8 \\cdot 10^3 km$ من سطح الأرض."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1. احسب السرعة المدارية $v$ للقمر ألكوم سات 1."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب السرعة المدارية $v$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "من العبارة السابقة للسرعة المدارية $v = \\sqrt{\\frac{G M_T}{(R_T + h)}}$ حيث $r = R_T + h$ بإجراء التطبيق العددي"
+                },
+                {
+                  "type": "latex",
+                  "text": "v = \\sqrt{\\frac{6,67 \\times 10^{-11} \\times 6 \\times 10^{24}}{(6380 + 35,8 \\times 10^3) \\cdot 10^3}}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نجد $v = 3080 m \\cdot s^{-1} \\simeq 3 km \\cdot s^{-1}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. استنتج الدور $T$ للقمر الاصطناعي ألكوم سات 1."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استنتاج الدور $T$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "أي $T = \\frac{2\\pi r}{v}$ ، $T = \\frac{2\\pi(R_T + h)}{v}$ (ت ع)"
+                },
+                {
+                  "type": "latex",
+                  "text": "T = \\frac{2 \\times 3,14 \\times (6380 + 35,8 \\times 10^3) \\cdot 10^3}{3080}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نجد $T = 86003 s \\simeq 24 h$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(نقبل توظيف العبارة $T = 2\\pi \\sqrt{\\frac{r^3}{GM_T}}$)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. يَظهر ألكوم سات 1 ساكنا بالنسبة لملاحظ على سطح الأرض."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1.3. حَدِّد الشروط التي يحققها هذا القمر الاصطناعي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الشروط التي يحققها ألكوم سات 1 :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– يدور في جهة دوران الأرض حول محورها"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– يدور في مستوى خط الاستواء"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– دوره يساوي دور الأرض حول محورها $T \\simeq 24h$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 12,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.3. كَيْف يُسمى هذا النوع من الأقمار الاصطناعية؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اسم هذا النوع من الأقمار الاصطناعية :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نسمي هذا النوع من الأقمار الاصطناعية : أقمار جيو مستقرة"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            }
+          ]
+        },
+        {
+          "orderIndex": 2,
+          "title": "التمرين الثاني: (07 نقاط)",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "حمض الأزوتيد (النيتروز) صيغته الكيميائية $HNO_2$ يتواجد على شكل محلول ذي لون أزرق فاتح، يُستخدم في الصناعات الورقية والنسيجية."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التمرين إلى دراسة تفاعل حمض الأزوتيد مع الماء والمتابعة الزمنية لتفككه الذاتي في وسط مائي."
+            },
+            {
+              "type": "heading",
+              "text": "I. نُحَضِّر محلولا مائيا ($S_0$) لحمض الأزوتيد $HNO_2$ تركيزه المولي $c_0 = 0,5 mol \\cdot L^{-1}$ وحجمه $V_0$، قسنا $pH$ المحلول ($S_0$) فوجدنا القيمة $pH = 1,8$ عند درجة حرارة $\\theta = 25^\\circ C$."
+            }
+          ],
+          "assetIds": [
+            "s1_ex2_graph1",
+            "s1_ex2_graph2"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1. أعط تعريف الحمض حسب برونشتد."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف الحمض حسب العالم برونشتد :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "\" حسب العالم برونشتد ، الحمض هو كل فرد كيميائي يفقد بروتون $H^+$ خلال تفاعله \""
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. اكتب معادلة التفاعل المنمذجة للتحول الحادث بَيْنَ حمض الأزوتيد والماء."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "معادلة التفاعل المنمذجة للتحول الحادث بين حمض الأزوتيد و الماء :"
+                },
+                {
+                  "type": "latex",
+                  "text": "HNO_2(aq) + H_2O(l) = NO_2^-(aq) + H_3O^+(aq)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. أنجز جدول تقدم التفاعل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "إنجاز جدول تقدم التفاعل :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "| معادلة التفاعل | $HNO_2(aq) + H_2O(l) = NO_2^-(aq) + H_3O^+(aq)$ |\n|---|---|\n| الحالة | تقدم التفاعل: $x(mol)$ | كمية المادة : $(mol)$ |\n| الابتدائية | $0$ | $c_0 V_0$ | بوفرة | $0$ | $0$ |\n| الانتقالية | $x$ | $c_0 V_0 - x$ | بوفرة | $x$ | $x$ |\n| النهائية | $X_f$ | $c_0 V_0 - X_f$ | بوفرة | $X_f$ | $X_f$ |"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4. جِدْ عبارة نسبة التقدم النهائي $\\tau_f$ بدلالة الـ $pH$ و $c_0$ واحسب قيمتها. هل حمض الأزوتيد قوي أم ضعيف؟ علِّل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة نسبة التقدم النهائي $\\tau_f$ بدلالة $pH$ و $c_0$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حيث $X_{max} = c_0 V_0$ و $X_f = [H_3O^+]_f V_0 = 10^{-pH} V_0$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ومنه: $\\tau_f = \\frac{10^{-pH}}{c_0}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* حساب قيمة $\\tau_f$ : (ت ع) $\\tau_f = \\frac{10^{-1,8}}{0,5}$ نجد $\\tau_f = 0,032(3,2\\%)$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* طبيعة الحمض : بما أن $\\tau_f < 1$ فتفاعل الحمض مع الماء غير تام . حمض الأزوتيد حمض ضعيف."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "5. نُحَضِّر عِدَّة محاليل مُمدَّدة انطلاقا من المحلول ($S_0$). قياس $pH$ هذه المحاليل وحساب $\\tau_f$ في كل محلول مكنتنا من رسم المنحنى البياني (الشكل 2) الممثّل لتغيرات $\\tau_f^2$ بدلالة مقلوب التركيز المولي للمحلول الحمضي $\\frac{1}{c}$ ، من أجل التقريب التالي: $1 \\approx 1 - \\tau_f$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1.5. جِدْ عبارة ثابت التوازن $K$ للتفاعل الحادث بَيْنَ حمض الأزوتيد والماء بدلالة $\\tau_f$ و $c$ تركيز المحلول المُمدَّد."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة ثابت التوازن $K$ بدلالة $\\tau_f$ و $c$ :"
+                },
+                {
+                  "type": "latex",
+                  "text": "K = \\frac{[H_3O^+]_{(eq)} [NO_2^-]_{(eq)}}{[HNO_2]_{(eq)}}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حيث $[NO_2^-]_{(eq)} = [H_3O^+]_{(eq)} = c \\tau_f$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "و $[HNO_2]_{(eq)} = c - [H_3O^+]_{(eq)} = c - c \\tau_f$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالتعويض نجد $K = \\frac{c \\cdot \\tau_f^2}{1 - \\tau_f}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "و باعتبار $1 \\approx 1 - \\tau_f$ تصبح العبارة $K = c \\cdot \\tau_f^2$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.5. استنتج من البيان قيمة ثابت التوازن $K$ للتفاعل الحادث."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استنتاج من البيان قيمة ثابت التوازن $K$ للتفاعل الحادث :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "معادلة البيان : $\\tau_f^2 = a \\cdot \\frac{1}{c}$ حيث $a$ معامل توجيه الخط المستقيم قيمته"
+                },
+                {
+                  "type": "latex",
+                  "text": "a = \\frac{(5 - 1) \\times 10^{-3}}{(10 - 2)} = 0,50 \\cdot 10^{-3} mol \\cdot L^{-1}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "و من العلاقة السابقة $\\tau_f^2 = K \\cdot \\frac{1}{c}$ و بالتطابق $K = a$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$K = 0,5 \\cdot 10^{-3}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.5. ماهو تأثير التراكيز المولية الابتدائية على كل من $\\tau_f$ و $K$ عند نفس درجة حرارة الوسط التفاعلي؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تأثير التراكيز الابتدائية على $\\tau_f$ و $K$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* حسب العلاقة $\\tau_f^2 = K \\cdot \\frac{1}{c}$ فإن نسبة التقدم النهائي $\\tau_f$ تزداد كلما نقص التركيز الابتدائي للمحلول ( تمديد المحلول يزيد من نسبة تقدم التفاعل)"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* أما ثابت التوازن $K$ فلا يتغير بتغيير التركيز الابتدائي للمحلول في نفس درجة الحرارة لأنه يميز التفاعل الحادث ( و هو يمثل معامل توجيه البيان و هو مقدار ثابت)."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "II. حمض الأزوتيد في الوسط المائي غير مُستقر، يتفكّك ذاتيا وفق تفاعل تام. سمحت إحدى طرق متابعة تفكّك حمض الأزوتيد مع مرور الزمن عند درجة حرارة $\\theta = 25^\\circ C$ من رسم المنحنى البياني المُبيّن في (الشكل 3) والذي يُمثّل تطور كمّية مادة $HNO_2$ بدلالة الزمن $t$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1. كَيْف نُصَنِّف هذا التحول من حيث مُدّة إستغراقه؟ علِّل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تصنيف التحول الحادث من حيث مدة استغراقه ، مع التعليل :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التحول الحادث هو تحول بطيء لأنه يستغرق عدة ساعات."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. اكتب معادلة التفاعل المنمذجة للتحول الحادث علما أنّ الثنائيتين المُشاركتين في التفاعل هما:"
+                },
+                {
+                  "type": "latex",
+                  "text": "(NO_3^-(aq) / HNO_2(aq)) \\; , \\; (HNO_2(aq) / NO(g))"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "معادلة التفاعل المنمذجة للتحول الحادث :"
+                },
+                {
+                  "type": "latex",
+                  "text": "2 \\times [HNO_2(aq) + H_3O^+(aq) + e^- = NO(g) + 2H_2O(l)] : (HNO_2(aq) / NO(g))"
+                },
+                {
+                  "type": "latex",
+                  "text": "1 \\times [HNO_2(aq) + 4H_2O(l) = NO_3^-(aq) + 3H_3O^+ + 2e^-(aq)] : (NO_3^-(aq) / HNO_2(aq))"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بجمع المعادلتين النصفيتين نجد معادلة التفاعل المنمذجة للتفكك الذاتي لحمض الأزوتيد"
+                },
+                {
+                  "type": "latex",
+                  "text": "3HNO_2(aq) = 2NO(g) + NO_3^-(aq) + H_3O^+(aq)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. بالاستعانة بجدول التقدم استنتج قيمة التقدم الأعظمي $X_{max}$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بالاستعانة بجدول تقدم التفاعل استنتاج قيمة $X_{max}$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "| معادلة التفاعل | $3HNO_2(aq) = 2NO(g) + NO_3^-(aq) + H_3O^+(aq)$ |\n|---|---|\n| الحالة | تقدم التفاعل: $x(mol)$ | كمية المادة : $(mol)$ |\n| الابتدائية | $0$ | $n_0 = 0,6$ | $0$ | $0$ | $0$ |\n| الانتقالية | $x$ | $n_0 - 3x$ | $2x$ | $x$ | $x$ |\n| النهائية | $X_f$ | $n_0 - 3X_f$ | $2X_f$ | $X_f$ | $X_f$ |"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التحول تام ، $HNO_2$ متفاعل محد أي $0 = 0,6 - 3X_{max}$ و منه $X_{max} = 0,2 mol$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4. عَرِّف زمن نصف التفاعل $t_{1/2}$ ثم حَدِّد قيمته من البيان."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف زمن نصف التفاعل و تحديد قيمته بيانيا :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "\" زمن نصف التفاعل هو الزمن الذي من أجله يبلغ تقدم التفاعل نصف تقدمه النهائي \""
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تحديد قيمته بيانيا : $x = \\frac{X_f}{2} = \\frac{X_{max}}{2}$ فإن $t = t_{1/2}$ و لما $n(HNO_2)(t) = n_0 - 3x(t)$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالتعويض نجد $n(HNO_2)(t_{1/2}) = n_0 - 3 \\frac{X_{max}}{2} = 0,6 - 3 \\frac{0,2}{2} = 0,3 mol$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالاسقاط نجد $t_{1/2} = 21h$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "( تقبل الإجابة التالية : عند اختفاء نصف كمية مادة المتفاعل المحد فإن: $n(HNO_2)(t_{1/2}) = \\frac{n_0}{2} = 0,3 mol$ بالاسقاط نجد $t_{1/2} = 21h$ )"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 12,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "5. احسب سرعة التفاعل عند اللّحظة $t = 30h$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب سرعة التفاعل لما $t = 30h$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$n(HNO_2)(t) = n_0 - 3x(t)$ بالاشتقاق نجد $\\frac{dn(HNO_2)}{dt} = -3 \\frac{dx}{dt} = -3 \\cdot v(t)$ و منه"
+                },
+                {
+                  "type": "latex",
+                  "text": "v(t) = -\\frac{1}{3} \\frac{dn(HNO_2)}{dt}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "وعند اللحظة $t = 30h$"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\frac{dn(HNO_2)}{dt} = \\frac{(0 - 0,44)}{(60 - 0)} = -7,33 \\cdot 10^{-3} mol \\cdot h^{-1}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "و منه فنجد القيمة $v(30h) = -\\frac{1}{3} (-7,33 \\cdot 10^{-3})$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$v(30h) = 2,4 \\cdot 10^{-3} mol \\cdot h^{-1}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            }
+          ]
+        },
+        {
+          "orderIndex": 3,
+          "title": "الجزء الثاني: (07 نقاط)\nالتمرين التجريبي:",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "في حصة عمل مخبري طلب أستاذ من تلامذته تحديد طبيعة ومُميزات ثنائيات أقطاب مجهولة $D_1$ ، $D_2$ و $D_3$ وأكّد لهم أنّها تمثّل مكثفة (سعتها $C$)، وشيعة ( ذاتيتها $L$ ومقاومتها الداخلية $r$ ) وناقل أومي ( مقاومته $R$)."
+            },
+            {
+              "type": "paragraph",
+              "text": "من أجل هذا تم تركيب الدراة الكهربائية الموضحة في (الشكل 4) والمتكوّنة من:"
+            },
+            {
+              "type": "paragraph",
+              "text": "- مولد مثالي للتوتر قوته المحركة الكهربائية $E = 4 V$"
+            },
+            {
+              "type": "paragraph",
+              "text": "- ناقل أومي مقاومته $R_0 = 8 \\Omega$"
+            },
+            {
+              "type": "paragraph",
+              "text": "- جهاز أمبيرمتر"
+            },
+            {
+              "type": "paragraph",
+              "text": "- قاطعة $K$"
+            },
+            {
+              "type": "paragraph",
+              "text": "قام الأستاذ بتفويج التلاميذ إلى ثلاث مجموعات وكلّفهم بإنجاز المهمات الآتية:"
+            },
+            {
+              "type": "heading",
+              "text": "المجموعة الأولى:"
+            },
+            {
+              "type": "paragraph",
+              "text": "كُلِّفت بتحديد طبيعة كل ثنائي قطب، بأخذ في كل مرة أحد الثنائيات $D_1$ ، $D_2$ و $D_3$ وربطه بَيْنَ النقطتين $M$ و $N$ ثم قراءة شدة التيار الكهربائي المار في الدارة على جهاز الأمبيرمتر بعد غلق القاطعة $K$ في لحظة نختارها مبدأ للأزمنة ($t = 0$) ، فكانت نتائج القياسات كما في الجدول الآتي:"
+            }
+          ],
+          "assetIds": [
+            "s1_ex3_fig4",
+            "s1_ex3_table1",
+            "s1_ex3_graph5",
+            "s1_ex3_graph6"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1. من النتائج المُتحصّل عليها في الجدول، حَدِّد طبيعة كل ثنائي قطب مع التّعليل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تحديد طبيعة كل ثنائي قطب مع التعليل :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$D_1$ : مكثفة ألن لحظة غلق الدارة تكون شدة التيار أعظمية ثم تتناقص الى أن تنعدم"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$D_2$ : وشيعة ألن لحظة غلق الدارة تكون شدة التيار منعدمة ثم تتزايد الى أن تثبت"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$D_3$ : ناقل أومي ألن شدة التيار تبقى ثابتة ال تتغير"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,5"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,5"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,5"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. بتطبيق قانون أوم وقانون جمع التوترات، جِدْ قيمة مقاومة الناقل الأومي $R$ والمقاومة الداخلية $r$ للوشيعة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "إيجاد قيمة $R$ و $r$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* بالنسبة للناقل الأومي $D_3$ و وفق الدارة لدينا $E = (R_0 + R)I \\implies R = \\frac{E}{I} - R_0$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(ت ع) : $R = \\frac{4}{0,25} - 8$ نجد $R = 8\\Omega$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* بالنسبة للوشيعة $D_2$ و في النظام الدائم لدينا $E = (R_0 + r)I \\implies r = \\frac{E}{I} - R_0$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(ت ع) : $r = \\frac{4}{0,25} - 8$ نجد $r = 8\\Omega$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "المجموعة الثانية:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "كُلِّفت بتحديد قيمة سعة المكثفة $C$ ، فتمّ ربطها بَيْنَ النقطتين $M$ و $N$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "عند اللّحظة $t=0$ ، أغلق أحد التلاميذ القاطعة $K$ . بواسطة برنامج معلوماتي مناسب تمّ رسم المنحنى المُمثّل لتغيرات $(-\\frac{di}{dt})$ بدلالة شدة التيار الكهربائي $(i)$ (الشكل 5)."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1. بتطبيق قانون جمع التوترات، بيّن أنّ المعادلة التفاضلية التي تحققها شدة التيار المار في الدارة تكتب على الشكل: $A \\frac{di(t)}{dt} + i(t) = 0$ حيث $A$ ثابت يُطلب تحديد عبارته الحرفية بدلالة مميزات الدارة وبيّن باعتماد التحليل البُعدي أَنّ له بعدا زمنيا."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تبيان أن المعادلة التفاضلية لـ $i(t)$ من الشكل $A \\frac{di(t)}{dt} + i(t) = 0$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* من قانون جمع التوترات $u_{R_0} + u_c = E$ أي $R_0 i + \\frac{q}{C} = E$ بالاشتقاق نجد"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$R_0 \\frac{di}{dt} + \\frac{1}{C} \\frac{dq}{dt} = 0$ ، و منه $R_0 C \\frac{di}{dt} + i = 0$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "*عبارة الثابت $A$ بدلالة مميزات الدارة : بالمطابقة فإن $A = R_0 C$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* التحليل البعدي للثابت $A$ : $[A] = [R_0] \\cdot [C]$ حيث $[R_0] = \\frac{[u]}{[i]}$ و $[C] = \\frac{[q]}{[u]} = \\frac{[i][t]}{[u]}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالتعويض نجد $[A] = \\frac{[u]}{[i]} \\cdot \\frac{[i][t]}{[u]} \\implies [A] = [t] = T$ فالثابت $A$ له بعد زمني"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,75"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. بالاعتماد على المنحنى البياني جِدْ قيمة:\n1.2. شِدّة التيار الكهربائي الأعظمية المار في الدارة $I_0$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "من البيان إيجاد $I_0$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$I_0 = 0,5 A$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.2. ثابت الزمن $\\tau$ المُمَيِّز للدارة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "من البيان إيجاد ثابت الزمن $\\tau$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "معادلة البيان من الشكل $(-\\frac{di}{dt}) = a \\cdot i$ حيث $a$ معامل توجيه الخط المستقيم"
+                },
+                {
+                  "type": "latex",
+                  "text": "a = \\frac{(0,625 - 0)}{(0,5 - 0)} = 1,25 ms^{-1} = 1,25 \\cdot 10^3 s^{-1}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "و من المعادلة التفاضلية $(-\\frac{di}{dt}) = \\frac{1}{A} \\cdot i$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حيث $A = \\tau$ اذن $(-\\frac{di}{dt}) = \\frac{1}{\\tau} \\cdot i$ بالتطابق فإن $\\frac{1}{\\tau} = a \\implies \\tau = \\frac{1}{a} = \\frac{1}{1,25 \\cdot 10^3}$ نجد $\\tau = 0,8 \\cdot 10^{-3} s$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. استنتج قيمة سعة المكثفة $C$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استنتاج سعة المكثفة $C$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$\\tau = R_0 C$ و منه $C = \\frac{\\tau}{R_0}$ (ت ع) $C = \\frac{0,8 \\cdot 10^{-3}}{8}$ نجد $C = 10^{-4} F = 100 \\mu F$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "المجموعة الثالثة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "كُلِّفت بتحديد المقادير المُمَيِّزة للوشيعة $(L, r)$ ، فتمّ ربطها بَيْنَ النقطتين $M$ و $N$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "عند اللّحظة $t=0$ ، أغلق أحد التلاميذ القاطعة $K$ ، بواسطة راسم اهتزاز ذو ذاكرة تمّ مُعاينة التوتر $u_b$ بَيْنَ طرفي الوشيعة $u_b(t) = g(t)$ (الشكل 6)."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1. ارسم مُخطط الدارة الكهربائية المُوَافقة وبَيِّن عليها:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1.1. الجهة الاصطلاحية لمرور التيار الكهربائي $(i)$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2.1. سهم التوترين الكهربائيين $u_b$ و $u_{R_0}$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "3.1. مدخل راسم اهتزاز ذو ذاكرة لمُعَاينة $u_b(t)$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "رسم مخطط الدارة و تبيان عليها:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1.1. الجهة الاصطلاحية لمرور التيار $i$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2.1. سهما التوترين $u_b$ و $u_{R_0}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "3.1. مدخل راسم الاهتزاز ذي ذاكرة لمعاينة $u_b(t)$."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. بالاعتماد على المنحنى البياني جِدْ قيمة ثابت الزمن المُمَيِّز للدارة ثم استنتج ذاتية الوشيعة $L$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "من البيان إيجاد قيمة $\\tau$ و استنتاج $L$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$\\tau = 62,5 ms = 62,5 \\cdot 10^{-3} s$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$\\tau = \\frac{L}{(R_0 + r)} \\implies L = \\tau \\cdot (R_0 + r)$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(ت ع) $L = 62,5 \\cdot 10^{-3} \\cdot (8 + 8)$ نجد $L = 1H$ ( اعتماد $r = 8\\Omega$ مما سبق)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "exercises": [
+        {
+          "orderIndex": 1,
+          "title": "التمرين الأول: (06 نقاط)",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "شَكّل سقوط الأجسام موضوع تساؤل الكثير من العلماء مُنذ القِدَم، حيث تصوّر أرسطو في القرن الرابع قبل الميلاد أنّ سرعة الأجسام أثناء سقوطها تتناسب مع ثقلها وفي بداية القرن السابع عشر اهتم العالم الإيطالي غاليلي بدراسة حركة أجسام مُختلفة بتركها تسقط من أعلى برج بيزا، فلاحظ أنّ أجساما ذات كتل مُختلفة تسقط بنفس الكيفية في غياب تأثير الهواء (على عكس ما كان يظنه أرسطو)."
+            },
+            {
+              "type": "paragraph",
+              "text": "للتحقّق من بعض النتائج المُتوصل إليها، ندرس في هذا التمرين تأثير كتلة الجسم على تطور سرعته خلال السقوط الشاقولي في الهواء."
+            },
+            {
+              "type": "heading",
+              "text": "1. دراسة السقوط الشاقولي بإهمال قوى الاحتكاك وتأثيرات الهواء:"
+            },
+            {
+              "type": "paragraph",
+              "text": "عند لحظة $t = 0$ نعتبرها مبدأ للأزمنة، نترك كرة كتلتها $m$ نعتبرها نقطية بدون سرعة ابتدائية من نقطة $o$ تقع أعلى برج ارتفاعه $h = 90m$ عن سطح الأرض. ندرس حركة الكرة في معلم $(o, \\vec{k})$ شاقولي موجه نحو الأسفل مُرتبط بسطح الأرض، نعتبره عطاليا (نأخذ $g = 9,8 m \\cdot s^{-2}$)"
+            }
+          ],
+          "assetIds": [
+            "s2_ex1_image1",
+            "s2_ex1_table1",
+            "s2_ex1_graph1"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1.1. عَرِّف المرجع العطالي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف المرجع العطالي :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "\" المرجع العطالي هو المرجع الذي يتحقق فيه مبدأ العطالة \""
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.1. هل يكون مركز عطالة الكرة في سقوط حُر؟ بَرِّر إجابتك."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حركة السقوط الحر مع التبرير:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بإهمال قوى احتكاك الهواء مع الكرة الممثلة في $\\vec{f}$ وتأثير الهواء الممثلة في دافعة أرخميدس $\\vec{\\Pi}$ يصبح مركز عطالة الكرة خاضع للثقل $\\vec{P}$ فقط فنقول أن الكرة في سقوط حر."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.1. بتطبيق القانون الثاني لنيوتن حَدِّد طبيعة حركة مركز عطالة الكرة ثم اكتب المعادلة الزمنية لِكُلٍّ من السرعة $v(t)$ والحركة $z(t)$ ."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تحديد طبيعة الحركة و كتابة المعادلة الزمنية للسرعة و للحركة :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "*بتطبيق القانون الثاني لنيوتن $\\vec{P} = m \\cdot \\vec{a}_G$ ، بالإسقاط على محور الحركة $(o, \\vec{k})$ نجد $mg = m \\cdot a_G$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "و منه $a_G = \\frac{dv}{dt} = g$ فتسارع مركز عطالة الكرة ثابت والمسار مستقيم $\\implies$ الحركة مستقيمة متغيرة بانتظام وهي متسارعة لأن $a \\cdot v > 0$ ."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* $a_G = \\frac{dv}{dt} = g$ و منه $v = gt = 9,8t$ ( لما $t = 0$ فإن $v_0 = 0$ )"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* $v = \\frac{dz}{dt} = gt$ و منه $z = \\frac{1}{2} g t^2 = 4,9t^2$ ( لما $t = 0$ فإن $z_0 = 0$ )"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4.1. احسب سرعة مركز عطالة الكرة عند بلوغها سطح الأرض ثم استنتج مُدّة السقوط عندئذ."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب السرعة و استنتاج لحظة الاصطدام بسطح الأرض :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* $v^2 = 2gh \\implies v = \\sqrt{2gh}$ (ت ع) $v = \\sqrt{2 \\times 9,8 \\times 90} \\implies v = 42 m \\cdot s^{-1}$ نجد"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* $v = gt \\implies t = \\frac{v}{g}$ (ت ع) $t = \\frac{42}{9,8}$ نجد $t = 4,29 s$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "5.1. هل تتعلق سرعة الكرة أثناء سقوطها بكتلتها في هذه الحالة؟ علِّل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعلق السرعة بالكتلة مع التعليل:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حسب العلاقة $v = gt$ فإن سرعة السقوط الحر للأجسام في الهواء لا تتعلق بكتلتها"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "2. دراسة حركة سقوط كرتين في الهواء:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ندرس في هذا الجزء السقوط في الهواء لكرة حديدية وكرة تنس نعتبرهما نقطيتان، تمّ تحريرهما عِند نفس اللّحظة $t=0$ بدون سرعة ابتدائية من أعلى نفس البرج السابق وفي نفس المعلم $(o, \\vec{k})$ مبدؤه منطبق مع أعلى البرج."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تخضع كل كرة أثناء سقوطها في الهواء لثقلها ولقوة احتكاك الهواء $\\vec{f}$ ( نهمل دافعة أرخميدس أمام هاتين القوتين ). نقبل أن شدة $\\vec{f}$ تُكتب $f = k \\cdot v^2$ حيث $k$ مُعامل الاحتكاك و $v$ سرعة مركز عطالة كل كرة عند لحظة $t$ ."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "دلّت القياسات عن بلوغ الكرة الحديدية سطح الأرض عند اللّحظة $t = 4,4s$ وبعد تأخر بثانية واحدة تصل كرة التنس إلى سطح الأرض. (نأخذ $g = 9,8 m \\cdot s^{-2}$)."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1.2. باستعمال التحليل البُعدي، جِدْ الوحدة الدولية للثابت $k$ ."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "وحدة ثابت الاحتكاك $k$ باستعمال التحليل البعدي:"
+                },
+                {
+                  "type": "latex",
+                  "text": "[K] = \\frac{[f]}{[v]^2}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "و منه $[K] = \\frac{[m] \\cdot \\frac{[l]}{[t]^2}}{\\frac{[l]^2}{[t]^2}}$ فنجد $[K] = M \\cdot L^{-1} = \\frac{[m]}{[l]}$ و منه وحدته $Kg \\cdot m^{-1}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.2. بتطبيق القانون الثاني لنيوتن جِدْ المعادلة التفاضلية التي تُحققها سرعة مركز عطالة إحدى الكرتين $v(t)$ ."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المعادلة التفاضلية للسرعة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بتطبيق القانون الثاني لنيوتن : $\\vec{P} + \\vec{f} = m \\cdot \\vec{a}_G$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالإسقاط على محور الحركة $(o, \\vec{k})$ نجد $mg - K v^2 = m \\cdot \\frac{dv}{dt}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالقسمة على $m$ نجد $\\frac{dv}{dt} + \\frac{K}{m} v^2 = g$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.2. بَيِّن أَنَّ السرعة الحَدِّيَّة $v_{lim}$ تُكتب بالعبارة: $v_{lim} = \\sqrt{\\frac{m \\cdot g}{k}}$"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تبيان عبارة السرعة الحدية :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "من المعادلة التفاضلية لما تكون $v = v_{lim}$ تكون $a_G = \\frac{dv}{dt} = 0$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالتعويض نجد $v_{lim} = \\sqrt{\\frac{mg}{K}}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4.2. احسب السرعة الحَدِّيَّة $v_{lim}$ لِكُلِّ كرة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب السرعة الحدية لكل كرة :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالنسبة للكرة الحديدية $v_{lim} = \\sqrt{\\frac{0,7 \\times 9,8}{1,19 \\times 10^{-3}}}$ نجد $v_{lim} = 75,93 m \\cdot s^{-1}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالنسبة لكرة التنس $v_{lim} = \\sqrt{\\frac{0,056 \\times 9,8}{9,50 \\times 10^{-4}}}$ نجد $v_{lim} = 24,04 m \\cdot s^{-1}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "5.2. تمّ تسجيل سرعة الكرتين خلال الزمن والحصول ببرنامج معلوماتي على المُنحنيين المُمثلين في (الشكل 1).\n1.5.2. عَيِّن بيانيا سرعة كل كرة لحظة بلوغها سطح الأرض."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعيين بيانيا سرعة كل كرة لحظة الاصطدام بسطح الأرض :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالنسبة للكرة الحديدية : لما $t = 4,4s$ بالاسقاط نجد $v = 39 m \\cdot s^{-1}$ ( تقبل القيمة $v = 40 m \\cdot s^{-1}$ )"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالنسبة لكرة التنس : لما $t = 5,4s$ بالاسقاط نجد $v = 24 m \\cdot s^{-1}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.5.2. هل بلغت الكرتان النظام الدائم عِند بلوغهما سطح الأرض؟ علّل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بلوغ النظام الدائم عند الاصطدام بسطح الأرض مع التعليل :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "الكرة الحديدية: $v(t = 4,4s) < v_{lim}$ فالكرة لم تبلغ النظام الدائم لحظة اصطدامها بالأرض"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "كرة التنس: $v(t = 5,4s) \\simeq v_{lim}$ فالكرة بلغت النظام الدائم."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 12,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.5.2. هل تتعلق سرعة الكرة بكتلتها في هذه الحالة؟ علّل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعلق السرعة بكتلتها في هذه الحالة مع التعليل :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "سرعة الكرة تتعلق بكتلتها (فكلما كانت الكتلة كبيرة كانت سرعتها أكبر) وفق العلاقة $v_{lim} = \\sqrt{\\frac{mg}{K}}$ (عدم تطابق المنحنيين دليل على أن السرعة تتعلق بالكتلة)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 13,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. استنادا إلى الدراستين السابقتين، اشرح تأثير كتلة الجسم على تطور سرعة مركز عطالته أثناء السقوط الشاقولي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "شرح تأثير كتلة الجسم على تطور السرعة :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "أثناء سقوط الأجسام في الهواء في حالة اهمال تأثير الهواء تكون السرعة مستقلة عن كتلتها بينما في حالة وجود تأثير الهواء فإن السرعة تزداد بزيادة الكتلة الى أن تثبت في النظام الدائم"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            }
+          ]
+        },
+        {
+          "orderIndex": 2,
+          "title": "التمرين الثاني: (07 نقاط)",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "أصبحت المكثفات تلعب دورا أساسيا في تركيب العديد من الأجهزة الكهربائية والالكترونية ذات فائدة عملية في الحياة اليومية من بينها أجهزة الإنذار التي تجهز بها المنازل."
+            },
+            {
+              "type": "paragraph",
+              "text": "يمثل الشكل 2 جزءا من التركيب المبسط لجهاز الإنذار والمتكون من:"
+            },
+            {
+              "type": "paragraph",
+              "text": "– مولد مثالي للتوتر قوته المحركة الكهربائية $E = 20 V$."
+            },
+            {
+              "type": "paragraph",
+              "text": "– ناقل أومي مقاومته $R = 50 k\\Omega$."
+            },
+            {
+              "type": "paragraph",
+              "text": "– مكثفة سعتها $C$."
+            },
+            {
+              "type": "paragraph",
+              "text": "– بادلة $K$ قابلة للتأرجح بَيْنَ الموضعين (1) و (2)."
+            },
+            {
+              "type": "paragraph",
+              "text": "– دارة التحكم في صفارة الإنذار."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التمرين إلى دراسة ثنائي قطب $RC$ في تشغيل صفارة الإنذار عند فتح باب منزل حيث:"
+            },
+            {
+              "type": "paragraph",
+              "text": "– عندما يكون باب المنزل مُغلقا ، تكون البادلة $K$ في الوضع (1)."
+            },
+            {
+              "type": "paragraph",
+              "text": "– عندما يُفتح باب المنزل، تتأرجح البادلة $K$ آليا إلى الوضع (2) وتشتغل صفارة الإنذار."
+            },
+            {
+              "type": "heading",
+              "text": "I -/ دراسة دارة شحن مكثفة:"
+            },
+            {
+              "type": "paragraph",
+              "text": "المكثفة غير مشحونة. نضع البادلة $K$ عند لحظة $t = 0$ نختارها مبدأ للأزمنة في الوضع (1) ، نُعاين بواسطة جهاز معلوماتي مُلائم تطور كمّية الكهرباء $q$ بدلالة الزمن $t$ فنحصل على المنحنى الموضّح في (الشكل 3)"
+            }
+          ],
+          "assetIds": [
+            "s2_ex2_fig2",
+            "s2_ex2_graph3"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1. اكتب العلاقة التي تربط بَيْنَ شحنة المكثفة $q$ والتوتر الكهربائي بَيْنَ طرفيها ثم بَيِّن كَيْف يُمكِن الحصول على المنحنى $q(t)$ باستعمال راسم اهتزاز ذو ذاكرة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "العلاقة بين $q$ و $u_C$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$u_C = \\frac{q}{C}$ ومنه نجد: $q = C \\cdot u_C$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "–كيفية الحصول على البيان $q(t)$ ."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نربط أحد مدخلي راسم اهتزاز ذي ذاكرة بين طرفي المكثفة لمعاينة التوتر الكهربائي $u_C(t)$ وبالضرب في قيمة السعة $C$ نحصل على المنحنى البياني لـ $q(t)$ ."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. أنقل الشكل 2 على ورقة إجابتك ومثّل عليه:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– الجهة الاصطلاحية لمرور التيار الكهربائي $i$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– سهمي التوترين الكهربائيين $u_C$ و $u_R$ ."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تمثيل على مخطط الدارة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– الجهة الاصطلاحية للتيار الكهربائي."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– سهما التوترين الكهربائيين $u_C$ و $u_R$ ."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. باستغلال المُنحنى البياني، جِدْ قيمة:\n1.3. كمّية الشحنة الأعظمية $Q_{max}$ المُخزنة في المكثفة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استغلال البيان $q(t)$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "كمية الشحنة الأعظمية: $Q_{max} = 52 \\mu C = 52 \\times 10^{-6} C = 5 \\times 10,4 \\times 10^{-6}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.3. ثابت الزمن $\\tau$ المُمَيِّز لدارة شحن المكثفة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ثابت الزمن $\\tau$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "من البيان نجد: $\\tau = 0,13s$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.3. قيمة شِدّة التيار الكهربائي الأعظمية $I_0$ ."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "شدة التيار الأعظمية $I_0$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– من ميل المماس: $I_0 = (\\frac{dq}{dt})_{(t=0)} \\implies I_0 = \\frac{\\Delta q}{\\Delta t} = \\frac{Q_{max} - 0}{\\tau - 0} = \\frac{52 \\times 10^{-6}}{0,13} = 4 \\times 10^{-4} A$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4. استنتج قيمة سعة المكثفة $C$ بطريقتين مختلفتين."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استنتاج سعة المكثفة بطريقتين مختلفتين:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– الطريقة (1): $\\tau = R \\cdot C \\implies C = \\frac{\\tau}{R} = \\frac{0,13}{50 \\times 10^3} = 2,6 \\times 10^{-6} F = 2,6 \\mu F$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– طريقة(2): $Q_{max} = C \\cdot E \\implies C = \\frac{Q_{max}}{E} = \\frac{52 \\times 10^{-6}}{20} = 2,6 \\times 10^{-6} F$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "II -/ دراسة دارة اشتغال صفارة الإنذار:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "عندما يتحقق النظام الدائم نضع البادلة $K$ في الوضع (2) في لحظة نعتبرها مبدأ جديدا للأزمنة."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نُنمذِج دارة التحكم في صفارة الإنذار بناقل أومي مقاومته $R' = 12 M\\Omega$ ( ونعتبر $1 M\\Omega = 10^6 \\Omega$ ) و $C = 2,6 \\mu F$ ."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1. ما هي الظاهرة المجهرية الحادثة في المكثفة في هذه الحالة؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الظاهرة الحادثة في المكثفة مجهريا: تحدث هجرة جماعية للإلكترونات عبر دارة التحكم من اللبوس السالب نحو اللبوس الموجب الى غاية حدوث توازن كهربائي (تفريغ المكثفة لشحنتها في دارة صفارة الإنذار)."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. بتطبيق قانون جمع التوترات، جِدْ المعادلة التفاضلية التي يُحققها التوتر الكهربائي $u_C(t)$ بَيْنَ طرفي المكثفة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المعادلة التفاضلية لتطور $u_C(t)$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$u_C(t) + u_{R'}(t) = 0$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ومنه نجد: $u_{R'}(t) = R' \\cdot i(t) = R' \\cdot C \\frac{du_C(t)}{dt}$"
+                },
+                {
+                  "type": "latex",
+                  "text": "u_C(t) + R' C \\frac{du_C(t)}{dt} = 0 \\implies \\frac{du_C(t)}{dt} + \\frac{1}{R' C} u_C(t) = 0"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. يُعطى حل المعادلة التفاضلية السابقة بالشكل $u_C = E e^{-\\frac{t}{\\alpha}}$ حيث $\\alpha$ مقدار ثابت وموجب يُطلب إيجاد عبارته بدلالة المقادير المُمَيِّزة للدارة ومُبَيِّنَا أنّه مُتجانس مع الزمن."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة الثابت $\\alpha$ : من حل المعادلة التفاضلية:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نجد بالتعويض: $u_C(t) = E e^{-\\frac{t}{\\alpha}} \\implies \\frac{du_C(t)}{dt} = -\\frac{E}{\\alpha} e^{-\\frac{t}{\\alpha}}$"
+                },
+                {
+                  "type": "latex",
+                  "text": "-\\frac{1}{\\alpha} E e^{-\\frac{t}{\\alpha}} + \\frac{1}{R' C} E e^{-\\frac{t}{\\alpha}} = 0 \\implies E e^{-\\frac{t}{\\alpha}} (-\\frac{1}{\\alpha} + \\frac{1}{R' C}) = 0"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "وحتى تتحقق المعادلة يكون $\\alpha = R' C$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– التحليل البعدي للثابت $\\alpha$ :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$[\\alpha] = [R'] \\cdot [C]$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حيث $[R'] = \\frac{[u]}{[i]}$ و $[C] = \\frac{[q]}{[u]} = \\frac{[i][t]}{[u]}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالتعويض نجد $[\\alpha] = \\frac{[u]}{[i]} \\cdot \\frac{[i][t]}{[u]} \\implies [\\alpha] = [t] = T$ فالثابت $\\alpha$ له بعد زمني."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4. تشتغل صفارة الإنذار في دارة التحكم عندما يكون التوتر الكهربائي بَيْنَ طرفيها $u_C(t) \\geq 9V$.\n1.4. احسب أطول مُدّة زمنية لاشتغال صفارة الإنذار بعد فتح الباب."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تشغيل صفارة الإنذار من اجل $u_C \\geq 9V$ ."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حساب أطول مدة لاشتغال صفارة الإنذار:"
+                },
+                {
+                  "type": "latex",
+                  "text": "u_C = E e^{-\\frac{t}{R' C}} \\implies \\ln(\\frac{u_C}{E}) = -\\frac{t}{R' C} \\implies t = -R' C \\ln(\\frac{u_C}{E})"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$t = -12 \\times 10^6 \\times 2,6 \\times 10^{-6} \\ln(\\frac{9}{20}) = 24,9 s$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.4. كَيْف يُمكِن عمليا التحكم في مُدّة اشتغال صفارة الإنذار؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "كيفية التحكم عمليا في مدة الاشتغال:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "مدة الاشتغال تتعلق بثابت الزمن وعليه يمكن التحكم فيه بتغيير قيمة المقاومة $R'$ أو قيمة سعة المكثفة $C$ أو كلاهما معا."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            }
+          ]
+        },
+        {
+          "orderIndex": 3,
+          "title": "الجزء الثاني: (07 نقاط)\nالتمرين التجريبي:",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "توجد الأسترات العضوية في الفواكه، الخضر، الأزهار، الزيوت ... ويُمكن اصطناعها من الكحولات والأحماض الكربوكسيلية بسهولة في المخابر. يُحضَّر الكيميائي الشروط التجريبية المُناسبة ثم يُراقب التحول الحادث من حيث سرعته، نواتجه ومردوده."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التمرين إلى متابعة تفاعل الأسترة زمنيا ومراقبة مردوده."
+            },
+            {
+              "type": "paragraph",
+              "text": "نُحضِّر مزيجا ابتدائيا في أرلينمّاير يتكون من $0,6 mol$ من حمض الإيثانويك ($CH_3COOH (\\ell)$) و $0,6 mol$ من كحول صيغته ($C_4H_9OH (\\ell)$). نُوزعه بالتساوي على عشرة (10) أنابيب اختبار ونُضيف إليها بضع قطرات من حمض الكبريت المُركز ثم نَسُدُّها بسدادات مُزَوَّدة بِمُبَرِّد هوائي (الشكل 4)."
+            },
+            {
+              "type": "paragraph",
+              "text": "عند اللّحظة $t=0$، نضع الأنابيب في حمام مائي درجة حرارته $80^\\circ C$. مُعايرة كمّية مادة الحمض المُتبقية في لحظات مُختلفة مكّنت من رسم مُنحنى تغيرات كمّية مادة الأستر المُتشكلة في المزيج الابتدائي بدلالة الزمن (الشكل 5)."
+            },
+            {
+              "type": "heading",
+              "text": "I -/ المتابعة الزمنية لتحول الأسترة:"
+            }
+          ],
+          "assetIds": [
+            "s2_ex3_fig4",
+            "s2_ex3_graph5"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1. اذكر دور كل من إضافة بضع قطرات من حمض الكبريت المُركز وتسخين المزيج التفاعلي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "دور حمض الكبريت المركز و تسخين المزيج :"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "إضافة قطرات من حمض الكبريت المركز و تسخين المزيج التفاعلي هو لزيادة سرعة التفاعل."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. لماذا زودنا أنابيب الاختبار بِمُبَرِّد هوائي؟ كَيْف تُسمى هذه العملية؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أهمية المبرد الهوائي واسم العملية:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "هو الحفاظ على كمية المادة لمكونات المزيج التفاعلي من الضياع بتكثيف البخار المتصاعد."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تسمى هذه العملية بالتسخين المرتد."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. اكتب معادلة التفاعل الحادث ثم أنجز جدولا لتقدمه."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "معادلة التفاعل وجدول التقدم:"
+                },
+                {
+                  "type": "latex",
+                  "text": "CH_3COOH(l) + C_4H_9OH(l) = CH_3COOC_4H_9(l) + H_2O(l)"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "| معادلة التفاعل | $CH_3COOH(l) + C_4H_9OH(l) = CH_3COOC_4H_9(l) + H_2O(l)$ |\n|---|---|\n| الحالة | التقدم $x(mol)$ | كميّة المادة $(mol)$ |\n| $t=0$ | $0$ | $n_0=0,6$ | $n_0=0,6$ | $0$ | $0$ |\n| $t>0$ | $x$ | $0,6 - x$ | $0,6 - x$ | $x$ | $x$ |\n| $t=t_f$ | $x_f$ | $0,6 - x_f$ | $0,6 - x_f$ | $x_f$ | $x_f$ |"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4. بالاعتماد على المنحنى البياني (الشكل 5):\n1.4. استنتج خصائص تفاعل الأسترة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "خصائص تفاعل الأسترة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– تفاعل بطيئ لأنه يستغرق عدة ساعات."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– غير تام (محدود) لأن $X_f = 0,4 mol$ لا يساوي $X_{max} = 0,6 mol$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.4. حَدِّد قيمة زمن نصف التفاعل $t_{1/2}$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تحديد قيمة زمن نصف التفاعل:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "عند $t = t_{1/2}$ يكون $x = \\frac{n(E)_f}{2} = \\frac{0,2}{2} mol$ بالاسقاط نجد: $t_{1/2} = 1h$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.4. احسب سرعة التفاعل عند اللّحظة $t = 2h$ ثم فَسِّر كَيْف تتطور السرعة خلال الزمن."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب سرعة التفاعل عند اللّحظة $t = 2h$ :"
+                },
+                {
+                  "type": "latex",
+                  "text": "v = \\frac{dx}{dt} = \\frac{dn_E}{dt} = \\frac{1,4 \\times 0,1}{2} = 7 \\times 10^{-2} mol \\cdot h^{-1}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "– تكون سرعة التفاعل اعظمية عند اللّحظة $t = 0$ ثُمّ تتناقص حتى تنعدم وهذا راجع إلى تناقص التراكيز المولية للمتفاعلات خلال الزمن( بيانيا تتناقص قيمة ميل المماس بمرور الزمن)."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "5. بِناءً على ما درسته هل السرعة الحجمية لتفاعل الأسترة في المزيج الابتدائي عند اللّحظة $t = 2h$ تكون: أكبر، أصغر أم تساوي السرعة الحجمية للتفاعل في أنبوبة اختبار عند نفس اللّحظة $t$ ؟ علِّل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مقارنة السرعة الحجمية في المزيج الابتدائي مع السرعة الحجمية في أحد الانابيب:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تكون السرعة الحجمية لتفاعل الأسترة الحادث في المزيج عند لحظة $t$ مساوية للسرعة الحجمية لنفس التفاعل في الانبوب عند نفس اللّحظة $t$ لأن تغير كمية المادة على الحجم ثابتة."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2x0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "II -/ مُراقبة تحول الأسترة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "إِنَّ دراسة تحول الأسترة أبرزت عِدَّة عوامل تُؤثِّر على مردود التفاعل المُنمذج له."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1. اعتمادا على جدول تقدم التفاعل الحادث في المزيج الابتدائي جِدْ:\n1.1. التركيب المولي للمزيج التفاعلي عند حالة التوازن الكيميائي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التركيب المولي للمزيج التفاعلي عند حالة التوازن الكيميائي:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$n_f(\\text{حمض}) = n_f(\\text{كحول}) = n_0 - X_f = 0,6 - 0,4 = 0,2 mol$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$n_f(\\text{أستر}) = n_f(\\text{ماء}) = X_f = 0,4 mol$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2.1. قيمة ثابت التوازن الكيميائي $K$ لتفاعل الأسترة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "قيمة ثابت التوازن $K$ :"
+                },
+                {
+                  "type": "latex",
+                  "text": "K = \\frac{[\\text{أستر}]_f \\cdot [\\text{ماء}]_f}{[\\text{حمض}]_f \\cdot [\\text{كحول}]_f} = \\frac{X_f^2}{(n_0 - X_f)^2} = (\\frac{X_f}{n_0 - X_f})^2 = (\\frac{0,4}{0,6})^2 = 4"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3.1. قيمة مردود التحول الحادث $r$ ثم استنتج صنف الكحول المُستعمل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "إيجاد مردود التفاعل ثم استنتاج صنف الكحول:"
+                },
+                {
+                  "type": "latex",
+                  "text": "r = \\frac{X_f}{X_{max}} \\times 100\\% = \\frac{0,4}{0,6} \\times 100\\% = 67\\%"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "وبما أن المزيج الابتدائي متساوي في كمية المادة ، فإن صنف الكحول أولي."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2. اكتب الصيغة نصف المنشورة والاسم النظامي لِكُلٍّ من الكحول والأستر علما أَنَّ السلسلة الفحمية للكحول خطية غير مُتفرعة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الصيغة نصف المنشورة ،الإسم النظامي لكل من الكحول والأستر:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "الكحول: $CH_3-CH_2-CH_2-CH_2-OH$ بوتان- 1- أول"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "الاستر : $CH_3-COOCH_2-CH_2-CH_2-CH_3$ إيثانوات بيوتيل"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,50"
+                }
+              ],
+              "assetIds": []
+            },
+            {
+              "orderIndex": 12,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3. احسب كمّية مادة حمض الإيثانويك $n_{(ac)}$ التي يجب إضافتها للمزيج الابتدائي في نفس شروط التجربة ليكون مردود تصنيع الأستر هو $r = 95\\%$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب كمية مادة حمض الإيثانويك المظافة من أجل $r = 95\\%$ :"
+                },
+                {
+                  "type": "latex",
+                  "text": "r = \\frac{x_f}{X_{max}} \\times 100 = \\frac{n_{Ef}}{n_0} \\times 100\\% = 95\\% \\implies n_{Ef} = \\frac{0,6 \\times 95}{100} = 0,57 mol"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "| المركب | حمض | كحول | أستر | ماء |\n|---|---|---|---|---|\n| $t = 0$ | $(0,6 + n_a)$ | $0,6 mol$ | $0$ | $0$ |\n| $t_f$ | $(0,6 + n_a) - 0,57$ | $0,6 - 0,57$ | $0,57 mol$ | $0,57 mol$ |"
+                },
+                {
+                  "type": "latex",
+                  "text": "K = \\frac{(0,57)^2}{(0,6 - 0,57 + n_a) \\cdot (0,6 - 0,57)} = 4 \\implies n_a = 2,68 mol"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "0,25"
+                }
+              ],
+              "assetIds": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_ex1_image1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 1,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex1_graph1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 2,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex1_corr_fig1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 1,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex2_graph1",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 2,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex2_graph2",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 3,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex3_fig4",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex3_table1",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 3,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex3_graph5",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_ex3_graph6",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s2_ex1_image1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5,
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "s2_ex1_table1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 6,
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "s2_ex1_graph1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6,
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "s2_ex2_fig2",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6,
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "s2_ex2_graph3",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 7,
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "s2_ex3_fig4",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 8,
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "s2_ex3_graph5",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 8,
+      "variantCode": "SUJET_2"
+    }
+  ],
+  "uncertainties": []
+}

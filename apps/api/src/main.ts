@@ -7,6 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     createApiAdapter(),
+    {
+      rawBody: true,
+    },
   );
   await configureApiApp(app);
 

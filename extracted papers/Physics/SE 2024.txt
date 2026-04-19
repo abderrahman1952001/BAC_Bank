@@ -1,0 +1,2481 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "exercises": [
+        {
+          "orderIndex": 1,
+          "title": "التمرين الأول",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "يعتمد الطب النووي على حقن مواد مشعة في جسم الإنسان بهدف التشخيص والعلاج، ومنها نظير الزنك $^{62}_{30}Zn$ الموجود في محلول أسيتات الزنك الذي يستعمل في علاج بعض الأورام وذلك لقصر مدة حياته."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التمرين إلى دراسة أحد استعمالات الزنك في مجال الطب النووي."
+            },
+            {
+              "type": "heading",
+              "text": "معطيات:"
+            },
+            {
+              "type": "paragraph",
+              "text": "زمن نصف عمر الزنك $t_{1/2}(^{62}_{30}Zn) = 9.186 \\text{ heures}$"
+            },
+            {
+              "type": "paragraph",
+              "text": "ثابت أفوغادرو: $N_A = 6.02 \\times 10^{23} mol^{-1}$؛ الكتلة المولية للزنك: $M = 62 g \\cdot mol^{-1}$"
+            },
+            {
+              "type": "latex",
+              "text": "m(^{1}_{0}n) = 1.0087 u \\; ; \\; m(^{1}_{1}p) = 1.0073 u \\; ; \\; m(^{62}_{30}Zn) = 61.9179 u"
+            },
+            {
+              "type": "latex",
+              "text": "1 u = 931.5 MeV / c^2 \\; ; \\; \\frac{E_l}{A}(^{62}_{29}Cu) = 8.74 MeV / nuc"
+            },
+            {
+              "type": "heading",
+              "text": "أولا: دراسة النشاط الإشعاعي لنظير الزنك $^{62}_{30}Zn$"
+            },
+            {
+              "type": "paragraph",
+              "text": "النواة $^{62}_{30}Zn$ مشعة، وهي إحدى نظائر عنصر الزنك الذي له ثلاثون نظيرا منها خمسة نظائر مستقرة."
+            }
+          ],
+          "assetIds": [],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عرّف النواة المشعة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف النواة المشعة: نواة غير مستقرة تتفكك تلقائيا لتعطي نواة بنتا أكثر استقرارا مع اصدار اشعاعات."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "1."
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أعط تركيب نواة الزنك $^{62}_{30}Zn$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تركيب النواة $^{62}_{30}Zn$: $Z = 30$ بروتون، $N = A - Z = 32$ نيوترون"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تتفكك نواة الزنك $^{62}_{30}Zn$ تلقائيا فينتج عنها نواة النحاس $^{62}_{Z}Cu$ والجسيم $\\beta^+$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "والنواة البنت الناتجة تتفكك بدورها لتعطي نواة النيكل المستقرة $^{A}_{28}Ni$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "عرّف الجسيم $\\beta^+$ وبيّن آلية إصداره."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف الجسيم $\\beta^+$: الكترون موجب $_{+1}^{0}e$ (بوزيترون)"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "آلية إصداره: يتحول البروتون $^{1}_{1}p$ إلى نيوترون $^{1}_{0}n$ وفق المعادلة: $^{1}_{1}p \\rightarrow ^{1}_{0}n + _{+1}^{0}e$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف الجسيم: 0.25 | آلية إصداره: 0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "1.3."
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اكتب معادلة كل تفكك نووي، محدّدا العددين $A$ و $Z$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "معادلتا التفكك النووي:"
+                },
+                {
+                  "type": "latex",
+                  "text": "^{62}_{30}Zn \\rightarrow ^{62}_{29}Cu + _{+1}^{0}e"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حسب قانوني الانحفاظ لصودي:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\begin{cases} 62 = A \\\\ 30 = Z + 1 \\end{cases} \\Rightarrow \\begin{cases} 62 = A \\\\ Z = 29 \\end{cases}"
+                },
+                {
+                  "type": "latex",
+                  "text": "^{62}_{29}Cu \\rightarrow ^{62}_{28}Ni + _{+1}^{0}e"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حسب قانوني الانحفاظ لصودي:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\begin{cases} 62 = A \\\\ 29 = Z + 1 \\end{cases} \\Rightarrow \\begin{cases} 62 = A \\\\ Z = 28 \\end{cases}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التفكك الأول: 0.25×2 | التفكك الثاني: 0.25×2"
+                }
+              ],
+              "assetIds": [],
+              "label": "2.3."
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أعد رسم الشكل 1 ومثّل عليه التحولين النوويين السابقين."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تمثيل التحولين النوويين على المخطط $(N, Z)$:"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.50 (المجموع للمجموعة 3 هو 2.00)"
+                }
+              ],
+              "assetIds": [
+                "SUJET_1_EX1_FIG1",
+                "CORR_S1_EX1_FIG1"
+              ],
+              "label": "3.3."
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "ثانيا:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "اكتب علاقة التكافؤ: كتلة-طاقة لأينشتاين."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "علاقة التكافؤ: كتلة-طاقة لأينشتاين: $E = m \\cdot c^2$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "1."
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عرّف طاقة الربط للنواة $E_l$ واحسب قيمتها بالنسبة لنواة الزنك $^{62}_{30}Zn$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف طاقة الربط لنواة $E_l$:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "هي الطاقة اللازم تقديمها للنواة $^{A}_{Z}X$ الساكنة لتفكيكها إلى نويات متفرقة وساكنة."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "هي الطاقة المتحررة خلال تشكل نواة $^{A}_{Z}X$ ساكنة انطلاقا من نويات متفرقة وساكنة."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حساب قيمتها بالنسبة لنواة $^{62}_{30}Zn$:"
+                },
+                {
+                  "type": "latex",
+                  "text": "E_l(^{A}_{Z}X) = \\left[ \\left( Z m_p + (A - Z) m_n \\right) - m(^{A}_{Z}X) \\right] \\times c^2"
+                },
+                {
+                  "type": "latex",
+                  "text": "E_l(^{62}_{30}Zn) = \\left[ \\left( 30 \\times 1.0073 + (62 - 30) \\times 1.0087 \\right) - 61.9179 \\right] \\times 931.5 = 539.8 \\text{ MeV}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التعريف: 0.25 | العلاقة: 0.25 | الحساب: 0.25 (المجموع 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حدّد النواة الأكثر استقرارا من بين النواتين $^{62}_{30}Zn$ و $^{62}_{29}Cu$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "النواة الأكثر استقرارا من بين النواتين $^{62}_{30}Zn$ و $^{62}_{29}Cu$:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\frac{E_l(^{62}_{30}Zn)}{A} = \\frac{539.8}{62} = 8.70 \\text{ MeV / nuc}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "المقارنة:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\frac{E_l(^{62}_{30}Zn)}{A} < \\frac{E_l(^{62}_{29}Cu)}{A}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "النواة الأكثر استقرارا هي النواة $^{62}_{29}Cu$."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب E_l/A للزنك: 0.25 | المقارنة: 0.25 | الاستنتاج: 0.25 (المجموع 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "ثالثا:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "من أجل علاج حالة مَرَضيّة، تُحضّرُ جُرْعةٌ كتلتها $m_0 = 10 \\mu g$ في اللحظة $t = 0$، ليُحْقَن بها المريض في اللحظة $t_i$ عندما يصبح نشاط العيّنة الناتجة عن الزنك $^{62}_{30}Zn$ هو $A_i = 0.6 A_0$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "لماذا يُفضّل استخدام هذا النظير في العلاج؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يُفضّل استخدام هذا النظير في العلاج لقصر مدة حياته."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "1."
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اكتب عبارة $A(t)$، قانون التناقص لنشاط عيّنة مشعّة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "قانون النشاط الإشعاعي: $A(t) = A_0 e^{-\\lambda t}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "احسب قيمة النشاط الإشعاعي الابتدائي $A_0$ واستنتج اللحظة $t_i$ التي يُحْقَنُ فيها المريض بالجرعة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "قيمة النشاط الإشعاعي الابتدائي $A_0$:"
+                },
+                {
+                  "type": "latex",
+                  "text": "A_0 = \\lambda N_0 = \\frac{\\ln 2}{t_{1/2}} \\times \\frac{m_0}{M} N_A"
+                },
+                {
+                  "type": "latex",
+                  "text": "A_0 = \\frac{\\ln 2}{9.186 \\times 3600} \\times \\frac{10 \\times 10^{-6}}{62} \\times 6.02 \\times 10^{23} = 2.03 \\times 10^{12} \\text{ Bq}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "استنتاج اللحظة $t_i$:"
+                },
+                {
+                  "type": "latex",
+                  "text": "t_i = \\frac{- t_{1/2}}{\\ln 2} \\ln \\frac{A(t_i)}{A_0}"
+                },
+                {
+                  "type": "latex",
+                  "text": "t_i = \\frac{- 9.186}{\\ln 2} \\ln 0.6 = 6.8 \\text{ heures}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة A0: 0.25 | حساب A0: 0.25 | استنتاج عبارة ti: 0.25 | حساب ti: 0.25 (المجموع 1.00)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            }
+          ],
+          "maxPoints": 6
+        },
+        {
+          "orderIndex": 2,
+          "title": "التمرين الثاني",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "تُعْتَبَرُ الحركة على الطّرقات والقفز على الحواجز بواسطة لوح التّزلّج المُرَكّب على أربع عجلات، أحد التحديّات التي يواجهها المجازفون."
+            },
+            {
+              "type": "paragraph",
+              "text": "ندرس في هذا التمرين حركة الجملة (متزلّج ومستلزماته)، كتلتها $m$ ومركز عطالتها $G$. تتمّ الدّراسة على مرحلتين من مراحل الحركة (المستوي المائل، القفز فوق بركة ماء) في مرجع مناسب (الشكل 2)."
+            },
+            {
+              "type": "heading",
+              "text": "معطيات:"
+            },
+            {
+              "type": "paragraph",
+              "text": "تأثير الهواء مهمل؛\nكتلة الجملة: $m = 60.0 kg$؛\nتسارع الجاذبية الأرضية: $g = 9.80 m \\cdot s^{-2}$."
+            },
+            {
+              "type": "heading",
+              "text": "المرحلة الأولى: التّزلّج على المستوي المائل $AB$"
+            },
+            {
+              "type": "paragraph",
+              "text": "ينطلق المتزلّج دون سرعة ابتدائية من النقطة $A$ أعلى مستوى مائل طوله $AB$ ويصنع زاوية $\\alpha = 30^\\circ$ مع المستوي الأفقي ليصل إلى النقطة $B$. خلال هذه المرحلة، نُنَمْذِجُ مُحَصّلة قوى الاحتكاك بقوة $\\vec{f}$ شدّتها ثابتة ومعاكسة لجهة الحركة."
+            }
+          ],
+          "assetIds": [
+            "SUJET_1_EX2_FIG2"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اذكر المرجع المناسب الذي تتمّ فيه دراسة حركة مركز عطالة الجملة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المرجع المناسب لدراسة حركة الجملة: المرجع السطحي الأرضي."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.50"
+                }
+              ],
+              "assetIds": [],
+              "label": "1."
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مثّل القوى الخارجية المطبّقة على الجملة خلال هاته المرحلة من الحركة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تمثيل القوى الخارجية المطبقة على الجملة:"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×3 (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [
+                "CORR_S1_EX2_FIG2"
+              ],
+              "label": "2."
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ذكّر بنصّ القانون الثاني لنيوتن."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "نص القانون الثاني لنيوتن: في مرجع غاليلي، المجموع الشعاعي للقوى الخارجية المطبقة على جملة مادية يساوي في كل لحظة جداء كتلتها في شعاع تسارع مركز عطالتها."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.75"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بتطبيق القانون الثاني لنيوتن على مركز عطالة الجملة، بيّن أنّ المعادلة التفاضلية التي تحققها فاصلة مركز عطالة الجملة تكتب على الشكل: $\\frac{d^2 x}{dt^2} = g \\sin \\alpha - \\frac{f}{m}$"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المعادلة التفاضلية التي تحققها فاصلة مركز العطالة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تطبيق القانون الثاني لنيوتن:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\sum \\vec{F}_{ext} = m \\vec{a}_G \\Rightarrow \\vec{P} + \\vec{R} + \\vec{f} = m \\vec{a}_G"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالإسقاط على محور الحركة:"
+                },
+                {
+                  "type": "latex",
+                  "text": "P \\sin \\alpha - f = m a_G \\Rightarrow \\frac{d^2 x}{dt^2} = g \\sin \\alpha - \\frac{f}{m}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25+0.5 للقانون ومجموع الأشعة، 0.5 للإسقاط والمعادلة (المجموع: 1.25)"
+                }
+              ],
+              "assetIds": [],
+              "label": "4."
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "سمحت الدّراسة التجريبية بتحديد قيمة تسارع مركز عطالة الجملة $a_G = 4 m \\cdot s^{-2}$. استنتج شدّة قوة الاحتكاك $f$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "شدة قوة الاحتكاك ($f$):"
+                },
+                {
+                  "type": "latex",
+                  "text": "g \\sin \\alpha - \\frac{f}{m} = a_G \\Rightarrow f = m(g \\sin \\alpha - a_G)"
+                },
+                {
+                  "type": "latex",
+                  "text": "f = 60(9.8 \\times 0.5 - 4) = 54 \\text{ N}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "العبارة: 0.50 | النتيجة: 0.25 (المجموع 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "5."
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "المرحلة الثانية: دراسة حركة القفز فوق بركة الماء"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "يصل المتزلّج إلى النقطة $C$ فيصعد قافزا فوق بركة الماء بسرعة ابتدائية $v_0$ يصنع حاملها زاوية $\\beta = 45^\\circ$ مع المستوي الأفقي في لحظة نعتبرها مبدأ للأزمنة $t=0$ حيث تكون احداثيات مركز عطالة الجملة هي: $G_0(x_0 = 0, y_0 = 0.80 m)$ (الشكل 3)."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "جِدْ قيمة السّرعة الابتدائية لمركز عطالة الجملة $v_0$. علما أنّ الطّاقة الحركية الابتدائية للجملة هي: $E_{c_0} = 1.9 \\times 10^3 J$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "قيمة السرعة الابتدائية:"
+                },
+                {
+                  "type": "latex",
+                  "text": "E_{c_0} = \\frac{1}{2} m v_0^2"
+                },
+                {
+                  "type": "latex",
+                  "text": "v_0 = \\sqrt{\\frac{2 E_{c_0}}{m}}"
+                },
+                {
+                  "type": "latex",
+                  "text": "v_0 = \\sqrt{\\frac{2 \\times 1.9 \\times 10^3}{60}} = 7.96 \\text{ m\\cdot s}^{-1}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة الطاقة: 0.25 | استخراج v0: 0.25 | الحساب: 0.50 (المجموع 1.00)"
+                }
+              ],
+              "assetIds": [
+                "SUJET_1_EX2_FIG3"
+              ],
+              "label": "1."
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "معادلة مسار حركة مركز عطالة الجملة: $y = -\\frac{g}{2 v_0^2 \\cos^2(\\beta)} x^2 + \\tan(\\beta) x + y_0$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "عندما تلامس عجلات لوح التّزلّج سطح الأرض يكون مركز عطالة الجملة في الموضع $G(x_G, y_G = 0.30 m)$. باستغلال معادلة المسار، جِدْ قيمة $x_G$ فاصلة مركز عطالة الجملة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "فاصلة نقطة السقوط على الأرض $x_G$:"
+                },
+                {
+                  "type": "latex",
+                  "text": "0.15473 x_G^2 - x_G - 0.5 = 0"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ومنه: $x_G = 6.9 \\text{ m}$ ، $x_G' = -0.47 \\text{ m}$ مرفوض"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التعويض: 0.25×4 | إيجاد الجذور: 0.25×2 (المجموع: 1.50)  - Wait, barème says 0.25x4 + 0.25x2 + 0.5 (for next question) = 2.0"
+                }
+              ],
+              "assetIds": [],
+              "label": "1.2."
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "إذا علمت أنّ المسافة $CD = 6m$، هل يجتاز المتزلّج بركة الماء؟ بَرّر إجابتك."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المتزلج يجتاز البركة"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التبرير: $x_G > 6 \\text{ m}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.50"
+                }
+              ],
+              "assetIds": [],
+              "label": "2.2."
+            }
+          ],
+          "maxPoints": 7
+        },
+        {
+          "orderIndex": 3,
+          "title": "التمرين التجريبي",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "بيّنت الدّراسات أنّ تَسَرُّبَ شوارد الألمنيوم إلى جسم الإنسان له تأثير خطير على الأعصاب، حيث يعتبر كعامل مسبّب لمرض الزهايمر وهشاشة العظام. يُحَذَّرُ المختصّون من استعمال ورق الألمنيوم في الطّبخ وتغليف الأطعمة خاصّة إذا كانت ساخنة (مثل: المفور) وتحتوي على حمض موجود في (الطّماطم أو الخل أو ...)."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التمرين إلى دراسة حركية تفاعل الألمنيوم مع محلول حمضي وبعض العوامل الحركية المؤثّرة فيه."
+            },
+            {
+              "type": "heading",
+              "text": "أوّلاً:"
+            },
+            {
+              "type": "paragraph",
+              "text": "نُحَضّرُ محلولا مخفّفا ($S_1$) تركيزه المولي $c_1 = 0.482 mol \\cdot L^{-1}$ وحجمه $V = 500 mL$، انطلاقا من محلول تجاري ($S_0$) لحمض كلور الهيدروجين تركيزه المولي $c_0$، والموجود في قارورة بها لصيقة تحمل معلومات ذات دلالات معيّنة."
+            }
+          ],
+          "assetIds": [
+            "SUJET_1_EX3_BOTTLE"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اذكر دلالات المعلومات التي تحملها لصيقة القارورة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "دلالات المعلومات:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$P$: النقاوة، $M$: الكتلة المولية الجزيئية، $d$: كثافة المحلول، إشارة الخطر (بيكتوغرام)، $HCl$: الصيغة الجزيئية المجملة للحمض (نكتفي بـ 03 إجابات)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×3 (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "1."
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تحقق من أن:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التركيز المولي للمحلول ($S_0$) هو: $c_0 = 12.06 mol \\cdot L^{-1}$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التركيز المولي:"
+                },
+                {
+                  "type": "latex",
+                  "text": "c_0 = \\frac{10 \\cdot d \\cdot P}{M} = \\frac{10 \\times 1.19 \\times 37}{36.5} = 12.06 \\text{ mol}\\cdot\\text{L}^{-1}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "1.2."
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الحجم المأخوذ من المحلول ($S_0$) لتحضير المحلول المخفّف ($S_1$) هو: $V_0 = 20 mL$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حجم المحلول الأم:"
+                },
+                {
+                  "type": "latex",
+                  "text": "c_1 V = c_0 V_0 \\Rightarrow V_0 = \\frac{c_1 V}{c_0} = \\frac{0.482 \\times 500}{12.06} \\simeq 20 \\text{ mL}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2.2."
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اكتب بروتوكولا تجريبيا (الاحتياطات الأمنية، الوسائل، خطوات العمل) لعمليّة التّخفيف."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "البروتوكول التجريبي:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "الاحتياطات الأمنية: قفازات، مئزر، نظارات"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "الوسائل: حوجلة عيارية $500 mL$، ماصة عيارية $20 mL$ مزودة بإجاصة مص، طارحة المحلول التجاري ($S_0$)، ماء مقطر."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "خطوات العمل:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "- نأخذ $20 mL$ من المحلول التجاري بواسطة الماصة؛"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "- نسكب الحجم المأخوذ في الحوجلة العيارية بها قليل من الماء المقطر؛"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "- نضيف الماء المقطر إلى $\\frac{3}{4}$ حجم الحوجلة ونسدها ونرجها؛"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "- نكمل بالماء المقطر الى خط العيار $500 mL$، نرج الحوجلة للحصول على محلول متجانس."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الاحتياطات: 0.25 | الوسائل: 0.25 | الخطوات: 0.50 (المجموع 1.00)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "ثانيا:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نأخذ في اللحظة $t = 0$، حجما $V_1 = 100 mL$ من المحلول المخفّف ($S_1$) ذي التركيز المولي $c_1$ موجود بزيادة ونضعه في بيشر ثم نضيف له قطعة من الألمنيوم، فيحدث تحوّل أكسدة-إرجاع تام، يُنمذَج بتفاعل كيميائي معادلته:"
+                },
+                {
+                  "type": "latex",
+                  "text": "2Al(s) + 6H_3O^+(aq) \\rightarrow 2Al^{3+}(aq) + 6H_2O(l) + 3H_2(g)"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "المتابعة الزّمنية للتحوّل الكيميائي الحادث عند درجة حرارة $\\theta = 25^\\circ C$، مَكّنَت من رسم المنحنى البياني لتطوّر تركيز شوارد الألمنيوم المتشكّلة بدلالة الزّمن $[Al^{3+}] = f(t)$ (الشكل 4)."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "صنّف التّحوّل الكيميائي المدروس من حيث المدّة المستغرقة لحدوثه."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تصنيف التحول من حيث مدة حدوثه: تحول بطيء يستغرق عدة دقائق"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [
+                "SUJET_1_EX3_FIG4"
+              ],
+              "label": "1."
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استخرج الثّنائيتين Ox/Red المشاركتين في التّفاعل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الثنائيتان Ox / Red المشاركتان في التفاعل:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "الثنائيتان: $Al^{3+} / Al$ و $H_3O^+ / H_2$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عَرّف $t_{1/2}$ زمن نصف التّفاعل وحدّد قيمته بيانيّا."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعريف $t_{1/2}$: هو الزمن اللازم لبلوغ تقدم التفاعل نصف قيمته النهائية."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "قيمته بيانيا: مع التبرير"
+                },
+                {
+                  "type": "latex",
+                  "text": "[Al^{3+}]_{t_{1/2}} = \\frac{[Al^{3+}]_f}{2} = 5 \\times 10^{-2} \\text{ mol}\\cdot\\text{L}^{-1}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$t_{1/2} = 1.4 \\text{ min}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التعريف: 0.25 | التبرير (القيمة عند النصف): 0.25×2 | النتيجة: 0.25 (المجموع 1.00)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "احسب السّرعة الحجميّة لتشكّل شوارد $Al^{3+}$ في اللّحظة $t = 0$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب السرعة الحجمية لتشكل شوارد $Al^{3+}$ عند اللحظة $t = 0$:"
+                },
+                {
+                  "type": "latex",
+                  "text": "v_{vol}(Al^{3+}) = \\frac{1}{V_1} \\frac{dn(Al^{3+})}{dt} = \\frac{d[Al^{3+}]}{dt}"
+                },
+                {
+                  "type": "latex",
+                  "text": "v_{vol}(Al^{3+}) = a_0 = \\frac{10 \\times 10^{-2}}{2} = 5 \\times 10^{-2} \\text{ mol}\\cdot\\text{L}^{-1}\\cdot\\text{min}^{-1}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للعبارة و 0.25 للحساب (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "4."
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تُكرّر التّجربة بغرض دراسة تأثير بعض العوامل الحركيّة على التّحوّل الكيميائي المدروس:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تَعَرّف على العوامل الحركيّة المؤثّرة على التّحوّل الكيميائي والتي تُبْرِزها هذه التّجارب."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "العوامل الحركية: درجة حرارة الوسط التفاعلي، التركيز المولي للمتفاعلات."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [
+                "SUJET_1_EX3_TAB1"
+              ],
+              "label": "1.5."
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عند رفع درجة حرارة المزيج التّفاعلي، اختر الإجابة أو الإجابات الصّحيحة ممّا يلي:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "أ) يتناقص $t_{1/2}$ زمن نصف التّفاعل."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ب) تزداد السّرعة الحجميّة لتشكّل شوارد $Al^{3+}$ في اللّحظة $t = 0$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "جـ) يتناقص التّركيز النّهائي لتشكّل شوارد $Al^{3+}$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "د) يصبح المزيج ستوكيومتريا."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الإجابة الصحيحة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "أ) يتناقص $t_{1/2}$ زمن نصف التفاعل."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ب) تزداد السرعة الحجمية لتشكل $Al^{3+}$."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 لكل إجابة صحيحة (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2.5."
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أعد رسم الشكل 4 كيفيّا مبيّنا عليه بيان تطوّر تركيز شوارد $Al^{3+}$ المتشكّلة بدلالة الزّمن الموافق لكل تجربة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "رسم البيانات الكيفية:"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [
+                "CORR_S1_EX3_FIG4"
+              ],
+              "label": "3.5."
+            },
+            {
+              "orderIndex": 12,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بَرّر انطلاقا من الدّراسة السّابقة صحّة العبارة: «يُحَذَّرُ المختصّون من استعمال ورق الألمنيوم في الطّبخ وتغليف الأطعمة خاصّة إذا كانت ساخنة (مثل: المفور) وتحتوي على حمض موجود في (الطّماطم أو الخل أو ...)»."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تبرير صحة العبارة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التبرير: تسرب شوارد الألمنيوم إلى جسم الانسان الناتجة عن التفاعل الكيميائي بين الألمنيوم والحمض، والرفع في درجة الحرارة يؤدي إلى زيادة سرعة تشكل شوارد الألمنيوم $Al^{3+}$ مما يؤثر سلبا على صحة الانسان."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 + 0.25 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "6."
+            },
+            {
+              "orderIndex": 13,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اقترح حلاًّ لتجنّب تسرّب شوارد $Al^{3+}$ المتشكّلة إلى الأطعمة عند طهيها في ورق الألمنيوم."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الحل المقترح: تغليف الأطعمة بورق طهي صحي ثم تغليفه بورق الألمنيوم."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.50"
+                }
+              ],
+              "assetIds": [],
+              "label": "7."
+            }
+          ],
+          "maxPoints": 7
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "exercises": [
+        {
+          "orderIndex": 1,
+          "title": "التمرين الأول",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "تمكّن روّاد المركبة الفضائيّة أبولو 11 في 21 جويلية 1969 من النّزول على سطح القمر لأوّل مرّة، واستمرّت البعثات بعد ذلك للاستكشاف وإجراء التجارب العلميّة."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التمرين إلى دراسة حركة المركبة أبولو 11 حول القمر وحركة سقوط جسم صلب على سطح القمر."
+            },
+            {
+              "type": "heading",
+              "text": "معطيات:"
+            },
+            {
+              "type": "paragraph",
+              "text": "نصف قطر القمر: $R_L = 1.73 \\times 10^6 m$ ؛ كتلة القمر: $M_L = 7.34 \\times 10^{22} kg$ ؛\nدور القمر حول محوره: $T_L = 27.3 jours$ ؛ قيمة الجاذبيّة على سطح القمر: $g_L = 1.62 m \\cdot s^{-2}$ ؛\nثابت الجذب العام: $G = 6.67 \\times 10^{-11} SI$."
+            },
+            {
+              "type": "paragraph",
+              "text": "بعد انطلاق المركبة الفضائيّة أبولو 11 من سطح الأرض بواسطة الصّاروخ Saturn وقبل نزولها على سطح القمر، اتّخذت مدارا دائريّا حول القمر على ارتفاع $h = 110 km$ من سطح القمر (الشكل 1)."
+            },
+            {
+              "type": "paragraph",
+              "text": "نعتبر أنّ المركبة أبولو 11 تخضع إلى جذب القمر فقط، وأنّ القمر محاط بفراغ."
+            }
+          ],
+          "assetIds": [
+            "SUJET_2_EX1_FIG1",
+            "SUJET_2_EX1_IMG"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اذكر المرجع المناسب لدراسة حركة المركبة الفضائيّة أبولو 11 حول القمر. ومثّل $\\vec{F}_{L/A}$ القوّة المطبّقة من طرف القمر ($L$) على المركبة أبولو 11 ($A$)."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مرجع الدراسة وتمثيل القوة $\\vec{F}_{L/A}$:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "المرجع المناسب لدراسة حركة المركبة هو المرجع المركزي القمري."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للمرجع و 0.25 للتمثيل (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [
+                "CORR_S2_EX1_FIG1"
+              ],
+              "label": "1."
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بتطبيق القانون الثاني لنيوتن، جِدْ عبارة سرعة المركبة الفضائيّة أبولو 11، ثمّ احسب قيمتها."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة سرعة المركبة الفضائية بتطبيق القانون الثاني لنيوتن:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\sum \\vec{F}_{ext} = m \\vec{a} \\Rightarrow \\vec{F}_{L/A} = m \\vec{a}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالإسقاط وفق الناظم:"
+                },
+                {
+                  "type": "latex",
+                  "text": "F_{L/A} = m \\cdot a \\Rightarrow \\frac{G \\cdot M_L \\cdot m}{(R_L + h)^2} = m \\cdot \\frac{v^2}{(R_L + h)} \\Rightarrow v = \\sqrt{\\frac{G M_L}{(R_L + h)}}"
+                },
+                {
+                  "type": "latex",
+                  "text": "v = \\sqrt{\\frac{6.67 \\times 10^{-11} \\times 7.34 \\times 10^{22}}{(1.73 + 0.11) \\times 10^6}} = 1631.18 \\text{ m}\\cdot\\text{s}^{-1}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للقانون | 0.25×3 للعبارة | 0.25 للحساب (المجموع: 1.25)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اكتب عبارة $T_A$ دور المركبة الفضائيّة ($A$) بدلالة المقادير $R_L$ و $h$ و $v$، ثمّ احسب قيمته."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عبارة دور المركبة الفضائية:"
+                },
+                {
+                  "type": "latex",
+                  "text": "T_A = \\frac{2\\pi(R_L + h)}{v}"
+                },
+                {
+                  "type": "latex",
+                  "text": "T_A = \\frac{2\\pi(1.73 + 0.11) \\times 10^6}{1631.18} = 7087.54 \\text{ s} = 1.97 \\text{ h}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.5 للعبارة | 0.25 للحساب (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "هل المركبة الفضائيّة أبولو 11 مستقرّة بالنسبة للقمر؟ علّل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المركبة ليست مستقرة بالنسبة للقمر، لأن دورها يختلف عن دور القمر $27.32 \\text{ j} \\neq T_A$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.50"
+                }
+              ],
+              "assetIds": [],
+              "label": "4."
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "من أهداف الرّحلات نحو القمر إجراء تجارب علميّة والتّحقّق من بعض القوانين في علم الميكانيك، نذكر منها مدّة سقوط الأجسام:\nأ) مستقلّة عن كتلة الجسم.\nب) تتناقص بزيادة كتلة الجسم."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "للتّصديق على الفرضيّتين (أ) و (ب)، قام قائد البعثة Dave Scott في رحلة أبولو 15 في 30 جويلية 1971، بترك مطرقة وريشة تسقطان من نفس الارتفاع $h$ عن سطح القمر في نفس اللّحظة وبدون سرعة ابتدائيّة، فلاحظ وصولهما إلى السّطح في نفس اللّحظة. بناء على هذه الملاحظة، ماهي الفرضيّة الصّحيحة؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الفرضية الصحيحة هي الفرضية (أ)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "1.5."
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بتطبيق القانون الثاني لنيوتن على $G$ مركز عطالة المطرقة بالنسبة لمعلم خطّي محوره $(Oz)$ موجّه نحو الأعلى ومرتبط بمرجع الدّراسة المناسب."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "جِدْ المعادلة التفاضليّة التي تُحقّقها سرعة مركز عطالة المطرقة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المعادلة التفاضلية التي تحققها سرعة مركز عطالة المطرقة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بتطبيق القانون الثاني لنيوتن على مركز عطالة المطرقة في المرجع السطحي القمري:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\sum \\vec{F}_{ext} = m \\vec{a}_G \\Rightarrow \\vec{P} = m \\vec{a}_G"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالإسقاط وفق محور الحركة:"
+                },
+                {
+                  "type": "latex",
+                  "text": "a_G = -g_L \\Rightarrow \\frac{dv}{dt} = -g_L"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 + 0.25 + 0.25×2 (المجموع: 1.00 من أصل 3.00 لكتلة الأسئلة .5)"
+                }
+              ],
+              "assetIds": [],
+              "label": "1.2.5."
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استنتج المعادلتين الزمنيّتين $v_z(t)$ و $z(t)$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المعادلتان الزمنيتان:"
+                },
+                {
+                  "type": "latex",
+                  "text": "v_z(t) = -g_L t"
+                },
+                {
+                  "type": "latex",
+                  "text": "z(t) = -\\frac{1}{2} g_L t^2 + h"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.50 + 0.50 (المجموع: 1.00)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2.2.5."
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ترك رائد الفضاء Dave Scott المطرقة تسقط دون سرعة ابتدائيّة في لحظة $t = 0$ من موضع يبعد فيه مركز عطالة المطرقة بمسافة $h = 1.5 m$ عن سطح القمر. وعند وصولها لسطح القمر كان مركز عطالتها $G$ على ارتفاع $h_1 = 5 cm$ (الشكل 2)."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "احسب لحظة وصول المطرقة إلى سطح القمر."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب لحظة وصول المطرقة إلى السطح:"
+                },
+                {
+                  "type": "latex",
+                  "text": "t = \\sqrt{\\frac{2(h - h_1)}{g_L}}"
+                },
+                {
+                  "type": "latex",
+                  "text": "t = \\sqrt{\\frac{2(1.5 - 0.05)}{1.62}} = 1.34 \\text{ s}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 للعبارة | 0.25 للحساب (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [
+                "SUJET_2_EX1_FIG2"
+              ],
+              "label": "3.2.5."
+            }
+          ],
+          "maxPoints": 6
+        },
+        {
+          "orderIndex": 2,
+          "title": "التمرين الثاني",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "الوشيعة عنصر كهربائي له خاصيّة تخزين الطّاقة، وهي عبارة عن سلك ناقل للكهرباء مغطّى بعازل وملفوف عدّة لفّات بأشكال مختلفة حسب استعمالاتها."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التّمرين إلى دراسة تأثير نواة حديديّة على سلوك وشيعة."
+            },
+            {
+              "type": "paragraph",
+              "text": "من أجل اختبار سلوك وشيعة تحريضيّة عندما تكون مزوّدة بنواة حديديّة وبدونها والتّحقّق من تأثير ذلك على ذاتيّة الوشيعة، نُحقّق التّركيب التّجريبي الموضّح بالشكل 3 والمتكوّن من:"
+            },
+            {
+              "type": "paragraph",
+              "text": "– مُولّد توتّر مثالي قوّته المحرّكة الكهربائيّة $E = 5 V$ ؛\n– أسلاك توصيل؛\n– وشيعة ذاتيّتها $L$ ومقاومتها $r = 5 \\Omega$ ؛\n– ناقل أومي مقاومته $R = 10 \\Omega$ ؛\n– قاطعة $K$."
+            },
+            {
+              "type": "heading",
+              "text": "أوّلاً: الوشيعة بدون نواة حديديّة"
+            },
+            {
+              "type": "paragraph",
+              "text": "نغلق القاطعة $K$ في اللّحظة $t = 0$. يسمح نظام إدخال معلوماتي بالحصول على البيان 1 الموضّح في الشكل 4 والمُمثّل لتطوّر $u_R(t)$ التوتّر الكهربائي اللّحظي بين طرفي النّاقل الأومي بدلالة الزّمن $u_R(t) = f(t)$."
+            }
+          ],
+          "assetIds": [
+            "SUJET_2_EX2_FIG3",
+            "SUJET_2_EX2_FIG4"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أعد رسم الدّارة (الشكل 3) موضحا عليها جهة التّيار واتّجاه مختلف التوتّرات الكهربائيّة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "جهة التيار واتجاه أسهم التوتر:"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×3 (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [
+                "CORR_S2_EX2_FIG3"
+              ],
+              "label": "1."
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أثبت أنّ المعادلة التفاضليّة التي يُحقّقها التوتّر $u_R(t)$ تُكتب على الشّكل: $\\frac{du_R}{dt} + \\frac{(R+r)}{L} u_R = \\frac{R}{L} E$"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "إثبات المعادلة التفاضلية للدارة الكهربائية:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بتطبيق قانون جمع التوترات:"
+                },
+                {
+                  "type": "latex",
+                  "text": "u_R + u_b = E \\Rightarrow R i + r i + L \\frac{di}{dt} = E"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بأخذ : $i = \\frac{u_R}{R}$ نجد :"
+                },
+                {
+                  "type": "latex",
+                  "text": "(R+r)\\frac{u_R}{R} + L \\frac{1}{R} \\frac{du_R}{dt} = E"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "منه:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\frac{du_R}{dt} + \\frac{(R+r)}{L} u_R = \\frac{R}{L} E"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 لقانون الجمع | 0.25 للتعويض | 0.25 للمعادلة (المجموع: 1.00)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تَقْبَلُ المعادلة التفاضليّة السّابقة العبارة $u_R(t) = A \\left( 1 - e^{-\\frac{t}{\\tau}} \\right)$ حلاًّ لها، استنتج عبارتي الثّابتين $A$ و $\\tau$ بدلالة المقادير المميّزة للدّارة، معطيا مدلولهما الفيزيائي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "استنتاج عبارة الثابتين $A$ و $\\tau$:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "من: $u_R(t) = A \\left( 1 - e^{-\\frac{t}{\\tau}} \\right)$ نجد: $\\frac{du_R(t)}{dt} = \\frac{A}{\\tau} e^{-\\frac{t}{\\tau}}$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ونعوض في المعادلة التفاضلية:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\frac{A}{\\tau} e^{-\\frac{t}{\\tau}} + \\frac{(R+r)}{L} A \\left( 1 - e^{-\\frac{t}{\\tau}} \\right) = \\frac{R}{L} E"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "بالنشر نجد:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\left( \\frac{A}{\\tau} - \\frac{(R+r)}{L} A \\right) e^{-\\frac{t}{\\tau}} + \\frac{(R+r)}{L} A - \\frac{R}{L} E = 0"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\begin{cases} \\left( \\frac{A}{\\tau} - \\frac{(R+r)}{L} A \\right) = 0 \\\\ \\frac{(R+r)}{L} A - \\frac{R}{L} E = 0 \\end{cases} \\Rightarrow \\begin{cases} \\tau = \\frac{L}{R+r} \\\\ A = \\frac{E \\cdot R}{R+r} = R \\cdot I_0 = U_{Rmax} \\end{cases}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "المدلول الفيزيائي:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$\\tau$ ثابت الزمن وهو الزمن اللازم لبلوغ قيمة $u_R(t)$ %63 من قيمته العظمى."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$A$: التوتر الأعظمي بين طرفي الناقل الأومي."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للاشتقاق | 0.25 للتعويض | 0.25 للنشر | 0.25 لـ tau | 0.25 لـ A | 0.25×2 للمدلول (المجموع: 1.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بيّن أنّ $\\tau$ الثابت المميّز للدّارة متجانس مع الزّمن. ثمّ حدّد قيمته بيانيّا."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التحليل البعدي لثابت $\\tau$ المميز للدارة وتحديد قيمته بيانيا:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\tau = \\frac{L}{R+r} \\Rightarrow [\\tau] = \\frac{[L]}{[R]} = \\frac{[u][t]}{[i]} \\frac{[i]}{[u]} = [t] = T"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$\\tau$ له بُعْدُ الزّمن"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تحديد قيمته بيانيا:"
+                },
+                {
+                  "type": "latex",
+                  "text": "u_R(\\tau) = 0.63 \\cdot U_{Rmax} = 2.1 \\text{ V}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "من البيان (1) نقرأ : $\\tau = 1.2 \\text{ ms}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للتحليل البعدي | 0.25 للحساب (2.1V) | 0.25 للقراءة (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "4."
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حدّد بيانيّا المجال الزّمني لكلّ من النّظامين الانتقالي والدّائم واشرح كيف تتطوّر شدّة التّيار $i(t)$ فيهما؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التحديد البياني للمجال الزمني لكل من النظامين الانتقالي والدائم:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "النظام الانتقالي: $t \\in [0 ; 6 \\text{ ms}]$ (تقبل الإجابة من أجل $t \\in [0 ; 7 \\text{ ms}]$)"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "النظام الدائم: $t > 6 \\text{ ms}$ (تقبل الإجابة $t > 7 \\text{ ms}$)"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حسب قانون أوم $i(t) = \\frac{1}{R} u_R(t)$ يتطور التيار $i(t)$ بنفس كيفية تطور التوتر $u_R(t)$ أي تؤخر الوشيعة ظهور التيار في الدارة، فتزداد شدة التيار الكهربائي لفترة قصيرة من قيمة معدومة في اللحظة $t=0$ إلى قيمة عظمى $I_0$ (نظام انتقالي) ثم تحافظ على نفس القيمة (نظام دائم)."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للنظام الانتقالي | 0.25 للنظام الدائم | 0.50 للشرح (المجموع: 1.00)"
+                }
+              ],
+              "assetIds": [],
+              "label": "5."
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "عيّن قيمة المقدار $\\frac{di(t)}{dt}$ خلال النّظام الدّائم."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تعيين قيمة المقدار $\\frac{di(t)}{dt}$ أثناء النظام الدائم:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "شدة التيار ثابتة $i(\\infty) = I_0 = C^{te}$ منه: $\\frac{di(t)}{dt} = 0$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "6."
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "ثانيا: الوشيعة مزوّدة بنواة حديديّة"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نُعيدُ نفس التّجربة السّابقة بوضع نواة حديديّة داخل الوشيعة فنحصل على البيان 2 الموضّح في الشكل 4."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "باعتبار أنّ شكل المعادلة التفاضليّة السّابقة لا يتغيّر، ما هو المقدار المتوقّع تغيُّره في هذه المعادلة؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المقدار المتوقع تغيره هو ذاتية الوشيعة."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "1."
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حدّد بيانيّا الثّابت $\\tau'$ المميّز الجديد للدّارة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تحديد بيانيا الثابت $\\tau'$ المميز للدارة الجديدة:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$u_R(\\tau) = 0.63 \\cdot U_{Rmax} = 2.1 \\text{ V}$ من البيان (2) نقرأ: $\\tau' = 2.4 \\text{ ms}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "نرمز بـ $L$ لذاتيّة الوشيعة بدون نواة حديديّة و $L'$ لذاتيّة الوشيعة وهي مزوّدة بنواة حديديّة. استنتج تأثير النّواة الحديديّة على ذاتيّة الوشيعة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تأثير النواة الحديدية على ذاتية الوشيعة:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\begin{cases} \\tau = \\frac{L}{R+r} \\\\ \\tau' = \\frac{L'}{R+r} \\end{cases} \\dots \\tau' > \\tau \\Rightarrow L' > L"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "عند إدخال نواة حديدية في قلب وشيعة تزداد الذاتية $L$ للوشيعة وبالتالي يزداد ثابت الزمن."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للبرهان | 0.25 للاستنتاج (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            }
+          ],
+          "maxPoints": 7
+        },
+        {
+          "orderIndex": 3,
+          "title": "التمرين التجريبي",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "إيثانوات 3-ميثيل بوتيل، إستر يستعمل كمعطّر في الأدوية والياغورت والحلويات ...\nيوجد طبيعيّا في الموز، يمكن تحضيره مخبريّا بإنجاز تحوّل كيميائي محدود بين حمض الإيثانويك و 3-ميثيل بوتان-1-أول."
+            },
+            {
+              "type": "paragraph",
+              "text": "يهدف هذا التّمرين إلى دراسة تركيب إستر وتحسين مردوده."
+            },
+            {
+              "type": "heading",
+              "text": "الوثيقة 1: تفاعل التّركيب (التّصنيع)"
+            },
+            {
+              "type": "paragraph",
+              "text": "يُنَمْذَجُ تركيب الإستر (إيثانوات 3-ميثيل بوتيل) بتفاعل كيميائي معادلته:"
+            },
+            {
+              "type": "latex",
+              "text": "H_3C - CH(\\text{CH}_3) - CH_2 - CH_2 - OH + H_3C - C(=O) - OH \\rightleftharpoons H_3C - C(=O) - O - CH_2 - CH_2 - CH(\\text{CH}_3) - CH_3 + H_2O"
+            },
+            {
+              "type": "heading",
+              "text": "الوثيقة 2: معطيات حول المتفاعلات والنّواتج"
+            },
+            {
+              "type": "heading",
+              "text": "الوثيقة 3: البروتوكول التّجريبي"
+            },
+            {
+              "type": "paragraph",
+              "text": "- نسكب في بالون (دورق كروي) سعته $250 mL$ حجما $V_1$ من الكحول (3-ميثيل بوتان-1-أول) وحجما $V_2$ من حمض الإيثانويك؛\n- نضيف للمزيج التفاعلي بحذر قطرات من حمض الكبريت المركز وحبّات من حجر الخفّان؛\n- ننجز تركيب التّسخين المرتدّ ونسخّن لمدّة $30 min$؛\n- نوقف التّسخين، ونترك البالون يبرد في الهواء لمدّة بضع دقائق ثمّ نضعه في حمّام مائي بارد مع ترك دورة الماء البارد تسري في المبرّد؛\n- نقوم بفصل وتنقية الإستر المتشكّل."
+            }
+          ],
+          "assetIds": [
+            "SUJET_2_EX3_IMG",
+            "SUJET_2_EX3_TAB1",
+            "SUJET_2_EX3_FIG5"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بناءً على المعلومات المتوفّرة، اذكر احتياطات الأمن والوقاية الّتي ينبغي اتّخاذها في عمليّة تحضير الإستر."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "احتياطات الأمن والوقاية: مئزر، قفازات، نظارات"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "1."
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أعط أسماء عناصر التّركيب التّجريبي المرقّمة في الشكل 5.\nلماذا نضع المبرّد شاقوليا على البالون؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "أسماء عناصر التركيب التجريبي:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "① فتحة خروج الماء ② مبرد ③ فتحة دخول الماء ④ بالون (دورق كروي) ⑤ مسخن كهربائي ⑥ مقعد ذو رافعة"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نضع المبرد شاقوليا على البالون لتجنب ضياع المادة حيث تتكاثف الأبخرة على جدران المبرد وترتد للوسط التفاعلي."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×2 للأسماء | 0.25 للتبرير (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2."
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اذكر دور كلّ من حمض الكبريت المركّز وحجر الخفّان في عمليّة تركيب الإستر."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "دور حمض الكبريت: وسيط يسرع التفاعل"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "دور حجر الخفان: تنظيم درجة حرارة الوسط التفاعلي في البالون"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 | 0.25 (المجموع: 0.50)"
+                }
+              ],
+              "assetIds": [],
+              "label": "3."
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ما هو دور العنصر ⑥ في التّركيب التّجريبي (الشكل 5)؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "دور العنصر ⑥ : إبعاد المسخن الكهربائي عن البالون عند الحاجة لذلك."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "4."
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "اكتب معادلة التّفاعل باستعمال الصّيغ الجزيئيّة المجملة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المعادلة الكيميائية:"
+                },
+                {
+                  "type": "latex",
+                  "text": "C_5H_{12}O(l) + C_2H_4O_2(l) = C_7H_{14}O_2(l) + H_2O(l)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "5."
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "نتّبع نفس البروتوكول التّجريبي أعلاه في التّجربتين التّاليتين:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "احسب كميّة المادّة الابتدائيّة للمتفاعلين لكلّ تجربة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "كمية المادة الابتدائية للمتفاعلين:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التجربة 01:"
+                },
+                {
+                  "type": "latex",
+                  "text": "n_i(alcool) = \\frac{m}{M} = \\frac{\\rho V_1}{M} = \\frac{0.81 \\times 20}{88} = 0.18 \\text{ mol}"
+                },
+                {
+                  "type": "latex",
+                  "text": "n_i(acide) = \\frac{m}{M} = \\frac{\\rho V_2}{M} = \\frac{1.05 \\times 10}{60} \\simeq 0.18 \\text{ mol}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التجربة 02:"
+                },
+                {
+                  "type": "latex",
+                  "text": "n_i(alcool) = \\frac{m}{M} = \\frac{\\rho V_1}{M} = \\frac{0.81 \\times 20}{88} = 0.18 \\text{ mol}"
+                },
+                {
+                  "type": "latex",
+                  "text": "n_i(acide) = \\frac{m}{M} = \\frac{\\rho V_2}{M} = \\frac{1.05 \\times 25}{60} = 0.44 \\text{ mol}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 لكل حساب (المجموع: 1.00 - ضمن كتلة 5.00)"
+                }
+              ],
+              "assetIds": [
+                "SUJET_2_EX3_TAB2"
+              ],
+              "label": "1.6."
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "التّجربة رقم 01:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "حدّد صنف الكحول المستعمل. استنتج قيمة $\\tau_f$ نسبة التّقدّم النّهائي للتّفاعل."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تحديد صنف الكحول واستنتاج قيمة نسبة التقدم النهائي للتفاعل:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "صنف الكحول: كحول أولي (من الوثيقة 01)"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "نسبة التقدم النهائي: الكحول أولي والمزيج متكافئ في كمية المادة. منه: $\\tau_f = 0.67$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للصنف | 0.25 للاستنتاج | 0.25 للقيمة (المجموع: 0.75)"
+                }
+              ],
+              "assetIds": [],
+              "label": "1.2.6."
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بعد الفصل والتّنقية تحصّلنا على $16 mL$ من الإستر المتشكّل، احسب مردود التّحوّل $r = \\frac{n_{exp}}{n_{max}}$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "قارنه بنسبة التّقدّم النّهائي للتّفاعل $\\tau_f$. بَرّر النّتيجة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مردود التحول:"
+                },
+                {
+                  "type": "latex",
+                  "text": "r = \\frac{n_{exp}}{n_{max}}"
+                },
+                {
+                  "type": "latex",
+                  "text": "n_{exp} = \\frac{\\rho V}{M} = \\frac{0.87 \\times 16}{130} \\simeq 0.11 \\text{ mol}"
+                },
+                {
+                  "type": "latex",
+                  "text": "n_{max} = 0.18 \\text{ mol}"
+                },
+                {
+                  "type": "latex",
+                  "text": "r = \\frac{0.11}{0.18} \\simeq 0.61 \\rightarrow r = 61\\%"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$r < \\tau_f$ : أثناء تحضير الأستر يحدث ضياع طفيف للمادة بسبب التبخر وكذلك عند تنقية واستخلاص الأستر."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25×5 للحسابات والتبرير (المجموع: 1.25)"
+                }
+              ],
+              "assetIds": [],
+              "label": "2.2.6."
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "التّجربة رقم 02:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "احسب قيمة $\\tau'_f$ نسبة التّقدّم النّهائي، علما أنّ ثابت التّوازن المرتبط بمعادلة التّفاعل الحادث هو: $K = 4$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب قيمة $\\tau'_f$:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\tau'_f = \\frac{x_f}{x_{max}}"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "جدول التقدم:"
+                },
+                {
+                  "type": "latex",
+                  "text": "k = \\frac{x_f^2}{(0.18 - x_f)(0.44 - x_f)} = 4"
+                },
+                {
+                  "type": "latex",
+                  "text": "3x_f^2 - 2.48x_f + 0.317 = 0"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$x_f = 0.16 \\text{ mol}$ ; $x'_f = 0.67 \\text{ mol}$ (مرفوضة)"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\tau'_f = \\frac{0.16}{0.18} = 0.89"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25 للقانون | 0.25×2 للجدول | 0.25×3 للمعادلة والجذور | 0.25 لـ tau'_f (المجموع: 1.75)"
+                }
+              ],
+              "assetIds": [
+                "CORR_S2_EX3_TAB"
+              ],
+              "label": "3.6."
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ماذا تستنتج من التّجربتين 01 و02؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الاستنتاج:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تزداد قيمة $\\tau_f$ عند استخدام مزيج غير متكافئ في كمية المادة."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "0.25"
+                }
+              ],
+              "assetIds": [],
+              "label": "4.6."
+            }
+          ],
+          "maxPoints": 7
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "SUJET_1_EX1_FIG1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 1,
+      "caption": "الشكل 1. المخطط (N, Z)",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "CORR_S1_EX1_FIG1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 1,
+      "caption": "الشكل 1. المخطط (N, Z) (مكتمل)",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "SUJET_1_EX2_FIG2",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 2,
+      "caption": "الشكل 2. مرحلتا الحركة",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "CORR_S1_EX2_FIG2",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2,
+      "caption": "تمثيل القوى الخارجية المطبقة على الجملة",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "SUJET_1_EX2_FIG3",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3,
+      "caption": "الشكل 3. القفز للأعلى فوق بركة ماء",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "SUJET_1_EX3_BOTTLE",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3,
+      "caption": "لصيقة القارورة",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "SUJET_1_EX3_FIG4",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4,
+      "caption": "الشكل 4",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "CORR_S1_EX3_FIG4",
+      "exerciseOrderIndex": 3,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 5,
+      "caption": "رسم البيانات الكيفية",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "SUJET_1_EX3_TAB1",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 4,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "SUJET_2_EX1_FIG1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5,
+      "caption": "الشكل 1",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX1_IMG",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5,
+      "caption": "Dave Scott على سطح القمر",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "CORR_S2_EX1_FIG1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 5,
+      "caption": "تمثيل القوة المطبقة من طرف القمر",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX1_FIG2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6,
+      "caption": "الشكل 2",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX2_FIG3",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6,
+      "caption": "الشكل 3",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "CORR_S2_EX2_FIG3",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 6,
+      "caption": "جهة التيار واتجاه أسهم التوتر",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX2_FIG4",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6,
+      "caption": "الشكل 4",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX3_IMG",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7,
+      "caption": "صورة الموز",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX3_TAB1",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 7,
+      "caption": "الوثيقة 2: معطيات حول المتفاعلات والنواتج",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX3_FIG5",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 8,
+      "caption": "الشكل 5. الرّسم التّخطيطي للتّركيب التّجريبي",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "SUJET_2_EX3_TAB2",
+      "exerciseOrderIndex": 3,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 8,
+      "caption": "جدول حجوم المتفاعلات في التجربتين",
+      "variantCode": "SUJET_2"
+    },
+    {
+      "id": "CORR_S2_EX3_TAB",
+      "exerciseOrderIndex": 3,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 9,
+      "caption": "جدول التقدم للتجربة 2",
+      "variantCode": "SUJET_2"
+    }
+  ],
+  "uncertainties": [],
+  "exam": {
+    "title": "امتحان بكالوريا التعليم الثانوي - اختبار في مادة: العلوم الفيزيائية",
+    "totalPoints": 20
+  }
+}

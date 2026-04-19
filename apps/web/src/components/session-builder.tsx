@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { StudentNavbar } from "@/components/student-navbar";
@@ -17,6 +18,7 @@ import {
   StudyShell,
 } from "@/components/study-shell";
 import type { FiltersResponse } from "@/lib/study-api";
+import { STUDENT_BILLING_ROUTE } from "@/lib/student-routes";
 import { useSessionBuilder } from "@/lib/use-session-builder";
 
 export function SessionBuilder({
@@ -136,6 +138,13 @@ export function SessionBuilder({
                 </span>
               ) : null}
             </div>
+            {studyEntitlements.tier !== "PREMIUM" ? (
+              <div className="billing-inline-actions">
+                <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
+                  افتح Premium
+                </Link>
+              </div>
+            ) : null}
           </section>
         ) : null}
 

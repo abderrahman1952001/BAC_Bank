@@ -6,6 +6,7 @@ import { useAuthSession } from "@/components/auth-provider";
 import { StudentNavbar } from "@/components/student-navbar";
 import { StudyHeader, StudyShell } from "@/components/study-shell";
 import {
+  STUDENT_BILLING_ROUTE,
   STUDENT_TRAINING_DRILL_ROUTE,
   STUDENT_TRAINING_SIMULATION_ROUTE,
   STUDENT_TRAINING_WEAK_POINTS_ROUTE,
@@ -61,6 +62,13 @@ export function TrainingHome() {
               ? "Premium · وصول غير محدود للدريل والمحاكاة مع مسارات الدعم المتقدمة."
               : "Free · حصص شهرية منفصلة للدريل والمحاكاة، مع بقاء المكتبة والاستكمال متاحين دائماً."}
           </p>
+          <div className="billing-inline-actions">
+            <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
+              {studyEntitlements?.tier === "PREMIUM"
+                ? "إدارة الاشتراك"
+                : "الترقية إلى Premium"}
+            </Link>
+          </div>
         </section>
 
         <div className="builder-subject-grid">
@@ -116,6 +124,9 @@ export function TrainingHome() {
               <strong>دريل نقاط الضعف</strong>
               <p>يبني جلسة علاجية مباشرة من الإشارات الحديثة بعد المراجعة.</p>
               <small>متاح ضمن Premium</small>
+              <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
+                فعّل Premium
+              </Link>
             </article>
           )}
         </div>

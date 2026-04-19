@@ -17,13 +17,15 @@ import {
 } from "@/lib/admin-ingestion-structure-commands";
 import {
   patchDraftNode,
-  updateDraftAsset,
   updateDraftVariant,
   updateDraftVariantNodes,
-  type DraftAsset,
-  type DraftBlock,
-  type DraftNode,
-} from "@/lib/admin-ingestion-structure";
+} from "@/lib/admin-ingestion-structure-tree";
+import { updateDraftAsset } from "@/lib/admin-ingestion-structure-assets";
+import type {
+  DraftAsset,
+  DraftBlock,
+  DraftNode,
+} from "@/lib/admin-ingestion-structure-shared";
 
 export function useAdminIngestionStructureMutations(options: {
   draft: AdminIngestionDraft;

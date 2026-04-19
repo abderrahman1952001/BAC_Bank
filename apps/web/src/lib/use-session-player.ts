@@ -24,25 +24,29 @@ import {
   type SessionQuestionRef,
 } from "@/lib/session-player";
 import {
+  buildCompletedQuestionState,
+  buildDiagnosisQuestionState,
+  buildHintViewedQuestionState,
+  buildMethodViewedQuestionState,
+  buildReflectionQuestionState,
+  buildRevealSolutionQuestionState,
+  buildSkippedQuestionState,
+  isInteractiveElement,
+  isQuestionTimingTrackingEnabled,
+  resolveQuestionProgressPlan,
+  resolveRemainingSessionTimeMs,
+  resolveSimulationReviewAction,
+  shouldAutoRevealReviewSolution,
+  shouldStayOnCurrentQuestionAfterDiagnosis,
+  shouldStayOnCurrentQuestionAfterReflection,
+} from "@/lib/session-player-runtime";
+import {
   buildEmptyStudyProgress,
   readLocalStudyProgress,
   type StudyProgressSnapshot,
   writeLocalStudyProgress,
 } from "@/lib/study";
-import {
-  buildStudyExercisesFromSessionExercises,
-  canRevealStudyQuestionSolution,
-} from "@/lib/study-surface";
-
-function isInteractiveElement(target: EventTarget | null): boolean {
-  if (!(target instanceof HTMLElement)) {
-    return false;
-  }
-
-  return Boolean(
-    target.closest('input, textarea, select, button, [contenteditable="true"]'),
-  );
-}
+import { buildStudyExercisesFromSessionExercises } from "@/lib/study-surface";
 
 export function useSessionPlayer(
   sessionId: string,
@@ -84,10 +88,11 @@ export function useSessionPlayer(
       }),
     [exercises, progress, questionMotion, session],
   );
-  const timingTrackingEnabled =
-    Boolean(session?.timingEnabled) &&
-    session?.family === "DRILL" &&
-    progress.mode === "SOLVE";
+  const timingTrackingEnabled = isQuestionTimingTrackingEnabled({
+    timingEnabled: session?.timingEnabled,
+    sessionFamily: session?.family,
+    progressMode: progress.mode,
+  });
   const exerciseCheckpointSummary = useMemo(() => {
     if (!exerciseCheckpointExerciseId) {
       return null;
@@ -110,10 +115,14 @@ export function useSessionPlayer(
     progress.questionStates,
     session?.timingEnabled,
   ]);
-  const remainingTimeMs =
-    session?.family === "SIMULATION" && session.deadlineAt
-      ? Math.max(new Date(session.deadlineAt).getTime() - countdownNow, 0)
-      : null;
+  const remainingTimeMs = resolveRemainingSessionTimeMs({
+    sessionFamily: session?.family,
+    deadlineAt: session?.deadlineAt,
+    countdownNow,
+  });
+  const sessionFamily = session?.family;
+  const sessionDeadlineAt = session?.deadlineAt;
+  const sessionStatus = session?.status;
 
   function clearQuestionMotionTimers() {
     if (questionMotionOutTimerRef.current) {
@@ -361,55 +370,66 @@ export function useSessionPlayer(
   );
 
   useEffect(() => {
-    if (!session || session.family !== "SIMULATION" || !session.deadlineAt) {
+    if (sessionFamily !== "SIMULATION" || !sessionDeadlineAt) {
       return;
     }
 
-    setCountdownNow(Date.now());
+    const syncCountdownNow = () => {
+      setCountdownNow(Date.now());
+    };
+    const timeoutId = window.setTimeout(syncCountdownNow, 0);
     const intervalId = window.setInterval(() => {
       setCountdownNow(Date.now());
     }, 1000);
 
     return () => {
+      window.clearTimeout(timeoutId);
       window.clearInterval(intervalId);
     };
-  }, [session?.deadlineAt, session?.family]);
+  }, [sessionDeadlineAt, sessionFamily]);
 
   useEffect(() => {
-    if (
-      !session ||
-      session.family !== "SIMULATION" ||
-      progress.mode === "REVIEW"
-    ) {
+    const simulationReviewAction = resolveSimulationReviewAction({
+      sessionFamily,
+      sessionStatus,
+      deadlineAt: sessionDeadlineAt,
+      progressMode: progress.mode,
+      countdownNow,
+    });
+
+    if (simulationReviewAction === "none") {
       return;
     }
 
-    if (session.status === "COMPLETED" || session.status === "EXPIRED") {
-      updateProgress((current) => ({
-        ...current,
-        mode: "REVIEW",
-      }));
-      return;
-    }
+    const timeoutId = window.setTimeout(() => {
+      if (simulationReviewAction === "enter_review") {
+        updateProgress((current) => ({
+          ...current,
+          mode: "REVIEW",
+        }));
+        return;
+      }
 
-    if (
-      session.deadlineAt &&
-      new Date(session.deadlineAt).getTime() <= countdownNow
-    ) {
-      setSession((current) =>
-        current
-          ? {
-              ...current,
-              status: "EXPIRED",
-            }
-          : current,
-      );
-      updateProgress((current) => ({
-        ...current,
-        mode: "REVIEW",
-      }));
-    }
-  }, [countdownNow, progress.mode, session]);
+      if (simulationReviewAction === "expire_and_enter_review") {
+        setSession((current) =>
+          current
+            ? {
+                ...current,
+                status: "EXPIRED",
+              }
+            : current,
+        );
+        updateProgress((current) => ({
+          ...current,
+          mode: "REVIEW",
+        }));
+      }
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [countdownNow, progress.mode, sessionDeadlineAt, sessionFamily, sessionStatus]);
 
   useEffect(() => {
     if (!progressReady) {
@@ -432,12 +452,7 @@ export function useSessionPlayer(
     return () => {
       flushActiveQuestionTime({ pause: true });
     };
-  }, [
-    flushActiveQuestionTime,
-    progressReady,
-    timingTrackingEnabled,
-    viewModel.activeQuestion?.id,
-  ]);
+  }, [progressReady, timingTrackingEnabled, viewModel.activeQuestion?.id]);
 
   useEffect(() => {
     if (!timingTrackingEnabled) {
@@ -476,7 +491,7 @@ export function useSessionPlayer(
       window.removeEventListener("beforeunload", handleBeforeUnload);
       flushActiveQuestionTime({ pause: true });
     };
-  }, [flushActiveQuestionTime, timingTrackingEnabled]);
+  }, [timingTrackingEnabled]);
 
   function goToAdjacentQuestion(direction: -1 | 1) {
     const nextRef = getAdjacentQuestionRef({
@@ -543,37 +558,43 @@ export function useSessionPlayer(
       activeQuestionId,
       allQuestionRefs: viewModel.allQuestionRefs,
     });
+    const progressPlan = resolveQuestionProgressPlan({
+      activeExerciseId,
+      nextRef,
+      firstRef: viewModel.allQuestionRefs[0] ?? null,
+      sessionFamily: session?.family,
+      progressMode: progress.mode,
+      switchToReviewOnEnd: input.switchToReviewOnEnd,
+    });
 
     setCompletionOpen(false);
 
-    if (!nextRef) {
-      if (input.switchToReviewOnEnd && viewModel.allQuestionRefs[0]) {
-        const firstRef = viewModel.allQuestionRefs[0];
+    if (progressPlan.kind === "switch_to_review") {
+      updateProgress((current) => {
+        const nextState = input.updateCurrentQuestion(
+          current.questionStates[activeQuestionId],
+          current,
+        );
 
-        updateProgress((current) => {
-          const nextState = input.updateCurrentQuestion(
-            current.questionStates[activeQuestionId],
-            current,
-          );
-
-          return {
-            ...current,
-            mode: "REVIEW",
-            activeExerciseId: firstRef.exerciseId,
-            activeQuestionId: firstRef.questionId,
-            questionStates: {
-              ...current.questionStates,
-              [activeQuestionId]: nextState,
-              [firstRef.questionId]: {
-                ...current.questionStates[firstRef.questionId],
-                opened: true,
-              },
+        return {
+          ...current,
+          mode: "REVIEW",
+          activeExerciseId: progressPlan.firstRef.exerciseId,
+          activeQuestionId: progressPlan.firstRef.questionId,
+          questionStates: {
+            ...current.questionStates,
+            [activeQuestionId]: nextState,
+            [progressPlan.firstRef.questionId]: {
+              ...current.questionStates[progressPlan.firstRef.questionId],
+              opened: true,
             },
-          };
-        });
-        return;
-      }
+          },
+        };
+      });
+      return;
+    }
 
+    if (progressPlan.kind === "completion") {
       updateProgress((current) => ({
         ...current,
         questionStates: {
@@ -588,11 +609,7 @@ export function useSessionPlayer(
       return;
     }
 
-    if (
-      session?.family === "DRILL" &&
-      progress.mode === "SOLVE" &&
-      nextRef.exerciseId !== activeExerciseId
-    ) {
+    if (progressPlan.kind === "checkpoint") {
       updateProgress((current) => ({
         ...current,
         questionStates: {
@@ -603,11 +620,11 @@ export function useSessionPlayer(
           ),
         },
       }));
-      setExerciseCheckpointExerciseId(activeExerciseId);
+      setExerciseCheckpointExerciseId(progressPlan.exerciseId);
       return;
     }
 
-    void transitionToQuestion(nextRef, "forward", (current) => ({
+    void transitionToQuestion(progressPlan.nextRef, "forward", (current) => ({
       ...current,
       questionStates: {
         ...current.questionStates,
@@ -625,12 +642,10 @@ export function useSessionPlayer(
     }
 
     setCompletionOpen(false);
-    patchQuestionState(viewModel.activeQuestion.id, (current) => ({
-      ...(current ?? {}),
-      opened: true,
-      skipped: false,
-      solutionViewed: true,
-    }));
+    patchQuestionState(
+      viewModel.activeQuestion.id,
+      buildRevealSolutionQuestionState,
+    );
   }
 
   function showCurrentHint() {
@@ -639,11 +654,7 @@ export function useSessionPlayer(
     }
 
     setCompletionOpen(false);
-    patchQuestionState(viewModel.activeQuestion.id, (current) => ({
-      ...(current ?? {}),
-      opened: true,
-      hintViewed: true,
-    }));
+    patchQuestionState(viewModel.activeQuestion.id, buildHintViewedQuestionState);
   }
 
   function showCurrentMethod() {
@@ -652,11 +663,7 @@ export function useSessionPlayer(
     }
 
     setCompletionOpen(false);
-    patchQuestionState(viewModel.activeQuestion.id, (current) => ({
-      ...(current ?? {}),
-      opened: true,
-      methodViewed: true,
-    }));
+    patchQuestionState(viewModel.activeQuestion.id, buildMethodViewedQuestionState);
   }
 
   function setActiveQuestionReflection(
@@ -667,33 +674,32 @@ export function useSessionPlayer(
     }
 
     setCompletionOpen(false);
-    if (
-      reflection === "MISSED" ||
-      session?.family === "SIMULATION" ||
-      progress.mode === "REVIEW"
-    ) {
-      patchQuestionState(viewModel.activeQuestion.id, (current) => ({
-        ...(current ?? {}),
-        opened: true,
-        reflection,
-        diagnosis: reflection === "MISSED" ? current?.diagnosis ?? null : null,
-        solutionViewed:
-          Boolean(current?.solutionViewed) || progress.mode === "REVIEW",
-      }));
+    const stayOnCurrentQuestion = shouldStayOnCurrentQuestionAfterReflection({
+      reflection,
+      progressMode: progress.mode,
+      sessionFamily: session?.family,
+    });
+
+    if (stayOnCurrentQuestion) {
+      patchQuestionState(viewModel.activeQuestion.id, (current) =>
+        buildReflectionQuestionState({
+          current,
+          reflection,
+          progressMode: progress.mode,
+          complete: false,
+        }),
+      );
       return;
     }
 
     resolveCurrentQuestionAndProceed({
-      updateCurrentQuestion: (current) => ({
-        ...(current ?? {}),
-        opened: true,
-        completed: true,
-        skipped: false,
-        reflection,
-        diagnosis: null,
-        solutionViewed:
-          Boolean(current?.solutionViewed) || progress.mode === "REVIEW",
-      }),
+      updateCurrentQuestion: (current) =>
+        buildReflectionQuestionState({
+          current,
+          reflection,
+          progressMode: progress.mode,
+          complete: true,
+        }),
     });
   }
 
@@ -703,27 +709,31 @@ export function useSessionPlayer(
     }
 
     setCompletionOpen(false);
-    if (progress.mode === "REVIEW" || session?.family === "SIMULATION") {
-      patchQuestionState(viewModel.activeQuestion.id, (current) => ({
-        ...(current ?? {}),
-        opened: true,
-        diagnosis,
-        solutionViewed:
-          Boolean(current?.solutionViewed) || progress.mode === "REVIEW",
-      }));
+    const stayOnCurrentQuestion = shouldStayOnCurrentQuestionAfterDiagnosis({
+      progressMode: progress.mode,
+      sessionFamily: session?.family,
+    });
+
+    if (stayOnCurrentQuestion) {
+      patchQuestionState(viewModel.activeQuestion.id, (current) =>
+        buildDiagnosisQuestionState({
+          current,
+          diagnosis,
+          progressMode: progress.mode,
+          complete: false,
+        }),
+      );
       return;
     }
 
     resolveCurrentQuestionAndProceed({
-      updateCurrentQuestion: (current) => ({
-        ...(current ?? {}),
-        opened: true,
-        completed: true,
-        skipped: false,
-        diagnosis,
-        solutionViewed:
-          Boolean(current?.solutionViewed) || progress.mode === "REVIEW",
-      }),
+      updateCurrentQuestion: (current) =>
+        buildDiagnosisQuestionState({
+          current,
+          diagnosis,
+          progressMode: progress.mode,
+          complete: true,
+        }),
     });
   }
 
@@ -733,12 +743,7 @@ export function useSessionPlayer(
     }
 
     resolveCurrentQuestionAndProceed({
-      updateCurrentQuestion: (current) => ({
-        ...(current ?? {}),
-        opened: true,
-        completed: false,
-        skipped: true,
-      }),
+      updateCurrentQuestion: buildSkippedQuestionState,
       switchToReviewOnEnd: viewModel.isActiveSimulation,
     });
   }
@@ -767,14 +772,11 @@ export function useSessionPlayer(
     }
 
     resolveCurrentQuestionAndProceed({
-      updateCurrentQuestion: (current) => ({
-        ...(current ?? {}),
-        opened: true,
-        completed: true,
-        skipped: false,
-        solutionViewed:
-          Boolean(current?.solutionViewed) || progress.mode === "REVIEW",
-      }),
+      updateCurrentQuestion: (current) =>
+        buildCompletedQuestionState({
+          current,
+          progressMode: progress.mode,
+        }),
       switchToReviewOnEnd: viewModel.isActiveSimulation,
     });
   }
@@ -826,11 +828,14 @@ export function useSessionPlayer(
   });
 
   useEffect(() => {
-    if (progress.mode !== "REVIEW" || !viewModel.activeQuestion) {
-      return;
-    }
-
-    if (progress.questionStates[viewModel.activeQuestion.id]?.solutionViewed) {
+    if (
+      !shouldAutoRevealReviewSolution({
+        progressMode: progress.mode,
+        activeQuestionId: viewModel.activeQuestion?.id ?? null,
+        questionStates: progress.questionStates,
+      }) ||
+      !viewModel.activeQuestion
+    ) {
       return;
     }
 

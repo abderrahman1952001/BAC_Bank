@@ -13,133 +13,41 @@ import {
   makeDefaultSnippetCropBox,
   saveAssetToolDraftChanges,
   type AssetToolDraft,
-  type DraftAsset,
-  type DraftBlock,
-  type DraftNode,
-} from "@/lib/admin-ingestion-structure";
+} from "@/lib/admin-ingestion-structure-assets";
+import type {
+  DraftAsset,
+  DraftBlock,
+  DraftNode,
+} from "@/lib/admin-ingestion-structure-shared";
+import {
+  createEmptyKeyedCropState,
+  createEmptyKeyedRecoveryState,
+  createEmptySnippetSourceState,
+  resolveActiveToolPanel,
+  resolveActiveToolPanelBusy,
+  resolveAssetToolPreviewState,
+  resolveSelectedAssetPreviewState,
+  resolveSnippetToolState,
+  updateKeyedRecoveryState,
+  type AdminIngestionStructureSourcePage,
+  type KeyedCropState,
+  type KeyedRecoveryState,
+  type KeyedSnippetSourceState,
+} from "@/lib/admin-ingestion-structure-tools-state";
 import type { CropBox } from "@/components/ingestion-crop-editor";
 
-export type AdminIngestionStructureSourcePage = {
-  id: string;
-  documentId: string;
-  documentKind: "exam" | "correction";
-  page_number: number;
-  width: number;
-  height: number;
-  image_url: string;
-};
-
-type KeyedCropState = {
-  key: string | null;
-  cropBox: CropBox | null;
-};
-
-type KeyedSnippetSourceState = {
-  key: string | null;
-  sourcePageId: string | null;
-  cropBox: CropBox | null;
-};
-
-type KeyedRecoveryState = {
-  key: string | null;
-  mode: AdminIngestionRecoveryMode | null;
-  error: string | null;
-  notice: string | null;
-  notes: string[];
-};
-
-export function resolveActiveToolPanelBusy(options: {
-  activeToolPanel: "snippet" | "native" | "asset" | null;
-  snippetRecoveryMode: AdminIngestionRecoveryMode | null;
-  recoveryMode: AdminIngestionRecoveryMode | null;
-}) {
-  const { activeToolPanel, snippetRecoveryMode, recoveryMode } = options;
-
-  return activeToolPanel === "snippet"
-    ? snippetRecoveryMode !== null
-    : activeToolPanel === "native"
-      ? recoveryMode !== null
-      : false;
-}
-
-export function resolveInitialSnippetSourceState(options: {
-  selectedAssetSourcePageId: string | null;
-  sourcePages: AdminIngestionStructureSourcePage[];
-  sourcePageById: Map<string, AdminIngestionStructureSourcePage>;
-}) {
-  const { selectedAssetSourcePageId, sourcePages, sourcePageById } = options;
-  const sourcePageId = selectedAssetSourcePageId ?? sourcePages[0]?.id ?? null;
-
-  if (!sourcePageId) {
-    return {
-      sourcePageId: null,
-      cropBox: null,
-    };
-  }
-
-  const page = sourcePageById.get(sourcePageId) ?? null;
-
-  return {
-    sourcePageId,
-    cropBox: page ? makeDefaultSnippetCropBox(page) : null,
-  };
-}
-
-export function resolveFallbackSnippetSourceState(options: {
-  snippetSourcePageId: string | null;
-  sourcePages: AdminIngestionStructureSourcePage[];
-  sourcePageById: Map<string, AdminIngestionStructureSourcePage>;
-}) {
-  const { snippetSourcePageId, sourcePages, sourcePageById } = options;
-
-  if (!snippetSourcePageId || sourcePageById.has(snippetSourcePageId)) {
-    return null;
-  }
-
-  const fallbackPageId = sourcePages[0]?.id ?? null;
-
-  if (!fallbackPageId) {
-    return {
-      sourcePageId: null,
-      cropBox: null,
-    };
-  }
-
-  const page = sourcePageById.get(fallbackPageId) ?? null;
-
-  return {
-    sourcePageId: fallbackPageId,
-    cropBox: page ? makeDefaultSnippetCropBox(page) : null,
-  };
-}
-
-export function shouldCloseActiveToolPanel(options: {
-  activeToolPanel: "snippet" | "native" | "asset" | null;
-  hasSelectedBlock: boolean;
-  hasSelectedAsset: boolean;
-  hasAssetToolDraft: boolean;
-}) {
-  const {
-    activeToolPanel,
-    hasSelectedBlock,
-    hasSelectedAsset,
-    hasAssetToolDraft,
-  } = options;
-
-  if (activeToolPanel === "snippet") {
-    return !hasSelectedBlock;
-  }
-
-  if (activeToolPanel === "native") {
-    return !hasSelectedBlock || !hasSelectedAsset;
-  }
-
-  if (activeToolPanel === "asset") {
-    return !hasAssetToolDraft;
-  }
-
-  return false;
-}
+export {
+  resolveActiveToolPanel,
+  resolveActiveToolPanelBusy,
+  resolveAssetToolPreviewState,
+  resolveFallbackSnippetSourceState,
+  resolveInitialSnippetSourceState,
+  resolveSelectedAssetPreviewState,
+  resolveSnippetToolState,
+  shouldCloseActiveToolPanel,
+  updateKeyedRecoveryState,
+} from "@/lib/admin-ingestion-structure-tools-state";
+export type { AdminIngestionStructureSourcePage } from "@/lib/admin-ingestion-structure-tools-state";
 
 export function useAdminIngestionStructureTools(options: {
   draft: AdminIngestionDraft;
@@ -176,51 +84,27 @@ export function useAdminIngestionStructureTools(options: {
   } = options;
   const [filters, setFilters] = useState<AdminFiltersResponse | null>(null);
   const [selectedAssetCropPreviewState, setSelectedAssetCropPreviewState] =
-    useState<KeyedCropState>({
-      key: null,
-      cropBox: null,
-    });
-  const [recoveryState, setRecoveryState] = useState<KeyedRecoveryState>({
-    key: null,
-    mode: null,
-    error: null,
-    notice: null,
-    notes: [],
-  });
+    useState<KeyedCropState>(createEmptyKeyedCropState());
+  const [recoveryState, setRecoveryState] = useState<KeyedRecoveryState>(
+    createEmptyKeyedRecoveryState(),
+  );
   const [snippetSourceState, setSnippetSourceState] =
-    useState<KeyedSnippetSourceState>({
-      key: null,
-      sourcePageId: null,
-      cropBox: null,
-    });
+    useState<KeyedSnippetSourceState>(createEmptySnippetSourceState());
   const [liveSnippetCropPreviewState, setLiveSnippetCropPreviewState] =
-    useState<KeyedCropState>({
-      key: null,
-      cropBox: null,
-    });
+    useState<KeyedCropState>(createEmptyKeyedCropState());
   const [snippetAction, setSnippetAction] = useState<
     "replace" | "append" | "insert_below"
   >("replace");
   const [snippetRecoveryState, setSnippetRecoveryState] =
-    useState<KeyedRecoveryState>({
-      key: null,
-      mode: null,
-      error: null,
-      notice: null,
-      notes: [],
-    });
+    useState<KeyedRecoveryState>(createEmptyKeyedRecoveryState());
   const [assetToolDraft, setAssetToolDraft] = useState<AssetToolDraft | null>(
     null,
   );
   const [assetToolCropPreviewState, setAssetToolCropPreviewState] =
-    useState<KeyedCropState>({
-      key: null,
-      cropBox: null,
-    });
+    useState<KeyedCropState>(createEmptyKeyedCropState());
   const [activeToolPanelState, setActiveToolPanel] = useState<
     "snippet" | "native" | "asset" | null
   >(null);
-  const selectedAssetKey = `${selectedAsset?.id ?? ""}:${selectedAsset?.sourcePageId ?? ""}`;
   const recoveryKey = `${selectedBlock?.id ?? ""}:${selectedAsset?.id ?? ""}`;
   const snippetKey = selectedBlock?.id ?? "";
   const snippetSourceKey = `${selectedBlock?.id ?? ""}:${selectedAsset?.sourcePageId ?? sourcePages[0]?.id ?? ""}`;
@@ -244,14 +128,12 @@ export function useAdminIngestionStructureTools(options: {
       controller.abort();
     };
   }, []);
-  const activeToolPanel = shouldCloseActiveToolPanel({
-    activeToolPanel: activeToolPanelState,
+  const activeToolPanel = resolveActiveToolPanel({
+    activeToolPanelState,
     hasSelectedBlock: Boolean(selectedBlock),
     hasSelectedAsset: Boolean(selectedAsset),
     hasAssetToolDraft: Boolean(assetToolDraft),
-  })
-    ? null
-    : activeToolPanelState;
+  });
   const activeToolPanelBusy = useMemo(
     () =>
       resolveActiveToolPanelBusy({
@@ -287,61 +169,48 @@ export function useAdminIngestionStructureTools(options: {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [activeToolPanel, activeToolPanelBusy]);
-  const defaultSnippetSourceState = useMemo(
+  const {
+    snippetSourcePageId,
+    snippetSourcePage,
+    snippetCropBox,
+    previewSnippetCropBox,
+  } = useMemo(
     () =>
-      resolveInitialSnippetSourceState({
+      resolveSnippetToolState({
         selectedAssetSourcePageId: selectedAsset?.sourcePageId ?? null,
+        snippetSourceState,
+        snippetSourceKey,
+        liveSnippetCropPreviewState,
         sourcePages,
         sourcePageById,
       }),
-    [selectedAsset?.sourcePageId, sourcePageById, sourcePages],
+    [
+      liveSnippetCropPreviewState,
+      selectedAsset?.sourcePageId,
+      snippetSourceKey,
+      snippetSourceState,
+      sourcePageById,
+      sourcePages,
+    ],
   );
-  const resolvedSnippetSourceState =
-    snippetSourceState.key === snippetSourceKey
-      ? {
-          sourcePageId: snippetSourceState.sourcePageId,
-          cropBox: snippetSourceState.cropBox,
-        }
-      : defaultSnippetSourceState;
-  const fallbackSnippetSourceState = resolveFallbackSnippetSourceState({
-    snippetSourcePageId: resolvedSnippetSourceState.sourcePageId,
-    sourcePages,
-    sourcePageById,
-  });
-  const snippetSourcePageId =
-    fallbackSnippetSourceState?.sourcePageId ??
-    resolvedSnippetSourceState.sourcePageId;
-  const snippetCropBox =
-    fallbackSnippetSourceState?.cropBox ?? resolvedSnippetSourceState.cropBox;
-  const snippetSourcePage = snippetSourcePageId
-    ? (sourcePageById.get(snippetSourcePageId) ?? null)
-    : null;
-  const liveSnippetCropBox =
-    liveSnippetCropPreviewState.key === snippetSourcePageId
-      ? liveSnippetCropPreviewState.cropBox
-      : null;
-  const previewSnippetCropBox = liveSnippetCropBox ?? snippetCropBox ?? null;
-  const selectedAssetPage = selectedAsset
-    ? (sourcePageById.get(selectedAsset.sourcePageId) ?? null)
-    : null;
-  const liveSelectedAssetCropBox =
-    selectedAssetCropPreviewState.key === selectedAssetKey
-      ? selectedAssetCropPreviewState.cropBox
-      : null;
-  const previewCropBox =
-    selectedAsset && liveSelectedAssetCropBox
-      ? liveSelectedAssetCropBox
-      : (selectedAsset?.cropBox ?? null);
-  const assetToolPage = assetToolDraft
-    ? (sourcePageById.get(assetToolDraft.sourcePageId) ?? null)
-    : null;
-  const assetToolKey = `${assetToolDraft?.assetId ?? ""}:${assetToolDraft?.sourcePageId ?? ""}`;
-  const liveAssetToolCropBox =
-    assetToolCropPreviewState.key === assetToolKey
-      ? assetToolCropPreviewState.cropBox
-      : null;
-  const assetToolPreviewCropBox =
-    liveAssetToolCropBox ?? assetToolDraft?.cropBox ?? null;
+  const { selectedAssetKey, selectedAssetPage, previewCropBox } = useMemo(
+    () =>
+      resolveSelectedAssetPreviewState({
+        selectedAsset,
+        selectedAssetCropPreviewState,
+        sourcePageById,
+      }),
+    [selectedAsset, selectedAssetCropPreviewState, sourcePageById],
+  );
+  const { assetToolKey, assetToolPage, assetToolPreviewCropBox } = useMemo(
+    () =>
+      resolveAssetToolPreviewState({
+        assetToolDraft,
+        assetToolCropPreviewState,
+        sourcePageById,
+      }),
+    [assetToolCropPreviewState, assetToolDraft, sourcePageById],
+  );
 
   function openAssetToolPanel(block: DraftBlock, mode: "create" | "edit") {
     const nextAssetToolDraft = buildAssetToolDraft({
@@ -360,19 +229,13 @@ export function useAdminIngestionStructureTools(options: {
     onSelectBlockId(block.id);
     onSelectAssetId(nextAssetToolDraft.assetId);
     setAssetToolDraft(nextAssetToolDraft);
-    setAssetToolCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setAssetToolCropPreviewState(createEmptyKeyedCropState());
     setActiveToolPanel("asset");
   }
 
   function closeAssetToolPanel() {
     setAssetToolDraft(null);
-    setAssetToolCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setAssetToolCropPreviewState(createEmptyKeyedCropState());
     setActiveToolPanel(null);
   }
 
@@ -404,10 +267,7 @@ export function useAdminIngestionStructureTools(options: {
     onSelectAssetId(assetId);
     onPendingInspectorScrollBlockIdChange(blockId);
     setAssetToolDraft(null);
-    setAssetToolCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setAssetToolCropPreviewState(createEmptyKeyedCropState());
     setActiveToolPanel("snippet");
   }
 
@@ -417,10 +277,7 @@ export function useAdminIngestionStructureTools(options: {
     onSelectAssetId(assetId);
     onPendingInspectorScrollBlockIdChange(blockId);
     setAssetToolDraft(null);
-    setAssetToolCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setAssetToolCropPreviewState(createEmptyKeyedCropState());
     setActiveToolPanel("native");
   }
 
@@ -435,10 +292,7 @@ export function useAdminIngestionStructureTools(options: {
     }
 
     setAssetToolDraft(null);
-    setAssetToolCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setAssetToolCropPreviewState(createEmptyKeyedCropState());
     setActiveToolPanel(null);
   }
 
@@ -450,10 +304,7 @@ export function useAdminIngestionStructureTools(options: {
       sourcePageId: sourcePageId || null,
       cropBox: nextPage ? makeDefaultSnippetCropBox(nextPage) : null,
     });
-    setLiveSnippetCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setLiveSnippetCropPreviewState(createEmptyKeyedCropState());
   }
 
   function handleSelectedAssetCropChange(nextCropBox: CropBox) {
@@ -462,8 +313,7 @@ export function useAdminIngestionStructureTools(options: {
     }
 
     setSelectedAssetCropPreviewState({
-      key: null,
-      cropBox: null,
+      ...createEmptyKeyedCropState(),
     });
     updateAsset(selectedAsset.id, {
       cropBox: nextCropBox,
@@ -490,8 +340,7 @@ export function useAdminIngestionStructureTools(options: {
     const nextPage = sourcePageById.get(sourcePageId) ?? null;
 
     setSelectedAssetCropPreviewState({
-      key: null,
-      cropBox: null,
+      ...createEmptyKeyedCropState(),
     });
     updateAsset(selectedAsset.id, {
       sourcePageId,
@@ -502,10 +351,7 @@ export function useAdminIngestionStructureTools(options: {
   }
 
   function handleAssetToolCropChange(nextCropBox: CropBox) {
-    setAssetToolCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setAssetToolCropPreviewState(createEmptyKeyedCropState());
     setAssetToolDraft((current) =>
       current
         ? {
@@ -536,10 +382,7 @@ export function useAdminIngestionStructureTools(options: {
       return;
     }
 
-    setAssetToolCropPreviewState({
-      key: null,
-      cropBox: null,
-    });
+    setAssetToolCropPreviewState(createEmptyKeyedCropState());
     setAssetToolDraft((current) =>
       current
         ? {
@@ -560,41 +403,49 @@ export function useAdminIngestionStructureTools(options: {
 
   function setRecoveryMode(mode: AdminIngestionRecoveryMode | null) {
     setRecoveryState((current) => ({
-      key: recoveryKey,
-      mode,
-      error: current.key === recoveryKey ? current.error : null,
-      notice: current.key === recoveryKey ? current.notice : null,
-      notes: current.key === recoveryKey ? current.notes : [],
+      ...updateKeyedRecoveryState({
+        current,
+        key: recoveryKey,
+        patch: {
+          mode,
+        },
+      }),
     }));
   }
 
   function setRecoveryError(error: string | null) {
     setRecoveryState((current) => ({
-      key: recoveryKey,
-      mode: current.key === recoveryKey ? current.mode : null,
-      error,
-      notice: current.key === recoveryKey ? current.notice : null,
-      notes: current.key === recoveryKey ? current.notes : [],
+      ...updateKeyedRecoveryState({
+        current,
+        key: recoveryKey,
+        patch: {
+          error,
+        },
+      }),
     }));
   }
 
   function setRecoveryNotice(notice: string | null) {
     setRecoveryState((current) => ({
-      key: recoveryKey,
-      mode: current.key === recoveryKey ? current.mode : null,
-      error: current.key === recoveryKey ? current.error : null,
-      notice,
-      notes: current.key === recoveryKey ? current.notes : [],
+      ...updateKeyedRecoveryState({
+        current,
+        key: recoveryKey,
+        patch: {
+          notice,
+        },
+      }),
     }));
   }
 
   function setRecoveryNotes(notes: string[]) {
     setRecoveryState((current) => ({
-      key: recoveryKey,
-      mode: current.key === recoveryKey ? current.mode : null,
-      error: current.key === recoveryKey ? current.error : null,
-      notice: current.key === recoveryKey ? current.notice : null,
-      notes,
+      ...updateKeyedRecoveryState({
+        current,
+        key: recoveryKey,
+        patch: {
+          notes,
+        },
+      }),
     }));
   }
 
@@ -615,41 +466,49 @@ export function useAdminIngestionStructureTools(options: {
 
   function setSnippetRecoveryMode(mode: AdminIngestionRecoveryMode | null) {
     setSnippetRecoveryState((current) => ({
-      key: snippetKey,
-      mode,
-      error: current.key === snippetKey ? current.error : null,
-      notice: current.key === snippetKey ? current.notice : null,
-      notes: current.key === snippetKey ? current.notes : [],
+      ...updateKeyedRecoveryState({
+        current,
+        key: snippetKey,
+        patch: {
+          mode,
+        },
+      }),
     }));
   }
 
   function setSnippetRecoveryError(error: string | null) {
     setSnippetRecoveryState((current) => ({
-      key: snippetKey,
-      mode: current.key === snippetKey ? current.mode : null,
-      error,
-      notice: current.key === snippetKey ? current.notice : null,
-      notes: current.key === snippetKey ? current.notes : [],
+      ...updateKeyedRecoveryState({
+        current,
+        key: snippetKey,
+        patch: {
+          error,
+        },
+      }),
     }));
   }
 
   function setSnippetRecoveryNotice(notice: string | null) {
     setSnippetRecoveryState((current) => ({
-      key: snippetKey,
-      mode: current.key === snippetKey ? current.mode : null,
-      error: current.key === snippetKey ? current.error : null,
-      notice,
-      notes: current.key === snippetKey ? current.notes : [],
+      ...updateKeyedRecoveryState({
+        current,
+        key: snippetKey,
+        patch: {
+          notice,
+        },
+      }),
     }));
   }
 
   function setSnippetRecoveryNotes(notes: string[]) {
     setSnippetRecoveryState((current) => ({
-      key: snippetKey,
-      mode: current.key === snippetKey ? current.mode : null,
-      error: current.key === snippetKey ? current.error : null,
-      notice: current.key === snippetKey ? current.notice : null,
-      notes,
+      ...updateKeyedRecoveryState({
+        current,
+        key: snippetKey,
+        patch: {
+          notes,
+        },
+      }),
     }));
   }
 

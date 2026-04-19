@@ -22,6 +22,7 @@ import {
 export { INGESTION_DRAFT_SCHEMA, normalizeIngestionDraft };
 export type {
   DraftAsset,
+  DraftAssetClassification,
   DraftAssetNativeSuggestionSource,
   DraftAssetNativeSuggestionStatus,
   DraftAssetNativeSuggestionType,

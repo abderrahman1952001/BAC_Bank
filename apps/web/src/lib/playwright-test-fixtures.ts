@@ -54,6 +54,7 @@ export const playwrightTestStudentUser = {
     name: "Sciences experimentales",
   },
   subscriptionStatus: "FREE",
+  subscriptionEndsAt: null,
   studyEntitlements: playwrightFreeStudyEntitlements,
 } satisfies AuthUser;
 
@@ -67,6 +68,7 @@ export const playwrightTestAdminUser = {
     name: "Sciences experimentales",
   },
   subscriptionStatus: "FREE",
+  subscriptionEndsAt: null,
   studyEntitlements: playwrightFreeStudyEntitlements,
 } satisfies AuthUser;
 

@@ -1,7 +1,9 @@
 import type { ApiJsonParser } from "@/lib/api-client";
 import {
+  parseAdminBillingSettingsResponse,
   parseAdminIngestionJobResponse,
   parseAdminIngestionJobListResponse,
+  type AdminBillingSettingsResponse,
   type AdminIngestionJobResponse,
   type AdminIngestionJobListResponse,
 } from "@/lib/admin";
@@ -57,5 +59,13 @@ export async function fetchServerAdminIngestionJob(
     `/ingestion/jobs/${encodeURIComponent(jobId)}`,
     undefined,
     parseAdminIngestionJobResponse,
+  );
+}
+
+export async function fetchServerAdminBillingSettings(): Promise<AdminBillingSettingsResponse> {
+  return fetchServerAdminJson<AdminBillingSettingsResponse>(
+    "/billing/settings",
+    undefined,
+    parseAdminBillingSettingsResponse,
   );
 }

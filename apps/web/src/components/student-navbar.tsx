@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  CreditCard,
   House,
   LogOut,
   PenTool,
@@ -13,6 +14,7 @@ import { motion } from "motion/react";
 import { useAuthSession } from "@/components/auth-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
+  STUDENT_BILLING_ROUTE,
   STUDENT_LIBRARY_ROUTE,
   STUDENT_MY_SPACE_ROUTE,
   STUDENT_TRAINING_ROUTE,
@@ -41,6 +43,13 @@ const baseNavItems = [
     shortLabel: "تدريب",
     icon: PenTool,
     surface: "training" as const,
+  },
+  {
+    href: STUDENT_BILLING_ROUTE,
+    label: "الاشتراك",
+    shortLabel: "اشتراك",
+    icon: CreditCard,
+    surface: "billing" as const,
   },
 ];
 

@@ -52,6 +52,7 @@ export type AuthUser = {
   role: AuthUserRole;
   stream: AuthStreamOption | null;
   subscriptionStatus: AuthSubscriptionStatus;
+  subscriptionEndsAt: string | null;
   studyEntitlements: AuthStudyEntitlements;
 };
 
@@ -128,6 +129,7 @@ export const authUserSchema: z.ZodType<AuthUser> = z.object({
   role: authUserRoleSchema,
   stream: authStreamOptionSchema.nullable(),
   subscriptionStatus: authSubscriptionStatusSchema,
+  subscriptionEndsAt: z.string().nullable(),
   studyEntitlements: authStudyEntitlementsSchema,
 });
 

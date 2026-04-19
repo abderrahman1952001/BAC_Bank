@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { BillingModule } from './billing/billing.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { HealthModule } from './health/health.module';
 import { IngestionModule } from './ingestion/ingestion.module';
@@ -19,6 +20,7 @@ import { RedisModule } from './redis/redis.module';
     PrismaModule,
     CatalogModule,
     AuthModule,
+    BillingModule,
     HealthModule,
     StudyModule,
     AdminModule,

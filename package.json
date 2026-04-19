@@ -25,7 +25,7 @@
     "release:check": "npm run prisma:generate -w @bac-bank/api && npm run prisma:validate -w @bac-bank/api && npm run lint && npm test && npm run build",
     "test": "npm run test --workspaces",
     "test:e2e:web": "npm run test:e2e -w @bac-bank/web",
-    "db:up": "docker compose up -d postgres redis adminer",
+    "db:up": "docker compose up -d postgres redis",
     "db:down": "docker compose down",
     "db:studio": "npm run prisma:studio -w @bac-bank/api",
     "db:migrate": "npm run prisma:migrate:dev -w @bac-bank/api"

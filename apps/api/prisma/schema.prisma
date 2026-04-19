@@ -183,6 +183,26 @@ enum SubscriptionStatus {
   CANCELED
 }
 
+enum BillingProvider {
+  CHARGILY
+}
+
+enum BillingCheckoutStatus {
+  PENDING
+  PROCESSING
+  PAID
+  FAILED
+  CANCELED
+  EXPIRED
+}
+
+enum BillingWebhookEventStatus {
+  RECEIVED
+  PROCESSED
+  IGNORED
+  FAILED
+}
+
 model StreamFamily {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   code        String   @unique
@@ -642,6 +662,7 @@ model User {
   fullName           String?                  @map("full_name")
   role               UserRole                 @default(USER)
   subscriptionStatus SubscriptionStatus       @default(FREE) @map("subscription_status")
+  subscriptionEndsAt DateTime?                @map("subscription_ends_at")
   streamId           String?                  @map("stream_id") @db.Uuid
   stream             Stream?                  @relation(fields: [streamId], references: [id], onDelete: SetNull)
   topicStats         UserTopicStats[]
@@ -652,11 +673,89 @@ model User {
   examActivities     ExamActivity[]
   exerciseStates     StudentExerciseState[]
   reviewQueueItems   StudentReviewQueueItem[]
+  billingCheckouts   BillingCheckout[]
   createdAt          DateTime                 @default(now()) @map("created_at")
   updatedAt          DateTime                 @updatedAt @map("updated_at")
 
   @@index([streamId])
+  @@index([subscriptionStatus, subscriptionEndsAt])
   @@map("users")
+}
+
+model BillingCheckout {
+  id                    String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                String                @map("user_id") @db.Uuid
+  provider              BillingProvider
+  planCode              String                @map("plan_code")
+  currency              String
+  amount                Int
+  status                BillingCheckoutStatus @default(PENDING)
+  locale                String
+  providerCheckoutId    String?               @unique @map("provider_checkout_id")
+  providerCustomerId    String?               @map("provider_customer_id")
+  providerPaymentMethod String?               @map("provider_payment_method")
+  providerInvoiceId     String?               @map("provider_invoice_id")
+  providerLivemode      Boolean?              @map("provider_livemode")
+  checkoutUrl           String?               @map("checkout_url") @db.Text
+  successUrl            String                @map("success_url") @db.Text
+  failureUrl            String                @map("failure_url") @db.Text
+  webhookUrl            String                @map("webhook_url") @db.Text
+  failureReason         String?               @map("failure_reason") @db.Text
+  providerPayload       Json?                 @map("provider_payload")
+  metadata              Json?
+  accessStartsAt        DateTime?             @map("access_starts_at")
+  accessEndsAt          DateTime?             @map("access_ends_at")
+  paidAt                DateTime?             @map("paid_at")
+  lastSyncedAt          DateTime?             @map("last_synced_at")
+  user                  User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  webhookEvents         BillingWebhookEvent[]
+  createdAt             DateTime              @default(now()) @map("created_at")
+  updatedAt             DateTime              @updatedAt @map("updated_at")
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, status, createdAt(sort: Desc)])
+  @@index([provider, status, createdAt(sort: Desc)])
+  @@map("billing_checkouts")
+}
+
+model BillingWebhookEvent {
+  id                 String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  provider           BillingProvider
+  providerEventId    String                    @unique @map("provider_event_id")
+  billingCheckoutId  String?                   @map("billing_checkout_id") @db.Uuid
+  eventType          String                    @map("event_type")
+  status             BillingWebhookEventStatus @default(RECEIVED)
+  providerCheckoutId String?                   @map("provider_checkout_id")
+  providerLivemode   Boolean?                  @map("provider_livemode")
+  signatureVerified  Boolean                   @default(false) @map("signature_verified")
+  payload            Json
+  errorMessage       String?                   @map("error_message") @db.Text
+  processedAt        DateTime?                 @map("processed_at")
+  billingCheckout    BillingCheckout?          @relation(fields: [billingCheckoutId], references: [id], onDelete: SetNull)
+  createdAt          DateTime                  @default(now()) @map("created_at")
+  updatedAt          DateTime                  @updatedAt @map("updated_at")
+
+  @@index([billingCheckoutId, createdAt(sort: Desc)])
+  @@index([providerCheckoutId, createdAt(sort: Desc)])
+  @@index([status, createdAt(sort: Desc)])
+  @@map("billing_webhook_events")
+}
+
+model BillingSettings {
+  id                        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  singletonKey              String    @unique @default("default") @map("singleton_key")
+  premium30DaysAmountDzd    Int       @map("premium_30_days_amount_dzd")
+  premium30DaysDurationDays Int       @map("premium_30_days_duration_days")
+  premium90DaysAmountDzd    Int       @map("premium_90_days_amount_dzd")
+  premium90DaysDurationDays Int       @map("premium_90_days_duration_days")
+  premiumBacSeasonAmountDzd Int       @map("premium_bac_season_amount_dzd")
+  bacSeasonEndsAt           DateTime? @map("bac_season_ends_at")
+  updatedByUserId           String?   @map("updated_by_user_id") @db.Uuid
+  updatedByEmail            String?   @map("updated_by_email")
+  createdAt                 DateTime  @default(now()) @map("created_at")
+  updatedAt                 DateTime  @updatedAt @map("updated_at")
+
+  @@map("billing_settings")
 }
 
 model Media {

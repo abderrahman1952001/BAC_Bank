@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookCopy,
+  CreditCard,
   GraduationCap,
   Inbox,
   LibraryBig,
@@ -30,6 +31,11 @@ const navItems = [
     href: "/admin/library",
     label: "Library",
     icon: LibraryBig,
+  },
+  {
+    href: "/admin/billing",
+    label: "Billing",
+    icon: CreditCard,
   },
 ];
 

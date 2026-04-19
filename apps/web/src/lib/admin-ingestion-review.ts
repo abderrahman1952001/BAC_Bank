@@ -3,10 +3,8 @@ import type {
   AdminIngestionJobResponse,
   AdminIngestionValidationIssue,
 } from "@/lib/admin";
-import {
-  isRecord,
-  readDraftSelectedStreamCodes,
-} from "@/lib/admin-ingestion-structure";
+import { readDraftSelectedStreamCodes } from "@/lib/admin-ingestion-structure-review";
+import { isRecord } from "@/lib/admin-ingestion-structure-shared";
 import type { IngestionEditorFocusRequest } from "@/lib/admin-ingestion-editor-state";
 
 export type ReviewSection =

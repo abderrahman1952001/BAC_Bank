@@ -16,6 +16,7 @@ import {
   buildStudyEntitlements,
   getStudyMonthlyQuotaWindow,
 } from '../study/study-entitlements';
+import { resolveEffectiveSubscriptionStatus } from '../billing/billing-access';
 import { AuthenticatedUser } from './auth.types';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
@@ -32,6 +33,7 @@ type UserProfileRecord = Prisma.UserGetPayload<{
     fullName: true;
     role: true;
     subscriptionStatus: true;
+    subscriptionEndsAt: true;
     stream: {
       select: {
         code: true;
@@ -129,7 +131,7 @@ export class AuthService {
     }
 
     return {
-      user: await this.mapUserProfile(user),
+      user: await this.mapUserProfile(await this.ensureFreshSubscription(user)),
     };
   }
 
@@ -147,7 +149,9 @@ export class AuthService {
     });
 
     return {
-      user: await this.mapUserProfile(updatedUser),
+      user: await this.mapUserProfile(
+        await this.ensureFreshSubscription(updatedUser),
+      ),
     };
   }
 
@@ -159,6 +163,7 @@ export class AuthService {
       fullName: true,
       role: true,
       subscriptionStatus: true,
+      subscriptionEndsAt: true,
       stream: {
         select: {
           code: true,
@@ -296,6 +301,10 @@ export class AuthService {
   }
 
   private async mapUserProfile(user: UserProfileRecord) {
+    const effectiveSubscriptionStatus = resolveEffectiveSubscriptionStatus({
+      subscriptionStatus: user.subscriptionStatus,
+      subscriptionEndsAt: user.subscriptionEndsAt,
+    });
     const [drillStartsUsed, simulationStartsUsed] =
       await this.readMonthlySessionStartUsage(user.id);
 
@@ -310,9 +319,10 @@ export class AuthService {
             name: user.stream.name,
           }
         : null,
-      subscriptionStatus: user.subscriptionStatus,
+      subscriptionStatus: effectiveSubscriptionStatus,
+      subscriptionEndsAt: user.subscriptionEndsAt?.toISOString() ?? null,
       studyEntitlements: buildStudyEntitlements({
-        subscriptionStatus: user.subscriptionStatus,
+        subscriptionStatus: effectiveSubscriptionStatus,
         drillStartsUsed,
         simulationStartsUsed,
       }),
@@ -371,6 +381,25 @@ export class AuthService {
   private getClerkClient() {
     return createClerkClient({
       secretKey: this.getClerkSecretKey(),
+    });
+  }
+
+  private async ensureFreshSubscription(user: UserProfileRecord) {
+    const effectiveSubscriptionStatus = resolveEffectiveSubscriptionStatus({
+      subscriptionStatus: user.subscriptionStatus,
+      subscriptionEndsAt: user.subscriptionEndsAt,
+    });
+
+    if (effectiveSubscriptionStatus === user.subscriptionStatus) {
+      return user;
+    }
+
+    return this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        subscriptionStatus: effectiveSubscriptionStatus,
+      },
+      select: this.userProfileSelect,
     });
   }
 

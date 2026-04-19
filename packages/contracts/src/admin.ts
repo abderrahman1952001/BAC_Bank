@@ -1,4 +1,10 @@
-import { dateLikeSchema, jsonRecordSchema, parseContract, z } from "./shared.js";
+import {
+  dateLikeSchema,
+  jsonRecordSchema,
+  parseContract,
+  z,
+} from "./shared.js";
+import { billingPlanSchema, type BillingPlan } from "./billing.js";
 
 export type AdminStatus = "draft" | "published";
 export type AdminSession = "normal" | "rattrapage";
@@ -72,6 +78,37 @@ export type AdminFiltersResponse = {
   streamFamilies: AdminCodeNameOption[];
   years: number[];
   topics: TopicOption[];
+};
+
+export type AdminBillingFeeResponsibility = "MERCHANT";
+
+export type AdminBillingSettings = {
+  premium30DaysAmountDzd: number;
+  premium30DaysDurationDays: number;
+  premium90DaysAmountDzd: number;
+  premium90DaysDurationDays: number;
+  premiumBacSeasonAmountDzd: number;
+  configuredBacSeasonEndsAt: string | null;
+  effectiveBacSeasonEndsAt: string;
+  checkoutFeeResponsibility: AdminBillingFeeResponsibility;
+  persisted: boolean;
+  updatedAt: string | null;
+  updatedByUserId: string | null;
+  updatedByEmail: string | null;
+};
+
+export type AdminBillingSettingsResponse = {
+  settings: AdminBillingSettings;
+  plans: BillingPlan[];
+};
+
+export type UpdateAdminBillingSettingsRequest = {
+  premium30DaysAmountDzd: number;
+  premium30DaysDurationDays: number;
+  premium90DaysAmountDzd: number;
+  premium90DaysDurationDays: number;
+  premiumBacSeasonAmountDzd: number;
+  configuredBacSeasonEndsAt: string | null;
 };
 
 export type AdminExam = {
@@ -222,6 +259,41 @@ export const adminFiltersResponseSchema: z.ZodType<AdminFiltersResponse> =
     topics: z.array(topicOptionSchema),
   });
 
+export const adminBillingFeeResponsibilitySchema: z.ZodType<AdminBillingFeeResponsibility> =
+  z.enum(["MERCHANT"]);
+
+export const adminBillingSettingsSchema: z.ZodType<AdminBillingSettings> =
+  z.object({
+    premium30DaysAmountDzd: z.number().int().positive(),
+    premium30DaysDurationDays: z.number().int().positive(),
+    premium90DaysAmountDzd: z.number().int().positive(),
+    premium90DaysDurationDays: z.number().int().positive(),
+    premiumBacSeasonAmountDzd: z.number().int().positive(),
+    configuredBacSeasonEndsAt: z.string().datetime().nullable(),
+    effectiveBacSeasonEndsAt: z.string().datetime(),
+    checkoutFeeResponsibility: adminBillingFeeResponsibilitySchema,
+    persisted: z.boolean(),
+    updatedAt: z.string().datetime().nullable(),
+    updatedByUserId: z.string().nullable(),
+    updatedByEmail: z.string().nullable(),
+  });
+
+export const adminBillingSettingsResponseSchema: z.ZodType<AdminBillingSettingsResponse> =
+  z.object({
+    settings: adminBillingSettingsSchema,
+    plans: z.array(billingPlanSchema),
+  });
+
+export const updateAdminBillingSettingsRequestSchema: z.ZodType<UpdateAdminBillingSettingsRequest> =
+  z.object({
+    premium30DaysAmountDzd: z.number().int().positive(),
+    premium30DaysDurationDays: z.number().int().positive(),
+    premium90DaysAmountDzd: z.number().int().positive(),
+    premium90DaysDurationDays: z.number().int().positive(),
+    premiumBacSeasonAmountDzd: z.number().int().positive(),
+    configuredBacSeasonEndsAt: z.string().datetime().nullable(),
+  });
+
 export const adminExamSchema: z.ZodType<AdminExam> = z.object({
   id: z.string(),
   year: z.number(),
@@ -270,5 +342,21 @@ export function parseAdminFiltersResponse(value: unknown) {
     adminFiltersResponseSchema,
     value,
     "AdminFiltersResponse",
+  );
+}
+
+export function parseAdminBillingSettingsResponse(value: unknown) {
+  return parseContract(
+    adminBillingSettingsResponseSchema,
+    value,
+    "AdminBillingSettingsResponse",
+  );
+}
+
+export function parseUpdateAdminBillingSettingsRequest(value: unknown) {
+  return parseContract(
+    updateAdminBillingSettingsRequestSchema,
+    value,
+    "UpdateAdminBillingSettingsRequest",
   );
 }

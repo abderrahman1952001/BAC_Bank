@@ -51,7 +51,7 @@ from the command you run (`dev`, `build`, `start`).
 npm run db:up
 ```
 
-This starts PostgreSQL, Redis, and Adminer on `http://localhost:8080`.
+This starts PostgreSQL and Redis.
 PostgreSQL is exposed on host port `5433` to avoid collisions with local installs.
 
 4. Generate Prisma client:
@@ -82,7 +82,7 @@ npm run dev:all
 - `npm run dev:all`: run contracts, API, worker, and web together
 - `npm run dev:api`: run contracts and API
 - `npm run dev:web`: run contracts and web
-- `npm run db:up`: start PostgreSQL, Redis, and Adminer
+- `npm run db:up`: start PostgreSQL and Redis
 - `npm run db:down`: stop local infrastructure
 - `npm run db:migrate -- --name <change>`: create and apply a Prisma migration
 - `npm run release:check`: generate Prisma client, validate schema, lint, test, and build
