@@ -4,6 +4,7 @@ import {
   buildStudySessionProgress,
   flattenStudySessionQuestionRows,
   resolveEffectiveStudySessionStatus,
+  type StoredStudySessionQuestionRow,
 } from './study-session-state';
 
 export type RecentStudySessionSummaryRow = {
@@ -26,6 +27,8 @@ export type RecentStudySessionSummaryRow = {
       questionNodeId: string;
       sequenceIndex: number;
       answerState: StoredStudySessionQuestionRow['answerState'];
+      resultStatus: StoredStudySessionQuestionRow['resultStatus'];
+      evaluationMode: StoredStudySessionQuestionRow['evaluationMode'];
       reflection: StoredStudySessionQuestionRow['reflection'];
       diagnosis: StoredStudySessionQuestionRow['diagnosis'];
       firstOpenedAt: Date | null;
@@ -35,6 +38,7 @@ export type RecentStudySessionSummaryRow = {
       solutionViewedAt: Date | null;
       timeSpentSeconds: number;
       revealCount: number;
+      answerPayloadJson: StoredStudySessionQuestionRow['answerPayloadJson'];
     }>;
   }>;
   _count: {

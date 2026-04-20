@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { StudyQuestionState } from "@/lib/study";
 import {
+  buildAttemptedQuestionState,
   buildCompletedQuestionState,
   buildDiagnosisQuestionState,
   buildHintViewedQuestionState,
@@ -113,6 +114,11 @@ describe("session player runtime helpers", () => {
       solutionViewed: true,
       diagnosis: "METHOD",
     });
+    expect(buildAttemptedQuestionState(base)).toMatchObject({
+      attempted: true,
+      opened: true,
+      diagnosis: "METHOD",
+    });
     expect(buildHintViewedQuestionState(base)).toMatchObject({
       opened: true,
       hintViewed: true,
@@ -176,13 +182,13 @@ describe("session player runtime helpers", () => {
     expect(
       buildDiagnosisQuestionState({
         current,
-        diagnosis: "DETAIL",
+        diagnosis: "METHOD",
         progressMode: "REVIEW",
         complete: false,
       }),
     ).toMatchObject({
       opened: true,
-      diagnosis: "DETAIL",
+      diagnosis: "METHOD",
       solutionViewed: true,
     });
   });

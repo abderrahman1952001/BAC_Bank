@@ -88,10 +88,20 @@ function SessionPlayerScreen({
     activeQuestionState,
     solutionVisible,
     canRevealSolution,
+    canSubmitAutoAnswer,
+    requiresResultEvaluation,
+    requiresAutoCorrectReflection,
+    requiresAutoDiagnosis,
     requiresReflection,
     questionMotionLocked,
     primaryActionLabel,
     primaryActionDisabled,
+    answerDraftValue,
+    answerSubmitting,
+    answerError,
+    evaluationDraftResultStatus,
+    evaluationSubmitting,
+    evaluationError,
     openNavigator,
     closeNavigator,
     selectExercise,
@@ -101,6 +111,12 @@ function SessionPlayerScreen({
     goToFirstUnanswered,
     goToFirstSkipped,
     handlePrimaryAction,
+    markQuestionAttemptedAndRevealSolution,
+    setAnswerDraftValue,
+    submitQuestionAnswer,
+    setQuestionResultStatus,
+    submitCorrectQuestionReflection,
+    submitIncorrectQuestionDiagnosis,
     continueAfterExerciseCheckpoint,
     closeExerciseCheckpoint,
     showQuestionHint,
@@ -262,15 +278,28 @@ function SessionPlayerScreen({
           activeQuestionState={activeQuestionState}
           solutionVisible={solutionVisible}
           canRevealSolution={canRevealSolution}
+          canSubmitAutoAnswer={canSubmitAutoAnswer}
+          requiresResultEvaluation={requiresResultEvaluation}
+          requiresAutoCorrectReflection={requiresAutoCorrectReflection}
+          requiresAutoDiagnosis={requiresAutoDiagnosis}
           requiresReflection={requiresReflection}
           supportStyle={supportStyle}
           questionMotionLocked={questionMotionLocked}
           primaryActionLabel={primaryActionLabel}
           primaryActionDisabled={primaryActionDisabled}
+          answerDraftValue={answerDraftValue}
+          answerSubmitting={answerSubmitting}
+          answerError={answerError}
+          evaluationDraftResultStatus={evaluationDraftResultStatus}
+          evaluationSubmitting={evaluationSubmitting}
+          evaluationError={evaluationError}
           completionOpen={completionOpen}
           exerciseCheckpointSummary={exerciseCheckpointSummary}
           remainingTimeMs={remainingTimeMs}
           onPrimaryAction={handlePrimaryAction}
+          onMarkQuestionAttemptedAndRevealSolution={
+            markQuestionAttemptedAndRevealSolution
+          }
           onContinueAfterExerciseCheckpoint={continueAfterExerciseCheckpoint}
           onPauseAfterExerciseCheckpoint={() => {
             closeExerciseCheckpoint();
@@ -282,6 +311,11 @@ function SessionPlayerScreen({
           onGoToFirstUnanswered={goToFirstUnanswered}
           onGoToFirstSkipped={goToFirstSkipped}
           onToggleMode={toggleMode}
+          onSetAnswerDraftValue={setAnswerDraftValue}
+          onSubmitQuestionAnswer={submitQuestionAnswer}
+          onSetQuestionResultStatus={setQuestionResultStatus}
+          onSubmitCorrectQuestionReflection={submitCorrectQuestionReflection}
+          onSubmitIncorrectQuestionDiagnosis={submitIncorrectQuestionDiagnosis}
           onSetQuestionReflection={setQuestionReflection}
           onSetQuestionDiagnosis={setQuestionDiagnosis}
           canRequestAiExplanation={canRequestAiExplanation}

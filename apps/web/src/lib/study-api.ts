@@ -10,6 +10,7 @@ import {
   parseStudyQuestionAiExplanationResponse,
   parseStudyRoadmapsResponse,
   parseStudentExerciseStatesLookupResponse,
+  parseUpdateSessionProgressResponse,
   parseUpdateReviewQueueItemStatusResponse,
   parseUpsertExerciseStateResponse,
   parseWeakPointInsightsResponse,
@@ -38,11 +39,19 @@ export type {
   RecordReviewQueueOutcomeRequest,
   RecordReviewQueueOutcomeResponse,
   RecentExerciseStatesResponse,
+  SubmitStudyQuestionAnswerRequest,
+  SubmitStudyQuestionEvaluationRequest,
   StudyQuestionAiExplanationResponse,
   StudyReviewOutcome,
+  StudyQuestionCheckStrategy,
+  StudyQuestionCaptureMode,
   StudyReviewQueueStatus,
   StudyQuestionDiagnosis,
+  StudyQuestionEvaluationMode,
+  StudyQuestionInteractionFormat,
   StudyQuestionReflection,
+  StudyQuestionResponseMode,
+  StudyQuestionResultStatus,
   StudyRoadmapActionType,
   StudyRoadmapNodeStatus,
   StudyRoadmapsResponse,
@@ -64,8 +73,8 @@ export type {
   SessionType,
   StudentExerciseStateResponse,
   StudentExerciseStatesLookupResponse,
-    UpdateReviewQueueItemStatusRequest,
-    UpdateReviewQueueItemStatusResponse,
+  UpdateReviewQueueItemStatusRequest,
+  UpdateReviewQueueItemStatusResponse,
   UpsertExamActivityRequest,
   UpsertExamActivityResponse,
   UpsertExerciseStateRequest,
@@ -184,6 +193,46 @@ export async function fetchStudyQuestionAiExplanation(
       method: "POST",
     },
     parseStudyQuestionAiExplanationResponse,
+  );
+}
+
+export async function submitStudyQuestionEvaluation(
+  sessionId: string,
+  questionId: string,
+  input: import("@bac-bank/contracts/study").SubmitStudyQuestionEvaluationRequest,
+) {
+  return fetchJson<import("@bac-bank/contracts/study").UpdateSessionProgressResponse>(
+    `${API_BASE_URL}/study/sessions/${encodeURIComponent(
+      sessionId,
+    )}/questions/${encodeURIComponent(questionId)}/evaluation`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    },
+    parseUpdateSessionProgressResponse,
+  );
+}
+
+export async function submitStudyQuestionAnswer(
+  sessionId: string,
+  questionId: string,
+  input: import("@bac-bank/contracts/study").SubmitStudyQuestionAnswerRequest,
+) {
+  return fetchJson<import("@bac-bank/contracts/study").UpdateSessionProgressResponse>(
+    `${API_BASE_URL}/study/sessions/${encodeURIComponent(
+      sessionId,
+    )}/questions/${encodeURIComponent(questionId)}/answer`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    },
+    parseUpdateSessionProgressResponse,
   );
 }
 

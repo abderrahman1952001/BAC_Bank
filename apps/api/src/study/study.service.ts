@@ -31,6 +31,8 @@ import { CreateStudySessionDto } from './dto/create-study-session.dto';
 import { UpsertExamActivityDto } from './dto/upsert-exam-activity.dto';
 import { StudyExamActivityService } from './study-exam-activity.service';
 import { UpdateStudySessionProgressDto } from './dto/update-study-session-progress.dto';
+import { SubmitStudyQuestionEvaluationDto } from './dto/submit-study-question-evaluation.dto';
+import { SubmitStudyQuestionAnswerDto } from './dto/submit-study-question-answer.dto';
 import { StudySessionService } from './study-session.service';
 import { StudyQuestionAiExplanationService } from './study-question-ai-explanation.service';
 import {
@@ -736,6 +738,34 @@ export class StudyService {
       solutionBlocks: question.solutionBlocks,
       rubricBlocks: question.rubricBlocks,
     });
+  }
+
+  async submitStudyQuestionEvaluation(
+    userId: string,
+    sessionId: string,
+    questionId: string,
+    payload: SubmitStudyQuestionEvaluationDto,
+  ): Promise<UpdateSessionProgressResponse> {
+    return this.studySessionService.submitStudyQuestionEvaluation(
+      userId,
+      sessionId,
+      questionId,
+      payload,
+    );
+  }
+
+  async submitStudyQuestionAnswer(
+    userId: string,
+    sessionId: string,
+    questionId: string,
+    payload: SubmitStudyQuestionAnswerDto,
+  ): Promise<UpdateSessionProgressResponse> {
+    return this.studySessionService.submitStudyQuestionAnswer(
+      userId,
+      sessionId,
+      questionId,
+      payload,
+    );
   }
 
   async updateStudySessionProgress(

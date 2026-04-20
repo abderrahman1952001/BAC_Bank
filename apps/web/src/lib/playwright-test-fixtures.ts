@@ -497,6 +497,12 @@ export const playwrightTestStudySession = {
             label: "Q1",
             points: 8,
             depth: 0,
+            interaction: {
+              format: "PROBLEM_SOLVING",
+              captureMode: "TYPELESS",
+              responseMode: "NONE",
+              checkStrategy: "RESULT_MATCH",
+            },
             topics: [{ code: "ALG", name: "Algebra" }],
             promptBlocks: [
               {

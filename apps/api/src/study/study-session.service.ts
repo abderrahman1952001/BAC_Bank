@@ -31,6 +31,8 @@ import {
   resolveStudySessionFamilyFromKind,
 } from './study-entitlements';
 import { UpdateStudySessionProgressDto } from './dto/update-study-session-progress.dto';
+import { SubmitStudyQuestionAnswerDto } from './dto/submit-study-question-answer.dto';
+import { SubmitStudyQuestionEvaluationDto } from './dto/submit-study-question-evaluation.dto';
 import {
   type StudySessionExerciseCandidate,
   type SujetNumber,
@@ -61,8 +63,16 @@ import {
   type OfficialSimulationPlan,
 } from './study-session-simulation';
 import { SESSION_YEAR_MAX, SESSION_YEAR_MIN } from './session-year-range';
-import { resolveEffectiveStudySessionStatus } from './study-session-state';
+import {
+  buildStudySessionExerciseState,
+  buildStudySessionProgress,
+  deriveStudySessionStatusFromProgress,
+  resolveEffectiveStudySessionStatus,
+} from './study-session-state';
 import { buildStudySessionProgressUpdateDraft } from './study-session-progress-update';
+import { buildStudyQuestionAutoRuleSubmission } from './study-question-auto-rule';
+import { buildStudyQuestionEvaluation } from './study-question-evaluation';
+import { resolveStudyQuestionAutoRuleConfig } from './study-question-auto-rule';
 import {
   buildStudySessionResponse,
   resolveStudySessionPedagogyContext,
@@ -137,6 +147,8 @@ export class StudySessionService {
                 questionNodeId: true,
                 sequenceIndex: true,
                 answerState: true,
+                resultStatus: true,
+                evaluationMode: true,
                 reflection: true,
                 diagnosis: true,
                 firstOpenedAt: true,
@@ -146,6 +158,7 @@ export class StudySessionService {
                 solutionViewedAt: true,
                 timeSpentSeconds: true,
                 revealCount: true,
+                answerPayloadJson: true,
               },
             },
           },
@@ -296,6 +309,8 @@ export class StudySessionService {
                 questionNodeId: true,
                 sequenceIndex: true,
                 answerState: true,
+                resultStatus: true,
+                evaluationMode: true,
                 reflection: true,
                 diagnosis: true,
                 firstOpenedAt: true,
@@ -305,6 +320,7 @@ export class StudySessionService {
                 solutionViewedAt: true,
                 timeSpentSeconds: true,
                 revealCount: true,
+                answerPayloadJson: true,
               },
             },
             exam: {
@@ -478,6 +494,539 @@ export class StudySessionService {
     });
   }
 
+  async submitStudyQuestionEvaluation(
+    userId: string,
+    sessionId: string,
+    questionId: string,
+    payload: SubmitStudyQuestionEvaluationDto,
+  ): Promise<UpdateSessionProgressResponse> {
+    const existingSession = await this.prisma.studySession.findFirst({
+      where: { id: sessionId, userId },
+      select: {
+        id: true,
+        family: true,
+        status: true,
+        timingEnabled: true,
+        resumeMode: true,
+        startedAt: true,
+        deadlineAt: true,
+        submittedAt: true,
+        completedAt: true,
+        activeExerciseNodeId: true,
+        activeQuestionNodeId: true,
+        exercises: {
+          orderBy: { orderIndex: 'asc' },
+          select: {
+            id: true,
+            exerciseNodeId: true,
+            orderIndex: true,
+            firstOpenedAt: true,
+            lastInteractedAt: true,
+            completedAt: true,
+            createdAt: true,
+            sessionQuestions: {
+              orderBy: { sequenceIndex: 'asc' },
+              select: {
+                questionNodeId: true,
+                sequenceIndex: true,
+                answerState: true,
+                resultStatus: true,
+                evaluationMode: true,
+                reflection: true,
+                diagnosis: true,
+                firstOpenedAt: true,
+                lastInteractedAt: true,
+                completedAt: true,
+                skippedAt: true,
+                solutionViewedAt: true,
+                timeSpentSeconds: true,
+                revealCount: true,
+                answerPayloadJson: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!existingSession) {
+      throw new NotFoundException(`Study session ${sessionId} not found`);
+    }
+
+    const effectiveStatus = resolveEffectiveStudySessionStatus(existingSession);
+    const now = new Date();
+    const targetExercise = existingSession.exercises.find((exercise) =>
+      exercise.sessionQuestions.some((question) => question.questionNodeId === questionId),
+    );
+    const currentQuestion = targetExercise?.sessionQuestions.find(
+      (question) => question.questionNodeId === questionId,
+    );
+
+    if (!targetExercise || !currentQuestion) {
+      throw new NotFoundException(
+        `Question ${questionId} does not belong to study session ${sessionId}.`,
+      );
+    }
+
+    const nextQuestion = buildStudyQuestionEvaluation({
+      current: {
+        questionId: currentQuestion.questionNodeId,
+        sequenceIndex: currentQuestion.sequenceIndex,
+        answerState: currentQuestion.answerState,
+        resultStatus: currentQuestion.resultStatus,
+        evaluationMode: currentQuestion.evaluationMode,
+        reflection: currentQuestion.reflection,
+        diagnosis: currentQuestion.diagnosis,
+        firstOpenedAt: currentQuestion.firstOpenedAt,
+        lastInteractedAt: currentQuestion.lastInteractedAt,
+        completedAt: currentQuestion.completedAt,
+        skippedAt: currentQuestion.skippedAt,
+        solutionViewedAt: currentQuestion.solutionViewedAt,
+        timeSpentSeconds: currentQuestion.timeSpentSeconds,
+        revealCount: currentQuestion.revealCount,
+        answerPayloadJson: currentQuestion.answerPayloadJson,
+      },
+      payload,
+      sessionFamily: existingSession.family,
+      effectiveStatus,
+      now,
+    });
+    const nextExercises = existingSession.exercises.map((exercise) =>
+      exercise.id !== targetExercise.id
+        ? exercise
+        : {
+            ...exercise,
+            sessionQuestions: exercise.sessionQuestions.map((question) =>
+              question.questionNodeId === questionId
+                ? {
+                    ...question,
+                    answerState: nextQuestion.answerState,
+                    resultStatus: nextQuestion.resultStatus,
+                    evaluationMode: nextQuestion.evaluationMode,
+                    reflection: nextQuestion.reflection,
+                    diagnosis: nextQuestion.diagnosis,
+                    firstOpenedAt: nextQuestion.firstOpenedAt,
+                    lastInteractedAt: nextQuestion.lastInteractedAt,
+                    completedAt: nextQuestion.completedAt,
+                    skippedAt: nextQuestion.skippedAt,
+                    solutionViewedAt: nextQuestion.solutionViewedAt,
+                    timeSpentSeconds: nextQuestion.timeSpentSeconds,
+                    revealCount: nextQuestion.revealCount,
+                    answerPayloadJson: nextQuestion.answerPayloadJson,
+                  }
+                : question,
+            ),
+          },
+    );
+    const progress = buildStudySessionProgress({
+      resumeMode: existingSession.resumeMode,
+      activeExerciseId: existingSession.activeExerciseNodeId,
+      activeQuestionId: existingSession.activeQuestionNodeId,
+      sessionQuestions: nextExercises.flatMap((exercise) =>
+        exercise.sessionQuestions.map((question) => ({
+          questionId: question.questionNodeId,
+          sequenceIndex: question.sequenceIndex,
+          answerState: question.answerState,
+          resultStatus: question.resultStatus,
+          evaluationMode: question.evaluationMode,
+          reflection: question.reflection,
+          diagnosis: question.diagnosis,
+          firstOpenedAt: question.firstOpenedAt,
+          lastInteractedAt: question.lastInteractedAt,
+          completedAt: question.completedAt,
+          skippedAt: question.skippedAt,
+          solutionViewedAt: question.solutionViewedAt,
+          timeSpentSeconds: question.timeSpentSeconds,
+          revealCount: question.revealCount,
+          answerPayloadJson: question.answerPayloadJson,
+        })),
+      ),
+      updatedAt: now,
+    });
+    const status = deriveStudySessionStatusFromProgress(
+      progress,
+      existingSession.family,
+      existingSession.deadlineAt,
+      now,
+      Boolean(existingSession.startedAt),
+    );
+    const updatedExerciseState = buildStudySessionExerciseState({
+      ...targetExercise,
+      sessionQuestions: nextExercises.find((exercise) => exercise.id === targetExercise.id)
+        ?.sessionQuestions.map((question) => ({
+          questionId: question.questionNodeId,
+          sequenceIndex: question.sequenceIndex,
+          answerState: question.answerState,
+          resultStatus: question.resultStatus,
+          evaluationMode: question.evaluationMode,
+          reflection: question.reflection,
+          diagnosis: question.diagnosis,
+          firstOpenedAt: question.firstOpenedAt,
+          lastInteractedAt: question.lastInteractedAt,
+          completedAt: question.completedAt,
+          skippedAt: question.skippedAt,
+          solutionViewedAt: question.solutionViewedAt,
+          timeSpentSeconds: question.timeSpentSeconds,
+          revealCount: question.revealCount,
+          answerPayloadJson: question.answerPayloadJson,
+        })) ?? [],
+    });
+
+    const session = await this.prisma.$transaction(async (tx) => {
+      await tx.studySessionQuestion.update({
+        where: {
+          sessionExerciseId_questionNodeId: {
+            sessionExerciseId: targetExercise.id,
+            questionNodeId: questionId,
+          },
+        },
+        data: {
+          answerState: nextQuestion.answerState,
+          resultStatus: nextQuestion.resultStatus,
+          evaluationMode: nextQuestion.evaluationMode,
+          reflection: nextQuestion.reflection,
+          diagnosis: nextQuestion.diagnosis,
+          firstOpenedAt: nextQuestion.firstOpenedAt,
+          lastInteractedAt: nextQuestion.lastInteractedAt,
+          completedAt: nextQuestion.completedAt,
+          skippedAt: nextQuestion.skippedAt,
+          solutionViewedAt: nextQuestion.solutionViewedAt,
+          timeSpentSeconds: nextQuestion.timeSpentSeconds,
+          revealCount: nextQuestion.revealCount,
+          answerPayloadJson: nextQuestion.answerPayloadJson ?? Prisma.JsonNull,
+          finalizedAt: nextQuestion.completedAt ?? nextQuestion.skippedAt ?? null,
+        },
+      });
+
+      await tx.studySessionExercise.update({
+        where: { id: targetExercise.id },
+        data: {
+          firstOpenedAt: updatedExerciseState.firstOpenedAt,
+          lastInteractedAt: updatedExerciseState.lastInteractedAt,
+          completedAt: updatedExerciseState.completedAt,
+        },
+      });
+
+      await this.studyReadModelService.refreshUserReadModels(userId, tx);
+
+      return tx.studySession.update({
+        where: { id: sessionId },
+        data: {
+          startedAt:
+            existingSession.startedAt ??
+            (status !== StudySessionStatus.CREATED ? now : undefined),
+          lastInteractedAt:
+            status !== StudySessionStatus.CREATED
+              ? now
+              : existingSession.startedAt
+                ? now
+                : null,
+          completedAt:
+            status === StudySessionStatus.COMPLETED
+              ? (existingSession.completedAt ?? now)
+              : null,
+          submittedAt:
+            existingSession.family === StudySessionFamily.SIMULATION &&
+            status === StudySessionStatus.COMPLETED
+              ? (existingSession.submittedAt ?? now)
+              : existingSession.submittedAt,
+          status,
+        },
+        select: {
+          id: true,
+          status: true,
+          updatedAt: true,
+        },
+      });
+    });
+
+    return {
+      id: session.id,
+      status: session.status,
+      progress,
+      updatedAt: session.updatedAt.toISOString(),
+    };
+  }
+
+  async submitStudyQuestionAnswer(
+    userId: string,
+    sessionId: string,
+    questionId: string,
+    payload: SubmitStudyQuestionAnswerDto,
+  ): Promise<UpdateSessionProgressResponse> {
+    const existingSession = await this.prisma.studySession.findFirst({
+      where: { id: sessionId, userId },
+      select: {
+        id: true,
+        family: true,
+        status: true,
+        timingEnabled: true,
+        resumeMode: true,
+        startedAt: true,
+        deadlineAt: true,
+        submittedAt: true,
+        completedAt: true,
+        activeExerciseNodeId: true,
+        activeQuestionNodeId: true,
+        exercises: {
+          orderBy: { orderIndex: 'asc' },
+          select: {
+            id: true,
+            exerciseNodeId: true,
+            orderIndex: true,
+            firstOpenedAt: true,
+            lastInteractedAt: true,
+            completedAt: true,
+            createdAt: true,
+            sessionQuestions: {
+              orderBy: { sequenceIndex: 'asc' },
+              select: {
+                questionNodeId: true,
+                sequenceIndex: true,
+                answerState: true,
+                resultStatus: true,
+                evaluationMode: true,
+                reflection: true,
+                diagnosis: true,
+                firstOpenedAt: true,
+                lastInteractedAt: true,
+                completedAt: true,
+                skippedAt: true,
+                solutionViewedAt: true,
+                timeSpentSeconds: true,
+                revealCount: true,
+                answerPayloadJson: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!existingSession) {
+      throw new NotFoundException(`Study session ${sessionId} not found`);
+    }
+
+    const effectiveStatus = resolveEffectiveStudySessionStatus(existingSession);
+    const now = new Date();
+    const targetExercise = existingSession.exercises.find((exercise) =>
+      exercise.sessionQuestions.some(
+        (question) => question.questionNodeId === questionId,
+      ),
+    );
+    const currentQuestion = targetExercise?.sessionQuestions.find(
+      (question) => question.questionNodeId === questionId,
+    );
+
+    if (!targetExercise || !currentQuestion) {
+      throw new NotFoundException(
+        `Question ${questionId} does not belong to study session ${sessionId}.`,
+      );
+    }
+
+    const questionNode = await this.prisma.examNode.findUnique({
+      where: { id: questionId },
+      select: {
+        id: true,
+        metadata: true,
+      },
+    });
+
+    if (!questionNode) {
+      throw new NotFoundException(`Question ${questionId} not found.`);
+    }
+
+    const autoRule = resolveStudyQuestionAutoRuleConfig(questionNode.metadata);
+
+    if (!autoRule) {
+      throw new BadRequestException(
+        'This question does not support automatic answer checking.',
+      );
+    }
+
+    const nextQuestion = buildStudyQuestionAutoRuleSubmission({
+      current: {
+        questionId: currentQuestion.questionNodeId,
+        sequenceIndex: currentQuestion.sequenceIndex,
+        answerState: currentQuestion.answerState,
+        resultStatus: currentQuestion.resultStatus,
+        evaluationMode: currentQuestion.evaluationMode,
+        reflection: currentQuestion.reflection,
+        diagnosis: currentQuestion.diagnosis,
+        firstOpenedAt: currentQuestion.firstOpenedAt,
+        lastInteractedAt: currentQuestion.lastInteractedAt,
+        completedAt: currentQuestion.completedAt,
+        skippedAt: currentQuestion.skippedAt,
+        solutionViewedAt: currentQuestion.solutionViewedAt,
+        timeSpentSeconds: currentQuestion.timeSpentSeconds,
+        revealCount: currentQuestion.revealCount,
+        answerPayloadJson: currentQuestion.answerPayloadJson,
+      },
+      payload,
+      autoRule,
+      sessionFamily: existingSession.family,
+      effectiveStatus,
+      now,
+    });
+    const nextExercises = existingSession.exercises.map((exercise) =>
+      exercise.id !== targetExercise.id
+        ? exercise
+        : {
+            ...exercise,
+            sessionQuestions: exercise.sessionQuestions.map((question) =>
+              question.questionNodeId === questionId
+                ? {
+                    ...question,
+                    answerState: nextQuestion.answerState,
+                    resultStatus: nextQuestion.resultStatus,
+                    evaluationMode: nextQuestion.evaluationMode,
+                    reflection: nextQuestion.reflection,
+                    diagnosis: nextQuestion.diagnosis,
+                    firstOpenedAt: nextQuestion.firstOpenedAt,
+                    lastInteractedAt: nextQuestion.lastInteractedAt,
+                    completedAt: nextQuestion.completedAt,
+                    skippedAt: nextQuestion.skippedAt,
+                    solutionViewedAt: nextQuestion.solutionViewedAt,
+                    timeSpentSeconds: nextQuestion.timeSpentSeconds,
+                    revealCount: nextQuestion.revealCount,
+                    answerPayloadJson: nextQuestion.answerPayloadJson,
+                  }
+                : question,
+            ),
+          },
+    );
+    const progress = buildStudySessionProgress({
+      resumeMode: existingSession.resumeMode,
+      activeExerciseId: existingSession.activeExerciseNodeId,
+      activeQuestionId: existingSession.activeQuestionNodeId,
+      sessionQuestions: nextExercises.flatMap((exercise) =>
+        exercise.sessionQuestions.map((question) => ({
+          questionId: question.questionNodeId,
+          sequenceIndex: question.sequenceIndex,
+          answerState: question.answerState,
+          resultStatus: question.resultStatus,
+          evaluationMode: question.evaluationMode,
+          reflection: question.reflection,
+          diagnosis: question.diagnosis,
+          firstOpenedAt: question.firstOpenedAt,
+          lastInteractedAt: question.lastInteractedAt,
+          completedAt: question.completedAt,
+          skippedAt: question.skippedAt,
+          solutionViewedAt: question.solutionViewedAt,
+          timeSpentSeconds: question.timeSpentSeconds,
+          revealCount: question.revealCount,
+          answerPayloadJson: question.answerPayloadJson,
+        })),
+      ),
+      updatedAt: now,
+    });
+    const status = deriveStudySessionStatusFromProgress(
+      progress,
+      existingSession.family,
+      existingSession.deadlineAt,
+      now,
+      Boolean(existingSession.startedAt),
+    );
+    const updatedExerciseState = buildStudySessionExerciseState({
+      ...targetExercise,
+      sessionQuestions:
+        nextExercises
+          .find((exercise) => exercise.id === targetExercise.id)
+          ?.sessionQuestions.map((question) => ({
+            questionId: question.questionNodeId,
+            sequenceIndex: question.sequenceIndex,
+            answerState: question.answerState,
+            resultStatus: question.resultStatus,
+            evaluationMode: question.evaluationMode,
+            reflection: question.reflection,
+            diagnosis: question.diagnosis,
+            firstOpenedAt: question.firstOpenedAt,
+            lastInteractedAt: question.lastInteractedAt,
+            completedAt: question.completedAt,
+            skippedAt: question.skippedAt,
+            solutionViewedAt: question.solutionViewedAt,
+            timeSpentSeconds: question.timeSpentSeconds,
+            revealCount: question.revealCount,
+            answerPayloadJson: question.answerPayloadJson,
+          })) ?? [],
+    });
+
+    const session = await this.prisma.$transaction(async (tx) => {
+      await tx.studySessionQuestion.update({
+        where: {
+          sessionExerciseId_questionNodeId: {
+            sessionExerciseId: targetExercise.id,
+            questionNodeId: questionId,
+          },
+        },
+        data: {
+          answerState: nextQuestion.answerState,
+          resultStatus: nextQuestion.resultStatus,
+          evaluationMode: nextQuestion.evaluationMode,
+          reflection: nextQuestion.reflection,
+          diagnosis: nextQuestion.diagnosis,
+          firstOpenedAt: nextQuestion.firstOpenedAt,
+          lastInteractedAt: nextQuestion.lastInteractedAt,
+          completedAt: nextQuestion.completedAt,
+          skippedAt: nextQuestion.skippedAt,
+          solutionViewedAt: nextQuestion.solutionViewedAt,
+          timeSpentSeconds: nextQuestion.timeSpentSeconds,
+          revealCount: nextQuestion.revealCount,
+          answerPayloadJson: nextQuestion.answerPayloadJson ?? Prisma.JsonNull,
+          finalizedAt: nextQuestion.completedAt ?? nextQuestion.skippedAt ?? null,
+        },
+      });
+
+      await tx.studySessionExercise.update({
+        where: { id: targetExercise.id },
+        data: {
+          firstOpenedAt: updatedExerciseState.firstOpenedAt,
+          lastInteractedAt: updatedExerciseState.lastInteractedAt,
+          completedAt: updatedExerciseState.completedAt,
+        },
+      });
+
+      await this.studyReadModelService.refreshUserReadModels(userId, tx);
+
+      return tx.studySession.update({
+        where: { id: sessionId },
+        data: {
+          startedAt:
+            existingSession.startedAt ??
+            (status !== StudySessionStatus.CREATED ? now : undefined),
+          lastInteractedAt:
+            status !== StudySessionStatus.CREATED
+              ? now
+              : existingSession.startedAt
+                ? now
+                : null,
+          completedAt:
+            status === StudySessionStatus.COMPLETED
+              ? (existingSession.completedAt ?? now)
+              : null,
+          submittedAt:
+            existingSession.family === StudySessionFamily.SIMULATION &&
+            status === StudySessionStatus.COMPLETED
+              ? (existingSession.submittedAt ?? now)
+              : existingSession.submittedAt,
+          status,
+        },
+        select: {
+          id: true,
+          status: true,
+          updatedAt: true,
+        },
+      });
+    });
+
+    return {
+      id: session.id,
+      status: session.status,
+      progress,
+      updatedAt: session.updatedAt.toISOString(),
+    };
+  }
+
   async updateStudySessionProgress(
     userId: string,
     id: string,
@@ -513,6 +1062,8 @@ export class StudySessionService {
                 questionNodeId: true,
                 sequenceIndex: true,
                 answerState: true,
+                resultStatus: true,
+                evaluationMode: true,
                 reflection: true,
                 diagnosis: true,
                 firstOpenedAt: true,
@@ -522,6 +1073,7 @@ export class StudySessionService {
                 solutionViewedAt: true,
                 timeSpentSeconds: true,
                 revealCount: true,
+                answerPayloadJson: true,
               },
             },
           },
@@ -929,10 +1481,11 @@ export class StudySessionService {
     payload: CreateStudySessionDto,
     sessionMode: ResolvedStudySessionMode,
   ): Promise<OfficialSimulationPlan> {
-    assertOfficialSimulationRequested(sessionMode.sourceExamId);
+    const sourceExamId = sessionMode.sourceExamId;
+    assertOfficialSimulationRequested(sourceExamId);
 
     const exam = await this.prisma.exam.findUnique({
-      where: { id: sessionMode.sourceExamId },
+      where: { id: sourceExamId },
       select: {
         id: true,
         year: true,
@@ -1019,10 +1572,7 @@ export class StudySessionService {
       },
     });
 
-    assertOfficialSimulationExamMatchesRequest({
-      payload,
-      exam,
-    });
+    assertOfficialSimulationExamMatchesRequest(payload, exam);
 
     return buildOfficialSimulationPlan({
       exam,

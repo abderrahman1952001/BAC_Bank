@@ -24,6 +24,7 @@ import {
   formatStudyQuestionReflection,
   type StudyQuestionAiExplanationResponse,
   type StudyQuestionReflection,
+  type StudyQuestionResultStatus,
   formatStudySessionKind,
   formatSessionType,
   type StudySessionPedagogy,
@@ -92,15 +93,26 @@ type SessionPlayerQuestionPaneProps = {
   activeQuestionState: StudyQuestionState | undefined;
   solutionVisible: boolean;
   canRevealSolution: boolean;
+  canSubmitAutoAnswer: boolean;
+  requiresResultEvaluation: boolean;
+  requiresAutoCorrectReflection: boolean;
+  requiresAutoDiagnosis: boolean;
   requiresReflection: boolean;
   supportStyle: StudySupportStyle;
   questionMotionLocked: boolean;
   primaryActionLabel: string;
   primaryActionDisabled: boolean;
+  answerDraftValue: string;
+  answerSubmitting: boolean;
+  answerError: string | null;
+  evaluationDraftResultStatus: Exclude<StudyQuestionResultStatus, "UNKNOWN"> | null;
+  evaluationSubmitting: boolean;
+  evaluationError: string | null;
   completionOpen: boolean;
   exerciseCheckpointSummary: ExerciseCheckpointSummary | null;
   remainingTimeMs: number | null;
   onPrimaryAction: () => void;
+  onMarkQuestionAttemptedAndRevealSolution: () => void;
   onContinueAfterExerciseCheckpoint: () => void;
   onPauseAfterExerciseCheckpoint: () => void;
   onOpenHint: () => void;
@@ -109,6 +121,17 @@ type SessionPlayerQuestionPaneProps = {
   onGoToFirstUnanswered: () => void;
   onGoToFirstSkipped: () => void;
   onToggleMode: () => void;
+  onSetAnswerDraftValue: (value: string) => void;
+  onSubmitQuestionAnswer: () => void;
+  onSetQuestionResultStatus: (
+    resultStatus: Exclude<StudyQuestionResultStatus, "UNKNOWN">,
+  ) => void;
+  onSubmitCorrectQuestionReflection: (
+    reflection: Exclude<StudyQuestionReflection, "MISSED">,
+  ) => void;
+  onSubmitIncorrectQuestionDiagnosis: (
+    diagnosis: "CONCEPT" | "METHOD" | "CALCULATION",
+  ) => void;
   onSetQuestionReflection: (reflection: StudyQuestionReflection) => void;
   onSetQuestionDiagnosis: (
     diagnosis: "CONCEPT" | "METHOD" | "CALCULATION",
@@ -264,15 +287,26 @@ export function SessionPlayerQuestionPane({
   activeQuestionState,
   solutionVisible,
   canRevealSolution,
+  canSubmitAutoAnswer,
+  requiresResultEvaluation,
+  requiresAutoCorrectReflection,
+  requiresAutoDiagnosis,
   requiresReflection,
   supportStyle,
   questionMotionLocked,
   primaryActionLabel,
   primaryActionDisabled,
+  answerDraftValue,
+  answerSubmitting,
+  answerError,
+  evaluationDraftResultStatus,
+  evaluationSubmitting,
+  evaluationError,
   completionOpen,
   exerciseCheckpointSummary,
   remainingTimeMs,
   onPrimaryAction,
+  onMarkQuestionAttemptedAndRevealSolution,
   onContinueAfterExerciseCheckpoint,
   onPauseAfterExerciseCheckpoint,
   onOpenHint,
@@ -281,6 +315,11 @@ export function SessionPlayerQuestionPane({
   onGoToFirstUnanswered,
   onGoToFirstSkipped,
   onToggleMode,
+  onSetAnswerDraftValue,
+  onSubmitQuestionAnswer,
+  onSetQuestionResultStatus,
+  onSubmitCorrectQuestionReflection,
+  onSubmitIncorrectQuestionDiagnosis,
   onSetQuestionReflection,
   onSetQuestionDiagnosis,
   canRequestAiExplanation,
@@ -299,11 +338,35 @@ export function SessionPlayerQuestionPane({
     progressMode !== "REVIEW";
   const showReflectionSection =
     solutionVisible &&
+    activeQuestionState?.evaluationMode !== "AUTO" &&
+    !requiresResultEvaluation &&
+    !activeQuestionState?.attempted &&
     (progressMode === "REVIEW" || sessionFamily === "DRILL");
   const hasMethodGuidance = shouldOfferMethodGuidance({
     supportStyle,
     question: activeQuestion,
   });
+  const showAutoAnswerCard = canSubmitAutoAnswer;
+  const showAttemptCard =
+    activeQuestion.interaction.responseMode === "NONE" &&
+    !requiresAutoCorrectReflection &&
+    !solutionVisible &&
+    progressMode !== "REVIEW" &&
+    !isActiveSimulation &&
+    canRevealSolution;
+  const showAssistCard =
+    !requiresAutoCorrectReflection &&
+    !solutionVisible &&
+    !isActiveSimulation &&
+    (activeQuestion.hintBlocks.length > 0 || hasMethodGuidance);
+  const showCorrectFollowUp =
+    requiresAutoCorrectReflection ||
+    (requiresResultEvaluation && evaluationDraftResultStatus === "CORRECT");
+  const showDiagnosisFollowUp =
+    requiresAutoDiagnosis ||
+    (requiresResultEvaluation &&
+      (evaluationDraftResultStatus === "PARTIAL" ||
+        evaluationDraftResultStatus === "INCORRECT"));
 
   return (
     <main className="theater-question-pane">
@@ -339,12 +402,112 @@ export function SessionPlayerQuestionPane({
               <StudyQuestionPromptContent question={activeQuestion} />
             </StudyQuestionPanel>
 
-            {!solutionVisible && progressMode !== "REVIEW" && !isActiveSimulation ? (
+            {showAutoAnswerCard ? (
+              <StudySectionCard
+                tone="commentary"
+                title={getAutoAnswerTitle(activeQuestion)}
+              >
+                <p className="pedagogy-support-copy">
+                  {getAutoAnswerCopy({
+                    question: activeQuestion,
+                    resultStatus: activeQuestionState?.resultStatus ?? "UNKNOWN",
+                  })}
+                </p>
+                <form
+                  className="study-answer-form"
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    onSubmitQuestionAnswer();
+                  }}
+                >
+                  <input
+                    type="text"
+                    inputMode={
+                      activeQuestion.interaction.responseMode === "NUMERIC"
+                        ? "decimal"
+                        : "text"
+                    }
+                    className="study-answer-input"
+                    value={answerDraftValue}
+                    placeholder={getAutoAnswerPlaceholder(activeQuestion)}
+                    onChange={(event) => onSetAnswerDraftValue(event.target.value)}
+                    disabled={answerSubmitting || questionMotionLocked}
+                    autoComplete="off"
+                    dir={
+                      activeQuestion.interaction.responseMode === "NUMERIC"
+                        ? "ltr"
+                        : "auto"
+                    }
+                  />
+                  <button
+                    type="submit"
+                    className="btn-primary"
+                    disabled={
+                      answerSubmitting ||
+                      questionMotionLocked ||
+                      !answerDraftValue.trim()
+                    }
+                  >
+                    {answerSubmitting ? "جارٍ التحقق..." : "تحقق"}
+                  </button>
+                </form>
+                {answerError ? <p className="error-text">{answerError}</p> : null}
+                <div className="pedagogy-support-actions">
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={onMarkQuestionAttemptedAndRevealSolution}
+                    disabled={answerSubmitting || questionMotionLocked}
+                  >
+                    جاوبت على الورقة
+                  </button>
+                  {canRevealSolution ? (
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={onPrimaryAction}
+                      disabled={answerSubmitting || questionMotionLocked}
+                    >
+                      اكشف الحل مباشرة
+                    </button>
+                  ) : null}
+                </div>
+              </StudySectionCard>
+            ) : null}
+
+            {showAttemptCard ? (
+              <StudySectionCard tone="commentary" title="قبل التصحيح">
+                <p className="pedagogy-support-copy">
+                  إذا جاوبت على الورقة، افتح التصحيح من هنا ثم قيّم نتيجتك بسرعة
+                  بدون كتابة.
+                </p>
+                <div className="pedagogy-support-actions">
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    onClick={onMarkQuestionAttemptedAndRevealSolution}
+                    disabled={questionMotionLocked}
+                  >
+                    جاوبت، صحح لي
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={onPrimaryAction}
+                    disabled={questionMotionLocked}
+                  >
+                    اكشف الحل مباشرة
+                  </button>
+                </div>
+              </StudySectionCard>
+            ) : null}
+
+            {showAssistCard ? (
               <StudyQuestionAssistCard
                 supportStyle={supportStyle}
                 hasHints={activeQuestion.hintBlocks.length > 0}
                 hasMethodGuidance={hasMethodGuidance}
-                canRevealSolution={canRevealSolution}
+                canRevealSolution={false}
                 onOpenHint={onOpenHint}
                 onOpenMethod={onOpenMethod}
                 onRevealSolution={onPrimaryAction}
@@ -420,6 +583,96 @@ export function SessionPlayerQuestionPane({
           ) : null}
         </div>
 
+        {requiresResultEvaluation ? (
+          <StudySectionCard
+            tone="commentary"
+            title={getObjectiveResultTitle(activeQuestion)}
+          >
+            <p className="completion-summary-copy">
+              {getObjectiveResultCopy(activeQuestion)}
+            </p>
+            <div className="chip-grid">
+              {(
+                ["CORRECT", "PARTIAL", "INCORRECT"] as Array<
+                  Exclude<StudyQuestionResultStatus, "UNKNOWN">
+                >
+              ).map((resultStatus) => (
+                <button
+                  key={resultStatus}
+                  type="button"
+                  className={
+                    evaluationDraftResultStatus === resultStatus
+                      ? "choice-chip active"
+                      : "choice-chip"
+                  }
+                  onClick={() => onSetQuestionResultStatus(resultStatus)}
+                  disabled={evaluationSubmitting}
+                >
+                  {formatObjectiveResultLabel(
+                    resultStatus,
+                    activeQuestion.interaction.checkStrategy,
+                  )}
+                </button>
+              ))}
+            </div>
+            {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
+          </StudySectionCard>
+        ) : null}
+
+        {showCorrectFollowUp ? (
+          <StudySectionCard tone="commentary" title="كيف كانت المحاولة؟">
+            <p className="completion-summary-copy">
+              {requiresAutoCorrectReflection
+                ? "الإجابة مطابقة. اختر فقط مدى سهولة الوصول إليها."
+                : "بما أن الإجابة مطابقة، اختر فقط مستوى الراحة لديك."}
+            </p>
+            <div className="chip-grid">
+              {(["HARD", "MEDIUM", "EASY"] as const).map((reflection) => (
+                <button
+                  key={reflection}
+                  type="button"
+                  className="choice-chip"
+                  onClick={() => onSubmitCorrectQuestionReflection(reflection)}
+                  disabled={evaluationSubmitting}
+                >
+                  {formatStudyQuestionReflection(reflection)}
+                </button>
+              ))}
+            </div>
+            {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
+          </StudySectionCard>
+        ) : null}
+
+        {showDiagnosisFollowUp ? (
+          <StudySectionCard
+            tone="commentary"
+            title={getDiagnosisPromptTitle(supportStyle)}
+          >
+            <p className="completion-summary-copy">
+              {requiresAutoDiagnosis
+                ? "بعد مقارنة جوابك بالحل الرسمي، اختر السبب الأقرب للتعثر."
+                : "اختر السبب الأقرب حتى نبني العلاج على إشارة أوضح."}
+            </p>
+            <div className="chip-grid">
+              {(["CONCEPT", "METHOD", "CALCULATION"] as const).map((diagnosis) => (
+                <button
+                  key={diagnosis}
+                  type="button"
+                  className="choice-chip"
+                  onClick={() => onSubmitIncorrectQuestionDiagnosis(diagnosis)}
+                  disabled={evaluationSubmitting}
+                >
+                  {formatStudyQuestionDiagnosisForSupportStyle({
+                    diagnosis,
+                    supportStyle,
+                  })}
+                </button>
+              ))}
+            </div>
+            {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
+          </StudySectionCard>
+        ) : null}
+
         {showReflectionSection ? (
           <StudySectionCard
             tone="commentary"
@@ -452,6 +705,7 @@ export function SessionPlayerQuestionPane({
         ) : null}
 
         {showReflectionSection &&
+        !activeQuestionState?.attempted &&
         shouldCollectDiagnosis(
           activeQuestionState?.diagnosis,
           activeQuestionState?.reflection ?? null,
@@ -653,6 +907,71 @@ export function SessionPlayerQuestionPane({
       </div>
     </main>
   );
+}
+
+function getObjectiveResultTitle(question: StudyQuestionModel) {
+  switch (question.interaction.checkStrategy) {
+    case "RESULT_MATCH":
+      return "صحّح النتيجة النهائية";
+    case "RUBRIC_REVIEW":
+      return "راجِع عناصر الإجابة";
+    default:
+      return "قارن جوابك بالتصحيح";
+  }
+}
+
+function getObjectiveResultCopy(question: StudyQuestionModel) {
+  switch (question.interaction.checkStrategy) {
+    case "RESULT_MATCH":
+      return "بعد مقارنة النتيجة النهائية بما في الحل الرسمي، اختر الوضع الأقرب.";
+    case "RUBRIC_REVIEW":
+      return "بعد مراجعة العناصر المطلوبة في التصحيح أو السلم، اختر أقرب وصف.";
+    default:
+      return "بعد قراءة التصحيح الرسمي، اختر بسرعة مدى مطابقة جوابك.";
+  }
+}
+
+function formatObjectiveResultLabel(
+  resultStatus: Exclude<StudyQuestionResultStatus, "UNKNOWN">,
+  checkStrategy: StudyQuestionModel["interaction"]["checkStrategy"],
+) {
+  if (resultStatus === "CORRECT") {
+    return checkStrategy === "RESULT_MATCH" ? "مطابق" : "صحيح";
+  }
+
+  if (resultStatus === "PARTIAL") {
+    return "جزئي";
+  }
+
+  return checkStrategy === "RESULT_MATCH" ? "غير مطابق" : "خاطئ";
+}
+
+function getAutoAnswerTitle(question: StudyQuestionModel) {
+  return question.interaction.responseMode === "NUMERIC"
+    ? "تحقق سريع للنتيجة"
+    : "تحقق سريع للإجابة";
+}
+
+function getAutoAnswerCopy(input: {
+  question: StudyQuestionModel;
+  resultStatus: StudyQuestionResultStatus;
+}) {
+  if (
+    input.resultStatus === "PARTIAL" ||
+    input.resultStatus === "INCORRECT"
+  ) {
+    return "بدّل جوابك إن أردت المحاولة من جديد، أو افتح الحل ثم حدّد سبب التعثر.";
+  }
+
+  return input.question.interaction.responseMode === "NUMERIC"
+    ? "اكتب النتيجة النهائية فقط. إذا كنت حللت على الورقة ولا تريد الكتابة، انتقل مباشرة إلى التصحيح."
+    : "اكتب الجواب القصير فقط. إذا كنت حللت على الورقة ولا تريد الكتابة، انتقل مباشرة إلى التصحيح.";
+}
+
+function getAutoAnswerPlaceholder(question: StudyQuestionModel) {
+  return question.interaction.responseMode === "NUMERIC"
+    ? "مثال: 12.5"
+    : "اكتب الجواب المختصر";
 }
 
 export function SessionPlayerNavigatorModal({

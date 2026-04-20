@@ -42,6 +42,8 @@ import { GetStudyWeakPointsQueryDto } from './dto/get-study-weak-points-query.dt
 import { CreateStudyReviewVaultSessionDto } from './dto/create-study-review-vault-session.dto';
 import { RecordStudyReviewQueueOutcomeDto } from './dto/record-study-review-queue-outcome.dto';
 import { UpdateStudyReviewQueueStatusDto } from './dto/update-study-review-queue-status.dto';
+import { SubmitStudyQuestionEvaluationDto } from './dto/submit-study-question-evaluation.dto';
+import { SubmitStudyQuestionAnswerDto } from './dto/submit-study-question-answer.dto';
 import { UpsertStudyExerciseStateDto } from './dto/upsert-study-exercise-state.dto';
 import { UpsertExamActivityDto } from './dto/upsert-exam-activity.dto';
 import { UpdateStudySessionProgressDto } from './dto/update-study-session-progress.dto';
@@ -216,6 +218,38 @@ export class StudyController {
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<StudySessionResponse> {
     return this.studyService.getStudySessionById(request.user!.id, id);
+  }
+
+  @UseGuards(ClerkAuthGuard)
+  @Post('sessions/:sessionId/questions/:questionId/answer')
+  submitStudyQuestionAnswer(
+    @Req() request: AuthenticatedRequest,
+    @Param('sessionId', ParseUUIDPipe) sessionId: string,
+    @Param('questionId', ParseUUIDPipe) questionId: string,
+    @Body() payload: SubmitStudyQuestionAnswerDto,
+  ): Promise<UpdateSessionProgressResponse> {
+    return this.studyService.submitStudyQuestionAnswer(
+      request.user!.id,
+      sessionId,
+      questionId,
+      payload,
+    );
+  }
+
+  @UseGuards(ClerkAuthGuard)
+  @Post('sessions/:sessionId/questions/:questionId/evaluation')
+  submitStudyQuestionEvaluation(
+    @Req() request: AuthenticatedRequest,
+    @Param('sessionId', ParseUUIDPipe) sessionId: string,
+    @Param('questionId', ParseUUIDPipe) questionId: string,
+    @Body() payload: SubmitStudyQuestionEvaluationDto,
+  ): Promise<UpdateSessionProgressResponse> {
+    return this.studyService.submitStudyQuestionEvaluation(
+      request.user!.id,
+      sessionId,
+      questionId,
+      payload,
+    );
   }
 
   @UseGuards(ClerkAuthGuard)

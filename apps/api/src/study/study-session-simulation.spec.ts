@@ -106,17 +106,17 @@ describe('study session simulation helpers', () => {
     );
 
     expect(() =>
-      assertOfficialSimulationExamMatchesRequest({
-        payload: {
+      assertOfficialSimulationExamMatchesRequest(
+        {
           subjectCode: 'MATH',
           years: [2024],
           streamCodes: ['TM'],
         },
-        exam: {
+        {
           ...makeSimulationExam(),
           isPublished: true,
         },
-      }),
+      ),
     ).toThrow(
       new BadRequestException(
         'The selected official paper does not match the requested stream.',

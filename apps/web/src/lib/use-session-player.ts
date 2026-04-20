@@ -5,8 +5,11 @@ import {
   API_BASE_URL,
   fetchJson,
   parseUpdateSessionProgressResponse,
+  submitStudyQuestionAnswer,
+  submitStudyQuestionEvaluation,
   type StudyQuestionDiagnosis,
   type StudyQuestionReflection,
+  type StudyQuestionResultStatus,
   type StudySessionResponse,
   type UpdateSessionProgressResponse,
 } from "@/lib/study-api";
@@ -24,6 +27,7 @@ import {
   type SessionQuestionRef,
 } from "@/lib/session-player";
 import {
+  buildAttemptedQuestionState,
   buildCompletedQuestionState,
   buildDiagnosisQuestionState,
   buildHintViewedQuestionState,
@@ -42,6 +46,7 @@ import {
 } from "@/lib/session-player-runtime";
 import {
   buildEmptyStudyProgress,
+  normalizeStudyProgress,
   readLocalStudyProgress,
   type StudyProgressSnapshot,
   writeLocalStudyProgress,
@@ -68,6 +73,14 @@ export function useSessionPlayer(
   const [countdownNow, setCountdownNow] = useState(() => Date.now());
   const [questionMotion, setQuestionMotion] =
     useState<QuestionMotionState | null>(null);
+  const [evaluationDraftResultStatus, setEvaluationDraftResultStatus] = useState<
+    Exclude<StudyQuestionResultStatus, "UNKNOWN"> | null
+  >(null);
+  const [answerDraftValue, setAnswerDraftValue] = useState("");
+  const [answerSubmitting, setAnswerSubmitting] = useState(false);
+  const [answerError, setAnswerError] = useState<string | null>(null);
+  const [evaluationSubmitting, setEvaluationSubmitting] = useState(false);
+  const [evaluationError, setEvaluationError] = useState<string | null>(null);
   const questionMotionOutTimerRef = useRef<number | null>(null);
   const questionMotionInTimerRef = useRef<number | null>(null);
   const activeTimingQuestionIdRef = useRef<string | null>(null);
@@ -135,6 +148,15 @@ export function useSessionPlayer(
       questionMotionInTimerRef.current = null;
     }
   }
+
+  useEffect(() => {
+    setAnswerDraftValue("");
+    setAnswerError(null);
+    setAnswerSubmitting(false);
+    setEvaluationDraftResultStatus(null);
+    setEvaluationError(null);
+    setEvaluationSubmitting(false);
+  }, [viewModel.activeQuestion?.id]);
 
   useEffect(() => {
     if (!session || !exercises.length) {
@@ -648,6 +670,19 @@ export function useSessionPlayer(
     );
   }
 
+  function markCurrentQuestionAttemptedAndRevealSolution() {
+    if (!viewModel.activeQuestion) {
+      return;
+    }
+
+    setCompletionOpen(false);
+    setEvaluationDraftResultStatus(null);
+    setEvaluationError(null);
+    patchQuestionState(viewModel.activeQuestion.id, (current) =>
+      buildRevealSolutionQuestionState(buildAttemptedQuestionState(current)),
+    );
+  }
+
   function showCurrentHint() {
     if (!viewModel.activeQuestion) {
       return;
@@ -818,6 +853,168 @@ export function useSessionPlayer(
     advanceFromCurrentQuestion();
   }
 
+  function applyEvaluationResponse(
+    response: UpdateSessionProgressResponse,
+    questionId: string,
+  ) {
+    const nextQuestionState = applyRemoteQuestionState(response, questionId);
+    const shouldAutoAdvance =
+      progress.mode === "SOLVE" && session?.family === "DRILL";
+
+    if (!nextQuestionState) {
+      return;
+    }
+
+    if (shouldAutoAdvance) {
+      resolveCurrentQuestionAndProceed({
+        updateCurrentQuestion: (current) => ({
+          ...mergeRemoteQuestionState(current, nextQuestionState),
+        }),
+      });
+      return;
+    }
+
+    patchQuestionState(questionId, (current) =>
+      mergeRemoteQuestionState(current, nextQuestionState),
+    );
+  }
+
+  function applyRemoteQuestionState(
+    response: UpdateSessionProgressResponse,
+    questionId: string,
+  ) {
+    const remoteProgress = normalizeStudyProgress(response.progress);
+
+    setSession((current) =>
+      current
+        ? {
+            ...current,
+            status: response.status,
+            progress: response.progress,
+          }
+        : current,
+    );
+
+    return remoteProgress?.questionStates[questionId];
+  }
+
+  function mergeRemoteQuestionState(
+    current: StudyProgressSnapshot["questionStates"][string] | undefined,
+    nextQuestionState: NonNullable<
+      ReturnType<typeof normalizeStudyProgress>
+    >["questionStates"][string],
+  ) {
+    return {
+      ...current,
+      ...nextQuestionState,
+      attempted: current?.attempted,
+      hintViewed: current?.hintViewed,
+      methodViewed: current?.methodViewed,
+    };
+  }
+
+  function applyAnswerResponse(
+    response: UpdateSessionProgressResponse,
+    questionId: string,
+  ) {
+    const nextQuestionState = applyRemoteQuestionState(response, questionId);
+
+    if (!nextQuestionState) {
+      return;
+    }
+
+    patchQuestionState(questionId, (current) =>
+      mergeRemoteQuestionState(current, nextQuestionState),
+    );
+  }
+
+  function setCurrentQuestionResultStatus(
+    resultStatus: Exclude<StudyQuestionResultStatus, "UNKNOWN">,
+  ) {
+    setCompletionOpen(false);
+    setEvaluationError(null);
+    setEvaluationDraftResultStatus(resultStatus);
+  }
+
+  async function submitCurrentQuestionEvaluation(input: {
+    resultStatus: Exclude<StudyQuestionResultStatus, "UNKNOWN">;
+    reflection?: Exclude<StudyQuestionReflection, "MISSED">;
+    diagnosis?: Exclude<StudyQuestionDiagnosis, "TIME_PRESSURE">;
+  }) {
+    if (
+      !session ||
+      !viewModel.activeQuestion ||
+      evaluationSubmitting ||
+      viewModel.questionMotionLocked
+    ) {
+      return;
+    }
+
+    setCompletionOpen(false);
+    setEvaluationSubmitting(true);
+    setEvaluationError(null);
+
+    try {
+      const response = await submitStudyQuestionEvaluation(
+        session.id,
+        viewModel.activeQuestion.id,
+        input,
+      );
+      setEvaluationDraftResultStatus(null);
+      applyEvaluationResponse(response, viewModel.activeQuestion.id);
+    } catch (requestError) {
+      setEvaluationError(
+        requestError instanceof Error
+          ? requestError.message
+          : "تعذر تثبيت نتيجة السؤال.",
+      );
+    } finally {
+      setEvaluationSubmitting(false);
+    }
+  }
+
+  async function submitCurrentQuestionAnswer() {
+    if (
+      !session ||
+      !viewModel.activeQuestion ||
+      answerSubmitting ||
+      evaluationSubmitting ||
+      viewModel.questionMotionLocked
+    ) {
+      return;
+    }
+
+    const value = answerDraftValue.trim();
+
+    if (!value) {
+      setAnswerError("اكتب جواباً مختصراً أولاً.");
+      return;
+    }
+
+    setCompletionOpen(false);
+    setAnswerSubmitting(true);
+    setAnswerError(null);
+    setEvaluationError(null);
+    setEvaluationDraftResultStatus(null);
+
+    try {
+      const response = await submitStudyQuestionAnswer(
+        session.id,
+        viewModel.activeQuestion.id,
+        { value },
+      );
+      applyAnswerResponse(response, viewModel.activeQuestion.id);
+    } catch (requestError) {
+      setAnswerError(
+        requestError instanceof Error
+          ? requestError.message
+          : "تعذر التحقق من الجواب.",
+      );
+    } finally {
+      setAnswerSubmitting(false);
+    }
+  }
+
   const handleAdjacentQuestion = useEffectEvent((direction: -1 | 1) => {
     goToAdjacentQuestion(direction);
   });
@@ -926,10 +1123,25 @@ export function useSessionPlayer(
     activeQuestionState: viewModel.activeQuestionState,
     solutionVisible: viewModel.solutionVisible,
     canRevealSolution: viewModel.canRevealSolution,
+    canSubmitAutoAnswer: viewModel.canSubmitAutoAnswer,
+    autoAnswerResponseMode: viewModel.autoAnswerResponseMode,
+    requiresResultEvaluation: viewModel.requiresResultEvaluation,
+    requiresAutoCorrectReflection: viewModel.requiresAutoCorrectReflection,
+    requiresAutoDiagnosis: viewModel.requiresAutoDiagnosis,
     requiresReflection: viewModel.requiresReflection,
     questionMotionLocked: viewModel.questionMotionLocked,
     primaryActionLabel: viewModel.primaryActionLabel,
-    primaryActionDisabled: viewModel.primaryActionDisabled,
+    primaryActionDisabled:
+      viewModel.primaryActionDisabled ||
+      answerSubmitting ||
+      evaluationSubmitting ||
+      evaluationDraftResultStatus !== null,
+    answerDraftValue,
+    answerSubmitting,
+    answerError,
+    evaluationDraftResultStatus,
+    evaluationSubmitting,
+    evaluationError,
     openNavigator: () => setShowNavigator(true),
     closeNavigator: () => setShowNavigator(false),
     selectExercise: activateExercise,
@@ -951,6 +1163,25 @@ export function useSessionPlayer(
     goToFirstUnanswered,
     goToFirstSkipped,
     handlePrimaryAction,
+    markQuestionAttemptedAndRevealSolution:
+      markCurrentQuestionAttemptedAndRevealSolution,
+    setAnswerDraftValue,
+    submitQuestionAnswer: submitCurrentQuestionAnswer,
+    setQuestionResultStatus: setCurrentQuestionResultStatus,
+    submitCorrectQuestionReflection: (
+      reflection: Exclude<StudyQuestionReflection, "MISSED">,
+    ) =>
+      submitCurrentQuestionEvaluation({
+        resultStatus: "CORRECT",
+        reflection,
+      }),
+    submitIncorrectQuestionDiagnosis: (
+      diagnosis: Exclude<StudyQuestionDiagnosis, "TIME_PRESSURE">,
+    ) =>
+      submitCurrentQuestionEvaluation({
+        resultStatus: evaluationDraftResultStatus ?? "INCORRECT",
+        diagnosis,
+      }),
     continueAfterExerciseCheckpoint,
     closeExerciseCheckpoint: () => setExerciseCheckpointExerciseId(null),
     showQuestionHint: showCurrentHint,

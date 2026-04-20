@@ -4,6 +4,10 @@ import {
   ExamHierarchyBlock,
   ExamHierarchyNode,
   ExamResponse,
+  StudyQuestionCheckStrategy,
+  StudyQuestionCaptureMode,
+  StudyQuestionInteractionFormat,
+  StudyQuestionResponseMode,
   StudySessionResponse,
 } from "@/lib/study-api";
 
@@ -18,6 +22,12 @@ type HierarchyQuestionItem = {
   label: string;
   points: number;
   depth: number;
+  interaction: {
+    format: StudyQuestionInteractionFormat;
+    captureMode: StudyQuestionCaptureMode;
+    responseMode: StudyQuestionResponseMode;
+    checkStrategy: StudyQuestionCheckStrategy;
+  };
   topics: StudyTopicTag[];
   promptBlocks: ExamHierarchyBlock[];
   solutionBlocks: ExamHierarchyBlock[];
@@ -31,6 +41,12 @@ export type StudyQuestionModel = {
   label: string;
   points: number;
   depth: number;
+  interaction: {
+    format: StudyQuestionInteractionFormat;
+    captureMode: StudyQuestionCaptureMode;
+    responseMode: StudyQuestionResponseMode;
+    checkStrategy: StudyQuestionCheckStrategy;
+  };
   topics: StudyTopicTag[];
   promptBlocks: ExamHierarchyBlock[];
   solutionBlocks: ExamHierarchyBlock[];
@@ -98,6 +114,12 @@ function collectHierarchyQuestionItems(
         label: node.label || `السؤال ${node.orderIndex}`,
         points: node.maxPoints ?? 0,
         depth,
+        interaction: {
+          format: "GENERAL",
+          captureMode: "TYPELESS",
+          responseMode: "NONE",
+          checkStrategy: "MODEL_COMPARISON",
+        },
         topics: nodeTopics,
         promptBlocks: blocksByRoles(node.blocks, ["PROMPT", "STEM"]),
         solutionBlocks: blocksByRoles(node.blocks, ["SOLUTION"]),
@@ -188,6 +210,7 @@ export function buildStudyExercisesFromSessionExercises(
       label: question.label,
       points: question.points,
       depth: question.depth,
+      interaction: question.interaction,
       topics: question.topics,
       promptBlocks: question.promptBlocks,
       solutionBlocks: question.solutionBlocks,

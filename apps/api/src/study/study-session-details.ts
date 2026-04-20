@@ -9,6 +9,7 @@ import {
   pickRepresentativeExamOffering,
   type StudySessionExamOffering,
 } from './study-session-helpers';
+import { resolveStudyQuestionInteraction } from './study-question-interaction';
 
 type ExerciseLookupEntry = {
   exercise: HierarchyNodePayload;
@@ -45,11 +46,19 @@ export function buildStudySessionResponseExercises(input: {
       );
     }
 
+    const exam = entry.exam ?? linkedExercise.fallbackExam;
+
     const questions = collectHierarchyQuestionItemsForSession(
       linkedExercise.exercise.children,
       0,
       linkedExercise.exercise.topics,
-    );
+    ).map((question) => ({
+      ...question,
+      interaction: resolveStudyQuestionInteraction({
+        subjectCode: exam?.subject.code ?? linkedExercise.fallbackExam?.subject.code,
+        question,
+      }),
+    }));
     const totalPoints =
       linkedExercise.exercise.maxPoints ??
       questions.reduce((sum, question) => sum + question.points, 0);
@@ -57,7 +66,6 @@ export function buildStudySessionResponseExercises(input: {
       linkedExercise.exercise,
       questions,
     );
-    const exam = entry.exam ?? linkedExercise.fallbackExam;
 
     if (!exam) {
       throw new NotFoundException(

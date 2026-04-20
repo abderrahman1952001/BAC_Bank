@@ -46,6 +46,12 @@ const exercises: StudyExerciseModel[] = [
         label: "Q1",
         points: 4,
         depth: 0,
+        interaction: {
+          format: "GENERAL",
+          captureMode: "TYPELESS",
+          responseMode: "NONE",
+          checkStrategy: "MODEL_COMPARISON",
+        },
         topics: [{ code: "ALG", name: "Algebra" }],
         promptBlocks: [],
         solutionBlocks: [],
@@ -58,6 +64,12 @@ const exercises: StudyExerciseModel[] = [
         label: "Q2",
         points: 4,
         depth: 0,
+        interaction: {
+          format: "PROBLEM_SOLVING",
+          captureMode: "TYPELESS",
+          responseMode: "NONE",
+          checkStrategy: "RESULT_MATCH",
+        },
         topics: [{ code: "FUNC", name: "Functions" }],
         promptBlocks: [],
         solutionBlocks: [
@@ -103,6 +115,12 @@ const exercises: StudyExerciseModel[] = [
         label: "Q3",
         points: 5,
         depth: 0,
+        interaction: {
+          format: "GENERAL",
+          captureMode: "TYPELESS",
+          responseMode: "NONE",
+          checkStrategy: "MODEL_COMPARISON",
+        },
         topics: [{ code: "ALG", name: "Algebra" }],
         promptBlocks: [],
         solutionBlocks: [],
@@ -156,6 +174,7 @@ const session = {
         label: question.label,
         points: question.points,
         depth: question.depth,
+        interaction: question.interaction,
         topics: question.topics,
         promptBlocks: question.promptBlocks,
         solutionBlocks: question.solutionBlocks,
@@ -192,6 +211,8 @@ describe("session player helpers", () => {
             skipped: false,
             solutionViewed: false,
             timeSpentSeconds: 0,
+            resultStatus: "UNKNOWN",
+            evaluationMode: "UNGRADED",
             reflection: null,
             diagnosis: null,
           },
@@ -373,6 +394,46 @@ describe("session player helpers", () => {
     expect(viewModel.primaryActionLabel).toBe("اختر تقييمك");
   });
 
+  it("surfaces auto-check follow-up for objectively correct answers", () => {
+    const autoExercises: StudyExerciseModel[] = [
+      {
+        ...exercises[0],
+        questions: [
+          {
+            ...exercises[0].questions[0],
+            interaction: {
+              ...exercises[0].questions[0].interaction,
+              responseMode: "NUMERIC",
+            },
+          },
+        ],
+      },
+    ];
+
+    const viewModel = buildSessionPlayerViewModel({
+      session,
+      exercises: autoExercises,
+      progress: {
+        activeExerciseId: "exercise-1",
+        activeQuestionId: "q1",
+        mode: "SOLVE",
+        questionStates: {
+          q1: {
+            opened: true,
+            resultStatus: "CORRECT",
+            evaluationMode: "AUTO",
+          },
+        },
+        updatedAt: "2026-03-28T01:00:00.000Z",
+      },
+      questionMotion: null,
+    });
+
+    expect(viewModel.canSubmitAutoAnswer).toBe(false);
+    expect(viewModel.requiresAutoCorrectReflection).toBe(true);
+    expect(viewModel.primaryActionLabel).toBe("قيّم سهولة المحاولة");
+  });
+
   it("resolves adjacent, skipped, and unanswered question refs", () => {
     const allQuestionRefs = buildSessionQuestionRefs(exercises);
 
@@ -416,16 +477,31 @@ describe("session player helpers", () => {
       buildQuestionStatePresentation({
         state: { skipped: true },
         solutionVisible: false,
+        requiresResultEvaluation: false,
       }),
     ).toEqual({
       label: "متروك",
       tone: "danger",
     });
     expect(
+      buildQuestionStatePresentation({
+        state: { attempted: true },
+        solutionVisible: true,
+        requiresResultEvaluation: true,
+      }),
+    ).toEqual({
+      label: "صحّح نتيجتك",
+      tone: "accent",
+    });
+    expect(
       buildPrimaryActionLabel({
         isActiveSimulation: false,
         solutionVisible: false,
         canRevealSolution: false,
+        canSubmitAutoAnswer: false,
+        requiresResultEvaluation: false,
+        requiresAutoCorrectReflection: false,
+        requiresAutoDiagnosis: false,
         requiresReflection: false,
         isLastQuestion: false,
       }),

@@ -1,6 +1,8 @@
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import {
   StudySessionFamily,
+  StudyQuestionEvaluationMode,
+  StudyQuestionResultStatus,
   StudySessionResumeMode,
   StudySessionStatus,
 } from '@prisma/client';
@@ -24,6 +26,8 @@ type StoredSessionQuestionInput = {
   questionNodeId: string;
   sequenceIndex: number;
   answerState: StoredStudySessionQuestionRow['answerState'];
+  resultStatus: StudyQuestionResultStatus;
+  evaluationMode: StudyQuestionEvaluationMode;
   reflection: StoredStudySessionQuestionRow['reflection'];
   diagnosis: StoredStudySessionQuestionRow['diagnosis'];
   firstOpenedAt: Date | null;
@@ -33,6 +37,7 @@ type StoredSessionQuestionInput = {
   solutionViewedAt: Date | null;
   timeSpentSeconds: number;
   revealCount: number;
+  answerPayloadJson: StoredStudySessionQuestionRow['answerPayloadJson'];
 };
 
 type StoredSessionExerciseInput = {
@@ -242,6 +247,8 @@ function toStoredSessionExerciseRow(
       questionId: question.questionNodeId,
       sequenceIndex: question.sequenceIndex,
       answerState: question.answerState,
+      resultStatus: question.resultStatus,
+      evaluationMode: question.evaluationMode,
       reflection: question.reflection,
       diagnosis: question.diagnosis,
       firstOpenedAt: question.firstOpenedAt,
@@ -251,6 +258,7 @@ function toStoredSessionExerciseRow(
       solutionViewedAt: question.solutionViewedAt,
       timeSpentSeconds: question.timeSpentSeconds,
       revealCount: question.revealCount,
+      answerPayloadJson: question.answerPayloadJson,
     })),
   };
 }

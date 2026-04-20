@@ -138,6 +138,16 @@ export function buildRevealSolutionQuestionState(
   };
 }
 
+export function buildAttemptedQuestionState(
+  current: StudyQuestionState | undefined,
+): StudyQuestionState {
+  return {
+    ...(current ?? {}),
+    attempted: true,
+    opened: true,
+  };
+}
+
 export function buildHintViewedQuestionState(
   current: StudyQuestionState | undefined,
 ): StudyQuestionState {

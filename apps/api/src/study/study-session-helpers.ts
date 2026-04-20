@@ -8,6 +8,11 @@ import {
   PublicationStatus,
   SessionType,
 } from '@prisma/client';
+import type {
+  StudyQuestionCaptureMode,
+  StudyQuestionCheckStrategy,
+  StudyQuestionInteractionFormat,
+} from '@bac-bank/contracts/study';
 
 export type SujetNumber = 1 | 2;
 
@@ -110,6 +115,13 @@ export type SessionHierarchyQuestionPayload = {
   label: string;
   points: number;
   depth: number;
+  metadata: Prisma.JsonValue | null;
+  interaction?: {
+    format: StudyQuestionInteractionFormat;
+    captureMode: StudyQuestionCaptureMode;
+    responseMode: import('@bac-bank/contracts/study').StudyQuestionResponseMode;
+    checkStrategy: StudyQuestionCheckStrategy;
+  };
   topics: HierarchyTopicTagPayload[];
   promptBlocks: HierarchyBlockPayload[];
   solutionBlocks: HierarchyBlockPayload[];
@@ -117,11 +129,18 @@ export type SessionHierarchyQuestionPayload = {
   rubricBlocks: HierarchyBlockPayload[];
 };
 
+export type SessionExerciseHierarchyQuestionPayload = Omit<
+  SessionHierarchyQuestionPayload,
+  'metadata'
+> & {
+  interaction: NonNullable<SessionHierarchyQuestionPayload['interaction']>;
+};
+
 export type SessionExerciseHierarchyPayload = {
   exerciseNodeId: string;
   exerciseLabel: string | null;
   contextBlocks: HierarchyBlockPayload[];
-  questions: SessionHierarchyQuestionPayload[];
+  questions: SessionExerciseHierarchyQuestionPayload[];
 };
 
 export function toSujetNumberFromVariantCode(
@@ -241,6 +260,7 @@ export function collectHierarchyQuestionItemsForSession(
         label: node.label || `السؤال ${node.orderIndex}`,
         points: node.maxPoints ?? 0,
         depth,
+        metadata: node.metadata,
         topics: nodeTopics,
         promptBlocks: blocksByRoles(node.blocks, [
           BlockRole.PROMPT,
@@ -286,7 +306,11 @@ export function getExerciseContextBlocksFromHierarchy(
 
 export function buildSessionExerciseHierarchyPayload(
   exerciseNode: HierarchyNodePayload,
-  questions: SessionHierarchyQuestionPayload[],
+  questions: Array<
+    SessionHierarchyQuestionPayload & {
+      interaction: NonNullable<SessionHierarchyQuestionPayload['interaction']>;
+    }
+  >,
   contextNodes?: HierarchyNodePayload[],
 ): SessionExerciseHierarchyPayload {
   return {
@@ -296,7 +320,7 @@ export function buildSessionExerciseHierarchyPayload(
       exerciseNode,
       contextNodes,
     ),
-    questions,
+    questions: questions.map(({ metadata: _metadata, ...question }) => question),
   };
 }
 

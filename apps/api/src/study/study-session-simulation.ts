@@ -192,7 +192,9 @@ export function buildOfficialSimulationExercises(input: {
     );
 }
 
-export function assertOfficialSimulationRequested(sourceExamId: string | null) {
+export function assertOfficialSimulationRequested(
+  sourceExamId: string | null,
+): asserts sourceExamId is string {
   if (!sourceExamId) {
     throw new BadRequestException(
       'An official paper simulation requires a source exam.',
@@ -200,12 +202,10 @@ export function assertOfficialSimulationRequested(sourceExamId: string | null) {
   }
 }
 
-export function assertOfficialSimulationExamMatchesRequest(input: {
-  payload: CreateStudySessionDto;
-  exam: OfficialSimulationExamLookupRecord | null;
-}) {
-  const { payload, exam } = input;
-
+export function assertOfficialSimulationExamMatchesRequest(
+  payload: CreateStudySessionDto,
+  exam: OfficialSimulationExamLookupRecord | null,
+): asserts exam is OfficialSimulationExamLookupRecord {
   if (!exam || !exam.isPublished) {
     throw new NotFoundException('The selected official paper was not found.');
   }

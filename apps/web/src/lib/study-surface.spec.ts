@@ -182,6 +182,12 @@ describe("study surface helpers", () => {
               label: "Q1",
               points: 6,
               depth: 0,
+              interaction: {
+                format: "GENERAL",
+                captureMode: "TYPELESS",
+                responseMode: "NONE",
+                checkStrategy: "MODEL_COMPARISON",
+              },
               topics: [],
               promptBlocks: [],
               solutionBlocks: [],

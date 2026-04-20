@@ -23,6 +23,28 @@ export type StudyQuestionDiagnosis =
   | "METHOD"
   | "CALCULATION"
   | "TIME_PRESSURE";
+export type StudyQuestionResultStatus =
+  | "CORRECT"
+  | "PARTIAL"
+  | "INCORRECT"
+  | "UNKNOWN";
+export type StudyQuestionEvaluationMode =
+  | "AUTO"
+  | "MANUAL"
+  | "SELF_ASSESSED"
+  | "UNGRADED";
+export type StudyQuestionInteractionFormat =
+  | "GENERAL"
+  | "PROBLEM_SOLVING"
+  | "SHORT_RECALL"
+  | "DOCUMENT_ANALYSIS"
+  | "ESSAY_RESPONSE";
+export type StudyQuestionCaptureMode = "TYPELESS";
+export type StudyQuestionResponseMode = "NONE" | "NUMERIC" | "SHORT_TEXT";
+export type StudyQuestionCheckStrategy =
+  | "RESULT_MATCH"
+  | "MODEL_COMPARISON"
+  | "RUBRIC_REVIEW";
 export type StudyReviewReasonType =
   | "MISSED"
   | "HARD"
@@ -263,6 +285,8 @@ export type StudySessionProgress = {
     skipped: boolean;
     solutionViewed: boolean;
     timeSpentSeconds: number;
+    resultStatus: StudyQuestionResultStatus;
+    evaluationMode: StudyQuestionEvaluationMode;
     reflection: StudyQuestionReflection | null;
     diagnosis: StudyQuestionDiagnosis | null;
   }>;
@@ -362,6 +386,12 @@ export type StudySessionResponse = {
         label: string;
         points: number;
         depth: number;
+        interaction: {
+          format: StudyQuestionInteractionFormat;
+          captureMode: StudyQuestionCaptureMode;
+          responseMode: StudyQuestionResponseMode;
+          checkStrategy: StudyQuestionCheckStrategy;
+        };
         topics: Array<{
           code: string;
           name: string;
@@ -475,6 +505,16 @@ export type SessionPreviewResponse = {
 
 export type CreateSessionResponse = {
   id: string;
+};
+
+export type SubmitStudyQuestionAnswerRequest = {
+  value: string;
+};
+
+export type SubmitStudyQuestionEvaluationRequest = {
+  resultStatus: StudyQuestionResultStatus;
+  reflection?: StudyQuestionReflection;
+  diagnosis?: StudyQuestionDiagnosis;
 };
 
 export type UpdateSessionProgressResponse = {
@@ -1100,6 +1140,18 @@ export const studySessionProgressSchema: z.ZodType<StudySessionProgress> =
         skipped: z.boolean(),
         solutionViewed: z.boolean(),
         timeSpentSeconds: z.number(),
+        resultStatus: z.enum([
+          "CORRECT",
+          "PARTIAL",
+          "INCORRECT",
+          "UNKNOWN",
+        ]),
+        evaluationMode: z.enum([
+          "AUTO",
+          "MANUAL",
+          "SELF_ASSESSED",
+          "UNGRADED",
+        ]),
         reflection: studyQuestionReflectionSchema.nullable(),
         diagnosis: studyQuestionDiagnosisSchema.nullable(),
       }),
@@ -1213,9 +1265,24 @@ export const sessionPreviewResponseSchema: z.ZodType<SessionPreviewResponse> =
     maxSelectableExercises: z.number(),
   });
 
+const studyQuestionResponseModeSchema: z.ZodType<StudyQuestionResponseMode> =
+  z.enum(["NONE", "NUMERIC", "SHORT_TEXT"]);
+
 export const createSessionResponseSchema: z.ZodType<CreateSessionResponse> =
   z.object({
     id: z.string(),
+  });
+
+export const submitStudyQuestionAnswerRequestSchema: z.ZodType<SubmitStudyQuestionAnswerRequest> =
+  z.object({
+    value: z.string(),
+  });
+
+export const submitStudyQuestionEvaluationRequestSchema: z.ZodType<SubmitStudyQuestionEvaluationRequest> =
+  z.object({
+    resultStatus: z.enum(["CORRECT", "PARTIAL", "INCORRECT", "UNKNOWN"]),
+    reflection: studyQuestionReflectionSchema.optional(),
+    diagnosis: studyQuestionDiagnosisSchema.optional(),
   });
 
 export const updateSessionProgressResponseSchema: z.ZodType<UpdateSessionProgressResponse> =
@@ -1286,6 +1353,22 @@ export const studySessionResponseSchema: z.ZodType<StudySessionResponse> =
               label: z.string(),
               points: z.number(),
               depth: z.number(),
+              interaction: z.object({
+                format: z.enum([
+                  "GENERAL",
+                  "PROBLEM_SOLVING",
+                  "SHORT_RECALL",
+                  "DOCUMENT_ANALYSIS",
+                  "ESSAY_RESPONSE",
+                ]),
+                captureMode: z.literal("TYPELESS"),
+                responseMode: studyQuestionResponseModeSchema,
+                checkStrategy: z.enum([
+                  "RESULT_MATCH",
+                  "MODEL_COMPARISON",
+                  "RUBRIC_REVIEW",
+                ]),
+              }),
               topics: z.array(codeNameSchema),
               promptBlocks: z.array(examHierarchyBlockSchema),
               solutionBlocks: z.array(examHierarchyBlockSchema),
@@ -1625,6 +1708,22 @@ export function parseCreateSessionResponse(value: unknown) {
     createSessionResponseSchema,
     value,
     "CreateSessionResponse",
+  );
+}
+
+export function parseSubmitStudyQuestionAnswerRequest(value: unknown) {
+  return parseContract(
+    submitStudyQuestionAnswerRequestSchema,
+    value,
+    "SubmitStudyQuestionAnswerRequest",
+  );
+}
+
+export function parseSubmitStudyQuestionEvaluationRequest(value: unknown) {
+  return parseContract(
+    submitStudyQuestionEvaluationRequestSchema,
+    value,
+    "SubmitStudyQuestionEvaluationRequest",
   );
 }
 

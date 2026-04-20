@@ -1,16 +1,21 @@
 import {
+  StudyQuestionEvaluationMode,
   StudyQuestionDiagnosis,
   StudyQuestionReflection,
+  StudyQuestionResultStatus,
   StudySessionProgress,
   StudySessionMode,
 } from '@/lib/study-api';
 
 export type StudyQuestionState = {
+  attempted?: boolean;
   opened?: boolean;
   completed?: boolean;
   skipped?: boolean;
   solutionViewed?: boolean;
   timeSpentSeconds?: number;
+  resultStatus?: StudyQuestionResultStatus;
+  evaluationMode?: StudyQuestionEvaluationMode;
   reflection?: StudyQuestionReflection | null;
   diagnosis?: StudyQuestionDiagnosis | null;
   hintViewed?: boolean;
@@ -77,6 +82,8 @@ export function normalizeStudyProgress(
         skipped: item.skipped,
         solutionViewed: item.solutionViewed,
         timeSpentSeconds: item.timeSpentSeconds,
+        resultStatus: item.resultStatus,
+        evaluationMode: item.evaluationMode,
         reflection: item.reflection,
         diagnosis: item.diagnosis,
       },
@@ -103,6 +110,10 @@ export function serializeStudyProgress(
     skipped: Boolean(snapshot.questionStates[questionId]?.skipped),
     solutionViewed: Boolean(snapshot.questionStates[questionId]?.solutionViewed),
     timeSpentSeconds: snapshot.questionStates[questionId]?.timeSpentSeconds ?? 0,
+    resultStatus:
+      snapshot.questionStates[questionId]?.resultStatus ?? "UNKNOWN",
+    evaluationMode:
+      snapshot.questionStates[questionId]?.evaluationMode ?? "UNGRADED",
     reflection: snapshot.questionStates[questionId]?.reflection ?? null,
     diagnosis: snapshot.questionStates[questionId]?.diagnosis ?? null,
   }));
@@ -174,6 +185,20 @@ export function describeStudyQuestionState(
   }
 
   if (state?.completed) {
+    if (state.resultStatus === "CORRECT") {
+      return {
+        label: "مطابق",
+        tone: "success",
+      };
+    }
+
+    if (state.resultStatus === "PARTIAL") {
+      return {
+        label: "جزئي",
+        tone: "warning",
+      };
+    }
+
     if (state.reflection === 'MISSED') {
       return {
         label: 'فاتني',

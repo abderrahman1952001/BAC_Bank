@@ -1,6 +1,8 @@
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import {
   StudyQuestionAnswerState,
+  StudyQuestionEvaluationMode,
+  StudyQuestionResultStatus,
   StudySessionFamily,
   StudySessionResumeMode,
   StudySessionStatus,
@@ -37,6 +39,8 @@ function makeSession(
             questionNodeId: 'question-1',
             sequenceIndex: 1,
             answerState: StudyQuestionAnswerState.UNSEEN,
+            resultStatus: StudyQuestionResultStatus.UNKNOWN,
+            evaluationMode: StudyQuestionEvaluationMode.UNGRADED,
             reflection: null,
             diagnosis: null,
             firstOpenedAt: null,
@@ -46,6 +50,7 @@ function makeSession(
             solutionViewedAt: null,
             timeSpentSeconds: 0,
             revealCount: 0,
+            answerPayloadJson: null,
           },
         ],
       },

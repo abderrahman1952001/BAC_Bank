@@ -2,10 +2,13 @@ import type { StudySessionProgress } from '@bac-bank/contracts/study';
 import {
   StudyQuestionAnswerState,
   StudyQuestionDiagnosis,
+  StudyQuestionEvaluationMode,
   StudyQuestionReflection,
+  StudyQuestionResultStatus,
   StudySessionFamily,
   StudySessionResumeMode,
   StudySessionStatus,
+  type Prisma,
 } from '@prisma/client';
 
 export type StudySessionProgressSnapshot = StudySessionProgress;
@@ -14,6 +17,8 @@ export type StoredStudySessionQuestionRow = {
   questionId: string;
   sequenceIndex: number;
   answerState: StudyQuestionAnswerState;
+  resultStatus: StudyQuestionResultStatus;
+  evaluationMode: StudyQuestionEvaluationMode;
   reflection: StudyQuestionReflection | null;
   diagnosis: StudyQuestionDiagnosis | null;
   firstOpenedAt: Date | null;
@@ -23,6 +28,7 @@ export type StoredStudySessionQuestionRow = {
   solutionViewedAt: Date | null;
   timeSpentSeconds: number;
   revealCount: number;
+  answerPayloadJson: Prisma.JsonValue | null;
 };
 
 export type RequestedStudySessionQuestionState = {
@@ -51,6 +57,8 @@ export type StudySessionQuestionRowInput = {
   questionNodeId: string;
   sequenceIndex: number;
   answerState: StoredStudySessionQuestionRow['answerState'];
+  resultStatus: StoredStudySessionQuestionRow['resultStatus'];
+  evaluationMode: StoredStudySessionQuestionRow['evaluationMode'];
   reflection: StoredStudySessionQuestionRow['reflection'];
   diagnosis: StoredStudySessionQuestionRow['diagnosis'];
   firstOpenedAt: Date | null;
@@ -60,6 +68,7 @@ export type StudySessionQuestionRowInput = {
   solutionViewedAt: Date | null;
   timeSpentSeconds: number;
   revealCount: number;
+  answerPayloadJson: Prisma.JsonValue | null;
 };
 
 export type StudySessionQuestionContainer = {
@@ -125,6 +134,8 @@ export function flattenStudySessionQuestionRows(
       questionId: question.questionNodeId,
       sequenceIndex: question.sequenceIndex,
       answerState: question.answerState,
+      resultStatus: question.resultStatus,
+      evaluationMode: question.evaluationMode,
       reflection: question.reflection,
       diagnosis: question.diagnosis,
       firstOpenedAt: question.firstOpenedAt,
@@ -134,6 +145,7 @@ export function flattenStudySessionQuestionRows(
       solutionViewedAt: question.solutionViewedAt,
       timeSpentSeconds: question.timeSpentSeconds,
       revealCount: question.revealCount,
+      answerPayloadJson: question.answerPayloadJson,
     })),
   );
 }
@@ -209,6 +221,8 @@ export function resolveNextStudySessionQuestionState(input: {
           : desiredOpened
             ? StudyQuestionAnswerState.OPENED
             : StudyQuestionAnswerState.UNSEEN,
+    resultStatus: input.current.resultStatus,
+    evaluationMode: input.current.evaluationMode,
     reflection: desiredReflection,
     diagnosis: desiredDiagnosis,
     firstOpenedAt: desiredOpened
@@ -226,6 +240,7 @@ export function resolveNextStudySessionQuestionState(input: {
     revealCount: desiredSolutionViewed
       ? Math.max(input.current.revealCount, 1)
       : 0,
+    answerPayloadJson: input.current.answerPayloadJson,
   };
 }
 
@@ -235,6 +250,8 @@ export function hasStudySessionQuestionStateChanged(
 ) {
   return (
     current.answerState !== next.answerState ||
+    current.resultStatus !== next.resultStatus ||
+    current.evaluationMode !== next.evaluationMode ||
     current.reflection !== next.reflection ||
     current.diagnosis !== next.diagnosis ||
     current.timeSpentSeconds !== next.timeSpentSeconds ||
@@ -247,7 +264,9 @@ export function hasStudySessionQuestionStateChanged(
     dateOrNullToIso(current.skippedAt) !== dateOrNullToIso(next.skippedAt) ||
     dateOrNullToIso(current.solutionViewedAt) !==
       dateOrNullToIso(next.solutionViewedAt) ||
-    current.revealCount !== next.revealCount
+    current.revealCount !== next.revealCount ||
+    JSON.stringify(current.answerPayloadJson) !==
+      JSON.stringify(next.answerPayloadJson)
   );
 }
 
@@ -399,6 +418,8 @@ function toStudySessionProgressQuestionState(
     solutionViewed:
       question.solutionViewedAt !== null || question.revealCount > 0,
     timeSpentSeconds: question.timeSpentSeconds,
+    resultStatus: question.resultStatus,
+    evaluationMode: question.evaluationMode,
     reflection: question.reflection,
     diagnosis: question.diagnosis,
   };

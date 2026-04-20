@@ -5579,6 +5579,28 @@ textarea {
   gap: 0.65rem;
 }
 
+.study-answer-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.study-answer-input {
+  flex: 1 1 15rem;
+  min-width: min(100%, 15rem);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-strong);
+  padding: 0.76rem 0.92rem;
+}
+
+.study-answer-input:focus {
+  outline: 2px solid color-mix(in srgb, var(--brand) 24%, white 76%);
+  outline-offset: 2px;
+  border-color: color-mix(in srgb, var(--brand) 48%, var(--line) 52%);
+}
+
 .pedagogy-checklist {
   display: grid;
   gap: 0.7rem;

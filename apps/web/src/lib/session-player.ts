@@ -44,6 +44,11 @@ export type SessionPlayerViewModel = {
   activeQuestionState: StudyQuestionState | undefined;
   solutionVisible: boolean;
   canRevealSolution: boolean;
+  autoAnswerResponseMode: StudyQuestionModel["interaction"]["responseMode"];
+  canSubmitAutoAnswer: boolean;
+  requiresResultEvaluation: boolean;
+  requiresAutoCorrectReflection: boolean;
+  requiresAutoDiagnosis: boolean;
   requiresReflection: boolean;
   isActiveSimulation: boolean;
   canToggleMode: boolean;
@@ -169,7 +174,16 @@ export function buildSessionProgressUpdateRequest(
     activeExerciseId: serialized.activeExerciseId,
     activeQuestionId: serialized.activeQuestionId,
     mode: serialized.mode,
-    questionStates: serialized.questionStates,
+    questionStates: serialized.questionStates.map((question) => ({
+      questionId: question.questionId,
+      opened: question.opened,
+      completed: question.completed,
+      skipped: question.skipped,
+      solutionViewed: question.solutionViewed,
+      timeSpentSeconds: question.timeSpentSeconds,
+      reflection: question.reflection,
+      diagnosis: question.diagnosis,
+    })),
     totalQuestionCount: serialized.summary.totalQuestionCount,
     completedQuestionCount: serialized.summary.completedQuestionCount,
     skippedQuestionCount: serialized.summary.skippedQuestionCount,
@@ -452,7 +466,38 @@ export function buildSessionPlayerViewModel(input: {
     input.progress.mode === "REVIEW";
   const canRevealSolution =
     !isActiveSimulation && canRevealStudyQuestionSolution(activeQuestion);
+  const autoAnswerResponseMode = activeQuestion?.interaction.responseMode ?? "NONE";
+  const hasObjectiveResult =
+    activeQuestionState?.resultStatus != null &&
+    activeQuestionState.resultStatus !== "UNKNOWN";
+  const canSubmitAutoAnswer =
+    input.progress.mode === "SOLVE" &&
+    !isActiveSimulation &&
+    !solutionVisible &&
+    autoAnswerResponseMode !== "NONE" &&
+    activeQuestionState?.resultStatus !== "CORRECT";
+  const requiresResultEvaluation =
+    solutionVisible &&
+    Boolean(activeQuestionState?.attempted) &&
+    !hasObjectiveResult;
+  const requiresAutoCorrectReflection =
+    input.progress.mode === "SOLVE" &&
+    activeQuestionState?.evaluationMode === "AUTO" &&
+    activeQuestionState?.resultStatus === "CORRECT" &&
+    activeQuestionState?.reflection == null;
+  const requiresAutoDiagnosis =
+    input.progress.mode === "SOLVE" &&
+    solutionVisible &&
+    activeQuestionState?.evaluationMode === "AUTO" &&
+    (activeQuestionState?.resultStatus === "PARTIAL" ||
+      activeQuestionState?.resultStatus === "INCORRECT") &&
+    activeQuestionState?.diagnosis == null;
   const requiresReflection =
+    !requiresResultEvaluation &&
+    !requiresAutoCorrectReflection &&
+    !requiresAutoDiagnosis &&
+    !activeQuestionState?.attempted &&
+    activeQuestionState?.evaluationMode !== "AUTO" &&
     input.session?.family === "DRILL" &&
     input.progress.mode !== "REVIEW" &&
     solutionVisible &&
@@ -472,11 +517,16 @@ export function buildSessionPlayerViewModel(input: {
   const questionStatePresentation = buildQuestionStatePresentation({
     state: activeQuestionState,
     solutionVisible,
+    requiresResultEvaluation,
   });
   const primaryActionLabel = buildPrimaryActionLabel({
     isActiveSimulation,
     solutionVisible,
     canRevealSolution,
+    canSubmitAutoAnswer,
+    requiresResultEvaluation,
+    requiresAutoCorrectReflection,
+    requiresAutoDiagnosis,
     requiresReflection,
     isLastQuestion,
   });
@@ -500,6 +550,11 @@ export function buildSessionPlayerViewModel(input: {
     activeQuestionState,
     solutionVisible,
     canRevealSolution,
+    autoAnswerResponseMode,
+    canSubmitAutoAnswer,
+    requiresResultEvaluation,
+    requiresAutoCorrectReflection,
+    requiresAutoDiagnosis,
     requiresReflection,
     isActiveSimulation,
     canToggleMode: input.session?.family !== "SIMULATION",
@@ -510,7 +565,11 @@ export function buildSessionPlayerViewModel(input: {
     navigatorExercises,
     questionStatePresentation,
     primaryActionLabel,
-    primaryActionDisabled: requiresReflection,
+    primaryActionDisabled:
+      requiresResultEvaluation ||
+      requiresAutoCorrectReflection ||
+      requiresAutoDiagnosis ||
+      requiresReflection,
     questionMotionClass,
     questionMotionLocked: Boolean(input.questionMotion),
   };
@@ -519,23 +578,66 @@ export function buildSessionPlayerViewModel(input: {
 export function buildQuestionStatePresentation(input: {
   state: StudyQuestionState | undefined;
   solutionVisible: boolean;
+  requiresResultEvaluation: boolean;
 }) {
-  return input.state?.skipped
-    ? { label: "متروك", tone: "danger" as const }
-    : input.state?.completed
-      ? { label: "مكتمل", tone: "success" as const }
-      : input.solutionVisible
-        ? { label: "الحل ظاهر", tone: "accent" as const }
-        : { label: "جاهز", tone: "brand" as const };
+  if (input.state?.skipped) {
+    return { label: "متروك", tone: "danger" as const };
+  }
+
+  if (input.state?.resultStatus === "CORRECT") {
+    return { label: "مطابق", tone: "success" as const };
+  }
+
+  if (input.state?.resultStatus === "PARTIAL") {
+    return { label: "جزئي", tone: "warning" as const };
+  }
+
+  if (input.state?.resultStatus === "INCORRECT") {
+    return { label: "غير مطابق", tone: "danger" as const };
+  }
+
+  if (input.requiresResultEvaluation) {
+    return { label: "صحّح نتيجتك", tone: "accent" as const };
+  }
+
+  if (input.state?.attempted) {
+    return { label: "محاولة جاهزة", tone: "accent" as const };
+  }
+
+  if (input.state?.completed) {
+    return { label: "مكتمل", tone: "success" as const };
+  }
+
+  if (input.solutionVisible) {
+    return { label: "الحل ظاهر", tone: "accent" as const };
+  }
+
+  return { label: "جاهز", tone: "brand" as const };
 }
 
 export function buildPrimaryActionLabel(input: {
   isActiveSimulation: boolean;
   solutionVisible: boolean;
   canRevealSolution: boolean;
+  canSubmitAutoAnswer: boolean;
+  requiresResultEvaluation: boolean;
+  requiresAutoCorrectReflection: boolean;
+  requiresAutoDiagnosis: boolean;
   requiresReflection: boolean;
   isLastQuestion: boolean;
 }) {
+  if (input.requiresResultEvaluation) {
+    return "ثبّت النتيجة";
+  }
+
+  if (input.requiresAutoCorrectReflection) {
+    return "قيّم سهولة المحاولة";
+  }
+
+  if (input.requiresAutoDiagnosis) {
+    return "اختر سبب التعثر";
+  }
+
   if (input.requiresReflection) {
     return "اختر تقييمك";
   }
@@ -548,7 +650,9 @@ export function buildPrimaryActionLabel(input: {
     ? "الحل الرسمي"
     : input.isLastQuestion
       ? "إنهاء الجلسة"
-      : !input.solutionVisible && !input.canRevealSolution
+      : !input.solutionVisible &&
+          !input.canRevealSolution &&
+          !input.canSubmitAutoAnswer
         ? "متابعة إلى السؤال التالي"
         : "السؤال التالي";
 }

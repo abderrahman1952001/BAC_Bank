@@ -146,6 +146,9 @@ describe('study session details helpers', () => {
         questions: [
           {
             id: 'question-1',
+            interaction: {
+              responseMode: 'NONE',
+            },
             topics: [{ code: 'ALG', name: 'Algebra' }],
           },
         ],
