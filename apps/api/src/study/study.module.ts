@@ -25,5 +25,6 @@ import { StudyWeakPointService } from './study-weak-point.service';
     StudyReviewService,
     StudyWeakPointService,
   ],
+  exports: [StudyRoadmapService, StudyService],
 })
 export class StudyModule {}

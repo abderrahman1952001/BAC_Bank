@@ -1,155 +1,109 @@
 import { describe, expect, it } from "vitest";
-import type { FiltersResponse, StudyRoadmapsResponse } from "@/lib/study-api";
+import type {
+  CourseSubjectCardsResponse,
+  CourseSubjectResponse,
+  CourseTopicResponse,
+} from "@bac-bank/contracts/courses";
 import {
   buildCourseSubjectCards,
   buildCourseSubjectPageModel,
   buildCourseTopicPageModel,
 } from "./courses-surface";
 
-const filtersFixture: FiltersResponse = {
-  streams: [],
-  subjects: [
+const subjectCardsFixture: CourseSubjectCardsResponse["data"] = [
+  {
+    subject: { code: "MATHEMATICS", name: "الرياضيات" },
+    title: "الرياضيات",
+    description: "مسار الرياضيات.",
+    progressPercent: 62,
+    unitCount: 2,
+    topicCount: 2,
+    completedTopicCount: 1,
+    continueTopicCode: "FUNCTIONS",
+  },
+];
+
+const subjectFixture: CourseSubjectResponse = {
+  subject: { code: "MATHEMATICS", name: "الرياضيات" },
+  title: "خارطة الرياضيات",
+  description: "مسار الرياضيات.",
+  progressPercent: 62,
+  topicCount: 2,
+  completedTopicCount: 1,
+  continueTopicCode: "FUNCTIONS",
+  units: [
     {
-      code: "MATHEMATICS",
-      name: "الرياضيات",
-      streamCodes: ["SE"],
-      streams: [],
-    },
-  ],
-  years: [],
-  sessionTypes: ["NORMAL", "MAKEUP"],
-  topics: [
-    {
-      code: "FUNCTIONS",
-      name: "الدوال والتحليل",
-      slug: "functions",
-      parentCode: null,
-      displayOrder: 0,
-      isSelectable: true,
-      subject: { code: "MATHEMATICS", name: "الرياضيات" },
-      streamCodes: ["SE"],
-    },
-    {
-      code: "EXPONENTIAL",
-      name: "الدالة الأسية",
-      slug: "exponential",
-      parentCode: "FUNCTIONS",
-      displayOrder: 0,
-      isSelectable: true,
-      subject: { code: "MATHEMATICS", name: "الرياضيات" },
-      streamCodes: ["SE"],
-    },
-    {
-      code: "LOGARITHM",
-      name: "الدالة اللوغاريتمية",
-      slug: "logarithm",
-      parentCode: "FUNCTIONS",
-      displayOrder: 1,
-      isSelectable: true,
-      subject: { code: "MATHEMATICS", name: "الرياضيات" },
-      streamCodes: ["SE"],
+      id: "section-analysis",
+      code: "ANALYSIS",
+      title: "التحليل",
+      description: "مدخل المادة.",
+      progressPercent: 55,
+      topics: [
+        {
+          topicCode: "FUNCTIONS",
+          slug: "functions",
+          title: "الدوال",
+          shortTitle: "الدوال",
+          description: "فهم السلوك العام للدوال.",
+          status: "IN_PROGRESS",
+          progressPercent: 55,
+          conceptCount: 2,
+        },
+      ],
     },
     {
+      id: "section-sequences",
       code: "SEQUENCES",
-      name: "المتتاليات",
-      slug: "sequences",
-      parentCode: null,
-      displayOrder: 1,
-      isSelectable: true,
-      subject: { code: "MATHEMATICS", name: "الرياضيات" },
-      streamCodes: ["SE"],
+      title: "المتتاليات",
+      description: "التدرج العددي.",
+      progressPercent: 100,
+      topics: [
+        {
+          topicCode: "SEQUENCES",
+          slug: "sequences",
+          title: "المتتاليات",
+          shortTitle: "المتتاليات",
+          description: "الأنماط والتقارب.",
+          status: "COMPLETED",
+          progressPercent: 100,
+          conceptCount: 1,
+        },
+      ],
     },
   ],
 };
 
-const roadmapsFixture: StudyRoadmapsResponse["data"] = [
-  {
-    id: "roadmap-math",
-    title: "خارطة الرياضيات",
-    description: "مسار الرياضيات.",
-    subject: { code: "MATHEMATICS", name: "الرياضيات" },
-    curriculum: { code: "CURR_MATH", title: "برنامج الرياضيات" },
-    totalNodeCount: 2,
-    solidNodeCount: 1,
-    needsReviewNodeCount: 0,
-    inProgressNodeCount: 1,
-    notStartedNodeCount: 0,
-    openReviewItemCount: 0,
-    progressPercent: 62,
-    updatedAt: null,
-    nextAction: {
-      type: "TOPIC_DRILL",
-      label: "واصل الدوال",
-      topicCode: "FUNCTIONS",
-      topicName: "الدوال",
-    },
-    sections: [
-      {
-        id: "section-analysis",
-        code: "ANALYSIS",
-        title: "التحليل",
-        description: "مدخل المادة.",
-        orderIndex: 0,
-        nodes: [
-          {
-            id: "node-functions",
-            title: "الدوال",
-            description: "فهم السلوك العام للدوال.",
-            topicCode: "FUNCTIONS",
-            topicName: "الدوال",
-            orderIndex: 0,
-            estimatedSessions: 4,
-            isOptional: false,
-            sectionId: "section-analysis",
-            recommendedPreviousNodeId: null,
-            recommendedPreviousNodeTitle: null,
-            status: "IN_PROGRESS",
-            progressPercent: 55,
-            weaknessScore: 0.4,
-            attemptedQuestions: 18,
-            correctCount: 10,
-            incorrectCount: 8,
-            lastSeenAt: null,
-          },
-        ],
-      },
-      {
-        id: "section-sequences",
-        code: "SEQUENCES",
-        title: "المتتاليات",
-        description: "التدرج العددي.",
-        orderIndex: 1,
-        nodes: [
-          {
-            id: "node-sequences",
-            title: "المتتاليات",
-            description: "الأنماط والتقارب.",
-            topicCode: "SEQUENCES",
-            topicName: "المتتاليات",
-            orderIndex: 1,
-            estimatedSessions: 3,
-            isOptional: false,
-            sectionId: "section-sequences",
-            recommendedPreviousNodeId: null,
-            recommendedPreviousNodeTitle: null,
-            status: "SOLID",
-            progressPercent: 100,
-            weaknessScore: 0.1,
-            attemptedQuestions: 12,
-            correctCount: 10,
-            incorrectCount: 2,
-            lastSeenAt: null,
-          },
-        ],
-      },
-    ],
-    nodes: [],
+const topicFixture: CourseTopicResponse = {
+  subject: { code: "MATHEMATICS", name: "الرياضيات" },
+  topic: {
+    code: "FUNCTIONS",
+    slug: "functions",
+    title: "الدوال والتحليل",
+    shortTitle: "الدوال والتحليل",
   },
-];
+  parentUnitTitle: "التحليل",
+  description: "فهم السلوك العام للدوال.",
+  progressPercent: 55,
+  status: "IN_PROGRESS",
+  concepts: [
+    {
+      conceptCode: "EXPONENTIAL",
+      slug: "exponential",
+      title: "الدالة الأسية",
+      description: null,
+    },
+    {
+      conceptCode: "LOGARITHM",
+      slug: "logarithm",
+      title: "الدالة اللوغاريتمية",
+      description: null,
+    },
+  ],
+};
 
 describe("courses surface builders", () => {
-  it("builds subject cards from study roadmaps", () => {
-    const cards = buildCourseSubjectCards(roadmapsFixture);
+  it("builds subject cards from course responses", () => {
+    const cards = buildCourseSubjectCards(subjectCardsFixture);
 
     expect(cards).toHaveLength(1);
     expect(cards[0]).toMatchObject({
@@ -160,33 +114,24 @@ describe("courses surface builders", () => {
     expect(cards[0].href).toBe("/student/courses/MATHEMATICS");
   });
 
-  it("builds a subject page model from roadmap sections and curriculum topics", () => {
-    const model = buildCourseSubjectPageModel({
-      subjectCode: "MATHEMATICS",
-      roadmaps: roadmapsFixture,
-      filters: filtersFixture,
-    });
+  it("builds a subject page model from course subject responses", () => {
+    const model = buildCourseSubjectPageModel(subjectFixture);
 
-    expect(model?.subject.code).toBe("MATHEMATICS");
-    expect(model?.units).toHaveLength(2);
-    expect(model?.units[0].topics[0]).toMatchObject({
+    expect(model.subject.code).toBe("MATHEMATICS");
+    expect(model.units).toHaveLength(2);
+    expect(model.units[0].topics[0]).toMatchObject({
       topicCode: "FUNCTIONS",
       conceptCount: 2,
       href: "/student/courses/MATHEMATICS/topics/functions",
     });
   });
 
-  it("builds a topic page model with concept checkpoints from child topics", () => {
-    const model = buildCourseTopicPageModel({
-      subjectCode: "MATHEMATICS",
-      topicSlug: "functions",
-      roadmaps: roadmapsFixture,
-      filters: filtersFixture,
-    });
+  it("builds a topic page model with prototype concept checkpoints", () => {
+    const model = buildCourseTopicPageModel(topicFixture);
 
-    expect(model?.topic.slug).toBe("functions");
-    expect(model?.concepts).toHaveLength(3);
-    expect(model?.concepts[0].href).toBe(
+    expect(model.topic.slug).toBe("functions");
+    expect(model.concepts).toHaveLength(3);
+    expect(model.concepts[0].href).toBe(
       "/student/courses/MATHEMATICS/topics/functions/concepts/numeric-function",
     );
   });

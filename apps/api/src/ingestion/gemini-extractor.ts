@@ -21,6 +21,20 @@ import type {
   DraftVariant,
   IngestionDraft,
 } from './ingestion.contract';
+import {
+  detectPartMarkerFromLabel,
+  inferPointsFromTextBlocks,
+  normalizeExerciseLabel,
+  questionLabelForIndex,
+  splitLeadingQuestionMarker,
+  splitLeadingSubquestionMarker,
+  splitLeadingPartContextBlocks,
+  splitTextAtSubquestionMarkerLine,
+  splitTextAtPartMarkerLine,
+  subquestionLabelForLetter,
+  type DetectedPartMarker,
+  type DetectedSubquestionMarker,
+} from './ingestion-part-normalization';
 
 type GeminiStructuredBlock = {
   type: DraftBlockType | null;
@@ -147,9 +161,13 @@ Return strict JSON only. Do not wrap the response in Markdown or code fences.
 Stay maximally faithful to the scanned pages. Do not summarize, compress, simplify, or invent missing text.
 
 Extraction rules:
-- Organize content by variant (SUJET_1 / SUJET_2), then by exercise, then by question.
+- Organize content by variant (SUJET_1 / SUJET_2), then by exercise, then by exercise part when present, then by numbered question, then by lettered subquestion when present.
 - When the exam explicitly contains two variants/topics (for example "الموضوع الأول" and "الموضوع الثاني"), extract both variants in the same JSON response.
 - Do not omit a second variant because of length, convenience, or a desire to simplify the response.
+- Treat leading Roman section labels inside an exercise, such as I, II, III, and so on, as named part boundaries equivalent to "الجزء الأول", "الجزء الثاني", "الجزء الثالث", and so on.
+- Preserve those Roman part markers at the start of the nearest contextBlocks or promptBlocks text so draft normalization can create PART nodes instead of flattening the exercise.
+- Preserve visible numbered question markers such as 1), 2-, and 3. at the start of the nearest promptBlocks text so draft normalization can create QUESTION nodes.
+- Preserve visible Arabic-letter subquestion markers such as أ), ب), جـ), and د) at the start of the nearest promptBlocks text so draft normalization can create SUBQUESTION nodes under the active numbered question.
 - The attached exam PDF and correction PDF are both authoritative source documents for this response.
 - Never drop visible content from the exam PDF.
 - Never drop visible content from the correction PDF.
@@ -849,16 +867,153 @@ function buildDraftVariantFromGemini(
     (left, right) => left.orderIndex - right.orderIndex,
   )) {
     const exerciseId = randomUUID();
+    const exerciseContextBlocks: GeminiStructuredBlock[] = [];
+    const partsByIndex = new Map<number, PendingGeminiPart>();
+    const questionNodes: DraftNode[] = [];
+    let activePart: PendingGeminiPart | null = null;
+    const childQuestionCounters = new Map<string, number>();
+    const activeQuestionsByParentId = new Map<string, PendingGeminiQuestion>();
+    const pendingQuestionsById = new Map<string, PendingGeminiQuestion>();
+
+    const ensurePart = (marker: DetectedPartMarker) => {
+      const existing = partsByIndex.get(marker.partIndex);
+
+      if (existing) {
+        return existing;
+      }
+
+      const part: PendingGeminiPart = {
+        id: randomUUID(),
+        orderIndex: marker.partIndex,
+        label: marker.label,
+        contextBlocks: [],
+      };
+
+      partsByIndex.set(marker.partIndex, part);
+      return part;
+    };
+
+    const appendQuestion = (input: {
+      parentId: string;
+      requestedQuestionIndex: number | null;
+      promptBlocks: GeminiStructuredBlock[];
+      sourceQuestion: GeminiStructuredQuestion;
+      includeSourceContent: boolean;
+      includePromptAssets: boolean;
+      maxPoints: number | null;
+    }) => {
+      const questionOrderIndex = nextChildQuestionOrder(
+        childQuestionCounters,
+        input.parentId,
+        input.requestedQuestionIndex,
+      );
+      const questionNode: DraftNode = {
+        id: randomUUID(),
+        nodeType: 'QUESTION',
+        parentId: input.parentId,
+        orderIndex: questionOrderIndex,
+        label: questionLabelForIndex(questionOrderIndex),
+        maxPoints: input.maxPoints,
+        topicCodes: [],
+        blocks: buildGeminiQuestionLikeBlocks({
+          promptBlocks: input.promptBlocks,
+          sourceQuestion: input.sourceQuestion,
+          assetMap,
+          uncertainties,
+          includePromptAssets: input.includePromptAssets,
+          includeSolution: input.includeSourceContent,
+          includeHint: input.includeSourceContent,
+          includeRubric: input.includeSourceContent,
+        }),
+      };
+      const pendingQuestion: PendingGeminiQuestion = {
+        node: questionNode,
+        subquestionPoints: [],
+      };
+
+      questionNodes.push(questionNode);
+      activeQuestionsByParentId.set(input.parentId, pendingQuestion);
+      pendingQuestionsById.set(questionNode.id, pendingQuestion);
+
+      return pendingQuestion;
+    };
+
+    const appendSubquestion = (input: {
+      parentQuestion: PendingGeminiQuestion;
+      marker: DetectedSubquestionMarker;
+      promptBlocks: GeminiStructuredBlock[];
+      sourceQuestion: GeminiStructuredQuestion;
+      includePromptAssets: boolean;
+      maxPoints: number | null;
+    }) => {
+      const subquestionNode: DraftNode = {
+        id: randomUUID(),
+        nodeType: 'SUBQUESTION',
+        parentId: input.parentQuestion.node.id,
+        orderIndex: input.parentQuestion.subquestionPoints.length + 1,
+        label: subquestionLabelForLetter(input.marker.letter),
+        maxPoints: input.maxPoints,
+        topicCodes: [],
+        blocks: buildGeminiQuestionLikeBlocks({
+          promptBlocks: input.promptBlocks,
+          sourceQuestion: input.sourceQuestion,
+          assetMap,
+          uncertainties,
+          includePromptAssets: input.includePromptAssets,
+          includeSolution: true,
+          includeHint: true,
+          includeRubric: true,
+        }),
+      };
+
+      questionNodes.push(subquestionNode);
+      input.parentQuestion.subquestionPoints.push(input.maxPoints);
+
+      return subquestionNode;
+    };
+
+    for (const block of exercise.contextBlocks) {
+      const split = splitTextAtPartMarkerLine(block.text);
+
+      if (!split) {
+        const targetBlocks = activePart
+          ? activePart.contextBlocks
+          : exerciseContextBlocks;
+        targetBlocks.push(block);
+        continue;
+      }
+
+      if (split.beforeText) {
+        const targetBlocks = activePart
+          ? activePart.contextBlocks
+          : exerciseContextBlocks;
+        targetBlocks.push({
+          ...block,
+          text: split.beforeText,
+        });
+      }
+
+      const part = ensurePart(split.marker);
+      activePart = part;
+
+      if (split.marker.restText) {
+        part.contextBlocks.push({
+          ...block,
+          text: split.marker.restText,
+        });
+      }
+    }
+
     nodes.push({
       id: exerciseId,
       nodeType: 'EXERCISE',
       parentId: null,
       orderIndex: exercise.orderIndex,
-      label: exercise.title,
+      label: normalizeExerciseLabel(exercise.title),
       maxPoints: exercise.maxPoints,
       topicCodes: [],
       blocks: [
-        ...toDraftTextBlocks(exercise.contextBlocks, 'PROMPT'),
+        ...toDraftTextBlocks(exerciseContextBlocks, 'PROMPT'),
         ...toDraftAssetBlocks(
           exercise.assetIds,
           assetMap,
@@ -871,46 +1026,118 @@ function buildDraftVariantFromGemini(
     for (const question of [...exercise.questions].sort(
       (left, right) => left.orderIndex - right.orderIndex,
     )) {
-      nodes.push({
-        id: randomUUID(),
-        nodeType: 'QUESTION',
-        parentId: exerciseId,
-        orderIndex: question.orderIndex,
-        label: question.label ?? question.title,
-        maxPoints: question.maxPoints,
-        topicCodes: [],
-        blocks: [
-          ...toDraftTextBlocks(question.promptBlocks, 'PROMPT'),
-          ...toDraftAssetBlocks(
-            question.assetIds,
-            assetMap,
-            'PROMPT',
-            uncertainties,
-          ),
-          ...toDraftTextBlocks(question.solutionBlocks, 'SOLUTION'),
-          ...toDraftAssetBlocks(
-            question.assetIds,
-            assetMap,
-            'SOLUTION',
-            uncertainties,
-          ),
-          ...toDraftTextBlocks(question.hintBlocks, 'HINT'),
-          ...toDraftAssetBlocks(
-            question.assetIds,
-            assetMap,
-            'HINT',
-            uncertainties,
-          ),
-          ...toDraftTextBlocks(question.rubricBlocks, 'RUBRIC'),
-          ...toDraftAssetBlocks(
-            question.assetIds,
-            assetMap,
-            'RUBRIC',
-            uncertainties,
-          ),
-        ],
+      const normalizedQuestion = normalizeGeminiQuestionForParts(question);
+      const labelPartMarker = detectPartMarkerFromLabel(question.label);
+      const partMarker =
+        normalizedQuestion.partMarker ??
+        (labelPartMarker
+          ? {
+              partIndex: labelPartMarker.partIndex,
+              label: labelPartMarker.label,
+              restText: '',
+            }
+          : null);
+
+      if (partMarker) {
+        const part = ensurePart(partMarker);
+        activePart = part;
+        part.contextBlocks.push(...normalizedQuestion.partContextBlocks);
+      }
+
+      const parentId = activePart?.id ?? exerciseId;
+      const structuredQuestion = splitGeminiQuestionMarkers(
+        normalizedQuestion.promptBlocks,
+      );
+      const inferredPoints =
+        question.maxPoints ?? inferPointsFromTextBlocks(question.rubricBlocks);
+
+      if (structuredQuestion.questionMarker) {
+        const questionNode = appendQuestion({
+          parentId,
+          requestedQuestionIndex:
+            structuredQuestion.questionMarker.questionIndex,
+          promptBlocks: structuredQuestion.questionPromptBlocks,
+          sourceQuestion: question,
+          includeSourceContent: !structuredQuestion.subquestionMarker,
+          includePromptAssets: true,
+          maxPoints: structuredQuestion.subquestionMarker
+            ? null
+            : inferredPoints,
+        });
+
+        if (structuredQuestion.subquestionMarker) {
+          appendSubquestion({
+            parentQuestion: questionNode,
+            marker: structuredQuestion.subquestionMarker,
+            promptBlocks: structuredQuestion.subquestionPromptBlocks,
+            sourceQuestion: question,
+            includePromptAssets: false,
+            maxPoints: inferredPoints,
+          });
+        }
+
+        continue;
+      }
+
+      if (structuredQuestion.subquestionMarker) {
+        const activeQuestion = activeQuestionsByParentId.get(parentId);
+
+        if (activeQuestion) {
+          appendSubquestion({
+            parentQuestion: activeQuestion,
+            marker: structuredQuestion.subquestionMarker,
+            promptBlocks: structuredQuestion.subquestionPromptBlocks,
+            sourceQuestion: question,
+            includePromptAssets: true,
+            maxPoints: inferredPoints,
+          });
+          continue;
+        }
+      }
+
+      appendQuestion({
+        parentId,
+        requestedQuestionIndex: null,
+        promptBlocks: normalizedQuestion.promptBlocks,
+        sourceQuestion: question,
+        includeSourceContent: true,
+        includePromptAssets: true,
+        maxPoints: inferredPoints,
       });
     }
+
+    for (const pendingQuestion of pendingQuestionsById.values()) {
+      const hasSubquestions = pendingQuestion.subquestionPoints.length > 0;
+      const subquestionPoints = pendingQuestion.subquestionPoints.filter(
+        (points): points is number => points !== null,
+      );
+
+      if (
+        hasSubquestions &&
+        subquestionPoints.length === pendingQuestion.subquestionPoints.length
+      ) {
+        pendingQuestion.node.maxPoints = roundPoints(
+          subquestionPoints.reduce((sum, points) => sum + points, 0),
+        );
+      }
+    }
+
+    for (const part of [...partsByIndex.values()].sort(
+      (left, right) => left.orderIndex - right.orderIndex,
+    )) {
+      nodes.push({
+        id: part.id,
+        nodeType: 'PART',
+        parentId: exerciseId,
+        orderIndex: part.orderIndex,
+        label: part.label,
+        maxPoints: inferGeminiPartPoints(part.id, questionNodes),
+        topicCodes: [],
+        blocks: toDraftTextBlocks(part.contextBlocks, 'PROMPT'),
+      });
+    }
+
+    nodes.push(...questionNodes);
   }
 
   return {
@@ -918,6 +1145,278 @@ function buildDraftVariantFromGemini(
     title: variant.title,
     nodes,
   };
+}
+
+type PendingGeminiPart = {
+  id: string;
+  orderIndex: number;
+  label: string;
+  contextBlocks: GeminiStructuredBlock[];
+};
+
+type PendingGeminiQuestion = {
+  node: DraftNode;
+  subquestionPoints: Array<number | null>;
+};
+
+function normalizeGeminiQuestionForParts(question: GeminiStructuredQuestion) {
+  const promptBlocks = [...question.promptBlocks];
+
+  for (const [index, block] of promptBlocks.entries()) {
+    const split = splitTextAtPartMarkerLine(block.text);
+
+    if (!split) {
+      continue;
+    }
+
+    const nextPromptBlocks: GeminiStructuredBlock[] = [
+      ...promptBlocks.slice(0, index),
+    ];
+
+    if (split.beforeText) {
+      nextPromptBlocks.push({
+        ...block,
+        text: split.beforeText,
+      });
+    }
+
+    const remainingPromptBlocks = [
+      ...(split.marker.restText
+        ? [
+            {
+              ...block,
+              text: split.marker.restText,
+            },
+          ]
+        : []),
+      ...promptBlocks.slice(index + 1),
+    ];
+    const splitRemaining = splitLeadingPartContextBlocks(remainingPromptBlocks);
+
+    nextPromptBlocks.push(...splitRemaining.promptBlocks);
+
+    return {
+      partMarker: split.marker,
+      partContextBlocks: splitRemaining.partContextBlocks,
+      promptBlocks: nextPromptBlocks,
+    };
+  }
+
+  return {
+    partMarker: null,
+    partContextBlocks: [],
+    promptBlocks,
+  };
+}
+
+function splitGeminiQuestionMarkers(promptBlocks: GeminiStructuredBlock[]) {
+  const firstPromptBlock = promptBlocks[0];
+
+  if (!firstPromptBlock) {
+    return {
+      questionMarker: null,
+      subquestionMarker: null,
+      questionPromptBlocks: [],
+      subquestionPromptBlocks: [],
+    };
+  }
+
+  const questionMarker = splitLeadingQuestionMarker(firstPromptBlock.text);
+
+  if (questionMarker) {
+    const promptWithoutQuestionMarker = [
+      {
+        ...firstPromptBlock,
+        text: questionMarker.restText,
+      },
+      ...promptBlocks.slice(1),
+    ].filter(hasGeminiBlockText);
+    const subquestionSplit = splitFirstGeminiSubquestionFromBlocks(
+      promptWithoutQuestionMarker,
+    );
+
+    if (subquestionSplit) {
+      return {
+        questionMarker,
+        subquestionMarker: subquestionSplit.marker,
+        questionPromptBlocks: subquestionSplit.beforeBlocks,
+        subquestionPromptBlocks: subquestionSplit.afterBlocks,
+      };
+    }
+
+    return {
+      questionMarker,
+      subquestionMarker: null,
+      questionPromptBlocks: promptWithoutQuestionMarker,
+      subquestionPromptBlocks: [],
+    };
+  }
+
+  const subquestionSplit = splitFirstGeminiSubquestionFromBlocks(promptBlocks);
+
+  if (subquestionSplit && subquestionSplit.beforeBlocks.length === 0) {
+    return {
+      questionMarker: null,
+      subquestionMarker: subquestionSplit.marker,
+      questionPromptBlocks: [],
+      subquestionPromptBlocks: subquestionSplit.afterBlocks,
+    };
+  }
+
+  return {
+    questionMarker: null,
+    subquestionMarker: null,
+    questionPromptBlocks: promptBlocks,
+    subquestionPromptBlocks: [],
+  };
+}
+
+function splitFirstGeminiSubquestionFromBlocks(
+  blocks: GeminiStructuredBlock[],
+) {
+  for (const [index, block] of blocks.entries()) {
+    const leadingMarker = splitLeadingSubquestionMarker(block.text);
+
+    if (leadingMarker) {
+      return {
+        marker: leadingMarker,
+        beforeBlocks: blocks.slice(0, index),
+        afterBlocks: [
+          {
+            ...block,
+            text: leadingMarker.restText,
+          },
+          ...blocks.slice(index + 1),
+        ].filter(hasGeminiBlockText),
+      };
+    }
+
+    const split = splitTextAtSubquestionMarkerLine(block.text);
+
+    if (!split) {
+      continue;
+    }
+
+    return {
+      marker: split.marker,
+      beforeBlocks: [
+        ...blocks.slice(0, index),
+        ...(split.beforeText
+          ? [
+              {
+                ...block,
+                text: split.beforeText,
+              },
+            ]
+          : []),
+      ].filter(hasGeminiBlockText),
+      afterBlocks: [
+        {
+          ...block,
+          text: split.marker.restText,
+        },
+        ...blocks.slice(index + 1),
+      ].filter(hasGeminiBlockText),
+    };
+  }
+
+  return null;
+}
+
+function hasGeminiBlockText(block: GeminiStructuredBlock) {
+  return block.text.trim().length > 0;
+}
+
+function buildGeminiQuestionLikeBlocks(input: {
+  promptBlocks: GeminiStructuredBlock[];
+  sourceQuestion: GeminiStructuredQuestion;
+  assetMap: Map<string, DraftAsset>;
+  uncertainties: string[];
+  includePromptAssets: boolean;
+  includeSolution: boolean;
+  includeHint: boolean;
+  includeRubric: boolean;
+}) {
+  return [
+    ...toDraftTextBlocks(input.promptBlocks, 'PROMPT'),
+    ...(input.includePromptAssets
+      ? toDraftAssetBlocks(
+          input.sourceQuestion.assetIds,
+          input.assetMap,
+          'PROMPT',
+          input.uncertainties,
+        )
+      : []),
+    ...(input.includeSolution
+      ? [
+          ...toDraftTextBlocks(input.sourceQuestion.solutionBlocks, 'SOLUTION'),
+          ...toDraftAssetBlocks(
+            input.sourceQuestion.assetIds,
+            input.assetMap,
+            'SOLUTION',
+            input.uncertainties,
+          ),
+        ]
+      : []),
+    ...(input.includeHint
+      ? [
+          ...toDraftTextBlocks(input.sourceQuestion.hintBlocks, 'HINT'),
+          ...toDraftAssetBlocks(
+            input.sourceQuestion.assetIds,
+            input.assetMap,
+            'HINT',
+            input.uncertainties,
+          ),
+        ]
+      : []),
+    ...(input.includeRubric
+      ? [
+          ...toDraftTextBlocks(input.sourceQuestion.rubricBlocks, 'RUBRIC'),
+          ...toDraftAssetBlocks(
+            input.sourceQuestion.assetIds,
+            input.assetMap,
+            'RUBRIC',
+            input.uncertainties,
+          ),
+        ]
+      : []),
+  ];
+}
+
+function inferGeminiPartPoints(parentId: string, nodes: DraftNode[]) {
+  const childQuestions = nodes.filter(
+    (node) => node.parentId === parentId && node.nodeType === 'QUESTION',
+  );
+
+  if (!childQuestions.length) {
+    return null;
+  }
+
+  if (childQuestions.some((node) => node.maxPoints === null)) {
+    return null;
+  }
+
+  return roundPoints(
+    childQuestions.reduce((sum, node) => sum + (node.maxPoints ?? 0), 0),
+  );
+}
+
+function nextChildQuestionOrder(
+  counters: Map<string, number>,
+  parentId: string,
+  requestedOrderIndex: number | null = null,
+) {
+  const currentOrder = counters.get(parentId) ?? 0;
+  const nextOrder =
+    requestedOrderIndex !== null && requestedOrderIndex > currentOrder
+      ? requestedOrderIndex
+      : currentOrder + 1;
+  counters.set(parentId, nextOrder);
+  return nextOrder;
+}
+
+function roundPoints(value: number) {
+  return Number.parseFloat(value.toFixed(3));
 }
 
 function toDraftTextBlocks(

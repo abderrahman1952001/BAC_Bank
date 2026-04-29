@@ -697,7 +697,8 @@ function validateNodeContent(
   }
 
   if (
-    (node.nodeType === 'QUESTION' || node.nodeType === 'SUBQUESTION') &&
+    (node.nodeType === 'SUBQUESTION' ||
+      (node.nodeType === 'QUESTION' && childCount === 0)) &&
     !hasPromptContent
   ) {
     collector.warning({

@@ -4,9 +4,13 @@ Return strict JSON only. Do not wrap the response in Markdown or code fences.
 Stay maximally faithful to the scanned pages. Do not summarize, compress, simplify, or invent missing text.
 
 Extraction rules:
-- Organize content by variant (SUJET_1 / SUJET_2), then by exercise, then by question.
+- Organize content by variant (SUJET_1 / SUJET_2), then by exercise, then by exercise part when present, then by numbered question, then by lettered subquestion when present.
 - When the exam explicitly contains two variants/topics (for example "الموضوع الأول" and "الموضوع الثاني"), extract both variants in the same JSON response.
 - Do not omit a second variant because of length, convenience, or a desire to simplify the response.
+- Treat leading Roman section labels inside an exercise, such as I, II, III, and so on, as named part boundaries equivalent to "الجزء الأول", "الجزء الثاني", "الجزء الثالث", and so on.
+- Preserve those Roman part markers at the start of the nearest contextBlocks or promptBlocks text so draft normalization can create PART nodes instead of flattening the exercise.
+- Preserve visible numbered question markers such as 1), 2-, and 3. at the start of the nearest promptBlocks text so draft normalization can create QUESTION nodes.
+- Preserve visible Arabic-letter subquestion markers such as أ), ب), جـ), and د) at the start of the nearest promptBlocks text so draft normalization can create SUBQUESTION nodes under the active numbered question.
 - The attached exam PDF and correction PDF are both authoritative source documents for this response.
 - Never drop visible content from the exam PDF.
 - Never drop visible content from the correction PDF.

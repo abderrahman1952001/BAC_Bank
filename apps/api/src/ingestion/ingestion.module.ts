@@ -12,6 +12,7 @@ import { IngestionPublicationService } from './ingestion-publication.service';
 import { IngestionQueueService } from './ingestion-queue.service';
 import { IngestionReadService } from './ingestion-read.service';
 import { IngestionRecoveryService } from './ingestion-recovery.service';
+import { IngestionReviewedExtractService } from './ingestion-reviewed-extract.service';
 import { IngestionReviewService } from './ingestion-review.service';
 import { IngestionPublishedVariantService } from './ingestion-published-variant.service';
 import { IngestionSourceIntakeService } from './ingestion-source-intake.service';
@@ -31,6 +32,7 @@ import { IngestionWorkerService } from './ingestion-worker.service';
     IngestionPublicationService,
     IngestionQueueService,
     IngestionRecoveryService,
+    IngestionReviewedExtractService,
     IngestionReviewService,
     IngestionPublishedAssetsService,
     IngestionPaperSourceService,
@@ -50,6 +52,7 @@ import { IngestionWorkerService } from './ingestion-worker.service';
     IngestionProcessingEngineService,
     IngestionPaperSourceService,
     IngestionSourceIntakeService,
+    IngestionReviewedExtractService,
   ],
 })
 export class IngestionModule {}

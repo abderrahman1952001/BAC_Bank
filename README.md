@@ -6,7 +6,8 @@ BAC Bank is a study platform for Algerian BAC students. The product direction is
 
 - Product and UX source of truth: [BAC-platform-architecture-workbench.md](./BAC-platform-architecture-workbench.md)
 - Production and operational runbook: [docs/production-runbook.md](./docs/production-runbook.md)
-- Admin ingestion workflow: [docs/admin-ingestion-workflow.md](./docs/admin-ingestion-workflow.md)
+- Ingestion workflow: [docs/admin-ingestion-workflow.md](./docs/admin-ingestion-workflow.md)
+- Agent ingestion playbook: [docs/agent-ingestion-playbook.md](./docs/agent-ingestion-playbook.md)
 
 Use the README for repo orientation and local setup.
 Use the workbench for the latest product spec, pedagogy rules, UX expectations, and target model direction.

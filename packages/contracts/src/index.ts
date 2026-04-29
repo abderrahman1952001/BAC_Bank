@@ -10,6 +10,11 @@ export {
   parseBillingCreateCheckoutResponse,
   parseBillingOverviewResponse,
 } from "./billing.js";
+export {
+  parseCourseSubjectCardsResponse,
+  parseCourseSubjectResponse,
+  parseCourseTopicResponse,
+} from "./courses.js";
 export * from "./ingestion.js";
 export {
   parseCatalogResponse,

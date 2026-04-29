@@ -1,5 +1,10 @@
 import type { AuthOptionsResponse, AuthUser } from "@bac-bank/contracts/auth";
 import type {
+  CourseSubjectCardsResponse,
+  CourseSubjectResponse,
+  CourseTopicResponse,
+} from "@bac-bank/contracts/courses";
+import type {
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
 } from "@bac-bank/contracts/ingestion";
@@ -447,6 +452,112 @@ export const playwrightTestStudyRoadmaps = {
     },
   ],
 } satisfies StudyRoadmapsResponse;
+
+export const playwrightTestCourseSubjectCards = {
+  data: [
+    {
+      subject: {
+        code: "MATH",
+        name: "Mathematics",
+      },
+      title: "Mathematics",
+      description: "A guided revision route for mathematics.",
+      progressPercent: 42,
+      unitCount: 2,
+      topicCount: 3,
+      completedTopicCount: 1,
+      continueTopicCode: "ALG",
+    },
+  ],
+} satisfies CourseSubjectCardsResponse;
+
+export const playwrightTestCourseSubject = {
+  subject: {
+    code: "MATH",
+    name: "Mathematics",
+  },
+  title: "Math roadmap",
+  description: "A guided revision route for mathematics.",
+  progressPercent: 42,
+  topicCount: 3,
+  completedTopicCount: 1,
+  continueTopicCode: "ALG",
+  units: [
+    {
+      id: "roadmap-section-1",
+      code: "FOUNDATION",
+      title: "Foundations",
+      description: "Stabilize the highest-return chapters first.",
+      progressPercent: 63,
+      topics: [
+        {
+          topicCode: "ALG",
+          slug: "algebra",
+          title: "Algebra",
+          shortTitle: "Algebra",
+          description: "Start with the chapter that most needs attention.",
+          status: "NEEDS_REVIEW",
+          progressPercent: 25,
+          conceptCount: 1,
+        },
+        {
+          topicCode: "GEO",
+          slug: "geometry",
+          title: "Geometry",
+          shortTitle: "Geometry",
+          description: "Lock in your proofs and visual reasoning.",
+          status: "COMPLETED",
+          progressPercent: 100,
+          conceptCount: 1,
+        },
+      ],
+    },
+    {
+      id: "roadmap-section-2",
+      code: "CONSOLIDATION",
+      title: "Consolidation",
+      description: "Finish with the chapters you have not opened yet.",
+      progressPercent: 0,
+      topics: [
+        {
+          topicCode: "ANL",
+          slug: "analysis",
+          title: "Analysis",
+          shortTitle: "Analysis",
+          description: "Build enough momentum here before a full mock.",
+          status: "READY",
+          progressPercent: 0,
+          conceptCount: 1,
+        },
+      ],
+    },
+  ],
+} satisfies CourseSubjectResponse;
+
+export const playwrightTestCourseTopic = {
+  subject: {
+    code: "MATH",
+    name: "Mathematics",
+  },
+  topic: {
+    code: "ALG",
+    slug: "algebra",
+    title: "Algebra",
+    shortTitle: "Algebra",
+  },
+  parentUnitTitle: "Foundations",
+  description: "Start with the chapter that most needs attention.",
+  progressPercent: 25,
+  status: "NEEDS_REVIEW",
+  concepts: [
+    {
+      conceptCode: "ALG",
+      slug: "algebra",
+      title: "Algebra",
+      description: null,
+    },
+  ],
+} satisfies CourseTopicResponse;
 
 export const playwrightTestStudySession = {
   id: "session-123",

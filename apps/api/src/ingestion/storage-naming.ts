@@ -33,10 +33,16 @@ export function buildCanonicalDocumentFileName(
 }
 
 export function buildCanonicalDocumentStorageKey(
-  context: Pick<CanonicalStorageContext, 'year'>,
+  context: Pick<CanonicalStorageContext, 'year' | 'subjectCode'>,
   fileName: string,
 ) {
-  return ['bac', `${context.year}`, 'documents', fileName].join('/');
+  return [
+    'bac',
+    `${context.year}`,
+    'documents',
+    slugifySegment(context.subjectCode ?? 'pending-subject'),
+    fileName,
+  ].join('/');
 }
 
 export function buildCanonicalPageStorageKey(

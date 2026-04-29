@@ -87,7 +87,8 @@ describe('IngestionSourceDocumentService', () => {
   it('stores manual source documents with canonical keys and upload metadata', async () => {
     prisma.sourceDocument.create.mockResolvedValueOnce({
       id: 'doc-1',
-      storageKey: 'bac/2024/documents/bac-exam-math-se-2024-normal.pdf',
+      storageKey:
+        'bac/2024/documents/math/bac-exam-math-se-2024-normal.pdf',
     });
 
     await service.storeManualSourceDocument({
@@ -105,7 +106,7 @@ describe('IngestionSourceDocumentService', () => {
     });
 
     expect(storageClient.putObject).toHaveBeenCalledWith({
-      key: 'bac/2024/documents/bac-exam-math-se-2024-normal.pdf',
+      key: 'bac/2024/documents/math/bac-exam-math-se-2024-normal.pdf',
       body: pdfBuffer,
       contentType: 'application/pdf',
       metadata: {
@@ -116,7 +117,7 @@ describe('IngestionSourceDocumentService', () => {
       data: {
         paperSourceId: 'paper-source-1',
         kind: SourceDocumentKind.EXAM,
-        storageKey: 'bac/2024/documents/bac-exam-math-se-2024-normal.pdf',
+        storageKey: 'bac/2024/documents/math/bac-exam-math-se-2024-normal.pdf',
         fileName: 'bac-exam-math-se-2024-normal.pdf',
         mimeType: 'application/pdf',
         pageCount: null,
@@ -141,7 +142,8 @@ describe('IngestionSourceDocumentService', () => {
   it('replaces correction documents and clears stored pages before updating metadata', async () => {
     prisma.sourceDocument.update.mockResolvedValueOnce({
       id: 'doc-2',
-      storageKey: 'bac/2024/documents/bac-correction-math-se-2024-normal.pdf',
+      storageKey:
+        'bac/2024/documents/math/bac-correction-math-se-2024-normal.pdf',
     });
 
     await service.replaceManualSourceDocument({
@@ -177,7 +179,8 @@ describe('IngestionSourceDocumentService', () => {
         id: 'doc-2',
       },
       data: {
-        storageKey: 'bac/2024/documents/bac-correction-math-se-2024-normal.pdf',
+        storageKey:
+          'bac/2024/documents/math/bac-correction-math-se-2024-normal.pdf',
         fileName: 'bac-correction-math-se-2024-normal.pdf',
         mimeType: 'application/pdf',
         pageCount: null,
