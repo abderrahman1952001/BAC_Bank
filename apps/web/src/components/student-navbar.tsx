@@ -5,7 +5,9 @@ import { usePathname } from "next/navigation";
 import {
   BookOpen,
   CreditCard,
+  GraduationCap,
   House,
+  Layers,
   LogOut,
   PenTool,
   Shield,
@@ -14,6 +16,8 @@ import { motion } from "motion/react";
 import { useAuthSession } from "@/components/auth-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
+  STUDENT_COURSES_ROUTE,
+  STUDENT_FLASHCARDS_ROUTE,
   STUDENT_BILLING_ROUTE,
   STUDENT_LIBRARY_ROUTE,
   STUDENT_MY_SPACE_ROUTE,
@@ -31,6 +35,13 @@ const baseNavItems = [
     surface: "mySpace" as const,
   },
   {
+    href: STUDENT_COURSES_ROUTE,
+    label: "الدورات",
+    shortLabel: "دورات",
+    icon: GraduationCap,
+    surface: "courses" as const,
+  },
+  {
     href: STUDENT_LIBRARY_ROUTE,
     label: "المكتبة",
     shortLabel: "المكتبة",
@@ -43,6 +54,13 @@ const baseNavItems = [
     shortLabel: "تدريب",
     icon: PenTool,
     surface: "training" as const,
+  },
+  {
+    href: STUDENT_FLASHCARDS_ROUTE,
+    label: "البطاقات",
+    shortLabel: "بطاقات",
+    icon: Layers,
+    surface: "flashcards" as const,
   },
   {
     href: STUDENT_BILLING_ROUTE,

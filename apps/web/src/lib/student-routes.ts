@@ -1,5 +1,7 @@
 export const STUDENT_MY_SPACE_ROUTE = "/student/my-space";
+export const STUDENT_COURSES_ROUTE = "/student/courses";
 export const STUDENT_LIBRARY_ROUTE = "/student/library";
+export const STUDENT_FLASHCARDS_ROUTE = "/student/flashcards";
 export const STUDENT_TRAINING_ROUTE = "/student/training";
 export const STUDENT_BILLING_ROUTE = "/student/billing";
 export const STUDENT_TRAINING_DRILL_ROUTE = "/student/training/drill";
@@ -8,7 +10,9 @@ export const STUDENT_TRAINING_WEAK_POINTS_ROUTE = "/student/training/weak-points
 
 const studentSurfaceRoutes = {
   mySpace: STUDENT_MY_SPACE_ROUTE,
+  courses: STUDENT_COURSES_ROUTE,
   library: STUDENT_LIBRARY_ROUTE,
+  flashcards: STUDENT_FLASHCARDS_ROUTE,
   training: STUDENT_TRAINING_ROUTE,
   billing: STUDENT_BILLING_ROUTE,
 } as const;
@@ -90,6 +94,38 @@ export function buildStudentMySpaceRoadmapRoute(
   )}`;
 
   return section ? `${pathname}#${section}` : pathname;
+}
+
+export function buildStudentCoursesRoute(): string {
+  return STUDENT_COURSES_ROUTE;
+}
+
+export function buildStudentCourseSubjectRoute(subjectCode: string): string {
+  return `${STUDENT_COURSES_ROUTE}/${encodeURIComponent(subjectCode)}`;
+}
+
+export function buildStudentCourseTopicRoute(
+  subjectCode: string,
+  topicSlug: string,
+): string {
+  return `${buildStudentCourseSubjectRoute(subjectCode)}/topics/${encodeURIComponent(
+    topicSlug,
+  )}`;
+}
+
+export function buildStudentCourseConceptRoute(
+  subjectCode: string,
+  topicSlug: string,
+  conceptSlug: string,
+): string {
+  return `${buildStudentCourseTopicRoute(
+    subjectCode,
+    topicSlug,
+  )}/concepts/${encodeURIComponent(conceptSlug)}`;
+}
+
+export function buildStudentFlashcardsRoute(): string {
+  return STUDENT_FLASHCARDS_ROUTE;
 }
 
 export function buildStudentTrainingDrillRoute(input?: {

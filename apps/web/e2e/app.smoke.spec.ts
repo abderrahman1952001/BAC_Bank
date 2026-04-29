@@ -7,6 +7,7 @@ import {
   playwrightTestFilters,
   playwrightTestStudySession,
   playwrightTestPreview,
+  playwrightTestStudyRoadmaps,
   playwrightTestStudentUser,
   playwrightTestWeakPointInsights,
 } from '../src/lib/playwright-test-fixtures';
@@ -105,6 +106,10 @@ async function installMockApi(
 
     if (path === '/api/v1/study/filters') {
       return jsonResponse(route, playwrightTestFilters);
+    }
+
+    if (path === '/api/v1/study/roadmaps' && method === 'GET') {
+      return jsonResponse(route, playwrightTestStudyRoadmaps);
     }
 
     if (path === '/api/v1/study/sessions/preview' && method === 'POST') {
@@ -250,6 +255,25 @@ test('creates a session from training and persists browser progress', async ({ p
   await expect
     .poll(() => mockApi.getProgressWrites())
     .toBeGreaterThan(writesBeforeAction);
+});
+
+test('opens the new courses surface and enters a subject', async ({ page }) => {
+  await installPlaywrightSession(page, 'student');
+  await installMockApi(page, {
+    sessionUser: playwrightTestStudentUser,
+  });
+
+  await page.goto('/student/courses');
+
+  await expect(
+    page.getByRole('heading', { name: 'رحلة مفاهيمية متدرجة داخل كل مادة' }),
+  ).toBeVisible();
+  await expect(page.getByText('Mathematics')).toBeVisible();
+
+  await page.getByRole('link', { name: 'افتح المادة' }).first().click();
+
+  await expect(page).toHaveURL(/\/student\/courses\/MATH$/);
+  await expect(page.getByRole('heading', { name: 'Mathematics' })).toBeVisible();
 });
 
 test('creates and queues an admin ingestion job from the browser', async ({ page }) => {

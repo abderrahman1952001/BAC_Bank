@@ -107,12 +107,16 @@ Positioning rule:
 - Library
 - Training
 - My Space
+- Courses
+- Flashcards
 
 ### Surface intent
 
 - Library: browse trusted BAC material digitally
 - Training: actively create and run study sessions
 - My Space: continuity, saved/review state, recent work, and later progress
+- Courses: move through a premium guided theory journey by subject, unit, topic, and concept
+- Flashcards: review important facts through flexible decks that may start from the platform and evolve privately for each student
 
 ### Student context defaults
 
@@ -127,6 +131,8 @@ Positioning rule:
 - `/student/sessions/new`
 - `/student/sessions/:sessionId`
 - `/student/my-space`
+- `/student/courses`
+- `/student/flashcards`
 - `/admin/intake`
 - `/admin/drafts/*`
 
