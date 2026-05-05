@@ -7,11 +7,33 @@ auth, billing, training, library, and lab pages.
 ## Visual Direction
 
 - The app defaults to dark mode.
-- The dark theme is ink/navy, not pure carbon black.
+- The dark theme is `Midnight Slate & Electric Emerald`: carbon-navy, not pure
+  black, with emerald used as a scarce signal.
+- Use `#0b0f14` for the main dark app background, `#131a22` for panels,
+  `#18212b` for stronger/elevated surfaces, `#f8fafc` for headings, and a soft
+  slate such as `#b6c2cf` for long Arabic body/supporting text.
 - Keep the interface calm, dense, and operational. This is a study/work tool,
   not a marketing site.
-- Use the green accent for primary action and active state. Use warm gold only
-  as a secondary support/accent tone.
+- Use electric emerald (`#00e599`) for progress, lab instruments, success
+  states, selected-state borders, and high-intent actions. Do not make generic
+  hover states, cards, or passive controls glow green.
+- Keep shadcn/Tailwind's generic `accent` color mapped to a slate surface. Use
+  `primary`, `ring`, `--app-accent`, or explicit domain tokens when the emerald
+  signal is intentional.
+- Use warm gold only as a rare editorial/support tone, mostly for exam-paper or
+  archival context.
+- Prefer hairline borders (`white` at roughly 6-12% opacity in dark mode) over
+  heavy shadows.
+- Light mode is the `Premium Paper & Ink` companion theme: use slate-50
+  (`#f8fafc`) for the workspace, white for cards/panels, slate-900
+  (`#0f172a`) for headings, and slate-600 (`#475569`) for long body/supporting
+  text.
+- In light mode, use a deeper ivy green (`#047857` for controls/text,
+  `#10b981` for soft accent fields) instead of the dark theme's electric
+  emerald. Bright emerald belongs to dark/lab-style instrument signals, not
+  routine light-mode button text.
+- Light mode should use subtle slate borders and soft cardstock shadows; keep
+  shadows lower than marketing UI and avoid pure white full-page backgrounds.
 - Avoid one-note palettes, decorative gradient blobs, and heavy card mosaics.
 - Prefer full-width work surfaces, sidebars, rails, inspectors, and simple
   section bands over nested card stacks.

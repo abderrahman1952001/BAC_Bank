@@ -37,6 +37,10 @@ const bannedLegacyClasses = [
   "sujet-browser-pill",
   "sujet-question-solution-toggle",
   "course-concept-step-dot",
+  "validation-issue-button",
+  "ingestion-section-chip",
+  "ingestion-asset-rail-card",
+  "study-nav-exercise-button",
 ];
 
 const sourceExtensions = new Set([".css", ".ts", ".tsx"]);

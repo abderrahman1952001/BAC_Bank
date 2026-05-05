@@ -68,7 +68,7 @@ export function HubRoadmapSection({
             <motion.article
               key={item.key}
               className="hub-activity-card kind-session"
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.28,
@@ -166,7 +166,7 @@ export function HubWeakPointsSection({
             <motion.article
               key={item.key}
               className="hub-activity-card kind-weak-point"
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.28,
@@ -236,7 +236,7 @@ export function HubMistakesSection({
                   ? 'hub-activity-card kind-mistake is-flagged'
                   : 'hub-activity-card kind-mistake'
               }
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.28,
@@ -318,7 +318,7 @@ export function HubSavedExercisesSection({
                   ? 'hub-activity-card kind-saved is-flagged'
                   : 'hub-activity-card kind-saved'
               }
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.28,
@@ -384,7 +384,7 @@ export function HubRecentActivitySection({
             <motion.article
               key={item.key}
               className={`hub-activity-card kind-${item.kind}`}
-              initial={{ opacity: 0, y: 16 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 duration: 0.28,
