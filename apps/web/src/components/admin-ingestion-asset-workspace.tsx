@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
+import { SelectionCard } from '@/components/ui/selection-card';
 import type { AdminIngestionDraft } from '@/lib/admin';
 
 type SourcePageEntry = {
@@ -283,15 +284,12 @@ export function AdminIngestionAssetWorkspace({
                   sourcePages.find((entry) => entry.id === asset.sourcePageId) ?? null;
 
                 return (
-                  <button
+                  <SelectionCard
                     key={asset.id}
                     type="button"
                     id={`asset-library-${asset.id}`}
-                    className={
-                      selectedAsset?.id === asset.id
-                        ? 'ingestion-asset-rail-card active'
-                        : 'ingestion-asset-rail-card'
-                    }
+                    active={selectedAsset?.id === asset.id}
+                    className="min-h-0 rounded-2xl p-3"
                     onClick={() => {
                       setSelectedAssetId(asset.id);
                       setLiveCropBox(null);
@@ -310,7 +308,7 @@ export function AdminIngestionAssetWorkspace({
                     <span>
                       {page ? `${page.documentKind} page ${page.page_number}` : 'Missing page'}
                     </span>
-                  </button>
+                  </SelectionCard>
                 );
               })
             ) : (
