@@ -1,5 +1,5 @@
 import { CourseConceptPage } from "@/components/course-concept-page";
-import { fetchServerCourseTopicPageModel } from "@/lib/server-courses-api";
+import { fetchServerCourseConceptPageModel } from "@/lib/server-courses-api";
 
 export default async function StudentCourseConceptRoutePage({
   params,
@@ -12,10 +12,11 @@ export default async function StudentCourseConceptRoutePage({
 }) {
   const { subjectCode: rawSubjectCode, topicSlug, conceptSlug } = await params;
   const subjectCode = rawSubjectCode.trim().toUpperCase();
-  const model = await fetchServerCourseTopicPageModel(
+  const model = await fetchServerCourseConceptPageModel(
     subjectCode,
     topicSlug,
+    conceptSlug,
   ).catch(() => null);
 
-  return <CourseConceptPage model={model} conceptSlug={conceptSlug} />;
+  return <CourseConceptPage model={model} />;
 }

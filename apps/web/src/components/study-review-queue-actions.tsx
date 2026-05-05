@@ -6,6 +6,7 @@ import {
   type StudyReviewQueueStatus,
   updateStudyReviewQueueStatus,
 } from "@/lib/study-api";
+import { Button } from "@/components/ui/button";
 
 const defaultStatusLabels: Record<Exclude<StudyReviewQueueStatus, "OPEN">, string> = {
   DONE: "تمت المراجعة",
@@ -65,10 +66,11 @@ export function StudyReviewQueueActions({
     <>
       <div className="study-action-row">
         {statuses.map((status) => (
-          <button
+          <Button
             key={status}
             type="button"
-            className="study-toggle-button"
+            variant="outline"
+            className="h-10 rounded-full px-4"
             onClick={() => {
               void handleStatusChange(status);
             }}
@@ -77,7 +79,7 @@ export function StudyReviewQueueActions({
             {pendingStatus === status
               ? "جارٍ التحديث..."
               : labels?.[status] ?? defaultStatusLabels[status]}
-          </button>
+          </Button>
         ))}
       </div>
       {error ? <p className="error-text">{error}</p> : null}

@@ -19,6 +19,9 @@ This is especially important for subjects where one exercise may contain:
 - named parts such as `الجزء الأول`
 - nested subquestions under a numbered question
 
+For corpus-scale extraction routes, crop policy, and native asset rendering,
+also follow `docs/premium-ingestion-extraction.md`.
+
 ## Current Policy
 
 Apply this normalization from now on for new structured imports and draft
@@ -346,6 +349,11 @@ Good cleanup examples:
 - malformed spacing around inline notation
 - accidental line-join artifacts that make the sentence harder to read
 
+Do not use cleanup as a license to rewrite. Do not shorten, paraphrase,
+modernize, simplify, or explain the source text. If the original wording is
+awkward but meaningful, keep it. If a word, symbol, or punctuation mark is
+unclear, preserve the best reading and add an explicit review uncertainty.
+
 ### Avoid fake styling
 
 Until the content model supports real inline rich text, do not simulate bold or
@@ -396,11 +404,14 @@ When the source is ambiguous:
 
 ## Asset Rules
 
-Until native structured assets are recovered:
-
-- import document figures as `image`
-- keep the asset attached to the node where it is used
-- refine crops later if needed
+- Render faithful structured assets natively when the frontend can represent
+  them cleanly.
+- Keep source-page asset references attached to native blocks when they exist,
+  so the reviewer can compare the rendered block with the source.
+- Use image crops for visuals that should not be redrawn.
+- Keep image crops tight enough that the student-side preview looks intentional.
+- Treat full-page or broad placeholder crops as review debt, not publish-ready
+  content.
 
 ## Cleanup Strategy For Earlier Drafts
 
@@ -416,5 +427,4 @@ Recommended order:
 
 1. Use this policy for all new ingestions now.
 2. Backfill the first batch of already imported drafts to match it.
-3. After the data shape stabilizes, improve the web rendering so parts and
-   subquestions display natively instead of being flattened.
+3. Use the student-side draft preview as the rendering gate before publishing.

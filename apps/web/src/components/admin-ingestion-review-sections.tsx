@@ -3,6 +3,12 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { SelectionCard } from "@/components/ui/selection-card";
+import { Textarea } from "@/components/ui/textarea";
 import type {
   AdminIngestionDraft,
   AdminIngestionJobResponse,
@@ -40,21 +46,20 @@ function ValidationIssueList({
     <article className={className}>
       <strong>{title}</strong>
       {issues.map((issue) => (
-        <button
+        <SelectionCard
           key={issue.id}
           type="button"
-          className={
-            issue.id === focusedIssueId
-              ? "validation-issue-button active"
-              : "validation-issue-button"
-          }
+          active={issue.id === focusedIssueId}
+          className="min-h-0 rounded-xl p-3 text-left"
           onClick={() => {
             onIssueFocus(issue);
           }}
         >
           <strong>{issue.message}</strong>
-          <span>{formatIssueLocation(issue)}</span>
-        </button>
+          <span className="text-sm text-muted-foreground">
+            {formatIssueLocation(issue)}
+          </span>
+        </SelectionCard>
       ))}
     </article>
   );
@@ -107,7 +112,9 @@ export function AdminIngestionReviewOverviewSection({
               {data.job.status}
             </span>
             <strong>
-              {data.job.draft_kind === "revision" ? "Revision draft" : "Ingestion draft"}
+              {data.job.draft_kind === "revision"
+                ? "Revision draft"
+                : "Ingestion draft"}
             </strong>
             {workflow.awaiting_correction ? (
               <span className="muted-text">Waiting for correction</span>
@@ -128,7 +135,8 @@ export function AdminIngestionReviewOverviewSection({
               <strong>{data.documents.length} documents</strong>
               <span>{sourcePageCount} rasterized pages</span>
               <span className="muted-text">
-                Correction {workflow.has_correction_document ? "attached" : "missing"}
+                Correction{" "}
+                {workflow.has_correction_document ? "attached" : "missing"}
               </span>
             </div>
           )}
@@ -188,13 +196,18 @@ export function AdminIngestionReviewOverviewSection({
               <strong>{publishedExams.length} stream offering(s)</strong>
               <div className="block-item-actions">
                 {publishedExams.map((exam) => (
-                  <Link
+                  <Button
                     key={exam.id}
-                    href={`/admin/library?examId=${exam.id}`}
-                    className="btn-secondary"
+                    asChild
+                    variant="outline"
+                    className="h-9 rounded-full px-3"
                   >
-                    {exam.stream_code}
-                  </Link>
+                    <Link
+                      href={`/admin/library?examId=${exam.id}`}
+                    >
+                      {exam.stream_code}
+                    </Link>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -211,7 +224,7 @@ export function AdminIngestionReviewOverviewSection({
 
         <label className="field admin-form-wide">
           <span>Reviewer Handoff</span>
-          <textarea
+          <Textarea
             rows={6}
             value={reviewNotes}
             onChange={(event) => {
@@ -262,7 +275,7 @@ export function AdminIngestionReviewOverviewSection({
           <div className="admin-form-grid">
             <label className="field admin-form-wide">
               <span>Correction PDF</span>
-              <input
+              <Input
                 type="file"
                 accept="application/pdf,.pdf"
                 onChange={(event) => {
@@ -273,21 +286,20 @@ export function AdminIngestionReviewOverviewSection({
           </div>
 
           <div className="block-item-actions">
-            <button
+            <Button
               type="button"
-              className="btn-primary"
+              className="h-10 rounded-full px-5"
               onClick={onAttachCorrection}
               disabled={actionBusy || !correctionFile}
             >
               {attachingCorrection ? "Uploading…" : "Attach Correction PDF"}
-            </button>
+            </Button>
           </div>
         </section>
       ) : null}
     </>
   );
 }
-
 export function AdminIngestionReviewMetadataSection({
   draft,
   selectedStreamCodes,
@@ -312,7 +324,7 @@ export function AdminIngestionReviewMetadataSection({
       <div className="admin-form-grid">
         <label className="field">
           <span>Year</span>
-          <input
+          <Input
             type="number"
             value={draft.exam.year}
             onChange={(event) => {
@@ -327,7 +339,7 @@ export function AdminIngestionReviewMetadataSection({
 
         <label className="field">
           <span>Subject Code</span>
-          <select
+          <NativeSelect
             value={draft.exam.subjectCode ?? ""}
             onChange={(event) => {
               onSubjectCodeChange(event.target.value || null);
@@ -339,12 +351,12 @@ export function AdminIngestionReviewMetadataSection({
                 {code} · {label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </label>
 
         <label className="field">
           <span>Session</span>
-          <select
+          <NativeSelect
             value={draft.exam.sessionType}
             onChange={(event) => {
               onSessionTypeChange(event.target.value as "NORMAL" | "MAKEUP");
@@ -352,7 +364,7 @@ export function AdminIngestionReviewMetadataSection({
           >
             <option value="NORMAL">Normal</option>
             <option value="MAKEUP">Rattrapage</option>
-          </select>
+          </NativeSelect>
         </label>
 
         <label className="field admin-form-wide">
@@ -372,19 +384,17 @@ export function AdminIngestionReviewMetadataSection({
                       : "ingestion-stream-option"
                   }
                 >
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={checked}
-                    onChange={(event) => {
-                      if (
-                        !event.target.checked &&
-                        wouldClearLastSelected
-                      ) {
+                    onCheckedChange={(nextChecked) => {
+                      const isChecked = nextChecked === true;
+
+                      if (!isChecked && wouldClearLastSelected) {
                         return;
                       }
 
                       onSelectedStreamCodesChange(
-                        event.target.checked
+                        isChecked
                           ? [...selectedStreamCodes, code]
                           : selectedStreamCodes.filter(
                               (streamCode) => streamCode !== code,
@@ -444,7 +454,7 @@ export function AdminIngestionReviewSourcesSection({
             <h3>No source PDFs attached</h3>
             <p className="muted-text">
               {isPublishedRevisionJob
-                ? "This draft was created from the live published paper. Start a new ingestion job if you need source-page processing or crop-based asset recovery."
+                ? "This draft was created from the live published paper. Start a new ingestion job if you need source-page processing or asset crop editing."
                 : "Attach and process the exam source files before reviewing this section."}
             </p>
           </article>

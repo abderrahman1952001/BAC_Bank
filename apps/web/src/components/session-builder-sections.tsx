@@ -1,6 +1,14 @@
+import { ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 import { SubjectIcon } from "@/components/subject-icon";
 import { EmptyState } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
+import { FilterChip } from "@/components/ui/filter-chip";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { SelectionCard } from "@/components/ui/selection-card";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { cn } from "@/lib/utils";
 import {
   type BuilderStep,
   type BuilderYearMode,
@@ -152,20 +160,25 @@ export function SessionBuilderStepper({
         });
 
         return (
-          <button
+          <Button
             key={item.step}
             type="button"
-            className={`builder-stepper-button${isActive ? " active" : ""}${
-              isCompleted ? " completed" : ""
-            }`}
+            variant="ghost"
+            className={cn(
+              "h-auto min-w-0 flex-col items-stretch justify-start gap-2 rounded-none bg-transparent p-0 text-right shadow-none hover:bg-transparent hover:text-foreground",
+              !isEnabled && "opacity-45",
+            )}
             onClick={() => onGoToStep(item.step)}
             disabled={!isEnabled}
             aria-current={isActive ? "step" : undefined}
           >
-            <span className="builder-stepper-track" aria-hidden="true">
+            <span
+              className="relative h-2 overflow-hidden rounded-full bg-primary/10"
+              aria-hidden="true"
+            >
               {isActive || isCompleted ? (
                 <motion.span
-                  className="builder-stepper-fill"
+                  className="absolute inset-0 origin-right rounded-full bg-primary"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{
@@ -175,10 +188,17 @@ export function SessionBuilderStepper({
                 />
               ) : null}
             </span>
-            <span className="builder-stepper-copy">
-              <strong>{item.label}</strong>
+            <span>
+              <strong
+                className={cn(
+                  "text-sm text-muted-foreground",
+                  (isActive || isCompleted) && "text-primary",
+                )}
+              >
+                {item.label}
+              </strong>
             </span>
-          </button>
+          </Button>
         );
       })}
     </div>
@@ -203,12 +223,11 @@ export function SessionBuilderSubjectStep({
       {suggestedSubjects.length ? (
         <div className="builder-subject-grid">
           {suggestedSubjects.map((subject) => (
-            <button
+            <SelectionCard
               key={subject.code}
               type="button"
-              className={`builder-choice-card builder-subject-card${
-                subjectCode === subject.code ? " active" : ""
-              }`}
+              active={subjectCode === subject.code}
+              className="min-h-44 content-start border-primary/20 bg-secondary/60"
               onClick={() => onSelectSubject(subject.code)}
               disabled={loading}
             >
@@ -220,7 +239,7 @@ export function SessionBuilderSubjectStep({
                 />
               </span>
               <strong>{subject.name}</strong>
-            </button>
+            </SelectionCard>
           ))}
         </div>
       ) : (
@@ -254,9 +273,14 @@ export function SessionBuilderTopicsStep({
           <p className="page-kicker">الخطوة 2</p>
           <h2>المحاور</h2>
         </div>
-        <button type="button" className="btn-secondary" onClick={onBack}>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-10 rounded-full px-5"
+          onClick={onBack}
+        >
           تغيير المادة
-        </button>
+        </Button>
       </div>
 
       <div className="builder-summary-pills">
@@ -270,15 +294,14 @@ export function SessionBuilderTopicsStep({
         />
       ) : (
         <>
-          <button
+          <SelectionCard
             type="button"
-            className={`builder-choice-card builder-wide-choice${
-              topicSelectionMode === "all" ? " active" : ""
-            }`}
+            active={topicSelectionMode === "all"}
+            className="min-h-24 w-full content-center"
             onClick={() => onChangeTopicMode("all")}
           >
             <strong>كل المحاور</strong>
-          </button>
+          </SelectionCard>
 
           <div className="builder-subject-grid">
             {chapterTopics
@@ -294,12 +317,11 @@ export function SessionBuilderTopicsStep({
                 const subtopicCount = countSelectableTopics(chapter.children);
 
                 return (
-                  <button
+                  <SelectionCard
                     key={chapter.code}
                     type="button"
-                    className={`builder-choice-card builder-subject-card${
-                      chapterActive ? " active" : ""
-                    }`}
+                    active={chapterActive}
+                    className="min-h-44 content-start border-primary/20 bg-secondary/60"
                     onClick={() => onToggleTopic(chapter.code)}
                   >
                     <strong>{chapter.name}</strong>
@@ -310,7 +332,7 @@ export function SessionBuilderTopicsStep({
                           ? `${subtopicCount} فروع`
                           : "مباشر"}
                     </span>
-                  </button>
+                  </SelectionCard>
                 );
               })}
           </div>
@@ -325,19 +347,17 @@ export function SessionBuilderTopicsStep({
                     <h3>{chapter.name}</h3>
                     <div className="chip-grid">
                       {subtopics.map((topic) => (
-                        <button
+                        <FilterChip
                           key={topic.code}
                           type="button"
-                          className={
+                          active={
                             topicSelectionMode === "custom" &&
                             topicCodes.includes(topic.code)
-                              ? "choice-chip active"
-                              : "choice-chip"
                           }
                           onClick={() => onToggleTopic(topic.code)}
                         >
                           {topic.name}
-                        </button>
+                        </FilterChip>
                       ))}
                     </div>
                   </section>
@@ -349,18 +369,23 @@ export function SessionBuilderTopicsStep({
       )}
 
       <div className="builder-stage-actions">
-        <button type="button" className="btn-secondary" onClick={onBack}>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 rounded-full px-5"
+          onClick={onBack}
+        >
           رجوع
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           data-testid="session-builder-next-topics"
-          className="btn-primary"
+          className="h-11 rounded-full px-5"
           onClick={onNext}
           disabled={!topicSelectionComplete}
         >
           السنوات
-        </button>
+        </Button>
       </div>
     </>
   );
@@ -398,13 +423,14 @@ export function SessionBuilderYearsStep({
           <p className="page-kicker">الخطوة 3</p>
           <h2>السنوات</h2>
         </div>
-        <button
+        <Button
           type="button"
-          className="btn-secondary"
+          variant="outline"
+          className="h-10 rounded-full px-5"
           onClick={onReturnToTopics}
         >
           العودة للمحاور
-        </button>
+        </Button>
       </div>
 
       <div className="builder-summary-pills">
@@ -414,17 +440,16 @@ export function SessionBuilderYearsStep({
 
       <div className="builder-year-grid">
         {YEAR_MODE_OPTIONS.map((option) => (
-          <button
+          <SelectionCard
             key={option.value}
             type="button"
-            className={`builder-choice-card builder-year-card${
-              yearMode === option.value ? " active" : ""
-            }`}
+            active={yearMode === option.value}
+            className="min-h-28"
             onClick={() => onSetYearMode(option.value)}
           >
             <strong>{option.label}</strong>
             <span>{option.value === "custom" ? "مخصص" : "سريع"}</span>
-          </button>
+          </SelectionCard>
         ))}
       </div>
 
@@ -432,7 +457,7 @@ export function SessionBuilderYearsStep({
         <div className="builder-year-range">
           <label className="field">
             <span>من</span>
-            <select
+            <NativeSelect
               value={yearStart ?? ""}
               onChange={(event) => onSetYearStart(Number(event.target.value) || null)}
             >
@@ -444,12 +469,12 @@ export function SessionBuilderYearsStep({
                     {year}
                   </option>
                 ))}
-            </select>
+            </NativeSelect>
           </label>
 
           <label className="field">
             <span>إلى</span>
-            <select
+            <NativeSelect
               value={yearEnd ?? ""}
               onChange={(event) => onSetYearEnd(Number(event.target.value) || null)}
             >
@@ -461,52 +486,51 @@ export function SessionBuilderYearsStep({
                     {year}
                   </option>
                 ))}
-            </select>
+            </NativeSelect>
           </label>
         </div>
       ) : null}
 
       <section className="builder-advanced-panel">
-        <button
+        <Button
           type="button"
-          className="builder-advanced-toggle"
+          variant="ghost"
+          className="h-auto w-full justify-between rounded-2xl px-4 py-3 text-right"
           onClick={onToggleAdvanced}
         >
           <span>خيارات إضافية</span>
-          <strong>{advancedOpen ? "إخفاء" : "إظهار"}</strong>
-        </button>
+          <ChevronDown
+            className={cn(
+              "size-4 transition-transform",
+              advancedOpen && "rotate-180",
+            )}
+            aria-hidden="true"
+          />
+        </Button>
 
         {advancedOpen ? (
           <div className="builder-advanced-grid">
             <div className="builder-subsection">
               <h3>الشعبة</h3>
               <div className="chip-grid">
-                <button
+                <FilterChip
                   type="button"
-                  className={
-                    !effectiveStreamCodes.length
-                      ? "choice-chip active"
-                      : "choice-chip"
-                  }
+                  active={!effectiveStreamCodes.length}
                   onClick={onOpenAllStreams}
                   disabled={!subjectCode}
                 >
                   كل الشعب
-                </button>
+                </FilterChip>
                 {availableStreams.map((stream) => (
-                  <button
+                  <FilterChip
                     key={stream.code}
                     type="button"
-                    className={
-                      effectiveStreamCodes.includes(stream.code)
-                        ? "choice-chip active"
-                        : "choice-chip"
-                    }
+                    active={effectiveStreamCodes.includes(stream.code)}
                     onClick={() => onToggleStream(stream.code)}
                     disabled={!subjectCode}
                   >
                     {stream.name}
-                  </button>
+                  </FilterChip>
                 ))}
               </div>
             </div>
@@ -515,18 +539,14 @@ export function SessionBuilderYearsStep({
               <h3>نوع الدورة</h3>
               <div className="chip-grid">
                 {filters.sessionTypes.map((type) => (
-                  <button
+                  <FilterChip
                     key={type}
                     type="button"
-                    className={
-                      sessionTypes.includes(type)
-                        ? "choice-chip active"
-                        : "choice-chip"
-                    }
+                    active={sessionTypes.includes(type)}
                     onClick={() => onToggleSessionType(type)}
                   >
                     {formatSessionType(type)}
-                  </button>
+                  </FilterChip>
                 ))}
               </div>
             </div>
@@ -535,18 +555,23 @@ export function SessionBuilderYearsStep({
       </section>
 
       <div className="builder-stage-actions">
-        <button type="button" className="btn-secondary" onClick={onBack}>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 rounded-full px-5"
+          onClick={onBack}
+        >
           رجوع
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           data-testid="session-builder-next-years"
-          className="btn-primary"
+          className="h-11 rounded-full px-5"
           onClick={onNext}
           disabled={!yearSelectionComplete}
         >
           الحجم
-        </button>
+        </Button>
       </div>
     </>
   );
@@ -588,9 +613,14 @@ export function SessionBuilderReviewStep({
           <p className="page-kicker">الخطوة 4</p>
           <h2>الحجم</h2>
         </div>
-        <button type="button" className="btn-secondary" onClick={onReturnToYears}>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-10 rounded-full px-5"
+          onClick={onReturnToYears}
+        >
           العودة للسنوات
-        </button>
+        </Button>
       </div>
 
       <div className="builder-summary-pills">
@@ -602,31 +632,37 @@ export function SessionBuilderReviewStep({
 
       <div className="builder-size-grid">
         {SESSION_BUILDER_SIZE_OPTIONS.map((option) => (
-          <button
+          <SelectionCard
             key={option.value}
             type="button"
-            className={`builder-choice-card builder-size-card${
-              exerciseCount === option.value ? " active" : ""
-            }`}
+            active={exerciseCount === option.value}
+            className="min-h-32 content-start [&_strong]:text-2xl"
             onClick={() => onSelectExerciseCount(option.value)}
             disabled={option.value > maxExerciseCount}
           >
             <strong>{option.label}</strong>
             <span>{option.description}</span>
             <small>{option.helper}</small>
-          </button>
+          </SelectionCard>
         ))}
       </div>
 
       <section className="builder-advanced-panel">
-        <button
+        <Button
           type="button"
-          className="builder-advanced-toggle"
+          variant="ghost"
+          className="h-auto w-full justify-between rounded-2xl px-4 py-3 text-right"
           onClick={onToggleAdvanced}
         >
           <span>خيارات إضافية</span>
-          <strong>{advancedOpen ? "إخفاء" : "إظهار"}</strong>
-        </button>
+          <ChevronDown
+            className={cn(
+              "size-4 transition-transform",
+              advancedOpen && "rotate-180",
+            )}
+            aria-hidden="true"
+          />
+        </Button>
 
         {advancedOpen ? (
           <div className="builder-advanced-grid">
@@ -634,19 +670,15 @@ export function SessionBuilderReviewStep({
               <h3>عدد مخصص</h3>
               <div className="chip-grid">
                 {[1, 2, 3, 4, 6].map((count) => (
-                  <button
+                  <FilterChip
                     key={count}
                     type="button"
-                    className={
-                      exerciseCount === count
-                        ? "choice-chip active"
-                        : "choice-chip"
-                    }
+                    active={exerciseCount === count}
                     onClick={() => onSelectExerciseCount(Math.min(count, maxExerciseCount))}
                     disabled={count > maxExerciseCount}
                   >
                     {count} تمارين
-                  </button>
+                  </FilterChip>
                 ))}
               </div>
             </div>
@@ -655,7 +687,7 @@ export function SessionBuilderReviewStep({
               <h3>اسم الجلسة</h3>
               <label className="field">
                 <span>اختياري</span>
-                <input
+                <Input
                   type="text"
                   placeholder="اسم الجلسة"
                   value={title}
@@ -670,22 +702,28 @@ export function SessionBuilderReviewStep({
       <section className="builder-preview-card">
         <h3>تحليل الوقت</h3>
         <p>اختياري. عند التفعيل سنعرض لك ملاحظات وصفية قصيرة بعد كل تمرين.</p>
-        <div className="chip-grid">
-          <button
-            type="button"
-            className={timingEnabled ? "choice-chip active" : "choice-chip"}
-            onClick={() => onSetTimingEnabled(true)}
-          >
+        <ToggleGroup
+          type="single"
+          value={timingEnabled ? "on" : "off"}
+          onValueChange={(value) => {
+            if (value === "on") {
+              onSetTimingEnabled(true);
+            }
+
+            if (value === "off") {
+              onSetTimingEnabled(false);
+            }
+          }}
+          variant="outline"
+          className="flex-wrap"
+        >
+          <ToggleGroupItem value="on" className="h-10 rounded-full px-4">
             فعّل التتبع
-          </button>
-          <button
-            type="button"
-            className={!timingEnabled ? "choice-chip active" : "choice-chip"}
-            onClick={() => onSetTimingEnabled(false)}
-          >
+          </ToggleGroupItem>
+          <ToggleGroupItem value="off" className="h-10 rounded-full px-4">
             بدون تتبع
-          </button>
-        </div>
+          </ToggleGroupItem>
+        </ToggleGroup>
       </section>
 
       {previewLoading && !preview ? (
@@ -703,13 +741,14 @@ export function SessionBuilderReviewStep({
           <h3>{zeroResultsGuidance.title}</h3>
           <p>{zeroResultsGuidance.description}</p>
           {zeroResultsGuidance.actionLabel && zeroResultsGuidance.action ? (
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-10 rounded-full px-5"
               onClick={onZeroResultsAction}
             >
               {zeroResultsGuidance.actionLabel}
-            </button>
+            </Button>
           ) : null}
         </section>
       ) : null}
@@ -808,13 +847,18 @@ export function SessionBuilderReviewStep({
       ) : null}
 
       <div className="builder-stage-actions">
-        <button type="button" className="btn-secondary" onClick={onBack}>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 rounded-full px-5"
+          onClick={onBack}
+        >
           رجوع
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
           data-testid="session-builder-create"
-          className="btn-primary"
+          className="h-11 rounded-full px-5"
           onClick={onCreateSession}
           disabled={
             !builderReadyToPreview ||
@@ -829,7 +873,7 @@ export function SessionBuilderReviewStep({
             : previewLoading
               ? "جاري التحديث..."
               : "إنشاء الجلسة"}
-        </button>
+        </Button>
       </div>
     </>
   );

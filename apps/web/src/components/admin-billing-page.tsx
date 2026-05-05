@@ -6,6 +6,8 @@ import {
   updateAdminBillingSettings,
 } from "@/lib/admin";
 import type { BillingPlan } from "@/lib/billing-api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type BillingSettingsFormState = {
   premium30DaysAmountDzd: string;
@@ -240,7 +242,7 @@ export function AdminBillingPage({
           <div className="admin-form-grid">
             <label className="field">
               <span>30-day plan price (DZD)</span>
-              <input
+              <Input
                 type="number"
                 min="100"
                 step="1"
@@ -253,7 +255,7 @@ export function AdminBillingPage({
 
             <label className="field">
               <span>30-day duration (days)</span>
-              <input
+              <Input
                 type="number"
                 min="1"
                 step="1"
@@ -266,7 +268,7 @@ export function AdminBillingPage({
 
             <label className="field">
               <span>90-day semester price (DZD)</span>
-              <input
+              <Input
                 type="number"
                 min="100"
                 step="1"
@@ -279,7 +281,7 @@ export function AdminBillingPage({
 
             <label className="field">
               <span>90-day duration (days)</span>
-              <input
+              <Input
                 type="number"
                 min="1"
                 step="1"
@@ -292,7 +294,7 @@ export function AdminBillingPage({
 
             <label className="field">
               <span>BAC season plan price (DZD)</span>
-              <input
+              <Input
                 type="number"
                 min="100"
                 step="1"
@@ -305,7 +307,7 @@ export function AdminBillingPage({
 
             <label className="field">
               <span>BAC season end (optional)</span>
-              <input
+              <Input
                 type="datetime-local"
                 value={form.configuredBacSeasonEndsAt}
                 onChange={(event) => {
@@ -346,16 +348,20 @@ export function AdminBillingPage({
           {saveNotice ? <p className="success-text">{saveNotice}</p> : null}
 
           <div className="admin-form-actions">
-            <button type="submit" className="btn-primary" disabled={saving}>
+            <Button
+              type="submit"
+              className="h-12 rounded-full px-6"
+              disabled={saving}
+            >
               {saving ? "Saving..." : "Save billing settings"}
-            </button>
+            </Button>
           </div>
         </form>
 
         <div className="admin-billing-sidebar">
           <article className="admin-context-card">
             <span className="admin-stat-label">Checkout fees</span>
-            <strong>BAC Bank absorbs Chargily fees</strong>
+            <strong>مِراس absorbs Chargily fees</strong>
             <p className="admin-billing-note">
               Students see the final price only. The payment gateway fee is
               always allocated to the merchant in checkout creation.

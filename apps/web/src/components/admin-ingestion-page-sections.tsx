@@ -1,6 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FilterChip } from "@/components/ui/filter-chip";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import type {
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
@@ -51,13 +56,9 @@ function AdminIngestionStatusGroupSection({
         <div className="ingestion-subfilter-row">
           <span className="ingestion-subfilter-label">Paper Streams</span>
           <div className="ingestion-subfilter-nav">
-            <button
+            <FilterChip
               type="button"
-              className={
-                statusGroup.activeStreamKey === "all"
-                  ? "ingestion-subfilter-chip active"
-                  : "ingestion-subfilter-chip"
-              }
+              active={statusGroup.activeStreamKey === "all"}
               onClick={() => {
                 onUpdateStatusScopedFilter(statusGroup.status, {
                   streamKey: "all",
@@ -67,16 +68,12 @@ function AdminIngestionStatusGroupSection({
             >
               All streams
               <span>{statusGroup.count}</span>
-            </button>
+            </FilterChip>
             {statusGroup.availableStreamGroups.map((streamGroup) => (
-              <button
+              <FilterChip
                 key={`${statusGroup.status}-${streamGroup.streamKey}`}
                 type="button"
-                className={
-                  statusGroup.activeStreamKey === streamGroup.streamKey
-                    ? "ingestion-subfilter-chip active"
-                    : "ingestion-subfilter-chip"
-                }
+                active={statusGroup.activeStreamKey === streamGroup.streamKey}
                 onClick={() => {
                   onUpdateStatusScopedFilter(statusGroup.status, {
                     streamKey: streamGroup.streamKey,
@@ -86,7 +83,7 @@ function AdminIngestionStatusGroupSection({
               >
                 {streamGroup.label}
                 <span>{streamGroup.count}</span>
-              </button>
+              </FilterChip>
             ))}
           </div>
         </div>
@@ -94,13 +91,9 @@ function AdminIngestionStatusGroupSection({
         <div className="ingestion-subfilter-row">
           <span className="ingestion-subfilter-label">Year</span>
           <div className="ingestion-subfilter-nav">
-            <button
+            <FilterChip
               type="button"
-              className={
-                statusGroup.activeYear === "all"
-                  ? "ingestion-subfilter-chip active"
-                  : "ingestion-subfilter-chip"
-              }
+              active={statusGroup.activeYear === "all"}
               onClick={() => {
                 onUpdateStatusScopedFilter(statusGroup.status, {
                   year: "all",
@@ -108,16 +101,12 @@ function AdminIngestionStatusGroupSection({
               }}
             >
               All years
-            </button>
+            </FilterChip>
             {statusGroup.availableYears.map((yearGroup) => (
-              <button
+              <FilterChip
                 key={`${statusGroup.status}-${yearGroup.year}`}
                 type="button"
-                className={
-                  statusGroup.activeYear === yearGroup.year
-                    ? "ingestion-subfilter-chip active"
-                    : "ingestion-subfilter-chip"
-                }
+                active={statusGroup.activeYear === yearGroup.year}
                 onClick={() => {
                   onUpdateStatusScopedFilter(statusGroup.status, {
                     year: yearGroup.year,
@@ -126,7 +115,7 @@ function AdminIngestionStatusGroupSection({
               >
                 {yearGroup.year}
                 <span>{yearGroup.count}</span>
-              </button>
+              </FilterChip>
             ))}
           </div>
         </div>
@@ -207,32 +196,33 @@ function AdminIngestionStatusGroupSection({
 
                         <div className="block-item-actions">
                           {job.draft_kind === "ingestion" ? (
-                            <button
+                            <Button
                               type="button"
                               data-testid={`admin-process-job-${job.id}`}
-                              className="btn-secondary"
+                              variant="outline"
+                              className="h-9 rounded-full px-3"
                               onClick={() => {
                                 onProcessJob(job);
                               }}
                               disabled={processActionState.disabled}
                             >
                               {processActionState.label}
-                            </button>
+                            </Button>
                           ) : null}
-                          <Link
-                            href={`/admin/drafts/${job.id}`}
-                            className="btn-primary"
-                          >
-                            Open Draft
-                          </Link>
+                          <Button asChild className="h-9 rounded-full px-3">
+                            <Link href={`/admin/drafts/${job.id}`}>Open Draft</Link>
+                          </Button>
                           {job.published_exams.map((exam) => (
-                            <Link
+                            <Button
                               key={exam.id}
-                              href={`/admin/library?examId=${exam.id}`}
-                              className="btn-secondary"
+                              asChild
+                              variant="outline"
+                              className="h-9 rounded-full px-3"
                             >
-                              {`Published ${exam.stream_code}`}
-                            </Link>
+                              <Link href={`/admin/library?examId=${exam.id}`}>
+                                {`Published ${exam.stream_code}`}
+                              </Link>
+                            </Button>
                           ))}
                         </div>
                       </article>
@@ -304,7 +294,7 @@ export function AdminIngestionManualUploadSection({
       <form className="ingestion-upload-form" onSubmit={onSubmit}>
         <label>
           <span>Year</span>
-          <input
+          <Input
             type="number"
             min={2008}
             max={2100}
@@ -329,11 +319,10 @@ export function AdminIngestionManualUploadSection({
                       : "ingestion-stream-option"
                   }
                 >
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={checked}
-                    onChange={(event) => {
-                      onTogglePaperStream(value, event.target.checked);
+                    onCheckedChange={(nextChecked) => {
+                      onTogglePaperStream(value, nextChecked === true);
                     }}
                   />
                   <span>
@@ -347,7 +336,7 @@ export function AdminIngestionManualUploadSection({
 
         <label>
           <span>Subject</span>
-          <select
+          <NativeSelect
             value={subjectCode}
             onChange={(event) => onSubjectCodeChange(event.target.value)}
           >
@@ -356,12 +345,12 @@ export function AdminIngestionManualUploadSection({
                 {value} · {label}
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </label>
 
         <label>
           <span>Session</span>
-          <select
+          <NativeSelect
             value={session}
             onChange={(event) =>
               onSessionChange(
@@ -371,12 +360,12 @@ export function AdminIngestionManualUploadSection({
           >
             <option value="NORMAL">NORMAL</option>
             <option value="MAKEUP">MAKEUP</option>
-          </select>
+          </NativeSelect>
         </label>
 
         <label className="ingestion-upload-span-2">
           <span>Title</span>
-          <input
+          <Input
             type="text"
             placeholder="BAC 2025 · MATHEMATICS · SE"
             value={title}
@@ -386,7 +375,7 @@ export function AdminIngestionManualUploadSection({
 
         <label>
           <span>Qualifier Key</span>
-          <input
+          <Input
             type="text"
             placeholder="german / spanish / italian"
             value={qualifierKey}
@@ -396,7 +385,7 @@ export function AdminIngestionManualUploadSection({
 
         <label>
           <span>Source Reference</span>
-          <input
+          <Input
             type="text"
             placeholder="Official ministry PDF / local archive"
             value={sourceReference}
@@ -406,7 +395,7 @@ export function AdminIngestionManualUploadSection({
 
         <label>
           <span>Exam PDF</span>
-          <input
+          <Input
             type="file"
             accept="application/pdf,.pdf"
             onChange={(event) =>
@@ -418,7 +407,7 @@ export function AdminIngestionManualUploadSection({
 
         <label>
           <span>Correction PDF</span>
-          <input
+          <Input
             type="file"
             accept="application/pdf,.pdf"
             onChange={(event) =>
@@ -427,14 +416,14 @@ export function AdminIngestionManualUploadSection({
           />
         </label>
 
-        <button
+        <Button
           type="submit"
           data-testid="admin-ingestion-submit"
-          className="btn-primary"
+          className="h-10 rounded-full px-5"
           disabled={uploading}
         >
           {uploading ? "Uploading…" : "Create Ingestion Draft"}
-        </button>
+        </Button>
       </form>
 
       {uploadError ? <p className="error-text">{uploadError}</p> : null}
@@ -491,7 +480,7 @@ export function AdminIngestionJobBrowserSection({
         <h2>Draft Queue</h2>
         <label className="field ingestion-job-search">
           <span>Search</span>
-          <input
+          <Input
             type="search"
             placeholder="Search title, draft type, stream, subject, year…"
             value={jobQuery}
@@ -505,32 +494,24 @@ export function AdminIngestionJobBrowserSection({
         role="tablist"
         aria-label="Draft types"
       >
-        <button
+        <FilterChip
           type="button"
-          className={
-            draftKindFilter === "all"
-              ? "ingestion-status-chip active"
-              : "ingestion-status-chip"
-          }
+          active={draftKindFilter === "all"}
           onClick={() => onDraftKindFilterChange("all")}
         >
           All drafts
           <span>{draftKindCounts.all}</span>
-        </button>
+        </FilterChip>
         {(["ingestion", "revision"] as const).map((draftKind) => (
-          <button
+          <FilterChip
             key={draftKind}
             type="button"
-            className={
-              draftKindFilter === draftKind
-                ? "ingestion-status-chip active"
-                : "ingestion-status-chip"
-            }
+            active={draftKindFilter === draftKind}
             onClick={() => onDraftKindFilterChange(draftKind)}
           >
             {formatDraftKind(draftKind)}
             <span>{draftKindCounts[draftKind]}</span>
-          </button>
+          </FilterChip>
         ))}
       </div>
 
@@ -539,32 +520,24 @@ export function AdminIngestionJobBrowserSection({
         role="tablist"
         aria-label="Draft statuses"
       >
-        <button
+        <FilterChip
           type="button"
-          className={
-            statusFilter === "all"
-              ? "ingestion-status-chip active"
-              : "ingestion-status-chip"
-          }
+          active={statusFilter === "all"}
           onClick={() => onStatusFilterChange("all")}
         >
           All
           <span>{statusCounts.all}</span>
-        </button>
+        </FilterChip>
         {BROWSABLE_DRAFT_STATUS_ORDER.map((status) => (
-          <button
+          <FilterChip
             key={status}
             type="button"
-            className={
-              statusFilter === status
-                ? "ingestion-status-chip active"
-                : "ingestion-status-chip"
-            }
+            active={statusFilter === status}
             onClick={() => onStatusFilterChange(status)}
           >
             {INGESTION_STATUS_LABELS[status]}
             <span>{statusCounts[status]}</span>
-          </button>
+          </FilterChip>
         ))}
       </div>
 

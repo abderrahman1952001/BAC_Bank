@@ -3,12 +3,17 @@ import {
   parseAdminBillingSettingsResponse,
   parseAdminIngestionJobResponse,
   parseAdminIngestionJobListResponse,
+  parseAdminSourceWorkbenchSourceListResponse,
+  parseAdminSourceWorkbenchSourceResponse,
   type AdminBillingSettingsResponse,
   type AdminIngestionJobResponse,
   type AdminIngestionJobListResponse,
+  type AdminSourceWorkbenchSourceListResponse,
+  type AdminSourceWorkbenchSourceResponse,
 } from "@/lib/admin";
 import {
   clonePlaywrightFixture,
+  playwrightTestAdminBillingSettings,
   playwrightTestAdminJobResponse,
   playwrightTestAdminJobSummary,
 } from "@/lib/playwright-test-fixtures";
@@ -63,9 +68,35 @@ export async function fetchServerAdminIngestionJob(
 }
 
 export async function fetchServerAdminBillingSettings(): Promise<AdminBillingSettingsResponse> {
+  if (shouldUsePlaywrightFixtures()) {
+    return clonePlaywrightFixture(playwrightTestAdminBillingSettings);
+  }
+
   return fetchServerAdminJson<AdminBillingSettingsResponse>(
     "/billing/settings",
     undefined,
     parseAdminBillingSettingsResponse,
+  );
+}
+
+export async function fetchServerAdminSourceWorkbenchSources(): Promise<AdminSourceWorkbenchSourceListResponse> {
+  return fetchServerAdminJson<AdminSourceWorkbenchSourceListResponse>(
+    "/source-workbench/sources",
+    undefined,
+    parseAdminSourceWorkbenchSourceListResponse,
+  );
+}
+
+export async function fetchServerAdminSourceWorkbenchSource(
+  sourceId: string,
+): Promise<AdminSourceWorkbenchSourceResponse> {
+  const params = new URLSearchParams({
+    sourceId,
+  });
+
+  return fetchServerAdminJson<AdminSourceWorkbenchSourceResponse>(
+    `/source-workbench/source?${params.toString()}`,
+    undefined,
+    parseAdminSourceWorkbenchSourceResponse,
   );
 }

@@ -67,14 +67,14 @@ export function buildStudyQuestionEvaluation(input: {
 
   const reflection =
     input.payload.resultStatus === StudyQuestionResultStatus.CORRECT
-      ? input.payload.reflection ?? input.current.reflection
+      ? (input.payload.reflection ?? input.current.reflection)
       : input.payload.resultStatus === StudyQuestionResultStatus.PARTIAL
         ? StudyQuestionReflection.HARD
         : StudyQuestionReflection.MISSED;
   const diagnosis =
     input.payload.resultStatus === StudyQuestionResultStatus.CORRECT
       ? null
-      : input.payload.diagnosis ?? null;
+      : (input.payload.diagnosis ?? null);
   const preserveAutoEvaluation =
     input.current.evaluationMode === StudyQuestionEvaluationMode.AUTO &&
     input.current.resultStatus !== StudyQuestionResultStatus.UNKNOWN &&
@@ -130,7 +130,9 @@ function buildAnswerPayload(input: {
   } satisfies StoredAnswerPayload;
 }
 
-function readAnswerPayload(value: Prisma.JsonValue | null): StoredAnswerPayload {
+function readAnswerPayload(
+  value: Prisma.JsonValue | null,
+): StoredAnswerPayload {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return {};
   }

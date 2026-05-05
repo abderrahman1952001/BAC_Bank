@@ -2,9 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  AdminIngestionAssetToolPanel,
   AdminIngestionNativeToolPanel,
-  AdminIngestionSnippetToolPanel,
+  AdminIngestionAssetToolPanel,
   AdminIngestionToolPanelShell,
 } from "@/components/admin-ingestion-tool-panels";
 import { AdminIngestionInspector } from "@/components/admin-ingestion-inspector";
@@ -12,6 +11,8 @@ import {
   AdminIngestionHierarchyTree,
   AdminIngestionRenderedPreview,
 } from "@/components/admin-ingestion-structure-views";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   type AdminIngestionDraft,
   type AdminIngestionValidationIssue,
@@ -27,6 +28,7 @@ import {
   type IngestionEditorFocusRequest,
 } from "@/lib/admin-ingestion-editor-state";
 import {
+  applyNativeSuggestionToDraftBlock,
   buildChildrenMap,
   collectDescendants,
   readDraftSelectedStreamCodes,
@@ -34,10 +36,7 @@ import {
   sortNodes,
   type DraftBlock,
 } from "@/lib/admin-ingestion-structure";
-import {
-  useAdminIngestionStructureMutations,
-} from "@/lib/admin-ingestion-structure-mutations";
-import { useAdminIngestionStructureRecovery } from "@/lib/admin-ingestion-structure-recovery";
+import { useAdminIngestionStructureMutations } from "@/lib/admin-ingestion-structure-mutations";
 import {
   useAdminIngestionStructureTools,
   type AdminIngestionStructureSourcePage,
@@ -65,7 +64,6 @@ function makeClientId(prefix: string) {
 }
 
 export function AdminIngestionStructureEditor({
-  jobId,
   draft,
   sourcePages,
   assetPreviewBaseUrl,
@@ -73,7 +71,6 @@ export function AdminIngestionStructureEditor({
   focusRequest,
   onChange,
 }: {
-  jobId: string;
   draft: AdminIngestionDraft;
   sourcePages: SourcePageEntry[];
   assetPreviewBaseUrl: string;
@@ -100,8 +97,14 @@ export function AdminIngestionStructureEditor({
     () => new Map(sourcePages.map((page) => [page.id, page])),
     [sourcePages],
   );
-  const blockReferenceById = useMemo(() => buildBlockReferenceById(draft), [draft]);
-  const nodeReferenceById = useMemo(() => buildNodeReferenceById(draft), [draft]);
+  const blockReferenceById = useMemo(
+    () => buildBlockReferenceById(draft),
+    [draft],
+  );
+  const nodeReferenceById = useMemo(
+    () => buildNodeReferenceById(draft),
+    [draft],
+  );
   const assetReferenceById = useMemo(
     () =>
       buildAssetReferenceById({
@@ -213,44 +216,18 @@ export function AdminIngestionStructureEditor({
     filters,
     activeToolPanel,
     activeToolPanelBusy,
-    recoveryMode,
-    recoveryError,
-    recoveryNotice,
-    recoveryNotes,
-    snippetSourcePageId,
-    snippetSourcePage,
-    snippetCropBox,
-    previewSnippetCropBox,
-    snippetAction,
-    snippetRecoveryMode,
-    snippetRecoveryError,
-    snippetRecoveryNotice,
-    snippetRecoveryNotes,
     assetToolDraft,
     assetToolPage,
     assetToolPreviewCropBox,
     selectedAssetPage,
     previewCropBox,
     setLiveSelectedAssetCropBox,
-    setRecoveryMode,
-    setRecoveryError,
-    setRecoveryNotice,
-    setRecoveryNotes,
-    setSnippetCropBox,
-    setLiveSnippetCropBox,
-    setSnippetAction,
-    setSnippetRecoveryMode,
-    setSnippetRecoveryError,
-    setSnippetRecoveryNotice,
-    setSnippetRecoveryNotes,
     setLiveAssetToolCropBox,
     openAssetToolPanel,
     saveAssetToolDraft,
-    focusSnippetTools,
     focusNativeTools,
     closeAssetToolPanel,
     closeActiveToolPanel,
-    handleSnippetSourcePageChange,
     handleSelectedAssetCropChange,
     handleSelectedAssetClassificationChange,
     handleSelectedAssetSourcePageChange,
@@ -283,33 +260,27 @@ export function AdminIngestionStructureEditor({
       }),
     [draft.exam.subjectCode, filters, selectedStreamCodes],
   );
-  const {
-    applyNativeSuggestionToSelectedBlock,
-    recoverIntoSelectedBlock,
-    recoverSnippetIntoSelectedBlock,
-  } = useAdminIngestionStructureRecovery({
-    jobId,
-    draft,
-    selectedVariantCode,
-    selectedNode,
-    selectedBlock,
-    selectedAsset,
-    snippetSourcePage,
-    snippetCropBox,
-    snippetAction,
-    onChange,
-    onSelectBlockId: setSelectedBlockId,
-    onPendingInspectorScrollBlockIdChange: setPendingInspectorScrollBlockId,
-    makeClientId,
-    setRecoveryMode,
-    setRecoveryError,
-    setRecoveryNotice,
-    setRecoveryNotes,
-    setSnippetRecoveryMode,
-    setSnippetRecoveryError,
-    setSnippetRecoveryNotice,
-    setSnippetRecoveryNotes,
-  });
+
+  function applyNativeSuggestionToSelectedBlock() {
+    if (
+      !selectedNode ||
+      !selectedBlock ||
+      !selectedAsset?.nativeSuggestion ||
+      selectedAsset.nativeSuggestion.status === "stale"
+    ) {
+      return;
+    }
+
+    onChange(
+      applyNativeSuggestionToDraftBlock({
+        draft,
+        variantCode: selectedVariantCode,
+        nodeId: selectedNode.id,
+        blockId: selectedBlock.id,
+        asset: selectedAsset,
+      }),
+    );
+  }
 
   function handlePreviewAssetToolPanel(
     nodeId: string,
@@ -355,20 +326,17 @@ export function AdminIngestionStructureEditor({
         </div>
         <div className="block-item-actions">
           {draft.variants.map((variant) => (
-            <button
+            <Button
               key={variant.code}
               type="button"
-              className={
-                variant.code === activeVariant.code
-                  ? "btn-primary"
-                  : "btn-secondary"
-              }
+              variant={variant.code === activeVariant.code ? "default" : "outline"}
+              className="h-9 rounded-full px-4"
               onClick={() => {
                 setSelectedVariantCode(variant.code);
               }}
             >
               {variant.code.replace("_", " ")}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -377,19 +345,20 @@ export function AdminIngestionStructureEditor({
         <aside className="admin-tree-panel">
           <div className="admin-page-head ingestion-side-head">
             <h3>Hierarchy</h3>
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-9 rounded-full px-3"
               onClick={() => addNode(null)}
             >
               Add Root
-            </button>
+            </Button>
           </div>
 
           <div className="admin-form-grid">
             <label className="field admin-form-wide">
               <span>Variant title</span>
-              <input
+              <Input
                 value={activeVariant.title}
                 onChange={(event) => {
                   updateVariant(activeVariant.code, (variant) => ({
@@ -402,46 +371,51 @@ export function AdminIngestionStructureEditor({
           </div>
 
           <div className="block-item-actions">
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-9 rounded-full px-3"
               disabled={!selectedNode}
               onClick={() => addNode(selectedNode?.id ?? null)}
             >
               Add Child
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-9 rounded-full px-3"
               disabled={!selectedNode}
               onClick={() => addNode(selectedNode?.parentId ?? null)}
             >
               Add Sibling
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-9 rounded-full px-3"
               disabled={!selectedNode}
               onClick={() => moveSelectedNode(-1)}
             >
               Move Up
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-9 rounded-full px-3"
               disabled={!selectedNode}
               onClick={() => moveSelectedNode(1)}
             >
               Move Down
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-9 rounded-full px-3"
               disabled={!selectedNode}
               onClick={removeSelectedNode}
             >
               Delete
-            </button>
+            </Button>
           </div>
 
           <div className="tree-root">
@@ -482,13 +456,6 @@ export function AdminIngestionStructureEditor({
                 onSelectNode={setSelectedNodeId}
                 onSelectBlock={handlePreviewBlockSelect}
                 onInsertBlock={handlePreviewBlockInsert}
-                onFocusSnippetTools={(nodeId, blockId) =>
-                  focusSnippetTools(
-                    nodeId,
-                    blockId,
-                    blockReferenceById.get(blockId)?.assetId ?? null,
-                  )
-                }
                 onFocusNativeTools={focusNativeTools}
                 onOpenAssetToolPanel={handlePreviewAssetToolPanel}
               />
@@ -519,13 +486,6 @@ export function AdminIngestionStructureEditor({
             onUpdateBlock={updateBlock}
             onMoveBlock={moveBlock}
             onRemoveBlock={removeBlock}
-            onFocusSnippetTools={(nodeId, blockId) =>
-              focusSnippetTools(
-                nodeId,
-                blockId,
-                blockReferenceById.get(blockId)?.assetId ?? null,
-              )
-            }
             onFocusNativeTools={focusNativeTools}
             onApplyBlockPreset={applyBlockPreset}
             onUpdateBlockData={updateBlockData}
@@ -533,39 +493,6 @@ export function AdminIngestionStructureEditor({
           />
         </article>
       </section>
-
-      {activeToolPanel === "snippet" ? (
-        <AdminIngestionToolPanelShell
-          mode="snippet"
-          title="Fix Text From Source"
-          disabled={activeToolPanelBusy}
-          onClose={closeActiveToolPanel}
-        >
-          <AdminIngestionSnippetToolPanel
-            selectedBlock={selectedBlock}
-            snippetSourcePage={snippetSourcePage}
-            previewSnippetCropBox={previewSnippetCropBox}
-            snippetCropBox={snippetCropBox}
-            snippetAction={snippetAction}
-            snippetSourcePageId={snippetSourcePageId}
-            sourcePages={sourcePages}
-            snippetRecoveryMode={snippetRecoveryMode}
-            snippetRecoveryError={snippetRecoveryError}
-            snippetRecoveryNotice={snippetRecoveryNotice}
-            snippetRecoveryNotes={snippetRecoveryNotes}
-            onSnippetActionChange={setSnippetAction}
-            onSnippetSourcePageChange={handleSnippetSourcePageChange}
-            onSnippetCropPreviewChange={setLiveSnippetCropBox}
-            onSnippetCropChange={(nextCropBox) => {
-              setLiveSnippetCropBox(null);
-              setSnippetCropBox(nextCropBox);
-            }}
-            onRecoverSnippet={() => {
-              void recoverSnippetIntoSelectedBlock();
-            }}
-          />
-        </AdminIngestionToolPanelShell>
-      ) : null}
 
       {activeToolPanel === "native" ? (
         <AdminIngestionToolPanelShell
@@ -582,20 +509,15 @@ export function AdminIngestionStructureEditor({
             assetPreviewBaseUrl={assetPreviewBaseUrl}
             assetClassifications={ASSET_CLASSIFICATIONS}
             sourcePages={sourcePages}
-            recoveryMode={recoveryMode}
-            recoveryError={recoveryError}
-            recoveryNotice={recoveryNotice}
-            recoveryNotes={recoveryNotes}
             onSelectedAssetCropPreviewChange={setLiveSelectedAssetCropBox}
             onSelectedAssetCropChange={handleSelectedAssetCropChange}
             onSelectedAssetClassificationChange={
               handleSelectedAssetClassificationChange
             }
-            onSelectedAssetSourcePageChange={handleSelectedAssetSourcePageChange}
+            onSelectedAssetSourcePageChange={
+              handleSelectedAssetSourcePageChange
+            }
             onApplyNativeSuggestion={applyNativeSuggestionToSelectedBlock}
-            onRecoverIntoSelectedBlock={(mode) => {
-              void recoverIntoSelectedBlock(mode);
-            }}
           />
         </AdminIngestionToolPanelShell>
       ) : null}
@@ -620,7 +542,9 @@ export function AdminIngestionStructureEditor({
             assetClassifications={ASSET_CLASSIFICATIONS}
             onAssetToolCropPreviewChange={setLiveAssetToolCropBox}
             onAssetToolCropChange={handleAssetToolCropChange}
-            onAssetToolClassificationChange={handleAssetToolClassificationChange}
+            onAssetToolClassificationChange={
+              handleAssetToolClassificationChange
+            }
             onAssetToolSourcePageChange={handleAssetToolSourcePageChange}
             onSaveAssetToolDraft={saveAssetToolDraft}
             onCancel={closeAssetToolPanel}

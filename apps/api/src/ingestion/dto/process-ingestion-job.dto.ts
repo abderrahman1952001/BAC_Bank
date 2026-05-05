@@ -8,8 +8,4 @@ export class ProcessIngestionJobDto {
   @IsOptional()
   @Allow()
   replace_existing?: unknown;
-
-  @IsOptional()
-  @Allow()
-  skip_extraction?: unknown;
 }

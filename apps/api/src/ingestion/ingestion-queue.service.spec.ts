@@ -7,7 +7,6 @@ describe('IngestionQueueService', () => {
       action: 'publish',
       forceReprocess: false,
       replaceExisting: false,
-      skipExtraction: false,
       queuedAt: '2026-04-13T10:00:00.000Z',
     },
   };

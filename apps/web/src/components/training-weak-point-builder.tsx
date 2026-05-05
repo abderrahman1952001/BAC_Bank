@@ -11,7 +11,10 @@ import {
   StudyHeader,
   StudyShell,
 } from "@/components/study-shell";
+import { Badge } from "@/components/ui/badge";
 import { StudentNavbar } from "@/components/student-navbar";
+import { Button } from "@/components/ui/button";
+import { SelectionCard } from "@/components/ui/selection-card";
 import {
   API_BASE_URL,
   fetchJson,
@@ -59,7 +62,10 @@ export function TrainingWeakPointBuilder({
     user?.studyEntitlements.capabilities.weakPointDrill ??
     initialInsights?.enabled ??
     false;
-  const insights = initialInsights?.data ?? [];
+  const insights = useMemo(
+    () => initialInsights?.data ?? [],
+    [initialInsights?.data],
+  );
   const preferredSubjectCode =
     searchParams.get("subject")?.trim().toUpperCase() ?? null;
   const selectedInsight = useMemo(
@@ -183,18 +189,18 @@ export function TrainingWeakPointBuilder({
             title="دريل نقاط الضعف"
             subtitle="يبني جلسة مباشرة من الإشارات الضعيفة الحديثة بعد مراجعاتك."
             actions={
-              <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-                العودة إلى التدريب
-              </Link>
+              <Button asChild variant="outline" className="h-10 rounded-full px-5">
+                <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+              </Button>
             }
           />
           <EmptyState
             title="هذا المسار متاح ضمن Premium"
             description="عند تفعيل Premium، سنعرض نقاط الضعف الأوضح ونقترح جلسة علاجية مباشرة."
             action={
-              <Link href={STUDENT_TRAINING_ROUTE} className="btn-primary">
-                العودة إلى التدريب
-              </Link>
+              <Button asChild className="h-10 rounded-full px-5">
+                <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+              </Button>
             }
           />
         </section>
@@ -212,9 +218,9 @@ export function TrainingWeakPointBuilder({
             title="دريل نقاط الضعف"
             subtitle="يبني جلسة مباشرة من الإشارات الضعيفة الحديثة بعد مراجعاتك."
             actions={
-              <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-                العودة إلى التدريب
-              </Link>
+              <Button asChild variant="outline" className="h-10 rounded-full px-5">
+                <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+              </Button>
             }
           />
           <EmptyState
@@ -222,9 +228,9 @@ export function TrainingWeakPointBuilder({
             description="أكمل بعض جلسات التدريب، ثم افتح الحل وعلّم الأسئلة التي فاتتك أو بدت صعبة حتى نبني مساراً علاجياً واضحاً."
             action={
               <div className="study-action-row">
-                <Link href={STUDENT_TRAINING_ROUTE} className="btn-primary">
-                  العودة إلى التدريب
-                </Link>
+                <Button asChild className="h-10 rounded-full px-5">
+                  <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+                </Button>
               </div>
             }
           />
@@ -243,9 +249,9 @@ export function TrainingWeakPointBuilder({
           title="دريل نقاط الضعف"
           subtitle="اختر مادة فيها إشارات ضعف حديثة، ثم ابدأ جلسة علاجية مبنية على نفس محرك التدريب."
           actions={
-            <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-              العودة إلى التدريب
-            </Link>
+            <Button asChild variant="outline" className="h-10 rounded-full px-5">
+              <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+            </Button>
           }
           meta={[
             ...(drillQuota
@@ -283,12 +289,11 @@ export function TrainingWeakPointBuilder({
           <h3>المواد ذات الإشارات الأوضح</h3>
           <div className="builder-subject-grid">
             {insights.map((subject) => (
-              <button
+              <SelectionCard
                 key={subject.subject.code}
                 type="button"
-                className={`builder-choice-card builder-subject-card${
-                  selectedSubjectCode === subject.subject.code ? " active" : ""
-                }`}
+                active={selectedSubjectCode === subject.subject.code}
+                className="min-h-44 content-start border-primary/20 bg-secondary/60"
                 onClick={() => setSelectedSubjectCode(subject.subject.code)}
               >
                 <span className="builder-card-icon" aria-hidden="true">
@@ -300,7 +305,7 @@ export function TrainingWeakPointBuilder({
                 </span>
                 <strong>{subject.subject.name}</strong>
                 <span>{subject.topTopics.slice(0, 2).map((topic) => topic.name).join(" · ")}</span>
-              </button>
+              </SelectionCard>
             ))}
           </div>
         </section>
@@ -351,9 +356,13 @@ export function TrainingWeakPointBuilder({
               <h3>المهارات الأكثر تأثراً</h3>
               <div className="chip-grid">
                 {selectedInsight.topSkills.map((skill) => (
-                  <span key={skill.code} className="choice-chip active">
+                  <Badge
+                    key={skill.code}
+                    variant="secondary"
+                    className="px-3 py-1.5"
+                  >
                     {skill.name}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             </section>
@@ -416,12 +425,12 @@ export function TrainingWeakPointBuilder({
         ) : null}
 
         <div className="builder-stage-actions">
-          <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-            رجوع
-          </Link>
-          <button
+          <Button asChild variant="outline" className="h-11 rounded-full px-5">
+            <Link href={STUDENT_TRAINING_ROUTE}>رجوع</Link>
+          </Button>
+          <Button
             type="button"
-            className="btn-primary"
+            className="h-11 rounded-full px-5"
             onClick={() => void startWeakPointDrill()}
             disabled={
               starting ||
@@ -431,7 +440,7 @@ export function TrainingWeakPointBuilder({
             }
           >
             {starting ? "جارٍ البدء..." : "ابدأ دريل نقاط الضعف"}
-          </button>
+          </Button>
         </div>
       </section>
     </StudyShell>

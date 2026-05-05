@@ -17,8 +17,6 @@ import type { FastifyReply } from 'fastify';
 import type { FastifyRequest } from 'fastify';
 import { AdminRoleGuard } from '../admin/admin.guard';
 import { ProcessIngestionJobDto } from './dto/process-ingestion-job.dto';
-import { RecoverAssetContentDto } from './dto/recover-asset-content.dto';
-import { RecoverSnippetContentDto } from './dto/recover-snippet-content.dto';
 import { UpdateIngestionJobDto } from './dto/update-ingestion-job.dto';
 import { IngestionService } from './ingestion.service';
 
@@ -94,25 +92,6 @@ export class IngestionController {
   @Post('admin/ingestion/jobs/:jobId/publish')
   publishJob(@Param('jobId', ParseUUIDPipe) jobId: string) {
     return this.ingestionService.publishJob(jobId);
-  }
-
-  @UseGuards(AdminRoleGuard)
-  @Post('admin/ingestion/jobs/:jobId/assets/:assetId/recover')
-  recoverAssetContent(
-    @Param('jobId', ParseUUIDPipe) jobId: string,
-    @Param('assetId') assetId: string,
-    @Body() payload: RecoverAssetContentDto = {},
-  ) {
-    return this.ingestionService.recoverAssetContent(jobId, assetId, payload);
-  }
-
-  @UseGuards(AdminRoleGuard)
-  @Post('admin/ingestion/jobs/:jobId/recover-snippet')
-  recoverSnippetContent(
-    @Param('jobId', ParseUUIDPipe) jobId: string,
-    @Body() payload: RecoverSnippetContentDto,
-  ) {
-    return this.ingestionService.recoverSnippetContent(jobId, payload);
   }
 
   @UseGuards(AdminRoleGuard)

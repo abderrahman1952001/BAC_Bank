@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BookOpen,
   CreditCard,
+  FlaskConical,
   GraduationCap,
   House,
   Layers,
@@ -15,10 +16,12 @@ import {
 import { motion } from "motion/react";
 import { useAuthSession } from "@/components/auth-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 import {
   STUDENT_COURSES_ROUTE,
   STUDENT_FLASHCARDS_ROUTE,
   STUDENT_BILLING_ROUTE,
+  STUDENT_LAB_ROUTE,
   STUDENT_LIBRARY_ROUTE,
   STUDENT_MY_SPACE_ROUTE,
   STUDENT_TRAINING_ROUTE,
@@ -47,6 +50,13 @@ const baseNavItems = [
     shortLabel: "المكتبة",
     icon: BookOpen,
     surface: "library" as const,
+  },
+  {
+    href: STUDENT_LAB_ROUTE,
+    label: "المختبر",
+    shortLabel: "مختبر",
+    icon: FlaskConical,
+    surface: "lab" as const,
   },
   {
     href: STUDENT_TRAINING_ROUTE,
@@ -78,7 +88,7 @@ export function StudentNavbar() {
   const userInitial =
     user?.username.trim().charAt(0).toUpperCase() ||
     user?.email.trim().charAt(0).toUpperCase() ||
-    "B";
+    "م";
 
   const navItems =
     user?.role === "ADMIN"
@@ -98,7 +108,7 @@ export function StudentNavbar() {
       <aside className="student-navbar" aria-label="التنقل الرئيسي">
         <div className="student-navbar-top">
           <Link href={STUDENT_MY_SPACE_ROUTE} className="student-brand">
-            <span className="student-brand-text">BAC Bank</span>
+            <span className="student-brand-text">مِراس</span>
             <span className="student-brand-badge" aria-hidden="true">
               {userInitial}
             </span>
@@ -147,9 +157,11 @@ export function StudentNavbar() {
           ) : null}
           <div className="student-nav-actions">
             <ThemeToggle />
-            <button
+            <Button
               type="button"
-              className="student-icon-button"
+              variant="outline"
+              size="icon-lg"
+              className="size-12 rounded-2xl"
               onClick={() => {
                 void signOut();
               }}
@@ -157,8 +169,8 @@ export function StudentNavbar() {
               aria-label="تسجيل الخروج"
               title="تسجيل الخروج"
             >
-              <LogOut size={18} strokeWidth={2} />
-            </button>
+              <LogOut data-icon="solo" strokeWidth={2} />
+            </Button>
           </div>
         </div>
       </aside>

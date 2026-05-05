@@ -7,14 +7,12 @@ export type IngestionWorkerRequest = {
   action: IngestionWorkerAction;
   forceReprocess: boolean;
   replaceExisting: boolean;
-  skipExtraction: boolean;
   queuedAt: string;
 };
 
 export function buildIngestionProcessRequest(input: {
   forceReprocess: boolean;
   replaceExisting: boolean;
-  skipExtraction: boolean;
   jobStatus: IngestionJobStatus;
   isPublishedRevision: boolean;
   queuedAt?: string;
@@ -23,7 +21,6 @@ export function buildIngestionProcessRequest(input: {
     action: 'process' as const,
     forceReprocess: input.forceReprocess,
     replaceExisting: input.replaceExisting,
-    skipExtraction: input.skipExtraction,
     queuedAt: input.queuedAt ?? new Date().toISOString(),
   } satisfies IngestionWorkerRequest;
 
@@ -34,7 +31,7 @@ export function buildIngestionProcessRequest(input: {
       input.jobStatus === IngestionJobStatus.FAILED)
   ) {
     throw new BadRequestException(
-      'This job already entered review or failed after processing. Retry with force_reprocess if you really want to rerun extraction.',
+      'This job already entered review or failed after source-page preparation. Retry with force_reprocess if you really want to refresh source pages.',
     );
   }
 
@@ -65,7 +62,6 @@ export function buildIngestionPublishRequest(input: {
     action: 'publish',
     forceReprocess: false,
     replaceExisting: false,
-    skipExtraction: false,
     queuedAt: input.queuedAt ?? new Date().toISOString(),
   } satisfies IngestionWorkerRequest;
 }
@@ -82,7 +78,6 @@ export function readIngestionWorkerRequest(
       action: 'process',
       forceReprocess: false,
       replaceExisting: false,
-      skipExtraction: false,
       queuedAt: new Date().toISOString(),
     } satisfies IngestionWorkerRequest;
   }
@@ -93,7 +88,6 @@ export function readIngestionWorkerRequest(
     action: rawRecord.action === 'publish' ? 'publish' : 'process',
     forceReprocess: rawRecord.forceReprocess === true,
     replaceExisting: rawRecord.replaceExisting === true,
-    skipExtraction: rawRecord.skipExtraction === true,
     queuedAt:
       typeof rawRecord.queuedAt === 'string'
         ? rawRecord.queuedAt

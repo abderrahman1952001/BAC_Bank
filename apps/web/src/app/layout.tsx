@@ -17,9 +17,9 @@ const tajawal = Tajawal({
 });
 
 export const metadata: Metadata = {
-  title: "BAC Bank | Algerian BAC Study Platform",
+  title: "مِراس | منصة التحضير للبكالوريا الجزائرية",
   description:
-    "منصة البكالوريا الجزائرية للمكتبة، التدريب، وتتبع التقدم في مساحة واحدة.",
+    "منصة البكالوريا الجزائرية للمكتبة، التدريب، وتتبع الإتقان في مساحة واحدة.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html
+      lang="ar"
+      dir="rtl"
+      data-theme="dark"
+      style={{ colorScheme: "dark" }}
+      suppressHydrationWarning
+    >
       <body
         className={`${cairo.variable} ${tajawal.variable}`}
         suppressHydrationWarning

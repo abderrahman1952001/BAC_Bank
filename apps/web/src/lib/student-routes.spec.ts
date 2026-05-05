@@ -3,6 +3,7 @@ import {
   STUDENT_COURSES_ROUTE,
   STUDENT_FLASHCARDS_ROUTE,
   STUDENT_BILLING_ROUTE,
+  STUDENT_LAB_ROUTE,
   STUDENT_LIBRARY_ROUTE,
   STUDENT_MY_SPACE_ROUTE,
   STUDENT_TRAINING_ROUTE,
@@ -13,6 +14,8 @@ import {
   buildStudentCourseSubjectRoute,
   buildStudentCourseTopicRoute,
   buildStudentFlashcardsRoute,
+  buildStudentLabRoute,
+  buildStudentLabToolRoute,
   buildRouteWithSearchParams,
   buildStudentLibraryExamRoute,
   buildStudentLibraryExamRouteWithSearch,
@@ -52,6 +55,11 @@ describe("student route helpers", () => {
     ).toBe(false);
     expect(isStudentSurfaceActive(STUDENT_BILLING_ROUTE, "billing")).toBe(true);
     expect(isStudentSurfaceActive("/student/payments", "billing")).toBe(false);
+    expect(isStudentSurfaceActive(STUDENT_LAB_ROUTE, "lab")).toBe(true);
+    expect(
+      isStudentSurfaceActive("/student/lab/math/function-explorer", "lab"),
+    ).toBe(true);
+    expect(isStudentSurfaceActive("/student/tools", "lab")).toBe(false);
   });
 
   it("builds query routes without empty values", () => {
@@ -84,6 +92,11 @@ describe("student route helpers", () => {
     );
     expect(STUDENT_FLASHCARDS_ROUTE).toBe("/student/flashcards");
     expect(buildStudentFlashcardsRoute()).toBe("/student/flashcards");
+    expect(STUDENT_LAB_ROUTE).toBe("/student/lab");
+    expect(buildStudentLabRoute()).toBe("/student/lab");
+    expect(buildStudentLabToolRoute("math", "function-explorer")).toBe(
+      "/student/lab/math/function-explorer",
+    );
 
     expect(
       buildStudentLibraryExamRoute({

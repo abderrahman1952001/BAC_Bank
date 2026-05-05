@@ -3,7 +3,11 @@ import type {
   StudyReviewReasonType,
   WeakPointInsightsResponse,
 } from '@bac-bank/contracts/study';
-import { Prisma, StudyReviewQueueStatus, SubscriptionStatus } from '@prisma/client';
+import {
+  Prisma,
+  StudyReviewQueueStatus,
+  SubscriptionStatus,
+} from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { getReviewReasonWeaknessWeight } from './study-review-signals';
 import {
@@ -114,7 +118,9 @@ export class StudyWeakPointService {
         0,
         input.limitTopics ?? 3,
       ),
-      skillCodes: subjectInsight.topSkills.slice(0, 4).map((skill) => skill.code),
+      skillCodes: subjectInsight.topSkills
+        .slice(0, 4)
+        .map((skill) => skill.code),
     };
   }
 
@@ -126,7 +132,8 @@ export class StudyWeakPointService {
     },
   ): Promise<WeakPointInsightsResponse['data']> {
     const cappedLimit = Math.min(Math.max(input?.limit ?? 4, 1), 12);
-    const requestedSubjectCode = input?.subjectCode?.trim().toUpperCase() ?? null;
+    const requestedSubjectCode =
+      input?.subjectCode?.trim().toUpperCase() ?? null;
     const [topicRollups, skillRollups, reviewQueueItems] = await Promise.all([
       this.prisma.studentTopicRollup.findMany({
         where: {
@@ -395,7 +402,9 @@ export class StudyWeakPointService {
         questionSkills: queueItem.questionNode?.skillMappings ?? [],
         exerciseSkills: queueItem.exerciseNode.skillMappings,
         questionTopics:
-          queueItem.questionNode?.topicMappings.map((mapping) => mapping.topic) ?? [],
+          queueItem.questionNode?.topicMappings.map(
+            (mapping) => mapping.topic,
+          ) ?? [],
         exerciseTopics: queueItem.exerciseNode.topicMappings.map(
           (mapping) => mapping.topic,
         ),
@@ -433,7 +442,9 @@ export class StudyWeakPointService {
           return right.weakSignalCount - left.weakSignalCount;
         }
 
-        return this.toTimestamp(right.lastSeenAt) - this.toTimestamp(left.lastSeenAt);
+        return (
+          this.toTimestamp(right.lastSeenAt) - this.toTimestamp(left.lastSeenAt)
+        );
       })
       .slice(0, cappedLimit)
       .map((subject) => {
@@ -448,7 +459,8 @@ export class StudyWeakPointService {
             }
 
             return (
-              this.toTimestamp(right.lastSeenAt) - this.toTimestamp(left.lastSeenAt)
+              this.toTimestamp(right.lastSeenAt) -
+              this.toTimestamp(left.lastSeenAt)
             );
           })
           .slice(0, 4)
@@ -487,8 +499,12 @@ export class StudyWeakPointService {
 
         return {
           subject: subject.subject,
-          recommendedTopicCodes: topTopics.slice(0, 3).map((topic) => topic.code),
-          totalWeaknessScore: this.roundWeaknessScore(subject.totalWeaknessScore),
+          recommendedTopicCodes: topTopics
+            .slice(0, 3)
+            .map((topic) => topic.code),
+          totalWeaknessScore: this.roundWeaknessScore(
+            subject.totalWeaknessScore,
+          ),
           weakSignalCount: subject.weakSignalCount,
           flaggedExerciseCount: subject.flaggedExerciseCount,
           lastSeenAt: subject.lastSeenAt?.toISOString() ?? null,
@@ -515,7 +531,10 @@ export class StudyWeakPointService {
     const subjectsTouched = new Set<string>();
 
     for (const topic of input.topics) {
-      const subject = this.getOrCreateSubjectAggregate(input.subjects, topic.subject);
+      const subject = this.getOrCreateSubjectAggregate(
+        input.subjects,
+        topic.subject,
+      );
       const topicAggregate = this.getOrCreateTopicAggregate(subject, topic);
 
       if (!subjectsTouched.has(subject.subject.code)) {
@@ -588,7 +607,9 @@ export class StudyWeakPointService {
     );
     const overlappingMappings = topic.skillMappings
       .map((mapping) => preferredBySkillCode.get(mapping.skill.code))
-      .filter((mapping): mapping is EffectiveSignalSkillMapping => Boolean(mapping));
+      .filter((mapping): mapping is EffectiveSignalSkillMapping =>
+        Boolean(mapping),
+      );
 
     if (overlappingMappings.length) {
       return overlappingMappings;

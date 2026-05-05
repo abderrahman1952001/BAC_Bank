@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import { startTransition, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/client-auth";
 import { getPostAuthRoute } from "@/lib/auth-routing";
 
@@ -21,7 +22,7 @@ export function PostAuthRedirect() {
   const router = useRouter();
   const { isLoaded, userId } = useAuth();
   const [statusMessage, setStatusMessage] = useState(
-    "جارٍ التحقق من حسابك ثم نقلك إلى BAC Bank...",
+    "جارٍ التحقق من حسابك ثم نقلك إلى مِراس...",
   );
   const [authFeedback, setAuthFeedback] = useState<string | null>(null);
 
@@ -87,7 +88,7 @@ export function PostAuthRedirect() {
       <section className="auth-layout">
         <aside className="auth-side">
           <div className="auth-side-top">
-            <p className="page-kicker">BAC Bank</p>
+            <p className="page-kicker">مِراس</p>
             <ThemeToggle />
           </div>
           <h1>لحظة واحدة</h1>
@@ -97,23 +98,23 @@ export function PostAuthRedirect() {
             <span>API</span>
             <span>توجيه</span>
           </div>
-          <Link href="/auth" className="btn-secondary">
-            العودة
-          </Link>
+          <Button asChild variant="outline" className="h-12 rounded-full px-5">
+            <Link href="/auth">العودة</Link>
+          </Button>
         </aside>
 
         <article className="auth-card">
           <div className="auth-form">
             <p>
-              بعد أول دخول نربط جلسة Clerk بملفك داخل BAC Bank ثم نوجهك إلى
+              بعد أول دخول نربط جلسة Clerk بملفك داخل مِراس ثم نوجهك إلى
               مساحة الطالب أو الإدارة.
             </p>
             <p className="auth-feedback">
               {authFeedback ?? "إذا تأخر التوجيه قليلا فذلك يعني أننا نكمل مزامنة الجلسة."}
             </p>
-            <Link href="/auth/sign-in" className="btn-secondary">
-              الرجوع إلى تسجيل الدخول
-            </Link>
+            <Button asChild variant="outline" className="h-12 rounded-full px-5">
+              <Link href="/auth/sign-in">الرجوع إلى تسجيل الدخول</Link>
+            </Button>
           </div>
         </article>
       </section>

@@ -54,9 +54,7 @@ export function buildPremiumAccessWindow(input: {
   const endsAt =
     input.grant.mode === 'FIXED_DAYS'
       ? addDays(startsAt, input.grant.durationDays)
-      : new Date(
-          Math.max(startsAt.getTime(), input.grant.endsAt.getTime()),
-        );
+      : new Date(Math.max(startsAt.getTime(), input.grant.endsAt.getTime()));
 
   return {
     startsAt,

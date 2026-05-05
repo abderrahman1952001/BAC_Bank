@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { MoonStar, SunMedium } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { THEME_EVENT_NAME, THEME_STORAGE_KEY, ThemeMode } from '@/lib/theme';
+import { cn } from '@/lib/utils';
 
 function getResolvedTheme(): ThemeMode {
   if (typeof document === 'undefined') {
-    return 'light';
+    return 'dark';
   }
 
   return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
@@ -20,7 +22,7 @@ function applyTheme(theme: ThemeMode) {
 }
 
 export function ThemeToggle({ className = '' }: { className?: string }) {
-  const [theme, setTheme] = useState<ThemeMode>('light');
+  const [theme, setTheme] = useState<ThemeMode>('dark');
 
   useEffect(() => {
     function syncTheme() {
@@ -38,10 +40,11 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
   }, []);
 
   return (
-    <button
+    <Button
       type="button"
-      className={className ? `theme-toggle ${className}` : 'theme-toggle'}
-      data-theme={theme}
+      variant="outline"
+      size="icon-lg"
+      className={cn('size-12 rounded-2xl', className)}
       aria-label={theme === 'dark' ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الداكن'}
       title={theme === 'dark' ? 'الوضع الفاتح' : 'الوضع الداكن'}
       onClick={() => {
@@ -50,12 +53,11 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
         setTheme(nextTheme);
       }}
     >
-      <span className="theme-toggle-icon" aria-hidden="true">
-        {theme === 'dark' ? <SunMedium size={17} /> : <MoonStar size={17} />}
-      </span>
-      <span className="theme-toggle-label">
-        {theme === 'dark' ? 'فاتح' : 'داكن'}
-      </span>
-    </button>
+      {theme === 'dark' ? (
+        <SunMedium data-icon="solo" aria-hidden="true" />
+      ) : (
+        <MoonStar data-icon="solo" aria-hidden="true" />
+      )}
+    </Button>
   );
 }

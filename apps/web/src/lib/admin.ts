@@ -7,9 +7,19 @@ import {
 import {
   parseAdminBillingSettingsResponse,
   parseAdminFiltersResponse,
+  parseAdminSourceWorkbenchSourceListResponse,
+  parseAdminSourceWorkbenchSourceResponse,
+  parseUpdateAdminSourceCropResponse,
   parseUpdateAdminBillingSettingsRequest,
 } from "@bac-bank/contracts/admin";
-import type { BlockType, ContentBlock } from "@bac-bank/contracts/admin";
+import type {
+  AdminSourceWorkbenchSourceListResponse,
+  AdminSourceWorkbenchSourceResponse,
+  BlockType,
+  ContentBlock,
+  UpdateAdminSourceCropRequest,
+  UpdateAdminSourceCropResponse,
+} from "@bac-bank/contracts/admin";
 export type {
   AdminBillingFeeResponsibility,
   AdminBillingSettings,
@@ -20,6 +30,13 @@ export type {
   AdminExamListResponse,
   AdminExercise,
   AdminFiltersResponse,
+  AdminSourceCropBox,
+  AdminSourceCropStatus,
+  AdminSourceWorkbenchCrop,
+  AdminSourceWorkbenchSourceDetail,
+  AdminSourceWorkbenchSourceListResponse,
+  AdminSourceWorkbenchSourceResponse,
+  AdminSourceWorkbenchSourceSummary,
   AdminSession,
   AdminStatus,
   BlockType,
@@ -28,10 +45,15 @@ export type {
   QuestionNode,
   TopicOption,
   UpdateAdminBillingSettingsRequest,
+  UpdateAdminSourceCropRequest,
+  UpdateAdminSourceCropResponse,
 } from "@bac-bank/contracts/admin";
 export {
   parseAdminBillingSettingsResponse,
   parseAdminFiltersResponse,
+  parseAdminSourceWorkbenchSourceListResponse,
+  parseAdminSourceWorkbenchSourceResponse,
+  parseUpdateAdminSourceCropResponse,
   parseUpdateAdminBillingSettingsRequest,
 };
 export type {
@@ -41,9 +63,6 @@ export type {
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
   AdminIngestionPublishedExam,
-  AdminIngestionRecoveryMode,
-  AdminIngestionRecoveryResponse,
-  AdminIngestionSnippetRecoveryResponse,
   AdminIngestionStatus,
   AdminIngestionValidationIssue,
   DraftAssetClassification,
@@ -101,6 +120,62 @@ export async function updateAdminBillingSettings(
     },
     parseAdminBillingSettingsResponse,
   );
+}
+
+export async function fetchAdminSourceWorkbenchSources() {
+  return fetchAdminJson<AdminSourceWorkbenchSourceListResponse>(
+    "/source-workbench/sources",
+    undefined,
+    parseAdminSourceWorkbenchSourceListResponse,
+  );
+}
+
+export async function fetchAdminSourceWorkbenchSource(sourceId: string) {
+  const params = new URLSearchParams({
+    sourceId,
+  });
+
+  return fetchAdminJson<AdminSourceWorkbenchSourceResponse>(
+    `/source-workbench/source?${params.toString()}`,
+    undefined,
+    parseAdminSourceWorkbenchSourceResponse,
+  );
+}
+
+export async function updateAdminSourceWorkbenchCrop(
+  sourceId: string,
+  cropId: string,
+  payload: UpdateAdminSourceCropRequest,
+) {
+  const params = new URLSearchParams({
+    sourceId,
+  });
+
+  return fetchAdminJson<UpdateAdminSourceCropResponse>(
+    `/source-workbench/crops/${encodeURIComponent(cropId)}?${params.toString()}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(payload),
+    },
+    parseUpdateAdminSourceCropResponse,
+  );
+}
+
+export function buildSourceWorkbenchAssetUrl(input: {
+  sourceId: string;
+  path: string;
+  version?: string | null;
+}) {
+  const params = new URLSearchParams({
+    sourceId: input.sourceId,
+    path: input.path,
+  });
+
+  if (input.version) {
+    params.set("v", input.version);
+  }
+
+  return `/api/v1/admin/source-workbench/assets?${params.toString()}`;
 }
 
 export function makeEmptyBlock(type: BlockType = "paragraph"): ContentBlock {

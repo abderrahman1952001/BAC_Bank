@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import type { CourseTopicPageModel } from "@/lib/courses-surface";
 import {
   STUDENT_COURSES_ROUTE,
@@ -20,9 +21,9 @@ export function CourseTopicPage({
           title="تعذر تحميل الموضوع"
           description="قد يكون الرابط غير صحيح أو أن محتوى الموضوع لم يعد متاحاً."
           action={
-            <Link href={STUDENT_COURSES_ROUTE} className="btn-secondary">
-              العودة إلى الدورات
-            </Link>
+            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+              <Link href={STUDENT_COURSES_ROUTE}>العودة إلى الدورات</Link>
+            </Button>
           }
         />
       </StudyShell>
@@ -43,7 +44,9 @@ export function CourseTopicPage({
                 "تحرك داخل هذا الموضوع عبر مفاهيم قصيرة، لكل منها هدف واضح ونقطة مراجعة صغيرة في النهاية."}
             </p>
             <div className="roadmap-hero-meta">
-              <StudyBadge tone="brand">{model.progressPercent}% تقدم</StudyBadge>
+              <StudyBadge tone="brand">
+                {model.progressPercent}% تقدم
+              </StudyBadge>
               <StudyBadge tone="accent">{model.conceptCount} مفاهيم</StudyBadge>
               <StudyBadge tone="success">{model.statusLabel}</StudyBadge>
             </div>
@@ -65,15 +68,14 @@ export function CourseTopicPage({
               </article>
             </div>
             <div className="roadmap-hero-actions">
-              <Link href={model.continueHref} className="btn-primary">
-                ابق في هذا المسار
-              </Link>
-              <Link
-                href={buildStudentCourseSubjectRoute(model.subject.code)}
-                className="btn-secondary"
-              >
-                العودة إلى المادة
-              </Link>
+              <Button asChild className="h-11 rounded-full px-5">
+                <Link href={model.continueHref}>ابق في هذا المسار</Link>
+              </Button>
+              <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                <Link href={buildStudentCourseSubjectRoute(model.subject.code)}>
+                  العودة إلى المادة
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -90,20 +92,43 @@ export function CourseTopicPage({
             </div>
           </div>
 
-          <div className="course-concept-grid">
-            {model.concepts.map((concept, index) => (
-              <article key={concept.slug} className="course-concept-card">
-                <div className="course-concept-card-head">
-                  <StudyBadge tone="accent">المفهوم {index + 1}</StudyBadge>
-                  <h3>{concept.title}</h3>
+          <div className="course-concept-unit-stack">
+            {model.conceptGroups.map((group) => (
+              <section
+                key={group.unitCode ?? "course-path"}
+                className="course-concept-unit"
+              >
+                <div className="course-concept-unit-head">
+                  <h3>{group.title}</h3>
+                  <StudyBadge tone="accent">
+                    {group.concepts.length} محطات
+                  </StudyBadge>
                 </div>
-                {concept.description ? <p>{concept.description}</p> : null}
-                <div className="course-concept-card-actions">
-                  <Link href={concept.href} className="btn-primary">
-                    افتح المفهوم
-                  </Link>
+
+                <div className="course-concept-grid">
+                  {group.concepts.map((concept, index) => (
+                    <article key={concept.slug} className="course-concept-card">
+                      <div className="course-concept-card-head">
+                        <StudyBadge
+                          tone={concept.role === "LESSON" ? "accent" : "brand"}
+                        >
+                          {concept.roleLabel}
+                        </StudyBadge>
+                        <StudyBadge tone="accent">{index + 1}</StudyBadge>
+                        <h4>{concept.title}</h4>
+                      </div>
+                      {concept.description ? (
+                        <p>{concept.description}</p>
+                      ) : null}
+                      <div className="course-concept-card-actions">
+                        <Button asChild className="h-11 rounded-full px-5">
+                          <Link href={concept.href}>افتح المفهوم</Link>
+                        </Button>
+                      </div>
+                    </article>
+                  ))}
                 </div>
-              </article>
+              </section>
             ))}
           </div>
         </section>

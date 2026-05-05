@@ -2,6 +2,10 @@ export { parseAuthOptionsResponse, parseAuthSessionResponse } from "./auth.js";
 export {
   parseAdminBillingSettingsResponse,
   parseAdminFiltersResponse,
+  parseAdminSourceWorkbenchSourceListResponse,
+  parseAdminSourceWorkbenchSourceResponse,
+  parseUpdateAdminSourceCropRequest,
+  parseUpdateAdminSourceCropResponse,
   parseUpdateAdminBillingSettingsRequest,
 } from "./admin.js";
 export {
@@ -11,6 +15,7 @@ export {
   parseBillingOverviewResponse,
 } from "./billing.js";
 export {
+  parseCourseConceptResponse,
   parseCourseSubjectCardsResponse,
   parseCourseSubjectResponse,
   parseCourseTopicResponse,

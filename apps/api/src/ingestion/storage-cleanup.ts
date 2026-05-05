@@ -7,7 +7,8 @@ export async function deleteStorageKeysBestEffort(
   const uniqueKeys = Array.from(
     new Set(
       keys.filter(
-        (key): key is string => typeof key === 'string' && key.trim().length > 0,
+        (key): key is string =>
+          typeof key === 'string' && key.trim().length > 0,
       ),
     ),
   );

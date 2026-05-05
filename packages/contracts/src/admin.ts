@@ -102,6 +102,73 @@ export type AdminBillingSettingsResponse = {
   plans: BillingPlan[];
 };
 
+export type AdminSourceCropStatus = "needs-review" | "reviewed" | "approved";
+
+export type AdminSourceCropBox = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type AdminSourceCropDimensions = {
+  width: number;
+  height: number;
+};
+
+export type AdminSourceWorkbenchCrop = {
+  id: string;
+  source: string;
+  asset: string;
+  caption: string | null;
+  status: AdminSourceCropStatus;
+  notes: string | null;
+  box: AdminSourceCropBox;
+  sourceDimensions: AdminSourceCropDimensions | null;
+  assetUpdatedAt: string | null;
+};
+
+export type AdminSourceWorkbenchSourceSummary = {
+  id: string;
+  title: string;
+  relativePath: string;
+  subject: string | null;
+  subjectCode: string | null;
+  streams: string[];
+  unit: string | null;
+  topicCode: string | null;
+  source: string | null;
+  sourceSection: string | null;
+  cropCount: number;
+  reviewCounts: Record<AdminSourceCropStatus, number>;
+  updatedAt: string | null;
+};
+
+export type AdminSourceWorkbenchSourceDetail = {
+  source: AdminSourceWorkbenchSourceSummary;
+  markdown: string;
+  crops: AdminSourceWorkbenchCrop[];
+};
+
+export type AdminSourceWorkbenchSourceListResponse = {
+  data: AdminSourceWorkbenchSourceSummary[];
+};
+
+export type AdminSourceWorkbenchSourceResponse = {
+  data: AdminSourceWorkbenchSourceDetail;
+};
+
+export type UpdateAdminSourceCropRequest = {
+  box: AdminSourceCropBox;
+  status?: AdminSourceCropStatus;
+  notes?: string | null;
+};
+
+export type UpdateAdminSourceCropResponse = {
+  source: AdminSourceWorkbenchSourceDetail;
+  crop: AdminSourceWorkbenchCrop;
+};
+
 export type UpdateAdminBillingSettingsRequest = {
   premium30DaysAmountDzd: number;
   premium30DaysDurationDays: number;
@@ -284,6 +351,86 @@ export const adminBillingSettingsResponseSchema: z.ZodType<AdminBillingSettingsR
     plans: z.array(billingPlanSchema),
   });
 
+export const adminSourceCropStatusSchema: z.ZodType<AdminSourceCropStatus> =
+  z.enum(["needs-review", "reviewed", "approved"]);
+
+export const adminSourceCropBoxSchema: z.ZodType<AdminSourceCropBox> = z.object({
+  x: z.number().finite().min(0),
+  y: z.number().finite().min(0),
+  width: z.number().finite().min(1),
+  height: z.number().finite().min(1),
+});
+
+export const adminSourceCropDimensionsSchema: z.ZodType<AdminSourceCropDimensions> =
+  z.object({
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
+  });
+
+export const adminSourceWorkbenchCropSchema: z.ZodType<AdminSourceWorkbenchCrop> =
+  z.object({
+    id: z.string().min(1),
+    source: z.string().min(1),
+    asset: z.string().min(1),
+    caption: z.string().nullable(),
+    status: adminSourceCropStatusSchema,
+    notes: z.string().nullable(),
+    box: adminSourceCropBoxSchema,
+    sourceDimensions: adminSourceCropDimensionsSchema.nullable(),
+    assetUpdatedAt: z.string().nullable(),
+  });
+
+export const adminSourceWorkbenchSourceSummarySchema: z.ZodType<AdminSourceWorkbenchSourceSummary> =
+  z.object({
+    id: z.string().min(1),
+    title: z.string().min(1),
+    relativePath: z.string().min(1),
+    subject: z.string().nullable(),
+    subjectCode: z.string().nullable(),
+    streams: z.array(z.string()),
+    unit: z.string().nullable(),
+    topicCode: z.string().nullable(),
+    source: z.string().nullable(),
+    sourceSection: z.string().nullable(),
+    cropCount: z.number().int().min(0),
+    reviewCounts: z.object({
+      "needs-review": z.number().int().min(0),
+      reviewed: z.number().int().min(0),
+      approved: z.number().int().min(0),
+    }),
+    updatedAt: z.string().nullable(),
+  });
+
+export const adminSourceWorkbenchSourceDetailSchema: z.ZodType<AdminSourceWorkbenchSourceDetail> =
+  z.object({
+    source: adminSourceWorkbenchSourceSummarySchema,
+    markdown: z.string(),
+    crops: z.array(adminSourceWorkbenchCropSchema),
+  });
+
+export const adminSourceWorkbenchSourceListResponseSchema: z.ZodType<AdminSourceWorkbenchSourceListResponse> =
+  z.object({
+    data: z.array(adminSourceWorkbenchSourceSummarySchema),
+  });
+
+export const adminSourceWorkbenchSourceResponseSchema: z.ZodType<AdminSourceWorkbenchSourceResponse> =
+  z.object({
+    data: adminSourceWorkbenchSourceDetailSchema,
+  });
+
+export const updateAdminSourceCropRequestSchema: z.ZodType<UpdateAdminSourceCropRequest> =
+  z.object({
+    box: adminSourceCropBoxSchema,
+    status: adminSourceCropStatusSchema.optional(),
+    notes: z.string().nullable().optional(),
+  });
+
+export const updateAdminSourceCropResponseSchema: z.ZodType<UpdateAdminSourceCropResponse> =
+  z.object({
+    source: adminSourceWorkbenchSourceDetailSchema,
+    crop: adminSourceWorkbenchCropSchema,
+  });
+
 export const updateAdminBillingSettingsRequestSchema: z.ZodType<UpdateAdminBillingSettingsRequest> =
   z.object({
     premium30DaysAmountDzd: z.number().int().positive(),
@@ -350,6 +497,38 @@ export function parseAdminBillingSettingsResponse(value: unknown) {
     adminBillingSettingsResponseSchema,
     value,
     "AdminBillingSettingsResponse",
+  );
+}
+
+export function parseAdminSourceWorkbenchSourceListResponse(value: unknown) {
+  return parseContract(
+    adminSourceWorkbenchSourceListResponseSchema,
+    value,
+    "AdminSourceWorkbenchSourceListResponse",
+  );
+}
+
+export function parseAdminSourceWorkbenchSourceResponse(value: unknown) {
+  return parseContract(
+    adminSourceWorkbenchSourceResponseSchema,
+    value,
+    "AdminSourceWorkbenchSourceResponse",
+  );
+}
+
+export function parseUpdateAdminSourceCropRequest(value: unknown) {
+  return parseContract(
+    updateAdminSourceCropRequestSchema,
+    value,
+    "UpdateAdminSourceCropRequest",
+  );
+}
+
+export function parseUpdateAdminSourceCropResponse(value: unknown) {
+  return parseContract(
+    updateAdminSourceCropResponseSchema,
+    value,
+    "UpdateAdminSourceCropResponse",
   );
 }
 

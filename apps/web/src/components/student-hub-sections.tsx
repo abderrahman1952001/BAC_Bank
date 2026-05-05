@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { StudyClearVaultButton } from '@/components/study-clear-vault-button';
 import { StudyReviewQueueActions } from '@/components/study-review-queue-actions';
 import { EmptyState, StudyBadge } from '@/components/study-shell';
+import { Button } from '@/components/ui/button';
 import type {
   HubActivityItem,
   MyMistakeItem,
@@ -27,12 +28,12 @@ function HubDualActions({
 }) {
   return (
     <div className="study-action-row">
-      <Link href={primaryHref} className="btn-primary">
-        {primaryLabel}
-      </Link>
-      <Link href={secondaryHref} className="btn-secondary">
-        {secondaryLabel}
-      </Link>
+      <Button asChild className="h-11 rounded-full px-5">
+        <Link href={primaryHref}>{primaryLabel}</Link>
+      </Button>
+      <Button asChild variant="outline" className="h-11 rounded-full px-5">
+        <Link href={secondaryHref}>{secondaryLabel}</Link>
+      </Button>
     </div>
   );
 }

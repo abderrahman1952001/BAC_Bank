@@ -7,13 +7,8 @@ import type {
   StudyReviewReasonType,
   UpdateReviewQueueItemStatusResponse,
 } from '@bac-bank/contracts/study';
-import {
-  PrismaService,
-} from '../prisma/prisma.service';
-import {
-  Prisma,
-  StudyReviewQueueStatus,
-} from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { Prisma, StudyReviewQueueStatus } from '@prisma/client';
 import {
   orderStudyReviewReasons,
   REVIEW_REASON_ORDER,
@@ -46,7 +41,8 @@ export class StudyReviewService {
   ): Promise<MyMistakesResponse> {
     const cappedLimit = Math.min(Math.max(input?.limit ?? 8, 1), 20);
     const searchLimit = Math.max(cappedLimit * 16, 40);
-    const requestedSubjectCode = input?.subjectCode?.trim().toUpperCase() ?? null;
+    const requestedSubjectCode =
+      input?.subjectCode?.trim().toUpperCase() ?? null;
     const requestedStatus = input?.status ?? StudyReviewQueueStatus.OPEN;
     const now = new Date();
     const preferredStreamCode = await this.getPreferredStreamCode(userId);
@@ -185,34 +181,32 @@ export class StudyReviewService {
 
       const key = queueItem.exerciseNode.id;
       const currentItem = itemsByExerciseNodeId.get(key);
-      const nextItem =
-        currentItem ??
-        {
-          exerciseNodeId: key,
-          updatedAt: queueItem.lastPromotedAt,
-          dueAt: queueItem.dueAt,
-          successStreak: queueItem.successStreak,
-          lastReviewedAt: queueItem.lastReviewedAt,
-          lastReviewOutcome:
-            (queueItem.lastReviewOutcome as StudyReviewOutcome | null) ?? null,
-          reasons: new Set<StudyReviewReasonType>(),
-          flagged: false,
-          exercise: {
-            id: key,
-            orderIndex: queueItem.exerciseNode.orderIndex,
-            title: queueItem.exerciseNode.label,
-          },
-          exam: {
-            id: representativeExam.id,
-            year: representativeExam.year,
-            sessionType: representativeExam.sessionType,
-            stream: representativeExam.stream,
-            subject: representativeExam.subject,
-            sujetNumber,
-            sujetLabel: getSujetLabel(sujetNumber),
-          },
-          questionSignals: new Map(),
-        };
+      const nextItem = currentItem ?? {
+        exerciseNodeId: key,
+        updatedAt: queueItem.lastPromotedAt,
+        dueAt: queueItem.dueAt,
+        successStreak: queueItem.successStreak,
+        lastReviewedAt: queueItem.lastReviewedAt,
+        lastReviewOutcome:
+          (queueItem.lastReviewOutcome as StudyReviewOutcome | null) ?? null,
+        reasons: new Set<StudyReviewReasonType>(),
+        flagged: false,
+        exercise: {
+          id: key,
+          orderIndex: queueItem.exerciseNode.orderIndex,
+          title: queueItem.exerciseNode.label,
+        },
+        exam: {
+          id: representativeExam.id,
+          year: representativeExam.year,
+          sessionType: representativeExam.sessionType,
+          stream: representativeExam.stream,
+          subject: representativeExam.subject,
+          sujetNumber,
+          sujetLabel: getSujetLabel(sujetNumber),
+        },
+        questionSignals: new Map(),
+      };
 
       if (queueItem.lastPromotedAt.getTime() > nextItem.updatedAt.getTime()) {
         nextItem.updatedAt = queueItem.lastPromotedAt;
@@ -227,7 +221,8 @@ export class StudyReviewService {
       if (
         queueItem.lastReviewedAt &&
         (!nextItem.lastReviewedAt ||
-          queueItem.lastReviewedAt.getTime() >= nextItem.lastReviewedAt.getTime())
+          queueItem.lastReviewedAt.getTime() >=
+            nextItem.lastReviewedAt.getTime())
       ) {
         nextItem.lastReviewedAt = queueItem.lastReviewedAt;
         nextItem.lastReviewOutcome =
@@ -245,15 +240,15 @@ export class StudyReviewService {
         continue;
       }
 
-      const questionEntry =
-        nextItem.questionSignals.get(queueItem.questionNodeId) ??
-        {
-          id: queueItem.questionNodeId,
-          label: queueItem.questionNode?.label ?? null,
-          reasons: new Set<StudyReviewReasonType>(),
-          updatedAt: queueItem.lastPromotedAt,
-          priorityScore: Number(queueItem.priorityScore),
-        };
+      const questionEntry = nextItem.questionSignals.get(
+        queueItem.questionNodeId,
+      ) ?? {
+        id: queueItem.questionNodeId,
+        label: queueItem.questionNode?.label ?? null,
+        reasons: new Set<StudyReviewReasonType>(),
+        updatedAt: queueItem.lastPromotedAt,
+        priorityScore: Number(queueItem.priorityScore),
+      };
 
       questionEntry.reasons.add(queueItem.reasonType);
       questionEntry.priorityScore = Math.max(
@@ -261,7 +256,9 @@ export class StudyReviewService {
         Number(queueItem.priorityScore),
       );
 
-      if (queueItem.lastPromotedAt.getTime() > questionEntry.updatedAt.getTime()) {
+      if (
+        queueItem.lastPromotedAt.getTime() > questionEntry.updatedAt.getTime()
+      ) {
         questionEntry.updatedAt = queueItem.lastPromotedAt;
       }
 
@@ -272,7 +269,11 @@ export class StudyReviewService {
     return {
       data: Array.from(itemsByExerciseNodeId.values())
         .sort((left, right) => {
-          const dueComparison = this.compareReviewDueOrder(left.dueAt, right.dueAt, now);
+          const dueComparison = this.compareReviewDueOrder(
+            left.dueAt,
+            right.dueAt,
+            now,
+          );
 
           if (dueComparison !== 0) {
             return dueComparison;
@@ -423,7 +424,8 @@ export class StudyReviewService {
       Math.max(input?.limit ?? REVIEW_VAULT_BATCH_LIMIT, 1),
       REVIEW_VAULT_BATCH_LIMIT,
     );
-    const requestedSubjectCode = input?.subjectCode?.trim().toUpperCase() ?? null;
+    const requestedSubjectCode =
+      input?.subjectCode?.trim().toUpperCase() ?? null;
     const now = new Date();
     const selectedCandidates =
       (await this.listClearVaultCandidates({
@@ -443,7 +445,10 @@ export class StudyReviewService {
         limit: cappedLimit,
       }));
 
-    if (!selectedCandidates || selectedCandidates.exerciseNodeIds.length === 0) {
+    if (
+      !selectedCandidates ||
+      selectedCandidates.exerciseNodeIds.length === 0
+    ) {
       throw new BadRequestException(
         'No corrective review items are available to clear right now.',
       );
@@ -597,7 +602,9 @@ export class StudyReviewService {
     }
 
     const resolvedSubjectCode =
-      input.subjectCode ?? queueItems[0]?.exerciseNode.variant.paper.subject.code ?? null;
+      input.subjectCode ??
+      queueItems[0]?.exerciseNode.variant.paper.subject.code ??
+      null;
 
     if (!resolvedSubjectCode) {
       return null;
@@ -688,7 +695,9 @@ export class StudyReviewService {
     const cleared = nextSuccessStreak >= REVIEW_CLEAR_STREAK_TARGET;
 
     return {
-      status: cleared ? StudyReviewQueueStatus.DONE : StudyReviewQueueStatus.OPEN,
+      status: cleared
+        ? StudyReviewQueueStatus.DONE
+        : StudyReviewQueueStatus.OPEN,
       dueAt: cleared
         ? null
         : this.addDays(input.now, nextSuccessStreak >= 2 ? 3 : 1),

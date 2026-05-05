@@ -127,16 +127,14 @@ describe('IngestionStoredPageService', () => {
     jest
       .spyOn(service as never, 'readSourceDocumentBuffer')
       .mockResolvedValue(Buffer.from('%PDF'));
-    jest
-      .spyOn(service as never, 'rasterizePdf')
-      .mockResolvedValue([
-        {
-          filePath: pagePath,
-          pageNumber: 1,
-          width: 4,
-          height: 5,
-        },
-      ]);
+    jest.spyOn(service as never, 'rasterizePdf').mockResolvedValue([
+      {
+        filePath: pagePath,
+        pageNumber: 1,
+        width: 4,
+        height: 5,
+      },
+    ]);
 
     try {
       await expect(

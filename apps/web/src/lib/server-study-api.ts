@@ -25,6 +25,7 @@ import {
 import {
   clonePlaywrightFixture,
   playwrightTestCatalog,
+  playwrightTestExam,
   playwrightTestFilters,
   playwrightTestMyMistakes,
   playwrightTestRecentExerciseStates,
@@ -74,6 +75,14 @@ export async function fetchServerExam(
   examId: string,
   sujetNumber: number,
 ): Promise<ExamResponse> {
+  if (
+    shouldUsePlaywrightFixtures() &&
+    examId === playwrightTestExam.id &&
+    sujetNumber === playwrightTestExam.selectedSujetNumber
+  ) {
+    return clonePlaywrightFixture(playwrightTestExam);
+  }
+
   return fetchServerApiJson<ExamResponse>(
     buildServerExamUrl(examId, sujetNumber),
     undefined,

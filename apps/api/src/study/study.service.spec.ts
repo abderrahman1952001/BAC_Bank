@@ -824,9 +824,7 @@ describe('StudyService study sessions', () => {
     prisma.exam.findMany.mockResolvedValue([
       makeSharedExam('exam-se', 'SE', 'Sciences experimentales'),
     ]);
-    prisma.studySession.count
-      .mockResolvedValueOnce(5)
-      .mockResolvedValueOnce(0);
+    prisma.studySession.count.mockResolvedValueOnce(5).mockResolvedValueOnce(0);
 
     await expect(
       service.createStudySession('user-1', {
@@ -1133,7 +1131,8 @@ describe('StudyService study sessions', () => {
             isPrimary: true,
             skill: {
               name: 'Exponential functions',
-              description: 'Identify the rule before expanding the calculation.',
+              description:
+                'Identify the rule before expanding the calculation.',
               displayOrder: 1,
             },
           },

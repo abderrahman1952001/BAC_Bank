@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import type {
+  CourseConceptResponse,
   CourseSubjectCardsResponse,
   CourseSubjectResponse,
   CourseTopicResponse,
@@ -38,6 +39,21 @@ export class CoursesController {
       request.user!.id,
       subjectCode,
       topicSlug,
+    );
+  }
+
+  @Get('subjects/:subjectCode/topics/:topicSlug/concepts/:conceptSlug')
+  getCourseConcept(
+    @Req() request: AuthenticatedRequest,
+    @Param('subjectCode') subjectCode: string,
+    @Param('topicSlug') topicSlug: string,
+    @Param('conceptSlug') conceptSlug: string,
+  ): Promise<CourseConceptResponse> {
+    return this.coursesService.getCourseConcept(
+      request.user!.id,
+      subjectCode,
+      topicSlug,
+      conceptSlug,
     );
   }
 }

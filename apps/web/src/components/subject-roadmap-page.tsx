@@ -4,6 +4,7 @@ import { StudyClearVaultButton } from "@/components/study-clear-vault-button";
 import { StudentNavbar } from "@/components/student-navbar";
 import { StudyReviewQueueActions } from "@/components/study-review-queue-actions";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import {
   formatStudyReviewReason,
   type MyMistakesResponse,
@@ -203,12 +204,12 @@ export function SubjectRoadmapPage({
           description="أعد المحاولة من مساحتك أو ارجع إلى التدريب."
           action={
             <div className="study-action-row">
-              <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-primary">
-                العودة إلى مساحتي
-              </Link>
-              <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-                التدريب
-              </Link>
+              <Button asChild className="h-11 rounded-full px-5">
+                <Link href={STUDENT_MY_SPACE_ROUTE}>العودة إلى مساحتي</Link>
+              </Button>
+              <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                <Link href={STUDENT_TRAINING_ROUTE}>التدريب</Link>
+              </Button>
             </div>
           }
         />
@@ -220,7 +221,6 @@ export function SubjectRoadmapPage({
   const nextActionHref = buildRoadmapNextActionHref(roadmap);
   const recommendedTopicCode =
     roadmap.nextAction?.type === "TOPIC_DRILL" ? roadmap.nextAction.topicCode : null;
-  let mapIndex = 0;
 
   return (
     <StudyShell>
@@ -273,12 +273,14 @@ export function SubjectRoadmapPage({
             </div>
 
             <div className="roadmap-hero-actions">
-              <Link href={nextActionHref} className="btn-primary">
-                {roadmap.nextAction?.label ?? "ابدأ الآن"}
-              </Link>
-              <Link href={STUDENT_TRAINING_SIMULATION_ROUTE} className="btn-secondary">
-                محاكاة كاملة
-              </Link>
+              <Button asChild className="h-11 rounded-full px-5">
+                <Link href={nextActionHref}>
+                  {roadmap.nextAction?.label ?? "ابدأ الآن"}
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>محاكاة كاملة</Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -304,6 +306,9 @@ export function SubjectRoadmapPage({
           <div className="roadmap-map-canvas">
             {roadmap.sections.map((section, sectionIndex) => {
               const sectionSummary = getSectionSummary(section);
+              const sectionStartIndex = roadmap.sections
+                .slice(0, sectionIndex)
+                .reduce((sum, currentSection) => sum + currentSection.nodes.length, 0);
 
               return (
                 <section key={section.id} className="roadmap-stage">
@@ -336,10 +341,8 @@ export function SubjectRoadmapPage({
                       const nodeAction = buildRoadmapNodeAction(roadmap, node);
                       const nodeTone = getRoadmapNodeTone(node);
                       const isRecommended = recommendedTopicCode === node.topicCode;
-                      const currentMapIndex = mapIndex;
+                      const currentMapIndex = sectionStartIndex + nodeIndex;
                       const isRight = (sectionIndex + nodeIndex) % 2 === 1;
-
-                      mapIndex += 1;
 
                       return (
                         <article
@@ -459,12 +462,12 @@ export function SubjectRoadmapPage({
               description="يمكنك الآن تثبيت المحاور أو الانتقال إلى محاكاة رسمية كاملة."
               action={
                 <div className="study-action-row">
-                  <Link href={STUDENT_TRAINING_SIMULATION_ROUTE} className="btn-primary">
-                    ابدأ محاكاة
-                  </Link>
-                  <Link href={STUDENT_LIBRARY_ROUTE} className="btn-secondary">
-                    المكتبة
-                  </Link>
+                  <Button asChild className="h-11 rounded-full px-5">
+                    <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>ابدأ محاكاة</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                    <Link href={STUDENT_LIBRARY_ROUTE}>المكتبة</Link>
+                  </Button>
                 </div>
               }
             />

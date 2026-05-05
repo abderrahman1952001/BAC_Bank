@@ -2,6 +2,11 @@
 
 import { useEffect } from "react";
 import { TopicTagPicker } from "@/components/topic-tag-picker";
+import { Button } from "@/components/ui/button";
+import { FilterChip } from "@/components/ui/filter-chip";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Textarea } from "@/components/ui/textarea";
 import type { DraftBlockRole, DraftBlockType } from "@/lib/admin";
 import {
   formatRows,
@@ -57,7 +62,6 @@ export function AdminIngestionInspector({
   onUpdateBlock,
   onMoveBlock,
   onRemoveBlock,
-  onFocusSnippetTools,
   onFocusNativeTools,
   onApplyBlockPreset,
   onUpdateBlockData,
@@ -80,8 +84,11 @@ export function AdminIngestionInspector({
   onUpdateBlock: (blockId: string, patch: Partial<DraftBlock>) => void;
   onMoveBlock: (blockId: string, direction: -1 | 1) => void;
   onRemoveBlock: (blockId: string) => void;
-  onFocusSnippetTools: (nodeId: string, blockId: string) => void;
-  onFocusNativeTools: (nodeId: string, blockId: string, assetId: string) => void;
+  onFocusNativeTools: (
+    nodeId: string,
+    blockId: string,
+    assetId: string,
+  ) => void;
   onApplyBlockPreset: (
     blockId: string,
     preset: "table" | "formula_graph" | "probability_tree",
@@ -153,7 +160,7 @@ export function AdminIngestionInspector({
           <div className="admin-form-grid">
             <label className="field">
               <span>Node type</span>
-              <select
+              <NativeSelect
                 value={selectedNode.nodeType}
                 onChange={(event) => {
                   onUpdateSelectedNodeFields({
@@ -166,12 +173,12 @@ export function AdminIngestionInspector({
                     {option}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
             </label>
 
             <label className="field">
               <span>Parent</span>
-              <select
+              <NativeSelect
                 value={selectedNode.parentId ?? ""}
                 onChange={(event) => {
                   onReparentSelectedNode(event.target.value || null);
@@ -183,12 +190,12 @@ export function AdminIngestionInspector({
                     {option.label ?? option.nodeType}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
             </label>
 
             <label className="field">
               <span>Label</span>
-              <input
+              <Input
                 value={selectedNode.label ?? ""}
                 onChange={(event) => {
                   onUpdateSelectedNodeFields({
@@ -200,7 +207,7 @@ export function AdminIngestionInspector({
 
             <label className="field">
               <span>Points</span>
-              <input
+              <Input
                 type="number"
                 min="0"
                 step="0.25"
@@ -255,7 +262,7 @@ export function AdminIngestionInspector({
                           {blockIssueCountById.get(block.id)}
                         </span>
                       ) : null}
-                      <select
+                      <NativeSelect
                         value={block.role}
                         onChange={(event) => {
                           onUpdateBlock(block.id, {
@@ -268,8 +275,8 @@ export function AdminIngestionInspector({
                             {option}
                           </option>
                         ))}
-                      </select>
-                      <select
+                      </NativeSelect>
+                      <NativeSelect
                         value={block.type}
                         onChange={(event) => {
                           onUpdateBlock(block.id, {
@@ -282,60 +289,47 @@ export function AdminIngestionInspector({
                             {option}
                           </option>
                         ))}
-                      </select>
-                      <button
+                      </NativeSelect>
+                      <Button
                         type="button"
-                        className="btn-secondary"
+                        variant="outline"
+                        className="h-8 rounded-full px-3"
                         onClick={(event) => {
                           event.stopPropagation();
                           onMoveBlock(block.id, -1);
                         }}
                       >
                         ↑
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
-                        className="btn-secondary"
+                        variant="outline"
+                        className="h-8 rounded-full px-3"
                         onClick={(event) => {
                           event.stopPropagation();
                           onMoveBlock(block.id, 1);
                         }}
                       >
                         ↓
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
-                        className="btn-secondary"
+                        variant="outline"
+                        className="h-8 rounded-full px-3"
                         onClick={(event) => {
                           event.stopPropagation();
                           onRemoveBlock(block.id);
                         }}
                       >
                         Remove
-                      </button>
+                      </Button>
                     </div>
                   </div>
 
                   <div className="chip-grid">
-                    {block.type === "paragraph" ||
-                    block.type === "latex" ||
-                    block.type === "heading" ||
-                    block.type === "list" ? (
-                      <button
-                        type="button"
-                        className="choice-chip"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          onFocusSnippetTools(selectedNode.id, block.id);
-                        }}
-                      >
-                        Fix From Source
-                      </button>
-                    ) : null}
                     {block.assetId ? (
-                      <button
+                      <FilterChip
                         type="button"
-                        className="choice-chip"
                         onClick={(event) => {
                           event.stopPropagation();
                           onFocusNativeTools(
@@ -346,44 +340,41 @@ export function AdminIngestionInspector({
                         }}
                       >
                         Native Render
-                      </button>
+                      </FilterChip>
                     ) : null}
-                    <button
+                    <FilterChip
                       type="button"
-                      className="choice-chip"
                       onClick={(event) => {
                         event.stopPropagation();
                         onApplyBlockPreset(block.id, "table");
                       }}
                     >
                       Table Preset
-                    </button>
-                    <button
+                    </FilterChip>
+                    <FilterChip
                       type="button"
-                      className="choice-chip"
                       onClick={(event) => {
                         event.stopPropagation();
                         onApplyBlockPreset(block.id, "formula_graph");
                       }}
                     >
                       Graph Preset
-                    </button>
-                    <button
+                    </FilterChip>
+                    <FilterChip
                       type="button"
-                      className="choice-chip"
                       onClick={(event) => {
                         event.stopPropagation();
                         onApplyBlockPreset(block.id, "probability_tree");
                       }}
                     >
                       Tree Preset
-                    </button>
+                    </FilterChip>
                   </div>
 
                   <div className="admin-form-grid">
                     <label className="field">
                       <span>Asset</span>
-                      <select
+                      <NativeSelect
                         value={block.assetId ?? ""}
                         onChange={(event) => {
                           onUpdateBlock(block.id, {
@@ -397,43 +388,45 @@ export function AdminIngestionInspector({
                             {asset.label ?? asset.id} · {asset.classification}
                           </option>
                         ))}
-                      </select>
+                      </NativeSelect>
                     </label>
 
                     {block.type === "image" ||
                     block.type === "table" ||
                     block.type === "graph" ||
-                    block.type === "tree" ? (
-                      <div className="block-item-actions">
-                        <button
-                          type="button"
-                          className="btn-secondary"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            onOpenAssetToolPanel(block, "create");
-                          }}
-                        >
-                          New Asset
-                        </button>
-                        {block.assetId ? (
-                          <button
-                            type="button"
-                            className="btn-secondary"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onOpenAssetToolPanel(block, "edit");
-                            }}
-                          >
-                            Edit Asset
-                          </button>
-                        ) : null}
-                      </div>
+	                    block.type === "tree" ? (
+	                      <div className="block-item-actions">
+	                        <Button
+	                          type="button"
+	                          variant="outline"
+	                          className="h-9 rounded-full px-3"
+	                          onClick={(event) => {
+	                            event.stopPropagation();
+	                            onOpenAssetToolPanel(block, "create");
+	                          }}
+	                        >
+	                          New Asset
+	                        </Button>
+	                        {block.assetId ? (
+	                          <Button
+	                            type="button"
+	                            variant="outline"
+	                            className="h-9 rounded-full px-3"
+	                            onClick={(event) => {
+	                              event.stopPropagation();
+	                              onOpenAssetToolPanel(block, "edit");
+	                            }}
+	                          >
+	                            Edit Asset
+	                          </Button>
+	                        ) : null}
+	                      </div>
                     ) : null}
 
                     {block.type === "heading" ? (
                       <label className="field">
                         <span>Heading level</span>
-                        <input
+                        <Input
                           data-primary-block-input="true"
                           type="number"
                           min="1"
@@ -455,7 +448,7 @@ export function AdminIngestionInspector({
                     {block.type === "code" ? (
                       <label className="field">
                         <span>Language</span>
-                        <input
+                        <Input
                           data-primary-block-input="true"
                           value={block.meta?.language ?? ""}
                           onChange={(event) => {
@@ -473,7 +466,7 @@ export function AdminIngestionInspector({
                     {block.type === "table" ? (
                       <label className="field admin-form-wide">
                         <span>Rows</span>
-                        <textarea
+                        <Textarea
                           data-primary-block-input="true"
                           key={`${block.id}:${formatRows(block.data)}`}
                           rows={5}
@@ -501,7 +494,7 @@ export function AdminIngestionInspector({
                                 ? "Supporting Text"
                                 : "Content"}
                         </span>
-                        <textarea
+                        <Textarea
                           data-primary-block-input="true"
                           rows={block.type === "code" ? 7 : 4}
                           value={block.value}

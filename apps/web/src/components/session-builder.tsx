@@ -17,6 +17,7 @@ import {
   StudyHeader,
   StudyShell,
 } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import type { FiltersResponse } from "@/lib/study-api";
 import { STUDENT_BILLING_ROUTE } from "@/lib/student-routes";
 import { useSessionBuilder } from "@/lib/use-session-builder";
@@ -140,9 +141,9 @@ export function SessionBuilder({
             </div>
             {studyEntitlements.tier !== "PREMIUM" ? (
               <div className="billing-inline-actions">
-                <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
-                  افتح Premium
-                </Link>
+                <Button asChild variant="outline" className="h-10 rounded-full px-5">
+                  <Link href={STUDENT_BILLING_ROUTE}>افتح Premium</Link>
+                </Button>
               </div>
             ) : null}
           </section>
@@ -153,9 +154,10 @@ export function SessionBuilder({
             title="تعذر تحميل الجلسة"
             description="أعد المحاولة."
             action={
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={() => {
                   startRefreshingFilters(() => {
                     router.refresh();
@@ -164,7 +166,7 @@ export function SessionBuilder({
                 disabled={refreshingFilters}
               >
                 {refreshingFilters ? "جارٍ التحديث..." : "إعادة المحاولة"}
-              </button>
+              </Button>
             }
           />
         ) : null}

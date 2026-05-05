@@ -1,8 +1,5 @@
 import { Transform, TransformFnParams } from 'class-transformer';
-import {
-  IsEnum,
-  IsOptional,
-} from 'class-validator';
+import { IsEnum, IsOptional } from 'class-validator';
 import {
   StudyQuestionDiagnosis,
   StudyQuestionReflection,

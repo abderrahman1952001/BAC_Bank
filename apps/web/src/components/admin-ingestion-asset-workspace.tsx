@@ -8,6 +8,9 @@ import {
   IngestionCropPreview,
   type CropBox,
 } from '@/components/ingestion-crop-editor';
+import { Button } from '@/components/ui/button';
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import type { AdminIngestionDraft } from '@/lib/admin';
 
 type SourcePageEntry = {
@@ -233,22 +236,24 @@ export function AdminIngestionAssetWorkspace({
           </div>
         </div>
         <div className="block-item-actions">
-          <button
+          <Button
             type="button"
-            className="btn-secondary"
+            variant="outline"
+            className="h-9 rounded-full px-3"
             onClick={addAsset}
             disabled={!sourcePages.length}
           >
             Add Asset
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="btn-secondary"
+            variant="outline"
+            className="h-9 rounded-full px-3"
             onClick={removeSelectedAsset}
             disabled={!selectedAsset}
           >
             Remove Asset
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -263,7 +268,7 @@ export function AdminIngestionAssetWorkspace({
 
           <label className="field">
             <span>Find asset</span>
-            <input
+            <Input
               type="search"
               placeholder="Search classification, role, page…"
               value={assetQuery}
@@ -325,9 +330,10 @@ export function AdminIngestionAssetWorkspace({
             </div>
             {selectedAssetPage ? (
               <div className="block-item-actions">
-                <button
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="outline"
+                  className="h-9 rounded-full px-3"
                   onClick={() => {
                     if (!selectedAsset) {
                       return;
@@ -346,7 +352,7 @@ export function AdminIngestionAssetWorkspace({
                   }}
                 >
                   Use Full Page
-                </button>
+                </Button>
               </div>
             ) : null}
           </div>
@@ -390,7 +396,7 @@ export function AdminIngestionAssetWorkspace({
             <div className="admin-form-grid">
               <label className="field">
                 <span>Source page</span>
-                <select
+                <NativeSelect
                   value={selectedAsset.sourcePageId}
                   onChange={(event) => {
                     const nextPage =
@@ -413,12 +419,12 @@ export function AdminIngestionAssetWorkspace({
                       {page.documentKind} page {page.page_number}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </label>
 
               <label className="field">
                 <span>Variant</span>
-                <select
+                <NativeSelect
                   value={selectedAsset.variantCode ?? ''}
                   onChange={(event) => {
                     updateAsset(selectedAsset.id, (asset) => ({
@@ -433,12 +439,12 @@ export function AdminIngestionAssetWorkspace({
                   <option value="">Unassigned</option>
                   <option value="SUJET_1">Sujet 1</option>
                   <option value="SUJET_2">Sujet 2</option>
-                </select>
+                </NativeSelect>
               </label>
 
               <label className="field">
                 <span>Role</span>
-                <select
+                <NativeSelect
                   value={selectedAsset.role}
                   onChange={(event) => {
                     updateAsset(selectedAsset.id, (asset) => ({
@@ -457,12 +463,12 @@ export function AdminIngestionAssetWorkspace({
                   <option value="HINT">Hint</option>
                   <option value="RUBRIC">Rubric</option>
                   <option value="META">Meta</option>
-                </select>
+                </NativeSelect>
               </label>
 
               <label className="field">
                 <span>Classification</span>
-                <select
+                <NativeSelect
                   value={selectedAsset.classification}
                   onChange={(event) => {
                     updateAsset(selectedAsset.id, (asset) => ({
@@ -479,13 +485,13 @@ export function AdminIngestionAssetWorkspace({
                   <option value="table">Table</option>
                   <option value="tree">Tree</option>
                   <option value="graph">Graph</option>
-                </select>
+                </NativeSelect>
               </label>
 
               {(['x', 'y', 'width', 'height'] as const).map((field) => (
                 <label key={field} className="field">
                   <span>{field}</span>
-                  <input
+                  <Input
                     type="number"
                     value={selectedAsset.cropBox[field]}
                     onChange={(event) => {

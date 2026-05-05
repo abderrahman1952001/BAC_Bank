@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
 
 export type StudyMetaItem = {
   label: string;
@@ -224,19 +225,20 @@ export function StudyNavigator({
                 : 'study-nav-exercise'
             }
           >
-            <button
+            <Button
               type="button"
-              className="study-nav-exercise-button"
+              variant="ghost"
+              className="h-auto w-full justify-between gap-2 rounded-none p-0 text-right hover:bg-transparent"
               onClick={() => onSelectExercise(exercise.id)}
             >
-              <div>
+              <div className="grid gap-0.5">
                 <strong>{exercise.title}</strong>
                 {exercise.subtitle ? <span>{exercise.subtitle}</span> : null}
               </div>
               {exercise.badge ? (
                 <span className="study-nav-badge">{exercise.badge}</span>
               ) : null}
-            </button>
+            </Button>
 
             {exercise.progressLabel ? (
               <p className="study-nav-progress">{exercise.progressLabel}</p>
@@ -244,9 +246,11 @@ export function StudyNavigator({
 
             <div className="study-nav-question-grid">
               {exercise.questions.map((question) => (
-                <button
+                <Button
                   key={question.id}
                   type="button"
+                  variant="ghost"
+                  size="icon-sm"
                   className={`study-nav-question state-${question.status}${question.solutionViewed ? ' has-solution-viewed' : ''}${
                     question.id === activeQuestionId ? ' current' : ''
                   }`}
@@ -261,7 +265,7 @@ export function StudyNavigator({
                   )}`}
                 >
                   {question.shortLabel ?? question.label}
-                </button>
+                </Button>
               ))}
             </div>
           </section>

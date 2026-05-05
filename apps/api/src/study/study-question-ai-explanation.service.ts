@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  ServiceUnavailableException,
-} from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { GoogleGenAI, createPartFromText } from '@google/genai';
 import type {
   StudyQuestionAiExplanationResponse,
@@ -102,9 +99,7 @@ export class StudyQuestionAiExplanationService {
       model:
         normalizeOptionalString(process.env.GEMINI_MODEL) ??
         DEFAULT_GEMINI_MODEL,
-      contents: [
-        createPartFromText(this.buildPrompt(input)),
-      ],
+      contents: [createPartFromText(this.buildPrompt(input))],
       config: {
         systemInstruction: AI_EXPLANATION_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
@@ -132,7 +127,8 @@ export class StudyQuestionAiExplanationService {
     return {
       questionId: input.questionId,
       generatedAt: new Date().toISOString(),
-      summary: normalizeOptionalString(parsed.summary) ?? 'تعذر توليد شرح مختصر.',
+      summary:
+        normalizeOptionalString(parsed.summary) ?? 'تعذر توليد شرح مختصر.',
       steps: Array.isArray(parsed.steps)
         ? parsed.steps
             .map((item) => normalizeOptionalString(item))

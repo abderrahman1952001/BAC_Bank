@@ -319,14 +319,14 @@ export function buildProcessActionLabel({
       : "Worker running…";
   }
 
-  if (shouldUseDestructiveExtractionProcess({ workflow, jobStatus })) {
-    return "Re-run extraction";
+  if (shouldRefreshExistingSourcePages({ workflow, jobStatus })) {
+    return "Refresh pages";
   }
 
-  return "Process";
+  return "Prepare pages";
 }
 
-export function shouldUseDestructiveExtractionProcess({
+export function shouldRefreshExistingSourcePages({
   workflow,
   jobStatus,
 }: {
@@ -343,11 +343,11 @@ export function buildProcessConfirmationMessage({
   workflow: Pick<AdminIngestionJobResponse["workflow"], "review_started">;
   jobStatus: AdminIngestionJobResponse["job"]["status"];
 }) {
-  if (!shouldUseDestructiveExtractionProcess({ workflow, jobStatus })) {
+  if (!shouldRefreshExistingSourcePages({ workflow, jobStatus })) {
     return null;
   }
 
-  return "Re-running extraction will replace the current extracted structure with a fresh extraction from the source PDFs. Continue?";
+  return "Refreshing source pages will re-rasterize the canonical PDFs while keeping the current reviewed draft structure. Continue?";
 }
 
 export function buildProcessRequestPayload({
@@ -357,7 +357,7 @@ export function buildProcessRequestPayload({
   workflow: Pick<AdminIngestionJobResponse["workflow"], "review_started">;
   jobStatus: AdminIngestionJobResponse["job"]["status"];
 }) {
-  if (!shouldUseDestructiveExtractionProcess({ workflow, jobStatus })) {
+  if (!shouldRefreshExistingSourcePages({ workflow, jobStatus })) {
     return {};
   }
 

@@ -2,12 +2,8 @@ import { Injectable } from '@nestjs/common';
 import type {
   AdminIngestionJobListResponse,
   AdminIngestionJobResponse,
-  AdminIngestionRecoveryResponse,
-  AdminIngestionSnippetRecoveryResponse,
 } from '@bac-bank/contracts/ingestion';
 import { ProcessIngestionJobDto } from './dto/process-ingestion-job.dto';
-import { RecoverAssetContentDto } from './dto/recover-asset-content.dto';
-import { RecoverSnippetContentDto } from './dto/recover-snippet-content.dto';
 import { UpdateIngestionJobDto } from './dto/update-ingestion-job.dto';
 import {
   AttachCorrectionDocumentInput,
@@ -16,7 +12,6 @@ import {
 } from './ingestion-draft-intake.service';
 import { IngestionQueueService } from './ingestion-queue.service';
 import { IngestionReadService } from './ingestion-read.service';
-import { IngestionRecoveryService } from './ingestion-recovery.service';
 import { IngestionReviewService } from './ingestion-review.service';
 
 @Injectable()
@@ -25,7 +20,6 @@ export class IngestionService {
     private readonly draftIntakeService: IngestionDraftIntakeService,
     private readonly queueService: IngestionQueueService,
     private readonly readService: IngestionReadService,
-    private readonly recoveryService: IngestionRecoveryService,
     private readonly reviewService: IngestionReviewService,
   ) {}
 
@@ -96,20 +90,5 @@ export class IngestionService {
 
   async getAssetPreview(jobId: string, assetId: string) {
     return this.readService.getAssetPreview(jobId, assetId);
-  }
-
-  async recoverAssetContent(
-    jobId: string,
-    assetId: string,
-    payload: RecoverAssetContentDto = {},
-  ): Promise<AdminIngestionRecoveryResponse> {
-    return this.recoveryService.recoverAssetContent(jobId, assetId, payload);
-  }
-
-  async recoverSnippetContent(
-    jobId: string,
-    payload: RecoverSnippetContentDto,
-  ): Promise<AdminIngestionSnippetRecoveryResponse> {
-    return this.recoveryService.recoverSnippetContent(jobId, payload);
   }
 }

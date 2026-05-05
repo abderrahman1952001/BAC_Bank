@@ -420,7 +420,7 @@ describe("admin ingestion page helpers", () => {
       }),
     ).toEqual({
       disabled: false,
-      label: "Re-run extraction",
+      label: "Refresh pages",
     });
 
     expect(
@@ -441,7 +441,7 @@ describe("admin ingestion page helpers", () => {
       }),
     ).toEqual({
       disabled: false,
-      label: "Process",
+      label: "Prepare pages",
     });
 
     expect(
@@ -462,7 +462,7 @@ describe("admin ingestion page helpers", () => {
       }),
     ).toEqual({
       disabled: false,
-      label: "Re-run extraction",
+      label: "Refresh pages",
     });
 
     expect(

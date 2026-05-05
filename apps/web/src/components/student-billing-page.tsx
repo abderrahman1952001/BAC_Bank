@@ -17,6 +17,7 @@ import { createBillingCheckout, syncBillingCheckout } from "@/lib/billing-api";
 import { useAuthSession } from "@/components/auth-provider";
 import { StudentNavbar } from "@/components/student-navbar";
 import { StudyBadge, StudyHeader, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import {
   STUDENT_BILLING_ROUTE,
   STUDENT_TRAINING_ROUTE,
@@ -124,7 +125,7 @@ export function StudentBillingPage({
       <section className="student-main-frame student-main-frame-builder">
         <StudyHeader
           eyebrow="الاشتراك"
-          title="Premium BAC Bank"
+          title="مِراس Premium"
           subtitle="حوّل مسارك إلى تدريب علاجي أعمق مع دفع محلي عبر CIB و EDAHABIA. السعر الظاهر نهائي ورسوم الدفع تتحملها المنصة."
           meta={
             initialOverview
@@ -146,9 +147,9 @@ export function StudentBillingPage({
               : undefined
           }
           actions={
-            <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-              العودة إلى التدريب
-            </Link>
+            <Button asChild variant="outline" className="h-12 rounded-full px-5">
+              <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+            </Button>
           }
         />
 
@@ -310,14 +311,14 @@ function BillingPlanCard({
           <li key={feature}>{feature}</li>
         ))}
       </ul>
-      <button
+      <Button
         type="button"
-        className="btn-primary"
+        className="h-12 w-full rounded-full"
         onClick={onCheckout}
         disabled={disabled}
       >
         {isPending ? "جارٍ تجهيز الدفع..." : "ادفع الآن"}
-      </button>
+      </Button>
     </article>
   );
 }
@@ -403,9 +404,9 @@ export function StudentBillingStatusPage({
           title={headerTitle}
           subtitle={headerSubtitle}
           actions={
-            <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
-              صفحة الاشتراك
-            </Link>
+            <Button asChild variant="outline" className="h-12 rounded-full px-5">
+              <Link href={STUDENT_BILLING_ROUTE}>صفحة الاشتراك</Link>
+            </Button>
           }
         />
 
@@ -452,18 +453,18 @@ export function StudentBillingStatusPage({
 
           <div className="billing-status-actions">
             {checkoutId && isCheckoutSyncable(checkout) ? (
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
+                className="h-11 rounded-full px-5"
                 onClick={refreshCheckout}
                 disabled={syncing}
               >
                 {syncing ? "جارٍ تحديث الحالة..." : "تحديث الحالة الآن"}
-              </button>
+              </Button>
             ) : null}
-            <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
-              العودة إلى صفحة الاشتراك
-            </Link>
+            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+              <Link href={STUDENT_BILLING_ROUTE}>العودة إلى صفحة الاشتراك</Link>
+            </Button>
           </div>
         </section>
 

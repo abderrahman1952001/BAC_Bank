@@ -22,6 +22,8 @@ follow.
 Companion references:
 
 - draft normalization rules: `docs/ingestion-structure-normalization.md`
+- premium extraction, native rendering, and corpus sweep rules:
+  `docs/premium-ingestion-extraction.md`
 - agent playbook for producing reliable drafts:
   `docs/agent-ingestion-playbook.md`
 - runtime implementation: `apps/api/src/ingestion/*`
@@ -88,40 +90,35 @@ This layer answers:
 6. Extract structured JSON from the two PDFs.
 7. Create or refresh the ingestion draft from that extraction output.
 8. Normalize and review the draft until it is boring and reliable.
-9. Do a final human pass for crops, typos, and small mismatches.
-10. Approve the draft.
-11. Publish it.
-12. Let the worker write the reviewed draft into the app-facing published
+9. Open the student-side draft preview and verify the draft with the same
+   renderer students will use.
+10. Do a final human pass for crops, native assets, typos, and small
+    mismatches.
+11. Approve the draft.
+12. Publish it.
+13. Let the worker write the reviewed draft into the app-facing published
     tables.
 
-## Preferred Extraction Route
+## Canonical Extraction Route
 
-The preferred extraction route is:
+The canonical extraction route is `codex_app_reviewed_extraction` as described
+in `docs/premium-ingestion-extraction.md`.
 
-- Google AI Studio
-- `Gemini 3.1 Pro`
-- structured output enabled
-- both the exam PDF and the correction PDF attached
+Extraction produces one durable reviewed extract artifact in the premium draft
+graph shape:
 
-When the fallback API route is used, confirm the exact Google API model code
-separately. The operator default named in this document is the preferred Studio
-route and does not assume a particular API identifier.
+- `variants[].nodes[]`
+- `assets[]`
+- `assets[].cropBox` when crop geometry is known
+- `assets[].nativeSuggestion` when a table, graph, tree, or similar visual can
+  be rendered faithfully with frontend technology
 
-The API route still exists and is valid as a fallback when needed, but it is not
-the default operator path right now because of cost.
+The reviewed extract is imported through the shared reviewed-extract command.
+There is no separate model-owned ingestion engine.
 
-### Route Decision
-
-Use this order:
-
-1. Google AI Studio manual extraction
-2. Gemini API extraction through the app or scripts only if needed
-
-Reasons to use the API route:
-
-- the manual quota is blocked
-- repeat automation matters more than cost
-- we need to batch work without a human in the loop
+Optional model helpers may exist for narrow review tasks, such as crop-to-native
+suggestions, but they do not own full-paper extraction, draft state,
+publication, or source storage.
 
 ## Detailed Workflow
 
@@ -214,51 +211,25 @@ The important rule is:
 
 Do not create a second page-generation workflow in random scripts.
 
-### 4. Extract Structured JSON
+### 4. Produce A Premium Reviewed Extract
 
-Extraction is a separate step from canonical storage.
-
-#### Default route: Google AI Studio
-
-The default route is manual extraction in Google AI Studio with `Gemini 3.1
-Pro`.
+Extraction is separate from canonical storage and should speak the app's draft
+graph directly.
 
 Operator sequence:
 
-1. Enable structured output.
-2. Paste the general extraction prompt.
-3. Paste the request-specific prompt.
-4. Paste the JSON output structure.
-5. Attach the exam PDF.
-6. Attach the correction PDF.
-7. Run the extraction.
-8. Save the raw JSON response.
+1. Open the canonical exam and correction PDFs or rendered source pages.
+2. Extract the visible structure into `variants[].nodes[]`.
+3. Preserve prompt, correction, hint, and rubric blocks on the most specific
+   matching nodes.
+4. Add assets with source page references.
+5. Add crop geometry when it is known.
+6. Add native render suggestions whenever they are faithful and review-saving.
+7. Save the reviewed extract artifact with a stable paper-specific filename.
 
-Current prompt assets:
-
-- general/system prompt:
-  `gemini-prompts/extraction-system-instruction.txt`
-- request-specific prompt:
-  `gemini-prompts/extraction-request-template.txt`
-- output structure:
-  keep it aligned with the structured response contract in
-  `apps/api/src/ingestion/gemini-extractor.ts`
-
-The raw Gemini response is not yet the final publishable draft. It is an
-extraction artifact that must be turned into a reviewed draft.
-
-#### Fallback route: API extraction
-
-The API route is still supported when needed.
-
-Today the shared processing engine can rasterize, call Gemini, and write the
-extracted draft inside the ingestion workflow:
-
-- `apps/api/src/ingestion/ingestion-processing-engine.service.ts`
-- `apps/api/src/ingestion/gemini-extractor.ts`
-
-This path is useful, but it is the fallback route for now, not the preferred
-default.
+The extraction artifact is already shaped like the reviewed draft. The importer
+validates and normalizes it, but it should not have to rediscover the paper
+hierarchy from provider-specific output.
 
 ### 5. Create Or Refresh The Draft
 
@@ -266,7 +237,7 @@ After extraction, the job needs a reviewed working draft in `draft_json`.
 
 Conceptually this step is:
 
-- take the raw extraction JSON
+- take the premium reviewed extract JSON
 - parse it into the repo's ingestion draft contract
 - attach extraction provenance metadata
 - save it as the job's current `draft_json`
@@ -278,10 +249,15 @@ The important distinction is:
 
 The draft should carry enough metadata to explain where it came from, including:
 
-- extraction route: `google_ai_studio` or `api`
-- model: currently `gemini-3.1-pro`
+- extraction route: `codex_app_reviewed_extraction`
+- operator or agent identifier when useful
 - prompt version or prompt bundle reference
 - extraction timestamp
+
+The extraction route must follow the source faithfulness contract in
+`docs/premium-ingestion-extraction.md`. The reviewed extract is allowed to
+normalize hierarchy and formatting, but it must not summarize, paraphrase, omit,
+or silently invent exam or correction content.
 
 ### 6. Normalize And Review The Draft
 
@@ -314,6 +290,13 @@ The draft normalization pass is where we settle:
 - asset placement
 - correction fidelity
 
+For corpus-scale work, crop tightening may be deferred when it is the slowest
+part of the pass. The reviewed extract can omit unknown `assets[].cropBox`
+values; the importer will create full-page placeholder crops, record the count,
+and leave the draft in review for a human or dedicated second Codex crop pass.
+This is acceptable for fast ingestion, but those placeholders remain review
+debt and are not publish-ready.
+
 ### 7. Final Human Review
 
 After the agent or operator has normalized the draft, a human does the final
@@ -324,10 +307,17 @@ This pass should be lightweight compared with the earlier normalization pass.
 Typical final-review tasks:
 
 - crop assets
+- compare native-rendered assets against their source-page fallback
 - fix small typos
 - fix obvious mismatches missed earlier
 - confirm metadata and stream sharing
 - do the last side-by-side sanity check against the PDFs
+
+The admin draft editor is the editing surface. The student-side draft preview is
+the rendering surface. Before approval, open the preview route from the draft
+editor and check the paper through the same subject viewer used by students.
+This catches layout, crop, native rendering, and hierarchy issues that are easy
+to miss inside the admin editor.
 
 The final human reviewer should not be surprised by large structural problems.
 If they are, the earlier normalization pass was not good enough.
@@ -370,13 +360,12 @@ judgment.
 Today it can:
 
 - drain queued jobs
-- run the shared processing path
+- prepare canonical source pages
 - publish approved drafts
 - keep heartbeats and processing leases current
 
 In the preferred operator workflow, the worker remains essential for publication
-and may still be used for shared page-generation or API-based extraction when we
-choose that route.
+and shared source-page generation. It does not author full-paper draft content.
 
 ## Current Alignment With The Repo
 
@@ -388,21 +377,9 @@ The current repo already aligns with this workflow in the most important places:
 - worker-backed publication path
 - published paper write path
 
-The main place where the repo is still catching up to the preferred operator
-flow is extraction:
-
-- the codebase still has an internal Gemini processing path
-- the current default runtime model in code is not yet `Gemini 3.1 Pro`
-- the manual Google AI Studio path is not yet documented as the default route in
-  older docs
-- the raw extraction JSON import step is conceptually supported through draft
-  updates, but it is not yet called out as a first-class operator flow
-
-This document settles the preferred workflow direction:
-
-- Google AI Studio is the default extraction route
-- the Gemini API path remains a fallback
-- publication still goes through the shared worker-backed app path
+The repo now has one canonical internal extraction target: the premium reviewed
+draft graph imported through the shared reviewed-extract path. Source intake,
+page preparation, review, approval, and publication remain shared app services.
 
 ## Important Rules
 
@@ -411,7 +388,9 @@ This document settles the preferred workflow direction:
   correction PDF.
 - Treat the canonical PDFs as the source of truth.
 - Treat the stored page PNGs as the canonical visual review surface.
-- Do not publish raw Gemini output without a normalization pass.
+- Treat the student-side draft preview as the final rendering review surface.
+- Do not publish raw model output without a reviewed draft graph and final
+  review.
 - Keep filenames source-agnostic and paper-family based.
 - Model stream sharing through `paper_source_streams` and `familyCode`, not by
   duplicating papers.
@@ -425,17 +404,16 @@ These commands still matter for source intake, audits, and storage hygiene:
 ### Source Intake
 
 ```bash
-npm run intake:source:eddirasa -w @bac-bank/api -- --stage originals --min-year 2008
-npm run intake:source:eddirasa -w @bac-bank/api -- --stage pages --min-year 2008
-npm run intake:source:eddirasa -w @bac-bank/api -- --stage ocr --job-id <job-id>
-npm run intake:source:eddirasa -w @bac-bank/api -- --stage process --job-id <job-id>
+npm run ingest:eddirasa -w @bac-bank/api -- --stage originals --min-year 2008
+npm run ingest:eddirasa -w @bac-bank/api -- --stage pages --min-year 2008
+npm run ingest:eddirasa -w @bac-bank/api -- --stage pages --job-id <job-id>
 ```
 
 Interpretation:
 
-- `originals` and `pages` are compatible with the preferred source-storage flow
-- `ocr` and `process` represent the shared internal extraction path, which is
-  still useful but is not the preferred default operator route
+- `originals` stores canonical PDFs
+- `pages` prepares canonical source page PNGs
+- content enters the draft through the reviewed-extract import command
 
 ### Audits And Cleanup
 
@@ -459,7 +437,7 @@ An ingestion is truly done only when:
 
 - the source bundle is canonically stored
 - both PDFs have canonical page PNGs
-- extraction has produced a candidate structure
+- the premium reviewed extract has produced a faithful draft graph
 - the draft has been normalized into a reliable review artifact
 - the final human review is lightweight
 - the worker has published the approved draft into the app-facing model

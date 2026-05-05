@@ -1,10 +1,11 @@
 import type {
+  CourseConceptRole,
+  CourseConceptResponse,
   CourseSubjectCardsResponse,
   CourseSubjectResponse,
   CourseTopicResponse,
   CourseTopicStatus,
 } from "@bac-bank/contracts/courses";
-import { getPrototypeTopicContent } from "@/lib/course-prototype-content";
 import {
   buildStudentCourseConceptRoute,
   buildStudentCourseSubjectRoute,
@@ -15,6 +16,9 @@ type CourseSubjectCardRecord = CourseSubjectCardsResponse["data"][number];
 type CourseSubjectUnitRecord = CourseSubjectResponse["units"][number];
 type CourseSubjectTopicRecord = CourseSubjectUnitRecord["topics"][number];
 type CourseConceptRecord = CourseTopicResponse["concepts"][number];
+type CourseConceptStepRecord = CourseConceptResponse["steps"][number];
+type CourseConceptQuizRecord = CourseConceptResponse["quiz"];
+type CourseDepthPortalRecord = CourseConceptResponse["depthPortals"][number];
 
 export type CourseSubjectCard = {
   subjectCode: string;
@@ -69,9 +73,18 @@ export type CourseSubjectPageModel = {
 export type CourseConceptCard = {
   conceptCode: string;
   slug: string;
+  unitCode: string | null;
+  role: CourseConceptRole;
+  roleLabel: string;
   title: string;
   description: string | null;
   href: string;
+};
+
+export type CourseConceptGroup = {
+  unitCode: string | null;
+  title: string;
+  concepts: CourseConceptCard[];
 };
 
 export type CourseTopicPageModel = {
@@ -92,6 +105,32 @@ export type CourseTopicPageModel = {
   continueHref: string;
   conceptCount: number;
   concepts: CourseConceptCard[];
+  conceptGroups: CourseConceptGroup[];
+};
+
+export type CourseConceptPageModel = {
+  subject: {
+    code: string;
+    name: string;
+  };
+  topic: {
+    code: string;
+    slug: string;
+    title: string;
+    shortTitle: string;
+  };
+  concept: {
+    conceptCode: string;
+    slug: string;
+    title: string;
+    summary: string;
+    estimatedMinutes: number;
+    steps: CourseConceptStepRecord[];
+    depthPortals: CourseDepthPortalRecord[];
+    quiz: CourseConceptQuizRecord;
+  };
+  backHref: string;
+  nextHref: string | null;
 };
 
 function mapNodeStatus(
@@ -108,6 +147,21 @@ function mapNodeStatus(
       return { status: "READY", statusLabel: "جاهز" };
   }
 }
+
+const conceptRoleLabels: Record<CourseConceptRole, string> = {
+  FIELD_INTRO: "مدخل المجال",
+  UNIT_INTRO: "مدخل الوحدة",
+  LESSON: "مفهوم",
+  FIELD_SYNTHESIS: "خلاصة المجال",
+};
+
+const courseUnitLabels: Record<string, string> = {
+  PROTEIN_SYNTHESIS: "تركيب البروتين",
+  STRUCTURE_FUNCTION: "البنية والوظيفة",
+  ENZYMES: "الإنزيمات",
+  IMMUNITY: "المناعة",
+  NERVOUS_COMMUNICATION: "الاتصال العصبي",
+};
 
 function buildContinueHref(input: {
   subjectCode: string;
@@ -200,37 +254,55 @@ function buildFallbackConceptCards(
   return concepts.map((concept) => ({
     conceptCode: concept.conceptCode,
     slug: concept.slug,
+    unitCode: concept.unitCode,
+    role: concept.role,
+    roleLabel: conceptRoleLabels[concept.role],
     title: concept.title,
     description: concept.description,
     href: buildStudentCourseConceptRoute(subjectCode, topicSlug, concept.slug),
   }));
 }
 
+function buildConceptGroups(
+  concepts: CourseConceptCard[],
+): CourseConceptGroup[] {
+  const groups: CourseConceptGroup[] = [];
+  const groupByUnitCode = new Map<string, CourseConceptGroup>();
+
+  for (const concept of concepts) {
+    const groupKey = concept.unitCode ?? "COURSE_PATH";
+    const existingGroup = groupByUnitCode.get(groupKey);
+
+    if (existingGroup) {
+      existingGroup.concepts.push(concept);
+      continue;
+    }
+
+    const group = {
+      unitCode: concept.unitCode,
+      title: concept.unitCode
+        ? (courseUnitLabels[concept.unitCode] ?? concept.unitCode)
+        : "المسار",
+      concepts: [concept],
+    };
+
+    groups.push(group);
+    groupByUnitCode.set(groupKey, group);
+  }
+
+  return groups;
+}
+
 export function buildCourseTopicPageModel(
   courseTopic: CourseTopicResponse,
 ): CourseTopicPageModel {
   const status = mapNodeStatus(courseTopic.status);
-  const prototypeTopic = getPrototypeTopicContent(
+  const concepts = buildFallbackConceptCards(
     courseTopic.subject.code,
     courseTopic.topic.slug,
+    courseTopic.concepts,
   );
-  const concepts = prototypeTopic
-    ? prototypeTopic.concepts.map((concept) => ({
-        conceptCode: concept.slug.toUpperCase(),
-        slug: concept.slug,
-        title: concept.title,
-        description: concept.summary,
-        href: buildStudentCourseConceptRoute(
-          courseTopic.subject.code,
-          courseTopic.topic.slug,
-          concept.slug,
-        ),
-      }))
-    : buildFallbackConceptCards(
-        courseTopic.subject.code,
-        courseTopic.topic.slug,
-        courseTopic.concepts,
-      );
+  const conceptGroups = buildConceptGroups(concepts);
 
   return {
     subject: courseTopic.subject,
@@ -245,5 +317,35 @@ export function buildCourseTopicPageModel(
     ),
     conceptCount: concepts.length,
     concepts,
+    conceptGroups,
+  };
+}
+
+export function buildCourseConceptPageModel(
+  courseConcept: CourseConceptResponse,
+): CourseConceptPageModel {
+  const backHref = buildStudentCourseTopicRoute(
+    courseConcept.subject.code,
+    courseConcept.topic.slug,
+  );
+  const nextHref = courseConcept.navigation.nextConceptSlug
+    ? buildStudentCourseConceptRoute(
+        courseConcept.subject.code,
+        courseConcept.topic.slug,
+        courseConcept.navigation.nextConceptSlug,
+      )
+    : null;
+
+  return {
+    subject: courseConcept.subject,
+    topic: courseConcept.topic,
+    concept: {
+      ...courseConcept.concept,
+      steps: courseConcept.steps,
+      depthPortals: courseConcept.depthPortals,
+      quiz: courseConcept.quiz,
+    },
+    backHref,
+    nextHref,
   };
 }

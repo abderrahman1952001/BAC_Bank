@@ -19,6 +19,10 @@ import {
   StudyNavigator,
   StudyStateLegend,
 } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
+import { FilterChip } from "@/components/ui/filter-chip";
+import { Input } from "@/components/ui/input";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { ReactNode } from "react";
 import {
   formatStudyQuestionReflection,
@@ -174,9 +178,9 @@ export function SessionPlayerHeader({
   return (
     <header className="theater-header">
       <div className="theater-header-left">
-        <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-ghost">
-          إغلاق
-        </Link>
+        <Button asChild variant="ghost" className="h-10 rounded-full px-4">
+          <Link href={STUDENT_MY_SPACE_ROUTE}>إغلاق</Link>
+        </Button>
       </div>
 
       <div className="theater-header-center">
@@ -204,9 +208,14 @@ export function SessionPlayerHeader({
             </span>
           </span>
         ) : null}
-        <button type="button" className="btn-secondary" onClick={onOpenNavigator}>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-10 rounded-full px-5"
+          onClick={onOpenNavigator}
+        >
           الخريطة
-        </button>
+        </Button>
       </div>
     </header>
   );
@@ -420,7 +429,7 @@ export function SessionPlayerQuestionPane({
                     onSubmitQuestionAnswer();
                   }}
                 >
-                  <input
+                  <Input
                     type="text"
                     inputMode={
                       activeQuestion.interaction.responseMode === "NUMERIC"
@@ -439,9 +448,9 @@ export function SessionPlayerQuestionPane({
                         : "auto"
                     }
                   />
-                  <button
+                  <Button
                     type="submit"
-                    className="btn-primary"
+                    className="h-10 rounded-full px-5"
                     disabled={
                       answerSubmitting ||
                       questionMotionLocked ||
@@ -449,27 +458,29 @@ export function SessionPlayerQuestionPane({
                     }
                   >
                     {answerSubmitting ? "جارٍ التحقق..." : "تحقق"}
-                  </button>
+                  </Button>
                 </form>
                 {answerError ? <p className="error-text">{answerError}</p> : null}
                 <div className="pedagogy-support-actions">
-                  <button
+                  <Button
                     type="button"
-                    className="btn-secondary"
+                    variant="outline"
+                    className="h-10 rounded-full px-5"
                     onClick={onMarkQuestionAttemptedAndRevealSolution}
                     disabled={answerSubmitting || questionMotionLocked}
                   >
                     جاوبت على الورقة
-                  </button>
+                  </Button>
                   {canRevealSolution ? (
-                    <button
+                    <Button
                       type="button"
-                      className="btn-secondary"
+                      variant="outline"
+                      className="h-10 rounded-full px-5"
                       onClick={onPrimaryAction}
                       disabled={answerSubmitting || questionMotionLocked}
                     >
                       اكشف الحل مباشرة
-                    </button>
+                    </Button>
                   ) : null}
                 </div>
               </StudySectionCard>
@@ -482,22 +493,23 @@ export function SessionPlayerQuestionPane({
                   بدون كتابة.
                 </p>
                 <div className="pedagogy-support-actions">
-                  <button
+                  <Button
                     type="button"
-                    className="btn-primary"
+                    className="h-10 rounded-full px-5"
                     onClick={onMarkQuestionAttemptedAndRevealSolution}
                     disabled={questionMotionLocked}
                   >
                     جاوبت، صحح لي
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
-                    className="btn-secondary"
+                    variant="outline"
+                    className="h-10 rounded-full px-5"
                     onClick={onPrimaryAction}
                     disabled={questionMotionLocked}
                   >
                     اكشف الحل مباشرة
-                  </button>
+                  </Button>
                 </div>
               </StudySectionCard>
             ) : null}
@@ -560,26 +572,27 @@ export function SessionPlayerQuestionPane({
 
         <div className="theater-actions-bar">
           {!(canRevealSolution && !solutionVisible && progressMode !== "REVIEW") ? (
-            <button
+            <Button
               type="button"
               data-testid="session-primary-action"
-              className="btn-primary"
+              className="h-11 rounded-full px-5"
               onClick={onPrimaryAction}
               disabled={questionMotionLocked || primaryActionDisabled}
             >
               {primaryActionLabel}
-            </button>
+            </Button>
           ) : null}
 
           {!solutionVisible && progressMode !== "REVIEW" ? (
-            <button
+            <Button
               type="button"
-              className="theater-subtle-action"
+              variant="ghost"
+              className="h-10 rounded-full px-4"
               onClick={onSkipQuestion}
               disabled={questionMotionLocked}
             >
               تخطي
-            </button>
+            </Button>
           ) : null}
         </div>
 
@@ -597,14 +610,10 @@ export function SessionPlayerQuestionPane({
                   Exclude<StudyQuestionResultStatus, "UNKNOWN">
                 >
               ).map((resultStatus) => (
-                <button
+                <FilterChip
                   key={resultStatus}
                   type="button"
-                  className={
-                    evaluationDraftResultStatus === resultStatus
-                      ? "choice-chip active"
-                      : "choice-chip"
-                  }
+                  active={evaluationDraftResultStatus === resultStatus}
                   onClick={() => onSetQuestionResultStatus(resultStatus)}
                   disabled={evaluationSubmitting}
                 >
@@ -612,7 +621,7 @@ export function SessionPlayerQuestionPane({
                     resultStatus,
                     activeQuestion.interaction.checkStrategy,
                   )}
-                </button>
+                </FilterChip>
               ))}
             </div>
             {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
@@ -628,15 +637,14 @@ export function SessionPlayerQuestionPane({
             </p>
             <div className="chip-grid">
               {(["HARD", "MEDIUM", "EASY"] as const).map((reflection) => (
-                <button
+                <FilterChip
                   key={reflection}
                   type="button"
-                  className="choice-chip"
                   onClick={() => onSubmitCorrectQuestionReflection(reflection)}
                   disabled={evaluationSubmitting}
                 >
                   {formatStudyQuestionReflection(reflection)}
-                </button>
+                </FilterChip>
               ))}
             </div>
             {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
@@ -655,10 +663,9 @@ export function SessionPlayerQuestionPane({
             </p>
             <div className="chip-grid">
               {(["CONCEPT", "METHOD", "CALCULATION"] as const).map((diagnosis) => (
-                <button
+                <FilterChip
                   key={diagnosis}
                   type="button"
-                  className="choice-chip"
                   onClick={() => onSubmitIncorrectQuestionDiagnosis(diagnosis)}
                   disabled={evaluationSubmitting}
                 >
@@ -666,7 +673,7 @@ export function SessionPlayerQuestionPane({
                     diagnosis,
                     supportStyle,
                   })}
-                </button>
+                </FilterChip>
               ))}
             </div>
             {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
@@ -686,18 +693,14 @@ export function SessionPlayerQuestionPane({
             <div className="chip-grid">
               {(["MISSED", "HARD", "MEDIUM", "EASY"] as const).map(
                 (reflection) => (
-                  <button
+                  <FilterChip
                     key={reflection}
                     type="button"
-                    className={
-                      activeQuestionState?.reflection === reflection
-                        ? "choice-chip active"
-                        : "choice-chip"
-                    }
+                    active={activeQuestionState?.reflection === reflection}
                     onClick={() => onSetQuestionReflection(reflection)}
                   >
                     {formatStudyQuestionReflection(reflection)}
-                  </button>
+                  </FilterChip>
                 ),
               )}
             </div>
@@ -716,21 +719,17 @@ export function SessionPlayerQuestionPane({
           >
             <div className="chip-grid">
               {(["CONCEPT", "METHOD", "CALCULATION"] as const).map((diagnosis) => (
-                <button
+                <FilterChip
                   key={diagnosis}
                   type="button"
-                  className={
-                    activeQuestionState?.diagnosis === diagnosis
-                      ? "choice-chip active"
-                      : "choice-chip"
-                  }
+                  active={activeQuestionState?.diagnosis === diagnosis}
                   onClick={() => onSetQuestionDiagnosis(diagnosis)}
                 >
                   {formatStudyQuestionDiagnosisForSupportStyle({
                     diagnosis,
                     supportStyle,
                   })}
-                </button>
+                </FilterChip>
               ))}
             </div>
           </StudySectionCard>
@@ -739,14 +738,15 @@ export function SessionPlayerQuestionPane({
         {solutionVisible && canRequestAiExplanation ? (
           <StudySectionCard tone="commentary" title="شرح إضافي">
             <div className="study-action-row">
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={onRequestAiExplanation}
                 disabled={aiExplanationLoading}
               >
                 {aiExplanationLoading ? "جارٍ توليد الشرح..." : "اشرحه بالذكاء الاصطناعي"}
-              </button>
+              </Button>
             </div>
             {aiExplanationError ? <p className="error-text">{aiExplanationError}</p> : null}
             {aiExplanation ? (
@@ -823,20 +823,21 @@ export function SessionPlayerQuestionPane({
             </div>
 
             <div className="theater-summary-actions">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
+                className="h-10 rounded-full px-5"
                 onClick={onContinueAfterExerciseCheckpoint}
               >
                 تابع إلى التمرين التالي
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={onPauseAfterExerciseCheckpoint}
               >
                 توقّف هنا وارجع لاحقاً
-              </button>
+              </Button>
             </div>
           </StudySectionCard>
         ) : null}
@@ -871,36 +872,39 @@ export function SessionPlayerQuestionPane({
             </div>
 
             <div className="theater-summary-actions">
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={onGoToFirstUnanswered}
                 disabled={progressCounts.unansweredCount === 0}
               >
                 اذهب إلى غير المنجز
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={onGoToFirstSkipped}
                 disabled={progressCounts.skippedCount === 0}
               >
                 راجع المتروك
-              </button>
+              </Button>
               {sessionFamily === "DRILL" ? (
-                <button
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="outline"
+                  className="h-10 rounded-full px-5"
                   onClick={onToggleMode}
                 >
                   {progressMode === "REVIEW"
                     ? "العودة لوضع الحل"
                     : "فتح وضع المراجعة"}
-                </button>
+                </Button>
               ) : null}
-              <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-primary">
-                العودة إلى مساحتي
-              </Link>
+              <Button asChild className="h-10 rounded-full px-5">
+                <Link href={STUDENT_MY_SPACE_ROUTE}>العودة إلى مساحتي</Link>
+              </Button>
             </div>
           </StudySectionCard>
         ) : null}
@@ -1003,9 +1007,14 @@ export function SessionPlayerNavigatorModal({
               <p className="page-kicker">خريطة الجلسة</p>
               <h2>{sessionTitle ?? "جلسة تدريب"}</h2>
             </div>
-            <button type="button" className="btn-ghost" onClick={onClose}>
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-10 rounded-full px-4"
+              onClick={onClose}
+            >
               إغلاق
-            </button>
+            </Button>
           </div>
 
           <div className="theater-modal-section">
@@ -1019,28 +1028,21 @@ export function SessionPlayerNavigatorModal({
           <div className="theater-modal-actions">
             {canToggleMode ? (
               <>
-                <button
-                  type="button"
-                  className={
-                    progressMode === "SOLVE"
-                      ? "study-toggle-button active"
-                      : "study-toggle-button"
-                  }
-                  onClick={() => onSetMode("SOLVE")}
+                <ToggleGroup
+                  type="single"
+                  value={progressMode}
+                  onValueChange={(value) => {
+                    if (value === "SOLVE" || value === "REVIEW") {
+                      onSetMode(value);
+                    }
+                  }}
+                  variant="outline"
+                  size="sm"
+                  className="flex-wrap"
                 >
-                  حل
-                </button>
-                <button
-                  type="button"
-                  className={
-                    progressMode === "REVIEW"
-                      ? "study-toggle-button active"
-                      : "study-toggle-button"
-                  }
-                  onClick={() => onSetMode("REVIEW")}
-                >
-                  مراجعة
-                </button>
+                  <ToggleGroupItem value="SOLVE">حل</ToggleGroupItem>
+                  <ToggleGroupItem value="REVIEW">مراجعة</ToggleGroupItem>
+                </ToggleGroup>
               </>
             ) : sessionStatus === "COMPLETED" || sessionStatus === "EXPIRED" ? (
               <span className="study-meta-pill">
@@ -1053,22 +1055,24 @@ export function SessionPlayerNavigatorModal({
                 <span>محاكاة جارية</span>
               </span>
             )}
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-10 rounded-full px-5"
               onClick={onGoToFirstUnanswered}
               disabled={progressCounts.unansweredCount === 0}
             >
               أول غير منجز
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-10 rounded-full px-5"
               onClick={onGoToFirstSkipped}
               disabled={progressCounts.skippedCount === 0}
             >
               راجع المتروك
-            </button>
+            </Button>
           </div>
 
           <StudyNavigator

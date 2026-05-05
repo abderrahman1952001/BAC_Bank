@@ -13,7 +13,6 @@ type ResetToDraftInput = {
 type RunStageInput = {
   jobId: string;
   replaceExisting: boolean;
-  skipExtraction: boolean;
   completionStatus: 'IN_REVIEW';
 };
 type JobRecord = {
@@ -176,7 +175,6 @@ describe('IngestionReviewedExtractService', () => {
     expect(runStage).toHaveBeenCalledWith({
       jobId: 'job-1',
       replaceExisting: false,
-      skipExtraction: true,
       completionStatus: 'IN_REVIEW',
     });
     expect(result.finalStatus).toBe(IngestionJobStatus.IN_REVIEW);

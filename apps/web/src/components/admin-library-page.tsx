@@ -9,6 +9,7 @@ import {
   AdminLibrarySujetsPanel,
 } from "@/components/admin-library-sections";
 import { EmptyState } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import {
   buildAdminLibraryQuery,
   buildAdminLibrarySelectionPrompt,
@@ -280,13 +281,14 @@ export function AdminLibraryPage({
           title="Published library unavailable"
           description="Retry the page to load the published catalog."
           action={
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-10 rounded-full px-5"
               onClick={() => router.refresh()}
             >
               Retry
-            </button>
+            </Button>
           }
         />
       </section>
@@ -319,12 +321,12 @@ export function AdminLibraryPage({
           </div>
         </div>
         <div className="table-actions">
-          <Link href="/admin/drafts" className="btn-secondary">
-            Open Drafts
-          </Link>
-          <Link href="/admin/intake" className="btn-secondary">
-            Open Intake
-          </Link>
+          <Button asChild variant="outline" className="h-10 rounded-full px-5">
+            <Link href="/admin/drafts">Open Drafts</Link>
+          </Button>
+          <Button asChild variant="outline" className="h-10 rounded-full px-5">
+            <Link href="/admin/intake">Open Intake</Link>
+          </Button>
         </div>
       </div>
 

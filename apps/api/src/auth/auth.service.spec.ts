@@ -11,6 +11,7 @@ jest.mock('@clerk/backend', () => ({
 
 const mockedCreateClerkClient = jest.mocked(createClerkClient);
 const mockedVerifyToken = jest.mocked(verifyToken);
+const fixedNow = new Date('2026-04-08T10:00:00.000Z');
 const freeStudyEntitlements = {
   tier: 'FREE',
   capabilities: {
@@ -62,6 +63,8 @@ describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(() => {
+    jest.useFakeTimers({ now: fixedNow });
+
     const values: Record<string, string> = {
       AUTH_BOOTSTRAP_ADMIN_EMAIL: 'admin@example.com',
       CLERK_SECRET_KEY: 'sk_test_example',
@@ -92,6 +95,10 @@ describe('AuthService', () => {
     mockedCreateClerkClient.mockReset();
 
     service = new AuthService(prisma as never, configService as ConfigService);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it('provisions a Clerk-backed student account on first authenticated request', async () => {
@@ -161,18 +168,16 @@ describe('AuthService', () => {
       sid: 'sess_admin',
       sub: 'user_clerk_admin',
     } as never);
-    prisma.user.findUnique
-      .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce({
-        id: 'admin-1',
-        clerkUserId: null,
-        email: 'admin@example.com',
-        fullName: 'Admin',
-        role: UserRole.ADMIN,
-        subscriptionStatus: SubscriptionStatus.FREE,
-        subscriptionEndsAt: null,
-        stream: null,
-      });
+    prisma.user.findUnique.mockResolvedValueOnce(null).mockResolvedValueOnce({
+      id: 'admin-1',
+      clerkUserId: null,
+      email: 'admin@example.com',
+      fullName: 'Admin',
+      role: UserRole.ADMIN,
+      subscriptionStatus: SubscriptionStatus.FREE,
+      subscriptionEndsAt: null,
+      stream: null,
+    });
     prisma.user.update.mockResolvedValueOnce({
       id: 'admin-1',
       clerkUserId: 'user_clerk_admin',

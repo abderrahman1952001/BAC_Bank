@@ -1,4 +1,5 @@
 import { Bookmark, Flag } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { StudentExerciseStateResponse } from "@/lib/study-api";
 import {
   getStudentExerciseStateFlags,
@@ -19,24 +20,26 @@ export function StudyExerciseStateActions({
 
   return (
     <>
-      <button
+      <Button
         type="button"
-        className={isBookmarked ? "study-toggle-button active" : "study-toggle-button"}
+        variant={isBookmarked ? "secondary" : "outline"}
+        className="h-10 rounded-full px-4"
         onClick={onToggleBookmark}
         disabled={pending}
       >
-        <Bookmark size={16} aria-hidden="true" />
+        <Bookmark data-icon="inline-start" aria-hidden="true" />
         {isBookmarked ? "محفوظ" : "حفظ"}
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
-        className={isFlagged ? "study-toggle-button active" : "study-toggle-button"}
+        variant={isFlagged ? "secondary" : "outline"}
+        className="h-10 rounded-full px-4"
         onClick={onToggleFlag}
         disabled={pending}
       >
-        <Flag size={16} aria-hidden="true" />
+        <Flag data-icon="inline-start" aria-hidden="true" />
         {isFlagged ? "للمراجعة" : "علّم للمراجعة"}
-      </button>
+      </Button>
     </>
   );
 }

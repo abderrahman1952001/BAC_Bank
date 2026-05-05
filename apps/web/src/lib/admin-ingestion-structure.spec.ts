@@ -2,8 +2,6 @@ import { describe, expect, it } from "vitest";
 import type { AdminIngestionDraft } from "@/lib/admin";
 import {
   applyNativeSuggestionToDraftBlock,
-  applyRecoveredAssetToDraft,
-  applyRecoveredSnippetToDraft,
   buildAssetToolDraft,
   buildDraftBlockPreset,
   buildPreviewBlocks,
@@ -382,8 +380,8 @@ describe("admin ingestion structure helpers", () => {
           kind: "formula_graph",
         },
         status: "suggested",
-        source: "gemini_initial",
-        notes: ["Recovered"],
+        source: "codex_app_extraction",
+        notes: ["Imported native suggestion"],
       },
     });
     const updatedDraft = updateDraftAsset(withSuggestion, "asset-1", {
@@ -407,7 +405,7 @@ describe("admin ingestion structure helpers", () => {
         ...updatedAsset,
         nativeSuggestion: {
           ...updatedAsset.nativeSuggestion!,
-          status: "recovered",
+          status: "suggested",
         },
       },
     });
@@ -424,96 +422,6 @@ describe("admin ingestion structure helpers", () => {
           kind: "formula_graph",
         },
         assetId: "asset-1",
-      }),
-    );
-  });
-
-  it("applies recovered asset payloads through the extracted recovery helper", () => {
-    const draft = createDraft();
-    const result = applyRecoveredAssetToDraft({
-      draft,
-      variantCode: "SUJET_1",
-      nodeId: "question-1",
-      blockId: "block-2",
-      assetId: "asset-1",
-      mode: "graph",
-      recovery: {
-        mode: "graph",
-        type: "graph",
-        value: "y=x^2",
-        data: {
-          kind: "formula_graph",
-        },
-        notes: ["Graph recovered"],
-      },
-    });
-
-    expect(result.keepsAsset).toBe(true);
-    expect(result.draft.assets[0]).toEqual(
-      expect.objectContaining({
-        classification: "graph",
-        nativeSuggestion: {
-          type: "graph",
-          value: "y=x^2",
-          data: {
-            kind: "formula_graph",
-          },
-          status: "recovered",
-          source: "crop_recovery",
-          notes: ["Graph recovered"],
-        },
-      }),
-    );
-    expect(
-      result.draft.variants[0]?.nodes[2]?.blocks.find(
-        (block) => block.id === "block-2",
-      ),
-    ).toEqual(
-      expect.objectContaining({
-        type: "graph",
-        value: "y=x^2",
-        data: {
-          kind: "formula_graph",
-        },
-        assetId: "asset-1",
-      }),
-    );
-  });
-
-  it("falls back to inserting a snippet block when append cannot merge block types", () => {
-    const draft = createDraft();
-    const result = applyRecoveredSnippetToDraft({
-      draft,
-      variantCode: "SUJET_1",
-      nodeId: "question-1",
-      blockId: "block-2",
-      snippetAction: "append",
-      recovery: {
-        mode: "text",
-        type: "paragraph",
-        value: "Recovered explanation",
-        data: null,
-        notes: ["Inserted below"],
-      },
-      makeBlockId: () => "block-new",
-    });
-
-    expect(result.appendFallbackToInsert).toBe(true);
-    expect(result.nextSelectedBlockId).toBe("block-new");
-    expect(
-      result.draft.variants[0]?.nodes[2]?.blocks.map((block) => block.id),
-    ).toEqual(["block-2", "block-new", "block-3"]);
-    expect(
-      result.draft.variants[0]?.nodes[2]?.blocks.find(
-        (block) => block.id === "block-new",
-      ),
-    ).toEqual(
-      expect.objectContaining({
-        role: "PROMPT",
-        type: "paragraph",
-        value: "Recovered explanation",
-        data: null,
-        assetId: null,
       }),
     );
   });
@@ -572,7 +480,7 @@ describe("admin ingestion structure helpers", () => {
         value: "y=x^2",
         data: null,
         status: "suggested" as const,
-        source: "gemini_initial" as const,
+        source: "codex_app_extraction" as const,
         notes: [],
       },
     };

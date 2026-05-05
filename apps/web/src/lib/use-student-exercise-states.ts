@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { StudentExerciseStateResponse } from "@/lib/study-api";
 import {
   fetchStudentExerciseStatesLookup,
@@ -33,7 +33,10 @@ export function useStudentExerciseStates({
     setExerciseStatesById(buildStudentExerciseStateMap(initialStates ?? []));
   }, [initialStates]);
 
-  const normalizedExerciseNodeIds = normalizeExerciseNodeIds(exerciseNodeIds);
+  const normalizedExerciseNodeIds = useMemo(
+    () => normalizeExerciseNodeIds(exerciseNodeIds),
+    [exerciseNodeIds],
+  );
   const lookupKey = normalizedExerciseNodeIds.join(":");
 
   useEffect(() => {
@@ -66,7 +69,7 @@ export function useStudentExerciseStates({
     return () => {
       cancelled = true;
     };
-  }, [initialStates, lookupKey]);
+  }, [initialStates, lookupKey, normalizedExerciseNodeIds]);
 
   async function updateExerciseState(
     exerciseNodeId: string,

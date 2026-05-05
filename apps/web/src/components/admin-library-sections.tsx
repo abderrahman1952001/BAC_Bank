@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
+import { FilterChip } from "@/components/ui/filter-chip";
+import { SelectionCard } from "@/components/ui/selection-card";
 import { formatPublishedSessionLabel } from "@/lib/admin-library";
 import { type CatalogResponse, type ExamResponse } from "@/lib/study-api";
 
@@ -72,29 +75,27 @@ export function AdminLibraryFiltersRail({
         <div className="library-filter-head">
           <h3>Stream</h3>
           {selectedStreamCode ? (
-            <button
+            <Button
               type="button"
-              className="library-clear-button"
+              variant="ghost"
+              size="xs"
+              className="rounded-full px-2"
               onClick={onClearStream}
             >
               Clear
-            </button>
+            </Button>
           ) : null}
         </div>
         <div className="chip-grid">
           {(catalog?.streams ?? []).map((item) => (
-            <button
+            <FilterChip
               key={item.code}
               type="button"
-              className={
-                item.code === selectedStreamCode
-                  ? "choice-chip active"
-                  : "choice-chip"
-              }
+              active={item.code === selectedStreamCode}
               onClick={() => onSelectStream(item.code)}
             >
               {item.name}
-            </button>
+            </FilterChip>
           ))}
         </div>
       </div>
@@ -103,13 +104,15 @@ export function AdminLibraryFiltersRail({
         <div className="library-filter-head">
           <h3>Subject</h3>
           {selectedSubjectCode ? (
-            <button
+            <Button
               type="button"
-              className="library-clear-button"
+              variant="ghost"
+              size="xs"
+              className="rounded-full px-2"
               onClick={onClearSubject}
             >
               Clear
-            </button>
+            </Button>
           ) : null}
         </div>
         {!stream ? (
@@ -117,18 +120,14 @@ export function AdminLibraryFiltersRail({
         ) : (
           <div className="chip-grid">
             {stream.subjects.map((item) => (
-              <button
+              <FilterChip
                 key={item.code}
                 type="button"
-                className={
-                  item.code === selectedSubjectCode
-                    ? "choice-chip active"
-                    : "choice-chip"
-                }
+                active={item.code === selectedSubjectCode}
                 onClick={() => onSelectSubject(item.code)}
               >
                 {item.name}
-              </button>
+              </FilterChip>
             ))}
           </div>
         )}
@@ -138,13 +137,15 @@ export function AdminLibraryFiltersRail({
         <div className="library-filter-head">
           <h3>Year</h3>
           {selectedYear ? (
-            <button
+            <Button
               type="button"
-              className="library-clear-button"
+              variant="ghost"
+              size="xs"
+              className="rounded-full px-2"
               onClick={onClearYear}
             >
               Clear
-            </button>
+            </Button>
           ) : null}
         </div>
         {!subject ? (
@@ -152,19 +153,16 @@ export function AdminLibraryFiltersRail({
         ) : (
           <div className="library-year-list">
             {subject.years.map((item) => (
-              <button
+              <SelectionCard
                 key={item.year}
                 type="button"
-                className={
-                  item.year === selectedYear
-                    ? "library-year-button active"
-                    : "library-year-button"
-                }
+                active={item.year === selectedYear}
+                className="min-h-12 grid-cols-[auto_auto] items-center rounded-2xl px-3 py-2"
                 onClick={() => onSelectYear(item.year)}
               >
                 <strong>{item.year}</strong>
                 <span>{item.sujets.length} sujets</span>
-              </button>
+              </SelectionCard>
             ))}
           </div>
         )}
@@ -208,20 +206,19 @@ export function AdminLibrarySujetsPanel({
               item.sujetNumber === selectedSujetNumber;
 
             return (
-              <button
+              <SelectionCard
                 key={`${item.examId}:${item.sujetNumber}`}
                 type="button"
-                className={
-                  isActive ? "library-sujet-card active" : "library-sujet-card"
-                }
+                active={isActive}
+                className="min-h-24 content-start rounded-2xl"
                 onClick={() => onSelectSujet(item.examId, item.sujetNumber)}
               >
-                <div className="library-sujet-card-top">
+                <div className="flex items-center justify-between gap-2">
                   <strong>{item.label}</strong>
                   <span>{item.exerciseCount} exercises</span>
                 </div>
                 <p>{formatPublishedSessionLabel(item.sessionType)}</p>
-              </button>
+              </SelectionCard>
             );
           })}
         </div>
@@ -254,13 +251,13 @@ export function AdminLibraryPreviewPanel({
         <h2>Paper Preview</h2>
         <div className="table-actions">
           {studentPreviewHref ? (
-            <Link href={studentPreviewHref} className="btn-secondary">
-              Student Preview
-            </Link>
+            <Button asChild variant="outline" className="h-10 rounded-full px-5">
+              <Link href={studentPreviewHref}>Student Preview</Link>
+            </Button>
           ) : null}
-          <button
+          <Button
             type="button"
-            className="btn-primary"
+            className="h-10 rounded-full px-5"
             onClick={onStartRevision}
             disabled={startingRevision || !canStartRevision}
           >
@@ -269,7 +266,7 @@ export function AdminLibraryPreviewPanel({
               : hasActiveRevisionDraft
                 ? "Resume Revision Draft"
                 : "Open Revision Draft"}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -285,13 +282,14 @@ export function AdminLibraryPreviewPanel({
           title="Preview unavailable"
           description={examError}
           action={
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-10 rounded-full px-5"
               onClick={onRetryPreview}
             >
               Retry
-            </button>
+            </Button>
           }
         />
       ) : selectedExam ? (

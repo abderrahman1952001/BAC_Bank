@@ -1,5 +1,12 @@
 import type { AuthOptionsResponse, AuthUser } from "@bac-bank/contracts/auth";
+import type { AdminBillingSettingsResponse } from "@bac-bank/contracts/admin";
 import type {
+  BillingCheckoutResponse,
+  BillingOverviewResponse,
+  BillingPlan,
+} from "@bac-bank/contracts/billing";
+import type {
+  CourseConceptResponse,
   CourseSubjectCardsResponse,
   CourseSubjectResponse,
   CourseTopicResponse,
@@ -10,6 +17,7 @@ import type {
 } from "@bac-bank/contracts/ingestion";
 import type {
   CatalogResponse,
+  ExamResponse,
   FiltersResponse,
   MyMistakesResponse,
   RecentExerciseStatesResponse,
@@ -65,7 +73,7 @@ export const playwrightTestStudentUser = {
 
 export const playwrightTestAdminUser = {
   id: "admin-test-user",
-  username: "BAC Admin",
+  username: "مشرف مِراس",
   email: "admin@example.com",
   role: "ADMIN",
   stream: {
@@ -175,6 +183,299 @@ export const playwrightTestCatalog = {
     },
   ],
 } satisfies CatalogResponse;
+
+const playwrightTestBillingPlans = [
+  {
+    code: "PREMIUM_30_DAYS",
+    name: "Premium 30",
+    description: "A focused month for short revision sprints.",
+    currency: "DZD",
+    amount: 2500,
+    accessType: "FIXED_DAYS",
+    durationDays: 30,
+    seasonEndsAt: null,
+    features: [
+      "Unlimited topic drills",
+      "Paper simulations",
+      "Priority mistake review",
+    ],
+  },
+  {
+    code: "PREMIUM_90_DAYS",
+    name: "Premium 90",
+    description: "The steady semester option for repeated practice.",
+    currency: "DZD",
+    amount: 6500,
+    accessType: "FIXED_DAYS",
+    durationDays: 90,
+    seasonEndsAt: null,
+    features: [
+      "Everything in Premium 30",
+      "Longer revision window",
+      "Best for trimester planning",
+    ],
+    recommended: true,
+  },
+  {
+    code: "PREMIUM_BAC_SEASON",
+    name: "BAC Season",
+    description: "Premium access through the final BAC preparation period.",
+    currency: "DZD",
+    amount: 9000,
+    accessType: "SEASON_END",
+    durationDays: null,
+    seasonEndsAt: "2026-06-30T23:00:00.000Z",
+    features: [
+      "Full-season access",
+      "Simulations until exam month",
+      "Designed for final-year students",
+    ],
+  },
+] satisfies BillingPlan[];
+
+export const playwrightTestBillingOverview = {
+  provider: "CHARGILY",
+  currentAccess: {
+    isPremium: false,
+    subscriptionStatus: "FREE",
+    subscriptionEndsAt: null,
+  },
+  availablePlans: playwrightTestBillingPlans,
+  recentCheckouts: [
+    {
+      id: "checkout-1",
+      provider: "CHARGILY",
+      planCode: "PREMIUM_90_DAYS",
+      currency: "DZD",
+      amount: 6500,
+      status: "PENDING",
+      locale: "ar",
+      providerCheckoutId: "chargily-checkout-1",
+      paymentMethod: null,
+      checkoutUrl: "https://pay.chargily.test/checkout-1",
+      failureReason: null,
+      accessStartsAt: null,
+      accessEndsAt: null,
+      paidAt: null,
+      createdAt: "2026-03-28T12:00:00.000Z",
+      updatedAt: "2026-03-28T12:00:00.000Z",
+    },
+  ],
+} satisfies BillingOverviewResponse;
+
+export const playwrightTestBillingCheckout = {
+  checkout: playwrightTestBillingOverview.recentCheckouts[0],
+} satisfies BillingCheckoutResponse;
+
+export const playwrightTestAdminBillingSettings = {
+  settings: {
+    premium30DaysAmountDzd: 2500,
+    premium30DaysDurationDays: 30,
+    premium90DaysAmountDzd: 6500,
+    premium90DaysDurationDays: 90,
+    premiumBacSeasonAmountDzd: 9000,
+    configuredBacSeasonEndsAt: null,
+    effectiveBacSeasonEndsAt: "2026-06-30T23:00:00.000Z",
+    checkoutFeeResponsibility: "MERCHANT",
+    persisted: true,
+    updatedAt: "2026-03-28T12:00:00.000Z",
+    updatedByUserId: "admin-test-user",
+    updatedByEmail: "admin@example.com",
+  },
+  plans: playwrightTestBillingPlans,
+} satisfies AdminBillingSettingsResponse;
+
+export const playwrightTestExam = {
+  id: "exam-1",
+  paperId: "paper-1",
+  year: 2025,
+  sessionType: "NORMAL",
+  durationMinutes: 210,
+  officialSourceReference: null,
+  stream: {
+    code: "SE",
+    name: "Sciences experimentales",
+  },
+  subject: {
+    code: "MATH",
+    name: "Mathematics",
+  },
+  selectedSujetNumber: 1,
+  selectedSujetLabel: "Sujet 1",
+  availableSujets: [
+    {
+      sujetNumber: 1,
+      label: "Sujet 1",
+    },
+  ],
+  selectedVariantCode: "SUJET_1",
+  hierarchy: {
+    variantId: "variant-1",
+    variantCode: "SUJET_1",
+    title: "Sujet 1",
+    status: "PUBLISHED",
+    nodeCount: 5,
+    exercises: [
+      {
+        id: "exercise-1",
+        nodeType: "EXERCISE",
+        orderIndex: 1,
+        label: "Exercise 1",
+        maxPoints: 8,
+        status: "PUBLISHED",
+        metadata: null,
+        topics: [{ code: "ALG", name: "Algebra" }],
+        blocks: [
+          {
+            id: "exam-context-1",
+            role: "STEM",
+            orderIndex: 1,
+            blockType: "PARAGRAPH",
+            textValue: "Let f be the function defined by f(x) = x^2 - 3x + 2.",
+            data: null,
+            media: null,
+          },
+        ],
+        children: [
+          {
+            id: "question-1",
+            nodeType: "QUESTION",
+            orderIndex: 1,
+            label: "1",
+            maxPoints: 3,
+            status: "PUBLISHED",
+            metadata: null,
+            topics: [{ code: "ALG", name: "Algebra" }],
+            blocks: [
+              {
+                id: "question-1-prompt",
+                role: "PROMPT",
+                orderIndex: 1,
+                blockType: "PARAGRAPH",
+                textValue: "Solve f(x) = 0 and interpret the roots.",
+                data: null,
+                media: null,
+              },
+              {
+                id: "question-1-solution",
+                role: "SOLUTION",
+                orderIndex: 2,
+                blockType: "PARAGRAPH",
+                textValue: "f(x) = (x - 1)(x - 2), so the roots are 1 and 2.",
+                data: null,
+                media: null,
+              },
+            ],
+            children: [],
+          },
+          {
+            id: "question-2",
+            nodeType: "QUESTION",
+            orderIndex: 2,
+            label: "2",
+            maxPoints: 5,
+            status: "PUBLISHED",
+            metadata: null,
+            topics: [{ code: "ALG", name: "Algebra" }],
+            blocks: [
+              {
+                id: "question-2-prompt",
+                role: "PROMPT",
+                orderIndex: 1,
+                blockType: "PARAGRAPH",
+                textValue: "Determine the sign of f(x) on R.",
+                data: null,
+                media: null,
+              },
+              {
+                id: "question-2-solution",
+                role: "SOLUTION",
+                orderIndex: 2,
+                blockType: "PARAGRAPH",
+                textValue:
+                  "The parabola opens upward, so f is positive outside [1, 2] and negative inside.",
+                data: null,
+                media: null,
+              },
+            ],
+            children: [],
+          },
+        ],
+      },
+      {
+        id: "exercise-2",
+        nodeType: "EXERCISE",
+        orderIndex: 2,
+        label: "Exercise 2",
+        maxPoints: 6,
+        status: "PUBLISHED",
+        metadata: null,
+        topics: [{ code: "ALG", name: "Algebra" }],
+        blocks: [
+          {
+            id: "exam-context-2",
+            role: "STEM",
+            orderIndex: 1,
+            blockType: "PARAGRAPH",
+            textValue: "A sequence is defined by u0 = 2 and u(n+1) = 3u(n) - 1.",
+            data: null,
+            media: null,
+          },
+        ],
+        children: [
+          {
+            id: "question-3",
+            nodeType: "QUESTION",
+            orderIndex: 1,
+            label: "1",
+            maxPoints: 6,
+            status: "PUBLISHED",
+            metadata: null,
+            topics: [{ code: "ALG", name: "Algebra" }],
+            blocks: [
+              {
+                id: "question-3-prompt",
+                role: "PROMPT",
+                orderIndex: 1,
+                blockType: "PARAGRAPH",
+                textValue: "Compute u1 and u2, then conjecture the growth trend.",
+                data: null,
+                media: null,
+              },
+              {
+                id: "question-3-solution",
+                role: "SOLUTION",
+                orderIndex: 2,
+                blockType: "PARAGRAPH",
+                textValue: "u1 = 5 and u2 = 14. The terms grow rapidly.",
+                data: null,
+                media: null,
+              },
+            ],
+            children: [],
+          },
+        ],
+      },
+    ],
+  },
+  exerciseCount: 2,
+  exercises: [
+    {
+      id: "exercise-1",
+      orderIndex: 1,
+      title: "Exercise 1",
+      totalPoints: 8,
+      questionCount: 2,
+    },
+    {
+      id: "exercise-2",
+      orderIndex: 2,
+      title: "Exercise 2",
+      totalPoints: 6,
+      questionCount: 1,
+    },
+  ],
+} satisfies ExamResponse;
 
 export const playwrightTestPreview = {
   sessionFamily: "DRILL",
@@ -553,11 +854,59 @@ export const playwrightTestCourseTopic = {
     {
       conceptCode: "ALG",
       slug: "algebra",
+      unitCode: null,
+      role: "LESSON",
       title: "Algebra",
       description: null,
     },
   ],
 } satisfies CourseTopicResponse;
+
+export const playwrightTestCourseConcept = {
+  subject: {
+    code: "MATH",
+    name: "Mathematics",
+  },
+  topic: {
+    code: "ALG",
+    slug: "algebra",
+    title: "Algebra",
+    shortTitle: "Algebra",
+  },
+  concept: {
+    conceptCode: "ALG",
+    slug: "algebra",
+    unitCode: null,
+    role: "LESSON",
+    title: "Core algebra checkpoint",
+    summary: "Stabilize the symbolic move before drilling exam questions.",
+    estimatedMinutes: 4,
+  },
+  navigation: {
+    previousConceptSlug: null,
+    nextConceptSlug: null,
+  },
+  steps: [
+    {
+      id: "rule",
+      type: "RULE",
+      eyebrow: "Rule",
+      title: "Keep both sides balanced",
+      body: "Every algebraic transformation must preserve equality on both sides.",
+      bullets: ["Apply the same operation to both sides"],
+      visual: null,
+      interaction: null,
+      examLens: null,
+    },
+  ],
+  depthPortals: [],
+  quiz: {
+    question: "What must stay true after an algebraic transformation?",
+    options: ["The equality is preserved", "The left side becomes larger"],
+    correctIndex: 0,
+    explanation: "Balanced transformations keep the equation equivalent.",
+  },
+} satisfies CourseConceptResponse;
 
 export const playwrightTestStudySession = {
   id: "session-123",
@@ -759,8 +1108,87 @@ export const playwrightTestAdminJobResponse = {
       metadata: {},
     },
     sourcePages: [],
-    assets: [],
-    variants: [],
+    assets: [
+      {
+        id: "asset-table",
+        sourcePageId: "page-1",
+        documentKind: "EXAM",
+        pageNumber: 1,
+        variantCode: "SUJET_1",
+        role: "PROMPT",
+        classification: "table",
+        cropBox: {
+          x: 10,
+          y: 20,
+          width: 400,
+          height: 180,
+        },
+        label: "جدول المعاينة",
+        notes: null,
+      },
+    ],
+    variants: [
+      {
+        code: "SUJET_1",
+        title: "الموضوع الأول",
+        nodes: [
+          {
+            id: "pw-exercise-1",
+            nodeType: "EXERCISE",
+            parentId: null,
+            orderIndex: 1,
+            label: "التمرين الأول",
+            maxPoints: null,
+            topicCodes: [],
+            blocks: [
+              {
+                id: "pw-exercise-context",
+                role: "PROMPT",
+                type: "paragraph",
+                value: "نص تمهيدي قصير لمعاينة المسودة.",
+                assetId: null,
+                data: null,
+              },
+              {
+                id: "pw-exercise-table",
+                role: "PROMPT",
+                type: "table",
+                value: "",
+                assetId: "asset-table",
+                data: null,
+              },
+            ],
+          },
+          {
+            id: "pw-question-1",
+            nodeType: "QUESTION",
+            parentId: "pw-exercise-1",
+            orderIndex: 1,
+            label: "السؤال 1",
+            maxPoints: 2,
+            topicCodes: [],
+            blocks: [
+              {
+                id: "pw-question-prompt",
+                role: "PROMPT",
+                type: "paragraph",
+                value: "استخرج المعلومة الأساسية من النص.",
+                assetId: null,
+                data: null,
+              },
+              {
+                id: "pw-question-solution",
+                role: "SOLUTION",
+                type: "paragraph",
+                value: "المعلومة الأساسية واردة بوضوح في النص.",
+                assetId: null,
+                data: null,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   asset_preview_base_url: "/api/v1/ingestion/jobs/job-1/assets",
   validation: {

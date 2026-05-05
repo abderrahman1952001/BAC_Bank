@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { AdminIngestionJobBrowserSection } from "@/components/admin-ingestion-page-sections";
+import { Button } from "@/components/ui/button";
 import {
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
@@ -261,25 +262,26 @@ export function AdminDraftsPage({ initialJobs }: AdminDraftsPageProps) {
           </div>
         </div>
         <div className="table-actions">
-          <Link href="/admin/intake" className="btn-secondary">
-            Open Intake
-          </Link>
-          <Link href="/admin/library" className="btn-secondary">
-            Open Library
-          </Link>
+          <Button asChild variant="outline" className="h-10 rounded-full px-5">
+            <Link href="/admin/intake">Open Intake</Link>
+          </Button>
+          <Button asChild variant="outline" className="h-10 rounded-full px-5">
+            <Link href="/admin/library">Open Library</Link>
+          </Button>
         </div>
       </div>
 
       {loading ? <p className="muted-text">Loading drafts…</p> : null}
       {error ? <p className="error-text">{error}</p> : null}
       {error && jobs.length === 0 ? (
-        <button
+        <Button
           type="button"
-          className="btn-secondary"
+          variant="outline"
+          className="h-10 rounded-full px-5"
           onClick={() => router.refresh()}
         >
           Retry
-        </button>
+        </Button>
       ) : null}
       {processNotice ? <p className="success-text">{processNotice}</p> : null}
 

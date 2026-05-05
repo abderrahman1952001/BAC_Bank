@@ -1,5 +1,9 @@
 import { BadRequestException } from '@nestjs/common';
-import { IngestionJobStatus, SessionType, SourceDocumentKind } from '@prisma/client';
+import {
+  IngestionJobStatus,
+  SessionType,
+  SourceDocumentKind,
+} from '@prisma/client';
 import { createEmptyDraft } from './ingestion.contract';
 import { IngestionProcessingEngineService } from './ingestion-processing-engine.service';
 
@@ -76,11 +80,12 @@ describe('IngestionProcessingEngineService', () => {
       service.runStage({
         jobId: 'job-1',
         replaceExisting: false,
-        skipExtraction: true,
         completionStatus: 'DRAFT',
       }),
     ).rejects.toThrow(
-      new BadRequestException('Add the correction PDF before processing this job.'),
+      new BadRequestException(
+        'Add the correction PDF before processing this job.',
+      ),
     );
 
     expect(prisma.ingestionJob.update).toHaveBeenCalledWith({
@@ -92,6 +97,8 @@ describe('IngestionProcessingEngineService', () => {
         errorMessage: 'Add the correction PDF before processing this job.',
       }),
     });
-    expect(storedPageService.ensureStoredPagesForDocument).not.toHaveBeenCalled();
+    expect(
+      storedPageService.ensureStoredPagesForDocument,
+    ).not.toHaveBeenCalled();
   });
 });

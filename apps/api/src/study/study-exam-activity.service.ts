@@ -184,7 +184,9 @@ export class StudyExamActivityService {
   ) {
     const variantCode =
       sujetNumber === 2 ? ExamVariantCode.SUJET_2 : ExamVariantCode.SUJET_1;
-    const selectedVariant = variants.find((variant) => variant.code === variantCode);
+    const selectedVariant = variants.find(
+      (variant) => variant.code === variantCode,
+    );
 
     return selectedVariant?.title || getSujetLabel(sujetNumber as 1 | 2);
   }

@@ -32,13 +32,11 @@ export type DraftBlockType =
 export type DraftAssetClassification = "image" | "table" | "tree" | "graph";
 export type DraftAssetKind = DraftAssetClassification;
 export type DraftAssetNativeSuggestionType = "table" | "tree" | "graph";
-export type DraftAssetNativeSuggestionStatus =
-  | "suggested"
-  | "stale"
-  | "recovered";
+export type DraftAssetNativeSuggestionStatus = "suggested" | "stale";
 export type DraftAssetNativeSuggestionSource =
-  | "gemini_initial"
-  | "crop_recovery";
+  | "codex_app_extraction"
+  | "reviewed_extract"
+  | "manual_review";
 export type DraftSessionType = StudySessionType;
 export type DraftDocumentKind = "EXAM" | "CORRECTION";
 export type AdminIngestionSession = "normal" | "rattrapage";
@@ -249,39 +247,6 @@ export type AdminIngestionJobResponse = {
   validation: AdminIngestionValidation;
 };
 
-export type AdminIngestionRecoveryMode = "text" | "table" | "tree" | "graph";
-
-export type AdminIngestionRecoveryResponse = {
-  asset: {
-    id: string;
-    classification: DraftAssetClassification;
-    source_page_id: string;
-    page_number: number;
-  };
-  recovery: {
-    mode: AdminIngestionRecoveryMode;
-    type: DraftBlockType;
-    value: string;
-    data: Record<string, unknown> | null;
-    notes: string[];
-  };
-};
-
-export type AdminIngestionSnippetRecoveryResponse = {
-  source_page: {
-    id: string;
-    page_number: number;
-    document_kind: DraftDocumentKind;
-  };
-  recovery: {
-    mode: AdminIngestionRecoveryMode;
-    type: DraftBlockType;
-    value: string;
-    data: Record<string, unknown> | null;
-    notes: string[];
-  };
-};
-
 export type UpdateIngestionJobPayload = {
   draft_json?: IngestionDraft;
   review_notes?: string | null;
@@ -342,10 +307,10 @@ export const draftAssetNativeSuggestionTypeSchema: z.ZodType<DraftAssetNativeSug
   z.enum(["table", "tree", "graph"]);
 
 export const draftAssetNativeSuggestionStatusSchema: z.ZodType<DraftAssetNativeSuggestionStatus> =
-  z.enum(["suggested", "stale", "recovered"]);
+  z.enum(["suggested", "stale"]);
 
 export const draftAssetNativeSuggestionSourceSchema: z.ZodType<DraftAssetNativeSuggestionSource> =
-  z.enum(["gemini_initial", "crop_recovery"]);
+  z.enum(["codex_app_extraction", "reviewed_extract", "manual_review"]);
 
 export const draftDocumentKindSchema: z.ZodType<DraftDocumentKind> = z.enum([
   "EXAM",
@@ -875,7 +840,7 @@ function normalizeAssetNativeSuggestion(
         : null,
     status: normalizeAssetNativeSuggestionStatus(raw.status) ?? "suggested",
     source:
-      normalizeAssetNativeSuggestionSource(raw.source) ?? "gemini_initial",
+      normalizeAssetNativeSuggestionSource(raw.source) ?? "reviewed_extract",
     notes: Array.isArray(raw.notes)
       ? raw.notes
           .filter((entry): entry is string => typeof entry === "string")
@@ -898,8 +863,12 @@ function normalizeAssetNativeSuggestionType(
 function normalizeAssetNativeSuggestionStatus(
   value: unknown,
 ): DraftAssetNativeSuggestionStatus | null {
-  if (value === "suggested" || value === "stale" || value === "recovered") {
+  if (value === "suggested" || value === "stale") {
     return value;
+  }
+
+  if (value === "recovered") {
+    return "suggested";
   }
 
   return null;
@@ -908,8 +877,16 @@ function normalizeAssetNativeSuggestionStatus(
 function normalizeAssetNativeSuggestionSource(
   value: unknown,
 ): DraftAssetNativeSuggestionSource | null {
-  if (value === "gemini_initial" || value === "crop_recovery") {
+  if (
+    value === "codex_app_extraction" ||
+    value === "reviewed_extract" ||
+    value === "manual_review"
+  ) {
     return value;
+  }
+
+  if (value === "gemini_initial" || value === "crop_recovery") {
+    return "reviewed_extract";
   }
 
   return null;

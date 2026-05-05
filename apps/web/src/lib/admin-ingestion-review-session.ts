@@ -514,7 +514,7 @@ export function useAdminIngestionReviewSession({
 
       applyPayload(payload);
       setNotice(
-        "Background processing queued. This page will refresh automatically when the worker updates the draft.",
+        "Source-page preparation queued. This page will refresh automatically when the worker updates the draft.",
       );
     } catch (processError) {
       setError(

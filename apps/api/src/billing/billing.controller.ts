@@ -40,13 +40,17 @@ export class BillingController {
     @Req() request: AuthenticatedRequest,
     @Body() payload: CreateBillingCheckoutDto,
   ): Promise<BillingCreateCheckoutResponse> {
-    return this.billingService.createCheckoutForUser(request.user!.id, payload, {
-      appOrigin: buildRequestOriginFromHeaders({
-        host: request.headers.host,
-        forwardedHost: request.headers['x-forwarded-host'],
-        forwardedProto: request.headers['x-forwarded-proto'],
-      }),
-    });
+    return this.billingService.createCheckoutForUser(
+      request.user!.id,
+      payload,
+      {
+        appOrigin: buildRequestOriginFromHeaders({
+          host: request.headers.host,
+          forwardedHost: request.headers['x-forwarded-host'],
+          forwardedProto: request.headers['x-forwarded-proto'],
+        }),
+      },
+    );
   }
 
   @UseGuards(ClerkAuthGuard)
@@ -65,7 +69,10 @@ export class BillingController {
     @Req() request: AuthenticatedRequest,
     @Param('id', ParseUUIDPipe) checkoutId: string,
   ): Promise<BillingCheckoutResponse> {
-    return this.billingService.syncCheckoutForUser(request.user!.id, checkoutId);
+    return this.billingService.syncCheckoutForUser(
+      request.user!.id,
+      checkoutId,
+    );
   }
 
   @HttpCode(200)

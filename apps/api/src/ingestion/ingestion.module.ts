@@ -11,7 +11,6 @@ import { IngestionOpsService } from './ingestion-ops.service';
 import { IngestionPublicationService } from './ingestion-publication.service';
 import { IngestionQueueService } from './ingestion-queue.service';
 import { IngestionReadService } from './ingestion-read.service';
-import { IngestionRecoveryService } from './ingestion-recovery.service';
 import { IngestionReviewedExtractService } from './ingestion-reviewed-extract.service';
 import { IngestionReviewService } from './ingestion-review.service';
 import { IngestionPublishedVariantService } from './ingestion-published-variant.service';
@@ -31,7 +30,6 @@ import { IngestionWorkerService } from './ingestion-worker.service';
     IngestionDraftIntakeService,
     IngestionPublicationService,
     IngestionQueueService,
-    IngestionRecoveryService,
     IngestionReviewedExtractService,
     IngestionReviewService,
     IngestionPublishedAssetsService,

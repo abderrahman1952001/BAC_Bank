@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import type { CourseSubjectCard } from "@/lib/courses-surface";
 import { STUDENT_MY_SPACE_ROUTE } from "@/lib/student-routes";
 
@@ -19,9 +20,9 @@ export function CoursesHomePage({
           title="تعذر تحميل الدورات"
           description="أعد المحاولة من مساحتك أو عد لاحقاً."
           action={
-            <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-secondary">
-              العودة إلى مساحتي
-            </Link>
+            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+              <Link href={STUDENT_MY_SPACE_ROUTE}>العودة إلى مساحتي</Link>
+            </Button>
           }
         />
       </StudyShell>
@@ -35,18 +36,18 @@ export function CoursesHomePage({
       <div className="hub-page roadmap-page">
         <section className="roadmap-hero course-hero">
           <div className="roadmap-hero-copy">
-            <p className="page-kicker">Courses</p>
-            <h1>رحلة مفاهيمية متدرجة داخل كل مادة</h1>
+            <p className="page-kicker">الدورات</p>
+            <h1>خارطة مفاهيمية دقيقة لكل مادة</h1>
             <p>
-              اختر المادة، وادخل عبر وحدات واضحة، ثم تحرك بين المفاهيم بخطوات
-              قصيرة، نظيفة، وقابلة للمراجعة.
+              اختر المادة، ثم تحرك بين الوحدات والمفاهيم بخطوات قصيرة مرتبطة
+              بالتدريب والمراجعة.
             </p>
             <div className="roadmap-hero-meta">
               <StudyBadge tone="brand">
                 {subjectCards.length} مواد جاهزة للمسار
               </StudyBadge>
-              <StudyBadge tone="accent">نمط تعلّم تفاعلي</StudyBadge>
-              <StudyBadge tone="success">تصميم هادئ ومركز</StudyBadge>
+              <StudyBadge tone="accent">شرح نشط</StudyBadge>
+              <StudyBadge tone="success">مرتبط بالتدريب</StudyBadge>
             </div>
           </div>
 
@@ -76,12 +77,12 @@ export function CoursesHomePage({
               </article>
             </div>
             <div className="roadmap-hero-actions">
-              <Link href={subjectCards[0].continueHref} className="btn-primary">
-                واصل آخر مسار
-              </Link>
-              <Link href={subjectCards[0].href} className="btn-secondary">
-                افتح أول مادة
-              </Link>
+              <Button asChild className="h-11 rounded-full px-5">
+                <Link href={subjectCards[0].continueHref}>واصل آخر مسار</Link>
+              </Button>
+              <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                <Link href={subjectCards[0].href}>افتح أول مادة</Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -92,8 +93,8 @@ export function CoursesHomePage({
               <p className="page-kicker">المواد</p>
               <h2>اختر مادة وابدأ من الخارطة</h2>
               <p>
-                كل مادة تعرض تقدماً عاماً، وعدد الوحدات، وأسرع طريق للعودة إلى
-                آخر موضوع نشط.
+                كل مادة تعرض تقدمك العام، الوحدات النشطة، وأسرع عودة إلى آخر
+                مفهوم يحتاج تثبيتاً.
               </p>
             </div>
           </div>
@@ -103,7 +104,7 @@ export function CoursesHomePage({
               <article key={card.subjectCode} className="course-subject-card">
                 <div className="course-subject-card-head">
                   <div>
-                    <p className="page-kicker">Subject</p>
+                    <p className="page-kicker">المادة</p>
                     <h3>{card.title}</h3>
                   </div>
                   <StudyBadge tone="brand">{card.progressPercent}%</StudyBadge>
@@ -111,7 +112,7 @@ export function CoursesHomePage({
 
                 <p className="course-subject-card-copy">
                   {card.description ??
-                    "مسار منظم يجمع بين فهم الموضوعات الأساسية والعودة السريعة إلى آخر نقطة توقفت عندها."}
+                    "مسار منظم يجمع بين فهم المفاهيم الأساسية والعودة السريعة إلى آخر نقطة توقفت عندها."}
                 </p>
 
                 <div className="course-subject-card-meta">
@@ -121,12 +122,12 @@ export function CoursesHomePage({
                 </div>
 
                 <div className="course-subject-card-actions">
-                  <Link href={card.href} className="btn-primary">
-                    افتح المادة
-                  </Link>
-                  <Link href={card.continueHref} className="btn-secondary">
-                    واصل
-                  </Link>
+                  <Button asChild className="h-11 rounded-full px-5">
+                    <Link href={card.href}>افتح المادة</Link>
+                  </Button>
+                  <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                    <Link href={card.continueHref}>واصل</Link>
+                  </Button>
                 </div>
               </article>
             ))}

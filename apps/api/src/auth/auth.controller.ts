@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Req,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Req, Post, UseGuards } from '@nestjs/common';
 import type { AuthenticatedRequest } from './auth.types';
 import { AuthService } from './auth.service';
 import { ClerkAuthGuard } from './clerk-auth.guard';

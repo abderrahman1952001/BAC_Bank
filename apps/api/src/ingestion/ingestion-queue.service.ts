@@ -67,7 +67,6 @@ export class IngestionQueueService {
     const processRequest = buildIngestionProcessRequest({
       forceReprocess: this.readBooleanFlag(payload.force_reprocess),
       replaceExisting: this.readBooleanFlag(payload.replace_existing),
-      skipExtraction: this.readBooleanFlag(payload.skip_extraction),
       jobStatus: job.status,
       isPublishedRevision: isPublishedRevisionProvider(draft.exam.provider),
     });
@@ -155,7 +154,7 @@ export class IngestionQueueService {
       this.processingEngine.buildStageInput(
         jobId,
         workerRequest,
-        IngestionJobStatus.IN_REVIEW,
+        IngestionJobStatus.DRAFT,
       ),
     );
   }

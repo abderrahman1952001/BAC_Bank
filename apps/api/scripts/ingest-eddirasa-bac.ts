@@ -27,12 +27,6 @@ import {
   type EddirasaStorageContext,
 } from '../src/ingestion/eddirasa-normalization';
 import { resolveAlternatePdfSource } from '../src/ingestion/alternate-pdf-sources';
-import {
-  hasGeminiApiKeyConfigured,
-  readDefaultGeminiMaxOutputTokens,
-  readDefaultGeminiModel,
-  readDefaultGeminiTemperature,
-} from '../src/ingestion/gemini-extractor';
 import { IngestionProcessingEngineService } from '../src/ingestion/ingestion-processing-engine.service';
 import { IngestionSourceIntakeService } from '../src/ingestion/ingestion-source-intake.service';
 import { splitCombinedPdf } from '../src/ingestion/pdf-split';
@@ -71,12 +65,9 @@ type CliOptions = {
   limit: number | null;
   dryRun: boolean;
   replaceExisting: boolean;
-  stage: 'full' | 'originals' | 'pages' | 'ocr' | 'process';
+  stage: 'full' | 'originals' | 'pages';
   jobIds: string[];
   slugs: string[];
-  geminiModel: string;
-  geminiMaxOutputTokens: number;
-  geminiTemperature: number;
   rasterDpi: number;
   jobConcurrency: number;
   pageConcurrency: number;
@@ -118,10 +109,7 @@ async function main() {
 
   try {
     if (isPendingProcessingStage(options.stage)) {
-      const summary = await processPendingJobs(
-        options,
-        resolveProcessingStage(options.stage),
-      );
+      const summary = await processPendingJobs(options);
 
       if (
         summary.skipped > 0 &&
@@ -162,7 +150,9 @@ async function main() {
         options.maxYear !== null &&
         pageYear > options.maxYear
       ) {
-        console.log(`skip page ${pageUrl} year ${pageYear} > ${options.maxYear}`);
+        console.log(
+          `skip page ${pageUrl} year ${pageYear} > ${options.maxYear}`,
+        );
         continue;
       }
 
@@ -220,7 +210,10 @@ async function main() {
         options.jobConcurrency,
         async (candidate) => {
           try {
-            const prepared = await ensureOriginalsForCandidate(candidate, options);
+            const prepared = await ensureOriginalsForCandidate(
+              candidate,
+              options,
+            );
 
             return {
               candidate,
@@ -231,7 +224,7 @@ async function main() {
             return {
               candidate,
               prepared: null,
-              error,
+              error: error instanceof Error ? error : new Error(String(error)),
             };
           }
         },
@@ -271,7 +264,6 @@ async function main() {
     const summary = await processPreparedCandidates(
       preparedCandidates,
       options,
-      resolveProcessingStage(options.stage),
     );
 
     console.log(
@@ -283,11 +275,7 @@ async function main() {
 }
 
 function isPendingProcessingStage(stage: CliOptions['stage']) {
-  return stage === 'pages' || stage === 'ocr' || stage === 'process';
-}
-
-function resolveProcessingStage(stage: CliOptions['stage']) {
-  return stage === 'pages' ? 'pages' : 'review';
+  return stage === 'pages';
 }
 
 function matchesCandidateFilters(
@@ -383,69 +371,64 @@ async function ensureOriginalsForCandidate(
 
   syncDraftWithCandidate(draft, candidate, options);
 
-  try {
-    const examDocument = await buildSourceDocumentInput({
-      candidate,
-      kind: SourceDocumentKind.EXAM,
-      documentUrl: candidate.examPdfUrl,
-      pageUrl: candidate.pageUrl,
-    });
-    const correctionDocument = candidate.correctionPdfUrl
-      ? await buildSourceDocumentInput({
-          candidate,
-          kind: SourceDocumentKind.CORRECTION,
-          documentUrl: candidate.correctionPdfUrl,
-          pageUrl: candidate.correctionPageUrl ?? candidate.pageUrl,
-        })
-      : null;
+  const examDocument = await buildSourceDocumentInput({
+    candidate,
+    kind: SourceDocumentKind.EXAM,
+    documentUrl: candidate.examPdfUrl,
+    pageUrl: candidate.pageUrl,
+  });
+  const correctionDocument = candidate.correctionPdfUrl
+    ? await buildSourceDocumentInput({
+        candidate,
+        kind: SourceDocumentKind.CORRECTION,
+        documentUrl: candidate.correctionPdfUrl,
+        pageUrl: candidate.correctionPageUrl ?? candidate.pageUrl,
+      })
+    : null;
 
-    const prepared = await sourceIntakeService.upsertExternalSourceJob({
-      externalExamUrl: candidate.examPdfUrl,
-      replaceExisting: options.replaceExisting,
-      storageClient: getR2Client(),
-      draft,
-      metadata: toJsonValue(buildJobMetadata(candidate)),
-      job: {
-        label: candidate.title,
-        provider: 'eddirasa',
-        sourceListingUrl: options.listingUrl,
-        sourceExamPageUrl: candidate.pageUrl,
-        sourceCorrectionPageUrl: candidate.correctionPageUrl,
-        year: candidate.year,
-        streamCode: candidate.streamCode,
-        subjectCode: candidate.subjectCode,
-        sessionType: candidate.sessionType,
-        minYear: options.minYear,
-      },
-      documents: correctionDocument
-        ? [examDocument, correctionDocument]
-        : [examDocument],
-    });
+  const prepared = await sourceIntakeService.upsertExternalSourceJob({
+    externalExamUrl: candidate.examPdfUrl,
+    replaceExisting: options.replaceExisting,
+    storageClient: getR2Client(),
+    draft,
+    metadata: toJsonValue(buildJobMetadata(candidate)),
+    job: {
+      label: candidate.title,
+      provider: 'eddirasa',
+      sourceListingUrl: options.listingUrl,
+      sourceExamPageUrl: candidate.pageUrl,
+      sourceCorrectionPageUrl: candidate.correctionPageUrl,
+      year: candidate.year,
+      streamCode: candidate.streamCode,
+      subjectCode: candidate.subjectCode,
+      sessionType: candidate.sessionType,
+      minYear: options.minYear,
+    },
+    documents: correctionDocument
+      ? [examDocument, correctionDocument]
+      : [examDocument],
+  });
 
-    if (!prepared) {
-      console.log(
-        `skip locked existing ${candidate.examPdfUrl} status=${existing?.status ?? 'UNKNOWN'}`,
-      );
-      return null;
-    }
-
+  if (!prepared) {
     console.log(
-      `originals ${candidate.year} ${candidate.subjectCode ?? 'UNKNOWN'} ${candidate.streamCode ?? 'UNKNOWN'} ${candidate.pageUrl}`,
+      `skip locked existing ${candidate.examPdfUrl} status=${existing?.status ?? 'UNKNOWN'}`,
     );
-
-    return {
-      jobId: prepared.jobId,
-      candidate,
-    };
-  } catch (error) {
-    throw error;
+    return null;
   }
+
+  console.log(
+    `originals ${candidate.year} ${candidate.subjectCode ?? 'UNKNOWN'} ${candidate.streamCode ?? 'UNKNOWN'} ${candidate.pageUrl}`,
+  );
+
+  return {
+    jobId: prepared.jobId,
+    candidate,
+  };
 }
 
 async function processPreparedCandidates(
   candidates: PreparedCandidate[],
   options: CliOptions,
-  stage: 'pages' | 'review',
 ) {
   let jobs = 0;
   let documents = 0;
@@ -457,7 +440,7 @@ async function processPreparedCandidates(
     options.jobConcurrency,
     async (prepared) => {
       try {
-        return await processJobById(prepared.jobId, options, stage);
+        return await processJobById(prepared.jobId, options);
       } catch (error) {
         console.error(
           `failed process ${prepared.candidate.examPdfUrl}: ${describeError(error)}`,
@@ -486,10 +469,7 @@ async function processPreparedCandidates(
   };
 }
 
-async function processPendingJobs(
-  options: CliOptions,
-  stage: 'pages' | 'review',
-) {
+async function processPendingJobs(options: CliOptions) {
   const selectionWhere = buildJobSelectionWhere(options);
   const jobs = await prisma.ingestionJob.findMany({
     where: {
@@ -523,7 +503,7 @@ async function processPendingJobs(
     options.jobConcurrency,
     async (job) => {
       try {
-        return await processJobById(job.id, options, stage);
+        return await processJobById(job.id, options);
       } catch (error) {
         console.error(`failed process ${job.label}: ${describeError(error)}`);
         return null;
@@ -550,23 +530,14 @@ async function processPendingJobs(
   };
 }
 
-async function processJobById(
-  jobId: string,
-  options: CliOptions,
-  stage: 'pages' | 'review',
-) {
+async function processJobById(jobId: string, options: CliOptions) {
   const result = await processingEngine.runStage({
     jobId,
     replaceExisting: options.replaceExisting,
-    skipExtraction: stage === 'pages',
-    completionStatus:
-      stage === 'pages' ? IngestionJobStatus.DRAFT : IngestionJobStatus.IN_REVIEW,
-    geminiModel: options.geminiModel,
-    geminiMaxOutputTokens: options.geminiMaxOutputTokens,
-    geminiTemperature: options.geminiTemperature,
+    completionStatus: IngestionJobStatus.DRAFT,
   });
 
-  console.log(`${stage} job=${jobId}`);
+  console.log(`pages job=${jobId}`);
 
   return result.summary;
 }
@@ -970,11 +941,7 @@ function collectDetailPageEntries($: CheerioAPI, pageUrl: string) {
     const rowText = normalizeText($(element).closest('tr').text()) || null;
     const sectionText =
       normalizeText(
-        $(element)
-          .closest('table')
-          .prevAll('h2,h3,h4')
-          .first()
-          .text(),
+        $(element).closest('table').prevAll('h2,h3,h4').first().text(),
       ) || null;
     const slug = getPathSlug(normalized);
 
@@ -1038,11 +1005,7 @@ async function resolveDetailPagePdfUrl(pageUrl: string) {
   $('a[href], iframe[src], embed[src], object[data]').each((_, element) => {
     const tagName = element.tagName.toLowerCase();
     const attribute =
-      tagName === 'a'
-        ? 'href'
-        : tagName === 'object'
-          ? 'data'
-          : 'src';
+      tagName === 'a' ? 'href' : tagName === 'object' ? 'data' : 'src';
     const value = $(element).attr(attribute);
 
     if (!value) {
@@ -1209,9 +1172,6 @@ function parseCliOptions(argv: string[]): CliOptions {
     stage: 'full',
     jobIds: [],
     slugs: [],
-    geminiModel: readDefaultGeminiModel(),
-    geminiMaxOutputTokens: readDefaultGeminiMaxOutputTokens(),
-    geminiTemperature: readDefaultGeminiTemperature(),
     rasterDpi: DEFAULT_RASTER_DPI,
     jobConcurrency: DEFAULT_JOB_CONCURRENCY,
     pageConcurrency: DEFAULT_PAGE_CONCURRENCY,
@@ -1265,21 +1225,13 @@ function parseCliOptions(argv: string[]): CliOptions {
     if (arg === '--stage' && argv[index + 1]) {
       const stage = argv[index + 1];
 
-      if (
-        stage === 'full' ||
-        stage === 'originals' ||
-        stage === 'pages' ||
-        stage === 'ocr' ||
-        stage === 'process'
-      ) {
+      if (stage === 'full' || stage === 'originals' || stage === 'pages') {
         options.stage = stage;
         index += 1;
         continue;
       }
 
-      throw new Error(
-        '--stage must be one of: full, originals, pages, ocr, process.',
-      );
+      throw new Error('--stage must be one of: full, originals, pages.');
     }
 
     if (arg === '--job-id' && argv[index + 1]) {
@@ -1290,24 +1242,6 @@ function parseCliOptions(argv: string[]): CliOptions {
 
     if (arg === '--slug' && argv[index + 1]) {
       options.slugs.push(...parseListArgument(argv[index + 1]));
-      index += 1;
-      continue;
-    }
-
-    if (arg === '--gemini-model' && argv[index + 1]) {
-      options.geminiModel = argv[index + 1].trim();
-      index += 1;
-      continue;
-    }
-
-    if (arg === '--gemini-max-output-tokens' && argv[index + 1]) {
-      options.geminiMaxOutputTokens = Number.parseInt(argv[index + 1], 10);
-      index += 1;
-      continue;
-    }
-
-    if (arg === '--gemini-temperature' && argv[index + 1]) {
-      options.geminiTemperature = Number.parseFloat(argv[index + 1]);
       index += 1;
       continue;
     }
@@ -1360,35 +1294,6 @@ function parseCliOptions(argv: string[]): CliOptions {
     throw new Error('--page-concurrency must be a positive integer.');
   }
 
-  if (!options.geminiModel) {
-    throw new Error('Gemini model name cannot be empty.');
-  }
-
-  if (
-    !Number.isInteger(options.geminiMaxOutputTokens) ||
-    options.geminiMaxOutputTokens < 1
-  ) {
-    throw new Error('--gemini-max-output-tokens must be a positive integer.');
-  }
-
-  if (
-    !Number.isFinite(options.geminiTemperature) ||
-    options.geminiTemperature < 0
-  ) {
-    throw new Error('--gemini-temperature must be a non-negative number.');
-  }
-
-  if (
-    (options.stage === 'full' ||
-      options.stage === 'ocr' ||
-      options.stage === 'process') &&
-    !hasGeminiApiKeyConfigured()
-  ) {
-    throw new Error(
-      'Gemini extraction requires GEMINI_API_KEY or GOOGLE_API_KEY.',
-    );
-  }
-
   return options;
 }
 
@@ -1420,18 +1325,6 @@ function inferYear(values: string[]) {
   }
 
   return null;
-}
-
-function buildCorrectionPageUrl(pageUrl: string) {
-  const url = new URL(pageUrl);
-  const slug = getPathSlug(pageUrl);
-
-  if (!slug.startsWith('bac-') || slug.startsWith('correction-')) {
-    return null;
-  }
-
-  url.pathname = `/${`correction-${slug}`}/`;
-  return url.toString();
 }
 
 function buildDocumentStorageKey(

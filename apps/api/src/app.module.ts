@@ -9,6 +9,7 @@ import { HealthModule } from './health/health.module';
 import { IngestionModule } from './ingestion/ingestion.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { RedisModule } from './redis/redis.module';
+import { SourceWorkbenchModule } from './source-workbench/source-workbench.module';
 import { StudyModule } from './study/study.module';
 
 @Module({
@@ -27,6 +28,7 @@ import { StudyModule } from './study/study.module';
     StudyModule,
     AdminModule,
     IngestionModule,
+    SourceWorkbenchModule,
   ],
 })
 export class AppModule {}

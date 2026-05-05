@@ -1,14 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { IngestionJobStatus, Prisma, SourceDocumentKind } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import {
-  extractDraftWithGemini,
-  hasGeminiApiKeyConfigured,
-  hasGeminiExtraction,
-  readDefaultGeminiMaxOutputTokens,
-  readDefaultGeminiModel,
-  readDefaultGeminiTemperature,
-} from './gemini-extractor';
 import { projectIngestionJobMetadataFromDraft } from './ingestion-job-metadata';
 import { IngestionReadService } from './ingestion-read.service';
 import {
@@ -43,12 +35,8 @@ export class IngestionProcessingEngineService {
   async runStage(input: {
     jobId: string;
     replaceExisting: boolean;
-    skipExtraction: boolean;
     completionStatus: CompletionStatus;
     clearProcessingRequestMetadata?: boolean;
-    geminiModel?: string;
-    geminiMaxOutputTokens?: number;
-    geminiTemperature?: number;
   }) {
     const job = await this.readService.findJobOrThrow(input.jobId);
 
@@ -59,10 +47,6 @@ export class IngestionProcessingEngineService {
     }
 
     let draft = this.readService.hydrateDraft(job);
-    if (input.replaceExisting) {
-      draft.sourcePages = [];
-      draft.assets = [];
-    }
 
     try {
       const examDocument = job.sourceDocuments.find(
@@ -106,67 +90,6 @@ export class IngestionProcessingEngineService {
 
       const refreshedJob = await this.readService.findJobOrThrow(input.jobId);
       draft = this.readService.hydrateDraft(refreshedJob);
-
-      if (input.replaceExisting) {
-        draft.assets = [];
-      }
-
-      const shouldRunExtraction =
-        !input.skipExtraction &&
-        (input.replaceExisting || !hasGeminiExtraction(draft));
-
-      if (shouldRunExtraction) {
-        if (!hasGeminiApiKeyConfigured()) {
-          throw new BadRequestException(
-            'Gemini extraction is not configured. Set GEMINI_API_KEY or GOOGLE_API_KEY before processing this job.',
-          );
-        }
-
-        const examDocumentForExtraction = refreshedJob.sourceDocuments.find(
-          (document) => document.kind === SourceDocumentKind.EXAM,
-        );
-
-        if (!examDocumentForExtraction) {
-          throw new BadRequestException(
-            `Missing EXAM source document for ingestion job ${refreshedJob.label}.`,
-          );
-        }
-
-        const correctionDocumentForExtraction =
-          refreshedJob.sourceDocuments.find(
-            (document) => document.kind === SourceDocumentKind.CORRECTION,
-          ) ?? null;
-
-        if (!correctionDocumentForExtraction) {
-          throw new BadRequestException(
-            'Add the correction PDF before processing this job.',
-          );
-        }
-
-        draft = await extractDraftWithGemini({
-          draft,
-          label: refreshedJob.label,
-          model: input.geminiModel ?? readDefaultGeminiModel(),
-          maxOutputTokens:
-            input.geminiMaxOutputTokens ?? readDefaultGeminiMaxOutputTokens(),
-          temperature:
-            input.geminiTemperature ?? readDefaultGeminiTemperature(),
-          examDocument: {
-            fileName: examDocumentForExtraction.fileName,
-            buffer: await this.storedPageService.readSourceDocumentBuffer(
-              examDocumentForExtraction,
-              this.getStorageClient(),
-            ),
-          },
-          correctionDocument: {
-            fileName: correctionDocumentForExtraction.fileName,
-            buffer: await this.storedPageService.readSourceDocumentBuffer(
-              correctionDocumentForExtraction,
-              this.getStorageClient(),
-            ),
-          },
-        });
-      }
 
       const savedJob = await this.prisma.ingestionJob.update({
         where: {
@@ -246,7 +169,6 @@ export class IngestionProcessingEngineService {
     return {
       jobId,
       replaceExisting: workerRequest.replaceExisting,
-      skipExtraction: workerRequest.skipExtraction,
       completionStatus,
       clearProcessingRequestMetadata: true,
     };

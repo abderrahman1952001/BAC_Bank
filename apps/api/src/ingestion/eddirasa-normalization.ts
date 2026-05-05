@@ -460,8 +460,8 @@ export function parseEddirasaSlug(
     const descriptor = resolveSubjectDescriptor(tokens.slice(0, -1));
     const normalizedSuffixStreamCode =
       suffixStreamCode === 'LE'
-        ? resolveForeignLanguageStreamCode(descriptor?.subjectCode ?? null) ??
-          suffixStreamCode
+        ? (resolveForeignLanguageStreamCode(descriptor?.subjectCode ?? null) ??
+          suffixStreamCode)
         : suffixStreamCode;
 
     if (descriptor) {
@@ -482,8 +482,8 @@ export function parseEddirasaSlug(
   const descriptor = resolveSubjectDescriptor(rawStreamCode ? rest : tokens);
   const streamCode =
     rawStreamCode === 'LE'
-      ? resolveForeignLanguageStreamCode(descriptor?.subjectCode ?? null) ??
-        rawStreamCode
+      ? (resolveForeignLanguageStreamCode(descriptor?.subjectCode ?? null) ??
+        rawStreamCode)
       : rawStreamCode;
 
   return {

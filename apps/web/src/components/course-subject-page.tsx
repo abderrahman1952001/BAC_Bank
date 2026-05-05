@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import type { CourseSubjectPageModel } from "@/lib/courses-surface";
 import { STUDENT_COURSES_ROUTE } from "@/lib/student-routes";
 
@@ -17,9 +18,9 @@ export function CourseSubjectPage({
           title="تعذر تحميل مسار المادة"
           description="تحقق من اختيار المادة أو أعد المحاولة لاحقاً."
           action={
-            <Link href={STUDENT_COURSES_ROUTE} className="btn-secondary">
-              العودة إلى الدورات
-            </Link>
+            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+              <Link href={STUDENT_COURSES_ROUTE}>العودة إلى الدورات</Link>
+            </Button>
           }
         />
       </StudyShell>
@@ -64,12 +65,12 @@ export function CourseSubjectPage({
               </article>
             </div>
             <div className="roadmap-hero-actions">
-              <Link href={model.continueHref} className="btn-primary">
-                واصل التعلم
-              </Link>
-              <Link href={STUDENT_COURSES_ROUTE} className="btn-secondary">
-                كل المواد
-              </Link>
+              <Button asChild className="h-11 rounded-full px-5">
+                <Link href={model.continueHref}>واصل التعلم</Link>
+              </Button>
+              <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                <Link href={STUDENT_COURSES_ROUTE}>كل المواد</Link>
+              </Button>
             </div>
           </div>
         </section>
@@ -134,12 +135,16 @@ export function CourseSubjectPage({
                       </div>
 
                       <div className="course-topic-card-actions">
-                        <Link href={topic.href} className="btn-primary">
-                          افتح الموضوع
-                        </Link>
-                        <Link href={topic.continueHref} className="btn-secondary">
-                          التفاصيل
-                        </Link>
+                        <Button asChild className="h-11 rounded-full px-5">
+                          <Link href={topic.href}>افتح الموضوع</Link>
+                        </Button>
+                        <Button
+                          asChild
+                          variant="outline"
+                          className="h-11 rounded-full px-5"
+                        >
+                          <Link href={topic.continueHref}>التفاصيل</Link>
+                        </Button>
                       </div>
                     </article>
                   ))}

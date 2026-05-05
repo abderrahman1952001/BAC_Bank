@@ -55,7 +55,8 @@ export function buildStudySessionResponseExercises(input: {
     ).map((question) => ({
       ...question,
       interaction: resolveStudyQuestionInteraction({
-        subjectCode: exam?.subject.code ?? linkedExercise.fallbackExam?.subject.code,
+        subjectCode:
+          exam?.subject.code ?? linkedExercise.fallbackExam?.subject.code,
         question,
       }),
     }));

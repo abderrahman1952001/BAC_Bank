@@ -181,6 +181,271 @@ describe('reviewed-paper-import', () => {
     });
   });
 
+  it('preserves existing crop geometry when a refreshed extract omits crop boxes', () => {
+    const baseDraft = createBaseDraft();
+    baseDraft.assets = [
+      {
+        id: 'asset-1',
+        sourcePageId: 'exam-page-1',
+        documentKind: 'EXAM',
+        pageNumber: 1,
+        variantCode: 'SUJET_1',
+        role: 'PROMPT',
+        classification: 'image',
+        cropBox: {
+          x: 120,
+          y: 240,
+          width: 360,
+          height: 220,
+        },
+        label: 'الشكل 1',
+        notes: 'Reviewed crop.',
+        nativeSuggestion: null,
+      },
+    ];
+    const extract = parseReviewedPaperExtract({
+      variants: [
+        {
+          code: 'SUJET_1',
+          title: 'الموضوع الأول',
+          exercises: [
+            {
+              orderIndex: 1,
+              title: 'التمرين الأول',
+              contextBlocks: [],
+              assetIds: ['asset-1'],
+              questions: [],
+            },
+          ],
+        },
+      ],
+      assets: [
+        {
+          id: 'asset-1',
+          exerciseOrderIndex: 1,
+          documentKind: 'EXAM',
+          role: 'PROMPT',
+          classification: 'image',
+          pageNumber: 1,
+          caption: 'الشكل 1',
+          variantCode: 'SUJET_1',
+        },
+      ],
+      uncertainties: [],
+      exam: {},
+    });
+
+    const { draft, summary } = importReviewedPaperExtract({
+      baseDraft,
+      reviewedExtract: extract,
+      importFilePath: 'extracted papers/SVT/M-2017.txt',
+      importedAt: new Date('2026-04-18T00:00:00.000Z'),
+    });
+
+    expect(summary.placeholderAssetCount).toBe(0);
+    expect(draft.exam.metadata.reviewedExtractCropGeometryCount).toBe(1);
+    expect(draft.assets[0]).toMatchObject({
+      id: 'asset-1',
+      cropBox: {
+        x: 120,
+        y: 240,
+        width: 360,
+        height: 220,
+      },
+      notes:
+        'Preserved existing crop geometry during reviewed extract import; verify before publication.',
+    });
+  });
+
+  it('imports premium draft graph nodes with crop geometry and native render suggestions', () => {
+    const extract = parseReviewedPaperExtract({
+      variants: [
+        {
+          code: 'SUJET_1',
+          title: 'الموضوع الأول',
+          nodes: [
+            {
+              id: 's1_ex1',
+              nodeType: 'EXERCISE',
+              parentId: null,
+              orderIndex: 1,
+              label: 'التمرين الأول',
+              maxPoints: 4,
+              topicCodes: ['  unit_1 '],
+              blocks: [
+                {
+                  id: 's1_ex1_prompt_1',
+                  role: 'PROMPT',
+                  type: 'paragraph',
+                  value: 'سياق التمرين.',
+                },
+              ],
+            },
+            {
+              id: 's1_ex1_q1',
+              nodeType: 'QUESTION',
+              parentId: 's1_ex1',
+              orderIndex: 1,
+              label: 'السؤال 1',
+              maxPoints: 4,
+              topicCodes: [],
+              blocks: [
+                {
+                  id: 's1_ex1_q1_prompt_1',
+                  role: 'PROMPT',
+                  type: 'image',
+                  value: '',
+                  assetId: 'asset-table-1',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      assets: [
+        {
+          id: 'asset-table-1',
+          sourcePageId: 'exam-page-1',
+          documentKind: 'EXAM',
+          role: 'PROMPT',
+          classification: 'table',
+          pageNumber: 1,
+          cropBox: {
+            x: 100,
+            y: 200,
+            width: 420,
+            height: 180,
+          },
+          label: 'جدول القياسات',
+          variantCode: 'SUJET_1',
+          nativeSuggestion: {
+            type: 'table',
+            value: '',
+            data: {
+              rows: [
+                ['x', '0', '1'],
+                ['f(x)', '2', '3'],
+              ],
+            },
+            status: 'suggested',
+            source: 'codex_app_extraction',
+            notes: ['Rendered natively with image fallback.'],
+          },
+        },
+      ],
+      uncertainties: [],
+      exam: {
+        durationMinutes: 180,
+        totalPoints: 20,
+      },
+    });
+
+    const { draft, summary } = importReviewedPaperExtract({
+      baseDraft: createBaseDraft(),
+      reviewedExtract: extract,
+      importFilePath: 'tmp/reviewed/svt-2025.json',
+      importedAt: new Date('2026-04-18T00:00:00.000Z'),
+    });
+
+    expect(summary).toMatchObject({
+      variantCount: 1,
+      exerciseCount: 1,
+      questionCount: 1,
+      assetCount: 1,
+      placeholderAssetCount: 0,
+      missingVariantCodes: ['SUJET_2'],
+    });
+    expect(draft.exam.metadata).toMatchObject({
+      reviewedExtractShape: 'draft_graph',
+      reviewedExtractCropGeometryCount: 1,
+      reviewedExtractNativeSuggestionCount: 1,
+    });
+    expect(draft.assets[0]).toMatchObject({
+      id: 'asset-table-1',
+      sourcePageId: 'exam-page-1',
+      cropBox: {
+        x: 100,
+        y: 200,
+        width: 420,
+        height: 180,
+      },
+      nativeSuggestion: {
+        type: 'table',
+        source: 'codex_app_extraction',
+      },
+    });
+    expect(draft.variants[0]?.nodes[0]?.topicCodes).toEqual(['UNIT_1']);
+    expect(draft.variants[0]?.nodes[1]?.blocks[0]).toMatchObject({
+      type: 'table',
+      assetId: 'asset-table-1',
+      data: {
+        rows: [
+          ['x', '0', '1'],
+          ['f(x)', '2', '3'],
+        ],
+      },
+    });
+  });
+
+  it('uses native asset suggestions for legacy reviewed asset blocks', () => {
+    const extract = parseReviewedPaperExtract({
+      variants: [
+        {
+          code: 'SUJET_1',
+          title: 'الموضوع الأول',
+          exercises: [
+            {
+              orderIndex: 1,
+              title: 'التمرين الأول',
+              contextBlocks: [],
+              assetIds: ['asset-graph-1'],
+              questions: [],
+            },
+          ],
+        },
+      ],
+      assets: [
+        {
+          id: 'asset-graph-1',
+          exerciseOrderIndex: 1,
+          documentKind: 'EXAM',
+          role: 'PROMPT',
+          classification: 'graph',
+          pageNumber: 1,
+          caption: 'المنحنى',
+          variantCode: 'SUJET_1',
+          nativeSuggestion: {
+            type: 'graph',
+            value: '',
+            data: {
+              kind: 'formula_graph',
+              curves: [{ fn: 'x^2' }],
+            },
+            source: 'reviewed_extract',
+            notes: [],
+          },
+        },
+      ],
+      uncertainties: [],
+      exam: {},
+    });
+
+    const { draft } = importReviewedPaperExtract({
+      baseDraft: createBaseDraft(),
+      reviewedExtract: extract,
+      importFilePath: 'tmp/reviewed/graph.json',
+    });
+
+    expect(draft.variants[0]?.nodes[0]?.blocks[0]).toMatchObject({
+      type: 'graph',
+      assetId: 'asset-graph-1',
+      data: {
+        kind: 'formula_graph',
+        curves: [{ fn: 'x^2' }],
+      },
+    });
+  });
+
   it('normalizes Roman exercise sections into named part nodes', () => {
     const extract = parseReviewedPaperExtract({
       variants: [

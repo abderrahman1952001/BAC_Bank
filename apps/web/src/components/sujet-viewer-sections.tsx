@@ -8,6 +8,8 @@ import {
   StudyQuestionPromptContent,
   StudyQuestionSolutionStack,
 } from "@/components/study-stage";
+import { Button } from "@/components/ui/button";
+import { FilterChip } from "@/components/ui/filter-chip";
 import {
   type ExamHierarchyBlock,
   type ExamHierarchyNode,
@@ -53,10 +55,12 @@ export function formatSujetLabel(
 export function SujetViewerHero({
   exam,
   backToLibraryHref,
+  backLabel = "العودة إلى المكتبة",
   simulationAction,
 }: {
   exam: ExamResponse;
   backToLibraryHref: string;
+  backLabel?: string;
   simulationAction?: ReactNode;
 }) {
   const selectedSujetNumber = exam.selectedSujetNumber ?? 1;
@@ -67,13 +71,6 @@ export function SujetViewerHero({
 
   return (
     <header className="sujet-browser-hero">
-      <div className="sujet-browser-hero-top">
-        <Link href={backToLibraryHref} className="btn-ghost">
-          العودة إلى المكتبة
-        </Link>
-        <span className="sujet-browser-collection">BAC Bank Archive</span>
-      </div>
-
       <div className="sujet-browser-masthead">
         <div className="sujet-browser-title-block">
           <span className="sujet-browser-kicker">
@@ -107,6 +104,9 @@ export function SujetViewerHero({
           {simulationAction ? (
             <div className="sujet-browser-actions">{simulationAction}</div>
           ) : null}
+          <Button asChild variant="ghost" className="h-10 rounded-full px-4">
+            <Link href={backToLibraryHref}>{backLabel}</Link>
+          </Button>
         </div>
       </div>
     </header>
@@ -127,17 +127,14 @@ export function SujetViewerNavigator({
           <span className="sujet-browser-nav-label">الموضوع</span>
           <div className="sujet-browser-pill-row">
             {variantLinks.map((variant) => (
-              <Link
+              <FilterChip key={variant.href} asChild active={variant.isActive}>
+                <Link
                 key={variant.href}
                 href={variant.href}
-                className={
-                  variant.isActive
-                    ? "sujet-browser-pill sujet-browser-pill-link active"
-                    : "sujet-browser-pill sujet-browser-pill-link"
-                }
               >
                 {variant.label}
-              </Link>
+                </Link>
+              </FilterChip>
             ))}
           </div>
         </div>
@@ -147,18 +144,14 @@ export function SujetViewerNavigator({
         <span className="sujet-browser-nav-label">التمارين</span>
         <div className="sujet-browser-pill-row">
           {exerciseTabs.map((exercise) => (
-            <button
+            <FilterChip
               key={exercise.id}
               type="button"
-              className={
-                exercise.isActive
-                  ? "sujet-browser-pill active"
-                  : "sujet-browser-pill"
-              }
+              active={exercise.isActive}
               onClick={exercise.onSelect}
             >
               {exercise.label}
-            </button>
+            </FilterChip>
           ))}
         </div>
       </div>
@@ -212,9 +205,10 @@ function QuestionSolutionToggle({
   }
 
   return (
-    <button
+    <Button
       type="button"
-      className="sujet-question-solution-toggle"
+      variant="ghost"
+      className="h-auto gap-1 rounded-full px-0 py-0 text-sm text-primary hover:bg-transparent"
       onClick={() => onToggleQuestionSolution(question.id)}
     >
       {isSolutionOpen ? (
@@ -228,7 +222,7 @@ function QuestionSolutionToggle({
           إظهار الحل
         </>
       )}
-    </button>
+    </Button>
   );
 }
 
@@ -477,9 +471,10 @@ function SujetViewerFlatExerciseBody({
                 </div>
 
                 {canRevealSolution ? (
-                  <button
+                  <Button
                     type="button"
-                    className="sujet-question-solution-toggle"
+                    variant="ghost"
+                    className="h-auto gap-1 rounded-full px-0 py-0 text-sm text-primary hover:bg-transparent"
                     onClick={() => onToggleQuestionSolution(question.id)}
                   >
                     {isSolutionOpen ? (
@@ -493,7 +488,7 @@ function SujetViewerFlatExerciseBody({
                         إظهار الحل
                       </>
                     )}
-                  </button>
+                  </Button>
                 ) : null}
               </div>
 
@@ -532,6 +527,18 @@ export function SujetViewerExercisePaper({
 
   return (
     <section className="sujet-paper-shell">
+      <div className="sujet-paper-toolbar">
+        <div>
+          <span>أرشيف مِراس</span>
+          <strong>
+            {exam.subject.name} · بكالوريا {exam.year}
+          </strong>
+        </div>
+        <div className="sujet-paper-toolbar-actions">
+          {exerciseAction}
+        </div>
+      </div>
+
       <article className="sujet-paper-sheet">
         <div className="sujet-paper-head">
           <div className="sujet-paper-head-copy">
@@ -553,9 +560,6 @@ export function SujetViewerExercisePaper({
               ) : null}
               <span>{exercise.questions.length} أسئلة</span>
             </div>
-            {exerciseAction ? (
-              <div className="sujet-paper-actions">{exerciseAction}</div>
-            ) : null}
           </div>
         </div>
 

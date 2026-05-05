@@ -9,6 +9,8 @@ import {
   AdminIngestionReviewSourcesSection,
 } from "@/components/admin-ingestion-review-sections";
 import { AdminIngestionStructureEditor } from "@/components/admin-ingestion-structure-editor";
+import { Button } from "@/components/ui/button";
+import { FilterChip } from "@/components/ui/filter-chip";
 import type {
   AdminIngestionJobResponse,
   AdminIngestionValidationIssue,
@@ -28,6 +30,7 @@ import {
   scrollToIssueTarget,
   type ReviewSection,
 } from "@/lib/admin-ingestion-review";
+import { buildStudentIngestionPreviewRouteWithSearch } from "@/lib/student-routes";
 import { useAdminIngestionReviewSession } from "@/lib/admin-ingestion-review-session";
 
 export function AdminIngestionReviewPage({
@@ -212,19 +215,36 @@ export function AdminIngestionReviewPage({
           </div>
         </div>
         <div className="table-actions ingestion-action-bar">
-          {publishedExams.map((exam) => (
+          <Button asChild variant="outline" className="h-10 rounded-full px-5">
             <Link
-              key={exam.id}
-              href={`/admin/library?examId=${exam.id}`}
-              className="btn-secondary"
+              href={buildStudentIngestionPreviewRouteWithSearch({
+                jobId,
+                streamCode:
+                  selectedStreamCodes[0] ?? data.job.stream_codes[0] ?? null,
+              })}
+              target="_blank"
+              rel="noreferrer"
             >
-              {`Open ${exam.stream_code} Exam`}
+              Student Preview
             </Link>
+          </Button>
+          {publishedExams.map((exam) => (
+            <Button
+              key={exam.id}
+              asChild
+              variant="outline"
+              className="h-10 rounded-full px-5"
+            >
+              <Link href={`/admin/library?examId=${exam.id}`}>
+                {`Open ${exam.stream_code} Exam`}
+              </Link>
+            </Button>
           ))}
           {!isRevisionDraft ? (
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-10 rounded-full px-5"
               onClick={() => {
                 void processJob(workflow);
               }}
@@ -235,11 +255,12 @@ export function AdminIngestionReviewPage({
               }
             >
               {processActionLabel}
-            </button>
+            </Button>
           ) : null}
-          <button
+          <Button
             type="button"
-            className="btn-secondary"
+            variant="outline"
+            className="h-10 rounded-full px-5"
             onClick={() => {
               void saveDraft().catch(() => undefined);
             }}
@@ -248,20 +269,21 @@ export function AdminIngestionReviewPage({
             }
           >
             {saveActionLabel}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="btn-secondary"
+            variant="outline"
+            className="h-10 rounded-full px-5"
             onClick={approveJob}
             disabled={
               reviewActionState.actionBusy || !validationSummary.can_approve
             }
           >
             {approveActionLabel}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="btn-primary"
+            className="h-10 rounded-full px-5"
             onClick={approveAndPublish}
             disabled={
               reviewActionState.actionBusy ||
@@ -270,7 +292,7 @@ export function AdminIngestionReviewPage({
             }
           >
             {primaryActionLabel}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -288,14 +310,10 @@ export function AdminIngestionReviewPage({
       >
         {(Object.keys(REVIEW_SECTION_LABELS) as ReviewSection[]).map(
           (section) => (
-            <button
+            <FilterChip
               key={section}
               type="button"
-              className={
-                activeSection === section
-                  ? "ingestion-section-chip active"
-                  : "ingestion-section-chip"
-              }
+              active={activeSection === section}
               onClick={() => {
                 setActiveSection(section);
               }}
@@ -304,7 +322,7 @@ export function AdminIngestionReviewPage({
               {issueCountBySection[section] > 0 ? (
                 <span>{issueCountBySection[section]}</span>
               ) : null}
-            </button>
+            </FilterChip>
           ),
         )}
       </div>
@@ -373,7 +391,6 @@ export function AdminIngestionReviewPage({
       {activeSection === "structure" ? (
         <section className="ingestion-section-panel">
           <AdminIngestionStructureEditor
-            jobId={jobId}
             draft={draft}
             sourcePages={sourcePages}
             assetPreviewBaseUrl={data.asset_preview_base_url}

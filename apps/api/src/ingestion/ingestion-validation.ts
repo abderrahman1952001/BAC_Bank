@@ -177,7 +177,7 @@ export function validateIngestionDraft(
       code: 'draft_has_no_nodes',
       target: 'exam',
       message:
-        'Draft has no hierarchy nodes yet. Run extraction or build the structure before approval.',
+        'Draft has no hierarchy nodes yet. Import or build the structure before approval.',
       variantCode: null,
       nodeId: null,
       blockId: null,
@@ -411,6 +411,21 @@ function validateAsset(
     });
   }
 
+  if (isFullPageCrop(asset.cropBox, page)) {
+    collector.warning({
+      code: 'asset_crop_placeholder',
+      target: 'asset',
+      message: `Asset ${asset.id} uses a full-page placeholder crop. Refine this crop before approval or publication.`,
+      variantCode: asset.variantCode,
+      nodeId: null,
+      blockId: null,
+      assetId: asset.id,
+      sourcePageId: asset.sourcePageId,
+      pageNumber: page.pageNumber,
+      field: 'cropBox',
+    });
+  }
+
   if (asset.nativeSuggestion?.status === 'stale') {
     collector.warning({
       code: 'asset_native_suggestion_stale',
@@ -447,6 +462,18 @@ function validateAsset(
       field: 'nativeSuggestion.type',
     });
   }
+}
+
+function isFullPageCrop(
+  cropBox: DraftAsset['cropBox'],
+  sourcePage: DraftSourcePage,
+) {
+  return (
+    cropBox.x === 0 &&
+    cropBox.y === 0 &&
+    cropBox.width === sourcePage.width &&
+    cropBox.height === sourcePage.height
+  );
 }
 
 function isPublishedRevisionDraft(draft: IngestionDraft) {

@@ -12,18 +12,18 @@ import {
 import type { AuthenticatedRequest } from '../auth/auth.types';
 import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
 import type {
-    CatalogResponse,
-    CreateSessionResponse,
-    ExamResponse,
-    FiltersResponse,
-    MyMistakesResponse,
-    RecordReviewQueueOutcomeResponse,
-    RecentExerciseStatesResponse,
-    RecentExamActivitiesResponse,
-    RecentStudySessionsResponse,
-    SessionPreviewResponse,
-    StudyQuestionAiExplanationResponse,
-    StudyRoadmapsResponse,
+  CatalogResponse,
+  CreateSessionResponse,
+  ExamResponse,
+  FiltersResponse,
+  MyMistakesResponse,
+  RecordReviewQueueOutcomeResponse,
+  RecentExerciseStatesResponse,
+  RecentExamActivitiesResponse,
+  RecentStudySessionsResponse,
+  SessionPreviewResponse,
+  StudyQuestionAiExplanationResponse,
+  StudyRoadmapsResponse,
   UpdateReviewQueueItemStatusResponse,
   StudySessionResponse,
   StudentExerciseStatesLookupResponse,
@@ -160,7 +160,10 @@ export class StudyController {
     @Req() request: AuthenticatedRequest,
     @Body() payload: UpdateStudyReviewQueueStatusDto,
   ): Promise<UpdateReviewQueueItemStatusResponse> {
-    return this.studyReviewService.updateReviewQueueStatus(request.user!.id, payload);
+    return this.studyReviewService.updateReviewQueueStatus(
+      request.user!.id,
+      payload,
+    );
   }
 
   @UseGuards(ClerkAuthGuard)
@@ -169,7 +172,10 @@ export class StudyController {
     @Req() request: AuthenticatedRequest,
     @Body() payload: RecordStudyReviewQueueOutcomeDto,
   ): Promise<RecordReviewQueueOutcomeResponse> {
-    return this.studyReviewService.recordReviewQueueOutcome(request.user!.id, payload);
+    return this.studyReviewService.recordReviewQueueOutcome(
+      request.user!.id,
+      payload,
+    );
   }
 
   @UseGuards(ClerkAuthGuard)

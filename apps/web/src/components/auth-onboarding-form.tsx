@@ -7,6 +7,9 @@ import type {
   AuthUser,
 } from "@bac-bank/contracts/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
 import { getPostAuthRoute } from "@/lib/auth-routing";
 import { updateCurrentUserProfile } from "@/lib/client-auth";
 
@@ -71,7 +74,7 @@ export function AuthOnboardingForm({
       <section className="auth-layout">
         <aside className="auth-side">
           <div className="auth-side-top">
-            <p className="page-kicker">BAC Bank</p>
+            <p className="page-kicker">مِراس</p>
             <ThemeToggle />
           </div>
           <h1>أكمل حسابك</h1>
@@ -85,8 +88,9 @@ export function AuthOnboardingForm({
           <form className="auth-form" onSubmit={handleSubmit}>
             <label>
               <span>اسم المستخدم</span>
-              <input
+              <Input
                 type="text"
+                className="h-12 rounded-2xl"
                 required
                 minLength={2}
                 maxLength={80}
@@ -98,7 +102,8 @@ export function AuthOnboardingForm({
             </label>
             <label>
               <span>الشعبة</span>
-              <select
+              <NativeSelect
+                className="h-12 rounded-2xl"
                 required
                 value={streamFamilyCode}
                 onChange={(event) => {
@@ -127,12 +132,13 @@ export function AuthOnboardingForm({
                     {family.name}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
             </label>
             {requiresLeafSelection ? (
               <label>
                 <span>المسار</span>
-                <select
+                <NativeSelect
+                  className="h-12 rounded-2xl"
                   required
                   value={streamCode}
                   onChange={(event) => {
@@ -147,17 +153,17 @@ export function AuthOnboardingForm({
                       {stream.name}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </label>
             ) : null}
             {submitError ? <p className="auth-feedback">{submitError}</p> : null}
-            <button
+            <Button
               type="submit"
-              className="btn-primary"
+              className="h-14 rounded-full text-base"
               disabled={isSubmitting || !streamCode}
             >
               {isSubmitting ? "جارٍ الحفظ..." : "الدخول إلى مساحة الطالب"}
-            </button>
+            </Button>
           </form>
         </article>
       </section>

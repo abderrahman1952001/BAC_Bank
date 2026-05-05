@@ -26,6 +26,8 @@
     "repair:source-document-readability": "ts-node --transpile-only scripts/repair-source-document-readability.ts",
     "import:reviewed-extract": "ts-node --transpile-only scripts/import-reviewed-extract.ts",
     "audit:bac-storage": "ts-node --transpile-only scripts/audit-bac-storage.ts",
+    "validate:course-blueprints": "npm run build -w @bac-bank/contracts && ts-node --transpile-only scripts/validate-course-blueprints.ts",
+    "prepare:course-visual-assets": "npm run build -w @bac-bank/contracts && ts-node --transpile-only scripts/prepare-course-visual-assets.ts",
     "reorganize:source-documents-by-subject": "ts-node --transpile-only scripts/reorganize-source-documents-by-subject.ts",
     "audit:canonical-completeness": "ts-node --transpile-only scripts/audit-canonical-completeness.ts",
     "cleanup:r2:orphans": "ts-node --transpile-only scripts/cleanup-orphaned-r2-objects.ts",

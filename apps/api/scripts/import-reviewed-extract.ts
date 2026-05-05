@@ -45,7 +45,7 @@ async function main() {
     const absoluteFilePath = path.resolve(process.cwd(), options.filePath);
     const importFilePath = toDisplayPath(absoluteFilePath);
     const reviewedExtract = parseReviewedPaperExtract(
-      JSON.parse(await fs.readFile(absoluteFilePath, 'utf8')),
+      parseJsonFileContent(await fs.readFile(absoluteFilePath, 'utf8')),
       importFilePath,
     );
     const resolvedTarget = options.jobId
@@ -88,6 +88,7 @@ async function main() {
             exerciseCount: result.summary.exerciseCount,
             questionCount: result.summary.questionCount,
             assetCount: result.summary.assetCount,
+            placeholderAssetCount: result.summary.placeholderAssetCount,
             uncertaintyCount: result.summary.uncertaintyCount,
             missingVariantCodes: result.summary.missingVariantCodes,
           },
@@ -144,12 +145,11 @@ async function resolveJobForPaperSource(input: {
         },
       },
       ingestionJobs: {
-        orderBy: {
-          createdAt: 'asc',
-        },
+        orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
         select: {
           id: true,
           status: true,
+          updatedAt: true,
         },
       },
     },
@@ -270,14 +270,33 @@ function selectWorkingJobId(
   jobs: Array<{
     id: string;
     status: IngestionJobStatus;
+    updatedAt: Date;
   }>,
 ) {
-  const mutableJob = jobs.find(
+  const mutableJobs = jobs.filter(
     (job) =>
       job.status !== IngestionJobStatus.QUEUED &&
       job.status !== IngestionJobStatus.PROCESSING &&
       job.status !== IngestionJobStatus.PUBLISHED,
   );
+
+  const statusPriority = new Map<IngestionJobStatus, number>([
+    [IngestionJobStatus.IN_REVIEW, 1],
+    [IngestionJobStatus.APPROVED, 2],
+    [IngestionJobStatus.DRAFT, 3],
+    [IngestionJobStatus.FAILED, 4],
+  ]);
+
+  const mutableJob = mutableJobs.sort((left, right) => {
+    const leftPriority = statusPriority.get(left.status) ?? 99;
+    const rightPriority = statusPriority.get(right.status) ?? 99;
+
+    if (leftPriority !== rightPriority) {
+      return leftPriority - rightPriority;
+    }
+
+    return right.updatedAt.getTime() - left.updatedAt.getTime();
+  })[0];
 
   return mutableJob?.id ?? null;
 }
@@ -342,6 +361,21 @@ function parseCliOptions(argv: string[]): CliOptions {
 function toDisplayPath(absolutePath: string) {
   const relativePath = path.relative(process.cwd(), absolutePath);
   return relativePath.startsWith('..') ? absolutePath : relativePath;
+}
+
+function parseJsonFileContent(content: string) {
+  try {
+    return JSON.parse(content);
+  } catch {
+    const start = content.indexOf('{');
+    const end = content.lastIndexOf('}');
+
+    if (start === -1 || end === -1 || end <= start) {
+      throw new Error('Reviewed extract file must contain a JSON object.');
+    }
+
+    return JSON.parse(content.slice(start, end + 1));
+  }
 }
 
 void main().catch((error) => {

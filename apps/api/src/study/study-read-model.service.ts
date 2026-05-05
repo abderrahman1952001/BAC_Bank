@@ -83,73 +83,74 @@ export class StudyReadModelService {
     const db = client ?? this.prisma;
     const [questionSignals, flaggedExerciseStates, existingReviewQueueItems] =
       await Promise.all([
-      db.studySessionQuestion.findMany({
-        where: {
-          sessionExercise: {
-            session: {
-              userId,
+        db.studySessionQuestion.findMany({
+          where: {
+            sessionExercise: {
+              session: {
+                userId,
+              },
             },
           },
-        },
-        select: {
-          questionNodeId: true,
-          answerState: true,
-          resultStatus: true,
-          reflection: true,
-          firstOpenedAt: true,
-          lastInteractedAt: true,
-          completedAt: true,
-          skippedAt: true,
-          solutionViewedAt: true,
-          updatedAt: true,
-          questionNode: {
-            select: {
-              skillMappings: {
-                select: {
-                  weight: true,
-                  isPrimary: true,
-                  skill: {
-                    select: {
-                      id: true,
-                      code: true,
-                      name: true,
-                      subject: {
-                        select: {
-                          code: true,
-                          name: true,
+          select: {
+            questionNodeId: true,
+            answerState: true,
+            resultStatus: true,
+            reflection: true,
+            firstOpenedAt: true,
+            lastInteractedAt: true,
+            completedAt: true,
+            skippedAt: true,
+            solutionViewedAt: true,
+            updatedAt: true,
+            questionNode: {
+              select: {
+                skillMappings: {
+                  select: {
+                    weight: true,
+                    isPrimary: true,
+                    skill: {
+                      select: {
+                        id: true,
+                        code: true,
+                        name: true,
+                        subject: {
+                          select: {
+                            code: true,
+                            name: true,
+                          },
                         },
                       },
                     },
                   },
                 },
-              },
-              topicMappings: {
-                select: {
-                  topic: {
-                    select: {
-                      id: true,
-                      code: true,
-                      name: true,
-                      studentLabel: true,
-                      subject: {
-                        select: {
-                          code: true,
-                          name: true,
+                topicMappings: {
+                  select: {
+                    topic: {
+                      select: {
+                        id: true,
+                        code: true,
+                        name: true,
+                        studentLabel: true,
+                        subject: {
+                          select: {
+                            code: true,
+                            name: true,
+                          },
                         },
-                      },
-                      skillMappings: {
-                        select: {
-                          weight: true,
-                          isPrimary: true,
-                          skill: {
-                            select: {
-                              id: true,
-                              code: true,
-                              name: true,
-                              subject: {
-                                select: {
-                                  code: true,
-                                  name: true,
+                        skillMappings: {
+                          select: {
+                            weight: true,
+                            isPrimary: true,
+                            skill: {
+                              select: {
+                                id: true,
+                                code: true,
+                                name: true,
+                                subject: {
+                                  select: {
+                                    code: true,
+                                    name: true,
+                                  },
                                 },
                               },
                             },
@@ -161,58 +162,58 @@ export class StudyReadModelService {
                 },
               },
             },
-          },
-          sessionExercise: {
-            select: {
-              exerciseNodeId: true,
-              exerciseNode: {
-                select: {
-                  skillMappings: {
-                    select: {
-                      weight: true,
-                      isPrimary: true,
-                      skill: {
-                        select: {
-                          id: true,
-                          code: true,
-                          name: true,
-                          subject: {
-                            select: {
-                              code: true,
-                              name: true,
+            sessionExercise: {
+              select: {
+                exerciseNodeId: true,
+                exerciseNode: {
+                  select: {
+                    skillMappings: {
+                      select: {
+                        weight: true,
+                        isPrimary: true,
+                        skill: {
+                          select: {
+                            id: true,
+                            code: true,
+                            name: true,
+                            subject: {
+                              select: {
+                                code: true,
+                                name: true,
+                              },
                             },
                           },
                         },
                       },
                     },
-                  },
-                  topicMappings: {
-                    select: {
-                      topic: {
-                        select: {
-                          id: true,
-                          code: true,
-                          name: true,
-                          studentLabel: true,
-                          subject: {
-                            select: {
-                              code: true,
-                              name: true,
+                    topicMappings: {
+                      select: {
+                        topic: {
+                          select: {
+                            id: true,
+                            code: true,
+                            name: true,
+                            studentLabel: true,
+                            subject: {
+                              select: {
+                                code: true,
+                                name: true,
+                              },
                             },
-                          },
-                          skillMappings: {
-                            select: {
-                              weight: true,
-                              isPrimary: true,
-                              skill: {
-                                select: {
-                                  id: true,
-                                  code: true,
-                                  name: true,
-                                  subject: {
-                                    select: {
-                                      code: true,
-                                      name: true,
+                            skillMappings: {
+                              select: {
+                                weight: true,
+                                isPrimary: true,
+                                skill: {
+                                  select: {
+                                    id: true,
+                                    code: true,
+                                    name: true,
+                                    subject: {
+                                      select: {
+                                        code: true,
+                                        name: true,
+                                      },
                                     },
                                   },
                                 },
@@ -227,41 +228,40 @@ export class StudyReadModelService {
               },
             },
           },
-        },
-      }),
-      db.studentExerciseState.findMany({
-        where: {
-          userId,
-          flaggedAt: {
-            not: null,
+        }),
+        db.studentExerciseState.findMany({
+          where: {
+            userId,
+            flaggedAt: {
+              not: null,
+            },
           },
-        },
-        select: {
-          exerciseNodeId: true,
-          flaggedAt: true,
-          updatedAt: true,
-        },
-      }),
-      db.studentReviewQueueItem.findMany({
-        where: {
-          userId,
-        },
-        select: {
-          id: true,
-          identityKey: true,
-          questionNodeId: true,
-          exerciseNodeId: true,
-          reasonType: true,
-          status: true,
-          dueAt: true,
-          successStreak: true,
-          lastReviewedAt: true,
-          lastReviewOutcome: true,
-          priorityScore: true,
-          lastPromotedAt: true,
-        },
-      }),
-    ]);
+          select: {
+            exerciseNodeId: true,
+            flaggedAt: true,
+            updatedAt: true,
+          },
+        }),
+        db.studentReviewQueueItem.findMany({
+          where: {
+            userId,
+          },
+          select: {
+            id: true,
+            identityKey: true,
+            questionNodeId: true,
+            exerciseNodeId: true,
+            reasonType: true,
+            status: true,
+            dueAt: true,
+            successStreak: true,
+            lastReviewedAt: true,
+            lastReviewOutcome: true,
+            priorityScore: true,
+            lastPromotedAt: true,
+          },
+        }),
+      ]);
 
     const topicRollups = new Map<string, TopicRollupAggregate>();
     const skillRollups = new Map<string, SkillRollupAggregate>();
@@ -517,10 +517,10 @@ export class StudyReadModelService {
       question.answerState !== StudyQuestionAnswerState.UNSEEN ||
       Boolean(
         question.firstOpenedAt ??
-          question.lastInteractedAt ??
-          question.completedAt ??
-          question.skippedAt ??
-          question.solutionViewedAt,
+        question.lastInteractedAt ??
+        question.completedAt ??
+        question.skippedAt ??
+        question.solutionViewedAt,
       )
     );
   }
@@ -657,7 +657,8 @@ export class StudyReadModelService {
 
       const roundedPriorityScore = this.roundScore(derivedItem.priorityScore);
       const hasFreshSignal =
-        derivedItem.lastPromotedAt.getTime() > existingItem.lastPromotedAt.getTime();
+        derivedItem.lastPromotedAt.getTime() >
+        existingItem.lastPromotedAt.getTime();
       const needsUpdate =
         existingItem.questionNodeId !== derivedItem.questionNodeId ||
         existingItem.exerciseNodeId !== derivedItem.exerciseNodeId ||

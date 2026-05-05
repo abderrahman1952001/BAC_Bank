@@ -5,6 +5,7 @@ import { BrainCircuit, PenTool, TimerReset } from "lucide-react";
 import { useAuthSession } from "@/components/auth-provider";
 import { StudentNavbar } from "@/components/student-navbar";
 import { StudyHeader, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import {
   STUDENT_BILLING_ROUTE,
   STUDENT_TRAINING_DRILL_ROUTE,
@@ -27,8 +28,8 @@ export function TrainingHome() {
       <section className="student-main-frame student-main-frame-builder">
         <StudyHeader
           eyebrow="التدريب"
-          title="اختر مسار الدراسة"
-          subtitle="ابدأ بدريل مرن أو بمحاكاة امتحان كاملة من نفس سطح التدريب."
+          title="اختر تمرينك التالي"
+          subtitle="دريل سريع، محاكاة رسمية، أو جلسة علاجية مبنية على إشاراتك الأخيرة."
           meta={[
             ...(drillQuota
               ? [
@@ -59,88 +60,97 @@ export function TrainingHome() {
           <h3>الخطة الحالية</h3>
           <p>
             {studyEntitlements?.tier === "PREMIUM"
-              ? "Premium · وصول غير محدود للدريل والمحاكاة مع مسارات الدعم المتقدمة."
-              : "Free · حصص شهرية منفصلة للدريل والمحاكاة، مع بقاء المكتبة والاستكمال متاحين دائماً."}
+              ? "الخطة المتقدمة · وصول كامل للتدريب، المحاكاة، وجلسات نقاط الضعف."
+              : "الخطة المجانية · حصص شهرية للتدريب والمحاكاة، مع بقاء المكتبة والاستكمال متاحين دائماً."}
           </p>
           <div className="billing-inline-actions">
-            <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
-              {studyEntitlements?.tier === "PREMIUM"
-                ? "إدارة الاشتراك"
-                : "الترقية إلى Premium"}
-            </Link>
+            <Button asChild variant="outline" className="h-10 rounded-full px-5">
+              <Link href={STUDENT_BILLING_ROUTE}>
+                {studyEntitlements?.tier === "PREMIUM"
+                  ? "إدارة الاشتراك"
+                  : "الترقية للخطة المتقدمة"}
+              </Link>
+            </Button>
           </div>
         </section>
 
-        <div className="builder-subject-grid">
+        <div className="training-mode-board">
           <Link
             href={STUDENT_TRAINING_DRILL_ROUTE}
-            className="builder-choice-card builder-subject-card"
+            className="training-mode-row"
           >
             <span className="builder-card-icon" aria-hidden="true">
               <PenTool size={24} strokeWidth={2.1} />
             </span>
-            <strong>جلسة دريل</strong>
-            <p>دريل بالمحاور أو دريل مختلط مع معاينة مباشرة قبل البدء.</p>
+            <span className="training-mode-copy">
+              <strong>جلسة دريل</strong>
+              <p>تمارين مختارة حسب المادة، المحور، والسنوات التي تريد تثبيتها.</p>
+            </span>
             <small>
               {drillQuota?.monthlyLimit === null
                 ? "بدء غير محدود"
-                : `المتبقي هذا الشهر: ${drillQuota?.remaining ?? 0}`}
+                : `المتبقي: ${drillQuota?.remaining ?? 0}`}
             </small>
           </Link>
 
           <Link
             href={STUDENT_TRAINING_SIMULATION_ROUTE}
-            className="builder-choice-card builder-subject-card"
+            className="training-mode-row"
           >
             <span className="builder-card-icon" aria-hidden="true">
               <TimerReset size={24} strokeWidth={2.1} />
             </span>
-            <strong>محاكاة امتحان كاملة</strong>
-            <p>اختر موضوعاً رسمياً، راجع بياناته، ثم ابدأ محاكاة بزمن الامتحان.</p>
+            <span className="training-mode-copy">
+              <strong>محاكاة امتحان كاملة</strong>
+              <p>موضوع BAC رسمي بزمن مضبوط واستمرارية حتى بعد الخروج.</p>
+            </span>
             <small>
               {simulationQuota?.monthlyLimit === null
                 ? "بدء غير محدود"
-                : `المتبقي هذا الشهر: ${simulationQuota?.remaining ?? 0}`}
+                : `المتبقي: ${simulationQuota?.remaining ?? 0}`}
             </small>
           </Link>
 
           {weakPointDrillEnabled ? (
             <Link
               href={STUDENT_TRAINING_WEAK_POINTS_ROUTE}
-              className="builder-choice-card builder-subject-card"
+              className="training-mode-row"
             >
               <span className="builder-card-icon" aria-hidden="true">
                 <BrainCircuit size={24} strokeWidth={2.1} />
               </span>
-              <strong>دريل نقاط الضعف</strong>
-              <p>جلسة علاجية مبنية على أخطائك الحديثة ومحاورك الأضعف داخل المادة.</p>
-              <small>Premium · مبني على إشاراتك الأخيرة</small>
+              <span className="training-mode-copy">
+                <strong>دريل نقاط الضعف</strong>
+                <p>جلسة علاجية مبنية على أخطائك الحديثة ومحاورك الأضعف.</p>
+              </span>
+              <small>الخطة المتقدمة · مبني على إشاراتك الأخيرة</small>
             </Link>
           ) : (
-            <article className="builder-choice-card builder-subject-card is-locked">
+            <article className="training-mode-row is-locked">
               <span className="builder-card-icon" aria-hidden="true">
                 <BrainCircuit size={24} strokeWidth={2.1} />
               </span>
-              <strong>دريل نقاط الضعف</strong>
-              <p>يبني جلسة علاجية مباشرة من الإشارات الحديثة بعد المراجعة.</p>
-              <small>متاح ضمن Premium</small>
-              <Link href={STUDENT_BILLING_ROUTE} className="btn-secondary">
-                فعّل Premium
-              </Link>
+              <span className="training-mode-copy">
+                <strong>دريل نقاط الضعف</strong>
+                <p>يفتح جلسة علاجية مباشرة من الأخطاء والإشارات الحديثة.</p>
+              </span>
+              <Button asChild variant="outline" className="h-10 rounded-full px-5">
+                <Link href={STUDENT_BILLING_ROUTE}>فعّل الخطة المتقدمة</Link>
+              </Button>
             </article>
           )}
         </div>
 
-        <section className="builder-preview-card">
-          <h3>ما الذي يدخل في هذا المرور؟</h3>
-          <div className="builder-preview-exercises">
-            <article className="builder-preview-exercise">
+        <section className="training-process-strip">
+          <h3>ما الذي يحدث داخل الجلسة؟</h3>
+          <div>
+            <article>
               <div>
                 <strong>الدريل</strong>
                 <p>مسار مرن للتعلم، مع كشف الحل أثناء الدراسة واستكمال الجلسة لاحقاً.</p>
               </div>
             </article>
-            <article className="builder-preview-exercise">
+            <article>
               <div>
                 <strong>المحاكاة الرسمية</strong>
                 <p>بدء من موضوع BAC رسمي بزمن محدد، مع استمرار العد التنازلي بعد الخروج.</p>

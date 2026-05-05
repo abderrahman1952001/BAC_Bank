@@ -5,8 +5,7 @@
 Use this playbook when an agent is asked to produce a reliable BAC ingestion
 draft from source papers.
 
-The success criterion is not "got some JSON back from Gemini." The success
-criterion is:
+The success criterion is not "got some JSON back." The success criterion is:
 
 - the draft is structurally reliable
 - the correction is faithful
@@ -16,22 +15,18 @@ criterion is:
 This playbook follows the canonical workflow in
 `docs/admin-ingestion-workflow.md`.
 
+For subject-neutral premium extraction, native asset rendering, crop policy,
+and corpus sweeps, also follow `docs/premium-ingestion-extraction.md`.
+
 ## Default Route
 
-Unless the user explicitly says otherwise, use this extraction route:
+Use `codex_app_reviewed_extraction`:
 
-- Google AI Studio
-- `Gemini 3.1 Pro`
-- structured output enabled
-- both the exam PDF and correction PDF attached
-
-If the extraction must go through the API, verify the exact Google API model
-code before running it. Do not assume the Studio-facing name is the same as the
-API identifier.
-
-Fallback:
-
-- Gemini API through the shared ingestion path only when needed
+- inspect the canonical PDFs and rendered source pages
+- create a durable reviewed extract artifact in the premium draft graph shape
+- import it through the generic reviewed-extract command
+- keep source storage, review state, approval, and publication on the shared
+  ingestion path
 
 ## Inputs Required Before Draft Work Starts
 
@@ -56,16 +51,17 @@ An agent may:
 - qualify the paper family
 - store canonical source records and files through the shared ingestion path
 - generate canonical page PNGs through the shared path
-- run the manual extraction workflow in Google AI Studio
-- turn the extraction output into a reviewed draft
+- produce a premium reviewed extract in the app's draft graph shape
+- import the reviewed extract into a reviewed draft
 - normalize and clean the draft
+- verify the draft through the student-side preview route
 - save the reviewed draft back to the job
 
 An agent must not:
 
 - create a second ingestion engine in scripts
 - invent missing source or correction content
-- publish raw Gemini output without review
+- publish raw model output without review
 - replace the final human review with guesswork
 
 ## Standard Procedure
@@ -107,44 +103,52 @@ must be the stable basis for:
 - asset mapping
 - final crop review
 
-### 4. Run Extraction In Google AI Studio
+### 4. Produce The Premium Reviewed Extract
 
-The default manual extraction sequence is:
+Use the same extraction contract for every paper. The model may normalize
+structure, labels, block types, punctuation, and obvious OCR noise, but it must
+not summarize, paraphrase, omit, or replace source content with its own wording.
+The exam PDF is the source of truth for prompts. The correction PDF is the
+source of truth for solutions, rubrics, and barèmes.
 
-1. Open Google AI Studio.
-2. Select `Gemini 3.1 Pro`.
-3. Enable structured output.
-4. Paste the general extraction prompt.
-5. Paste the request-specific prompt.
-6. Paste the output JSON structure.
-7. Attach the exam PDF.
-8. Attach the correction PDF.
-9. Run the extraction.
-10. Save the raw JSON response.
+The standard extraction sequence is:
 
-Current prompt sources:
+1. Inspect the canonical exam PDF and correction PDF.
+2. Use rendered source pages for visual checks and asset coordinates.
+3. Build `variants[].nodes[]` directly in the app's draft graph shape.
+4. Preserve prompt, solution, hint, and rubric blocks on the right nodes.
+5. Attach assets to the right node and source page.
+6. Add crop geometry when known.
+7. Add native render suggestions when they are faithful and review-saving.
+8. Save the reviewed extract artifact with a stable paper-specific filename.
 
-- `gemini-prompts/extraction-system-instruction.txt`
-- `gemini-prompts/extraction-request-template.txt`
-- output structure aligned with
-  `apps/api/src/ingestion/gemini-extractor.ts`
+If crop tightening is the bottleneck during a bulk run, defer it deliberately:
+finish the text, structure, correction, asset references, and import first;
+omit unknown `assets[].cropBox` values; and report the placeholder crop count
+as review debt. The follow-up crop pass may be human-led or Codex-led, but the
+draft is not publish-ready until those placeholders are resolved.
 
-If the user explicitly asks for API extraction, use the shared ingestion
-processing path instead of inventing a separate API script.
+Before saving the JSON, run a self-review pass:
+
+- compare each prompt block back to the exam source
+- compare each solution and rubric block back to the official correction
+- verify that no prompt, condition, unit, formula, point split, or repeated
+  instruction was compressed away
+- move uncertain readings into `uncertainties[]` instead of hiding them in
+  polished prose
 
 ### 5. Create Or Refresh The Draft
 
-Take the raw extraction JSON and turn it into the job's `draft_json`.
+Take the reviewed extract JSON and turn it into the job's `draft_json`.
 
 At minimum, preserve extraction provenance in `draft.exam.metadata`:
 
-- route: `google_ai_studio` or `api`
-- model: `gemini-3.1-pro`
+- route: `codex_app_reviewed_extraction`
 - extracted timestamp
-- prompt version or prompt bundle reference
+- source artifact path
 
-The reviewed draft is the artifact that matters. The raw extraction JSON is only
-an input to that draft.
+The reviewed draft is the artifact that matters. The reviewed extract JSON is
+only an input to that draft.
 
 ### 6. Normalize The Draft
 
@@ -179,7 +183,23 @@ A draft is not ready just because validation passes. The agent still owns:
 Validation should catch broken references and missing required structure.
 Normalization should remove surprise.
 
-### 8. Save The Reviewed Draft
+### 8. Student-Side Preview QA
+
+Open the draft from the student-side preview route before handoff or approval.
+This route converts the reviewed draft graph into the same `ExamResponse` shape
+used by published papers, then renders it with the student subject viewer.
+
+Use it to check:
+
+- hierarchy and exercise navigation
+- crop fit and image clarity
+- native table, graph, tree, and formula rendering
+- solution reveal behavior
+- mobile and desktop layout issues
+
+If the draft only looks correct in the admin editor, it is not done.
+
+### 9. Save The Reviewed Draft
 
 When the draft is materially better, save it back to the ingestion job.
 
@@ -189,7 +209,7 @@ Important status behavior:
 - draft edits after approval invalidate approval
 - published jobs are frozen
 
-### 9. Hand Off For Final Human Review
+### 10. Hand Off For Final Human Review
 
 The handoff target is a draft where the human mostly needs to:
 
@@ -240,6 +260,8 @@ Before handing off, verify all of the following.
 - standalone formulas use `latex` blocks when needed
 - prose with inline notation stays readable
 - duplicated chrome or numbering noise is removed from block text
+- tables, graphs, trees, and formula-heavy visuals are native blocks when that
+  is faithful and faster to review than an image
 
 ### Correction Fidelity
 
@@ -254,8 +276,9 @@ Before handing off, verify all of the following.
 - assets are attached to the right question or exercise
 - assets that should remain structured blocks are not reduced carelessly to
   images
-- uncropped assets are acceptable only when the later human pass can fix them
-  quickly
+- crops are tight enough that the student-side preview looks intentional
+- any remaining full-page or broad placeholder crops are explicitly called out
+  and are not publish-ready
 
 ### Readability
 
@@ -271,7 +294,6 @@ When handing off to the human reviewer, report:
 
 - what source bundle was processed
 - which extraction route was used
-- which model was used
 - whether the draft was created fresh or refreshed
 - what major normalization fixes were applied
 - any remaining risks or open questions

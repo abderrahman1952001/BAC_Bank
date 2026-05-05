@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { clearStudyReviewVault } from "@/lib/study-api";
 import { buildStudentTrainingSessionRoute } from "@/lib/student-routes";
 
@@ -41,16 +42,16 @@ export function StudyClearVaultButton({
 
   return (
     <>
-      <button
+      <Button
         type="button"
-        className="btn-primary"
+        className="h-11 rounded-full px-5"
         onClick={() => {
           void handleStart();
         }}
         disabled={pending}
       >
         {pending ? "جارٍ تجهيز الجلسة..." : label}
-      </button>
+      </Button>
       {error ? <p className="error-text">{error}</p> : null}
     </>
   );

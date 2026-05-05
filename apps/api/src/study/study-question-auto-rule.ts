@@ -146,7 +146,9 @@ export function buildStudyQuestionAutoRuleSubmission(input: {
   const rawValue = input.payload.value.trim();
 
   if (!rawValue) {
-    throw new BadRequestException('Answer submission requires a non-empty value.');
+    throw new BadRequestException(
+      'Answer submission requires a non-empty value.',
+    );
   }
 
   const outcome = evaluateAutoRuleSubmission(rawValue, input.autoRule);
@@ -195,7 +197,11 @@ function evaluateAutoRuleSubmission(
         ? null
         : Number.parseFloat(maybeNormalizedValue);
 
-    if (maybeNormalizedValue === null || parsedValue === null || Number.isNaN(parsedValue)) {
+    if (
+      maybeNormalizedValue === null ||
+      parsedValue === null ||
+      Number.isNaN(parsedValue)
+    ) {
       return {
         resultStatus: StudyQuestionResultStatus.INCORRECT,
         normalizedValue: rawValue.trim(),
@@ -232,7 +238,8 @@ function evaluateAutoRuleSubmission(
   }
 
   const exactMatch =
-    autoRule.acceptedAnswers.find((answer) => answer === normalizedValue) ?? null;
+    autoRule.acceptedAnswers.find((answer) => answer === normalizedValue) ??
+    null;
 
   if (exactMatch) {
     return {
@@ -262,13 +269,13 @@ function evaluateAutoRuleSubmission(
           ? StudyQuestionResultStatus.PARTIAL
           : StudyQuestionResultStatus.INCORRECT,
     normalizedValue,
-    matchedValue: matchedKeywords.length
-      ? matchedKeywords.join(', ')
-      : null,
+    matchedValue: matchedKeywords.length ? matchedKeywords.join(', ') : null,
   };
 }
 
-function readAnswerPayload(value: Prisma.JsonValue | null): AutoRuleAnswerPayload {
+function readAnswerPayload(
+  value: Prisma.JsonValue | null,
+): AutoRuleAnswerPayload {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     return {};
   }
@@ -310,7 +317,9 @@ function readNormalizedStrings(value: unknown) {
   return Array.from(
     new Set(
       value
-        .map((item) => (typeof item === 'string' ? normalizeShortText(item) : ''))
+        .map((item) =>
+          typeof item === 'string' ? normalizeShortText(item) : '',
+        )
         .filter(Boolean),
     ),
   );

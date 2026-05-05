@@ -242,7 +242,7 @@ describe("admin ingestion review helpers", () => {
         jobStatus: "draft",
         processing: false,
       }),
-    ).toBe("Re-run extraction");
+    ).toBe("Refresh pages");
     expect(
       buildProcessActionLabel({
         workflow: {
@@ -253,7 +253,7 @@ describe("admin ingestion review helpers", () => {
         jobStatus: "failed",
         processing: false,
       }),
-    ).toBe("Re-run extraction");
+    ).toBe("Refresh pages");
     expect(
       buildProcessActionLabel({
         workflow: {
@@ -264,7 +264,7 @@ describe("admin ingestion review helpers", () => {
         jobStatus: "draft",
         processing: false,
       }),
-    ).toBe("Process");
+    ).toBe("Prepare pages");
     expect(
       buildProcessActionLabel({
         workflow: {
@@ -283,7 +283,7 @@ describe("admin ingestion review helpers", () => {
         },
         jobStatus: "in_review",
       }),
-    ).toContain("replace the current extracted structure");
+    ).toContain("re-rasterize the canonical PDFs");
     expect(
       buildProcessConfirmationMessage({
         workflow: {

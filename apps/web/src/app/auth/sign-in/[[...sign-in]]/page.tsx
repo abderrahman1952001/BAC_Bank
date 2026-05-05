@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SignIn } from "@clerk/nextjs";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 
 export default function SignInPage() {
   return (
@@ -8,14 +9,14 @@ export default function SignInPage() {
       <section className="auth-layout">
         <aside className="auth-side">
           <div className="auth-side-top">
-            <p className="page-kicker">BAC Bank</p>
+            <p className="page-kicker">مِراس</p>
             <ThemeToggle />
           </div>
           <h1>مرحبا بعودتك</h1>
           <p>سجّل الدخول بحسابك ثم نوجّهك تلقائيا إلى مساحة الطالب أو الإدارة.</p>
-          <Link href="/auth" className="btn-secondary">
-            العودة
-          </Link>
+          <Button asChild variant="outline" className="h-12 rounded-full px-5">
+            <Link href="/auth">العودة</Link>
+          </Button>
         </aside>
 
         <article className="auth-card">

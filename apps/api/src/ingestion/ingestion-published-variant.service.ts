@@ -317,9 +317,7 @@ export class IngestionPublishedVariantService {
       },
     });
 
-    return new Map(
-      topics.map((topic) => [topic.id, topic.skillMappings]),
-    );
+    return new Map(topics.map((topic) => [topic.id, topic.skillMappings]));
   }
 
   private async createNodeBlocks(

@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import type {
+  CourseConceptResponse,
   CourseSubjectCardsResponse,
   CourseSubjectResponse,
   CourseTopicResponse,
 } from "@bac-bank/contracts/courses";
 import {
+  buildCourseConceptPageModel,
   buildCourseSubjectCards,
   buildCourseSubjectPageModel,
   buildCourseTopicPageModel,
@@ -89,16 +91,87 @@ const topicFixture: CourseTopicResponse = {
     {
       conceptCode: "EXPONENTIAL",
       slug: "exponential",
+      unitCode: "PROTEIN_SYNTHESIS",
+      role: "UNIT_INTRO",
       title: "الدالة الأسية",
       description: null,
     },
     {
       conceptCode: "LOGARITHM",
       slug: "logarithm",
+      unitCode: "PROTEIN_SYNTHESIS",
+      role: "LESSON",
       title: "الدالة اللوغاريتمية",
       description: null,
     },
   ],
+};
+
+const conceptFixture: CourseConceptResponse = {
+  subject: { code: "MATHEMATICS", name: "الرياضيات" },
+  topic: {
+    code: "FUNCTIONS",
+    slug: "functions",
+    title: "الدوال والتحليل",
+    shortTitle: "الدوال والتحليل",
+  },
+  concept: {
+    conceptCode: "NUMERIC_FUNCTION",
+    slug: "numeric-function",
+    unitCode: "ANALYSIS",
+    role: "LESSON",
+    title: "ما معنى الدالة العددية؟",
+    summary: "كل قيمة من المجال تقود إلى صورة وحيدة.",
+    estimatedMinutes: 4,
+  },
+  navigation: {
+    previousConceptSlug: null,
+    nextConceptSlug: "domain-of-definition",
+  },
+  steps: [
+    {
+      id: "definition",
+      type: "EXPLAIN",
+      eyebrow: "تعريف",
+      title: "الصورة والسابقة",
+      body: "إذا كان y = f(x) فإن y هي صورة x بالدالة.",
+      bullets: ["الصورة: العدد الناتج"],
+      visual: {
+        kind: "DIAGRAM",
+        title: "علاقة الدخول بالخروج",
+        description: "مخطط بسيط يربط x بصورة وحيدة.",
+        prompt: "Diagram showing one input x mapped to one output f(x).",
+        altText: "سهم من x إلى f(x).",
+      },
+      interaction: {
+        kind: "SIMPLE_CHOICE",
+        prompt: "اختر العبارة التي تحافظ على معنى الوحيدة.",
+        items: ["صورة واحدة", "صورتان مختلفتان"],
+        answer: "صورة واحدة",
+      },
+      examLens: {
+        bacSkill: "صياغة تعريف دقيق",
+        prompt: "في BAC، التعريف يجب أن يظهر المجال والوحيدة.",
+        trap: "خلط الدالة بالمنحنى فقط.",
+      },
+    },
+  ],
+  depthPortals: [
+    {
+      slug: "mapping-vs-function",
+      kind: "ADVANCED_CONTEXT",
+      title: "متى لا تكون العلاقة دالة؟",
+      summary: "استكشاف سريع لعلاقة تعطي صورتين لنفس السابقة.",
+      body: "هذا الاستكشاف اختياري، لكنه يوضح لماذا شرط الصورة الوحيدة ليس تفصيلاً لغوياً.",
+      estimatedMinutes: 2,
+    },
+  ],
+  quiz: {
+    question: "أي عبارة تعبّر بدقة عن الدالة؟",
+    options: ["كل x يملك صورة وحيدة", "كل x يملك صورتين"],
+    correctIndex: 0,
+    explanation: "جوهر التعريف هو الوحيدة.",
+  },
 };
 
 describe("courses surface builders", () => {
@@ -126,13 +199,44 @@ describe("courses surface builders", () => {
     });
   });
 
-  it("builds a topic page model with prototype concept checkpoints", () => {
+  it("builds a topic page model from API concept checkpoints", () => {
     const model = buildCourseTopicPageModel(topicFixture);
 
     expect(model.topic.slug).toBe("functions");
-    expect(model.concepts).toHaveLength(3);
+    expect(model.concepts).toHaveLength(2);
+    expect(model.conceptGroups).toEqual([
+      {
+        unitCode: "PROTEIN_SYNTHESIS",
+        title: "تركيب البروتين",
+        concepts: model.concepts,
+      },
+    ]);
+    expect(model.concepts[0]).toMatchObject({
+      title: "الدالة الأسية",
+      role: "UNIT_INTRO",
+      roleLabel: "مدخل الوحدة",
+    });
     expect(model.concepts[0].href).toBe(
-      "/student/courses/MATHEMATICS/topics/functions/concepts/numeric-function",
+      "/student/courses/MATHEMATICS/topics/functions/concepts/exponential",
+    );
+  });
+
+  it("builds a concept page model with navigation routes", () => {
+    const model = buildCourseConceptPageModel(conceptFixture);
+
+    expect(model.concept.slug).toBe("numeric-function");
+    expect(model.concept.steps[0].visual?.kind).toBe("DIAGRAM");
+    expect(model.concept.steps[0].interaction?.kind).toBe("SIMPLE_CHOICE");
+    expect(model.concept.steps[0].examLens?.bacSkill).toBe("صياغة تعريف دقيق");
+    expect(model.concept.depthPortals[0]).toMatchObject({
+      slug: "mapping-vs-function",
+      estimatedMinutes: 2,
+    });
+    expect(model.backHref).toBe(
+      "/student/courses/MATHEMATICS/topics/functions",
+    );
+    expect(model.nextHref).toBe(
+      "/student/courses/MATHEMATICS/topics/functions/concepts/domain-of-definition",
     );
   });
 });

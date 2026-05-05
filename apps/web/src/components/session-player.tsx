@@ -8,6 +8,7 @@ import { useAuthSession } from "@/components/auth-provider";
 import { StudyReviewOutcomeActions } from "@/components/study-review-outcome-actions";
 import { StudyExerciseStateActions } from "@/components/study-exercise-state-actions";
 import { StudyReviewQueueActions } from "@/components/study-review-queue-actions";
+import { Button } from "@/components/ui/button";
 import {
   SessionPlayerContextPane,
   SessionPlayerHeader,
@@ -148,9 +149,9 @@ function SessionPlayerScreen({
       <div className="theater-mode theater-mode-empty">
         <header className="theater-header">
           <div className="theater-header-left">
-            <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-ghost">
-              إغلاق
-            </Link>
+            <Button asChild variant="ghost" className="h-10 rounded-full px-4">
+              <Link href={STUDENT_MY_SPACE_ROUTE}>إغلاق</Link>
+            </Button>
           </div>
           <div className="theater-header-center" />
           <div className="theater-header-right" />
@@ -162,9 +163,9 @@ function SessionPlayerScreen({
             description={error || "لا توجد بيانات لهذه الجلسة"}
             action={
               <div className="study-action-row">
-                <button
+                <Button
                   type="button"
-                  className="btn-primary"
+                  className="h-11 rounded-full px-5"
                   onClick={() => {
                     startRefreshingSession(() => {
                       router.refresh();
@@ -173,10 +174,10 @@ function SessionPlayerScreen({
                   disabled={refreshingSession}
                 >
                   {refreshingSession ? "جارٍ التحديث..." : "إعادة المحاولة"}
-                </button>
-                <Link href={STUDENT_MY_SPACE_ROUTE} className="btn-secondary">
-                  العودة إلى مساحتي
-                </Link>
+                </Button>
+                <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                  <Link href={STUDENT_MY_SPACE_ROUTE}>العودة إلى مساحتي</Link>
+                </Button>
               </div>
             }
           />

@@ -200,15 +200,15 @@ export class StudyExerciseStateService {
       const now = new Date();
       const nextBookmarkedAt =
         payload.bookmarked === undefined
-          ? currentExerciseState?.bookmarkedAt ?? null
+          ? (currentExerciseState?.bookmarkedAt ?? null)
           : payload.bookmarked
-            ? currentExerciseState?.bookmarkedAt ?? now
+            ? (currentExerciseState?.bookmarkedAt ?? now)
             : null;
       const nextFlaggedAt =
         payload.flagged === undefined
-          ? currentExerciseState?.flaggedAt ?? null
+          ? (currentExerciseState?.flaggedAt ?? null)
           : payload.flagged
-            ? currentExerciseState?.flaggedAt ?? now
+            ? (currentExerciseState?.flaggedAt ?? now)
             : null;
 
       if (!nextBookmarkedAt && !nextFlaggedAt) {

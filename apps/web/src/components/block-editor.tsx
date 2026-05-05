@@ -2,6 +2,11 @@
 
 import katex from 'katex';
 import { ChangeEvent, useMemo, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { FilterChip } from '@/components/ui/filter-chip';
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Textarea } from "@/components/ui/textarea";
 import { ContentBlock, makeEmptyBlock } from '@/lib/admin';
 
 type BlockEditorProps = {
@@ -176,14 +181,13 @@ export function BlockEditor({
         <h3>{title}</h3>
         <div className="chip-grid">
           {blockTypes.map((type) => (
-            <button
+            <FilterChip
               key={type}
               type="button"
-              className="choice-chip"
               onClick={() => addBlock(type)}
             >
               + {type}
-            </button>
+            </FilterChip>
           ))}
         </div>
       </header>
@@ -194,7 +198,7 @@ export function BlockEditor({
             <div className="block-item-head">
               <strong>Block {index + 1}</strong>
               <div className="block-item-actions">
-                <select
+                <NativeSelect
                   value={block.type}
                   onChange={(event) => {
                     updateBlock(block.id, {
@@ -207,35 +211,38 @@ export function BlockEditor({
                       {type}
                     </option>
                   ))}
-                </select>
-                <button
+                </NativeSelect>
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="outline"
+                  className="h-8 rounded-full px-3"
                   onClick={() => moveBlock(block.id, -1)}
                 >
                   ↑
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="outline"
+                  className="h-8 rounded-full px-3"
                   onClick={() => moveBlock(block.id, 1)}
                 >
                   ↓
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
-                  className="btn-secondary"
+                  variant="outline"
+                  className="h-8 rounded-full px-3"
                   onClick={() => removeBlock(block.id)}
                 >
                   Remove
-                </button>
+                </Button>
               </div>
             </div>
 
             {block.type === 'heading' ? (
               <label className="field">
                 <span>Heading level</span>
-                <input
+                <Input
                   type="number"
                   min={1}
                   max={6}
@@ -252,7 +259,7 @@ export function BlockEditor({
             {block.type === 'code' ? (
               <label className="field">
                 <span>Language</span>
-                <input
+                <Input
                   type="text"
                   value={block.meta?.language ?? ''}
                   onChange={(event) => {
@@ -270,7 +277,7 @@ export function BlockEditor({
             block.type === 'tree' ? (
               <label className="field">
                 <span>Caption</span>
-                <input
+                <Input
                   type="text"
                   value={block.meta?.caption ?? ''}
                   onChange={(event) => {
@@ -285,7 +292,7 @@ export function BlockEditor({
             {block.type === 'table' ? (
               <label className="field">
                 <span>Table Rows</span>
-                <textarea
+                <Textarea
                   key={`${block.id}:${formatTableRows(block.data)}`}
                   rows={5}
                   defaultValue={formatTableRows(block.data)}
@@ -312,7 +319,7 @@ export function BlockEditor({
                         ? 'Supporting Text'
                       : 'Content'}
               </span>
-              <textarea
+              <Textarea
                 rows={block.type === 'code' ? 7 : 4}
                 value={block.value}
                 onChange={(event) => {
@@ -326,7 +333,7 @@ export function BlockEditor({
             {block.type === 'image' && onUploadImage ? (
               <label className="field">
                 <span>Upload Image</span>
-                <input
+                <Input
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
@@ -341,7 +348,7 @@ export function BlockEditor({
 
             <details className="field">
               <summary>Structured Data JSON</summary>
-              <textarea
+              <Textarea
                 key={`${block.id}:${stringifyBlockData(block.data)}`}
                 rows={6}
                 defaultValue={stringifyBlockData(block.data)}

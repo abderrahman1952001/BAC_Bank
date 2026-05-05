@@ -3,10 +3,7 @@ import type { AdminIngestionJobResponse } from '@bac-bank/contracts/ingestion';
 import { IngestionJobStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateIngestionJobDto } from './dto/update-ingestion-job.dto';
-import {
-  IngestionDraft,
-  normalizeIngestionDraft,
-} from './ingestion.contract';
+import { IngestionDraft, normalizeIngestionDraft } from './ingestion.contract';
 import { projectIngestionJobMetadataFromDraft } from './ingestion-job-metadata';
 import { IngestionReadService } from './ingestion-read.service';
 import { validateIngestionDraft } from './ingestion-validation';

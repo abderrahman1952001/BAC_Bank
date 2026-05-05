@@ -185,10 +185,9 @@ describe('Study routes (e2e)', () => {
       .set('Cookie', 'bb_session=test-token')
       .expect(200);
 
-    expect(studyExerciseStateService.listRecentExerciseStates).toHaveBeenCalledWith(
-      'user-1',
-      4,
-    );
+    expect(
+      studyExerciseStateService.listRecentExerciseStates,
+    ).toHaveBeenCalledWith('user-1', 4);
   });
 
   it(`/${API_GLOBAL_PREFIX}/study/exercises/:id/state validates and stores bookmark state`, async () => {
@@ -254,7 +253,9 @@ describe('Study routes (e2e)', () => {
 
   it(`/${API_GLOBAL_PREFIX}/study/roadmaps lists derived study roadmaps`, async () => {
     await request(app.getHttpServer())
-      .get(`/${API_GLOBAL_PREFIX}/study/roadmaps?limit=2&subjectCode=mathematics`)
+      .get(
+        `/${API_GLOBAL_PREFIX}/study/roadmaps?limit=2&subjectCode=mathematics`,
+      )
       .set('Cookie', 'bb_session=test-token')
       .expect(200);
 
@@ -269,7 +270,9 @@ describe('Study routes (e2e)', () => {
 
   it(`/${API_GLOBAL_PREFIX}/study/weak-points lists premium weak-point insights`, async () => {
     await request(app.getHttpServer())
-      .get(`/${API_GLOBAL_PREFIX}/study/weak-points?limit=2&subjectCode=mathematics`)
+      .get(
+        `/${API_GLOBAL_PREFIX}/study/weak-points?limit=2&subjectCode=mathematics`,
+      )
       .set('Cookie', 'bb_session=test-token')
       .expect(200);
 

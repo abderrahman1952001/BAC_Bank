@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BookCopy,
   CreditCard,
+  Crop,
   GraduationCap,
   Inbox,
   LibraryBig,
@@ -13,6 +14,7 @@ import {
 import { motion } from "motion/react";
 import { useAuthSession } from "@/components/auth-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 import { STUDENT_MY_SPACE_ROUTE } from "@/lib/student-routes";
 import { useSignOut } from "@/components/use-sign-out";
 
@@ -31,6 +33,11 @@ const navItems = [
     href: "/admin/library",
     label: "Library",
     icon: LibraryBig,
+  },
+  {
+    href: "/admin/sources",
+    label: "Sources",
+    icon: Crop,
   },
   {
     href: "/admin/billing",
@@ -58,7 +65,7 @@ export function AdminNavbar() {
         <Link href="/admin/drafts" className="admin-brand">
           <div className="admin-brand-copy">
             <span className="admin-role-badge">Admin</span>
-            <strong className="admin-brand-title">BAC Studio</strong>
+            <strong className="admin-brand-title">استوديو مِراس</strong>
             <span className="admin-brand-subtitle">
               Intake, review, and publishing
             </span>
@@ -103,23 +110,31 @@ export function AdminNavbar() {
       <div className="admin-nav-footer">
         <div className="admin-nav-context">
           <span className="admin-nav-context-kicker">Workspace</span>
-          <strong>{user?.username ?? "Administrator"}</strong>
-          <span>{user?.email ?? "BAC Bank CMS"}</span>
+          <strong>{user?.username ?? "مشرف مِراس"}</strong>
+          <span>{user?.email ?? "مِراس CMS"}</span>
         </div>
 
         <div className="admin-nav-actions">
           <ThemeToggle />
-          <Link
-            href={STUDENT_MY_SPACE_ROUTE}
-            className="admin-icon-button"
-            aria-label="Open student app"
-            title="Student app"
+          <Button
+            asChild
+            variant="outline"
+            size="icon-lg"
+            className="size-12 rounded-2xl"
           >
-            <GraduationCap size={18} strokeWidth={2} />
-          </Link>
-          <button
+            <Link
+              href={STUDENT_MY_SPACE_ROUTE}
+              aria-label="Open student app"
+              title="Student app"
+            >
+              <GraduationCap data-icon="solo" strokeWidth={2} />
+            </Link>
+          </Button>
+          <Button
             type="button"
-            className="admin-icon-button"
+            variant="outline"
+            size="icon-lg"
+            className="size-12 rounded-2xl"
             onClick={() => {
               void signOut();
             }}
@@ -127,8 +142,8 @@ export function AdminNavbar() {
             aria-label={isSigningOut ? "Signing out" : "Log out"}
             title={isSigningOut ? "Signing out" : "Log out"}
           >
-            <LogOut size={18} strokeWidth={2} />
-          </button>
+            <LogOut data-icon="solo" strokeWidth={2} />
+          </Button>
         </div>
       </div>
     </header>

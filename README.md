@@ -132,13 +132,13 @@ DATABASE_URL=postgresql://bac_user:bac_password@localhost:5433/bac_bank?schema=p
 
 - Prisma migrations live in `apps/api/prisma/migrations`
 - Source intake examples:
-  - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage originals --min-year 2008`
-  - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage pages --min-year 2008`
-  - `npm run intake:source:eddirasa -w @bac-bank/api -- --stage ocr --ocr-backend gemini --job-id <job-id>`
-  - `--stage process` remains as a compatibility shortcut for `pages + ocr` on already uploaded originals.
-  - `--job-id a,b,c` lets `pages`, `ocr`, or `process` target exact ingestion jobs.
-  - `--slug slug-a,slug-b` lets `originals`, `pages`, `ocr`, or `process` target exact Eddirasa exam slugs.
+  - `npm run ingest:eddirasa -w @bac-bank/api -- --stage originals --min-year 2008`
+  - `npm run ingest:eddirasa -w @bac-bank/api -- --stage pages --min-year 2008`
+  - `npm run ingest:eddirasa -w @bac-bank/api -- --stage pages --job-id <job-id>`
+  - `--job-id a,b,c` lets `pages` target exact ingestion jobs.
+  - `--slug slug-a,slug-b` lets `originals` or `pages` target exact Eddirasa exam slugs.
   - Uses `pdftoppm` to rasterize PDF pages into PNGs before uploading them to R2.
+  - Paper content enters drafts through the premium reviewed-extract import path.
   - Manual PDF intake is available in the admin UI at `/admin/intake`.
 - `npm run prisma:seed -w @bac-bank/api` syncs base taxonomy, active curricula, starter topic trees, first skill mappings, and default roadmap shells.
 - In this environment, Docker daemon access may be restricted; migrations can still be generated from schema, then applied on a DB-enabled machine/CI.

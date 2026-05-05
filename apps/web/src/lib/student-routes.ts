@@ -1,6 +1,9 @@
 export const STUDENT_MY_SPACE_ROUTE = "/student/my-space";
 export const STUDENT_COURSES_ROUTE = "/student/courses";
 export const STUDENT_LIBRARY_ROUTE = "/student/library";
+export const STUDENT_LAB_ROUTE = "/student/lab";
+export const STUDENT_INGESTION_PREVIEW_ROUTE =
+  `${STUDENT_LIBRARY_ROUTE}/ingestion-preview`;
 export const STUDENT_FLASHCARDS_ROUTE = "/student/flashcards";
 export const STUDENT_TRAINING_ROUTE = "/student/training";
 export const STUDENT_BILLING_ROUTE = "/student/billing";
@@ -12,6 +15,7 @@ const studentSurfaceRoutes = {
   mySpace: STUDENT_MY_SPACE_ROUTE,
   courses: STUDENT_COURSES_ROUTE,
   library: STUDENT_LIBRARY_ROUTE,
+  lab: STUDENT_LAB_ROUTE,
   flashcards: STUDENT_FLASHCARDS_ROUTE,
   training: STUDENT_TRAINING_ROUTE,
   billing: STUDENT_BILLING_ROUTE,
@@ -81,6 +85,32 @@ export function buildStudentLibraryExamRouteWithSearch(
   });
 }
 
+export function buildStudentIngestionPreviewRoute(jobId: string): string {
+  return `${STUDENT_INGESTION_PREVIEW_ROUTE}/${encodeURIComponent(jobId)}`;
+}
+
+export function buildStudentIngestionPreviewRouteWithSearch(input: {
+  jobId: string;
+  sujetNumber?: string | number | null;
+  exercise?: string | number | null;
+  streamCode?: string | null;
+}): string {
+  return buildRouteWithSearchParams(
+    buildStudentIngestionPreviewRoute(input.jobId),
+    {
+      sujet:
+        input.sujetNumber === null || input.sujetNumber === undefined
+          ? undefined
+          : String(input.sujetNumber),
+      exercise:
+        input.exercise === null || input.exercise === undefined
+          ? undefined
+          : String(input.exercise),
+      stream: input.streamCode ?? undefined,
+    },
+  );
+}
+
 export function buildStudentTrainingSessionRoute(sessionId: string): string {
   return `${STUDENT_TRAINING_ROUTE}/${encodeURIComponent(sessionId)}`;
 }
@@ -126,6 +156,19 @@ export function buildStudentCourseConceptRoute(
 
 export function buildStudentFlashcardsRoute(): string {
   return STUDENT_FLASHCARDS_ROUTE;
+}
+
+export function buildStudentLabRoute(): string {
+  return STUDENT_LAB_ROUTE;
+}
+
+export function buildStudentLabToolRoute(
+  subjectSlug: string,
+  toolSlug: string,
+): string {
+  return `${STUDENT_LAB_ROUTE}/${encodeURIComponent(
+    subjectSlug,
+  )}/${encodeURIComponent(toolSlug)}`;
 }
 
 export function buildStudentTrainingDrillRoute(input?: {

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AdminIngestionManualUploadSection } from "@/components/admin-ingestion-page-sections";
+import { Button } from "@/components/ui/button";
 import {
   AdminIngestionJobResponse,
   fetchAdmin,
@@ -148,12 +149,12 @@ export function AdminIntakePage() {
           </div>
         </div>
         <div className="table-actions">
-          <Link href="/admin/drafts" className="btn-secondary">
-            Open Drafts
-          </Link>
-          <Link href="/admin/library" className="btn-secondary">
-            Open Library
-          </Link>
+          <Button asChild variant="outline" className="h-10 rounded-full px-5">
+            <Link href="/admin/drafts">Open Drafts</Link>
+          </Button>
+          <Button asChild variant="outline" className="h-10 rounded-full px-5">
+            <Link href="/admin/library">Open Library</Link>
+          </Button>
         </div>
       </div>
 

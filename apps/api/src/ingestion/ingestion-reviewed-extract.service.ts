@@ -81,7 +81,6 @@ export class IngestionReviewedExtractService {
       await this.processingEngine.runStage({
         jobId: input.jobId,
         replaceExisting: false,
-        skipExtraction: true,
         completionStatus: 'IN_REVIEW',
       });
       finalStatus = IngestionJobStatus.IN_REVIEW;
@@ -108,7 +107,9 @@ function buildReviewedExtractImportReviewNotes(input: {
     `Questions: ${input.summary.questionCount}.`,
     `Assets: ${input.summary.assetCount}.`,
     `Uncertainties: ${input.summary.uncertaintyCount}.`,
-    'Asset crops are full-page placeholders because the reviewed extract does not include crop geometry.',
+    input.summary.placeholderAssetCount > 0
+      ? `Asset crops needing geometry review: ${input.summary.placeholderAssetCount}.`
+      : 'Asset crop geometry was supplied for every imported asset.',
   ];
 
   if (input.summary.missingVariantCodes.length > 0) {
@@ -124,7 +125,9 @@ function buildReviewedExtractImportReviewNotes(input: {
   } else {
     notes.push(`Validation warnings: ${input.validation.warnings.length}.`);
     notes.push(
-      'Ready for manual crop cleanup and final human review before approval.',
+      input.summary.placeholderAssetCount > 0
+        ? 'Ready for crop cleanup and final human review before approval.'
+        : 'Ready for final human review before approval.',
     );
   }
 

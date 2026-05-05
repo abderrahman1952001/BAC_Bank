@@ -337,8 +337,8 @@ export function buildProcessJobActionState({
             ? "Publishing…"
             : "Worker running…"
           : job.workflow.review_started || job.status === "failed"
-            ? "Re-run extraction"
-            : "Process";
+            ? "Refresh pages"
+            : "Prepare pages";
 
   return {
     disabled,

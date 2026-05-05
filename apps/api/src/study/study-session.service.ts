@@ -556,7 +556,9 @@ export class StudySessionService {
     const effectiveStatus = resolveEffectiveStudySessionStatus(existingSession);
     const now = new Date();
     const targetExercise = existingSession.exercises.find((exercise) =>
-      exercise.sessionQuestions.some((question) => question.questionNodeId === questionId),
+      exercise.sessionQuestions.some(
+        (question) => question.questionNodeId === questionId,
+      ),
     );
     const currentQuestion = targetExercise?.sessionQuestions.find(
       (question) => question.questionNodeId === questionId,
@@ -652,24 +654,26 @@ export class StudySessionService {
     );
     const updatedExerciseState = buildStudySessionExerciseState({
       ...targetExercise,
-      sessionQuestions: nextExercises.find((exercise) => exercise.id === targetExercise.id)
-        ?.sessionQuestions.map((question) => ({
-          questionId: question.questionNodeId,
-          sequenceIndex: question.sequenceIndex,
-          answerState: question.answerState,
-          resultStatus: question.resultStatus,
-          evaluationMode: question.evaluationMode,
-          reflection: question.reflection,
-          diagnosis: question.diagnosis,
-          firstOpenedAt: question.firstOpenedAt,
-          lastInteractedAt: question.lastInteractedAt,
-          completedAt: question.completedAt,
-          skippedAt: question.skippedAt,
-          solutionViewedAt: question.solutionViewedAt,
-          timeSpentSeconds: question.timeSpentSeconds,
-          revealCount: question.revealCount,
-          answerPayloadJson: question.answerPayloadJson,
-        })) ?? [],
+      sessionQuestions:
+        nextExercises
+          .find((exercise) => exercise.id === targetExercise.id)
+          ?.sessionQuestions.map((question) => ({
+            questionId: question.questionNodeId,
+            sequenceIndex: question.sequenceIndex,
+            answerState: question.answerState,
+            resultStatus: question.resultStatus,
+            evaluationMode: question.evaluationMode,
+            reflection: question.reflection,
+            diagnosis: question.diagnosis,
+            firstOpenedAt: question.firstOpenedAt,
+            lastInteractedAt: question.lastInteractedAt,
+            completedAt: question.completedAt,
+            skippedAt: question.skippedAt,
+            solutionViewedAt: question.solutionViewedAt,
+            timeSpentSeconds: question.timeSpentSeconds,
+            revealCount: question.revealCount,
+            answerPayloadJson: question.answerPayloadJson,
+          })) ?? [],
     });
 
     const session = await this.prisma.$transaction(async (tx) => {
@@ -694,7 +698,8 @@ export class StudySessionService {
           timeSpentSeconds: nextQuestion.timeSpentSeconds,
           revealCount: nextQuestion.revealCount,
           answerPayloadJson: nextQuestion.answerPayloadJson ?? Prisma.JsonNull,
-          finalizedAt: nextQuestion.completedAt ?? nextQuestion.skippedAt ?? null,
+          finalizedAt:
+            nextQuestion.completedAt ?? nextQuestion.skippedAt ?? null,
         },
       });
 
@@ -973,7 +978,8 @@ export class StudySessionService {
           timeSpentSeconds: nextQuestion.timeSpentSeconds,
           revealCount: nextQuestion.revealCount,
           answerPayloadJson: nextQuestion.answerPayloadJson ?? Prisma.JsonNull,
-          finalizedAt: nextQuestion.completedAt ?? nextQuestion.skippedAt ?? null,
+          finalizedAt:
+            nextQuestion.completedAt ?? nextQuestion.skippedAt ?? null,
         },
       });
 

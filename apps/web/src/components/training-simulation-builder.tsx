@@ -7,6 +7,9 @@ import { SubjectIcon } from "@/components/subject-icon";
 import { useAuthSession } from "@/components/auth-provider";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyHeader, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
+import { FilterChip } from "@/components/ui/filter-chip";
+import { SelectionCard } from "@/components/ui/selection-card";
 import {
   createOfficialPaperSimulationSession,
   fetchStudyExamBySujet,
@@ -200,9 +203,10 @@ export function TrainingSimulationBuilder({
             title="تعذر تحميل المواضيع الرسمية"
             description="أعد المحاولة لتحميل فهرس المحاكاة."
             action={
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={() => {
                   startRefreshingCatalog(() => {
                     router.refresh();
@@ -211,7 +215,7 @@ export function TrainingSimulationBuilder({
                 disabled={refreshingCatalog}
               >
                 {refreshingCatalog ? "جارٍ التحديث..." : "إعادة المحاولة"}
-              </button>
+              </Button>
             }
           />
         </section>
@@ -229,9 +233,9 @@ export function TrainingSimulationBuilder({
             title="لا توجد مواضيع رسمية جاهزة للمحاكاة"
             description="أكمل اختيار الشعبة أو عُد لاحقاً بعد نشر المحتوى."
             action={
-              <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-                العودة إلى التدريب
-              </Link>
+              <Button asChild variant="outline" className="h-10 rounded-full px-5">
+                <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+              </Button>
             }
           />
         </section>
@@ -249,9 +253,9 @@ export function TrainingSimulationBuilder({
           title="محاكاة امتحان كاملة"
           subtitle="اختر مادة، ثم موضوع BAC رسمي، ثم راجع بياناته قبل البدء."
           actions={
-            <Link href={STUDENT_TRAINING_ROUTE} className="btn-secondary">
-              العودة إلى التدريب
-            </Link>
+            <Button asChild variant="outline" className="h-10 rounded-full px-5">
+              <Link href={STUDENT_TRAINING_ROUTE}>العودة إلى التدريب</Link>
+            </Button>
           }
         />
 
@@ -280,18 +284,14 @@ export function TrainingSimulationBuilder({
             <h3>الشعبة</h3>
             <div className="chip-grid">
               {availableStreams.map((stream) => (
-                <button
+                <FilterChip
                   key={stream.code}
                   type="button"
-                  className={
-                    activeStream.code === stream.code
-                      ? "choice-chip active"
-                      : "choice-chip"
-                  }
+                  active={activeStream.code === stream.code}
                   onClick={() => setSelectedStreamCode(stream.code)}
                 >
                   {stream.name}
-                </button>
+                </FilterChip>
               ))}
             </div>
           </section>
@@ -301,12 +301,11 @@ export function TrainingSimulationBuilder({
           <h3>المادة</h3>
           <div className="builder-subject-grid">
             {availableSubjects.map((subject) => (
-              <button
+              <SelectionCard
                 key={subject.code}
                 type="button"
-                className={`builder-choice-card builder-subject-card${
-                  selectedSubjectCode === subject.code ? " active" : ""
-                }`}
+                active={selectedSubjectCode === subject.code}
+                className="min-h-44 content-start border-primary/20 bg-secondary/60"
                 onClick={() => setSelectedSubjectCode(subject.code)}
               >
                 <span className="builder-card-icon" aria-hidden="true">
@@ -317,7 +316,7 @@ export function TrainingSimulationBuilder({
                   />
                 </span>
                 <strong>{subject.name}</strong>
-              </button>
+              </SelectionCard>
             ))}
           </div>
         </section>
@@ -331,12 +330,11 @@ export function TrainingSimulationBuilder({
                   buildOfficialSimulationPaperKey(paper) === selectedPaperKey;
 
                 return (
-                  <button
+                  <SelectionCard
                     key={buildOfficialSimulationPaperKey(paper)}
                     type="button"
-                    className={`builder-preview-exercise builder-choice-card${
-                      isActive ? " active" : ""
-                    }`}
+                    active={isActive}
+                    className="min-h-0 grid-cols-[1fr_auto] items-center"
                     onClick={() =>
                       setSelectedPaperKey(buildOfficialSimulationPaperKey(paper))
                     }
@@ -350,7 +348,7 @@ export function TrainingSimulationBuilder({
                       </p>
                     </div>
                     <span>{paper.exerciseCount} تمارين</span>
-                  </button>
+                  </SelectionCard>
                 );
               })}
             </div>
@@ -402,16 +400,16 @@ export function TrainingSimulationBuilder({
               انتهاء الوقت.
             </p>
             <div className="study-action-row">
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
+                className="h-11 rounded-full px-5"
                 onClick={() => {
                   void startSimulation();
                 }}
                 disabled={startingSimulation || simulationStartBlocked}
               >
                 {startingSimulation ? "جارٍ بدء المحاكاة..." : "ابدأ المحاكاة"}
-              </button>
+              </Button>
             </div>
           </section>
         ) : null}

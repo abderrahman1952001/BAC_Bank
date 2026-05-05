@@ -552,6 +552,21 @@ export function StudyHierarchyBlockView({
     const rows = parseTableRows(block);
 
     if (!rows.length) {
+      if (imageUrl) {
+        return (
+          <figure key={blockKey} className={mediaFrameClassName}>
+            <Image
+              src={imageUrl}
+              loader={passthroughLoader}
+              alt="Table asset"
+              width={1400}
+              height={1000}
+              unoptimized
+            />
+          </figure>
+        );
+      }
+
       return null;
     }
 

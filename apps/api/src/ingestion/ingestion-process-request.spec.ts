@@ -14,7 +14,6 @@ describe('ingestion process request helpers', () => {
       buildIngestionProcessRequest({
         forceReprocess: false,
         replaceExisting: true,
-        skipExtraction: false,
         jobStatus: IngestionJobStatus.DRAFT,
         isPublishedRevision: false,
         queuedAt: '2026-03-28T13:00:00.000Z',
@@ -23,7 +22,6 @@ describe('ingestion process request helpers', () => {
       action: 'process',
       forceReprocess: false,
       replaceExisting: true,
-      skipExtraction: false,
       queuedAt: '2026-03-28T13:00:00.000Z',
     });
   });
@@ -38,7 +36,6 @@ describe('ingestion process request helpers', () => {
       action: 'publish',
       forceReprocess: false,
       replaceExisting: false,
-      skipExtraction: false,
       queuedAt: '2026-03-28T13:30:00.000Z',
     });
 
@@ -54,7 +51,6 @@ describe('ingestion process request helpers', () => {
       buildIngestionProcessRequest({
         forceReprocess: false,
         replaceExisting: false,
-        skipExtraction: false,
         jobStatus: IngestionJobStatus.IN_REVIEW,
         isPublishedRevision: false,
       }),
@@ -66,7 +62,6 @@ describe('ingestion process request helpers', () => {
       buildIngestionProcessRequest({
         forceReprocess: false,
         replaceExisting: false,
-        skipExtraction: false,
         jobStatus: IngestionJobStatus.QUEUED,
         isPublishedRevision: true,
       }),
@@ -82,7 +77,6 @@ describe('ingestion process request helpers', () => {
         action: 'publish',
         forceReprocess: true,
         replaceExisting: true,
-        skipExtraction: false,
         queuedAt: '2026-03-28T14:00:00.000Z',
       },
     });
@@ -91,7 +85,6 @@ describe('ingestion process request helpers', () => {
       action: 'publish',
       forceReprocess: true,
       replaceExisting: true,
-      skipExtraction: false,
       queuedAt: '2026-03-28T14:00:00.000Z',
     });
     expect(
@@ -126,7 +119,6 @@ describe('ingestion process request helpers', () => {
     expect(fallback.action).toBe('process');
     expect(fallback.forceReprocess).toBe(false);
     expect(fallback.replaceExisting).toBe(false);
-    expect(fallback.skipExtraction).toBe(false);
     expect(typeof fallback.queuedAt).toBe('string');
     expect(legacyFallback.action).toBe('process');
   });

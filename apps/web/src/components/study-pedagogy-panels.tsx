@@ -2,6 +2,8 @@
 
 import { StudySectionCard } from "@/components/study-content";
 import { StudyBadge } from "@/components/study-shell";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   formatSessionType,
   formatStudyReviewReason,
@@ -51,14 +53,15 @@ export function StudyQuestionAssistCard({
       <p className="pedagogy-support-copy">{profile.assistCopy}</p>
       <div className="pedagogy-support-actions">
         {actions.map((action) => (
-          <button
+          <Button
             key={action.id}
             type="button"
-            className={action.tone === "primary" ? "btn-primary" : "btn-secondary"}
+            variant={action.tone === "primary" ? "default" : "outline"}
+            className="h-10 rounded-full px-5"
             onClick={actionHandlers[action.id]}
           >
             {action.label}
-          </button>
+          </Button>
         ))}
       </div>
     </StudySectionCard>
@@ -144,9 +147,13 @@ export function StudyWeakPointIntroCard({
         {intro.prerequisiteTopics.length ? (
           <div className="chip-grid">
             {intro.prerequisiteTopics.map((topic) => (
-              <span key={topic.code} className="choice-chip active">
+              <Badge
+                key={topic.code}
+                variant="secondary"
+                className="px-3 py-1.5"
+              >
                 {topic.name}
-              </span>
+              </Badge>
             ))}
           </div>
         ) : null}
@@ -172,9 +179,13 @@ export function StudyWeakPointIntroCard({
         ) : null}
 
         <div className="study-action-row">
-          <button type="button" className="btn-primary" onClick={onStart}>
+          <Button
+            type="button"
+            className="h-10 rounded-full px-5"
+            onClick={onStart}
+          >
             {getWeakPointIntroStartLabel(supportStyle)}
-          </button>
+          </Button>
         </div>
       </div>
     </StudySectionCard>

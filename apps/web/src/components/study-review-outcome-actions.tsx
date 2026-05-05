@@ -6,6 +6,7 @@ import {
   recordStudyReviewQueueOutcome,
   type StudyReviewOutcome,
 } from "@/lib/study-api";
+import { Button } from "@/components/ui/button";
 
 const defaultOutcomeLabels: Record<StudyReviewOutcome, string> = {
   CORRECT: "ثبتها اليوم",
@@ -64,10 +65,11 @@ export function StudyReviewOutcomeActions({
     <>
       <div className="study-action-row">
         {outcomes.map((outcome) => (
-          <button
+          <Button
             key={outcome}
             type="button"
-            className="study-toggle-button"
+            variant="outline"
+            className="h-10 rounded-full px-4"
             onClick={() => {
               void handleOutcome(outcome);
             }}
@@ -76,7 +78,7 @@ export function StudyReviewOutcomeActions({
             {pendingOutcome === outcome
               ? "جارٍ الحفظ..."
               : labels?.[outcome] ?? defaultOutcomeLabels[outcome]}
-          </button>
+          </Button>
         ))}
       </div>
       {error ? <p className="error-text">{error}</p> : null}

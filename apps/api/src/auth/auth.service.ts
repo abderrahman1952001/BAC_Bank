@@ -404,7 +404,9 @@ export class AuthService {
   }
 
   private getClerkSecretKey() {
-    const secretKey = this.configService.get<string>('CLERK_SECRET_KEY')?.trim();
+    const secretKey = this.configService
+      .get<string>('CLERK_SECRET_KEY')
+      ?.trim();
 
     if (!secretKey) {
       throw new UnauthorizedException(
@@ -456,9 +458,7 @@ export class AuthService {
     return token.trim() || null;
   }
 
-  private readHeaderValue(
-    value?: string | string[] | null,
-  ): string | null {
+  private readHeaderValue(value?: string | string[] | null): string | null {
     if (Array.isArray(value)) {
       return value[0]?.trim() || null;
     }

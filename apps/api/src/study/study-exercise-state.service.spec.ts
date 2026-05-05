@@ -1,8 +1,4 @@
-import {
-  ExamNodeType,
-  ExamVariantCode,
-  SessionType,
-} from '@prisma/client';
+import { ExamNodeType, ExamVariantCode, SessionType } from '@prisma/client';
 import { BadRequestException } from '@nestjs/common';
 import { StudyExerciseStateService } from './study-exercise-state.service';
 

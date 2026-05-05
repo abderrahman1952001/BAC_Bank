@@ -15,6 +15,7 @@ import {
   HubWeakPointsSection,
 } from '@/components/student-hub-sections';
 import { EmptyState, StudyBadge, StudyShell } from '@/components/study-shell';
+import { Button } from '@/components/ui/button';
 import {
   formatStudySessionKind,
   MyMistakesResponse,
@@ -109,10 +110,12 @@ export function StudentHub({
   );
   const latestSession = sessions[0] ?? null;
   const spotlightSession = activeSession ?? latestSession;
-  const displayName = user?.username ?? 'BAC Bank';
+  const displayName = user?.username ?? 'مِراس';
   const spotlightTitle =
     spotlightSession?.title ??
-    (spotlightSession ? formatStudySessionKind(spotlightSession.kind) : 'جلسة جديدة');
+    (spotlightSession
+      ? formatStudySessionKind(spotlightSession.kind)
+      : 'ابدأ جلسة مركزة اليوم');
   const spotlightMeta = spotlightSession
     ? [
         formatRelativeStudyTimestamp(
@@ -123,7 +126,9 @@ export function StudentHub({
           ? `${spotlightSession.durationMinutes} دقيقة`
           : `${spotlightSession.exerciseCount} تمارين`,
       ].join(' · ')
-    : user?.stream?.name ?? null;
+    : user?.stream?.name
+      ? `${user.stream.name} · اختر مساراً مبنياً على هدفك`
+      : 'اختر مساراً مبنياً على هدفك';
   const activityItems = useMemo(
     () =>
       buildHubActivityItems({
@@ -148,6 +153,20 @@ export function StudentHub({
     () => buildRoadmapItems(studyRoadmaps),
     [studyRoadmaps],
   );
+  const hubMetrics = [
+    {
+      label: 'جلسات',
+      value: sessions.length.toString(),
+    },
+    {
+      label: 'محفوظات',
+      value: savedExerciseItems.length.toString(),
+    },
+    {
+      label: 'أخطاء',
+      value: myMistakeItems.length.toString(),
+    },
+  ];
 
   if (hubUnavailable) {
     return (
@@ -157,9 +176,10 @@ export function StudentHub({
           title="تعذر تحميل مساحة الطالب"
           description="أعد المحاولة."
           action={
-            <button
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-11 rounded-full px-5"
               onClick={() => {
                 startRefreshingHub(() => {
                   router.refresh();
@@ -168,7 +188,7 @@ export function StudentHub({
               disabled={refreshingHub}
             >
               {refreshingHub ? 'جارٍ التحديث...' : 'إعادة المحاولة'}
-            </button>
+            </Button>
           }
         />
       </StudyShell>
@@ -181,11 +201,12 @@ export function StudentHub({
 
       <div className="hub-page">
         {missingHubData ? (
-          <div className="study-action-row">
-            <p className="error-text">تعذر تحديث بعض بيانات الصفحة.</p>
-            <button
+          <div className="hub-sync-notice">
+            <p>بعض البيانات لم تتحدث الآن. يمكنك المتابعة أو إعادة المحاولة.</p>
+            <Button
               type="button"
-              className="btn-secondary"
+              variant="outline"
+              className="h-11 rounded-full px-5"
               onClick={() => {
                 startRefreshingHub(() => {
                   router.refresh();
@@ -194,7 +215,7 @@ export function StudentHub({
               disabled={refreshingHub}
             >
               {refreshingHub ? 'جارٍ التحديث...' : 'إعادة المحاولة'}
-            </button>
+            </Button>
           </div>
         ) : null}
 
@@ -204,71 +225,89 @@ export function StudentHub({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <p className="page-kicker">BAC Bank</p>
-          <h1>مرحباً بك، {displayName}</h1>
+          <div>
+            <p className="page-kicker">Study Command</p>
+            <h1>مرحباً بك، {displayName}</h1>
+          </div>
+          <p>سطح واحد لما يجب أن تدرسه الآن، وما يجب أن تعود إليه لاحقاً.</p>
         </motion.section>
 
         <motion.section
-          className={`hub-spotlight${activeSession ? ' active-session' : ''}`}
+          className={`hub-command-deck${activeSession ? ' active-session' : ''}`}
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.38, delay: 0.06, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <div className="hub-spotlight-copy">
-            {spotlightSession ? (
-              <div className="hub-spotlight-meta">
-                <StudyBadge tone={studentHubStatusTones[spotlightSession.status]}>
-                  {studentHubStatusLabels[spotlightSession.status]}
-                </StudyBadge>
-              </div>
-            ) : null}
-            <h2>{spotlightTitle}</h2>
-            {spotlightMeta ? <p>{spotlightMeta}</p> : null}
+          <div className="hub-focus-plane">
+            <div className="hub-spotlight-copy">
+              {spotlightSession ? (
+                <div className="hub-spotlight-meta">
+                  <StudyBadge tone={studentHubStatusTones[spotlightSession.status]}>
+                    {studentHubStatusLabels[spotlightSession.status]}
+                  </StudyBadge>
+                </div>
+              ) : null}
+              <h2>{spotlightTitle}</h2>
+              {spotlightMeta ? <p>{spotlightMeta}</p> : null}
+            </div>
+
+            <div className="hub-spotlight-actions">
+              <Button asChild className="h-12 rounded-full px-5">
+                <Link
+                  href={
+                    activeSession
+                      ? buildStudentTrainingSessionRoute(activeSession.id)
+                      : STUDENT_TRAINING_ROUTE
+                  }
+                >
+                  {activeSession ? 'مواصلة' : 'ابدأ'}
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="h-12 rounded-full px-5">
+                <Link href={STUDENT_LIBRARY_ROUTE}>المكتبة</Link>
+              </Button>
+            </div>
           </div>
 
-          <div className="hub-spotlight-actions">
-            <Link
-                href={
-                  activeSession
-                    ? buildStudentTrainingSessionRoute(activeSession.id)
-                    : STUDENT_TRAINING_ROUTE
-                }
-              className="btn-primary"
-            >
-              {activeSession ? 'مواصلة' : 'ابدأ'}
-            </Link>
-            <Link href={STUDENT_LIBRARY_ROUTE} className="btn-secondary">
-              المكتبة
-            </Link>
-          </div>
+          <aside className="hub-mastery-rail" aria-label="ملخص المساحة">
+            <div className="hub-mastery-meter">
+              <span>التركيز الآن</span>
+              <strong>{activeSession ? 'نشط' : 'جاهز'}</strong>
+              <p>{activeSession ? 'جلسة تنتظر الاستكمال' : 'اختر أول مسار لليوم'}</p>
+            </div>
+
+            <div className="hub-metric-row">
+              {hubMetrics.map((metric) => (
+                <span key={metric.label}>
+                  <strong>{metric.value}</strong>
+                  {metric.label}
+                </span>
+              ))}
+            </div>
+
+            <div className="hub-action-rows">
+              <Link href={STUDENT_TRAINING_ROUTE}>
+                <span className="hub-path-icon tone-warm" aria-hidden="true">
+                  <PenTool size={18} strokeWidth={2.1} />
+                </span>
+                <span>
+                  <strong>التدريب</strong>
+                  <small>دريل ومحاكاة</small>
+                </span>
+              </Link>
+
+              <Link href={STUDENT_LIBRARY_ROUTE}>
+                <span className="hub-path-icon tone-cool" aria-hidden="true">
+                  <BookOpen size={18} strokeWidth={2.1} />
+                </span>
+                <span>
+                  <strong>الحوليات</strong>
+                  <small>الشعبة · المادة · السنة</small>
+                </span>
+              </Link>
+            </div>
+          </aside>
         </motion.section>
-
-        <motion.div
-          className="hub-path-grid"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.36, delay: 0.12, ease: [0.2, 0.8, 0.2, 1] }}
-        >
-          <Link href={STUDENT_TRAINING_ROUTE} className="hub-path-card">
-            <span className="hub-path-icon tone-warm" aria-hidden="true">
-              <PenTool size={24} strokeWidth={2.1} />
-            </span>
-            <div>
-              <h2>التدريب</h2>
-              <p>دريل مرن ومحاكاة امتحان كاملة</p>
-            </div>
-          </Link>
-
-          <Link href={STUDENT_LIBRARY_ROUTE} className="hub-path-card secondary">
-            <span className="hub-path-icon tone-cool" aria-hidden="true">
-              <BookOpen size={24} strokeWidth={2.1} />
-            </span>
-            <div>
-              <h2>تصفح الحوليات</h2>
-              <p>الشعبة · المادة · السنة</p>
-            </div>
-          </Link>
-        </motion.div>
 
         <HubRoadmapSection roadmapItems={roadmapItems} />
         <HubWeakPointsSection

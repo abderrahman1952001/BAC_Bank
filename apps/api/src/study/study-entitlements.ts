@@ -70,7 +70,9 @@ function buildTimeZoneDate(
   return new Date(approximateUtcTimestamp - offsetMs);
 }
 
-export function getStudyMonthlyQuotaWindow(now = new Date()): MonthlyQuotaWindow {
+export function getStudyMonthlyQuotaWindow(
+  now = new Date(),
+): MonthlyQuotaWindow {
   const { year, month } = readTimeZoneParts(now, ALGIERS_TIME_ZONE);
   const nextMonth = month === 12 ? 1 : month + 1;
   const nextMonthYear = month === 12 ? year + 1 : year;

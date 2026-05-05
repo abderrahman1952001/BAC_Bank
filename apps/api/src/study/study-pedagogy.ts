@@ -20,11 +20,7 @@ const CONTENT_HEAVY_SUBJECT_CODES = new Set([
   'HIST_GEO',
 ]);
 
-const ESSAY_HEAVY_SUBJECT_CODES = new Set([
-  'PHILOSOPHY',
-  'ARABIC',
-  'PHILO',
-]);
+const ESSAY_HEAVY_SUBJECT_CODES = new Set(['PHILOSOPHY', 'ARABIC', 'PHILO']);
 
 type StudyPedagogySupportProfile = {
   fallbackRules: string[];
@@ -44,8 +40,7 @@ const STUDY_PEDAGOGY_SUPPORT_PROFILES: Record<
     commonTrapMessages: {
       MISSED:
         'الخطأ الأوضح هنا هو البدء في الحل قبل تثبيت الفكرة المركزية المطلوبة.',
-      HARD:
-        'التعثر الحالي غالباً من تحويل الفكرة إلى خطوات واضحة قابلة للتنفيذ.',
+      HARD: 'التعثر الحالي غالباً من تحويل الفكرة إلى خطوات واضحة قابلة للتنفيذ.',
       SKIPPED:
         'أكثر ما يوقف هذا المحور هو غياب سطر انطلاق واضح. ابدأ بتحديد المطلوب والمعطيات قبل أي توسع.',
       REVEALED:
@@ -63,8 +58,7 @@ const STUDY_PEDAGOGY_SUPPORT_PROFILES: Record<
     commonTrapMessages: {
       MISSED:
         'الخطأ الأوضح هنا هو القفز إلى الحساب قبل تثبيت القاعدة أو الخاصية المناسبة.',
-      HARD:
-        'التعثر الحالي غالباً من اختيار الطريقة المناسبة رغم فهم المعطيات.',
+      HARD: 'التعثر الحالي غالباً من اختيار الطريقة المناسبة رغم فهم المعطيات.',
       SKIPPED:
         'أكثر ما يوقف هذا المحور هو غياب سطر انطلاق واضح. ابدأ بتحديد المطلوب والمعطيات قبل أي توسع.',
       REVEALED:
@@ -82,8 +76,7 @@ const STUDY_PEDAGOGY_SUPPORT_PROFILES: Record<
     commonTrapMessages: {
       MISSED:
         'الخطأ الأوضح هنا هو تذكّر الفكرة بشكل عام من دون استرجاع العناصر الدقيقة المطلوبة.',
-      HARD:
-        'التعثر الحالي غالباً من ترتيب المعلومات وربطها بالسؤال المطلوب بالضبط.',
+      HARD: 'التعثر الحالي غالباً من ترتيب المعلومات وربطها بالسؤال المطلوب بالضبط.',
       SKIPPED:
         'أكثر ما يوقف هذا المحور هو غياب عناصر الاسترجاع الأساسية. ابدأ بالكلمات المفتاحية أو الحدث المركزي ثم وسّع الإجابة.',
       REVEALED:
@@ -101,8 +94,7 @@ const STUDY_PEDAGOGY_SUPPORT_PROFILES: Record<
     commonTrapMessages: {
       MISSED:
         'الخطأ الأوضح هنا هو البدء في الكتابة قبل تحديد الإشكال أو البناء المنهجي للإجابة.',
-      HARD:
-        'التعثر الحالي غالباً من تنظيم الحجة أو المثال أكثر من كونه نقصاً تاماً في الفكرة.',
+      HARD: 'التعثر الحالي غالباً من تنظيم الحجة أو المثال أكثر من كونه نقصاً تاماً في الفكرة.',
       SKIPPED:
         'أكثر ما يوقف هذا المحور هو غياب قالب واضح للإجابة. ابدأ بالإشكال ثم وزّع الحجج أو الأمثلة قبل التوسع.',
       REVEALED:
@@ -189,5 +181,7 @@ export function extractPromptPreview(
     return null;
   }
 
-  return mergedText.length > 160 ? `${mergedText.slice(0, 157)}...` : mergedText;
+  return mergedText.length > 160
+    ? `${mergedText.slice(0, 157)}...`
+    : mergedText;
 }

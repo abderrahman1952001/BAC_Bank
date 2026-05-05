@@ -1,9 +1,13 @@
 import type {
   DraftAsset,
   DraftAssetClassification,
+  DraftAssetNativeSuggestionSource,
+  DraftAssetNativeSuggestionStatus,
+  DraftAssetNativeSuggestionType,
   DraftBlock,
   DraftBlockRole,
   DraftBlockType,
+  DraftCropBox,
   DraftDocumentKind,
   DraftNode,
   DraftVariantCode,
@@ -53,19 +57,36 @@ type ReviewedVariant = {
   code: DraftVariantCode;
   title: string;
   exercises: ReviewedExercise[];
+  nodes: ReviewedDraftNode[] | null;
 };
 
 type ReviewedAsset = {
   id: string;
   exerciseOrderIndex: number;
   questionOrderIndex: number | null;
+  sourcePageId: string | null;
   documentKind: DraftDocumentKind;
   role: DraftBlockRole;
   classification: DraftAssetClassification;
   pageNumber: number;
+  cropBox: DraftCropBox | null;
+  label: string | null;
   caption: string | null;
+  notes: string | null;
   variantCode: DraftVariantCode | null;
+  nativeSuggestion: ReviewedNativeSuggestion | null;
 };
+
+type ReviewedNativeSuggestion = {
+  type: DraftAssetNativeSuggestionType;
+  value: string;
+  data: Record<string, unknown> | null;
+  status: DraftAssetNativeSuggestionStatus;
+  source: DraftAssetNativeSuggestionSource;
+  notes: string[];
+};
+
+type ReviewedDraftNode = DraftNode;
 
 type ReviewedExamMetadata = {
   durationMinutes: number | null;
@@ -161,16 +182,32 @@ export function importReviewedPaperExtract(input: {
       : {}),
   };
 
+  const sourcePagesById = new Map(
+    draft.sourcePages.map((page) => [page.id, page]),
+  );
+  const existingAssetsById = new Map(
+    draft.assets.map((asset) => [asset.id, asset]),
+  );
   const assets = input.reviewedExtract.assets.map((asset) => {
-    const sourcePage = sourcePagesByKey.get(
-      buildSourcePageKey(asset.documentKind, asset.pageNumber),
-    );
+    const sourcePage =
+      (asset.sourcePageId ? sourcePagesById.get(asset.sourcePageId) : null) ??
+      sourcePagesByKey.get(
+        buildSourcePageKey(asset.documentKind, asset.pageNumber),
+      );
 
     if (!sourcePage) {
       throw new Error(
         `Asset ${asset.id} references missing ${asset.documentKind} page ${asset.pageNumber}.`,
       );
     }
+
+    const existingAsset = existingAssetsById.get(asset.id) ?? null;
+    const preservedCropBox =
+      existingAsset?.sourcePageId === sourcePage.id &&
+      existingAsset.documentKind === asset.documentKind
+        ? existingAsset.cropBox
+        : null;
+    const cropBox = asset.cropBox ?? preservedCropBox ?? fullPageCrop(sourcePage);
 
     const importedAsset: DraftAsset = {
       id: asset.id,
@@ -180,16 +217,16 @@ export function importReviewedPaperExtract(input: {
       variantCode: asset.variantCode,
       role: asset.role,
       classification: asset.classification,
-      cropBox: {
-        x: 0,
-        y: 0,
-        width: sourcePage.width,
-        height: sourcePage.height,
-      },
-      label: asset.caption,
+      cropBox,
+      label: asset.label ?? asset.caption,
       notes:
-        'Imported without crop geometry; refine before approval or publish.',
-      nativeSuggestion: null,
+        asset.notes ??
+        (asset.cropBox
+          ? 'Imported from reviewed extract with crop geometry; verify before publication.'
+          : preservedCropBox && !isFullPageCrop(preservedCropBox, sourcePage)
+            ? 'Preserved existing crop geometry during reviewed extract import; verify before publication.'
+          : 'Imported without crop geometry; refine before approval or publish.'),
+      nativeSuggestion: asset.nativeSuggestion,
     };
 
     return importedAsset;
@@ -221,10 +258,31 @@ export function importReviewedPaperExtract(input: {
   });
 
   const summary = buildImportSummary(input.reviewedExtract, assets.length);
+  const cropGeometryCount = assets.filter(
+    (asset) =>
+      !isFullPageCrop(asset.cropBox, sourcePagesById.get(asset.sourcePageId)),
+  ).length;
+  const nativeSuggestionCount = assets.filter(
+    (asset) => asset.nativeSuggestion !== null,
+  ).length;
+
+  draft.exam.metadata = {
+    ...draft.exam.metadata,
+    reviewedExtractShape: input.reviewedExtract.variants.some(
+      (variant) => variant.nodes !== null,
+    )
+      ? 'draft_graph'
+      : 'legacy_exercises',
+    reviewedExtractCropGeometryCount: cropGeometryCount,
+    reviewedExtractNativeSuggestionCount: nativeSuggestionCount,
+  };
 
   return {
     draft: normalizeIngestionDraft(draft),
-    summary,
+    summary: {
+      ...summary,
+      placeholderAssetCount: assets.length - cropGeometryCount,
+    },
   };
 }
 
@@ -233,16 +291,27 @@ function buildImportSummary(
   placeholderAssetCount: number,
 ): ReviewedPaperImportSummary {
   const exerciseCount = reviewedExtract.variants.reduce(
-    (sum, variant) => sum + variant.exercises.length,
+    (sum, variant) =>
+      sum +
+      (variant.nodes
+        ? variant.nodes.filter(
+            (node) => node.nodeType === 'EXERCISE' && node.parentId === null,
+          ).length
+        : variant.exercises.length),
     0,
   );
   const questionCount = reviewedExtract.variants.reduce(
     (sum, variant) =>
       sum +
-      variant.exercises.reduce(
-        (exerciseSum, exercise) => exerciseSum + exercise.questions.length,
-        0,
-      ),
+      (variant.nodes
+        ? variant.nodes.filter(
+            (node) =>
+              node.nodeType === 'QUESTION' || node.nodeType === 'SUBQUESTION',
+          ).length
+        : variant.exercises.reduce(
+            (exerciseSum, exercise) => exerciseSum + exercise.questions.length,
+            0,
+          )),
     0,
   );
 
@@ -266,6 +335,10 @@ function buildVariantNodes(input: {
   variant: ReviewedVariant;
   assetsById: Map<string, DraftAsset>;
 }) {
+  if (input.variant.nodes) {
+    return normalizeReviewedDraftNodes(input.variant.nodes, input.assetsById);
+  }
+
   return input.variant.exercises.flatMap((exercise) =>
     buildExerciseNodes({
       variantCode: input.variant.code,
@@ -273,6 +346,27 @@ function buildVariantNodes(input: {
       assetsById: input.assetsById,
     }),
   );
+}
+
+function normalizeReviewedDraftNodes(
+  nodes: ReviewedDraftNode[],
+  assetsById: Map<string, DraftAsset>,
+): DraftNode[] {
+  return nodes.map((node) => ({
+    ...node,
+    label: normalizeOptionalString(node.label),
+    maxPoints: node.maxPoints,
+    topicCodes: Array.from(
+      new Set(
+        node.topicCodes
+          .map((code) => code.trim().toUpperCase())
+          .filter((code) => code.length > 0),
+      ),
+    ),
+    blocks: node.blocks.map((block) =>
+      applyNativeSuggestionToAssetBlock(block, assetsById),
+    ),
+  }));
 }
 
 function buildExerciseNodes(input: {
@@ -1256,16 +1350,53 @@ function buildAssetBlocks(input: {
       return [];
     }
 
+    const nativeSuggestion =
+      asset.nativeSuggestion && asset.nativeSuggestion.status !== 'stale'
+        ? asset.nativeSuggestion
+        : null;
     const draftBlock: DraftBlock = {
       id: `${input.prefix}_${index + 1}`,
       role: asset.role,
-      type: mapAssetClassificationToBlockType(asset.classification),
-      value: asset.label ?? '',
+      type:
+        nativeSuggestion?.type ??
+        mapAssetClassificationToBlockType(asset.classification),
+      value: nativeSuggestion?.value ?? asset.label ?? '',
       assetId: asset.id,
+      ...(nativeSuggestion
+        ? {
+            data: nativeSuggestion.data,
+          }
+        : {}),
     };
 
     return [draftBlock];
   });
+}
+
+function applyNativeSuggestionToAssetBlock(
+  block: DraftBlock,
+  assetsById: Map<string, DraftAsset>,
+): DraftBlock {
+  if (!block.assetId || block.data) {
+    return block;
+  }
+
+  const asset = assetsById.get(block.assetId);
+  const nativeSuggestion =
+    asset?.nativeSuggestion && asset.nativeSuggestion.status !== 'stale'
+      ? asset.nativeSuggestion
+      : null;
+
+  if (!nativeSuggestion) {
+    return block;
+  }
+
+  return {
+    ...block,
+    type: nativeSuggestion.type,
+    value: block.value.trim() ? block.value : nativeSuggestion.value,
+    data: nativeSuggestion.data,
+  };
 }
 
 function parseReviewedVariant(
@@ -1274,16 +1405,103 @@ function parseReviewedVariant(
 ): ReviewedVariant {
   const record = asRecord(value, sourceLabel);
   const code = readVariantCode(record.code, `${sourceLabel}.code`);
+  const nodes =
+    record.nodes === undefined || record.nodes === null
+      ? null
+      : readArray(record.nodes, `${sourceLabel}.nodes`).map((entry, index) =>
+          parseReviewedDraftNode(entry, `${sourceLabel}.nodes[${index}]`),
+        );
 
   return {
     code,
     title:
       normalizeOptionalString(record.title) ?? DEFAULT_VARIANT_TITLES[code],
-    exercises: readArray(record.exercises, `${sourceLabel}.exercises`).map(
+    nodes,
+    exercises: nodes
+      ? []
+      : readArray(record.exercises, `${sourceLabel}.exercises`).map(
+          (entry, index) =>
+            parseReviewedExercise(entry, `${sourceLabel}.exercises[${index}]`),
+        ),
+  };
+}
+
+function parseReviewedDraftNode(
+  value: unknown,
+  sourceLabel: string,
+): ReviewedDraftNode {
+  const record = asRecord(value, sourceLabel);
+
+  return {
+    id: readRequiredString(record.id, `${sourceLabel}.id`),
+    nodeType: readNodeType(record.nodeType, `${sourceLabel}.nodeType`),
+    parentId: normalizeOptionalString(record.parentId),
+    orderIndex: readPositiveInteger(
+      record.orderIndex,
+      `${sourceLabel}.orderIndex`,
+    ),
+    label: normalizeOptionalString(record.label),
+    maxPoints: readOptionalNumber(record.maxPoints, `${sourceLabel}.maxPoints`),
+    topicCodes: readOptionalStringArray(
+      record.topicCodes,
+      `${sourceLabel}.topicCodes`,
+    ).map((code) => code.toUpperCase()),
+    blocks: readArray(record.blocks, `${sourceLabel}.blocks`).map(
       (entry, index) =>
-        parseReviewedExercise(entry, `${sourceLabel}.exercises[${index}]`),
+        parseReviewedDraftBlock(entry, `${sourceLabel}.blocks[${index}]`),
     ),
   };
+}
+
+function parseReviewedDraftBlock(
+  value: unknown,
+  sourceLabel: string,
+): DraftBlock {
+  const record = asRecord(value, sourceLabel);
+  const data =
+    record.data &&
+    typeof record.data === 'object' &&
+    !Array.isArray(record.data)
+      ? (record.data as Record<string, unknown>)
+      : null;
+  const meta =
+    record.meta &&
+    typeof record.meta === 'object' &&
+    !Array.isArray(record.meta)
+      ? parseDraftBlockMeta(record.meta, `${sourceLabel}.meta`)
+      : undefined;
+
+  return {
+    id: readRequiredString(record.id, `${sourceLabel}.id`),
+    role: readBlockRole(record.role, `${sourceLabel}.role`),
+    type: readBlockType(record.type, `${sourceLabel}.type`),
+    value:
+      typeof record.value === 'string'
+        ? record.value.trim()
+        : typeof record.text === 'string'
+          ? record.text.trim()
+          : '',
+    assetId: normalizeOptionalString(record.assetId),
+    data,
+    ...(meta ? { meta } : {}),
+  };
+}
+
+function parseDraftBlockMeta(value: unknown, sourceLabel: string) {
+  const record = asRecord(value, sourceLabel);
+  const meta: DraftBlock['meta'] = {};
+
+  if (record.level !== undefined && record.level !== null) {
+    meta.level = readPositiveInteger(record.level, `${sourceLabel}.level`);
+  }
+
+  const language = normalizeOptionalString(record.language);
+
+  if (language) {
+    meta.language = language;
+  }
+
+  return Object.keys(meta).length ? meta : undefined;
 }
 
 function parseReviewedExercise(
@@ -1353,13 +1571,14 @@ function parseReviewedAsset(
   return {
     id: readRequiredString(record.id, `${sourceLabel}.id`),
     exerciseOrderIndex: readPositiveInteger(
-      record.exerciseOrderIndex,
+      record.exerciseOrderIndex ?? 1,
       `${sourceLabel}.exerciseOrderIndex`,
     ),
     questionOrderIndex: readOptionalPositiveInteger(
       record.questionOrderIndex,
       `${sourceLabel}.questionOrderIndex`,
     ),
+    sourcePageId: normalizeOptionalString(record.sourcePageId),
     documentKind: readDocumentKind(
       record.documentKind,
       `${sourceLabel}.documentKind`,
@@ -1373,11 +1592,24 @@ function parseReviewedAsset(
       record.pageNumber,
       `${sourceLabel}.pageNumber`,
     ),
+    cropBox:
+      record.cropBox === undefined || record.cropBox === null
+        ? null
+        : parseCropBox(record.cropBox, `${sourceLabel}.cropBox`),
+    label: normalizeOptionalString(record.label),
     caption: normalizeOptionalString(record.caption),
+    notes: normalizeOptionalString(record.notes),
     variantCode: readOptionalVariantCode(
       record.variantCode,
       `${sourceLabel}.variantCode`,
     ),
+    nativeSuggestion:
+      record.nativeSuggestion === undefined || record.nativeSuggestion === null
+        ? null
+        : parseNativeSuggestion(
+            record.nativeSuggestion,
+            `${sourceLabel}.nativeSuggestion`,
+          ),
   };
 }
 
@@ -1404,6 +1636,38 @@ function parseReviewedExamMetadata(
   };
 }
 
+function parseCropBox(value: unknown, sourceLabel: string): DraftCropBox {
+  const record = asRecord(value, sourceLabel);
+
+  return {
+    x: readNonNegativeNumber(record.x, `${sourceLabel}.x`),
+    y: readNonNegativeNumber(record.y, `${sourceLabel}.y`),
+    width: readPositiveNumber(record.width, `${sourceLabel}.width`),
+    height: readPositiveNumber(record.height, `${sourceLabel}.height`),
+  };
+}
+
+function parseNativeSuggestion(
+  value: unknown,
+  sourceLabel: string,
+): ReviewedNativeSuggestion {
+  const record = asRecord(value, sourceLabel);
+
+  return {
+    type: readNativeSuggestionType(record.type, `${sourceLabel}.type`),
+    value: typeof record.value === 'string' ? record.value.trim() : '',
+    data:
+      record.data &&
+      typeof record.data === 'object' &&
+      !Array.isArray(record.data)
+        ? (record.data as Record<string, unknown>)
+        : null,
+    status: readNativeSuggestionStatus(record.status, `${sourceLabel}.status`),
+    source: readNativeSuggestionSource(record.source, `${sourceLabel}.source`),
+    notes: readOptionalStringArray(record.notes, `${sourceLabel}.notes`),
+  };
+}
+
 function readReviewedBlocks(value: unknown, sourceLabel: string) {
   return readArray(value, sourceLabel).map((entry, index) => {
     const record = asRecord(entry, `${sourceLabel}[${index}]`);
@@ -1424,6 +1688,30 @@ function buildSourcePageKey(
   pageNumber: number,
 ) {
   return `${documentKind}:${pageNumber}`;
+}
+
+function fullPageCrop(
+  sourcePage: IngestionDraft['sourcePages'][number],
+): DraftCropBox {
+  return {
+    x: 0,
+    y: 0,
+    width: sourcePage.width,
+    height: sourcePage.height,
+  };
+}
+
+function isFullPageCrop(
+  cropBox: DraftCropBox,
+  sourcePage: IngestionDraft['sourcePages'][number] | undefined,
+) {
+  return (
+    !sourcePage ||
+    (cropBox.x === 0 &&
+      cropBox.y === 0 &&
+      cropBox.width === sourcePage.width &&
+      cropBox.height === sourcePage.height)
+  );
 }
 
 function buildExerciseNodeId(
@@ -1573,7 +1861,37 @@ function readOptionalNumber(value: unknown, sourceLabel: string) {
   return parsed;
 }
 
+function readNonNegativeNumber(value: unknown, sourceLabel: string) {
+  const parsed = readOptionalNumber(value, sourceLabel);
+
+  if (parsed === null || parsed < 0) {
+    throw new Error(`${sourceLabel} must be a non-negative number.`);
+  }
+
+  return parsed;
+}
+
+function readPositiveNumber(value: unknown, sourceLabel: string) {
+  const parsed = readOptionalNumber(value, sourceLabel);
+
+  if (parsed === null || parsed <= 0) {
+    throw new Error(`${sourceLabel} must be a positive number.`);
+  }
+
+  return parsed;
+}
+
 function readStringArray(value: unknown, sourceLabel: string) {
+  return readArray(value, sourceLabel).map((entry, index) =>
+    readRequiredString(entry, `${sourceLabel}[${index}]`),
+  );
+}
+
+function readOptionalStringArray(value: unknown, sourceLabel: string) {
+  if (value === undefined || value === null) {
+    return [];
+  }
+
   return readArray(value, sourceLabel).map((entry, index) =>
     readRequiredString(entry, `${sourceLabel}[${index}]`),
   );
@@ -1642,6 +1960,100 @@ function readAssetClassification(
   }
 
   throw new Error(`${sourceLabel} must be one of image, table, tree, graph.`);
+}
+
+function readNodeType(
+  value: unknown,
+  sourceLabel: string,
+): DraftNode['nodeType'] {
+  if (
+    value === 'EXERCISE' ||
+    value === 'PART' ||
+    value === 'QUESTION' ||
+    value === 'SUBQUESTION' ||
+    value === 'CONTEXT'
+  ) {
+    return value;
+  }
+
+  throw new Error(
+    `${sourceLabel} must be one of EXERCISE, PART, QUESTION, SUBQUESTION, CONTEXT.`,
+  );
+}
+
+function readBlockType(value: unknown, sourceLabel: string): DraftBlockType {
+  if (
+    value === 'paragraph' ||
+    value === 'latex' ||
+    value === 'image' ||
+    value === 'code' ||
+    value === 'heading' ||
+    value === 'table' ||
+    value === 'list' ||
+    value === 'graph' ||
+    value === 'tree'
+  ) {
+    return value;
+  }
+
+  throw new Error(
+    `${sourceLabel} must be one of paragraph, latex, image, code, heading, table, list, graph, tree.`,
+  );
+}
+
+function readNativeSuggestionType(
+  value: unknown,
+  sourceLabel: string,
+): DraftAssetNativeSuggestionType {
+  if (value === 'table' || value === 'tree' || value === 'graph') {
+    return value;
+  }
+
+  throw new Error(`${sourceLabel} must be one of table, tree, graph.`);
+}
+
+function readNativeSuggestionStatus(
+  value: unknown,
+  sourceLabel: string,
+): DraftAssetNativeSuggestionStatus {
+  if (value === undefined || value === null || value === '') {
+    return 'suggested';
+  }
+
+  if (value === 'suggested' || value === 'stale') {
+    return value;
+  }
+
+  if (value === 'recovered') {
+    return 'suggested';
+  }
+
+  throw new Error(`${sourceLabel} must be suggested or stale.`);
+}
+
+function readNativeSuggestionSource(
+  value: unknown,
+  sourceLabel: string,
+): DraftAssetNativeSuggestionSource {
+  if (value === undefined || value === null || value === '') {
+    return 'reviewed_extract';
+  }
+
+  if (
+    value === 'codex_app_extraction' ||
+    value === 'reviewed_extract' ||
+    value === 'manual_review'
+  ) {
+    return value;
+  }
+
+  if (value === 'gemini_initial' || value === 'crop_recovery') {
+    return 'reviewed_extract';
+  }
+
+  throw new Error(
+    `${sourceLabel} must be codex_app_extraction, reviewed_extract, or manual_review.`,
+  );
 }
 
 function readTextBlockType(

@@ -12,6 +12,9 @@ import {
   StudyShell,
   StudySidebar,
 } from '@/components/study-shell';
+import { Button } from '@/components/ui/button';
+import { FilterChip } from '@/components/ui/filter-chip';
+import { SelectionCard } from '@/components/ui/selection-card';
 import {
   CatalogResponse,
   createExerciseDrillSession,
@@ -300,13 +303,14 @@ export function LibraryWorkspace({
             title="تعذر تحميل مساحة التصفح"
             description="أعد المحاولة."
             action={
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={() => router.refresh()}
               >
                 إعادة المحاولة
-              </button>
+              </Button>
             }
           />
         </section>
@@ -351,29 +355,27 @@ export function LibraryWorkspace({
                 <div className="library-filter-head">
                   <h3>الشعبة</h3>
                   {selectedStreamCode ? (
-                    <button
+                    <Button
                       type="button"
-                      className="library-clear-button"
+                      variant="ghost"
+                      size="xs"
+                      className="rounded-full px-2"
                       onClick={() => setSelectedStreamCode('')}
                     >
                       مسح
-                    </button>
+                    </Button>
                   ) : null}
                 </div>
                 <div className="chip-grid">
                   {catalog.streams.map((item) => (
-                    <button
+                    <FilterChip
                       key={item.code}
                       type="button"
-                      className={
-                        item.code === selectedStreamCode
-                          ? 'choice-chip active'
-                          : 'choice-chip'
-                      }
+                      active={item.code === selectedStreamCode}
                       onClick={() => setSelectedStreamCode(item.code)}
                     >
                       {item.name}
-                    </button>
+                    </FilterChip>
                   ))}
                 </div>
               </div>
@@ -382,13 +384,15 @@ export function LibraryWorkspace({
                 <div className="library-filter-head">
                   <h3>المادة</h3>
                   {selectedSubjectCode ? (
-                    <button
+                    <Button
                       type="button"
-                      className="library-clear-button"
+                      variant="ghost"
+                      size="xs"
+                      className="rounded-full px-2"
                       onClick={() => setSelectedSubjectCode('')}
                     >
                       مسح
-                    </button>
+                    </Button>
                   ) : null}
                 </div>
                 {!stream ? (
@@ -396,18 +400,14 @@ export function LibraryWorkspace({
                 ) : (
                   <div className="chip-grid">
                     {stream.subjects.map((item) => (
-                      <button
+                      <FilterChip
                         key={item.code}
                         type="button"
-                        className={
-                          item.code === selectedSubjectCode
-                            ? 'choice-chip active'
-                            : 'choice-chip'
-                        }
+                        active={item.code === selectedSubjectCode}
                         onClick={() => setSelectedSubjectCode(item.code)}
                       >
                         {item.name}
-                      </button>
+                      </FilterChip>
                     ))}
                   </div>
                 )}
@@ -417,13 +417,15 @@ export function LibraryWorkspace({
                 <div className="library-filter-head">
                   <h3>السنة</h3>
                   {selectedYear ? (
-                    <button
+                    <Button
                       type="button"
-                      className="library-clear-button"
+                      variant="ghost"
+                      size="xs"
+                      className="rounded-full px-2"
                       onClick={() => setSelectedYear(null)}
                     >
                       مسح
-                    </button>
+                    </Button>
                   ) : null}
                 </div>
                 {!subject ? (
@@ -431,19 +433,16 @@ export function LibraryWorkspace({
                 ) : (
                   <div className="library-year-list">
                     {subject.years.map((item) => (
-                      <button
+                      <SelectionCard
                         key={item.year}
                         type="button"
-                        className={
-                          item.year === selectedYear
-                            ? 'library-year-button active'
-                            : 'library-year-button'
-                        }
+                        active={item.year === selectedYear}
+                        className="min-h-12 grid-cols-[auto_auto] items-center rounded-2xl px-3 py-2"
                         onClick={() => setSelectedYear(item.year)}
                       >
                         <strong>{item.year}</strong>
                         <span>{item.sujets.length} موضوع</span>
-                      </button>
+                      </SelectionCard>
                     ))}
                   </div>
                 )}
@@ -491,25 +490,22 @@ export function LibraryWorkspace({
                           item.sujetNumber === selectedSujetNumber;
 
                         return (
-                          <button
+                          <SelectionCard
                             key={`${item.examId}:${item.sujetNumber}`}
                             type="button"
-                            className={
-                              isActive
-                                ? 'library-sujet-card active'
-                                : 'library-sujet-card'
-                            }
+                            active={isActive}
+                            className="min-h-24 content-start rounded-2xl"
                             onClick={() => {
                               setSelectedExamId(item.examId);
                               setSelectedSujetNumber(item.sujetNumber);
                             }}
                           >
-                            <div className="library-sujet-card-top">
+                            <div className="flex items-center justify-between gap-2">
                               <strong>{item.label}</strong>
                               <span>{item.exerciseCount} تمارين</span>
                             </div>
                             <p>{formatSessionType(item.sessionType)}</p>
-                          </button>
+                          </SelectionCard>
                         );
                       })}
                     </div>
@@ -546,13 +542,14 @@ export function LibraryWorkspace({
                       title="تعذر تحميل معاينة الموضوع"
                       description={examError}
                       action={
-                        <button
+                        <Button
                           type="button"
-                          className="btn-secondary"
+                          variant="outline"
+                          className="h-10 rounded-full px-5"
                           onClick={() => router.refresh()}
                         >
                           حاول مجدداً
-                        </button>
+                        </Button>
                       }
                     />
                   ) : selectedExam ? (
@@ -584,9 +581,9 @@ export function LibraryWorkspace({
                         </div>
 
                         <div className="library-preview-actions">
-                          <button
+                          <Button
                             type="button"
-                            className="btn-primary"
+                            className="h-11 rounded-full px-5"
                             onClick={() => {
                               void startSimulationFromSelectedSujet();
                             }}
@@ -600,7 +597,7 @@ export function LibraryWorkspace({
                               : simulationQuota?.exhausted
                                 ? 'نفدت حصة المحاكاة'
                                 : 'ابدأ محاكاة هذا الموضوع'}
-                          </button>
+                          </Button>
                         </div>
                       </article>
 
@@ -616,26 +613,32 @@ export function LibraryWorkspace({
                             </div>
 
                             <div className="library-exercise-actions">
-                              <Link
-                                href={buildStudentLibraryExamRouteWithSearch({
-                                  streamCode: selectedExam.stream.code,
-                                  subjectCode: selectedExam.subject.code,
-                                  year: selectedExam.year,
-                                  examId: selectedExam.id,
-                                  sujetNumber:
-                                    selectedExam.selectedSujetNumber ??
-                                    selectedSujet?.sujetNumber ??
-                                    1,
-                                  exercise: exercise.orderIndex,
-                                })}
-                                className="btn-secondary"
+                              <Button
+                                asChild
+                                variant="outline"
+                                className="h-10 rounded-full px-5"
                               >
-                                افتح التمرين
-                              </Link>
+                                <Link
+                                  href={buildStudentLibraryExamRouteWithSearch({
+                                    streamCode: selectedExam.stream.code,
+                                    subjectCode: selectedExam.subject.code,
+                                    year: selectedExam.year,
+                                    examId: selectedExam.id,
+                                    sujetNumber:
+                                      selectedExam.selectedSujetNumber ??
+                                      selectedSujet?.sujetNumber ??
+                                      1,
+                                    exercise: exercise.orderIndex,
+                                  })}
+                                >
+                                  افتح التمرين
+                                </Link>
+                              </Button>
 
-                              <button
+                              <Button
                                 type="button"
-                                className="btn-secondary"
+                                variant="outline"
+                                className="h-10 rounded-full px-5"
                                 onClick={() => {
                                   void startExerciseDrill({
                                     exerciseNodeId: exercise.id,
@@ -652,7 +655,7 @@ export function LibraryWorkspace({
                                   : drillQuota?.exhausted
                                     ? 'نفدت حصة الدريل'
                                     : 'ابدأ دريل'}
-                              </button>
+                              </Button>
                             </div>
                           </article>
                         ))}

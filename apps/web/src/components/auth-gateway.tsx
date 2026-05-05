@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import { startTransition, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/client-auth";
 import { getPostAuthRoute } from "@/lib/auth-routing";
 
@@ -16,7 +17,6 @@ export function AuthGateway() {
 
   useEffect(() => {
     if (!isLoaded || !userId) {
-      setIsCompletingSignIn(false);
       return;
     }
 
@@ -63,19 +63,19 @@ export function AuthGateway() {
       <section className="auth-layout">
         <aside className="auth-side">
           <div className="auth-side-top">
-            <p className="page-kicker">BAC Bank</p>
+            <p className="page-kicker">مِراس</p>
             <ThemeToggle />
           </div>
-          <h1>الدخول إلى BAC Bank</h1>
+          <h1>الدخول إلى مِراس</h1>
           <p>حساب واحد للوصول إلى التصفح والجلسات والقارئ.</p>
           <div className="auth-side-pills" aria-label="مزايا الدخول">
             <span>تصفح</span>
             <span>جلسات</span>
             <span>حفظ تلقائي</span>
           </div>
-          <Link href="/" className="btn-secondary">
-            العودة
-          </Link>
+          <Button asChild variant="outline" className="h-12 rounded-full px-5">
+            <Link href="/">العودة</Link>
+          </Button>
         </aside>
 
         <article className="auth-card">
@@ -87,24 +87,30 @@ export function AuthGateway() {
           <div className="auth-form">
             <p>
               اختر الطريقة المناسبة لك. بعد أول تسجيل دخول سنربط حساب Clerk
-              بملفك داخل BAC Bank ثم نكمل الشعبة والاشتراك من قاعدة بياناتنا.
+              بملفك داخل مِراس ثم نكمل الشعبة والاشتراك من قاعدة بياناتنا.
             </p>
-            <Link
-              href="/auth/sign-up"
-              className="btn-primary"
-              data-testid="auth-register-link"
-              aria-disabled={isCompletingSignIn}
+            <Button asChild className="h-14 rounded-full text-base">
+              <Link
+                href="/auth/sign-up"
+                data-testid="auth-register-link"
+                aria-disabled={isCompletingSignIn}
+              >
+                إنشاء حساب
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="h-14 rounded-full text-base"
             >
-              إنشاء حساب
-            </Link>
-            <Link
-              href="/auth/sign-in"
-              className="btn-secondary"
-              data-testid="auth-login-link"
-              aria-disabled={isCompletingSignIn}
-            >
-              تسجيل الدخول
-            </Link>
+              <Link
+                href="/auth/sign-in"
+                data-testid="auth-login-link"
+                aria-disabled={isCompletingSignIn}
+              >
+                تسجيل الدخول
+              </Link>
+            </Button>
             <p className="auth-feedback">
               {isCompletingSignIn
                 ? "تم تسجيل الدخول. جارٍ نقلك إلى حسابك..."

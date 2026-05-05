@@ -46,6 +46,12 @@ describe("study pedagogy helpers", () => {
           label: "Q1",
           points: 5,
           depth: 0,
+          interaction: {
+            format: "GENERAL",
+            captureMode: "TYPELESS",
+            responseMode: "NONE",
+            checkStrategy: "MODEL_COMPARISON",
+          },
           topics: [{ code: "FUNC", name: "Functions" }],
           promptBlocks: [],
           solutionBlocks: [],

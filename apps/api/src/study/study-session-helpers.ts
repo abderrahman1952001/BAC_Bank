@@ -320,7 +320,9 @@ export function buildSessionExerciseHierarchyPayload(
       exerciseNode,
       contextNodes,
     ),
-    questions: questions.map(({ metadata: _metadata, ...question }) => question),
+    questions: questions.map(
+      ({ metadata: _metadata, ...question }) => question,
+    ),
   };
 }
 

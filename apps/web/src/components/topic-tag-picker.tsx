@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { FilterChip } from "@/components/ui/filter-chip";
 import {
   buildTopicAncestorsByCode,
   buildTopicDescendantsByCode,
@@ -136,14 +137,14 @@ export function TopicTagPicker({
             <section key={chapter.code} className="topic-tag-picker-group">
               <div className="topic-tag-picker-head">
                 {chapter.isSelectable ? (
-                  <button
+                  <FilterChip
                     type="button"
-                    className={chapterSelected ? "choice-chip active" : "choice-chip"}
+                    active={chapterSelected}
                     disabled={disabled}
                     onClick={() => toggleTopic(chapter.code)}
                   >
                     {chapter.name}
-                  </button>
+                  </FilterChip>
                 ) : (
                   <strong>{chapter.name}</strong>
                 )}
@@ -159,19 +160,15 @@ export function TopicTagPicker({
               {subtopics.length ? (
                 <div className="chip-grid">
                   {subtopics.map((topic) => (
-                    <button
+                    <FilterChip
                       key={topic.code}
                       type="button"
-                      className={
-                        selectedCodes.includes(topic.code)
-                          ? "choice-chip active"
-                          : "choice-chip"
-                      }
+                      active={selectedCodes.includes(topic.code)}
                       disabled={disabled}
                       onClick={() => toggleTopic(topic.code)}
                     >
                       {topic.name}
-                    </button>
+                    </FilterChip>
                   ))}
                 </div>
               ) : null}

@@ -64,6 +64,11 @@ When adding or changing code:
 
 ### Frontend
 
+For UI implementation details, read `docs/design-system.md` before changing
+`apps/web`. Use local shadcn primitives first, keep dark mode ink/navy by
+default, and do not reintroduce legacy button/control classes or raw visible
+form controls outside `apps/web/src/components/ui`.
+
 The Next.js app should be server-first by default.
 
 Prefer Server Components for:
@@ -154,11 +159,13 @@ Optimize the hot path first.
 Prefer simple systems that scale predictably over premature complexity.
 
 For the web app:
+
 - minimize unnecessary client JavaScript
 - fetch first-load data on the server when possible
 - keep interactive islands small
 
 For the API:
+
 - move long-running or expensive work to workers when appropriate
 - avoid blocking request-response cycles with heavy processing
 - paginate list endpoints
@@ -188,7 +195,7 @@ Prefer tightening an existing boundary over rewriting the system.
 When touching messy code, improve the local seam if you can do so safely.
 Do not spread the mess into new files.
 Do not create a parallel system just to avoid understanding the current one.
-When changing something with a new thing, do the clean up and dont left the repo mid-old mid-nex, unless the user asks for preservation.
+When replacing an old path with a new one, complete the cleanup so the repo is not left half old and half new, unless the user asks for preservation.
 
 ## Pause before high-blast-radius changes
 
@@ -213,19 +220,3 @@ After making changes, report:
 - any remaining risks or follow-ups
 
 If you notice an architectural smell outside the task, mention it briefly without expanding scope unless asked.
-
-## Discovery and planning mode
-
-When the user is brainstorming, exploring requirements, or discussing architecture, switch into discovery mode.
-
-In discovery mode:
-
-- ask targeted questions that reduce important ambiguity
-- help the user uncover constraints, edge cases, priorities, and success criteria
-- surface dimensions the user may not know to specify
-- when useful, offer concrete options instead of asking abstract questions
-- separate must-haves, nice-to-haves, and open decisions
-- summarize the current understanding before moving into implementation
-
-Do not ask unnecessary questions once the task is already clear enough.
-For straightforward, low-risk implementation work, make reasonable assumptions, state them briefly when needed, and proceed.

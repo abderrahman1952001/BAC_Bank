@@ -17,11 +17,15 @@ import {
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import {
+  DraftAsset,
+  DraftAssetClassification,
   DraftBlock,
   DraftBlockRole,
+  DraftCropBox,
+  DraftDocumentKind,
   DraftNode,
+  DraftSourcePage,
   DraftVariantCode,
-  IngestionDraft,
   createEmptyDraft,
 } from './ingestion.contract';
 import {
@@ -64,6 +68,12 @@ export type CreateManualUploadJobInput = {
 
 export type AttachCorrectionDocumentInput = {
   correctionDocument: IntakeUploadDocumentInput;
+};
+
+type PublishedRevisionDraftContext = {
+  variantCode: DraftVariantCode;
+  assets: DraftAsset[];
+  sourcePagesById: Map<string, DraftSourcePage>;
 };
 
 @Injectable()
@@ -256,6 +266,32 @@ export class IngestionDraftIntakeService {
         paperSourceId: true,
         familyCode: true,
         officialSourceReference: true,
+        paperSource: {
+          select: {
+            sourceDocuments: {
+              orderBy: {
+                kind: 'asc',
+              },
+              select: {
+                id: true,
+                kind: true,
+                storageKey: true,
+                pages: {
+                  orderBy: {
+                    pageNumber: 'asc',
+                  },
+                  select: {
+                    id: true,
+                    documentId: true,
+                    pageNumber: true,
+                    width: true,
+                    height: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         offerings: {
           where: {
             isPublished: true,
@@ -325,7 +361,9 @@ export class IngestionDraftIntakeService {
                     data: true,
                     media: {
                       select: {
+                        id: true,
                         url: true,
+                        metadata: true,
                       },
                     },
                   },
@@ -415,8 +453,14 @@ export class IngestionDraftIntakeService {
     );
 
     const draft = this.readService.hydrateDraft(job);
-    const context = buildStorageContextFromDraft(draft, this.paperSourceService);
-    const sourceReference = readJsonString(draft.exam.metadata, 'sourceReference');
+    const context = buildStorageContextFromDraft(
+      draft,
+      this.paperSourceService,
+    );
+    const sourceReference = readJsonString(
+      draft.exam.metadata,
+      'sourceReference',
+    );
     const existingCorrection =
       job.sourceDocuments.find(
         (document) => document.kind === SourceDocumentKind.CORRECTION,
@@ -467,6 +511,20 @@ export class IngestionDraftIntakeService {
     };
     familyCode: string;
     officialSourceReference: string | null;
+    paperSource: {
+      sourceDocuments: Array<{
+        id: string;
+        kind: SourceDocumentKind;
+        storageKey: string;
+        pages: Array<{
+          id: string;
+          documentId: string;
+          pageNumber: number;
+          width: number;
+          height: number;
+        }>;
+      }>;
+    };
     offerings: Array<{
       id: string;
       stream: {
@@ -496,7 +554,9 @@ export class IngestionDraftIntakeService {
           textValue: string | null;
           data: Prisma.JsonValue | null;
           media: {
+            id: string;
             url: string;
+            metadata: Prisma.JsonValue | null;
           } | null;
         }>;
       }>;
@@ -528,6 +588,35 @@ export class IngestionDraftIntakeService {
         originOfferingIds: paper.offerings.map((offering) => offering.id),
       },
     });
+    const sourcePagesById = new Map<string, DraftSourcePage>();
+
+    for (const document of paper.paperSource.sourceDocuments) {
+      if (document.kind === SourceDocumentKind.EXAM) {
+        draft.exam.examDocumentId = document.id;
+        draft.exam.examDocumentStorageKey = document.storageKey;
+      }
+
+      if (document.kind === SourceDocumentKind.CORRECTION) {
+        draft.exam.correctionDocumentId = document.id;
+        draft.exam.correctionDocumentStorageKey = document.storageKey;
+      }
+
+      for (const page of document.pages) {
+        const draftPage: DraftSourcePage = {
+          id: page.id,
+          documentId: page.documentId,
+          documentKind: this.fromSourceDocumentKind(document.kind),
+          pageNumber: page.pageNumber,
+          width: page.width,
+          height: page.height,
+        };
+
+        sourcePagesById.set(draftPage.id, draftPage);
+        draft.sourcePages.push(draftPage);
+      }
+    }
+
+    const revisionAssets: DraftAsset[] = [];
     const variantsByCode = new Map(
       paper.variants.map((variant) => [
         variant.code,
@@ -539,7 +628,11 @@ export class IngestionDraftIntakeService {
               ? 'الموضوع الثاني'
               : 'الموضوع الأول'),
           nodes: variant.nodes.map((node) =>
-            this.mapPublishedNodeToDraft(node),
+            this.mapPublishedNodeToDraft(node, {
+              variantCode: variant.code as DraftVariantCode,
+              assets: revisionAssets,
+              sourcePagesById,
+            }),
           ),
         },
       ]),
@@ -549,33 +642,39 @@ export class IngestionDraftIntakeService {
       (variant) =>
         variantsByCode.get(variant.code as ExamVariantCode) ?? variant,
     );
+    draft.assets = revisionAssets;
 
     return draft;
   }
 
-  private mapPublishedNodeToDraft(node: {
-    id: string;
-    parentId: string | null;
-    nodeType: ExamNodeType;
-    orderIndex: number;
-    label: string | null;
-    maxPoints: Prisma.Decimal | null;
-    topicMappings: Array<{
-      topic: {
-        code: string;
-      };
-    }>;
-    blocks: Array<{
+  private mapPublishedNodeToDraft(
+    node: {
       id: string;
-      role: BlockRole;
-      blockType: PrismaBlockType;
-      textValue: string | null;
-      data: Prisma.JsonValue | null;
-      media: {
-        url: string;
-      } | null;
-    }>;
-  }): DraftNode {
+      parentId: string | null;
+      nodeType: ExamNodeType;
+      orderIndex: number;
+      label: string | null;
+      maxPoints: Prisma.Decimal | null;
+      topicMappings: Array<{
+        topic: {
+          code: string;
+        };
+      }>;
+      blocks: Array<{
+        id: string;
+        role: BlockRole;
+        blockType: PrismaBlockType;
+        textValue: string | null;
+        data: Prisma.JsonValue | null;
+        media: {
+          id: string;
+          url: string;
+          metadata: Prisma.JsonValue | null;
+        } | null;
+      }>;
+    },
+    context: PublishedRevisionDraftContext,
+  ): DraftNode {
     return {
       id: node.id,
       nodeType: node.nodeType,
@@ -584,20 +683,27 @@ export class IngestionDraftIntakeService {
       label: node.label,
       maxPoints: node.maxPoints !== null ? Number(node.maxPoints) : null,
       topicCodes: node.topicMappings.map((mapping) => mapping.topic.code),
-      blocks: node.blocks.map((block) => this.mapPublishedBlockToDraft(block)),
+      blocks: node.blocks.map((block) =>
+        this.mapPublishedBlockToDraft(block, context),
+      ),
     };
   }
 
-  private mapPublishedBlockToDraft(block: {
-    id: string;
-    role: BlockRole;
-    blockType: PrismaBlockType;
-    textValue: string | null;
-    data: Prisma.JsonValue | null;
-    media: {
-      url: string;
-    } | null;
-  }): DraftBlock {
+  private mapPublishedBlockToDraft(
+    block: {
+      id: string;
+      role: BlockRole;
+      blockType: PrismaBlockType;
+      textValue: string | null;
+      data: Prisma.JsonValue | null;
+      media: {
+        id: string;
+        url: string;
+        metadata: Prisma.JsonValue | null;
+      } | null;
+    },
+    context: PublishedRevisionDraftContext,
+  ): DraftBlock {
     const rawData = asJsonRecord(block.data);
     const nextData = rawData ? { ...rawData } : {};
 
@@ -609,8 +715,16 @@ export class IngestionDraftIntakeService {
       nextData,
       Boolean(mediaUrl),
     );
+    const preservedAsset = this.buildDraftAssetFromPublishedMedia(
+      block,
+      type,
+      context,
+    );
 
-    if (mediaUrl && type === 'image') {
+    if (preservedAsset) {
+      context.assets.push(preservedAsset);
+      delete nextData.url;
+    } else if (mediaUrl && type === 'image') {
       nextData.url = mediaUrl;
     }
 
@@ -621,7 +735,11 @@ export class IngestionDraftIntakeService {
       id: block.id,
       role: this.fromPublishedBlockRole(block.role),
       type,
-      value: type === 'image' && mediaUrl ? mediaUrl : (block.textValue ?? ''),
+      value:
+        type === 'image' && mediaUrl && !preservedAsset
+          ? mediaUrl
+          : (block.textValue ?? ''),
+      assetId: preservedAsset?.id,
       ...(Object.keys(nextData).length
         ? {
             data: nextData,
@@ -644,6 +762,100 @@ export class IngestionDraftIntakeService {
           }
         : {}),
     };
+  }
+
+  private buildDraftAssetFromPublishedMedia(
+    block: {
+      id: string;
+      role: BlockRole;
+      textValue: string | null;
+      media: {
+        metadata: Prisma.JsonValue | null;
+      } | null;
+    },
+    blockType: DraftBlock['type'],
+    context: PublishedRevisionDraftContext,
+  ): DraftAsset | null {
+    const metadata = block.media ? asJsonRecord(block.media.metadata) : null;
+    const sourcePageId = readJsonString(metadata, 'sourcePageId');
+    const sourcePage = sourcePageId
+      ? context.sourcePagesById.get(sourcePageId)
+      : null;
+    const cropBox = this.readPublishedCropBox(metadata?.cropBox);
+
+    if (!sourcePage || !cropBox) {
+      return null;
+    }
+
+    return {
+      id: `revision_asset_${block.id}`,
+      sourcePageId: sourcePage.id,
+      documentKind: sourcePage.documentKind,
+      pageNumber: sourcePage.pageNumber,
+      variantCode: context.variantCode,
+      role: this.fromPublishedBlockRole(block.role),
+      classification: this.readPublishedAssetClassification(
+        metadata,
+        blockType,
+      ),
+      cropBox,
+      label: readOptionalString(block.textValue),
+      notes: 'Preserved from published human-verified crop.',
+      nativeSuggestion: null,
+    };
+  }
+
+  private readPublishedAssetClassification(
+    metadata: Record<string, unknown> | null,
+    blockType: DraftBlock['type'],
+  ): DraftAssetClassification {
+    const classification = readJsonString(metadata, 'classification');
+
+    if (
+      classification === 'table' ||
+      classification === 'tree' ||
+      classification === 'graph' ||
+      classification === 'image'
+    ) {
+      return classification;
+    }
+
+    if (
+      blockType === 'table' ||
+      blockType === 'tree' ||
+      blockType === 'graph'
+    ) {
+      return blockType;
+    }
+
+    return 'image';
+  }
+
+  private readPublishedCropBox(value: unknown): DraftCropBox | null {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      return null;
+    }
+
+    const raw = value as Record<string, unknown>;
+    const x = readFiniteNumber(raw.x);
+    const y = readFiniteNumber(raw.y);
+    const width = readFiniteNumber(raw.width);
+    const height = readFiniteNumber(raw.height);
+
+    if (x === null || y === null || width === null || height === null) {
+      return null;
+    }
+
+    return {
+      x,
+      y,
+      width,
+      height,
+    };
+  }
+
+  private fromSourceDocumentKind(kind: SourceDocumentKind): DraftDocumentKind {
+    return kind === SourceDocumentKind.CORRECTION ? 'CORRECTION' : 'EXAM';
   }
 
   private fromPublishedBlockRole(role: BlockRole): DraftBlockRole {
@@ -754,4 +966,12 @@ function isRecordWithKey(value: unknown, key: string) {
     !Array.isArray(value) &&
     Object.prototype.hasOwnProperty.call(value, key)
   );
+}
+
+function readFiniteNumber(value: unknown) {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return null;
+  }
+
+  return value;
 }

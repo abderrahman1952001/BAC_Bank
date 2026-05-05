@@ -1,0 +1,3217 @@
+{
+  "id": "svt-se-proteins-field-one",
+  "status": "draft",
+  "title": "Proteins: From Code To Living Function",
+  "description": "A full first-field SVT journey that turns protein synthesis, structure-function, enzymes, immunity, and nervous communication into a linear, visual, exam-aware course.",
+  "subjectCode": "NATURAL_SCIENCES",
+  "stream": "SE",
+  "fieldCode": "PROTEINS",
+  "requiredUnitCodes": [
+    "PROTEIN_SYNTHESIS",
+    "STRUCTURE_FUNCTION",
+    "ENZYMES",
+    "IMMUNITY",
+    "NERVOUS_COMMUNICATION"
+  ],
+  "visualStyle": {
+    "imageModel": "gpt-image-1",
+    "name": "premium-3d-biology-atlas",
+    "description": "Premium 3D-ish biology visuals for a serious AI-native BAC course: luminous molecular surfaces, clean Arabic labels, deep navy backgrounds, teal/cyan highlights, restrained gold accents, high contrast, and uncluttered educational composition.",
+    "promptPrefix": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition.",
+    "negativePrompt": "No childish cartoon style, no cluttered textbook scans, no photoreal gore, no dense paragraphs inside the image, no decorative blobs, no fake handwritten notes."
+  },
+  "topicCode": "PROTEINS",
+  "topicSlug": "proteins",
+  "sourceIntelligence": {
+    "programmePath": "bac_theory_content/programmes/svt/SE.yml",
+    "sourceIds": ["source-1-silver-series-svt-se"],
+    "notes": [
+      "Sources inform scope, density, terminology, traps, and visual needs.",
+      "Canonical lessons must remain platform-authored and must not reuse source expression.",
+      "The required mainline should feel complete without optional depth portals.",
+      "Optional portals deepen experiments, mechanisms, and BAC extensions without becoming required progress."
+    ]
+  },
+  "concepts": [
+    {
+      "conceptCode": "PROTEIN_WORLD",
+      "unitCode": "PROTEIN_SYNTHESIS",
+      "role": "FIELD_INTRO",
+      "quality": "POLISHED",
+      "slug": "protein-world",
+      "roadmapTitle": "مدخل المجال",
+      "title": "لماذا تبدأ الحياة بالبروتينات؟",
+      "summary": "مدخل المجال: البروتينات ليست فقرة حفظ، بل آلات خلوية تجعل المعلومة الوراثية فعلا حيا.",
+      "learningObjective": "يرى الطالب البروتينات كأدوات وظيفية مرتبطة بالبنية والوثائق، لا كقائمة تعريفات منفصلة.",
+      "estimatedMinutes": 9,
+      "steps": [
+        {
+          "id": "cell-as-living-workshop",
+          "type": "HOOK",
+          "eyebrow": "مدخل المجال",
+          "title": "داخل الخلية لا توجد عناوين، توجد أفعال",
+          "body": "تخيل أن السؤال ليس: ما هو البروتين؟ بل: ما الذي يستطيع هذا الجزيء فعله داخل الخلية؟ بعض البروتينات تسرع تفاعلات، بعضها يتعرف على جسم غريب، بعضها يفتح قناة لشاردة، وبعضها يلتقط رسالة عصبية. من هنا يبدأ المجال كله: وظيفة دقيقة تحتاج بنية دقيقة.",
+          "bullets": [],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "عائلة واحدة، أدوار كثيرة",
+            "description": "لوحة 3D تقارن إنزيما وقناة شاردية وجسما مضادا ومستقبلا عصبيا كآلات خلوية مختلفة.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a premium biology comparison panel: enzyme active site, membrane ion channel, antibody, and neural receptor floating inside a stylized cell. Use short Arabic labels: إنزيم، قناة، جسم مضاد، مستقبل. Show each as a precise molecular machine, not as a flat icon.",
+            "altText": "أربع بروتينات تمثل التحفيز والنقل والتعرف والاستقبال.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/protein-world/cell-as-living-workshop.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/protein-world/cell-as-living-workshop.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T13:35:31.853Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اضغط على كل آلة لتكشف السؤال الذي يمكن أن يطرحه BAC حولها.",
+            "items": [
+              "إنزيم: لماذا يسرع التفاعل؟",
+              "جسم مضاد: كيف يتعرف نوعيا؟",
+              "قناة: لماذا تمر شاردة محددة؟",
+              "مستقبل: كيف يلتقط رسالة؟"
+            ],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "ربط البنية بالوظيفة",
+            "prompt": "في BAC لا يكفي أن تقول إن البروتين له وظيفة؛ يجب أن تربط الوظيفة بدليل بنيوي أو تجريبي من الوثيقة.",
+            "trap": "تحويل المجال إلى قائمة أدوار محفوظة بدل قراءة العلاقة بين الشكل والعمل."
+          }
+        },
+        {
+          "id": "field-spine",
+          "type": "EXPLAIN",
+          "eyebrow": "الخيط الكبير",
+          "title": "المجال كله يمشي في اتجاه واحد",
+          "body": "المورثة تعطي تعليمة، التعليمة تنسخ إلى رسالة، الرسالة تترجم إلى سلسلة أحماض أمينية، السلسلة تنطوي إلى بنية، والبنية تسمح بوظيفة. إذا أمسكت بهذا الخيط، تصبح الإنزيمات والمناعة والاتصال العصبي تطبيقات لنفس الفكرة لا دروسا متفرقة.",
+          "bullets": [
+            "مورثة",
+            "ARNm",
+            "سلسلة أحماض أمينية",
+            "بنية فراغية",
+            "وظيفة"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من المعلومة إلى الوظيفة",
+            "description": "مسار بصري من ADN إلى ARNm إلى سلسلة ثم بروتين مطوي يؤدي وظيفة.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a horizontal journey map from gene segment in DNA to mRNA ribbon to ribosome-made amino acid chain to folded protein with glowing functional site. Add three faint future branches labeled: إنزيمات، مناعة، اتصال عصبي. Arabic labels should be minimal and crisp.",
+            "altText": "مسار من المورثة إلى البروتين الوظيفي.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/protein-world/field-spine.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/protein-world/field-spine.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T13:35:31.853Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب الخيط الذي سيعود معنا في كل الوحدة.",
+            "items": [
+              "بنية فراغية",
+              "مورثة",
+              "وظيفة",
+              "ARNm",
+              "سلسلة أحماض أمينية"
+            ],
+            "answer": "مورثة -> ARNm -> سلسلة أحماض أمينية -> بنية فراغية -> وظيفة"
+          },
+          "examLens": {
+            "bacSkill": "بناء تفسير سببي",
+            "prompt": "عندما ترى وثيقة عن طفرة أو إنزيم أو مشبك، حاول إرجاعها إلى هذا الخيط: معلومة، بنية، وظيفة.",
+            "trap": "القفز إلى النتيجة دون بناء السلسلة السببية."
+          }
+        },
+        {
+          "id": "how-we-study",
+          "type": "RULE",
+          "eyebrow": "طريقة الدراسة",
+          "title": "لن نضغط المجال في كتلة واحدة",
+          "body": "البرنامج يبدو ثقيلا عندما يعرض كصفحات متراكمة. هنا سنمشي بعقد صغيرة: فكرة واحدة، صورة قوية، حركة أو سؤال، ثم عدسة BAC. العمق موجود، لكنه لا يهاجمك دفعة واحدة.",
+          "bullets": [
+            "فكرة واحدة في كل عقدة",
+            "صورة قبل الحفظ",
+            "سؤال قصير قبل الانتقال",
+            "جسر دائم مع BAC"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "عقد صغيرة بدل كتلة ثقيلة",
+            "description": "خريطة مسار تعليمية تقسم المجال إلى عقد متصلة مع مسارات عمق اختيارية.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create an elegant learning-path diagram: a linear glowing path of small nodes labeled فكرة، صورة، سؤال، BAC, with optional side portals labeled عمق اختياري. Keep it serious, premium, not gamified childish.",
+            "altText": "مسار خطي من عقد صغيرة مع بوابات عمق اختيارية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/protein-world/how-we-study.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/protein-world/how-we-study.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T13:35:31.853Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الطريقة الأقوى لدراسة المجال؟",
+            "items": [
+              "حفظ كل وحدة كجزيرة منفصلة",
+              "اتباع خيط المعلومة -> البنية -> الوظيفة"
+            ],
+            "answer": "اتباع خيط المعلومة -> البنية -> الوظيفة"
+          },
+          "examLens": {
+            "bacSkill": "تنظيم الإجابة",
+            "prompt": "الطالب القوي لا يكتب كل ما يعرفه؛ يختار من الخيط ما يفسر الوثيقة المطلوبة.",
+            "trap": "الإجابة الطويلة غير المنظمة التي تجمع تعريفات دون استنتاج."
+          }
+        },
+        {
+          "id": "field-promise",
+          "type": "TAKEAWAY",
+          "eyebrow": "وعد المسار",
+          "title": "كل بروتين سنقابله سيكون دليلا جديدا",
+          "body": "سنبدأ بتركيب البروتين، ثم نرى كيف يصبح الشكل وظيفة، ثم نختبر الفكرة في الإنزيمات والمناعة والاتصال العصبي. ليس الهدف أن تحفظ أكثر؛ الهدف أن ترى أكثر.",
+          "bullets": [],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "خمس محطات، فكرة واحدة",
+            "description": "لوحة تجمع محطات المجال الخمس تحت خيط بصري واحد.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a five-station premium course atlas: protein synthesis, structure-function, enzymes, immunity, neural communication arranged around a central glowing line labeled معلومة -> بنية -> وظيفة. Use symbolic but biologically accurate 3D elements for each station.",
+            "altText": "خمس محطات في مجال البروتينات مرتبطة بخيط واحد.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/protein-world/field-promise.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/protein-world/field-promise.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T13:35:31.853Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "why-proteins-are-machines",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "لماذا نقول آلة وليس مجرد جزيء؟",
+          "summary": "توسيع اختياري يربط الشكل ثلاثي الأبعاد بالحركة والانتقاء النوعي.",
+          "body": "تسمية البروتين بالآلة ليست تشبيها للزينة. الآلة لها جزء حساس، شكل مناسب، وحدود لما تستطيع فعله. هذا التفكير يجعل الوثائق أسهل: لا تسأل فقط عن الاسم، بل عن الجزء الذي يسمح بالوظيفة.",
+          "estimatedMinutes": 3
+        },
+        {
+          "slug": "bac-protein-field-map",
+          "kind": "EXAM_EXTENSION",
+          "title": "كيف يتحول المجال إلى أسئلة BAC؟",
+          "summary": "خريطة اختيارية لأنواع الأسئلة المتوقعة في المجال.",
+          "body": "غالبا ستقابل وثيقة مقارنة، تجربة إنزيمية، تسلسل قواعد، منحنى، أو مخطط اتصال. المطلوب هو قراءة دليل ثم بناء تفسير. الحفظ يساعدك، لكنه لا يحل مكان القراءة.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما الخيط الذي سيجمع وحدات مجال البروتينات؟",
+        "options": [
+          "حفظ أسماء الجزيئات كما تظهر في الدرس.",
+          "انتقال المعلومة من مورثة إلى بنية بروتينية ثم إلى وظيفة.",
+          "اعتبار كل وحدة مستقلة تماما عن الأخرى."
+        ],
+        "correctIndex": 1,
+        "explanation": "الخط الرئيسي هو من المعلومة الوراثية إلى البنية ثم الوظيفة. هذا ما يجعل المجال مترابطا بدل أن يكون دروسا متفرقة."
+      }
+    },
+    {
+      "conceptCode": "PROTEIN_SYNTHESIS_UNIT_INTRO",
+      "unitCode": "PROTEIN_SYNTHESIS",
+      "role": "UNIT_INTRO",
+      "quality": "POLISHED",
+      "slug": "protein-synthesis-unit-intro",
+      "roadmapTitle": "تركيب البروتين",
+      "title": "رحلة الرسالة: كيف تتحول المورثة إلى سلسلة؟",
+      "summary": "مدخل وحدة تركيب البروتين: سنحوّل المعلومة الوراثية خطوة بخطوة إلى سلسلة أحماض أمينية.",
+      "learningObjective": "يعرف الطالب خريطة وحدة تركيب البروتين قبل تفاصيل الاستنساخ والشفرة والترجمة.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "unit-route-map",
+          "type": "HOOK",
+          "eyebrow": "مدخل الوحدة",
+          "title": "لا تبدأ من التفاصيل؛ ابدأ من الطريق",
+          "body": "هذه الوحدة تجيب عن سؤال واحد كبير: كيف تنتقل معلومة محفوظة في ADN إلى سلسلة أحماض أمينية يمكن أن تصبح بروتينا؟ سنمر عبر الاستنساخ، الشفرة الوراثية، ثم الترجمة.",
+          "bullets": [
+            "ADN محفوظ",
+            "ARNm رسالة عمل",
+            "رامزات تقرأ بثلاثيات",
+            "ترجمة تبني السلسلة"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "خريطة تركيب البروتين",
+            "description": "مسار واضح من ADN إلى ARNm ثم رامزات ثم سلسلة ببتيدية.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a cinematic 3D course map: DNA protected inside nucleus, transcription creates mRNA, mRNA exits to cytoplasm, ribosome reads codons, amino acid chain grows. Use minimal Arabic labels: ADN، استنساخ، ARNm، ترجمة، سلسلة.",
+            "altText": "خريطة وحدة تركيب البروتين من ADN إلى سلسلة أحماض أمينية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/protein-synthesis-unit-intro/unit-route-map.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/protein-synthesis-unit-intro/unit-route-map.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T13:35:31.853Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب خريطة الوحدة قبل البدء.",
+            "items": ["ترجمة", "ADN", "استنساخ", "ARNm", "سلسلة أحماض أمينية"],
+            "answer": "ADN -> استنساخ -> ARNm -> ترجمة -> سلسلة أحماض أمينية"
+          },
+          "examLens": {
+            "bacSkill": "تمييز مراحل تركيب البروتين",
+            "prompt": "عندما ترى وثيقة في هذه الوحدة، اسأل: هل نحن في الاستنساخ، قراءة الشفرة، أم الترجمة؟",
+            "trap": "خلط الاستنساخ بالترجمة لأنهما يظهران في نفس المسار."
+          }
+        },
+        {
+          "id": "two-spaces",
+          "type": "EXPLAIN",
+          "eyebrow": "مقرات",
+          "title": "الرحلة تمر بين مكانين",
+          "body": "في حقيقيات النواة، النواة تحفظ ADN، والهيولى تحتضن الريبوزومات التي تبني السلسلة. لذلك سنحتاج وسيطا: ARNm، نسخة عمل تنقل المعلومة دون أن يخرج الأصل.",
+          "bullets": [
+            "النواة: حفظ المعلومة",
+            "ARNm: نسخة قابلة للنقل",
+            "الهيولى: قراءة وبناء"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "النواة والهيولى كورشتين مختلفتين",
+            "description": "خلية ثلاثية الأبعاد تقسم مقر الاستنساخ ومقر الترجمة.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a 3D cutaway eukaryotic cell: glowing nucleus with DNA archive, mRNA strand passing through nuclear pore, ribosomes in cytoplasm as translation stations. Arabic labels should be short and spatially attached.",
+            "altText": "ADN داخل النواة وARNm ينتقل نحو الريبوزومات في الهيولى.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/protein-synthesis-unit-intro/two-spaces.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/protein-synthesis-unit-intro/two-spaces.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T14:28:01.644Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الجزيء الذي يسمح بربط النواة بالهيولى؟",
+            "items": ["ADN الأصلي", "ARNm كنسخة عمل"],
+            "answer": "ARNm كنسخة عمل"
+          },
+          "examLens": {
+            "bacSkill": "تحديد مقر الظاهرة",
+            "prompt": "إذا طلب منك تفسير انتقال المعلومة، اذكر مقر الاستنساخ ومقر الترجمة بدقة.",
+            "trap": "القول إن ADN يغادر النواة عند حقيقيات النواة."
+          }
+        },
+        {
+          "id": "bac-document-types",
+          "type": "INSPECT",
+          "eyebrow": "وثائق BAC",
+          "title": "كيف ستظهر هذه الوحدة في التمارين؟",
+          "body": "غالبا لن يسألك التمرين بصيغة: اشرح تركيب البروتين. سيعطيك سلسلة قواعد، جدول شفرة، مخطط ريبوزوم، أو مقارنة طفرة. كل وثيقة هي نافذة على مرحلة من الرحلة.",
+          "bullets": [
+            "سلاسل ADN/ARNm",
+            "جدول الشفرة",
+            "مخطط الترجمة",
+            "أثر طفرة"
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "أربع نوافذ للتمرين",
+            "description": "بطاقات وثائق تمثل الأنماط الشائعة في BAC لوحدة تركيب البروتين.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create four premium document cards floating in a 3D study interface: DNA/mRNA sequence card, genetic code table card, ribosome diagram card, mutation comparison card. Use short Arabic labels and subtle BAC exam paper styling without copying any real exam.",
+            "altText": "أنواع وثائق BAC في وحدة تركيب البروتين.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/protein-synthesis-unit-intro/bac-document-types.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/protein-synthesis-unit-intro/bac-document-types.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T14:28:01.644Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف السؤال العملي خلف كل وثيقة.",
+            "items": [
+              "سلسلة قواعد: ماذا أستخرج؟",
+              "جدول شفرة: متى أستعمله؟",
+              "ريبوزوم: ما المرحلة؟",
+              "طفرة: ما الأثر؟"
+            ],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "اختيار الأداة المناسبة",
+            "prompt": "لا تستعمل جدول الشفرة أو قاعدة التكامل إلا بعد تحديد نوع الوثيقة والمرحلة.",
+            "trap": "البدء بالحساب قبل فهم ما تمثله الوثيقة."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "protein-synthesis-roadmap-drill",
+          "kind": "EXAM_EXTENSION",
+          "title": "تدريب خريطة الوحدة في دقيقة",
+          "summary": "نشاط اختياري لترتيب وثائق متنوعة حسب موقعها في رحلة تركيب البروتين.",
+          "body": "هذا التدريب يجعل الطالب أسرع في أول خطوة من الحل: تسمية المرحلة. بعد ذلك تصبح القواعد التقنية أسهل بكثير.",
+          "estimatedMinutes": 3
+        }
+      ],
+      "quiz": {
+        "question": "ما الترتيب العام لوحدة تركيب البروتين؟",
+        "options": [
+          "ADN ثم ARNm ثم ترجمة ثم سلسلة أحماض أمينية.",
+          "بروتين ثم ADN ثم رامزة.",
+          "جسم مضاد ثم مشبك ثم pH."
+        ],
+        "correctIndex": 0,
+        "explanation": "الخيط العام يبدأ من المعلومة في ADN، ثم نسخة ARNm، ثم ترجمة تبني السلسلة."
+      }
+    },
+    {
+      "conceptCode": "DNA_INSTRUCTION",
+      "unitCode": "PROTEIN_SYNTHESIS",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "dna-instruction",
+      "roadmapTitle": "ADN والمورثة",
+      "title": "ADN: التعليمة المحفوظة",
+      "summary": "فهم أن ADN ليس العامل المنفذ غالبا، بل الخزان الذي تحفظ فيه تعليمات بناء البروتين.",
+      "learningObjective": "يميز الطالب بين مكان حفظ المعلومة الوراثية ومكان ترجمتها، وبين ADN كله والمورثة المدروسة.",
+      "estimatedMinutes": 10,
+      "steps": [
+        {
+          "id": "protected-archive",
+          "type": "HOOK",
+          "eyebrow": "الفكرة الكبرى",
+          "title": "الخلية لا تسحب الأصل إلى ورشة العمل",
+          "body": "في حقيقيات النواة يبقى ADN داخل النواة. عندما تحتاج الخلية إلى بروتين، لا تنقل الأصل كله إلى الهيولى؛ تصنع نسخة عمل مؤقتة هي ARNm. هذه الفكرة البسيطة تمنع خلطا كبيرا في التمارين.",
+          "bullets": [
+            "الأصل: ADN",
+            "نسخة العمل: ARNm",
+            "مكان الترجمة: الريبوزوم في الهيولى"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "الأصل المحفوظ ونسخة العمل",
+            "description": "خلية ثلاثية الأبعاد تظهر ADN في النواة وARNm يخرج نحو الهيولى.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a premium 3D cutaway of a eukaryotic cell: DNA stored like a glowing archive inside nucleus, mRNA copy leaving through nuclear pore toward cytoplasmic ribosomes. Use Arabic labels: الأصل ADN، نسخة العمل ARNm، النواة، الهيولى.",
+            "altText": "ADN محفوظ في النواة وARNm ينتقل نحو الهيولى.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/dna-instruction/protected-archive.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/dna-instruction/protected-archive.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T14:28:01.644Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب المسار العام قبل الدخول في التفاصيل.",
+            "items": ["ريبوزوم", "ADN", "بروتين", "ARNm"],
+            "answer": "ADN -> ARNm -> ريبوزوم -> بروتين"
+          },
+          "examLens": {
+            "bacSkill": "تحديد مقر الظاهرة",
+            "prompt": "عند تحليل وثيقة، اسأل: هل تتكلم عن حفظ المعلومة في النواة، أم عن ترجمتها في الهيولى؟",
+            "trap": "القول إن ADN يغادر النواة في حقيقيات النواة."
+          }
+        },
+        {
+          "id": "gene-window",
+          "type": "INSPECT",
+          "eyebrow": "تكبير",
+          "title": "المورثة نافذة صغيرة داخل ADN طويل",
+          "body": "المورثة قطعة محددة من ADN تحمل معلومة بناء سلسلة بروتينية أو عنصر وظيفي. لذلك لا تقل إن ADN كله يعطي بروتينا واحدا. في الوثائق، ابحث دائما عن الجزء المدروس: مورثة، سلسلة قالب، أو رامزة.",
+          "bullets": [
+            "ADN هو الحامل العام",
+            "المورثة جزء محدد",
+            "الجزء المدروس هو الذي تقرأه في التمرين"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من الصبغي إلى المورثة",
+            "description": "تكبير متدرج من صبغي إلى ADN ثم مقطع مورثة مضاء.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a cinematic zoom sequence: chromosome -> DNA double helix -> highlighted gene segment -> small codon window. Use Arabic labels: صبغي، ADN، مورثة، جزء مدروس. Make it feel like a premium molecular atlas.",
+            "altText": "تكبير يوضح أن المورثة جزء محدد من ADN.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/dna-instruction/gene-window.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/dna-instruction/gene-window.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T14:28:01.644Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "حدد على الصورة أين توجد المعلومة التي سيقرأها التمرين.",
+            "items": ["الصبغي كله", "المورثة المضاءة", "الهيولى"],
+            "answer": "المورثة المضاءة"
+          },
+          "examLens": {
+            "bacSkill": "استعمال المصطلح المناسب",
+            "prompt": "الدقة في كلمة مورثة أو ADN أو سلسلة قالب قد تغير كل الحل في سؤال السلاسل.",
+            "trap": "استخدام ADN ومورثة كأنهما نفس الشيء في كل السياقات."
+          }
+        },
+        {
+          "id": "document-reading-contract",
+          "type": "RULE",
+          "eyebrow": "قاعدة قراءة",
+          "title": "قبل أي حساب، سمّ الشيء الذي أمامك",
+          "body": "عندما ترى تسلسلا في وثيقة، لا تبدأ بتحويل القواعد مباشرة. اسأل أولا: هل هذا ADN؟ هل هي السلسلة القالب؟ هل هو ARNm؟ هل المطلوب مورثة أم بروتين؟ هذه الثواني القليلة تنقذ الإجابة كلها.",
+          "bullets": [
+            "ما نوع السلسلة؟",
+            "ما اتجاه القراءة؟",
+            "ما المطلوب في النهاية؟"
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "بطاقات السلاسل قبل الحساب",
+            "description": "ثلاث بطاقات تميز سلسلة ADN قالب وADN غير قالب وARNm.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create three premium sequence cards in a clean exam-analysis interface: DNA template strand, DNA coding strand, mRNA strand. Show base letters with subtle color coding, Arabic labels: قالب، غير قالب، ARNm. Keep it spacious and high contrast.",
+            "altText": "بطاقات تميز نوع السلسلة قبل تطبيق القواعد.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/dna-instruction/document-reading-contract.png",
+              "url": "/api/course-assets/svt/SE/proteins/assets/generated/dna-instruction/document-reading-contract.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "gpt-image-1",
+              "generatedAt": "2026-05-04T14:28:01.644Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما أول سؤال قبل استعمال القواعد؟",
+            "items": ["ما نوع السلسلة المعطاة؟", "ما لون الجدول؟"],
+            "answer": "ما نوع السلسلة المعطاة؟"
+          },
+          "examLens": {
+            "bacSkill": "منهجية السلاسل",
+            "prompt": "اكتب في الهامش: المعطى هو... والمطلوب هو... ثم طبق القاعدة المناسبة.",
+            "trap": "استعمال قاعدة صحيحة على سلسلة خاطئة."
+          }
+        },
+        {
+          "id": "information-vs-matter",
+          "type": "TAKEAWAY",
+          "eyebrow": "خلاصة",
+          "title": "المعلومة ليست هي المادة النهائية",
+          "body": "ADN يحمل معلومة، لكنه لا يكون البروتين مباشرة. البروتين يبنى لاحقا من أحماض أمينية حسب رسالة مشتقة من المورثة. هذا الفصل بين المعلومة والتنفيذ هو قلب تركيب البروتين.",
+          "bullets": [
+            "ADN = معلومة محفوظة",
+            "ARNm = رسالة عمل",
+            "البروتين = مادة وظيفية مبنية"
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "معلومة، رسالة، مادة",
+            "description": "مقارنة بصرية بين ADN كتعليمة وARNm كرسالة وبروتين كآلة وظيفية.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a three-panel premium biology comparison: DNA as glowing instruction archive, mRNA as mobile message ribbon, protein as folded molecular machine. Use Arabic labels: معلومة، رسالة، وظيفة.",
+            "altText": "ADN يحمل المعلومة وARNm ينقلها والبروتين يؤدي الوظيفة."
+          },
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "why-copy-not-original",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "لماذا تعمل الخلية بنسخة؟",
+          "summary": "توسيع اختياري عن الحماية، التنظيم، وإمكانية إنتاج عدة نسخ من نفس المورثة.",
+          "body": "النسخ يسمح للخلية بحماية الأصل داخل النواة، وتنظيم كمية البروتين، وإنتاج عدة رسائل من مورثة واحدة عند الحاجة. هذه ليست تفاصيل للحفظ الأولي، لكنها تجعل المنطق الخلوي أكثر وضوحا.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "لماذا تحتاج الخلية إلى ARNm؟",
+        "options": [
+          "لأنه نسخة عمل تنقل المعلومة من النواة إلى مكان الترجمة.",
+          "لأنه يخزن المعلومة الوراثية دائما بدل ADN.",
+          "لأنه يحول البروتين مباشرة إلى ADN."
+        ],
+        "correctIndex": 0,
+        "explanation": "ARNm هو نسخة قابلة للنقل والقراءة، بينما ADN يبقى محفوظا كمصدر للمعلومة."
+      }
+    },
+    {
+      "conceptCode": "TRANSCRIPTION_WORKING_COPY",
+      "unitCode": "PROTEIN_SYNTHESIS",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "transcription-working-copy",
+      "roadmapTitle": "الاستنساخ",
+      "title": "الاستنساخ: صناعة نسخة العمل",
+      "summary": "تحويل جزء من المعلومة الوراثية إلى ARNm وفق تكامل القواعد واتجاه القراءة.",
+      "learningObjective": "يطبق الطالب قاعدة التكامل ويفرق بين سلسلة ADN القالب وARNm مع الانتباه للاتجاه.",
+      "estimatedMinutes": 12,
+      "steps": [
+        {
+          "id": "open-template",
+          "type": "HOOK",
+          "eyebrow": "آلية",
+          "title": "الاستنساخ يبدأ بفتح نافذة صغيرة لا بفتح ADN كله",
+          "body": "ARN بوليميراز لا ينسخ الخلية كاملة. يتحرك على جزء محدد من ADN، يفتح منطقة صغيرة، ويستعمل إحدى السلسلتين كقالب لبناء ARNm متكامل.",
+          "bullets": [
+            "جزء محدد من ADN",
+            "سلسلة قالب",
+            "ARN بوليميراز",
+            "ARNm نامي"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "نافذة الاستنساخ",
+            "description": "إنزيم ARN بوليميراز يفتح جزءا صغيرا من ADN ويبني ARNm.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a 3D molecular close-up: RNA polymerase clamped on DNA, small transcription bubble open, mRNA strand emerging. Use Arabic labels: ARN بوليميراز، السلسلة القالب، ARNm. Show direction arrows clearly.",
+            "altText": "ARN بوليميراز يقرأ سلسلة قالب ويبني ARNm."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف دور كل عنصر في نافذة الاستنساخ.",
+            "items": [
+              "ARN بوليميراز",
+              "السلسلة القالب",
+              "ريبونوكليوتيدات",
+              "ARNm نامي"
+            ],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "تحديد عناصر الاستنساخ",
+            "prompt": "في مخطط الاستنساخ، سمّ الإنزيم والسلسلة القالب والنسخة الناتجة قبل أي تفسير.",
+            "trap": "خلط الاستنساخ بالتضاعف لأن كليهما يفتح ADN ويستعمل التكامل."
+          }
+        },
+        {
+          "id": "base-pairing-console",
+          "type": "INSPECT",
+          "eyebrow": "قاعدة التكامل",
+          "title": "كل قاعدة تقابلها قاعدة، لكن بلغة ARN",
+          "body": "الفكرة ليست استبدال T بـ U فقط. يجب أن تعرف السلسلة القالب، ثم تطبق التكامل: A في القالب تقابل U في ARNm، وT تقابل A، وC تقابل G، وG تقابل C.",
+          "bullets": ["A -> U", "T -> A", "C -> G", "G -> C"],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "لوحة التكامل أثناء الاستنساخ",
+            "description": "لوحة قواعد ملونة توضح بناء ARNm من سلسلة قالب.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a premium interactive-style base-pairing board: DNA template triplets on top, mRNA being built below, color-coded pairs A-U, T-A, C-G, G-C. Arabic title: قاعدة التكامل. Keep labels short and readable.",
+            "altText": "قاعدة التكامل بين سلسلة ADN قالب وARNm."
+          },
+          "interaction": {
+            "kind": "FILL_BLANK",
+            "prompt": "إذا كان القالب TAC، ما ثلاثية ARNm المتكاملة؟",
+            "items": ["AUG"],
+            "answer": "AUG"
+          },
+          "examLens": {
+            "bacSkill": "استخراج ARNm من سلسلة قالب",
+            "prompt": "حدد أولا أن المعطى قالب، ثم طبق التكامل، ثم استبدل T في ARN بـ U عند الحاجة.",
+            "trap": "استبدال T بـ U فقط دون تطبيق التكامل."
+          }
+        },
+        {
+          "id": "template-vs-coding-trap",
+          "type": "COMMON_TRAP",
+          "eyebrow": "الفخ الكبير",
+          "title": "السلسلة التي تشبه ARNm ليست دائما التي تقرأها",
+          "body": "قد يعطيك التمرين السلسلة القالب، أو السلسلة غير القالب، أو ARNm نفسه. إذا كانت السلسلة غير القالب، فهي تشبه ARNm غالبا مع اختلاف T/U. أما القالب فيحتاج تكاملا. هنا يقع أغلب الخلط.",
+          "bullets": [
+            "قالب: أطبق التكامل",
+            "غير قالب: يشبه ARNm مع T/U",
+            "ARNm: أقرأ الرامزات مباشرة"
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "قالب وغير قالب وARNm",
+            "description": "ثلاث سلاسل متوازية تبين الفرق بين السلسلة القالب وغير القالب وARNm.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a clean 3-layer sequence comparison: DNA template strand, DNA coding/non-template strand, mRNA strand. Highlight that coding strand matches mRNA except T/U. Arabic labels: قالب، غير قالب، ARNm. Add small warning badge: لا تخلط.",
+            "altText": "مقارنة بين سلسلة قالب وغير قالب وARNm."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "إذا كان المعطى سلسلة قالب، ماذا تفعل؟",
+            "items": ["أطبق التكامل", "أستعمل جدول الشفرة مباشرة"],
+            "answer": "أطبق التكامل"
+          },
+          "examLens": {
+            "bacSkill": "تجنب خطأ نوع السلسلة",
+            "prompt": "اكتب نوع السلسلة فوقها قبل الحساب: قالب، غير قالب، أو ARNm.",
+            "trap": "قراءة جدول الشفرة على ADN قالب مباشرة."
+          }
+        },
+        {
+          "id": "three-phase-motion",
+          "type": "EXPLAIN",
+          "eyebrow": "حركة",
+          "title": "البداية ثم الاستطالة ثم النهاية",
+          "body": "يمكن حفظ الاستنساخ كحركة من ثلاث لقطات: يتثبت الإنزيم على بداية الجزء، يضيف ريبونوكليوتيدات متكاملة أثناء التحرك، ثم يتوقف وتتحرر نسخة ARNm.",
+          "bullets": ["بداية", "استطالة", "نهاية"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "ثلاث لقطات للاستنساخ",
+            "description": "تسلسل 3D يوضح بداية واستطالة ونهاية الاستنساخ.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a three-frame cinematic sequence of transcription: initiation with polymerase binding, elongation with growing mRNA tail, termination with mRNA release. Use Arabic labels: البداية، الاستطالة، النهاية.",
+            "altText": "مراحل الاستنساخ: بداية واستطالة ونهاية."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب مراحل الاستنساخ.",
+            "items": ["تحرر ARNm", "تثبت الإنزيم", "إضافة ريبونوكليوتيدات"],
+            "answer": "تثبت الإنزيم -> إضافة ريبونوكليوتيدات -> تحرر ARNm"
+          },
+          "examLens": {
+            "bacSkill": "تلخيص آلية من وثيقة",
+            "prompt": "إذا أعطيت صورا متتابعة، اربط كل صورة بلحظة من لحظات الاستنساخ بدل وصف الرسم فقط.",
+            "trap": "ذكر أسماء المراحل دون وصف ما يحدث فيها."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "transcription-enzyme-detail",
+          "kind": "MECHANISM",
+          "title": "ماذا يفعل ARN بوليميراز بالضبط؟",
+          "summary": "تفصيل اختياري لدور الإنزيم في فتح السلسلتين وإضافة الريبونوكليوتيدات.",
+          "body": "يمكن تخيله كقارئ يتحرك على القالب ويفتح منطقة صغيرة فقط في كل مرة. لا يحتاج الطالب إلى حفظ كل تفصيل، لكن فهم الحركة يمنع الخلط بين الاستنساخ والتضاعف.",
+          "estimatedMinutes": 4
+        },
+        {
+          "slug": "strand-orientation-drill",
+          "kind": "EXAM_EXTENSION",
+          "title": "تدريب اتجاه السلاسل",
+          "summary": "تمرين اختياري قصير على تحديد اتجاه القراءة قبل كتابة ARNm.",
+          "body": "الفكرة المتقدمة هنا ليست حسابية فقط؛ إنها انضباط في قراءة الوثيقة. الطالب القوي يحدد الاتجاه والسلسلة ثم يكتب النتيجة.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "ما أول قرار قبل استخراج ARNm من وثيقة؟",
+        "options": [
+          "تحديد هل السلسلة المعطاة قالب أم غير قالب أم ARNm.",
+          "استعمال جدول الشفرة مباشرة في كل الحالات.",
+          "حذف كل القواعد T من السلسلة."
+        ],
+        "correctIndex": 0,
+        "explanation": "نوع السلسلة يحدد القاعدة التي ستستعملها. بعد ذلك فقط نطبق التكامل أو نقرأ الرامزات."
+      }
+    },
+    {
+      "conceptCode": "GENETIC_CODE",
+      "unitCode": "PROTEIN_SYNTHESIS",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "genetic-code",
+      "roadmapTitle": "الشفرة الوراثية",
+      "title": "الشفرة الوراثية: ثلاثيات تصير اختيارات",
+      "summary": "فهم كيف يقرأ الريبوزوم ARNm على شكل رامزات، كل رامزة توجه اختيار حمض أميني.",
+      "learningObjective": "يستعمل الطالب جدول الشفرة بعد الوصول إلى ARNm ويفسر أثر تغير الرامزات.",
+      "estimatedMinutes": 10,
+      "steps": [
+        {
+          "id": "codon-rhythm",
+          "type": "HOOK",
+          "eyebrow": "لغة",
+          "title": "الخلية لا تقرأ حرفا حرفا؛ تقرأ بثلاثيات",
+          "body": "الرامزة ثلاثية من قواعد ARNm. كل رامزة تقابل حمضا أمينيا معينا أو إشارة توقف. لذلك ترتيب القواعد لا يهم كحروف منفصلة فقط، بل كمجموعات من ثلاثة.",
+          "bullets": [
+            "رامزة = ثلاثية على ARNm",
+            "كل رامزة توجه حمضا أمينيا أو توقفا",
+            "إطار القراءة مهم"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "ARNm مقسم إلى رامزات",
+            "description": "شريط ARNm يقسم إلى ثلاثيات مع حمض أميني تحت كل ثلاثية.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a 3D mRNA ribbon segmented into glowing codon blocks, with amino acid beads forming below each block. Arabic labels: رامزة، حمض أميني، توقف. Show AUG as start and UAA as stop.",
+            "altText": "ARNm مقسم إلى رامزات ثلاثية."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف الرامزات واحدة تلو الأخرى.",
+            "items": ["AUG", "GAA", "UUC", "UAA"],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "تحديد إطار القراءة",
+            "prompt": "اقسم ARNm إلى ثلاثيات من نقطة البداية المناسبة قبل استعمال الجدول.",
+            "trap": "تجميع القواعد عشوائيا دون احترام الثلاثيات."
+          }
+        },
+        {
+          "id": "code-table-skill",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "منهجية",
+          "title": "جدول الشفرة لا يعمل إلا إذا أعطيته ARNm",
+          "body": "جدول الشفرة يربط رامزات ARNm بالأحماض الأمينية. إذا كان المعطى ADN، يجب أن تصل أولا إلى ARNm. بعدها فقط تبحث عن معنى كل ثلاثية.",
+          "bullets": [
+            "أصل إلى ARNm",
+            "أقسم إلى رامزات",
+            "أبحث في الجدول",
+            "أكتب سلسلة أحماض أمينية"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "واجهة استعمال جدول الشفرة",
+            "description": "واجهة تعليمية تبين إدخال رامزة ARNm في جدول الشفرة ثم خروج حمض أميني.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a premium educational interface: codon AUG highlighted on an mRNA strip, arrow into a simplified genetic code table, output amino acid bead labeled Met/بداية. Arabic labels should be minimal and clean.",
+            "altText": "استعمال جدول الشفرة بعد الوصول إلى ARNm."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب منهجية استعمال جدول الشفرة.",
+            "items": [
+              "البحث في الجدول",
+              "كتابة ARNm",
+              "تقسيم إلى رامزات",
+              "كتابة الأحماض الأمينية"
+            ],
+            "answer": "كتابة ARNm -> تقسيم إلى رامزات -> البحث في الجدول -> كتابة الأحماض الأمينية"
+          },
+          "examLens": {
+            "bacSkill": "استعمال جدول الشفرة الوراثية",
+            "prompt": "لا تبحث في جدول الشفرة إلا بعد التأكد أن السلسلة المعطاة هي ARNm أو حولتها إليه.",
+            "trap": "استعمال جدول الشفرة مباشرة على سلسلة ADN قالب."
+          }
+        },
+        {
+          "id": "start-stop-and-degeneracy",
+          "type": "EXPLAIN",
+          "eyebrow": "خصائص",
+          "title": "بداية، توقف، وترادف: ثلاث أفكار تحميك في الطفرات",
+          "body": "AUG غالبا رامزة بداية، وبعض الرامزات لا تعطي حمضا أمينيا بل توقف القراءة. كذلك الشفرة مترادفة: قد تعطي أكثر من رامزة نفس الحمض الأميني. هذه الخاصية تفسر لماذا قد تكون بعض الطفرات صامتة.",
+          "bullets": [
+            "رامزة بداية",
+            "رامزات توقف",
+            "ترادف الشفرة",
+            "طفرة صامتة ممكنة"
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "ثلاث خصائص للشفرة",
+            "description": "لوحة تقارن رامزة بداية ورامزة توقف وترادف رامزتين لنفس الحمض الأميني.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a three-panel 3D biology visual: AUG start gate, UAA stop gate, two different codon blocks pointing to the same amino acid bead. Arabic labels: بداية، توقف، ترادف.",
+            "altText": "خصائص الشفرة الوراثية: بداية وتوقف وترادف."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "كيف يمكن لطفرة أن تكون صامتة؟",
+            "items": [
+              "تتغير الرامزة لكن يبقى الحمض الأميني نفسه",
+              "كل تغير قاعدة يوقف البروتين دائما"
+            ],
+            "answer": "تتغير الرامزة لكن يبقى الحمض الأميني نفسه"
+          },
+          "examLens": {
+            "bacSkill": "تفسير أثر طفرة",
+            "prompt": "بعد مقارنة الرامزات، لا تستنتج تغير الوظيفة إلا إذا رأيت تغيرا مؤثرا في الحمض الأميني أو البنية.",
+            "trap": "اعتبار كل طفرة تغير البروتين بنفس القوة."
+          }
+        },
+        {
+          "id": "mutation-preview",
+          "type": "TAKEAWAY",
+          "eyebrow": "جسر",
+          "title": "الشفرة هي الجسر بين القاعدة والحمض الأميني",
+          "body": "عندما تتغير قاعدة، لا يهم التغير كحرف فقط. المهم: هل تغيرت الرامزة؟ وهل تغير الحمض الأميني؟ هذا السؤال سيقودنا لاحقا إلى علاقة الطفرة بالبنية والوظيفة.",
+          "bullets": ["قاعدة", "رامزة", "حمض أميني", "بنية", "وظيفة"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من تغير قاعدة إلى احتمال تغير وظيفة",
+            "description": "سلسلة سببية مبسطة تربط الطفرة بالرامزة ثم الحمض الأميني.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a compact causal chain: base change -> codon change -> amino acid same/different -> protein shape maybe changes. Use two paths, silent and changing, with Arabic labels: طفرة صامتة، طفرة مؤثرة.",
+            "altText": "الشفرة تربط تغير القاعدة بتغير الحمض الأميني."
+          },
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "silent-mutation",
+          "kind": "EXAM_EXTENSION",
+          "title": "كيف تكون الطفرة صامتة؟",
+          "summary": "امتداد اختياري يربط الترادف بتفسير تغير السلسلة دون تغير الحمض الأميني.",
+          "body": "إذا تغيرت رامزة إلى رامزة أخرى تقابل الحمض الأميني نفسه، قد لا تتغير البنية الأولية. في BAC، هذه فكرة قوية عند مقارنة السلاسل.",
+          "estimatedMinutes": 3
+        }
+      ],
+      "quiz": {
+        "question": "لماذا لا نستعمل جدول الشفرة مباشرة على سلسلة ADN قالب؟",
+        "options": [
+          "لأن جدول الشفرة يقرأ رامزات ARNm.",
+          "لأن ADN لا يحتوي على قواعد آزوتية.",
+          "لأن كل ثلاثية ADN تعطي بروتينا كاملا."
+        ],
+        "correctIndex": 0,
+        "explanation": "جدول الشفرة يربط رامزات ARNm بالأحماض الأمينية، لذلك يجب الوصول إلى ARNm أولا."
+      }
+    },
+    {
+      "conceptCode": "TRANSLATION_CHAIN",
+      "unitCode": "PROTEIN_SYNTHESIS",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "translation-chain",
+      "roadmapTitle": "الترجمة",
+      "title": "الترجمة: من رسالة إلى سلسلة",
+      "summary": "رؤية الريبوزوم كمنصة قراءة تجمع الأحماض الأمينية حسب ترتيب رامزات ARNm.",
+      "learningObjective": "يربط الطالب أدوار ARNm وARNt والريبوزوم ببناء السلسلة الببتيدية.",
+      "estimatedMinutes": 11,
+      "steps": [
+        {
+          "id": "ribosome-stage",
+          "type": "HOOK",
+          "eyebrow": "ورشة",
+          "title": "الريبوزوم منصة قراءة لا صندوقا أسود",
+          "body": "يدخل ARNm إلى الريبوزوم، وتأتي ARNt حاملة أحماضا أمينية. كل ARNt يتعرف على رامزة مناسبة، فتضاف الأحماض الأمينية بالترتيب وتتكون سلسلة ببتيدية.",
+          "bullets": [
+            "ARNm: الرسالة",
+            "ARNt: الناقل",
+            "الريبوزوم: منصة القراءة",
+            "السلسلة: الناتج الأول"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "ورشة الترجمة",
+            "description": "ريبوزوم يقرأ ARNm، وARNt يدخل بحمض أميني، وسلسلة ببتيدية تنمو.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a premium 3D ribosome workshop: mRNA ribbon passing through ribosome, tRNA molecules docking with amino acid beads, growing polypeptide chain emerging. Arabic labels: ARNm، ARNt، ريبوزوم، سلسلة ببتيدية.",
+            "altText": "ريبوزوم يقرأ ARNm مع ARNt وسلسلة ببتيدية نامية."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب الصورة العامة للترجمة.",
+            "items": [
+              "تأتي ARNt",
+              "يقرأ الريبوزوم ARNm",
+              "تتشكل سلسلة",
+              "ترتبط الرامزة بمضاد الرامزة"
+            ],
+            "answer": "يقرأ الريبوزوم ARNm -> تأتي ARNt -> ترتبط الرامزة بمضاد الرامزة -> تتشكل سلسلة"
+          },
+          "examLens": {
+            "bacSkill": "تحديد أدوار عناصر الترجمة",
+            "prompt": "في مخطط الترجمة، ابدأ بتسمية ARNm وARNt والريبوزوم والسلسلة النامية.",
+            "trap": "ذكر الترجمة دون تحديد دور كل ARN."
+          }
+        },
+        {
+          "id": "trna-match",
+          "type": "INSPECT",
+          "eyebrow": "تطابق",
+          "title": "ARNt هو المترجم العملي بين الرامزة والحمض الأميني",
+          "body": "ARNt يحمل حمضا أمينيا من جهة، ويملك مضاد رامزة من جهة أخرى. هذا يجعله يربط بين لغة القواعد في ARNm ولغة الأحماض الأمينية في السلسلة.",
+          "bullets": [
+            "رامزة على ARNm",
+            "مضاد رامزة على ARNt",
+            "حمض أميني محمول"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "رامزة ومضاد رامزة",
+            "description": "تكبير على ARNt يحمل حمضا أمينيا ويتطابق مع رامزة ARNm.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a molecular close-up of tRNA docking on mRNA codon inside ribosome. Show codon-anticodon pairing with glowing base pairs, amino acid bead attached to tRNA. Arabic labels: رامزة، مضاد رامزة، حمض أميني.",
+            "altText": "ARNt يطابق رامزة ARNm ويحمل حمضا أمينيا."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الذي يربط الحمض الأميني بالرامزة المناسبة؟",
+            "items": ["ARNt", "ADN الأصلي"],
+            "answer": "ARNt"
+          },
+          "examLens": {
+            "bacSkill": "تفسير نوعية اختيار الحمض الأميني",
+            "prompt": "إذا سئلت كيف يوضع الحمض الأميني المناسب، اذكر تطابق الرامزة ومضاد الرامزة ودور ARNt.",
+            "trap": "اعتبار الريبوزوم وحده هو الذي يحمل الأحماض الأمينية."
+          }
+        },
+        {
+          "id": "elongation-rhythm",
+          "type": "EXPLAIN",
+          "eyebrow": "إيقاع",
+          "title": "الاستطالة تعني تكرار نفس الحركة بدقة",
+          "body": "يتقدم الريبوزوم رامزة بعد رامزة. في كل مرة تأتي ARNt مناسبة، يضاف حمض أميني، وتطول السلسلة. لذلك ترتيب الرامزات يحدد ترتيب الأحماض الأمينية.",
+          "bullets": [
+            "قراءة رامزة",
+            "دخول ARNt",
+            "تكوين رابطة ببتيدية",
+            "تقدم الريبوزوم"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "إيقاع الاستطالة",
+            "description": "تتابع لقطات يبين تقدم الريبوزوم ونمو السلسلة.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a four-frame sequence of translation elongation: codon read, tRNA arrives, peptide bond forms, ribosome shifts. Use numbered frames and short Arabic labels. Make the growing chain visually clear.",
+            "altText": "مراحل استطالة السلسلة أثناء الترجمة."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب إيقاع الاستطالة.",
+            "items": [
+              "تقدم الريبوزوم",
+              "دخول ARNt",
+              "قراءة رامزة",
+              "رابطة ببتيدية"
+            ],
+            "answer": "قراءة رامزة -> دخول ARNt -> رابطة ببتيدية -> تقدم الريبوزوم"
+          },
+          "examLens": {
+            "bacSkill": "ربط ترتيب الرامزات بترتيب الأحماض الأمينية",
+            "prompt": "إذا تغيرت رامزة في الوسط، تتبع موقعها في السلسلة ولا تعمم على البروتين كله مباشرة.",
+            "trap": "القفز من تغير رامزة إلى تغير وظيفة دون تحديد موضع الحمض الأميني."
+          }
+        },
+        {
+          "id": "stop-and-release",
+          "type": "TAKEAWAY",
+          "eyebrow": "نهاية",
+          "title": "التوقف ليس حمضا أمينيا؛ إنه إشارة تحرير",
+          "body": "عندما يصل الريبوزوم إلى رامزة توقف، لا تأتي ARNt بحمض أميني جديد. تنتهي القراءة وتتحرر السلسلة الببتيدية. هذه السلسلة ستحتاج لاحقا إلى بنية فراغية لتصبح بروتينا وظيفيا.",
+          "bullets": [
+            "رامزة توقف",
+            "تحرر السلسلة",
+            "بنية لاحقة",
+            "وظيفة لاحقة"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من رامزة توقف إلى سلسلة حرة",
+            "description": "لقطة نهاية الترجمة ثم بداية انطواء السلسلة.",
+            "prompt": "Use the premium-3d-biology-atlas theme: cinematic 3D-ish biology render, luminous molecular surfaces, clean Arabic labels, deep navy background, teal/cyan highlights, restrained gold accents, high contrast, uncluttered educational composition. Create a 3D sequence: ribosome reaches stop codon, polypeptide chain released, chain begins folding faintly into a protein shape. Arabic labels: توقف، تحرير السلسلة، بداية الانطواء.",
+            "altText": "رامزة توقف تنهي الترجمة وتحرر السلسلة."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ماذا تعني رامزة التوقف؟",
+            "items": [
+              "إنهاء القراءة وتحرير السلسلة",
+              "إضافة حمض أميني جديد دائما"
+            ],
+            "answer": "إنهاء القراءة وتحرير السلسلة"
+          },
+          "examLens": {
+            "bacSkill": "تفسير أثر رامزة توقف مبكرة",
+            "prompt": "إذا ظهرت رامزة توقف مبكرة بسبب طفرة، توقع سلسلة أقصر وقد تتأثر البنية والوظيفة.",
+            "trap": "اعتبار رامزة التوقف حمضا أمينيا عاديا."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "trna-anticodon-drill",
+          "kind": "MECHANISM",
+          "title": "ما دور مضاد الرامزة؟",
+          "summary": "توسيع اختياري يوضح كيف يضمن ARNt توافق الحمض الأميني مع الرامزة.",
+          "body": "مضاد الرامزة يجعل ARNt يتعرف على الرامزة المناسبة، لكن قوة الفكرة في BAC هي ربط الرامزة بالحمض الأميني، ثم ترتيب الأحماض في السلسلة.",
+          "estimatedMinutes": 4
+        },
+        {
+          "slug": "early-stop-codon",
+          "kind": "EXAM_EXTENSION",
+          "title": "ماذا لو ظهرت رامزة توقف مبكرة؟",
+          "summary": "امتداد اختياري يربط الترجمة بالطفرات التي تختصر السلسلة.",
+          "body": "رامزة توقف مبكرة قد تنتج سلسلة قصيرة، وهذا قد يغير الانطواء أو يلغي موقعا وظيفيا مهما. في الإجابة، اربط الموضع بالنتيجة ولا تكتف بقول البروتين تغير.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما الدور الأقرب لـ ARNt أثناء الترجمة؟",
+        "options": [
+          "يحمل حمضا أمينيا ويتعرف على الرامزة المناسبة.",
+          "يحفظ المعلومة الوراثية الأصلية داخل النواة.",
+          "يفتح سلسلتي ADN أثناء الاستنساخ."
+        ],
+        "correctIndex": 0,
+        "explanation": "ARNt يعمل كناقل يربط بين الرامزة والحمض الأميني المناسب أثناء بناء السلسلة."
+      }
+    },
+    {
+      "conceptCode": "SYNTHESIS_TO_STRUCTURE_BRIDGE",
+      "unitCode": "PROTEIN_SYNTHESIS",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "synthesis-to-structure-bridge",
+      "roadmapTitle": "من السلسلة إلى البنية",
+      "title": "من السلسلة إلى البروتين الوظيفي",
+      "summary": "جسر يوضح أن ترتيب الأحماض الأمينية هو بداية البنية وليس نهاية الوظيفة.",
+      "learningObjective": "يفهم الطالب لماذا يمكن لتغير بسيط في السلسلة أن يغير وظيفة لاحقة.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "sequence-starts-shape",
+          "type": "TAKEAWAY",
+          "eyebrow": "جسر",
+          "title": "الترتيب يوجه الشكل، والشكل يوجه العمل",
+          "body": "السلسلة الببتيدية ليست خيطا عشوائيا. ترتيب الأحماض الأمينية يحدد كيف يمكن للسلسلة أن تنطوي، والانطواء يحدد السطح النشيط أو موقع التعرف أو القناة.",
+          "bullets": ["بنية أولية: ترتيب", "بنية فراغية: شكل", "وظيفة: أثر حي"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من ترتيب إلى شكل",
+            "description": "سلسلة خطية تتحول تدريجيا إلى بروتين مطوي.",
+            "prompt": "Arabic sequence diagram showing amino acid chain folding into a 3D protein with a highlighted functional site.",
+            "altText": "سلسلة أحماض أمينية تنطوي إلى بروتين وظيفي."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "إذا تغير ترتيب الأحماض الأمينية، ما أول شيء قد يتأثر؟",
+            "items": ["البنية الفراغية", "عدد الصبغيات"],
+            "answer": "البنية الفراغية"
+          },
+          "examLens": {
+            "bacSkill": "ربط الطفرة بالوظيفة عبر البنية",
+            "prompt": "الحل القوي لا يقول تغيرت المورثة فتغيرت الوظيفة فقط؛ يمر عبر السلسلة ثم البنية.",
+            "trap": "حذف مرحلة البنية من التفسير."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "لماذا لا تكفي معرفة أن السلسلة تكونت؟",
+        "options": [
+          "لأن البروتين يحتاج بنية فراغية مناسبة ليؤدي وظيفته.",
+          "لأن السلسلة تتحول دائما إلى ADN.",
+          "لأن الأحماض الأمينية لا تدخل في البروتينات."
+        ],
+        "correctIndex": 0,
+        "explanation": "الوظيفة تعتمد على البنية، والبنية تبدأ من ترتيب الأحماض الأمينية."
+      }
+    },
+    {
+      "conceptCode": "STRUCTURE_FUNCTION_UNIT_INTRO",
+      "unitCode": "STRUCTURE_FUNCTION",
+      "role": "UNIT_INTRO",
+      "quality": "SKELETON",
+      "slug": "structure-function-unit-intro",
+      "roadmapTitle": "البنية والوظيفة",
+      "title": "بعد أن ولدت السلسلة: كيف تصبح قادرة على العمل؟",
+      "summary": "مدخل وحدة العلاقة بين بنية ووظيفة البروتين: الترتيب يصنع الشكل، والشكل يفتح باب الوظيفة.",
+      "learningObjective": "يرى الطالب أن الوظيفة البروتينية نتيجة بنية منظمة، لا مجرد وجود سلسلة.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "unit-map",
+          "type": "HOOK",
+          "eyebrow": "مدخل الوحدة",
+          "title": "السلسلة وحدها لا تكفي",
+          "body": "بعد الترجمة نملك سلسلة. لكن السؤال الحقيقي يبدأ الآن: كيف يعطي ترتيب الأحماض الأمينية شكلا فراغيا، وكيف يجعل هذا الشكل البروتين قادرا على التعرف أو التحفيز أو النقل؟",
+          "bullets": ["بنية أولية", "انطواء", "موقع وظيفي", "نوعية"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من ترتيب إلى وظيفة",
+            "description": "سلسلة خطية تنطوي إلى بروتين له موقع وظيفي.",
+            "prompt": "Arabic visual map: amino acid sequence folds into 3D protein with highlighted functional site, then function appears.",
+            "altText": "الترتيب يتحول إلى بنية ثم إلى وظيفة."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف المستويات التي سنبنيها في هذه الوحدة.",
+            "items": ["ترتيب", "انطواء", "موقع", "وظيفة"],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "تفسير الوظيفة من البنية",
+            "prompt": "في وثائق هذه الوحدة، ابحث عن دليل بنيوي ثم اربطه بالوظيفة.",
+            "trap": "ذكر الوظيفة دون تفسير لماذا تسمح بها البنية."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الفكرة المركزية في وحدة البنية والوظيفة؟",
+        "options": [
+          "الشكل الفراغي المناسب يسمح بالوظيفة",
+          "البروتين يعمل بلا بنية",
+          "ADN يغادر النواة ليعمل كإنزيم"
+        ],
+        "correctIndex": 0,
+        "explanation": "الوظيفة البروتينية تعتمد على بنية ومواقع مناسبة."
+      }
+    },
+    {
+      "conceptCode": "AMINO_ACIDS_AND_PEPTIDE_BOND",
+      "unitCode": "STRUCTURE_FUNCTION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "amino-acids-and-peptide-bond",
+      "roadmapTitle": "الأحماض الأمينية",
+      "title": "الأحماض الأمينية والرابطة الببتيدية",
+      "summary": "تثبيت اللبنات التي تبنى منها البروتينات وكيف تتصل لتكوين سلسلة.",
+      "learningObjective": "يفهم الطالب أن البروتين سلسلة من أحماض أمينية مرتبطة بروابط ببتيدية.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "building-blocks",
+          "type": "EXPLAIN",
+          "eyebrow": "لبنات",
+          "title": "البروتين يبدأ كوحدات صغيرة قابلة للترتيب",
+          "body": "الأحماض الأمينية وحدات تحمل نفس الهيكل العام مع جزء متغير يعطيها خصائص مختلفة. عندما ترتبط بروابط ببتيدية تتكون سلسلة يمكن أن تنطوي لاحقا إلى بروتين وظيفي.",
+          "bullets": [
+            "حمض أميني",
+            "جزء متغير",
+            "رابطة ببتيدية",
+            "سلسلة ببتيدية"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من حمض أميني إلى سلسلة",
+            "description": "وحدات أحماض أمينية تتصل بروابط ببتيدية لتكوين سلسلة.",
+            "prompt": "Arabic biology sequence diagram: amino acids as building blocks linked by peptide bonds into a polypeptide chain.",
+            "altText": "أحماض أمينية مرتبطة بروابط ببتيدية."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف ما يضاف عند الانتقال من وحدة إلى سلسلة.",
+            "items": ["حمض أميني", "رابطة ببتيدية", "سلسلة"],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "استعمال لغة بنيوية دقيقة",
+            "prompt": "عند وصف بنية أولية، اذكر ترتيب الأحماض الأمينية والروابط التي تجمعها.",
+            "trap": "القفز إلى البنية الفراغية دون تثبيت السلسلة الببتيدية."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "amino-acid-properties",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "لماذا تختلف الأحماض الأمينية؟",
+          "summary": "توسيع اختياري حول الجزء المتغير وتأثيره في الانطواء.",
+          "body": "اختلاف الجزء المتغير يغير قابلية الحمض الأميني للتفاعل مع الماء أو مع أحماض أخرى، وهذا ينعكس لاحقا على طريقة الانطواء.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما الذي يربط الأحماض الأمينية في السلسلة الببتيدية؟",
+        "options": ["روابط ببتيدية", "رامزات ARNm مباشرة", "أجسام مضادة"],
+        "correctIndex": 0,
+        "explanation": "الرابطة الببتيدية تجمع الأحماض الأمينية لتكوين السلسلة."
+      }
+    },
+    {
+      "conceptCode": "PRIMARY_STRUCTURE",
+      "unitCode": "STRUCTURE_FUNCTION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "primary-structure",
+      "roadmapTitle": "البنية الأولية",
+      "title": "البنية الأولية: ترتيب يصنع مصيرا",
+      "summary": "البنية الأولية هي ترتيب الأحماض الأمينية، وهي أول رابط بين المورثة والبروتين.",
+      "learningObjective": "يقرأ الطالب السلسلة كترتيب له أثر، لا كرموز منفصلة.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "order-matters",
+          "type": "EXPLAIN",
+          "eyebrow": "بنية",
+          "title": "تغيير موقع واحد قد يغير القصة",
+          "body": "البنية الأولية هي ترتيب الأحماض الأمينية في السلسلة. إذا تغير حمض أميني في موضع حساس، قد يتغير الانطواء أو موقع الوظيفة لاحقا.",
+          "bullets": [
+            "تحددها الرامزات",
+            "تمثل أبسط مستوى بنيوي",
+            "تؤثر في الانطواء"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "سلسلة أحماض أمينية مرتبة",
+            "description": "سلسلتان تختلفان في حمض أميني واحد مع إبراز الموضع.",
+            "prompt": "Arabic comparison diagram of two amino acid sequences differing by one highlighted amino acid.",
+            "altText": "بنيتان أوليتان تختلفان في موضع واحد."
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "حدد الموضع المتغير بين السلسلتين.",
+            "items": ["الموضع 1", "الموضع 4", "الموضع 8"],
+            "answer": "الموضع 4"
+          },
+          "examLens": {
+            "bacSkill": "مقارنة سلاسل بروتينية",
+            "prompt": "ابدأ بالمقارنة الدقيقة للمواضع قبل استنتاج الأثر الوظيفي.",
+            "trap": "القول بوجود تغير وظيفي دون تحديد التغير في السلسلة."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما المقصود بالبنية الأولية؟",
+        "options": [
+          "ترتيب الأحماض الأمينية",
+          "الشكل النهائي فقط",
+          "موقع البروتين داخل النواة"
+        ],
+        "correctIndex": 0,
+        "explanation": "البنية الأولية هي ترتيب الأحماض الأمينية في السلسلة."
+      }
+    },
+    {
+      "conceptCode": "FOLDING_LEVELS",
+      "unitCode": "STRUCTURE_FUNCTION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "folding-levels",
+      "roadmapTitle": "البنية الفراغية",
+      "title": "الانطواء: كيف يصبح الخيط شكلا؟",
+      "summary": "فهم الانتقال من ترتيب خطي إلى بنية فراغية قابلة للوظيفة.",
+      "learningObjective": "يفسر الطالب أن الوظيفة تحتاج شكلا مناسبا وليس مجرد وجود سلسلة.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "folding-makes-sites",
+          "type": "INSPECT",
+          "eyebrow": "شكل",
+          "title": "الانطواء يصنع المواقع المهمة",
+          "body": "عندما تنطوي السلسلة، تقترب أحماض أمينية متباعدة في الترتيب لتصنع سطحا أو جيبا أو موقع تعرف. لذلك قد يكون موضع بعيد في البنية الأولية قريبا جدا في الفراغ.",
+          "bullets": [
+            "الخيط خطي",
+            "الشكل ثلاثي الأبعاد",
+            "الموقع الوظيفي نتيجة الانطواء"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "قرب في الفراغ رغم البعد في السلسلة",
+            "description": "سلسلة خطية تتحول إلى شكل يجعل موضعين متباعدين متجاورين.",
+            "prompt": "Modern Arabic protein folding diagram showing distant amino acids in sequence becoming close in 3D active site.",
+            "altText": "انطواء يجعل مواضع متباعدة متقاربة في الفراغ."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف كيف تصبح المواضع البعيدة قريبة بعد الانطواء.",
+            "items": ["قبل الانطواء", "بعد الانطواء", "الموقع الوظيفي"],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "تفسير العلاقة بين الشكل والوظيفة",
+            "prompt": "إذا أعطيت بنية ثلاثية الأبعاد، ابحث عن الموقع أو السطح الذي يفسر الوظيفة.",
+            "trap": "الاعتماد على البنية الأولية وحدها عند وجود وثيقة فراغية."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "protein-stability",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "ما الذي يثبت البنية الفراغية؟",
+          "summary": "نظرة اختيارية على الروابط والتفاعلات التي تحافظ على الانطواء.",
+          "body": "يمكن لعوامل مثل الحرارة أو pH أن تضعف التفاعلات التي تحفظ الشكل. لذلك تتأثر وظيفة بعض البروتينات عندما تتغير الشروط.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "لماذا يؤثر الانطواء في الوظيفة؟",
+        "options": [
+          "لأنه يصنع مواقع وفراغات تسمح بالتعرف أو التحفيز",
+          "لأنه يمحو ترتيب الأحماض الأمينية",
+          "لأنه يمنع كل تفاعل"
+        ],
+        "correctIndex": 0,
+        "explanation": "الشكل الفراغي يخلق المواقع التي تسمح للبروتين بأداء وظيفته."
+      }
+    },
+    {
+      "conceptCode": "DENATURATION_AND_RENATURATION",
+      "unitCode": "STRUCTURE_FUNCTION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "denaturation-and-renaturation",
+      "roadmapTitle": "تخرب البروتين",
+      "title": "التخرب والعودة: ماذا تعلمنا تجارب الانطواء؟",
+      "summary": "قراءة تغير الوظيفة عندما تتغير البنية، وربط ذلك بمنطق التجارب الكلاسيكية على البروتينات.",
+      "learningObjective": "يفسر الطالب فقدان أو عودة الوظيفة من خلال تغير البنية الفراغية.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "shape-lost-function-lost",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "تجربة",
+          "title": "عندما يتغير الشكل، قد تختفي الوظيفة",
+          "body": "إذا عومل بروتين بشروط تغير بنيته الفراغية، قد يفقد نشاطه. وإذا عادت الشروط المناسبة وعادت البنية، قد تعود الوظيفة. قوة هذه الفكرة أنها تجعل البنية دليلا تجريبيا لا رسما فقط.",
+          "bullets": [
+            "بنية طبيعية",
+            "تخرب",
+            "فقدان وظيفة",
+            "عودة ممكنة عند استرجاع البنية"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "تخرب ثم عودة البنية",
+            "description": "بروتين مطوي يفقد شكله ونشاطه ثم يسترجعهما عند شروط مناسبة.",
+            "prompt": "Arabic experimental sequence: folded protein active, denatured protein inactive, renatured protein active again under proper conditions.",
+            "altText": "تغير البنية يؤدي إلى تغير النشاط ثم عودته عند استرجاع البنية."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب قراءة تجربة التخرب.",
+            "items": [
+              "فقدان النشاط",
+              "تغير الشروط",
+              "تغير البنية",
+              "عودة الشروط"
+            ],
+            "answer": "تغير الشروط -> تغير البنية -> فقدان النشاط -> عودة الشروط"
+          },
+          "examLens": {
+            "bacSkill": "استنتاج دور البنية من تجربة",
+            "prompt": "إذا تغير النشاط مع تغير البنية، اجعل العلاقة بينهما محور الاستنتاج.",
+            "trap": "وصف التجربة دون تحويلها إلى دليل على علاقة البنية بالوظيفة."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "anfinsen-experiment",
+          "kind": "EXPERIMENT",
+          "title": "تفكيك منطق تجربة أنفنسن",
+          "summary": "توسيع اختياري حول كيف دعمت التجربة فكرة أن المعلومات اللازمة للانطواء موجودة في السلسلة.",
+          "body": "الفكرة المهمة للطالب ليست اسم التجربة فقط، بل منطقها: عندما تغير البنية يتغير النشاط، وعندما تستعاد البنية يمكن أن يعود النشاط.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "ما أقوى استنتاج من تجربة يتغير فيها النشاط مع تغير البنية؟",
+        "options": [
+          "الوظيفة مرتبطة بالبنية الفراغية",
+          "البروتين لا يملك أحماضا أمينية",
+          "الشفرة الوراثية غير موجودة"
+        ],
+        "correctIndex": 0,
+        "explanation": "تغير النشاط مع تغير البنية دليل على علاقة البنية بالوظيفة."
+      }
+    },
+    {
+      "conceptCode": "SPECIFICITY_BY_SHAPE",
+      "unitCode": "STRUCTURE_FUNCTION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "specificity-by-shape",
+      "roadmapTitle": "النوعية والبنية",
+      "title": "النوعية: لماذا لا يرتبط كل شيء بكل شيء؟",
+      "summary": "النوعية ناتجة عن تكامل الشكل والشحنات والموقع الوظيفي.",
+      "learningObjective": "يربط الطالب نوعية التفاعل بتكامل بين البروتين والجزيء المرتبط به.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "fit-and-recognition",
+          "type": "EXPLAIN",
+          "eyebrow": "نوعية",
+          "title": "التكامل ليس قفلا ومفتاحا فقط",
+          "body": "النوعية تعني أن موقعا في البروتين يناسب جزيئا أو جزءا محددا. التشابه في الشكل مهم، لكن التوزع الكيميائي والشحنات مهم أيضا. لذلك نفس المنطق يظهر في الإنزيم والجسم المضاد والمستقبل.",
+          "bullets": ["تكامل شكلي", "تكامل كيميائي", "نتيجة وظيفية محددة"],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "ثلاث صور للنوعية",
+            "description": "مقارنة بين موقع فعال، موقع ارتباط جسم مضاد، ومستقبل غشائي.",
+            "prompt": "Arabic comparison panel showing enzyme active site, antibody binding site, and receptor binding site with matching ligand shapes.",
+            "altText": "مواقع نوعية في إنزيم وجسم مضاد ومستقبل."
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق كل بروتين مع الجزيء الذي يتعرف عليه.",
+            "items": [
+              "إنزيم - ركيزة",
+              "جسم مضاد - مولد ضد",
+              "مستقبل - ناقل كيميائي"
+            ],
+            "answer": "إنزيم - ركيزة; جسم مضاد - مولد ضد; مستقبل - ناقل كيميائي"
+          },
+          "examLens": {
+            "bacSkill": "تعميم منطق النوعية بين الوحدات",
+            "prompt": "استعمل نفس الفكرة في عدة دروس: الموقع المناسب يفسر الاختصاص الوظيفي.",
+            "trap": "حفظ نوعية الإنزيم وحدها ونسيان أنها تعود في المناعة والاتصال العصبي."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الفكرة المشتركة بين الموقع الفعال وموقع ارتباط الجسم المضاد؟",
+        "options": [
+          "وجود تكامل نوعي يسمح بالارتباط",
+          "كلاهما داخل ADN",
+          "كلاهما يلغي الحاجة إلى الشكل"
+        ],
+        "correctIndex": 0,
+        "explanation": "النوعية تقوم على تكامل بين الموقع والجزيء المتعرف عليه."
+      }
+    },
+    {
+      "conceptCode": "MUTATION_TO_FUNCTION",
+      "unitCode": "STRUCTURE_FUNCTION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "mutation-to-function",
+      "roadmapTitle": "الطفرة والوظيفة",
+      "title": "من طفرة إلى تغير وظيفة",
+      "summary": "بناء السلسلة السببية من تغير في ADN إلى أثر محتمل على البروتين.",
+      "learningObjective": "ينتج الطالب تفسيرا كاملا لا يقفز من الطفرة إلى الصفة مباشرة.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "cause-chain",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "منهجية",
+          "title": "لا تقفز: ابن السلسلة",
+          "body": "طفرة في مورثة قد تغير رامزة، فتغير حمضا أمينيا، فتغير البنية الفراغية، فتتأثر الوظيفة. كلمة قد مهمة: ليس كل تغير في القاعدة يغير البروتين، وليس كل تغير في البروتين يغير الوظيفة بنفس القوة.",
+          "bullets": ["ADN", "ARNm", "حمض أميني", "بنية", "وظيفة"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "سلسلة أثر الطفرة",
+            "description": "مخطط سببي من تغير قاعدة إلى أثر وظيفي محتمل.",
+            "prompt": "Arabic causal chain diagram: DNA mutation -> mRNA codon change -> amino acid change -> protein shape change -> function change, with 'possible' markers.",
+            "altText": "سلسلة سببية من طفرة إلى وظيفة بروتينية."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب خطوات تفسير أثر طفرة.",
+            "items": [
+              "تغير وظيفة",
+              "تغير رامزة",
+              "تغير حمض أميني",
+              "تغير قاعدة",
+              "تغير بنية"
+            ],
+            "answer": "تغير قاعدة -> تغير رامزة -> تغير حمض أميني -> تغير بنية -> تغير وظيفة"
+          },
+          "examLens": {
+            "bacSkill": "كتابة تفسير سببي كامل",
+            "prompt": "استعمل ألفاظا حذرة: يؤدي إلى أو قد يؤدي إلى حسب الوثيقة، وادعم كل مرحلة بدليل.",
+            "trap": "استنتاج تغير الوظيفة دون المرور بالرامزة والحمض الأميني والبنية."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "mutation-strength",
+          "kind": "EXAM_EXTENSION",
+          "title": "لماذا تختلف قوة أثر الطفرات؟",
+          "summary": "توسيع اختياري حول الطفرات الصامتة والحساسة ومواقع الوظيفة.",
+          "body": "الأثر يكون أقوى غالبا عندما يمس موضعا مهما للانطواء أو الموقع الوظيفي. أما إذا لم يتغير الحمض الأميني، فقد يكون الأثر منعدما على البروتين المدروس.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "أي تفسير أكثر اكتمالا لأثر طفرة؟",
+        "options": [
+          "تغير ADN إذن تغيرت الوظيفة مباشرة",
+          "تغيرت القاعدة وقد تغير الرامزة والحمض الأميني والبنية ثم الوظيفة",
+          "الطفرة لا تؤثر أبدا"
+        ],
+        "correctIndex": 1,
+        "explanation": "التفسير القوي يمر عبر السلسلة الوسيطة ولا يقفز مباشرة إلى النتيجة."
+      }
+    },
+    {
+      "conceptCode": "ENZYMES_UNIT_INTRO",
+      "unitCode": "ENZYMES",
+      "role": "UNIT_INTRO",
+      "quality": "SKELETON",
+      "slug": "enzymes-unit-intro",
+      "roadmapTitle": "الإنزيمات",
+      "title": "الإنزيمات: أول اختبار حقيقي للبنية والوظيفة",
+      "summary": "مدخل وحدة الإنزيمات: سنرى كيف يتحول الموقع الفعال إلى سرعة ونوعية وشروط نشاط.",
+      "learningObjective": "يفهم الطالب أن الإنزيم تطبيق مباشر لعلاقة البنية بالوظيفة.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "unit-map",
+          "type": "HOOK",
+          "eyebrow": "مدخل الوحدة",
+          "title": "هنا يصبح الشكل سرعة",
+          "body": "الإنزيم بروتين يعمل بفضل موقع فعال. إذا فهمت الموقع الفعال، ستفهم النوعية، تأثير الحرارة و pH، المنحنيات، وحتى التثبيط.",
+          "bullets": ["موقع فعال", "ركيزة", "نشاط", "شروط مثلى", "تثبيط"],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "خريطة الإنزيمات",
+            "description": "إنزيم وموقع فعال يتفرع إلى النوعية والشروط والحركية والتثبيط.",
+            "prompt": "Arabic enzyme unit map centered on active site, branches to specificity, conditions, kinetics, inhibition.",
+            "altText": "خريطة وحدة الإنزيمات حول الموقع الفعال."
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق الفكرة بمحورها.",
+            "items": [
+              "موقع فعال - نوعية",
+              "حرارة و pH - شروط النشاط",
+              "ميل منحنى - سرعة"
+            ],
+            "answer": "موقع فعال - نوعية; حرارة و pH - شروط النشاط; ميل منحنى - سرعة"
+          },
+          "examLens": {
+            "bacSkill": "تحليل وثائق إنزيمية",
+            "prompt": "مع كل وثيقة إنزيمية، اسأل: هل السؤال عن نوعية، سرعة، شرط، أم تثبيط؟",
+            "trap": "قراءة منحنى النشاط دون ربطه بالبنية والموقع الفعال."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما مركز وحدة الإنزيمات؟",
+        "options": [
+          "الموقع الفعال وعلاقته بالنشاط",
+          "CMH فقط",
+          "قوس المنعكس فقط"
+        ],
+        "correctIndex": 0,
+        "explanation": "الموقع الفعال هو المفتاح الذي يربط البنية بالنشاط والنوعية."
+      }
+    },
+    {
+      "conceptCode": "ENZYME_AS_CATALYST",
+      "unitCode": "ENZYMES",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "enzyme-as-catalyst",
+      "roadmapTitle": "مفهوم الإنزيم",
+      "title": "الإنزيم: بروتين يسرع دون أن يختفي",
+      "summary": "تثبيت فكرة التحفيز الحيوي والتمييز بين الإنزيم والركيزة والناتج.",
+      "learningObjective": "يفسر الطالب دور الإنزيم كمحفز نوعي في تفاعل حيوي.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "catalyst-role",
+          "type": "EXPLAIN",
+          "eyebrow": "تحفيز",
+          "title": "الإنزيم يفتح طريقا أسرع للتفاعل",
+          "body": "الإنزيم لا يخلق المادة من العدم ولا يستهلك كركيزة. هو بروتين يسرع التفاعل بفضل موقع فعال يرتبط بالركيزة ويجعل تحولها أسهل.",
+          "bullets": ["إنزيم", "ركيزة", "معقد إنزيم-ركيزة", "ناتج"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "دورة التحفيز الإنزيمي",
+            "description": "إنزيم يرتبط بركيزة ثم يحرر الناتج ويبقى قابلا للاستعمال.",
+            "prompt": "Arabic sequence diagram of enzyme catalysis: enzyme + substrate -> enzyme-substrate complex -> product release, enzyme unchanged.",
+            "altText": "إنزيم يرتبط بالركيزة ثم يحرر الناتج."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب دورة التحفيز.",
+            "items": ["تحرر الناتج", "ارتباط الركيزة", "تشكل المعقد"],
+            "answer": "ارتباط الركيزة -> تشكل المعقد -> تحرر الناتج"
+          },
+          "examLens": {
+            "bacSkill": "وصف آلية التحفيز من مخطط",
+            "prompt": "استعمل أسماء العناصر كما تظهر في الوثيقة: إنزيم، ركيزة، معقد، ناتج.",
+            "trap": "اعتبار الإنزيم مادة متفاعلة تستهلك نهائيا."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الذي يبقى بعد تحرير الناتج؟",
+        "options": [
+          "الإنزيم قابلا لتحفيز تفاعل جديد",
+          "الإنزيم يتحول دائما إلى ركيزة",
+          "ADN جديد"
+        ],
+        "correctIndex": 0,
+        "explanation": "الإنزيم محفز؛ يشارك في التفاعل لكنه لا يستهلك كركيزة."
+      }
+    },
+    {
+      "conceptCode": "ACTIVE_SITE_SPECIFICITY",
+      "unitCode": "ENZYMES",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "active-site-specificity",
+      "roadmapTitle": "الموقع الفعال",
+      "title": "الموقع الفعال: أين تحدث النوعية؟",
+      "summary": "ربط نوعية الإنزيم ببنية الموقع الفعال وتكامل الركيزة معه.",
+      "learningObjective": "يفسر الطالب اختصاص الإنزيم من خلال الموقع الفعال.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "active-site-fit",
+          "type": "INSPECT",
+          "eyebrow": "موقع",
+          "title": "كل ركيزة لا تناسب كل موقع",
+          "body": "الموقع الفعال جزء من البنية الفراغية للإنزيم. عندما تكون الركيزة مناسبة، يتشكل معقد إنزيم-ركيزة. إذا تغير الموقع، قد تنقص النوعية أو النشاط.",
+          "bullets": ["موقع فعال", "تكامل مع الركيزة", "اختصاص نوعي"],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "ركيزة مناسبة وأخرى غير مناسبة",
+            "description": "موقع فعال يستقبل ركيزة واحدة ويرفض أخرى.",
+            "prompt": "Arabic comparison diagram of enzyme active site accepting matching substrate and rejecting non-matching substrate.",
+            "altText": "موقع فعال يناسب ركيزة محددة."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "أي ركيزة سترتبط بالموقع الفعال؟",
+            "items": ["الشكل المكمل", "أي جزيء عشوائي"],
+            "answer": "الشكل المكمل"
+          },
+          "examLens": {
+            "bacSkill": "استنتاج النوعية من البنية",
+            "prompt": "عند مقارنة إنزيمين أو ركيزتين، اجعل الموقع الفعال مركز تفسيرك.",
+            "trap": "تفسير النوعية باسم الإنزيم فقط دون ذكر البنية."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "induced-fit",
+          "kind": "MECHANISM",
+          "title": "هل الموقع الفعال جامد تماما؟",
+          "summary": "توسيع اختياري عن فكرة التلاؤم المحرض دون جعلها عبئا على المسار الرئيسي.",
+          "body": "بعض النماذج تبرز أن ارتباط الركيزة قد يسبب تعدلا بسيطا في شكل الموقع الفعال. المهم في BAC هو بقاء العلاقة بين البنية والنوعية.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما سبب نوعية الإنزيم؟",
+        "options": [
+          "تكامل الركيزة مع الموقع الفعال",
+          "وجود الإنزيم في النواة فقط",
+          "استهلاك الإنزيم بعد كل تفاعل"
+        ],
+        "correctIndex": 0,
+        "explanation": "النوعية ترجع إلى ملاءمة الموقع الفعال للركيزة."
+      }
+    },
+    {
+      "conceptCode": "ENZYME_CONDITIONS",
+      "unitCode": "ENZYMES",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "enzyme-conditions",
+      "roadmapTitle": "شروط النشاط",
+      "title": "الحرارة و pH: لماذا للنشاط شروط مثلى؟",
+      "summary": "قراءة تأثير العوامل الفيزيائية والكيميائية على النشاط الإنزيمي.",
+      "learningObjective": "يفسر الطالب منحنيات النشاط بدلالة البنية الفراغية للموقع الفعال.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "optimum-curve",
+          "type": "INSPECT",
+          "eyebrow": "منحنى",
+          "title": "القمة ليست صدفة",
+          "body": "يزداد النشاط الإنزيمي مع الاقتراب من شروط مثلى، ثم ينخفض إذا اختلت البنية أو صار الموقع الفعال أقل ملاءمة. المنحنى إذن ترجمة وظيفية لاستقرار البنية.",
+          "bullets": [
+            "درجة حرارة مثلى",
+            "pH أمثل",
+            "تغير البنية عند الشروط القاسية"
+          ],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "منحنى النشاط حسب الشرط",
+            "description": "منحنى له قيمة مثلى ثم انخفاض واضح.",
+            "prompt": "Clean Arabic BAC-style graph of enzyme activity versus temperature or pH, with optimum point and denaturation zone labeled.",
+            "altText": "منحنى نشاط إنزيمي بقيمة مثلى."
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "حدد على المنحنى أين يكون النشاط أعظميا.",
+            "items": ["قبل القمة", "القمة", "بعد الانخفاض"],
+            "answer": "القمة"
+          },
+          "examLens": {
+            "bacSkill": "تحليل منحنى تجريبي",
+            "prompt": "صف المنحنى ثم فسره: ماذا يحدث للنشاط؟ ولماذا من ناحية البنية؟",
+            "trap": "الاكتفاء بقراءة القمة دون ربطها بالبنية الفراغية."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "لماذا ينخفض النشاط عند حرارة عالية جدا؟",
+        "options": [
+          "لأن البنية الفراغية والموقع الفعال قد يتأثران",
+          "لأن الإنزيم يتحول إلى ADN",
+          "لأن الركيزة تختفي دائما"
+        ],
+        "correctIndex": 0,
+        "explanation": "الشروط القاسية قد تغير البنية، فتضعف ملاءمة الموقع الفعال."
+      }
+    },
+    {
+      "conceptCode": "ENZYME_KINETICS",
+      "unitCode": "ENZYMES",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "enzyme-kinetics",
+      "roadmapTitle": "الحركية الإنزيمية",
+      "title": "سرعة التفاعل: كيف تقرأ تجربة إنزيمية؟",
+      "summary": "قراءة تغير كمية الركيزة أو الناتج مع الزمن وتفسير السرعة.",
+      "learningObjective": "يستخرج الطالب معنى السرعة من وثيقة تجريبية بسيطة.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "rate-from-graph",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "تجربة",
+          "title": "السرعة تظهر في ميل المنحنى",
+          "body": "إذا كانت كمية الناتج ترتفع بسرعة في البداية ثم تستقر، فهذا يعني أن التفاعل كان سريعا ثم تباطأ. تفسير ذلك قد يرتبط بنقص الركيزة أو بلوغ التفاعل مرحلة استقرار.",
+          "bullets": ["كمية الناتج", "الزمن", "الميل", "مرحلة الاستقرار"],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "كمية الناتج حسب الزمن",
+            "description": "منحنى يرتفع ثم يقترب من الاستقرار.",
+            "prompt": "Arabic experimental graph: product quantity versus time in an enzyme reaction, steep initial slope then plateau.",
+            "altText": "منحنى كمية الناتج بدلالة الزمن."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "أين تكون السرعة أكبر؟",
+            "items": [
+              "في البداية عندما يكون الميل كبيرا",
+              "عند الاستقرار النهائي"
+            ],
+            "answer": "في البداية عندما يكون الميل كبيرا"
+          },
+          "examLens": {
+            "bacSkill": "استخراج معنى بيولوجي من ميل منحنى",
+            "prompt": "لا تقرأ النقاط فقط؛ اقرأ ميل المنحنى لأنه يمثل سرعة التغير.",
+            "trap": "خلط كمية الناتج بالسرعة اللحظية."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "substrate-concentration",
+          "kind": "EXPERIMENT",
+          "title": "ماذا يحدث إذا زدنا تركيز الركيزة؟",
+          "summary": "تجربة اختيارية حول التشبع الإنزيمي.",
+          "body": "عند تركيزات منخفضة، زيادة الركيزة ترفع السرعة. لكن عندما تصبح معظم المواقع الفعالة مشغولة، تقترب السرعة من حد أعظمي.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "ما الذي يدل على سرعة أكبر في منحنى كمية الناتج حسب الزمن؟",
+        "options": ["ميل أكبر", "عنوان أطول", "لون مختلف فقط"],
+        "correctIndex": 0,
+        "explanation": "السرعة مرتبطة بميل المنحنى: كلما كان الميل أكبر كان التغير أسرع."
+      }
+    },
+    {
+      "conceptCode": "ENZYME_INHIBITION",
+      "unitCode": "ENZYMES",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "enzyme-inhibition",
+      "roadmapTitle": "تثبيط الإنزيم",
+      "title": "تثبيط الإنزيم: عندما يغلق الطريق",
+      "summary": "فهم كيف يمكن لجزيء مثبط أن يضعف النشاط الإنزيمي.",
+      "learningObjective": "يميز الطالب بين تفسير بنيوي وتفسير تجريبي لانخفاض النشاط.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "blocked-site",
+          "type": "EXPLAIN",
+          "eyebrow": "تثبيط",
+          "title": "الانخفاض له سبب بنيوي محتمل",
+          "body": "قد يرتبط مثبط بالموقع الفعال أو يغير شكل الإنزيم من موقع آخر، فتقل قدرة الركيزة على الارتباط. في الوثائق، المطلوب عادة تفسير انخفاض النشاط بدليل.",
+          "bullets": ["مثبط", "موقع فعال", "انخفاض تشكل المعقد"],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "نشاط عادي ونشاط مثبط",
+            "description": "مقارنة بين إنزيم يرتبط بالركيزة وآخر يمنعه مثبط.",
+            "prompt": "Arabic comparison diagram showing normal enzyme-substrate binding versus inhibited enzyme with blocked active site.",
+            "altText": "مثبط يمنع ارتباط الركيزة بالموقع الفعال."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف أثر كل حالة على النشاط.",
+            "items": ["دون مثبط", "مع مثبط", "مع ركيزة زائدة"],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "تفسير انخفاض النشاط بدليل",
+            "prompt": "لا تقل تثبيط فقط؛ اربط المثبط بالموقع أو بالبنية ثم بانخفاض المعقد أو الناتج.",
+            "trap": "وصف النتيجة دون آلية."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "كيف يمكن لمثبط أن يخفض النشاط؟",
+        "options": [
+          "بمنع أو إضعاف ارتباط الركيزة بالإنزيم",
+          "بزيادة عدد المورثات دائما",
+          "بتحويل الناتج إلى صبغي"
+        ],
+        "correctIndex": 0,
+        "explanation": "التثبيط يضعف تشكل المعقد أو فعاليته، فينخفض النشاط."
+      }
+    },
+    {
+      "conceptCode": "IMMUNITY_UNIT_INTRO",
+      "unitCode": "IMMUNITY",
+      "role": "UNIT_INTRO",
+      "quality": "SKELETON",
+      "slug": "immunity-unit-intro",
+      "roadmapTitle": "المناعة",
+      "title": "المناعة: عندما تصبح النوعية دفاعا",
+      "summary": "مدخل وحدة المناعة: من تمييز الذات واللاذات إلى الاستجابات النوعية والذاكرة.",
+      "learningObjective": "يرى الطالب المناعة كتطبيق واسع لفكرة التعرف النوعي البروتيني.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "unit-map",
+          "type": "HOOK",
+          "eyebrow": "مدخل الوحدة",
+          "title": "قبل الدفاع يوجد تعرف",
+          "body": "المناعة ليست هجوما عشوائيا. هناك واسمات، مستقبلات، أجسام مضادة، وخلايا تتعاون. سنبني الوحدة من سؤال بسيط: كيف يعرف الجسم ما يجب أن يتعامل معه؟",
+          "bullets": [
+            "ذات ولاذات",
+            "مولد ضد",
+            "أجسام مضادة",
+            "استجابة خلوية",
+            "ذاكرة"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "خريطة المناعة",
+            "description": "مسار من التعرف إلى الاستجابة ثم الذاكرة أو الاختلال.",
+            "prompt": "Arabic immunity unit map: self/non-self recognition, innate response, humoral response, cellular response, memory, HIV disruption.",
+            "altText": "خريطة وحدة المناعة من التعرف إلى الذاكرة."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف الأسئلة التي ستنظم الوحدة.",
+            "items": [
+              "من هو الغريب؟",
+              "من يتعرف؟",
+              "من ينفذ؟",
+              "ما الذي يبقى في الذاكرة؟"
+            ],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "تحديد نوع الاستجابة المناعية",
+            "prompt": "قبل الحل، حدد هل الوثيقة عن تعرف، استجابة لانوعية، خلطية، خلوية، أم ذاكرة.",
+            "trap": "ذكر الأجسام المضادة في كل وضعية مناعية حتى عندما تكون الاستجابة خلوية."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما السؤال المنظم لوحدة المناعة؟",
+        "options": [
+          "كيف يتعرف الجسم ثم يختار الاستجابة؟",
+          "كيف ينسخ الريبوزوم ADN؟",
+          "كيف تتغير دالة عددية؟"
+        ],
+        "correctIndex": 0,
+        "explanation": "المناعة تبدأ بالتعرف ثم اختيار وتنفيذ استجابة مناسبة."
+      }
+    },
+    {
+      "conceptCode": "IMMUNE_IDENTITY",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "immune-identity",
+      "roadmapTitle": "الذات واللاذات",
+      "title": "الذات واللاذات: بداية المنطق المناعي",
+      "summary": "فهم أن المناعة تبدأ بالتعرف على ما ينتمي للجسم وما لا ينتمي إليه.",
+      "learningObjective": "يفسر الطالب دور مولدات الضد والواسمات في التعرف المناعي.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "recognition-first",
+          "type": "HOOK",
+          "eyebrow": "تعرف",
+          "title": "قبل الهجوم، يجب أن يوجد تعرف",
+          "body": "الجهاز المناعي لا يبدأ بالاستجابة عشوائيا. هناك جزيئات سطحية وواسمات تسمح بتمييز الذات من اللاذات، ومولدات ضد يمكن أن تثير استجابة نوعية.",
+          "bullets": ["ذات", "لاذات", "مولد ضد", "مستقبل نوعي"],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "خلية ذاتية وجسم غريب",
+            "description": "مقارنة بين خلية تحمل واسمات ذاتية وجسم يحمل مولدات ضد.",
+            "prompt": "Arabic immune recognition comparison: self cell with self markers versus foreign particle with antigens, clean labels.",
+            "altText": "تمييز الذات من اللاذات بواسطة واسمات ومولدات ضد."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الذي يثير استجابة نوعية؟",
+            "items": ["مولد ضد", "أي ماء داخل الخلية"],
+            "answer": "مولد ضد"
+          },
+          "examLens": {
+            "bacSkill": "تحديد عنصر التعرف في وثيقة",
+            "prompt": "في وثائق المناعة، ابحث عن مولد الضد أو المستقبل أو الجسم المضاد قبل وصف الاستجابة.",
+            "trap": "البدء بالخلايا دون تحديد ما تعرفت عليه."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الفكرة الأولى في المناعة النوعية؟",
+        "options": ["التعرف على مولد ضد", "تركيب ARNm", "قياس pH فقط"],
+        "correctIndex": 0,
+        "explanation": "الاستجابة النوعية تبدأ بتعرف محدد على مولد ضد."
+      }
+    },
+    {
+      "conceptCode": "CMH_AND_SELF_MARKERS",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "cmh-and-self-markers",
+      "roadmapTitle": "CMH/HLA",
+      "title": "CMH/HLA: بطاقة هوية الخلايا",
+      "summary": "فهم دور واسمات الذات في التعرف المناعي وقبول أو رفض الخلايا.",
+      "learningObjective": "يفسر الطالب أن التعرف على الذات يعتمد على جزيئات سطحية مميزة.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "cell-id-card",
+          "type": "EXPLAIN",
+          "eyebrow": "هوية",
+          "title": "كل خلية تعرض بطاقة سطحية",
+          "body": "معقد التوافق النسيجي CMH/HLA يمثل جزءا مهما من هوية الخلية. هذه الواسمات تساعد الجهاز المناعي على التمييز بين ما ينتمي للجسم وما يجب التعامل معه بحذر.",
+          "bullets": ["واسمات سطحية", "تعرف الذات", "توافق أو رفض"],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "واسمات CMH على سطح الخلية",
+            "description": "خلية تحمل جزيئات سطحية تمثل هوية الذات.",
+            "prompt": "Arabic immunology diagram of cell membrane with CMH/HLA self markers displayed as identity tags.",
+            "altText": "خلية تحمل واسمات CMH على سطحها."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الدور الأقرب لـ CMH/HLA؟",
+            "items": [
+              "المساهمة في تعريف هوية الخلية",
+              "تحفيز تفاعل إنزيمي في المعدة"
+            ],
+            "answer": "المساهمة في تعريف هوية الخلية"
+          },
+          "examLens": {
+            "bacSkill": "تفسير القبول أو الرفض المناعي",
+            "prompt": "في وثائق الزرع أو التعرف، اربط النتيجة بتوافق أو اختلاف الواسمات.",
+            "trap": "اختزال التعرف المناعي في وجود جسم مضاد فقط."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الفكرة الأساسية المرتبطة بـ CMH/HLA؟",
+        "options": [
+          "واسمات تساعد في تعريف الذات",
+          "رامزات ARNm",
+          "رابطة ببتيدية فقط"
+        ],
+        "correctIndex": 0,
+        "explanation": "CMH/HLA جزء من هوية الخلايا ويساهم في تمييز الذات."
+      }
+    },
+    {
+      "conceptCode": "BLOOD_GROUPS_SEROLOGY",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "blood-groups-serology",
+      "roadmapTitle": "الزمر الدموية",
+      "title": "الزمر الدموية: تجربة تعرف مرئية",
+      "summary": "استعمال نظام ABO/Rh كحالة تطبيقية على مولدات الضد والأجسام المضادة والتراص.",
+      "learningObjective": "يفسر الطالب نتائج تجارب تحديد الزمرة الدموية بمنطق مولد ضد/جسم مضاد.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "agglutination-logic",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "مصلية",
+          "title": "التراص يعني تعرفا نوعيا",
+          "body": "عندما يحدث تراص بين كريات الدم ومصل معين، فهذا يدل على وجود مولد ضد مناسب على سطح الكريات وجسم مضاد مناسب في المصل. لذلك تحديد الزمرة ليس حفظ جدول فقط، بل قراءة نتائج تعرف.",
+          "bullets": ["مولد ضد A أو B", "مصل مضاد", "تراص", "استنتاج الزمرة"],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "نتائج أمصال Anti-A و Anti-B",
+            "description": "لوحة قطرات مصلية مع وجود أو غياب التراص.",
+            "prompt": "Arabic BAC-style blood typing panel showing Anti-A and Anti-B drops with agglutination/no agglutination outcomes.",
+            "altText": "تجربة تحديد زمرة دموية بواسطة التراص."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "إذا حدث تراص مع Anti-A فقط، ما الموجود على الكريات؟",
+            "items": ["مولد ضد A", "مولد ضد B فقط"],
+            "answer": "مولد ضد A"
+          },
+          "examLens": {
+            "bacSkill": "استنتاج الزمرة من تجربة",
+            "prompt": "اقرأ وجود التراص كدليل على تعرف جسم مضاد على مولد ضد.",
+            "trap": "حفظ جدول الزمر دون تفسير معنى التراص."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "rh-factor",
+          "kind": "EXAM_EXTENSION",
+          "title": "أين يدخل عامل الريزوس؟",
+          "summary": "امتداد اختياري يضيف Rh إلى منطق التراص نفسه.",
+          "body": "عامل Rh يقرأ بالمنطق نفسه: وجود مولد ضد مناسب يؤدي إلى تفاعل مع المصل الموافق. لذلك لا تتغير طريقة التفكير، بل يضاف مؤشر جديد.",
+          "estimatedMinutes": 3
+        }
+      ],
+      "quiz": {
+        "question": "ماذا يدل حدوث التراص في تجربة مصلية؟",
+        "options": [
+          "وجود تعرف نوعي بين جسم مضاد ومولد ضد",
+          "غياب كل مولدات الضد",
+          "ترجمة بروتين داخل الريبوزوم"
+        ],
+        "correctIndex": 0,
+        "explanation": "التراص علامة على ارتباط نوعي بين الجسم المضاد ومولد الضد المناسب."
+      }
+    },
+    {
+      "conceptCode": "INNATE_DEFENSE",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "innate-defense",
+      "roadmapTitle": "المناعة اللانوعية",
+      "title": "الاستجابة اللانوعية: خط الدفاع السريع",
+      "summary": "إدراك دور الحواجز والبلعمة والالتهاب كاستجابة سريعة غير نوعية.",
+      "learningObjective": "يميز الطالب بين الدفاع اللانوعي والاستجابة النوعية اللاحقة.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "fast-defense",
+          "type": "EXPLAIN",
+          "eyebrow": "دفاع",
+          "title": "سريع لأنه لا ينتظر تطابقا دقيقا",
+          "body": "الحواجز الطبيعية والبلعمة والالتهاب تعمل بسرعة ضد عناصر غريبة كثيرة. هذه الاستجابة مهمة لكنها لا تمنح وحدها النوعية الدقيقة ولا الذاكرة المناعية الخاصة.",
+          "bullets": ["حواجز", "التهاب", "بلعمة", "عرض مولد الضد لاحقا"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من دخول جسم غريب إلى بلعمة",
+            "description": "مراحل مبسطة لدخول جسم غريب ثم تدخل خلية بلعمية.",
+            "prompt": "Arabic sequence diagram of innate immune response: barrier breach, inflammation signals, phagocyte engulfing pathogen.",
+            "altText": "استجابة لانوعية تشمل الالتهاب والبلعمة."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب سيناريو دفاع سريع.",
+            "items": ["بلعمة", "اختراق حاجز", "التهاب موضعي"],
+            "answer": "اختراق حاجز -> التهاب موضعي -> بلعمة"
+          },
+          "examLens": {
+            "bacSkill": "تصنيف نوع الاستجابة",
+            "prompt": "اسأل هل الاستجابة تعتمد على تعرف نوعي وذاكرة، أم دفاع عام سريع؟",
+            "trap": "اعتبار كل دفاع مناعي استجابة نوعية."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "antigen-presentation-bridge",
+          "kind": "MECHANISM",
+          "title": "كيف تمهد البلعمة للاستجابة النوعية؟",
+          "summary": "جسر اختياري نحو عرض مولد الضد وتنشيط اللمفاويات.",
+          "body": "بعض الخلايا البلعمية لا تبتلع فقط، بل تعرض أجزاء من العنصر الغريب، وهذا يجعلها جسرا بين اللانوعي والنوعي.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما الذي يميز الدفاع اللانوعي؟",
+        "options": [
+          "سرعة واستجابة عامة",
+          "ذاكرة نوعية قوية منذ البداية",
+          "ترجمة بروتين في الريبوزوم"
+        ],
+        "correctIndex": 0,
+        "explanation": "الدفاع اللانوعي سريع وعام ولا يعتمد وحده على نوعية دقيقة."
+      }
+    },
+    {
+      "conceptCode": "HUMORAL_RESPONSE",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "humoral-response",
+      "roadmapTitle": "الاستجابة الخلطية",
+      "title": "الاستجابة الخلطية: الأجسام المضادة كأدوات تعرف",
+      "summary": "فهم دور اللمفاويات B والبلازميات والأجسام المضادة في تحييد مولدات الضد.",
+      "learningObjective": "يربط الطالب الجسم المضاد بنوعية التعرف وتشكيل المعقد المناعي.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "antibody-specificity",
+          "type": "INSPECT",
+          "eyebrow": "خلطية",
+          "title": "الجسم المضاد بروتين تعرف نوعي",
+          "body": "عند تنشيط لمفاوية B مناسبة، تتمايز إلى خلايا بلازمية تفرز أجساما مضادة. الجسم المضاد يرتبط نوعيا بمولد الضد، فيتشكل معقد مناعي يساعد على تحييده أو التخلص منه.",
+          "bullets": ["لمفاوية B", "خلية بلازمية", "جسم مضاد", "معقد مناعي"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من تنشيط B إلى المعقد المناعي",
+            "description": "تسلسل يوضح تنشيط لمفاوية B وإفراز أجسام مضادة ترتبط بمولد الضد.",
+            "prompt": "Premium Arabic immunology sequence: B lymphocyte activation, plasma cell secretion of antibodies, antibodies binding antigen to form immune complex.",
+            "altText": "لمفاوية B تنتج أجساما مضادة ترتبط بمولد ضد."
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق العنصر بدوره.",
+            "items": [
+              "بلازمية - إفراز أجسام مضادة",
+              "جسم مضاد - ارتباط نوعي",
+              "مولد ضد - هدف التعرف"
+            ],
+            "answer": "بلازمية - إفراز أجسام مضادة; جسم مضاد - ارتباط نوعي; مولد ضد - هدف التعرف"
+          },
+          "examLens": {
+            "bacSkill": "تفسير تجربة مصلية",
+            "prompt": "في تجربة ترسيب أو تراص، فسر النتيجة بتشكل معقد مناعي نوعي.",
+            "trap": "القول إن أي جسم مضاد يرتبط بأي مولد ضد."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما معنى نوعية الجسم المضاد؟",
+        "options": [
+          "يرتبط بمولد ضد مناسب له",
+          "يرتبط بكل الجزيئات بنفس القوة",
+          "ينسخ ADN"
+        ],
+        "correctIndex": 0,
+        "explanation": "الجسم المضاد يملك موقع ارتباط يناسب مولد ضد محددا."
+      }
+    },
+    {
+      "conceptCode": "CLONAL_SELECTION_AND_COOPERATION",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "clonal-selection-and-cooperation",
+      "roadmapTitle": "الانتقاء النسيلي",
+      "title": "الانتقاء النسيلي والتعاون المناعي",
+      "summary": "فهم كيف تنتقى الخلايا المناسبة وكيف تنسق LT4 الاستجابة النوعية.",
+      "learningObjective": "يفسر الطالب تضاعف اللمفاويات المناسبة وتمايزها ضمن استجابة منسقة.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "selected-clone",
+          "type": "EXPLAIN",
+          "eyebrow": "تنسيق",
+          "title": "ليست كل اللمفاويات تتحرك بنفس الطريقة",
+          "body": "مولد الضد ينتقي اللمفاويات التي تحمل مستقبلات مناسبة. هذه الخلايا تتكاثر وتتمايز، وتساعد LT4 على تنسيق الاستجابة عبر رسائل كيميائية. هكذا تصبح الاستجابة قوية ونوعية.",
+          "bullets": ["انتقاء", "تكاثر نسيلي", "تمايز", "تعاون LT4"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من التعرف إلى التمايز",
+            "description": "لمفاوية مناسبة تنتقى ثم تتكاثر وتتجه نحو خلايا فعالة وذاكرية.",
+            "prompt": "Arabic immunology sequence diagram: antigen selects matching lymphocyte clone, clonal expansion, differentiation into effector and memory cells, helper T cell coordination.",
+            "altText": "انتقاء نسيلي وتمايز لمفاويات مناسبة."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب منطق الانتقاء النسيلي.",
+            "items": ["تكاثر", "تعرف نوعي", "تمايز", "انتقاء الخلية المناسبة"],
+            "answer": "تعرف نوعي -> انتقاء الخلية المناسبة -> تكاثر -> تمايز"
+          },
+          "examLens": {
+            "bacSkill": "تفسير تضاعف خلايا مناعية",
+            "prompt": "عندما ترى ارتفاع عدد خلايا معينة، اربطه بالانتقاء والتكاثر النسيلي لا بزيادة عشوائية.",
+            "trap": "اعتبار كل اللمفاويات فعالة ضد كل مولدات الضد."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما معنى الانتقاء النسيلي؟",
+        "options": [
+          "اختيار وتكاثر اللمفاويات الموافقة لمولد الضد",
+          "تحول الريبوزوم إلى جسم مضاد",
+          "إلغاء كل خلايا الذاكرة"
+        ],
+        "correctIndex": 0,
+        "explanation": "الاستجابة النوعية تنتقي الخلايا المناسبة ثم تضخم عددها."
+      }
+    },
+    {
+      "conceptCode": "CELLULAR_RESPONSE",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "cellular-response",
+      "roadmapTitle": "الاستجابة الخلوية",
+      "title": "الاستجابة الخلوية: قتل الخلايا المصابة",
+      "summary": "فهم دور اللمفاويات T القاتلة في التخلص من خلايا تحمل دليلا على الإصابة.",
+      "learningObjective": "يميز الطالب بين تحييد مولد ضد حر والتخلص من خلية مصابة.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "infected-cell-target",
+          "type": "EXPLAIN",
+          "eyebrow": "خلوية",
+          "title": "أحيانا الهدف ليس الجسم الغريب وحده، بل الخلية المصابة",
+          "body": "عندما تعرض خلية مصابة محددات غريبة، يمكن للمفاويات T القاتلة أن تتعرف عليها وتؤدي إلى تخريبها. هذه استجابة خلوية لأنها تستهدف خلايا لا مولدات ضد حرة فقط.",
+          "bullets": [
+            "خلية مصابة",
+            "عرض محددات",
+            "LT قاتلة",
+            "تحلل الخلية الهدف"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "LT قاتلة وخلية هدف",
+            "description": "لمفاوية T قاتلة ترتبط بخلية مصابة وتبدأ تخريبها.",
+            "prompt": "Arabic immunology diagram of cytotoxic T lymphocyte recognizing infected target cell and inducing cell destruction.",
+            "altText": "لمفاوية T قاتلة تتعرف على خلية مصابة."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الهدف المباشر هنا؟",
+            "items": ["خلية مصابة", "ركيزة إنزيمية"],
+            "answer": "خلية مصابة"
+          },
+          "examLens": {
+            "bacSkill": "تمييز الخلطية من الخلوية",
+            "prompt": "ابحث عن الهدف: مولد ضد حر وأجسام مضادة، أم خلية مصابة وLT قاتلة؟",
+            "trap": "ذكر الأجسام المضادة في كل تمرين مناعة حتى عندما يكون الهدف خلية مصابة."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "helper-t-cells",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "أين تدخل LT المساعدة؟",
+          "summary": "توسيع اختياري عن التنسيق بين فروع الاستجابة النوعية.",
+          "body": "تساعد بعض اللمفاويات T على تنشيط وتنسيق خلايا أخرى عبر رسائل كيميائية. هذا يشرح لماذا الاستجابة النوعية شبكة وليست خطا واحدا فقط.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما الفرق العملي بين الخلطية والخلوية؟",
+        "options": [
+          "الخلطية تعتمد على أجسام مضادة ضد مولدات حرة، والخلوية تستهدف خلايا مصابة",
+          "كلاهما نفس الشيء دائما",
+          "الخلوية تعني تركيب البروتين"
+        ],
+        "correctIndex": 0,
+        "explanation": "التصنيف يعتمد على الوسيط والهدف: أجسام مضادة أو خلايا قاتلة."
+      }
+    },
+    {
+      "conceptCode": "IMMUNE_MEMORY_VACCINATION",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "immune-memory-vaccination",
+      "roadmapTitle": "الذاكرة والتلقيح",
+      "title": "الذاكرة المناعية والتلقيح",
+      "summary": "فهم لماذا تكون الاستجابة الثانوية أسرع وأقوى، وكيف يستغل التلقيح ذلك.",
+      "learningObjective": "يفسر الطالب منحنيات الاستجابة الأولية والثانوية وهدف التلقيح.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "secondary-response",
+          "type": "INSPECT",
+          "eyebrow": "ذاكرة",
+          "title": "الجسم يتعلم الاستجابة",
+          "body": "بعد التعرض الأول، تبقى خلايا ذاكرة. عند التعرض الثاني لنفس مولد الضد، تكون الاستجابة أسرع وأقوى. التلقيح يقدم للجسم تدريبا آمنا نسبيا على مولد ضد أو جزء منه.",
+          "bullets": [
+            "استجابة أولية",
+            "خلايا ذاكرة",
+            "استجابة ثانوية",
+            "تلقيح"
+          ],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "الأولية والثانوية",
+            "description": "منحنيان لكمية الأجسام المضادة بعد تعرض أول وثان.",
+            "prompt": "Arabic BAC-style graph comparing primary and secondary immune responses, antibody concentration versus time, secondary faster and higher.",
+            "altText": "منحنى استجابة أولية وثانوية للأجسام المضادة."
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "حدد المنحنى الذي يمثل الاستجابة الثانوية.",
+            "items": ["الأبطأ والأضعف", "الأسرع والأقوى"],
+            "answer": "الأسرع والأقوى"
+          },
+          "examLens": {
+            "bacSkill": "تحليل منحنيات مناعية",
+            "prompt": "قارن زمن الظهور والشدة والمدة، ثم اربط ذلك بوجود خلايا ذاكرة.",
+            "trap": "وصف الاستجابة بأنها أقوى دون تفسير الذاكرة."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "لماذا تكون الاستجابة الثانوية أسرع؟",
+        "options": [
+          "بسبب وجود خلايا ذاكرة",
+          "لأن ADN يغادر النواة",
+          "لأن الإنزيم يستهلك"
+        ],
+        "correctIndex": 0,
+        "explanation": "خلايا الذاكرة تجعل التعرف والتنشيط أسرع عند التعرض الثاني."
+      }
+    },
+    {
+      "conceptCode": "HIV_AND_IMMUNE_COLLAPSE",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "hiv-and-immune-collapse",
+      "roadmapTitle": "VIH والسيدا",
+      "title": "VIH والسيدا: عندما يضرب الفيروس المنسق",
+      "summary": "فهم لماذا يؤدي استهداف خلايا مناعية منسقة إلى فقدان تدريجي للمناعة المكتسبة.",
+      "learningObjective": "يربط الطالب إصابة LT4 بضعف الاستجابات الخلطية والخلوية.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "helper-target",
+          "type": "EXPLAIN",
+          "eyebrow": "اختلال",
+          "title": "المشكلة ليست في فيروس فقط، بل في الخلية التي يستهدفها",
+          "body": "عندما يستهدف VIH خلايا مهمة في تنسيق الاستجابة، مثل LT4، يضعف التعاون المناعي. مع الزمن يصبح الجسم أقل قدرة على بناء استجابات نوعية فعالة ضد عوامل ممرضة متعددة.",
+          "bullets": ["VIH", "LT4", "تعاون مناعي", "ضعف المناعة المكتسبة"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من إصابة LT4 إلى ضعف الاستجابة",
+            "description": "تسلسل يوضح انخفاض LT4 ثم اضطراب تنشيط B وT.",
+            "prompt": "Arabic immunology causal diagram: HIV targets helper T cells, helper T cell count decreases, humoral and cellular responses weaken.",
+            "altText": "VIH يخفض خلايا LT4 فيضعف التعاون المناعي."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب أثر VIH على المناعة المكتسبة.",
+            "items": ["ضعف التعاون", "استهداف LT4", "استجابات نوعية أضعف"],
+            "answer": "استهداف LT4 -> ضعف التعاون -> استجابات نوعية أضعف"
+          },
+          "examLens": {
+            "bacSkill": "تفسير مرض مناعي بآلية خلوية",
+            "prompt": "اربط انخفاض خلايا مناعية معينة بوظيفتها في التنسيق، ثم بالنتيجة على الاستجابة.",
+            "trap": "اختزال السيدا في وجود فيروس دون تفسير فقدان التنسيق المناعي."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "hiv-cycle-high-level",
+          "kind": "MECHANISM",
+          "title": "دورة VIH بشكل عالي المستوى",
+          "summary": "توسيع اختياري يضع دورة تكاثر الفيروس في خريطة بسيطة دون إغراق.",
+          "body": "يدخل الفيروس إلى خلايا مستهدفة، يستعمل آلياتها لإنتاج مكونات فيروسية، ثم تنتشر فيروسات جديدة. المهم في المسار الرئيسي هو أثر ذلك على خلايا التنسيق المناعي.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "لماذا يكون استهداف LT4 خطيرا؟",
+        "options": [
+          "لأنها تساهم في تنسيق الاستجابات النوعية",
+          "لأنها ركيزة إنزيمية فقط",
+          "لأنها رامزة توقف"
+        ],
+        "correctIndex": 0,
+        "explanation": "ضعف LT4 يضعف التعاون المناعي، فتتضرر الاستجابات النوعية."
+      }
+    },
+    {
+      "conceptCode": "IMMUNE_SYNTHESIS_BRIDGE",
+      "unitCode": "IMMUNITY",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "immune-synthesis-bridge",
+      "roadmapTitle": "بروتينات المناعة",
+      "title": "جسر المناعة مع البروتينات",
+      "summary": "تثبيت أن الأجسام المضادة والمستقبلات نفسها بروتينات تخضع لمنطق البنية والوظيفة.",
+      "learningObjective": "يربط الطالب المناعة بالخيط البروتيني العام لا كدرس منفصل.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "antibody-is-protein",
+          "type": "TAKEAWAY",
+          "eyebrow": "جسر",
+          "title": "الجسم المضاد ليس استثناء من القاعدة",
+          "body": "الجسم المضاد بروتين. نوعيته تعود إلى بنية موقع الارتباط، وموقع الارتباط يعود إلى ترتيب وبنية السلاسل. لذلك تعود الجملة الأصلية: معلومة، بنية، وظيفة.",
+          "bullets": ["جسم مضاد = بروتين", "موقع ارتباط", "تعرف نوعي"],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "موقع ارتباط الجسم المضاد",
+            "description": "جسم مضاد مع إبراز منطقتي الارتباط بمولد ضد مناسب.",
+            "prompt": "Arabic diagram of antibody protein with highlighted antigen-binding sites matching an antigen.",
+            "altText": "موقع ارتباط نوعي في جسم مضاد."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الذي يفسر نوعية الجسم المضاد؟",
+            "items": ["بنية موقع الارتباط", "لون الوثيقة"],
+            "answer": "بنية موقع الارتباط"
+          },
+          "examLens": {
+            "bacSkill": "ربط وحدات البرنامج ببعضها",
+            "prompt": "عندما ترى جسما مضادا، تذكر أنه مثال تطبيقي لعلاقة البنية بالوظيفة.",
+            "trap": "دراسة المناعة كأنها منفصلة عن البروتينات."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "لماذا نربط الجسم المضاد بوحدة البنية والوظيفة؟",
+        "options": [
+          "لأنه بروتين ذو موقع ارتباط نوعي",
+          "لأنه جذر تربيعي",
+          "لأنه لا يملك بنية"
+        ],
+        "correctIndex": 0,
+        "explanation": "الأجسام المضادة بروتينات، ونوعيتها مثال مباشر لعلاقة البنية بالوظيفة."
+      }
+    },
+    {
+      "conceptCode": "NERVOUS_COMMUNICATION_UNIT_INTRO",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "UNIT_INTRO",
+      "quality": "SKELETON",
+      "slug": "nervous-communication-unit-intro",
+      "roadmapTitle": "الاتصال العصبي",
+      "title": "الاتصال العصبي: البروتينات وهي تنقل الرسائل",
+      "summary": "مدخل وحدة الاتصال العصبي: من العصبون وكمون العمل إلى المشبك والمستقبلات والتعديل.",
+      "learningObjective": "يربط الطالب الاتصال العصبي بالبنية الغشائية والمستقبلات البروتينية.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "unit-map",
+          "type": "HOOK",
+          "eyebrow": "مدخل الوحدة",
+          "title": "الرسالة العصبية ليست سلكا فقط",
+          "body": "سنمشي من بنية العصبون إلى كمون العمل، ثم إلى المشبك حيث تتحول الرسالة إلى ناقل كيميائي يرتبط بمستقبلات نوعية. مرة أخرى، البروتينات في قلب الوظيفة.",
+          "bullets": ["عصبون", "كمون عمل", "مشبك", "ناقل كيميائي", "مستقبلات"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "خريطة الاتصال العصبي",
+            "description": "مسار من العصبون إلى كمون العمل ثم المشبك والاستجابة.",
+            "prompt": "Arabic nervous communication unit map: neuron structure, action potential, synapse, neurotransmitter, receptor, response.",
+            "altText": "خريطة وحدة الاتصال العصبي."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب المسار العام للرسالة العصبية.",
+            "items": ["مشبك", "عصبون", "كمون عمل", "مستقبلات بعد مشبكية"],
+            "answer": "عصبون -> كمون عمل -> مشبك -> مستقبلات بعد مشبكية"
+          },
+          "examLens": {
+            "bacSkill": "تحديد مرحلة الاتصال العصبي",
+            "prompt": "اسأل هل الوثيقة عن تسجيل كهربائي، بنية عصبون، نقل مشبكي، أم تأثير مادة؟",
+            "trap": "اعتبار الرسالة كهربائية في كل المراحل ونسيان المرحلة الكيميائية في المشبك."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الجسر بين الاتصال العصبي وفكرة البروتينات؟",
+        "options": [
+          "القنوات والمستقبلات بروتينات نوعية",
+          "كل الرسائل هي ADN",
+          "لا توجد بنية في العصبون"
+        ],
+        "correctIndex": 0,
+        "explanation": "القنوات والمستقبلات البروتينية تجعل الاتصال العصبي مثالا آخر على البنية والوظيفة."
+      }
+    },
+    {
+      "conceptCode": "NEURON_ORGANIZATION",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "neuron-organization",
+      "roadmapTitle": "العصبون",
+      "title": "العصبون: خلية مصممة للرسائل",
+      "summary": "تعرف البنية العامة للعصبون وعلاقتها بنقل الرسالة العصبية.",
+      "learningObjective": "يربط الطالب أجزاء العصبون باتجاه انتقال الرسالة.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "neuron-path",
+          "type": "INSPECT",
+          "eyebrow": "بنية",
+          "title": "الشكل يخدم الاتجاه",
+          "body": "العصبون يستقبل رسائل عبر زوائد، يدمجها في جسم خلوي، وينقلها على طول المحور نحو النهايات. هذا التنظيم البنيوي يجعل انتقال المعلومة موجها.",
+          "bullets": ["زوائد شجيرية", "جسم خلوي", "محور", "نهايات محورية"],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "اتجاه الرسالة في العصبون",
+            "description": "عصبون كامل مع سهم يبين اتجاه انتقال السيالة.",
+            "prompt": "Arabic clean neuron diagram with dendrites, cell body, axon, axon terminals, and arrows showing nerve impulse direction.",
+            "altText": "بنية عصبون واتجاه انتقال الرسالة."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب الطريق العام للرسالة داخل العصبون.",
+            "items": ["محور", "زوائد شجيرية", "نهايات محورية", "جسم خلوي"],
+            "answer": "زوائد شجيرية -> جسم خلوي -> محور -> نهايات محورية"
+          },
+          "examLens": {
+            "bacSkill": "قراءة مخطط عصبون",
+            "prompt": "حدد الاتجاه والأجزاء قبل تفسير التجربة أو التسجيل الكهربائي.",
+            "trap": "عكس اتجاه السيالة في المخطط."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الجزء الذي ينقل السيالة غالبا نحو النهايات المحورية؟",
+        "options": ["المحور", "الموقع الفعال", "الجسم المضاد"],
+        "correctIndex": 0,
+        "explanation": "المحور ينقل الرسالة نحو النهايات المحورية."
+      }
+    },
+    {
+      "conceptCode": "REFLEX_ARC",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "reflex-arc",
+      "roadmapTitle": "المنعكس العضلي",
+      "title": "المنعكس العضلي: مسار سريع ومنظم",
+      "summary": "قراءة قوس المنعكس كمسار حسي مركزي حركي يؤدي إلى استجابة عضلية.",
+      "learningObjective": "يرتب الطالب عناصر المنعكس ويفرق بين المستقبل والمركز والمنفذ.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "reflex-path",
+          "type": "INSPECT",
+          "eyebrow": "مسار",
+          "title": "الاستجابة السريعة لها طريق محدد",
+          "body": "في المنعكس العضلي، يستقبل مستقبل حسي التنبيه، تنتقل رسالة حسية إلى المركز العصبي، ثم تخرج رسالة حركية نحو العضلة المنفذة. هذا المسار يساعدك على قراءة الوثائق التجريبية.",
+          "bullets": [
+            "مستقبل حسي",
+            "عصب حسي",
+            "مركز عصبي",
+            "عصب حركي",
+            "عضلة منفذة"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "قوس المنعكس",
+            "description": "مخطط من المستقبل إلى المركز ثم العضلة.",
+            "prompt": "Arabic reflex arc diagram: sensory receptor, sensory neuron, spinal cord center, motor neuron, muscle effector.",
+            "altText": "قوس منعكس من مستقبل حسي إلى عضلة منفذة."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب عناصر قوس المنعكس.",
+            "items": ["عضلة", "مستقبل", "مركز عصبي", "عصب حسي", "عصب حركي"],
+            "answer": "مستقبل -> عصب حسي -> مركز عصبي -> عصب حركي -> عضلة"
+          },
+          "examLens": {
+            "bacSkill": "تحليل تجربة قطع أو تنبيه",
+            "prompt": "حدد أي جزء من القوس تغير أو قطع، ثم استنتج أثره على الرسالة أو الاستجابة.",
+            "trap": "خلط الطريق الحسي بالطريق الحركي."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما ترتيب المنعكس العضلي العام؟",
+        "options": [
+          "مستقبل -> مركز عصبي -> عضلة عبر رسائل حسية وحركية",
+          "عضلة -> جدول شفرة -> مورثة",
+          "إنزيم -> ركيزة -> جسم مضاد"
+        ],
+        "correctIndex": 0,
+        "explanation": "المنعكس مسار من استقبال التنبيه إلى معالجة مركزية ثم استجابة عضلية."
+      }
+    },
+    {
+      "conceptCode": "RESTING_AND_ACTION_POTENTIAL",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "resting-and-action-potential",
+      "roadmapTitle": "كمون العمل",
+      "title": "من كمون الراحة إلى كمون العمل",
+      "summary": "فهم أن الرسالة العصبية تتجسد كهربائيا بتغيرات في فرق الكمون الغشائي.",
+      "learningObjective": "يقرأ الطالب منحنى كمون العمل ويصف مراحله العامة.",
+      "estimatedMinutes": 8,
+      "steps": [
+        {
+          "id": "potential-curve",
+          "type": "INSPECT",
+          "eyebrow": "كهرباء",
+          "title": "الرسالة موجة تغير في الغشاء",
+          "body": "في الراحة يوجد فرق كمون بين داخل وخارج العصبون. عند التنبيه الكافي، يحدث كمون عمل: زوال استقطاب ثم عودة الاستقطاب. قراءة المنحنى أهم من حفظ الكلمات وحدها.",
+          "bullets": ["كمون راحة", "عتبة", "زوال استقطاب", "عودة استقطاب"],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "منحنى كمون العمل",
+            "description": "منحنى فرق الكمون مع العتبة والمراحل الأساسية.",
+            "prompt": "Arabic BAC-style graph of neuronal action potential with resting potential, threshold, depolarization, repolarization labeled.",
+            "altText": "منحنى كمون العمل ومراحله."
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "حدد مرحلة زوال الاستقطاب على المنحنى.",
+            "items": [
+              "الصعود السريع",
+              "العودة نحو الراحة",
+              "الخط الأفقي قبل التنبيه"
+            ],
+            "answer": "الصعود السريع"
+          },
+          "examLens": {
+            "bacSkill": "تحليل تسجيل كهربائي",
+            "prompt": "صف تغير فرق الكمون ثم اربطه بانتقال السيالة، ولا تخلط بين شدة المنبه وسعة كمون العمل.",
+            "trap": "اعتقاد أن كمون العمل يكبر تدريجيا مع كل زيادة في شدة المنبه."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "all-or-none",
+          "kind": "MECHANISM",
+          "title": "ما معنى قانون الكل أو لا شيء؟",
+          "summary": "توسيع اختياري حول العتبة وثبات سعة كمون العمل.",
+          "body": "عندما يبلغ التنبيه العتبة، يظهر كمون عمل كامل. زيادة الشدة لا تعني بالضرورة زيادة سعة الكمون المفرد، بل قد تؤثر في تواتر الرسائل.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "ما الذي يحدث عند زوال الاستقطاب؟",
+        "options": [
+          "يتغير فرق الكمون بسرعة نحو قيم أقل سلبية أو موجبة",
+          "يتوقف العصبون عن كل نشاط للأبد",
+          "يتكون جسم مضاد"
+        ],
+        "correctIndex": 0,
+        "explanation": "زوال الاستقطاب هو صعود سريع في فرق الكمون الغشائي أثناء كمون العمل."
+      }
+    },
+    {
+      "conceptCode": "IONIC_BASIS_OF_POTENTIALS",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "ionic-basis-of-potentials",
+      "roadmapTitle": "القنوات والشوارد",
+      "title": "الأيونات والقنوات: من أين يأتي فرق الكمون؟",
+      "summary": "ربط كمون الراحة والعمل بتوزع الشوارد وقنوات الغشاء ومضخة Na+/K+.",
+      "learningObjective": "يفسر الطالب أن الرسالة الكهربائية تعتمد على بروتينات غشائية وتوزع شاردي.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "ions-and-proteins",
+          "type": "EXPLAIN",
+          "eyebrow": "شواهد",
+          "title": "الكهرباء هنا بيولوجيا غشائية",
+          "body": "فرق الكمون لا يظهر من فراغ. توزع Na+ و K+، قنوات التسرب، والقنوات الفولتية ومضخة Na+/K+ كلها عناصر غشائية تجعل العصبون قابلا لتوليد رسالة كهربائية.",
+          "bullets": [
+            "توزع Na+ و K+",
+            "قنوات غشائية",
+            "مضخة Na+/K+",
+            "بروتينات ناقلة"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "الغشاء كمسرح للشوارد",
+            "description": "غشاء عصبون مع قنوات ومضخة وتوزع Na+/K+.",
+            "prompt": "Arabic neuronal membrane diagram showing Na+ and K+ distribution, leak channels, voltage-gated channels, Na+/K+ pump.",
+            "altText": "غشاء عصبون مع قنوات شاردية ومضخة Na/K."
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق العنصر بدوره العام.",
+            "items": [
+              "قناة - مرور شاردة",
+              "مضخة - حفظ تدرج",
+              "غشاء - فصل الوسطين"
+            ],
+            "answer": "قناة - مرور شاردة; مضخة - حفظ تدرج; غشاء - فصل الوسطين"
+          },
+          "examLens": {
+            "bacSkill": "ربط التسجيل الكهربائي بآلية غشائية",
+            "prompt": "إذا ظهرت وثيقة عن شوارد أو قنوات، اربطها بتغير فرق الكمون لا بوصف الأرقام فقط.",
+            "trap": "دراسة كمون العمل كمنحنى فقط دون أساس شاردي."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "channel-proteins-are-proteins",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "القنوات نفسها بروتينات",
+          "summary": "جسر اختياري يعيد الاتصال العصبي إلى فكرة البنية والوظيفة.",
+          "body": "القناة الغشائية بروتين له بنية تسمح بمرور شاردة معينة في شروط معينة. هذا مثال جديد على النوعية البروتينية.",
+          "estimatedMinutes": 3
+        }
+      ],
+      "quiz": {
+        "question": "ما العنصر البروتيني المهم في توليد الرسالة العصبية؟",
+        "options": [
+          "القنوات والمضخات الغشائية",
+          "الأجسام المضادة فقط",
+          "الرابطة الببتيدية وحدها"
+        ],
+        "correctIndex": 0,
+        "explanation": "القنوات والمضخات بروتينات غشائية تتحكم في التوزع الشاردي وفرق الكمون."
+      }
+    },
+    {
+      "conceptCode": "SYNAPTIC_TRANSMISSION",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "synaptic-transmission",
+      "roadmapTitle": "النقل المشبكي",
+      "title": "المشبك: حين تتحول الرسالة الكهربائية إلى كيميائية",
+      "summary": "فهم انتقال الرسالة عبر المشبك بواسطة ناقل كيميائي ومستقبلات نوعية.",
+      "learningObjective": "يفسر الطالب مراحل النقل المشبكي ودور المستقبلات البروتينية.",
+      "estimatedMinutes": 8,
+      "steps": [
+        {
+          "id": "synapse-sequence",
+          "type": "INSPECT",
+          "eyebrow": "مشبك",
+          "title": "الفراغ لا يمنع الرسالة، بل يغير شكلها",
+          "body": "تصل السيالة إلى النهاية قبل المشبكية، فتحرر حويصلات ناقلا كيميائيا في الشق المشبكي. يرتبط الناقل بمستقبلات بعد مشبكية نوعية، فتتولد رسالة جديدة في الخلية التالية.",
+          "bullets": [
+            "نهاية قبل مشبكية",
+            "حويصلات",
+            "ناقل كيميائي",
+            "مستقبلات",
+            "خلية بعد مشبكية"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "مراحل النقل المشبكي",
+            "description": "تسلسل من وصول السيالة إلى ارتباط الناقل بالمستقبل.",
+            "prompt": "Premium Arabic synapse sequence diagram: action potential arrival, vesicle fusion, neurotransmitter release, receptor binding, postsynaptic response.",
+            "altText": "ناقل كيميائي يعبر الشق المشبكي ويرتبط بمستقبلات."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب مراحل النقل المشبكي.",
+            "items": [
+              "ارتباط بالمستقبل",
+              "وصول السيالة",
+              "تحرر الناقل",
+              "استجابة بعد مشبكية"
+            ],
+            "answer": "وصول السيالة -> تحرر الناقل -> ارتباط بالمستقبل -> استجابة بعد مشبكية"
+          },
+          "examLens": {
+            "bacSkill": "تفسير مخطط مشبكي",
+            "prompt": "اربط كل سهم في المخطط بمرحلة: كهربائية، كيميائية، ثم كهربائية أو استجابة خلوية.",
+            "trap": "نسيان دور المستقبلات النوعية في الجهة بعد المشبكية."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الذي يضمن نوعية تأثير الناقل الكيميائي؟",
+        "options": [
+          "ارتباطه بمستقبلات مناسبة",
+          "خروجه من النواة",
+          "تحوله إلى ركيزة إنزيمية دائما"
+        ],
+        "correctIndex": 0,
+        "explanation": "الناقل يؤثر عندما يرتبط بمستقبلات نوعية على الخلية بعد المشبكية."
+      }
+    },
+    {
+      "conceptCode": "CALCIUM_AND_TRANSMITTER_RELEASE",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "calcium-and-transmitter-release",
+      "roadmapTitle": "دور الكالسيوم",
+      "title": "دور Ca2+: الشرارة التي تطلق الناقل",
+      "summary": "فهم كيف يرتبط دخول الكالسيوم بتحرر الحويصلات قبل المشبكية.",
+      "learningObjective": "يفسر الطالب أثر منع Ca2+ أو تغييره على النقل المشبكي.",
+      "estimatedMinutes": 5,
+      "steps": [
+        {
+          "id": "calcium-trigger",
+          "type": "EXPLAIN",
+          "eyebrow": "شرارة",
+          "title": "لا يكفي وصول السيالة، يجب أن تتحرر الحويصلات",
+          "body": "وصول كمون العمل إلى النهاية قبل المشبكية يفتح قنوات تسمح بدخول Ca2+. هذا الدخول يساعد على اندماج الحويصلات بالغشاء وتحرير الناقل الكيميائي.",
+          "bullets": [
+            "وصول كمون العمل",
+            "دخول Ca2+",
+            "اندماج حويصلات",
+            "تحرر الناقل"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "Ca2+ وتحرير الناقل",
+            "description": "مراحل من فتح قنوات الكالسيوم إلى طرح الناقل في الشق.",
+            "prompt": "Arabic synaptic terminal sequence showing action potential opens calcium channels, Ca2+ enters, vesicles fuse, neurotransmitter released.",
+            "altText": "دخول Ca2+ يؤدي إلى تحرير الناقل الكيميائي."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب دور Ca2+ في التحرير المشبكي.",
+            "items": [
+              "تحرر الناقل",
+              "دخول Ca2+",
+              "وصول كمون العمل",
+              "اندماج الحويصلات"
+            ],
+            "answer": "وصول كمون العمل -> دخول Ca2+ -> اندماج الحويصلات -> تحرر الناقل"
+          },
+          "examLens": {
+            "bacSkill": "تفسير تجربة منع الكالسيوم",
+            "prompt": "إذا غاب Ca2+ أو منعت قنواته، توقع نقص تحرير الناقل ثم ضعف الاستجابة بعد المشبكية.",
+            "trap": "نسيان مرحلة تحرير الناقل والتركيز على المستقبلات فقط."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما أثر منع دخول Ca2+ في النهاية قبل المشبكية؟",
+        "options": [
+          "ينقص تحرير الناقل الكيميائي",
+          "يزيد نسخ ADN",
+          "يلغي كل أحماض أمينية"
+        ],
+        "correctIndex": 0,
+        "explanation": "دخول Ca2+ ضروري لاندماج الحويصلات وتحرير الناقل."
+      }
+    },
+    {
+      "conceptCode": "NEUROMUSCULAR_JUNCTION",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "neuromuscular-junction",
+      "roadmapTitle": "اللوحة المحركة",
+      "title": "المشبك العصبي العضلي: من رسالة إلى حركة",
+      "summary": "ربط الرسالة العصبية بتقلص العضلة عبر مشبك متخصص.",
+      "learningObjective": "يفسر الطالب كيف يؤدي النقل المشبكي إلى استجابة عضلية.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "message-to-contraction",
+          "type": "EXPLAIN",
+          "eyebrow": "حركة",
+          "title": "العضلة لا تسمع الكهرباء مباشرة",
+          "body": "في اللوحة المحركة، تصل رسالة عصبية إلى النهاية المحورية، يتحرر ناقل كيميائي، يرتبط بمستقبلات على الليف العضلي، ثم تبدأ سلسلة تؤدي إلى تقلص. هنا تظهر مرة أخرى بروتينات مستقبلية ونوعية ارتباط.",
+          "bullets": [
+            "نهاية عصبية",
+            "ناقل كيميائي",
+            "مستقبل عضلي",
+            "استجابة تقلصية"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "اللوحة المحركة",
+            "description": "مشبك بين عصبون حركي وليف عضلي مع مستقبلات واضحة.",
+            "prompt": "Arabic neuromuscular junction diagram: motor neuron terminal, neurotransmitter release, receptors on muscle fiber, contraction response.",
+            "altText": "مشبك عصبي عضلي يربط رسالة عصبية بتقلص."
+          },
+          "interaction": {
+            "kind": "TAP_REVEAL",
+            "prompt": "اكشف الطريق من الرسالة إلى الحركة.",
+            "items": ["سيالة عصبية", "ناقل كيميائي", "مستقبل عضلي", "تقلص"],
+            "answer": null
+          },
+          "examLens": {
+            "bacSkill": "ربط الاتصال العصبي بالاستجابة العضلية",
+            "prompt": "في وثائق العضلة، لا تنس مرحلة المشبك والمستقبلات قبل الحديث عن التقلص.",
+            "trap": "اعتبار السيالة الكهربائية تعبر الشق المشبكي كما هي."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "acetylcholine-breakdown",
+          "kind": "MECHANISM",
+          "title": "لماذا يجب إنهاء رسالة الناقل؟",
+          "summary": "توسيع اختياري عن تفكيك الناقل أو إزالته لإنهاء التأثير.",
+          "body": "إذا بقي الناقل مرتبطا بالمستقبلات، قد تستمر الاستجابة أو تختل. لذلك توجد آليات لإزالة الناقل أو تفكيكه بعد أداء دوره.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما الجسر بين العصبون والعضلة في اللوحة المحركة؟",
+        "options": [
+          "ناقل كيميائي يرتبط بمستقبلات عضلية",
+          "جدول الشفرة الوراثية",
+          "مولد ضد فقط"
+        ],
+        "correctIndex": 0,
+        "explanation": "النقل عبر المشبك يعتمد على ناقل كيميائي ومواقع استقبال نوعية."
+      }
+    },
+    {
+      "conceptCode": "INHIBITORY_SYNAPSE_AND_INTEGRATION",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "inhibitory-synapse-and-integration",
+      "roadmapTitle": "الإدماج العصبي",
+      "title": "المشابك المثبطة والإدماج العصبي",
+      "summary": "فهم أن العصبون يوازن رسائل منبهة ومثبطة قبل توليد استجابة.",
+      "learningObjective": "يفسر الطالب كيف تحدد محصلة الرسائل احتمال توليد كمون عمل.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "sum-of-signals",
+          "type": "EXPLAIN",
+          "eyebrow": "إدماج",
+          "title": "العصبون لا يستجيب لكل رسالة وحدها",
+          "body": "قد تصل رسائل منبهة ورسائل مثبطة إلى نفس العصبون. المحصلة عند منطقة الإدماج تحدد هل تبلغ العتبة أم لا. لذلك يمكن لمشبك مثبط مثل مشابك GABA أن يقلل احتمال توليد كمون عمل.",
+          "bullets": ["رسالة منبهة", "رسالة مثبطة", "عتبة", "إدماج عصبي"],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "محصلة رسائل منبهة ومثبطة",
+            "description": "رسم يبين جمع تأثيرات مشبكية مقارنة بالعتبة.",
+            "prompt": "Arabic neural integration diagram showing excitatory and inhibitory postsynaptic potentials summing toward or away from threshold.",
+            "altText": "إدماج رسائل منبهة ومثبطة قرب العتبة."
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "إذا زادت الرسائل المثبطة، ماذا يحدث غالبا؟",
+            "items": ["ينقص احتمال بلوغ العتبة", "يزداد تركيب الأجسام المضادة"],
+            "answer": "ينقص احتمال بلوغ العتبة"
+          },
+          "examLens": {
+            "bacSkill": "تحليل محصلة مشبكية",
+            "prompt": "قارن الإشارات المنبهة والمثبطة، ثم استنتج هل تبلغ المحصلة العتبة.",
+            "trap": "اعتبار كل ناقل كيميائي منبها دائما."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "gaba-inhibition",
+          "kind": "MECHANISM",
+          "title": "كيف نفهم GABA كناقل مثبط؟",
+          "summary": "توسيع اختياري يربط GABA بتقليل قابلية توليد كمون عمل.",
+          "body": "المهم في المسار الرئيسي هو النتيجة الوظيفية: ارتباط ناقل مثبط بمستقبلاته يجعل الخلية بعد المشبكية أبعد عن العتبة.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما معنى الإدماج العصبي؟",
+        "options": [
+          "جمع تأثيرات مشبكية لتحديد بلوغ العتبة",
+          "ترتيب رامزات ARNm",
+          "تخثر الدم فقط"
+        ],
+        "correctIndex": 0,
+        "explanation": "الإدماج هو محصلة الرسائل المنبهة والمثبطة على العصبون."
+      }
+    },
+    {
+      "conceptCode": "NEURAL_MODULATORS_AND_DRUGS",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "neural-modulators-and-drugs",
+      "roadmapTitle": "المؤثرات الخارجية",
+      "title": "المؤثرات الخارجية: كيف تتدخل في المشبك؟",
+      "summary": "فهم أن بعض المواد تغير الاتصال العصبي بالتأثير على الناقلات أو المستقبلات أو الإنزيمات.",
+      "learningObjective": "يفسر الطالب أثر مادة خارجية على مرحلة محددة من النقل المشبكي.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "where-drug-acts",
+          "type": "EXAM_LENS",
+          "eyebrow": "تدخل",
+          "title": "اسأل دائما: أين تدخلت المادة؟",
+          "body": "يمكن لمادة خارجية أن تمنع تحرير الناقل، أو تقلد الناقل، أو تغلق المستقبل، أو تمنع تفكيك الناقل. السؤال الذكي ليس هل أثرت؟ بل في أي مرحلة أثرت؟",
+          "bullets": [
+            "تحرير الناقل",
+            "الارتباط بالمستقبل",
+            "تفكيك الناقل",
+            "استجابة بعد مشبكية"
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "نقاط تدخل في المشبك",
+            "description": "مخطط مشبكي مع علامات على مراحل يمكن لمادة أن تؤثر فيها.",
+            "prompt": "Arabic synapse diagram with highlighted intervention points: neurotransmitter release, receptor binding, neurotransmitter breakdown, reuptake.",
+            "altText": "نقاط تدخل مواد خارجية في النقل المشبكي."
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق أثر المادة بمكان التدخل.",
+            "items": [
+              "تمنع التحرير - النهاية قبل المشبكية",
+              "تغلق المستقبل - الغشاء بعد المشبكي",
+              "تمنع التفكيك - الشق المشبكي"
+            ],
+            "answer": "تمنع التحرير - النهاية قبل المشبكية; تغلق المستقبل - الغشاء بعد المشبكي; تمنع التفكيك - الشق المشبكي"
+          },
+          "examLens": {
+            "bacSkill": "تحديد موقع تأثير مادة من وثائق",
+            "prompt": "اربط نتيجة التجربة بمرحلة النقل المشبكي المتأثرة، ثم استنتج الأثر على الاستجابة.",
+            "trap": "ذكر أن المادة تؤثر على الجهاز العصبي دون تحديد المرحلة."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما السؤال الأول عند دراسة أثر مادة على المشبك؟",
+        "options": [
+          "في أي مرحلة من النقل المشبكي تدخلت؟",
+          "ما لون المادة؟",
+          "هل تغيرت الشفرة الوراثية دائما؟"
+        ],
+        "correctIndex": 0,
+        "explanation": "تحديد مرحلة التدخل هو مفتاح تفسير أثر المادة."
+      }
+    },
+    {
+      "conceptCode": "PAIN_MORPHINE_AND_ADDICTION",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "LESSON",
+      "quality": "SKELETON",
+      "slug": "pain-morphine-and-addiction",
+      "roadmapTitle": "الألم والمورفين",
+      "title": "الألم والمورفين: تطبيق على تعديل الاتصال العصبي",
+      "summary": "استخدام مسار الألم والمورفين كحالة تطبيقية على المستقبلات، التثبيط، والتكيف العصبي.",
+      "learningObjective": "يفسر الطالب أثر المورفين على مسار الألم دون تحويل الدرس إلى معلومات صحية عامة.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "morphine-receptor-effect",
+          "type": "EXAM_LENS",
+          "eyebrow": "تطبيق",
+          "title": "المادة تؤثر لأنها تجد مستقبلا",
+          "body": "يمكن للمورفين أن يؤثر في مسارات الألم لأنه يرتبط بمستقبلات نوعية ويعدل النقل المشبكي. عند الاستعمال المتكرر، تتغير حساسية النظام وقد يظهر اعتماد. الفكرة الدراسية: مادة، مستقبل، تعديل رسالة، أثر وظيفي.",
+          "bullets": ["مسار ألم", "مستقبل نوعي", "تعديل مشبكي", "اعتماد محتمل"],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من مستقبل إلى أثر",
+            "description": "مسار مبسط يبين ارتباط مادة بمستقبل وتغير نقل رسالة الألم.",
+            "prompt": "Arabic educational sequence: morphine-like molecule binds receptor in pain pathway, synaptic transmission changes, pain signal decreases, adaptation with repeated exposure.",
+            "altText": "مادة ترتبط بمستقبل فتعدل رسالة الألم."
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب تفسير أثر المورفين.",
+            "items": [
+              "أثر على الألم",
+              "ارتباط بمستقبل",
+              "تعديل النقل المشبكي",
+              "وجود مادة"
+            ],
+            "answer": "وجود مادة -> ارتباط بمستقبل -> تعديل النقل المشبكي -> أثر على الألم"
+          },
+          "examLens": {
+            "bacSkill": "تفسير أثر مادة على مسار عصبي",
+            "prompt": "اجعل الجواب آليا: أين ترتبط المادة؟ أي مرحلة تتغير؟ ما الأثر على الرسالة؟",
+            "trap": "تحويل الجواب إلى نص عام عن الإدمان دون تحليل الوثيقة."
+          }
+        }
+      ],
+      "depthPortals": [],
+      "quiz": {
+        "question": "ما الخيط السببي الأقوى لتفسير أثر المورفين؟",
+        "options": [
+          "مادة -> مستقبل -> تعديل مشبكي -> أثر وظيفي",
+          "مادة -> جدول شفرة -> زمرة دموية",
+          "مادة -> انعدام كل بروتين"
+        ],
+        "correctIndex": 0,
+        "explanation": "التفسير البيولوجي يحدد المستقبل والمرحلة المشبكية ثم الأثر."
+      }
+    },
+    {
+      "conceptCode": "PROTEIN_FIELD_SYNTHESIS",
+      "unitCode": "NERVOUS_COMMUNICATION",
+      "role": "FIELD_SYNTHESIS",
+      "quality": "SKELETON",
+      "slug": "protein-field-synthesis",
+      "roadmapTitle": "خلاصة المجال",
+      "title": "الخلاصة الكبرى: البروتينات كلغة للوظيفة",
+      "summary": "إغلاق المجال بربط كل الوحدات بخيط واحد: معلومة، بنية، نوعية، وظيفة.",
+      "learningObjective": "يبني الطالب خريطة ذهنية موحدة للمجال كله استعدادا لتمارين التركيب.",
+      "estimatedMinutes": 6,
+      "steps": [
+        {
+          "id": "field-one-map",
+          "type": "TAKEAWAY",
+          "eyebrow": "تركيب",
+          "title": "كل الوحدات كانت تقول الشيء نفسه بطرق مختلفة",
+          "body": "في التركيب درسنا كيف تصنع السلسلة. في البنية رأينا كيف يصنع الشكل الوظيفة. في الإنزيمات والمناعة والعصبون رأينا أمثلة عملية للنوعية: موقع فعال، موقع ارتباط، مستقبل. عندما تفهم هذا الخيط، تصبح الوثائق أقل تشتتا.",
+          "bullets": [
+            "تركيب البروتين",
+            "بنية ووظيفة",
+            "إنزيمات",
+            "مناعة",
+            "اتصال عصبي"
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "الخيط الواحد عبر المجال",
+            "description": "خريطة تجمع الموقع الفعال والجسم المضاد والمستقبل المشبكي تحت فكرة النوعية البروتينية.",
+            "prompt": "Premium Arabic concept map linking protein synthesis, structure-function, enzyme active site, antibody binding, and synaptic receptor under one central idea: protein specificity enables function.",
+            "altText": "خريطة تربط وحدات مجال البروتينات بفكرة النوعية والوظيفة."
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق المثال بفكرة النوعية.",
+            "items": ["إنزيم - موقع فعال", "مناعة - جسم مضاد", "مشبك - مستقبل"],
+            "answer": "إنزيم - موقع فعال; مناعة - جسم مضاد; مشبك - مستقبل"
+          },
+          "examLens": {
+            "bacSkill": "حل سؤال تركيبي عابر للوحدات",
+            "prompt": "إذا جمع السؤال بين سلاسل وبنية ووظيفة، ابن الجواب على الخيط المركزي بدل معالجة كل وثيقة وحدها.",
+            "trap": "حل كل وثيقة في عزلة ونسيان الاستنتاج التركيبي النهائي."
+          }
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "field-one-exam-strategy",
+          "kind": "EXAM_EXTENSION",
+          "title": "استراتيجية سؤال تركيبي في مجال البروتينات",
+          "summary": "خطة اختيارية لتحويل الوثائق المتعددة إلى جواب واحد متماسك.",
+          "body": "ابدأ بتسمية الظاهرة في كل وثيقة، ثم اربطها بخيط المعلومة والبنية والوظيفة، ثم اكتب الاستنتاج النهائي بلغة سببية حذرة.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "ما الفكرة التي تربط الإنزيم والجسم المضاد والمستقبل المشبكي؟",
+        "options": [
+          "النوعية الناتجة عن بنية بروتينية مناسبة",
+          "كلها سلاسل ADN",
+          "كلها لا تحتاج إلى بنية"
+        ],
+        "correctIndex": 0,
+        "explanation": "هذه أمثلة مختلفة لبروتينات تؤدي وظائفها بفضل بنية وموقع نوعي."
+      }
+    }
+  ]
+}

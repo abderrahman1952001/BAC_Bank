@@ -120,13 +120,12 @@ describe('Billing routes (e2e)', () => {
       ],
     }).compile();
 
-    app =
-      moduleFixture.createNestApplication<NestFastifyApplication>(
-        createApiAdapter(),
-        {
-          rawBody: true,
-        },
-      );
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(
+      createApiAdapter(),
+      {
+        rawBody: true,
+      },
+    );
     await configureApiApp(app);
     await app.init();
     await app.getHttpAdapter().getInstance().ready();
@@ -181,7 +180,9 @@ describe('Billing routes (e2e)', () => {
 
   it(`/${API_GLOBAL_PREFIX}/billing/checkouts/:id/sync refreshes the current checkout`, async () => {
     const response = await request(app.getHttpServer())
-      .post(`/${API_GLOBAL_PREFIX}/billing/checkouts/11111111-1111-1111-1111-111111111111/sync`)
+      .post(
+        `/${API_GLOBAL_PREFIX}/billing/checkouts/11111111-1111-1111-1111-111111111111/sync`,
+      )
       .set('Authorization', 'Bearer test-token')
       .expect(200);
 

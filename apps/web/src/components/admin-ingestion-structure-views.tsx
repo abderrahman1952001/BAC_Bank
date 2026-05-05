@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import { StudyHierarchyBlockView } from "@/components/study-content";
+import { Button } from "@/components/ui/button";
 import {
   buildPreviewBlocks,
   type DraftAsset,
@@ -76,8 +77,10 @@ function AdminIngestionHierarchyTreeNode({
           onFocusNode(node.id);
         }}
       >
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon-xs"
           className="tree-collapse-btn"
           onClick={(event) => {
             event.stopPropagation();
@@ -85,7 +88,7 @@ function AdminIngestionHierarchyTreeNode({
           }}
         >
           {children.length ? (isCollapsed ? "+" : "−") : "·"}
-        </button>
+        </Button>
         <span className="ingestion-tree-copy">
           <strong>{node.label ?? node.nodeType}</strong>
           <small>
@@ -129,8 +132,9 @@ function AdminIngestionPreviewInsertControl({
   return (
     <div className="ingestion-preview-insert">
       <span className="ingestion-preview-insert-line" aria-hidden="true" />
-      <button
+      <Button
         type="button"
+        variant="outline"
         className="ingestion-preview-insert-button"
         aria-label={label}
         onClick={(event) => {
@@ -140,7 +144,7 @@ function AdminIngestionPreviewInsertControl({
       >
         <span aria-hidden="true">+</span>
         <span>{label}</span>
-      </button>
+      </Button>
       <span className="ingestion-preview-insert-line" aria-hidden="true" />
     </div>
   );
@@ -158,7 +162,6 @@ export function AdminIngestionRenderedPreview({
   onSelectNode,
   onSelectBlock,
   onInsertBlock,
-  onFocusSnippetTools,
   onFocusNativeTools,
   onOpenAssetToolPanel,
 }: {
@@ -173,8 +176,11 @@ export function AdminIngestionRenderedPreview({
   onSelectNode: (nodeId: string) => void;
   onSelectBlock: (nodeId: string, blockId: string) => void;
   onInsertBlock: (nodeId: string, insertIndex: number) => void;
-  onFocusSnippetTools: (nodeId: string, blockId: string) => void;
-  onFocusNativeTools: (nodeId: string, blockId: string, assetId: string) => void;
+  onFocusNativeTools: (
+    nodeId: string,
+    blockId: string,
+    assetId: string,
+  ) => void;
   onOpenAssetToolPanel: (
     nodeId: string,
     blockId: string,
@@ -196,7 +202,6 @@ export function AdminIngestionRenderedPreview({
       onSelectNode={onSelectNode}
       onSelectBlock={onSelectBlock}
       onInsertBlock={onInsertBlock}
-      onFocusSnippetTools={onFocusSnippetTools}
       onFocusNativeTools={onFocusNativeTools}
       onOpenAssetToolPanel={onOpenAssetToolPanel}
     />
@@ -215,7 +220,6 @@ function AdminIngestionRenderedPreviewNode({
   onSelectNode,
   onSelectBlock,
   onInsertBlock,
-  onFocusSnippetTools,
   onFocusNativeTools,
   onOpenAssetToolPanel,
 }: {
@@ -230,8 +234,11 @@ function AdminIngestionRenderedPreviewNode({
   onSelectNode: (nodeId: string) => void;
   onSelectBlock: (nodeId: string, blockId: string) => void;
   onInsertBlock: (nodeId: string, insertIndex: number) => void;
-  onFocusSnippetTools: (nodeId: string, blockId: string) => void;
-  onFocusNativeTools: (nodeId: string, blockId: string, assetId: string) => void;
+  onFocusNativeTools: (
+    nodeId: string,
+    blockId: string,
+    assetId: string,
+  ) => void;
   onOpenAssetToolPanel: (
     nodeId: string,
     blockId: string,
@@ -280,12 +287,9 @@ function AdminIngestionRenderedPreviewNode({
           />
           {node.blocks.map((block, index) => {
             const previewBlock = previewBlocks[index];
-            const asset = block.assetId ? (assetById.get(block.assetId) ?? null) : null;
-            const canFixFromSource =
-              block.type === "paragraph" ||
-              block.type === "latex" ||
-              block.type === "heading" ||
-              block.type === "list";
+            const asset = block.assetId
+              ? (assetById.get(block.assetId) ?? null)
+              : null;
             const canLinkAsset =
               block.type === "image" ||
               block.type === "table" ||
@@ -321,36 +325,28 @@ function AdminIngestionRenderedPreviewNode({
                     </div>
                     <div className="block-item-actions">
                       {issueCount > 0 ? (
-                        <span className="ingestion-issue-pill">{issueCount}</span>
-                      ) : null}
-                      {canFixFromSource ? (
-                        <button
-                          type="button"
-                          className="btn-secondary"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            onFocusSnippetTools(node.id, block.id);
-                          }}
-                        >
-                          Fix Text
-                        </button>
+                        <span className="ingestion-issue-pill">
+                          {issueCount}
+                        </span>
                       ) : null}
                       {asset ? (
-                        <button
+                        <Button
                           type="button"
-                          className="btn-secondary"
+                          variant="outline"
+                          className="h-9 rounded-full px-3"
                           onClick={(event) => {
                             event.stopPropagation();
                             onFocusNativeTools(node.id, block.id, asset.id);
                           }}
                         >
                           Native Render
-                        </button>
+                        </Button>
                       ) : null}
                       {canLinkAsset ? (
-                        <button
+                        <Button
                           type="button"
-                          className="btn-secondary"
+                          variant="outline"
+                          className="h-9 rounded-full px-3"
                           onClick={(event) => {
                             event.stopPropagation();
                             onOpenAssetToolPanel(
@@ -362,7 +358,7 @@ function AdminIngestionRenderedPreviewNode({
                           }}
                         >
                           {asset ? "Edit Asset" : "New Asset"}
-                        </button>
+                        </Button>
                       ) : null}
                     </div>
                   </div>
@@ -411,7 +407,6 @@ function AdminIngestionRenderedPreviewNode({
               onSelectNode={onSelectNode}
               onSelectBlock={onSelectBlock}
               onInsertBlock={onInsertBlock}
-              onFocusSnippetTools={onFocusSnippetTools}
               onFocusNativeTools={onFocusNativeTools}
               onOpenAssetToolPanel={onOpenAssetToolPanel}
             />

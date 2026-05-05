@@ -12,6 +12,7 @@ import {
 import { useAuthSession } from "@/components/auth-provider";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import {
   formatSujetLabel,
   SujetViewerExercisePaper,
@@ -299,9 +300,9 @@ export function SujetViewer({
             exam={exam}
             backToLibraryHref={backToLibraryHref}
             simulationAction={
-              <button
+              <Button
                 type="button"
-                className="btn-primary"
+                className="h-11 rounded-full px-5"
                 onClick={() => {
                   void handleStartSimulation();
                 }}
@@ -312,7 +313,7 @@ export function SujetViewer({
                   : simulationQuota?.exhausted
                     ? "نفدت حصة المحاكاة"
                     : "ابدأ محاكاة هذا الموضوع"}
-              </button>
+              </Button>
             }
           />
 
@@ -332,9 +333,10 @@ export function SujetViewer({
             revealedSolutions={revealedSolutions}
             onToggleQuestionSolution={toggleQuestionSolution}
             exerciseAction={
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={() => {
                   void handleStartExerciseDrill(activeExercise);
                 }}
@@ -348,7 +350,7 @@ export function SujetViewer({
                   : drillQuota?.exhausted
                     ? "نفدت حصة الدريل"
                     : "ابدأ دريل هذا التمرين"}
-              </button>
+              </Button>
             }
           />
 
@@ -368,9 +370,10 @@ export function SujetViewer({
           description="أعد المحاولة أو عد إلى المكتبة."
           action={
             <div className="study-action-row">
-              <button
+              <Button
                 type="button"
-                className="btn-secondary"
+                variant="outline"
+                className="h-10 rounded-full px-5"
                 onClick={() => {
                   startRefreshingExam(() => {
                     router.refresh();
@@ -379,10 +382,10 @@ export function SujetViewer({
                 disabled={refreshingExam}
               >
                 {refreshingExam ? "جارٍ التحديث..." : "إعادة المحاولة"}
-              </button>
-              <Link href={backToLibraryHref} className="btn-secondary">
-                العودة إلى المكتبة
-              </Link>
+              </Button>
+              <Button asChild variant="outline" className="h-10 rounded-full px-5">
+                <Link href={backToLibraryHref}>العودة إلى المكتبة</Link>
+              </Button>
             </div>
           }
         />

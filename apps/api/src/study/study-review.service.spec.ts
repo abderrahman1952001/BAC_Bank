@@ -35,7 +35,10 @@ describe('StudyReviewService', () => {
     studySessionService = {
       createStudySession: jest.fn(),
     };
-    service = new StudyReviewService(prisma as never, studySessionService as never);
+    service = new StudyReviewService(
+      prisma as never,
+      studySessionService as never,
+    );
   });
 
   it('merges flagged exercises with question-level review queue signals', async () => {
@@ -257,7 +260,11 @@ describe('StudyReviewService', () => {
   });
 });
 
-function makeExerciseNode(id: string, orderIndex: number, label: string | null) {
+function makeExerciseNode(
+  id: string,
+  orderIndex: number,
+  label: string | null,
+) {
   return {
     id,
     orderIndex,

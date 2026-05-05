@@ -40,8 +40,13 @@ export function resolveStudyQuestionInteraction(input: {
   }
 
   const supportStyle = resolveStudySupportStyle(input.subjectCode);
-  const responseMode = resolveStudyQuestionResponseMode(input.question.metadata);
-  const allBlocks = [...input.question.promptBlocks, ...input.question.rubricBlocks];
+  const responseMode = resolveStudyQuestionResponseMode(
+    input.question.metadata,
+  );
+  const allBlocks = [
+    ...input.question.promptBlocks,
+    ...input.question.rubricBlocks,
+  ];
   const hasStructuredVisual = allBlocks.some(
     (block) =>
       block.blockType === BlockType.TABLE ||
@@ -127,8 +132,7 @@ function readConfiguredInteraction(
       interactionValue.responseMode ??
         interactionValue.answerMode ??
         interactionValue.inputMode,
-    ) ??
-    resolveStudyQuestionResponseMode(metadata);
+    ) ?? resolveStudyQuestionResponseMode(metadata);
 
   if (
     !format ||
