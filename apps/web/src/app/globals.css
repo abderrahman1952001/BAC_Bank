@@ -1359,6 +1359,7 @@ textarea {
 }
 
 .roadmap-hero-panel-grid article {
+  min-width: 0;
   border-radius: 22px;
   padding: 0.85rem 0.9rem;
   display: grid;
@@ -1368,8 +1369,11 @@ textarea {
 }
 
 .roadmap-hero-panel-grid strong {
-  font-size: 1.65rem;
-  line-height: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.05rem, 2vw, 1.65rem);
+  line-height: 1.06;
+  text-wrap: balance;
 }
 
 .roadmap-hero-panel-grid span {
@@ -1502,6 +1506,12 @@ textarea {
   animation-delay: var(--roadmap-delay);
 }
 
+.roadmap-node-motion {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
 .roadmap-node.side-right .roadmap-node-body {
   transform: translateX(10px);
 }
@@ -1524,17 +1534,46 @@ textarea {
 .roadmap-node-rail-line {
   position: absolute;
   inset: 70px auto -18px auto;
-  width: 2px;
+  left: 50%;
+  width: 14px;
   border-radius: 999px;
-  background: linear-gradient(
-    180deg,
-    rgba(44, 51, 62, 0.08),
-    rgba(44, 51, 62, 0)
-  );
+  overflow: visible;
+  transform: translateX(-50%);
 }
 
 .roadmap-node:last-child .roadmap-node-rail-line {
   display: none;
+}
+
+.roadmap-node-rail-track,
+.roadmap-node-rail-progress {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.roadmap-node-rail-track {
+  stroke: rgba(148, 163, 184, 0.18);
+}
+
+.roadmap-node-rail-progress {
+  stroke: var(--app-accent, #00e599);
+  filter: drop-shadow(0 0 8px rgba(0, 229, 153, 0.22));
+}
+
+.roadmap-node.tone-warning .roadmap-node-rail-progress {
+  stroke: var(--danger);
+  filter: drop-shadow(0 0 8px rgba(169, 66, 70, 0.2));
+}
+
+.roadmap-node.tone-accent .roadmap-node-rail-progress {
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 8px rgba(180, 135, 81, 0.16));
+}
+
+.roadmap-node.is-pending .roadmap-node-rail-track {
+  stroke: rgba(148, 163, 184, 0.12);
 }
 
 .roadmap-node-orb {
@@ -1598,6 +1637,13 @@ textarea {
 
 .roadmap-node.is-recommended .roadmap-node-orb {
   animation: roadmapPulse 2.6s ease-in-out infinite;
+}
+
+.roadmap-node.is-recommended .roadmap-node-body {
+  border-color: rgba(0, 229, 153, 0.34);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 153, 0.12) inset,
+    0 18px 46px rgba(0, 229, 153, 0.1);
 }
 
 .roadmap-node-body {
@@ -2100,7 +2146,7 @@ textarea {
   border-radius: var(--radius-md);
   background: var(--surface);
   padding: 0.5rem;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .formula-graph-title {
@@ -2111,15 +2157,44 @@ textarea {
 }
 
 .formula-graph-host {
-  min-width: 680px;
+  width: 100%;
+  min-width: 0;
 }
 
-.formula-graph-host .function-plot text {
-  font-family: var(--font-tajawal), sans-serif;
+.formula-graph-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 220px;
 }
 
-.formula-graph-host .function-plot .line path {
+.formula-graph-plane {
+  fill: var(--surface-soft);
+  stroke: var(--line);
+}
+
+.formula-graph-grid-line {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.formula-graph-axis-line {
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.formula-graph-tick,
+.formula-graph-axis-label {
+  fill: var(--ink-soft);
+  font-family: var(--font-display), var(--font-display-fallback);
+  font-size: 12px;
+  font-weight: var(--weight-label);
+}
+
+.formula-graph-curve {
   stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .topic-chip-row {
@@ -5674,6 +5749,11 @@ textarea {
   );
 }
 
+.theater-mobile-tool-dock,
+.theater-mobile-sheet-backdrop {
+  display: none;
+}
+
 .source-workbench {
   display: grid;
   gap: 1rem;
@@ -6422,6 +6502,7 @@ textarea {
   .theater-header {
     grid-template-columns: 1fr;
     justify-items: stretch;
+    padding: 0.68rem 0.75rem;
   }
 
   .theater-header-left,
@@ -6434,10 +6515,154 @@ textarea {
     width: 100%;
   }
 
-  .theater-context-pane,
+  .theater-body {
+    grid-template-rows: minmax(0, 1fr);
+    padding: 0.75rem;
+  }
+
+  .theater-context-pane {
+    display: none;
+  }
+
   .theater-question-pane,
   .navigator-modal-content {
-    padding: 1rem;
+    padding: 0;
+  }
+
+  .theater-question-shell {
+    padding-bottom: calc(5.2rem + env(safe-area-inset-bottom));
+  }
+
+  .theater-question-card {
+    min-height: auto;
+  }
+
+  .theater-desktop-flow {
+    display: none;
+  }
+
+  .theater-actions-bar {
+    bottom: calc(4.7rem + env(safe-area-inset-bottom));
+    z-index: 12;
+    margin-top: 0;
+    padding-bottom: 0.55rem;
+  }
+
+  .theater-mobile-tool-dock {
+    position: fixed;
+    inset-inline: 0.75rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    z-index: 70;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.42rem;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 0.42rem;
+    background: rgba(11, 15, 20, 0.88);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(18px);
+  }
+
+  .theater-mobile-tool-dock button {
+    min-width: 0;
+    min-height: 3.25rem;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    gap: 0.18rem;
+    color: var(--ink-soft);
+    background: transparent;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: var(--weight-label);
+    cursor: pointer;
+  }
+
+  .theater-mobile-tool-dock button svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .theater-mobile-tool-dock button.is-active,
+  .theater-mobile-tool-dock button:not(:disabled):active {
+    border-color: var(--app-accent-line);
+    color: var(--app-accent);
+    background: var(--app-accent-ghost);
+  }
+
+  .theater-mobile-tool-dock button:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+  }
+
+  .theater-mobile-sheet-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(4, 8, 13, 0.58);
+    backdrop-filter: blur(6px);
+  }
+
+  .theater-mobile-sheet {
+    width: 100%;
+    max-height: min(78svh, 720px);
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    border-radius: 28px 28px 0 0;
+    background:
+      radial-gradient(circle at 16% 0%, rgba(0, 229, 153, 0.08), transparent 18rem),
+      var(--surface);
+    box-shadow: 0 -24px 64px rgba(0, 0, 0, 0.38);
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .theater-mobile-sheet-head {
+    border-bottom: 1px solid var(--line);
+    padding: 0.9rem 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .theater-mobile-sheet-head h2 {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .theater-mobile-sheet-head p {
+    color: var(--ink-soft);
+    margin: 0.16rem 0 0;
+    line-height: 1.6;
+  }
+
+  .theater-mobile-sheet-body {
+    min-height: 0;
+    overflow: auto;
+    padding: 0.9rem;
+    display: grid;
+    gap: 0.8rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .theater-mobile-sheet .study-exercise-stage-card,
+  .theater-mobile-sheet .study-section-card {
+    border-radius: 22px;
+  }
+
+  .theater-mode .study-media-frame,
+  .theater-mode .study-media-block,
+  .theater-mode .study-hierarchy-blocks figure {
+    max-width: 100%;
+    overflow: auto;
+    touch-action: pan-x pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
   }
 
   .theater-actions-bar,
@@ -7802,6 +8027,12 @@ textarea {
   box-shadow: none;
 }
 
+[data-theme="dark"] .roadmap-node.is-recommended .roadmap-node-body {
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 153, 0.12) inset,
+    0 18px 46px rgba(0, 229, 153, 0.1);
+}
+
 .roadmap-node.side-right .roadmap-node-body {
   transform: none;
 }
@@ -8901,6 +9132,23 @@ textarea {
   box-shadow: 0 34px 92px rgba(0, 0, 0, 0.3);
 }
 
+[data-theme="light"] .course-player-premium .course-player-theater {
+  border-color: var(--line);
+  background:
+    radial-gradient(
+      circle at 12% 0%,
+      rgba(16, 185, 129, 0.12),
+      transparent 23rem
+    ),
+    radial-gradient(
+      circle at 88% 16%,
+      rgba(14, 165, 233, 0.08),
+      transparent 22rem
+    ),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.9));
+  box-shadow: var(--shadow-md);
+}
+
 .course-player-premium .course-player-theater::before {
   content: "";
   position: absolute;
@@ -8913,6 +9161,13 @@ textarea {
     100% 4.2rem,
     5.4rem 100%;
   opacity: 0.3;
+}
+
+[data-theme="light"] .course-player-premium .course-player-theater::before {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.028) 1px, transparent 1px);
+  opacity: 0.55;
 }
 
 .course-player-storybar,
@@ -8941,6 +9196,10 @@ textarea {
   cursor: pointer;
 }
 
+[data-theme="light"] .course-story-segment {
+  background: rgba(15, 23, 42, 0.1);
+}
+
 .course-story-segment span {
   display: block;
   width: 100%;
@@ -8958,6 +9217,10 @@ textarea {
 
 .course-story-segment.is-current {
   box-shadow: 0 0 0 1px rgba(0, 229, 153, 0.22);
+}
+
+[data-theme="light"] .course-story-segment.is-current {
+  box-shadow: 0 0 0 1px var(--app-accent-line);
 }
 
 .course-player-head {
@@ -9022,6 +9285,15 @@ textarea {
     0 28px 70px rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(22px);
   backface-visibility: hidden;
+}
+
+[data-theme="light"] .course-card-face {
+  border-color: var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.84)),
+    var(--surface);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: none;
 }
 
 .course-player-card.is-roadblock .course-card-face {
@@ -9091,8 +9363,17 @@ textarea {
   line-height: 1.85;
 }
 
+[data-theme="light"] .course-player-premium .course-concept-step-card p,
+[data-theme="light"] .course-roadblock-back p {
+  color: var(--ink-soft);
+}
+
 .course-player-premium .course-concept-bullets {
   color: rgba(248, 250, 252, 0.72);
+}
+
+[data-theme="light"] .course-player-premium .course-concept-bullets {
+  color: var(--ink-soft);
 }
 
 .course-player-premium .course-concept-step-visual {
@@ -9102,9 +9383,21 @@ textarea {
     rgba(255, 255, 255, 0.035);
 }
 
+[data-theme="light"] .course-player-premium .course-concept-step-visual {
+  border-inline-end-color: var(--line);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12), transparent 42%),
+    rgba(15, 23, 42, 0.025);
+}
+
 .course-player-premium .course-concept-step-visual figcaption {
   background: rgba(11, 15, 20, 0.62);
   backdrop-filter: blur(16px);
+}
+
+[data-theme="light"] .course-player-premium .course-concept-step-visual figcaption {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
 }
 
 .course-roadblock-prompt {
@@ -9143,6 +9436,12 @@ textarea {
     linear-gradient(145deg, rgba(3, 19, 13, 0.82), rgba(15, 21, 28, 0.92));
 }
 
+[data-theme="light"] .course-roadblock-back {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(16, 185, 129, 0.12), transparent 18rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.9));
+}
+
 .course-roadblock-back-copy {
   display: grid;
   gap: 0.85rem;
@@ -9173,10 +9472,26 @@ textarea {
   backdrop-filter: blur(18px);
 }
 
+[data-theme="light"] .course-player-premium .course-concept-inspector section {
+  border-color: var(--line);
+  background: var(--surface);
+  backdrop-filter: none;
+  box-shadow: var(--shadow-sm);
+}
+
 .course-player-premium .course-concept-inspector .course-inspector-priority {
   background:
     linear-gradient(180deg, rgba(0, 229, 153, 0.11), rgba(0, 229, 153, 0.035)),
     rgba(19, 26, 34, 0.72);
+}
+
+[data-theme="light"]
+  .course-player-premium
+  .course-concept-inspector
+  .course-inspector-priority {
+  background:
+    linear-gradient(180deg, var(--app-accent-ghost), rgba(255, 255, 255, 0.2)),
+    var(--surface);
 }
 
 .course-player-premium .course-concept-stage-actions {
@@ -9185,6 +9500,124 @@ textarea {
 
 .course-player-premium .course-concept-stage-actions [data-slot="button"]:last-child {
   box-shadow: 0 0 18px rgba(0, 229, 153, 0.22);
+}
+
+[data-theme="light"]
+  .course-player-premium
+  .course-concept-stage-actions
+  [data-slot="button"]:last-child {
+  box-shadow: 0 0 18px rgba(4, 120, 87, 0.14);
+}
+
+[data-theme="light"] .roadmap-hero {
+  border-color: var(--line);
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(16, 185, 129, 0.12), transparent 24rem),
+    radial-gradient(circle at 86% 100%, rgba(14, 165, 233, 0.08), transparent 24rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.9));
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .roadmap-hero-copy p:last-child {
+  color: var(--ink-soft);
+}
+
+[data-theme="light"] .roadmap-hero-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 250, 252, 0.58)),
+    rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0 0 0 1px var(--line);
+  backdrop-filter: none;
+}
+
+[data-theme="light"] .roadmap-hero-panel-grid article {
+  background: rgba(15, 23, 42, 0.035);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.065);
+}
+
+[data-theme="light"] .roadmap-hero-panel-grid span {
+  color: var(--ink-soft);
+}
+
+[data-theme="light"] .hub-bento-card {
+  border-color: rgba(203, 213, 225, 0.78);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.8)),
+    var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .hub-bento-card::before {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.08), transparent 16rem),
+    radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.07), transparent 14rem);
+}
+
+[data-theme="light"] .hub-bento-card:hover {
+  border-color: var(--app-accent-line);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .hub-bento-continue {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.13), transparent 21rem),
+    radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.08), transparent 19rem),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.9));
+}
+
+[data-theme="light"] .hub-bento-continue.is-active {
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 1px var(--app-accent-line) inset;
+}
+
+[data-theme="light"] .hub-bento-insight {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(14, 165, 233, 0.09), transparent 20rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.76)),
+    var(--surface);
+}
+
+[data-theme="light"] .hub-bento-icon {
+  border-color: var(--line);
+  background: var(--surface-soft);
+}
+
+[data-theme="light"] .hub-bento-icon.tone-primary {
+  color: var(--app-accent);
+  background: var(--app-accent-ghost);
+  border-color: var(--app-accent-line);
+}
+
+[data-theme="light"] .hub-bento-icon.tone-cool {
+  color: #0369a1;
+  background: rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.2);
+}
+
+[data-theme="light"] .hub-bento-progress > div {
+  background: rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .hub-bento-mini-metrics span,
+[data-theme="light"] .hub-bento-action-grid a {
+  background: rgba(248, 250, 252, 0.8);
+}
+
+[data-theme="light"] .hub-bento-ring {
+  background:
+    radial-gradient(circle, var(--surface) 54%, transparent 56%),
+    conic-gradient(
+      from -90deg,
+      var(--app-accent) 0 var(--hub-ring),
+      rgba(148, 163, 184, 0.26) var(--hub-ring) 100%
+    );
+}
+
+[data-theme="light"] .hub-bento-action-grid a:hover {
+  border-color: var(--app-accent-line);
+  background: var(--app-accent-ghost);
 }
 
 @media (max-width: 1100px) {
@@ -9534,6 +9967,9 @@ textarea {
   .sujet-browser-hero,
   .sujet-browser-nav,
   .sujet-paper-shell,
+  .roadmap-node,
+  .roadmap-node-orb,
+  .roadmap-node-rail-progress,
   .course-story-segment span,
   .course-player-card,
   .course-card-flip {

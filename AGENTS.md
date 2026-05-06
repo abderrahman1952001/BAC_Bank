@@ -43,6 +43,14 @@ For ingestion work, the canonical implementation lives in `apps/api/src/ingestio
 Do not create or keep a second ingestion engine in scripts.
 Scripts may discover sources, enqueue jobs, or call shared services, but they must not own separate rasterization, extraction, state transitions, or publish logic if those already exist in the app.
 
+For BAC exam and theory-content extraction, treat page images and visual review
+as the authoritative source. OCR may be used to accelerate transcription or
+search, but it is only a helper: start with a visual structure pass, verify
+high-risk or ambiguous content visually, and do not treat OCR text as the source
+of truth. This matters especially for formulas, diagrams, tables, dense Arabic
+or French typography, poor scans, handwritten marks, and unusual layouts. Mark
+uncertainty explicitly instead of smoothing over weak extraction.
+
 Do not use destructive git commands.
 Do not revert unrelated user changes.
 Do not silently change public APIs, auth behavior, DB schema, or queue semantics without calling it out.

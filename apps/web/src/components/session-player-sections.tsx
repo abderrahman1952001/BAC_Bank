@@ -1,4 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import {
+  BookOpen,
+  FileText,
+  Lightbulb,
+  X,
+} from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   StudyHierarchyBlocks,
   StudySectionCard,
@@ -23,7 +32,7 @@ import { Button } from "@/components/ui/button";
 import { FilterChip } from "@/components/ui/filter-chip";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   formatStudyQuestionReflection,
   type StudyQuestionAiExplanationResponse,
@@ -44,6 +53,10 @@ import {
 import {
   type ExerciseCheckpointSummary,
 } from "@/lib/session-player";
+import {
+  buildSessionPlayerMobileTools,
+  type SessionPlayerMobileTools,
+} from "@/lib/session-player-mobile";
 import { STUDENT_MY_SPACE_ROUTE } from "@/lib/student-routes";
 import { type StudyQuestionState } from "@/lib/study";
 import {
@@ -87,6 +100,7 @@ type SessionPlayerContextPaneProps = {
 type SessionPlayerQuestionPaneProps = {
   activeQuestion: StudyQuestionModel;
   activeExercise: StudyExerciseModel;
+  exerciseActions?: ReactNode;
   questionMotionClass: string;
   questionStatePresentation: QuestionStatePresentation;
   currentQuestionPosition: number;
@@ -167,6 +181,112 @@ type SessionPlayerNavigatorModalProps = {
   onSelectExercise: (exerciseId: string) => void;
   onSelectQuestion: (exerciseId: string, questionId: string) => void;
 };
+
+type MobileSheetType = "context" | "support" | "solution";
+
+type SessionPlayerMobileToolDockProps = {
+  tools: SessionPlayerMobileTools;
+  activeSheet: MobileSheetType | null;
+  onOpenSheet: (sheet: MobileSheetType) => void;
+};
+
+function SessionPlayerMobileToolDock({
+  tools,
+  activeSheet,
+  onOpenSheet,
+}: SessionPlayerMobileToolDockProps) {
+  return (
+    <div className="theater-mobile-tool-dock" aria-label="أدوات السؤال">
+      <button
+        type="button"
+        className={activeSheet === "context" ? "is-active" : ""}
+        onClick={() => onOpenSheet("context")}
+        disabled={!tools.contextEnabled}
+      >
+        <BookOpen data-icon="solo" strokeWidth={2} />
+        <span>التمرين</span>
+      </button>
+      <button
+        type="button"
+        className={activeSheet === "support" ? "is-active" : ""}
+        onClick={() => onOpenSheet("support")}
+        disabled={!tools.supportEnabled}
+      >
+        <Lightbulb data-icon="solo" strokeWidth={2} />
+        <span>دعم</span>
+      </button>
+      <button
+        type="button"
+        className={activeSheet === "solution" ? "is-active" : ""}
+        onClick={() => onOpenSheet("solution")}
+        disabled={!tools.solutionEnabled}
+      >
+        <FileText data-icon="solo" strokeWidth={2} />
+        <span>{tools.solutionLabel}</span>
+      </button>
+    </div>
+  );
+}
+
+function SessionPlayerMobileSheet({
+  title,
+  subtitle,
+  children,
+  onClose,
+}: {
+  title: string;
+  subtitle?: string;
+  children: ReactNode;
+  onClose: () => void;
+}) {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <motion.div
+      className="theater-mobile-sheet-backdrop"
+      initial={prefersReducedMotion ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+      transition={{ duration: 0.18 }}
+      onClick={onClose}
+    >
+      <motion.aside
+        className="theater-mobile-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        initial={prefersReducedMotion ? false : { y: "100%" }}
+        animate={{ y: 0 }}
+        exit={prefersReducedMotion ? undefined : { y: "100%" }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 28,
+        }}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="theater-mobile-sheet-head">
+          <div>
+            <h2>{title}</h2>
+            {subtitle ? <p>{subtitle}</p> : null}
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={onClose}
+            aria-label="إغلاق"
+            title="إغلاق"
+          >
+            <X data-icon="solo" strokeWidth={2} />
+          </Button>
+        </header>
+        <div className="theater-mobile-sheet-body">{children}</div>
+      </motion.aside>
+    </motion.div>
+  );
+}
 
 export function SessionPlayerHeader({
   currentQuestionPosition,
@@ -286,6 +406,7 @@ export function SessionPlayerContextPane({
 export function SessionPlayerQuestionPane({
   activeQuestion,
   activeExercise,
+  exerciseActions,
   questionMotionClass,
   questionStatePresentation,
   currentQuestionPosition,
@@ -376,6 +497,129 @@ export function SessionPlayerQuestionPane({
     (requiresResultEvaluation &&
       (evaluationDraftResultStatus === "PARTIAL" ||
         evaluationDraftResultStatus === "INCORRECT"));
+  const [mobileSheetState, setMobileSheetState] = useState<{
+    questionId: string;
+    sheet: MobileSheetType;
+  } | null>(null);
+  const mobileSheet =
+    mobileSheetState?.questionId === activeQuestion.id
+      ? mobileSheetState.sheet
+      : null;
+  const mobileTools = buildSessionPlayerMobileTools({
+    hasHints: activeQuestion.hintBlocks.length > 0,
+    hasMethodGuidance,
+    solutionVisible,
+    canRevealSolution,
+    isActiveSimulation,
+  });
+
+  function openMobileSheet(sheet: MobileSheetType) {
+    setMobileSheetState({ questionId: activeQuestion.id, sheet });
+  }
+
+  function closeMobileSheet() {
+    setMobileSheetState(null);
+  }
+
+  function renderSupportSheetContent() {
+    return (
+      <>
+        {showAssistCard ? (
+          <StudyQuestionAssistCard
+            supportStyle={supportStyle}
+            hasHints={activeQuestion.hintBlocks.length > 0}
+            hasMethodGuidance={hasMethodGuidance}
+            canRevealSolution={false}
+            onOpenHint={onOpenHint}
+            onOpenMethod={onOpenMethod}
+            onRevealSolution={onPrimaryAction}
+          />
+        ) : null}
+
+        {!solutionVisible &&
+        !isActiveSimulation &&
+        activeQuestionState?.hintViewed &&
+        activeQuestion.hintBlocks.length ? (
+          <StudySectionCard tone="hint" title="تلميح">
+            <StudyHierarchyBlocks blocks={activeQuestion.hintBlocks} />
+          </StudySectionCard>
+        ) : null}
+
+        {!solutionVisible &&
+        !isActiveSimulation &&
+        activeQuestionState?.methodViewed &&
+        hasMethodGuidance ? (
+          <StudyQuestionMethodPanel
+            supportStyle={supportStyle}
+            question={activeQuestion}
+          />
+        ) : null}
+
+        {!showAssistCard &&
+        !activeQuestionState?.hintViewed &&
+        !activeQuestionState?.methodViewed ? (
+          <StudySectionCard tone="commentary" title="الدعم">
+            <p className="pedagogy-support-copy">
+              لا توجد تلميحات مفتوحة لهذا السؤال الآن.
+            </p>
+          </StudySectionCard>
+        ) : null}
+      </>
+    );
+  }
+
+  function renderSolutionSheetContent() {
+    if (solutionVisible) {
+      return <StudyQuestionSolutionStack question={activeQuestion} />;
+    }
+
+    return (
+      <StudySectionCard tone="commentary" title={mobileTools.solutionLabel}>
+        <p className="pedagogy-support-copy">{mobileTools.solutionDescription}</p>
+        {canRevealSolution && !isActiveSimulation ? (
+          <div className="study-action-row">
+            <Button
+              type="button"
+              className="h-10 rounded-full px-5"
+              onClick={onPrimaryAction}
+              disabled={questionMotionLocked}
+            >
+              اكشف التصحيح
+            </Button>
+          </div>
+        ) : null}
+      </StudySectionCard>
+    );
+  }
+
+  function renderMobileSheetContent() {
+    if (mobileSheet === "context") {
+      return (
+        <StudyExerciseStageCard
+          exercise={activeExercise}
+          kicker={
+            activeExercise.sourceExam
+              ? `${activeExercise.sourceExam.subject.name} · ${activeExercise.sourceExam.stream.name} · ${activeExercise.sourceExam.year} · ${formatSessionType(activeExercise.sourceExam.sessionType)}`
+              : "تمرين الجلسة"
+          }
+          heading={
+            <>
+              التمرين {activeExercise.displayOrder}
+              {activeExercise.title ? ` · ${activeExercise.title}` : ""}
+            </>
+          }
+          badgeLabel={`${activeExercise.questions.length} أسئلة`}
+          actions={exerciseActions}
+        />
+      );
+    }
+
+    if (mobileSheet === "support") {
+      return renderSupportSheetContent();
+    }
+
+    return renderSolutionSheetContent();
+  }
 
   return (
     <main className="theater-question-pane">
@@ -515,15 +759,17 @@ export function SessionPlayerQuestionPane({
             ) : null}
 
             {showAssistCard ? (
-              <StudyQuestionAssistCard
-                supportStyle={supportStyle}
-                hasHints={activeQuestion.hintBlocks.length > 0}
-                hasMethodGuidance={hasMethodGuidance}
-                canRevealSolution={false}
-                onOpenHint={onOpenHint}
-                onOpenMethod={onOpenMethod}
-                onRevealSolution={onPrimaryAction}
-              />
+              <div className="theater-desktop-flow">
+                <StudyQuestionAssistCard
+                  supportStyle={supportStyle}
+                  hasHints={activeQuestion.hintBlocks.length > 0}
+                  hasMethodGuidance={hasMethodGuidance}
+                  canRevealSolution={false}
+                  onOpenHint={onOpenHint}
+                  onOpenMethod={onOpenMethod}
+                  onRevealSolution={onPrimaryAction}
+                />
+              </div>
             ) : null}
 
             {!solutionVisible && isActiveSimulation ? (
@@ -545,23 +791,27 @@ export function SessionPlayerQuestionPane({
             !isActiveSimulation &&
             activeQuestionState?.hintViewed &&
             activeQuestion.hintBlocks.length ? (
-              <StudySectionCard tone="hint" title="تلميح">
-                <StudyHierarchyBlocks blocks={activeQuestion.hintBlocks} />
-              </StudySectionCard>
+              <div className="theater-desktop-flow">
+                <StudySectionCard tone="hint" title="تلميح">
+                  <StudyHierarchyBlocks blocks={activeQuestion.hintBlocks} />
+                </StudySectionCard>
+              </div>
             ) : null}
 
             {!solutionVisible &&
             !isActiveSimulation &&
             activeQuestionState?.methodViewed &&
             hasMethodGuidance ? (
-              <StudyQuestionMethodPanel
-                supportStyle={supportStyle}
-                question={activeQuestion}
-              />
+              <div className="theater-desktop-flow">
+                <StudyQuestionMethodPanel
+                  supportStyle={supportStyle}
+                  question={activeQuestion}
+                />
+              </div>
             ) : null}
 
             <div
-              className={`solution-reveal-wrapper${solutionVisible ? " is-open" : ""}`}
+              className={`theater-desktop-flow solution-reveal-wrapper${solutionVisible ? " is-open" : ""}`}
             >
               <div className="solution-reveal-inner">
                 <StudyQuestionSolutionStack question={activeQuestion} />
@@ -569,6 +819,35 @@ export function SessionPlayerQuestionPane({
             </div>
           </div>
         </div>
+
+        <SessionPlayerMobileToolDock
+          tools={mobileTools}
+          activeSheet={mobileSheet}
+          onOpenSheet={openMobileSheet}
+        />
+
+        <AnimatePresence>
+          {mobileSheet ? (
+            <SessionPlayerMobileSheet
+              key={mobileSheet}
+              title={
+                mobileSheet === "context"
+                  ? "معطيات التمرين"
+                  : mobileSheet === "support"
+                    ? "الدعم"
+                    : mobileTools.solutionLabel
+              }
+              subtitle={
+                mobileSheet === "solution"
+                  ? mobileTools.solutionDescription
+                  : undefined
+              }
+              onClose={closeMobileSheet}
+            >
+              {renderMobileSheetContent()}
+            </SessionPlayerMobileSheet>
+          ) : null}
+        </AnimatePresence>
 
         <div className="theater-actions-bar">
           {!(canRevealSolution && !solutionVisible && progressMode !== "REVIEW") ? (

@@ -1,5 +1,3 @@
-import { EvalBuiltIn } from "function-plot";
-
 export type FunctionExplorerPreset = {
   id: "linear" | "quadratic" | "cubic" | "rational";
   title: string;
@@ -32,6 +30,13 @@ const allowedTokens = new Set([
   "pi",
   "e",
 ]);
+
+type Token =
+  | { type: "number"; value: number }
+  | { type: "identifier"; value: string }
+  | { type: "operator"; value: "+" | "-" | "*" | "/" | "^" }
+  | { type: "paren"; value: "(" | ")" }
+  | { type: "comma"; value: "," };
 
 export const functionExplorerPresets = [
   {
@@ -75,6 +80,218 @@ function roundDisplayNumber(value: number): number {
 
   const rounded = Math.round(value * 1000) / 1000;
   return Object.is(rounded, -0) ? 0 : rounded;
+}
+
+function tokenizeExpression(expression: string): Token[] {
+  const tokens: Token[] = [];
+  let index = 0;
+
+  while (index < expression.length) {
+    const char = expression[index];
+
+    if (/\s/.test(char)) {
+      index += 1;
+      continue;
+    }
+
+    if (/[0-9.]/.test(char)) {
+      const start = index;
+      index += 1;
+
+      while (index < expression.length && /[0-9.]/.test(expression[index])) {
+        index += 1;
+      }
+
+      const value = Number(expression.slice(start, index));
+
+      if (!Number.isFinite(value)) {
+        throw new Error("Invalid number");
+      }
+
+      tokens.push({ type: "number", value });
+      continue;
+    }
+
+    if (/[A-Za-z]/.test(char)) {
+      const start = index;
+      index += 1;
+
+      while (index < expression.length && /[A-Za-z]/.test(expression[index])) {
+        index += 1;
+      }
+
+      tokens.push({
+        type: "identifier",
+        value: expression.slice(start, index).toLowerCase(),
+      });
+      continue;
+    }
+
+    if (char === "+" || char === "-" || char === "*" || char === "/" || char === "^") {
+      tokens.push({ type: "operator", value: char });
+      index += 1;
+      continue;
+    }
+
+    if (char === "(" || char === ")") {
+      tokens.push({ type: "paren", value: char });
+      index += 1;
+      continue;
+    }
+
+    if (char === ",") {
+      tokens.push({ type: "comma", value: char });
+      index += 1;
+      continue;
+    }
+
+    throw new Error("Unsupported character");
+  }
+
+  return tokens;
+}
+
+function evaluateTokens(tokens: Token[], x: number): number {
+  let index = 0;
+
+  function peek() {
+    return tokens[index] ?? null;
+  }
+
+  function consume() {
+    const token = tokens[index];
+    index += 1;
+    return token;
+  }
+
+  function parseExpression(): number {
+    let value = parseTerm();
+
+    while (peek()?.type === "operator" && (peek()?.value === "+" || peek()?.value === "-")) {
+      const operator = consume().value;
+      const next = parseTerm();
+      value = operator === "+" ? value + next : value - next;
+    }
+
+    return value;
+  }
+
+  function parseTerm(): number {
+    let value = parsePower();
+
+    while (peek()?.type === "operator" && (peek()?.value === "*" || peek()?.value === "/")) {
+      const operator = consume().value;
+      const next = parsePower();
+      value = operator === "*" ? value * next : value / next;
+    }
+
+    return value;
+  }
+
+  function parsePower(): number {
+    const base = parseUnary();
+
+    if (peek()?.type === "operator" && peek()?.value === "^") {
+      consume();
+      return Math.pow(base, parsePower());
+    }
+
+    return base;
+  }
+
+  function parseUnary(): number {
+    if (peek()?.type === "operator" && (peek()?.value === "+" || peek()?.value === "-")) {
+      const operator = consume().value;
+      const value = parseUnary();
+      return operator === "-" ? -value : value;
+    }
+
+    return parsePrimary();
+  }
+
+  function parsePrimary(): number {
+    const token = consume();
+
+    if (!token) {
+      throw new Error("Unexpected end of expression");
+    }
+
+    if (token.type === "number") {
+      return token.value;
+    }
+
+    if (token.type === "paren" && token.value === "(") {
+      const value = parseExpression();
+
+      if (peek()?.type !== "paren" || peek()?.value !== ")") {
+        throw new Error("Missing closing parenthesis");
+      }
+
+      consume();
+      return value;
+    }
+
+    if (token.type !== "identifier") {
+      throw new Error("Unexpected token");
+    }
+
+    if (token.value === "x") {
+      return x;
+    }
+
+    if (token.value === "pi") {
+      return Math.PI;
+    }
+
+    if (token.value === "e") {
+      return Math.E;
+    }
+
+    if (peek()?.type !== "paren" || peek()?.value !== "(") {
+      throw new Error("Function call expected");
+    }
+
+    consume();
+    const argument = parseExpression();
+
+    if (peek()?.type === "comma") {
+      throw new Error("Multiple arguments are not supported");
+    }
+
+    if (peek()?.type !== "paren" || peek()?.value !== ")") {
+      throw new Error("Missing function closing parenthesis");
+    }
+
+    consume();
+
+    switch (token.value) {
+      case "sin":
+        return Math.sin(argument);
+      case "cos":
+        return Math.cos(argument);
+      case "tan":
+        return Math.tan(argument);
+      case "sqrt":
+        return Math.sqrt(argument);
+      case "abs":
+        return Math.abs(argument);
+      case "exp":
+        return Math.exp(argument);
+      case "log":
+      case "ln":
+        return Math.log(argument);
+      default:
+        throw new Error("Unsupported function");
+    }
+  }
+
+  const value = parseExpression();
+
+  if (index !== tokens.length) {
+    throw new Error("Unexpected trailing tokens");
+  }
+
+  return value;
 }
 
 export function getFunctionExplorerPreset(
@@ -141,7 +358,7 @@ export function evaluateFunctionAt(
   }
 
   try {
-    const value = EvalBuiltIn({ fn: validation.expression }, "fn", { x });
+    const value = evaluateTokens(tokenizeExpression(validation.expression), x);
 
     return typeof value === "number" && Number.isFinite(value)
       ? roundDisplayNumber(value)

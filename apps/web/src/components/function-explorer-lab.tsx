@@ -118,6 +118,8 @@ export function FunctionExplorerLab() {
                 dir="ltr"
                 value={expression}
                 onChange={(event) => setExpression(event.target.value)}
+                autoComplete="off"
+                autoCorrect="off"
                 spellCheck={false}
                 placeholder="x^2 - 4*x + 3"
               />

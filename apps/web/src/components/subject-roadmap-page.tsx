@@ -1,14 +1,13 @@
-import type { CSSProperties } from "react";
 import Link from "next/link";
 import { StudyClearVaultButton } from "@/components/study-clear-vault-button";
 import { StudentNavbar } from "@/components/student-navbar";
+import { SubjectRoadmapTrail } from "@/components/subject-roadmap-trail";
 import { StudyReviewQueueActions } from "@/components/study-review-queue-actions";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
 import {
   formatStudyReviewReason,
   type MyMistakesResponse,
-  type StudyRoadmapsResponse,
 } from "@/lib/study-api";
 import {
   STUDENT_LIBRARY_ROUTE,
@@ -19,12 +18,8 @@ import {
   buildStudentMySpaceRoadmapRoute,
   buildStudentTrainingDrillRoute,
 } from "@/lib/student-routes";
+import type { Roadmap } from "@/lib/subject-roadmap-view";
 import { formatRelativeStudyTimestamp } from "@/lib/study-time";
-
-type Roadmap = StudyRoadmapsResponse["data"][number];
-type RoadmapNode = Roadmap["nodes"][number];
-type RoadmapSection = Roadmap["sections"][number];
-type RoadmapTone = "brand" | "success" | "warning" | "accent";
 
 function describeMistakeReviewCadence(
   item: MyMistakesResponse["data"][number],
@@ -70,79 +65,6 @@ function buildRoadmapNextActionHref(roadmap: Roadmap) {
   }
 }
 
-function getRoadmapNodeTone(node: RoadmapNode): RoadmapTone {
-  if (node.status === "NEEDS_REVIEW") {
-    return "warning";
-  }
-
-  if (node.status === "IN_PROGRESS") {
-    return "brand";
-  }
-
-  if (node.status === "SOLID") {
-    return "success";
-  }
-
-  return "accent";
-}
-
-function getRoadmapNodeStatusLabel(node: RoadmapNode) {
-  switch (node.status) {
-    case "SOLID":
-      return "ثابت";
-    case "IN_PROGRESS":
-      return "قيد البناء";
-    case "NEEDS_REVIEW":
-      return "مراجعة الآن";
-    default:
-      return "جاهز";
-  }
-}
-
-function buildRoadmapNodeAction(roadmap: Roadmap, node: RoadmapNode) {
-  if (node.status === "NEEDS_REVIEW") {
-    return {
-      label: "عالج المحور",
-      href: buildStudentTrainingDrillRoute({
-        subjectCode: roadmap.subject.code,
-        topicCodes: [node.topicCode],
-      }),
-      tone: "warning" as const,
-    };
-  }
-
-  if (node.status === "IN_PROGRESS") {
-    return {
-      label: "واصل المحور",
-      href: buildStudentTrainingDrillRoute({
-        subjectCode: roadmap.subject.code,
-        topicCodes: [node.topicCode],
-      }),
-      tone: "brand" as const,
-    };
-  }
-
-  if (node.status === "NOT_STARTED") {
-    return {
-      label: "ابدأ المحور",
-      href: buildStudentTrainingDrillRoute({
-        subjectCode: roadmap.subject.code,
-        topicCodes: [node.topicCode],
-      }),
-      tone: "accent" as const,
-    };
-  }
-
-  return {
-    label: "ثبّت المستوى",
-    href: buildStudentTrainingDrillRoute({
-      subjectCode: roadmap.subject.code,
-      topicCodes: [node.topicCode],
-    }),
-    tone: "success" as const,
-  };
-}
-
 function buildMistakeHref(item: MyMistakesResponse["data"][number]) {
   return buildStudentLibraryExamRouteWithSearch({
     streamCode: item.exam.stream.code,
@@ -153,39 +75,6 @@ function buildMistakeHref(item: MyMistakesResponse["data"][number]) {
     exercise: item.exerciseNodeId,
     question: item.focusQuestionId,
   });
-}
-
-function clampProgress(value: number) {
-  return Math.max(0, Math.min(value, 100));
-}
-
-function getSectionSummary(section: RoadmapSection) {
-  const solidCount = section.nodes.filter((node) => node.status === "SOLID").length;
-  const needsReviewCount = section.nodes.filter(
-    (node) => node.status === "NEEDS_REVIEW",
-  ).length;
-  const progressPercent = section.nodes.length
-    ? Math.round(
-        section.nodes.reduce((sum, node) => sum + node.progressPercent, 0) /
-          section.nodes.length,
-      )
-    : 0;
-
-  return {
-    solidCount,
-    needsReviewCount,
-    progressPercent,
-  };
-}
-
-function getNodeInlineStyle(
-  node: RoadmapNode,
-  mapIndex: number,
-): CSSProperties & Record<"--roadmap-progress" | "--roadmap-delay", string> {
-  return {
-    "--roadmap-progress": `${clampProgress(node.progressPercent)}%`,
-    "--roadmap-delay": `${120 + mapIndex * 70}ms`,
-  };
 }
 
 export function SubjectRoadmapPage({
@@ -303,143 +192,10 @@ export function SubjectRoadmapPage({
             </div>
           </div>
 
-          <div className="roadmap-map-canvas">
-            {roadmap.sections.map((section, sectionIndex) => {
-              const sectionSummary = getSectionSummary(section);
-              const sectionStartIndex = roadmap.sections
-                .slice(0, sectionIndex)
-                .reduce((sum, currentSection) => sum + currentSection.nodes.length, 0);
-
-              return (
-                <section key={section.id} className="roadmap-stage">
-                  <header className="roadmap-stage-head">
-                    <div>
-                      <span className="roadmap-stage-step">
-                        المرحلة {sectionIndex + 1}
-                      </span>
-                      <h3>{section.title}</h3>
-                      {section.description ? <p>{section.description}</p> : null}
-                    </div>
-
-                    <div className="roadmap-stage-metrics">
-                      <StudyBadge tone="brand">
-                        {sectionSummary.progressPercent}% متوسط التقدم
-                      </StudyBadge>
-                      <StudyBadge tone="success">
-                        {sectionSummary.solidCount} ثابتة
-                      </StudyBadge>
-                      {sectionSummary.needsReviewCount > 0 ? (
-                        <StudyBadge tone="warning">
-                          {sectionSummary.needsReviewCount} تحتاج مراجعة
-                        </StudyBadge>
-                      ) : null}
-                    </div>
-                  </header>
-
-                  <div className="roadmap-trail">
-                    {section.nodes.map((node, nodeIndex) => {
-                      const nodeAction = buildRoadmapNodeAction(roadmap, node);
-                      const nodeTone = getRoadmapNodeTone(node);
-                      const isRecommended = recommendedTopicCode === node.topicCode;
-                      const currentMapIndex = sectionStartIndex + nodeIndex;
-                      const isRight = (sectionIndex + nodeIndex) % 2 === 1;
-
-                      return (
-                        <article
-                          key={node.id}
-                          className={`roadmap-node tone-${nodeTone}${
-                            isRecommended ? " is-recommended" : ""
-                          }${isRight ? " side-right" : ""}`}
-                          style={getNodeInlineStyle(node, currentMapIndex)}
-                        >
-                          <div className="roadmap-node-rail" aria-hidden="true">
-                            <span className="roadmap-node-rail-line" />
-                            <span className="roadmap-node-orb">
-                              <span className="roadmap-node-orb-shell">
-                                <small>#{currentMapIndex + 1}</small>
-                                <strong>{clampProgress(node.progressPercent)}%</strong>
-                              </span>
-                            </span>
-                          </div>
-
-                          <div className="roadmap-node-body">
-                            <div className="roadmap-node-copy">
-                              <div className="roadmap-node-badges">
-                                <StudyBadge tone={nodeTone}>
-                                  {getRoadmapNodeStatusLabel(node)}
-                                </StudyBadge>
-                                {isRecommended ? (
-                                  <StudyBadge tone="brand">المقترح الآن</StudyBadge>
-                                ) : null}
-                                {node.weaknessScore > 0 ? (
-                                  <StudyBadge tone="warning">
-                                    ضعف {node.weaknessScore}
-                                  </StudyBadge>
-                                ) : null}
-                              </div>
-
-                              <h4>{node.title}</h4>
-                              <p>
-                                {node.description ??
-                                  `راجع ${node.topicName} ثم انتقل إلى المحور التالي.`}
-                              </p>
-                            </div>
-
-                            <div className="roadmap-node-meta">
-                              <span>{node.topicName}</span>
-                              {node.estimatedSessions ? (
-                                <span>{node.estimatedSessions} حصص تقريباً</span>
-                              ) : null}
-                              <span>
-                                {node.attemptedQuestions > 0
-                                  ? `${node.correctCount}/${node.attemptedQuestions} صحيحة`
-                                  : "لم تبدأ بعد"}
-                              </span>
-                              <span>
-                                {node.lastSeenAt
-                                  ? `آخر نشاط ${formatRelativeStudyTimestamp(
-                                      node.lastSeenAt,
-                                    )}`
-                                  : "جاهز للبدء"}
-                              </span>
-                              {node.recommendedPreviousNodeTitle ? (
-                                <span>
-                                  يفضّل بعد {node.recommendedPreviousNodeTitle}
-                                </span>
-                              ) : null}
-                            </div>
-
-                            <div className="roadmap-node-actions">
-                              <Link
-                                href={nodeAction.href}
-                                className={`hub-activity-action tone-${nodeAction.tone}`}
-                              >
-                                {nodeAction.label}
-                              </Link>
-                              <div className="roadmap-node-progress">
-                                <div
-                                  className="hub-activity-progress-track"
-                                  aria-hidden="true"
-                                >
-                                  <div
-                                    className={`hub-activity-progress-fill tone-${nodeAction.tone}`}
-                                    style={{
-                                      width: `${clampProgress(node.progressPercent)}%`,
-                                    }}
-                                  />
-                                </div>
-                                <small>{clampProgress(node.progressPercent)}% إتقان</small>
-                              </div>
-                            </div>
-                          </div>
-                        </article>
-                      );
-                    })}
-                  </div>
-                </section>
-              );
-            })}
-          </div>
+          <SubjectRoadmapTrail
+            roadmap={roadmap}
+            recommendedTopicCode={recommendedTopicCode}
+          />
         </section>
 
         <section id="mistakes" className="hub-activity-section">

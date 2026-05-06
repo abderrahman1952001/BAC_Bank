@@ -210,6 +210,18 @@ function SessionPlayerScreen({
       !isActiveSimulation &&
       activeQuestion.solutionBlocks.length,
   );
+  const activeExerciseActions = (
+    <StudyExerciseStateActions
+      state={exerciseStatesById[activeExercise.exerciseNodeId]}
+      pending={pendingExerciseIds[activeExercise.exerciseNodeId]}
+      onToggleBookmark={() => {
+        void toggleBookmark(activeExercise.exerciseNodeId);
+      }}
+      onToggleFlag={() => {
+        void toggleFlag(activeExercise.exerciseNodeId);
+      }}
+    />
+  );
 
   async function handleOpenAiExplanation() {
     if (!session || !activeQuestion || !canRequestAiExplanation || aiExplanationLoading) {
@@ -252,23 +264,13 @@ function SessionPlayerScreen({
           sessionMeta={sessionMeta}
           activeExerciseTopics={activeExerciseTopics}
           activeExercise={activeExercise}
-          exerciseActions={
-            <StudyExerciseStateActions
-              state={exerciseStatesById[activeExercise.exerciseNodeId]}
-              pending={pendingExerciseIds[activeExercise.exerciseNodeId]}
-              onToggleBookmark={() => {
-                void toggleBookmark(activeExercise.exerciseNodeId);
-              }}
-              onToggleFlag={() => {
-                void toggleFlag(activeExercise.exerciseNodeId);
-              }}
-            />
-          }
+          exerciseActions={activeExerciseActions}
         />
 
         <SessionPlayerQuestionPane
           activeQuestion={activeQuestion}
           activeExercise={activeExercise}
+          exerciseActions={activeExerciseActions}
           questionMotionClass={questionMotionClass}
           questionStatePresentation={questionStatePresentation}
           currentQuestionPosition={currentQuestionPosition}
