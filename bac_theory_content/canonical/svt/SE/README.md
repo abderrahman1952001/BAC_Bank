@@ -2,7 +2,13 @@
 
 This is the platform-authored layer for `علوم الطبيعة والحياة` in the `علوم تجريبية` stream.
 
-Canonical lessons should be aligned to `programmes/svt/SE.yml` and may cite or reuse assets from one or more source folders.
+Subject-agnostic curriculum rules live in `../../README.md`.
+
+Canonical lessons should be aligned to `programmes/svt/SE.yml`. Source folders
+are internal curriculum intelligence only: they may inform scope, density,
+terminology, traps, visual needs, and student expectations, but public canonical
+lessons must not reuse source wording, diagrams, page order, worked chains, or
+assets unless the material is explicitly licensed or owned.
 
 The first source extraction currently lives at:
 
@@ -14,7 +20,10 @@ Canonical course journeys live as `course.json` files. The first journey is:
 
 `proteins/course.json`
 
-The blueprint is the reviewed product artifact. Source extractions may inform scope, density, terminology, traps, and visual needs, but the blueprint must contain platform-authored explanations, original visual prompts, interactions, BAC lenses, micro-quizzes, and optional depth portals.
+The blueprint is the reviewed product artifact. Source extractions may inform
+scope, density, terminology, traps, and visual needs as private QA evidence, but
+the blueprint must contain platform-authored explanations, original visual
+prompts, interactions, BAC lenses, micro-quizzes, and optional depth portals.
 
 `proteins/course.json` currently defines the full first-field mainline across:
 

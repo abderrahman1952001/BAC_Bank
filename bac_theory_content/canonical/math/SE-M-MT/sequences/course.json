@@ -1,0 +1,1898 @@
+{
+  "id": "math-scientific-sequences",
+  "status": "draft",
+  "title": "Sequences: Predicting Discrete Motion",
+  "description": "A complete scientific Math journey for SE, M, and MT that turns sequences into prediction machines: read the object, detect direction, prove convergence, unlock hidden families, and solve full BAC-style problems.",
+  "subjectCode": "MATHEMATICS",
+  "stream": "SE-M-MT",
+  "fieldCode": "SEQUENCES",
+  "requiredUnitCodes": [
+    "SEQUENCES"
+  ],
+  "visualStyle": {
+    "imageModel": "gpt-image-1",
+    "name": "precision-motion-math",
+    "description": "Premium mathematical motion visuals for Algerian BAC courses: dark ink workspace, crisp white notation, teal active motion, amber fixed points and destinations, restrained red for illegal moves, clean graphs, rails, arrows, and formula chips.",
+    "promptPrefix": "Use the precision-motion-math theme: dark ink workspace, crisp white mathematical notation, teal active motion, amber fixed points and destinations, restrained red only for illegal moves, clean graphs, rails, arrows, formula chips, high contrast, uncluttered BAC-ready educational composition.",
+    "negativePrompt": "No scanned textbook pages, no copied worksheet layout, no decorative blobs, no childish cartoon style, no cluttered full-page formula dump, no unreadable dense Arabic text inside the image."
+  },
+  "topicCode": "SEQUENCES",
+  "topicSlug": "sequences",
+  "sourceIntelligence": {
+    "programmePath": "bac_theory_content/programmes/math/SE-M-MT.yml",
+    "sourceIds": [
+      "source-1-noureddine-math-scientific-sequences"
+    ],
+    "notes": [
+      "Sources inform scope, density, terminology, traps, and visual needs; canonical explanations and examples are platform-authored.",
+      "This authoring blueprint feeds leaf-stream roadmaps for SE, M, and MT.",
+      "The programme/source evidence uses the compact MATH code, while the authored course registry uses MATHEMATICS.",
+      "The local source bundle covers the index page and theory/training pages 6-39; pages after 39 are mentioned by the source index but are not present locally.",
+      "Before publication, visually audit graphical recurrence, adjacent sequence conditions, geometric q-cases, shifted sums, alpha/beta transformations, dense sums/products, and comprehensive problem architecture."
+    ]
+  },
+  "concepts": [
+    {
+      "conceptCode": "SEQ_FIELD_GATE",
+      "unitCode": "SEQUENCES",
+      "role": "FIELD_INTRO",
+      "quality": "POLISHED",
+      "slug": "sequence-field-gate",
+      "roadmapTitle": "مدخل المتتاليات",
+      "title": "آلة تتنبأ بالمستقبل",
+      "summary": "مدخل يجعل المتتالية آلة حركة وتوقع، لا قائمة قوانين جافة.",
+      "learningObjective": "يفهم الطالب أن المتتالية تصف حركة بخطوات وأن أسئلة BAC تدور حول القراءة، الاتجاه، البرهان، والتحويل.",
+      "estimatedMinutes": 8,
+      "steps": [
+        {
+          "id": "three-machines-hook",
+          "type": "HOOK",
+          "eyebrow": "مدخل الرحلة",
+          "title": "ثلاث آلات، ثلاثة مصائر",
+          "body": "تخيل ثلاث آلات تبدأ من نفس العدد: آلة تضيف 3 كل مرة، آلة تضرب في 1.5 كل مرة، وآلة تأخذ الناتج السابق وتدخله في دالة. السؤال ليس: ما القانون؟ السؤال الأول هو: أي آلة ستصل إلى 1000؟ وأي آلة قد تقترب من مقصد ولا تتجاوزه أبدا؟",
+          "bullets": [
+            "الحد ليس رقما معزولا؛ هو لقطة من حركة.",
+            "القانون يخبرنا كيف تتحرك اللقطات.",
+            "BAC يطلب منك قراءة هذه الحركة ثم تبريرها."
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "ثلاث آلات للمتتاليات",
+            "description": "ثلاث لوحات: آلة جمع ثابت، آلة ضرب ثابت، وآلة تراجعية تستعمل الناتج السابق.",
+            "prompt": "Show three premium math machines side by side: constant-step machine adding 3, constant-multiplier machine multiplying by 1.5, and feedback recurrence machine sending previous output into a function. Use Arabic labels: خطوة ثابتة، ضرب ثابت، تغذية راجعة. Keep notation crisp and minimal.",
+            "altText": "ثلاث آلات تمثل متتاليات حسابية وهندسية وتراجعية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-field-gate/three-machines-hook.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-field-gate/three-machines-hook.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:48.150Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "أي آلة تتوقع أن تصل إلى 1000 أسرع؟",
+            "items": [
+              "آلة تضيف 3",
+              "آلة تضرب في 1.5",
+              "لا يمكن الحكم دون معرفة الدالة التراجعية"
+            ],
+            "answer": "آلة تضرب في 1.5 غالبا أسرع، لكن الآلة التراجعية تحتاج دراسة خاصة."
+          },
+          "examLens": {
+            "bacSkill": "قراءة بنية المسألة قبل الحساب",
+            "prompt": "في BAC، بداية التمرين غالبا تكشف نوع الآلة: حد عام، علاقة تراجعية، أو متتالية مساعدة.",
+            "trap": "الدخول مباشرة في الحساب دون فهم نوع الحركة."
+          }
+        },
+        {
+          "id": "four-bac-questions",
+          "type": "EXPLAIN",
+          "eyebrow": "الخيط الكبير",
+          "title": "كل سؤال تقريبا يسأل واحدة من أربع",
+          "body": "في المتتاليات ستعود دائما إلى أربع مهام: اقرأ المتتالية، توقع اتجاهها، أثبت مصيرها، أو حوّلها إلى شكل معروف. عندما ترى التمرين بهذا الشكل، تختفي الفوضى ويظهر الطريق.",
+          "bullets": [
+            "اقرأ: ما الحد الأول؟ ما طريقة التعريف؟",
+            "توقع: هل تصعد، تنزل، أم تتذبذب؟",
+            "أثبت: هل هي محصورة؟ هل تستعمل التراجع؟",
+            "حوّل: هل تختبئ حسابية أو هندسية؟"
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "أربع مهام في مسار واحد",
+            "description": "مسار متدرج من القراءة إلى التوقع إلى البرهان إلى التحويل.",
+            "prompt": "Create a clean journey map with four stations labeled in Arabic: اقرأ، توقع، أثبت، حوّل. Use sequence dots moving along rails, teal for motion and amber for destination.",
+            "altText": "مسار أربع مهام في وحدة المتتاليات.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-field-gate/four-bac-questions.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-field-gate/four-bac-questions.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:48.325Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق كل سؤال BAC مع المهمة المناسبة.",
+            "items": [
+              "ادرس اتجاه التغير -> توقع",
+              "برهن أن 1 <= u_n <= 4 -> أثبت",
+              "عين v_n حتى تكون هندسية -> حوّل",
+              "حدد الحد الأول ومجال n -> اقرأ"
+            ],
+            "answer": "اتجاه التغير توقع، الحصر إثبات، المتتالية المساعدة تحويل، الحد الأول قراءة."
+          },
+          "examLens": {
+            "bacSkill": "اختيار الأداة قبل التنفيذ",
+            "prompt": "المصحح لا يكافئ النتيجة فقط؛ يكافئ الطريق القانوني الذي يبررها.",
+            "trap": "حفظ قوانين متفرقة دون معرفة متى تستعمل."
+          }
+        },
+        {
+          "id": "unit-promise",
+          "type": "TAKEAWAY",
+          "eyebrow": "وعد الوحدة",
+          "title": "لن نحفظ الجفاف؛ سنمتلك الآلة",
+          "body": "هذه الوحدة ستبني لديك عينا ترى الحركة قبل الرمز، ثم تضيف القواعد بدقة. كل قانون سيظهر بعد الحاجة إليه، وكل فخ سيظهر في مكانه الطبيعي.",
+          "bullets": [
+            "الفهم أولا، القانون ثانيا.",
+            "الشروط القانونية جزء من القوة.",
+            "الاختياري يوسع الفضول ولا يثقل الطريق الرئيسي."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "sequences-in-real-models",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "أين تعيش المتتاليات خارج الورقة؟",
+          "summary": "نظرة سريعة إلى الادخار، التبريد، النمو، والخوارزميات المتكررة.",
+          "body": "المتتالية تظهر عندما تتكرر عملية على مراحل منفصلة: شهر بعد شهر في الادخار، دقيقة بعد دقيقة في التبريد، جيل بعد جيل في النمو، أو خطوة بعد خطوة في خوارزمية. هذا السياق اختياري، لكنه يجعل فكرة الحركة بخطوات أكثر حيوية.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما أفضل وصف للمتتالية في هذه الوحدة؟",
+        "options": [
+          "قائمة قوانين تحفظ كما هي",
+          "آلة تنتج حدودا بخطوات ويمكن دراسة حركتها",
+          "دالة لا علاقة لها بالترتيب",
+          "مجموعة أعداد عشوائية"
+        ],
+        "correctIndex": 1,
+        "explanation": "المتتالية هي حركة منفصلة: كل حد له موقع، والقانون يصف كيف تتولد الحدود أو تتغير."
+      }
+    },
+    {
+      "conceptCode": "SEQ_UNIT_MAP",
+      "unitCode": "SEQUENCES",
+      "role": "UNIT_INTRO",
+      "quality": "POLISHED",
+      "slug": "sequence-unit-map",
+      "roadmapTitle": "خريطة الرحلة",
+      "title": "القوى الست قبل القوانين",
+      "summary": "خريطة مختصرة للقوى التي سيكتسبها الطالب قبل الدخول في التفاصيل.",
+      "learningObjective": "يرى الطالب ترتيب الوحدة ويعرف وظيفة كل مجموعة من القواعد قبل أن يدرسها.",
+      "estimatedMinutes": 7,
+      "steps": [
+        {
+          "id": "six-powers-map",
+          "type": "INSPECT",
+          "eyebrow": "خريطة القوى",
+          "title": "ست قوى تفتح تمرين المتتاليات",
+          "body": "قبل أي قانون، انظر إلى الطريق: قراءة الرمز، بناء الحدود، تحديد الاتجاه، إثبات الحصر والنهاية، كشف العائلة المخفية، ثم تشغيل كل ذلك في مسألة شاملة.",
+          "bullets": [
+            "القراءة تمنع أخطاء البداية.",
+            "الاتجاه والحصر يفتحان التقارب.",
+            "التحويل يحول الصعب إلى معروف.",
+            "المسألة الشاملة تجمع كل شيء."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "خريطة القوى الست",
+            "description": "ست بطاقات متصلة تمثل مهارات الوحدة.",
+            "prompt": "Create six connected power cards in Arabic: اقرأ الرمز، ابن الحدود، اكشف الاتجاه، اثبت المصير، اكشف العائلة، حل المسألة. Use dark ink background, teal connectors, amber final card.",
+            "altText": "خريطة القوى الست في وحدة المتتاليات.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-unit-map/six-powers-map.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-unit-map/six-powers-map.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:48.506Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب المسار المعتاد في تمرين تراجعي شامل.",
+            "items": [
+              "برهنة الحصر",
+              "دراسة الاتجاه",
+              "استنتاج التقارب",
+              "تعيين النهاية",
+              "تعريف متتالية مساعدة"
+            ],
+            "answer": "برهنة الحصر -> دراسة الاتجاه -> استنتاج التقارب -> تعيين النهاية -> تعريف متتالية مساعدة"
+          },
+          "examLens": {
+            "bacSkill": "رؤية هندسة التمرين",
+            "prompt": "أسئلة المتتاليات الشاملة مرتبة غالبا لتدفعك من البرهان إلى النتيجة، لا لتربكك.",
+            "trap": "القفز إلى النهاية قبل إثبات التقارب."
+          }
+        },
+        {
+          "id": "why-intros-matter",
+          "type": "EXPLAIN",
+          "eyebrow": "طريقة BAC Bank",
+          "title": "القانون لا يدخل إلا بعد أن تعرف مهمته",
+          "body": "سنقدم كل قاعدة كأداة لحل مشكلة محددة. عندما تعرف لماذا تحتاج الفرق أو النسبة أو التراجع، يصبح القانون أخف وأقوى.",
+          "bullets": [
+            "الفرق يقرأ الصعود والنزول.",
+            "الحصر يبني قضبان الأمان.",
+            "التراجع يثبت لكل الرتب.",
+            "المتتالية المساعدة تكشف السر."
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "الأداة والمهمة",
+            "description": "مطابقة بين أداة رياضية ومهمة BAC.",
+            "prompt": "Show a clean matching board: mathematical tools on left and BAC missions on right. Tools: فرق، نسبة، تراجع، حصر، تحويل. Missions: اتجاه، رتابة، إثبات، تقارب، حد عام.",
+            "altText": "لوحة تربط أدوات المتتاليات بمهام BAC.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-unit-map/why-intros-matter.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-unit-map/why-intros-matter.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:48.933Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق الأداة بالمهمة الأقرب.",
+            "items": [
+              "u_{n+1}-u_n -> الاتجاه",
+              "التراجع -> خاصية لكل n",
+              "الحصر -> التقارب",
+              "v_n=u_n-alpha -> التحويل"
+            ],
+            "answer": "كل أداة لها مهمة واضحة قبل الحساب."
+          },
+          "examLens": {
+            "bacSkill": "بناء حل منظم",
+            "prompt": "الحل القوي يبدأ بجملة تبرر اختيار الأداة، لا بسلسلة حسابات بلا عنوان.",
+            "trap": "استعمال أداة صحيحة في مكان لا تتحقق شروطها."
+          }
+        },
+        {
+          "id": "map-takeaway",
+          "type": "TAKEAWAY",
+          "eyebrow": "استعداد",
+          "title": "أنت الآن تعرف شكل الطريق",
+          "body": "عندما تبدأ التفاصيل، لا تعاملها كجزر منفصلة. كل عقدة تضيف أداة إلى صندوق واحد: صندوق حل تمارين المتتاليات.",
+          "bullets": [
+            "اسأل دائما: ما المهمة؟",
+            "ثم اسأل: ما الأداة القانونية؟",
+            "ثم نفذ بهدوء."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "how-sequence-exercises-are-engineered",
+          "kind": "EXAM_EXTENSION",
+          "title": "كيف يبني واضع BAC تمرين المتتاليات؟",
+          "summary": "قراءة ميتا لبنية التمرين الشامل دون إضافة محتوى خارج الطريق الرئيسي.",
+          "body": "غالبا يبدأ التمرين بسؤال بسيط لتحديد الدالة أو الحدود الأولى، ثم يدفعك إلى حصر أو اتجاه، ثم إلى تقارب ونهاية، ثم إلى متتالية مساعدة أو مجموع. معرفة هذه الهندسة تجعل التمرين أقل غموضا.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "لماذا نبدأ بخريطة الرحلة قبل القوانين؟",
+        "options": [
+          "لأن القوانين غير مهمة",
+          "لنعرف وظيفة كل قانون ومتى نستعمله",
+          "لنحذف البرهان",
+          "لأن المتتاليات لا تظهر في BAC"
+        ],
+        "correctIndex": 1,
+        "explanation": "الخريطة تجعل كل قاعدة أداة ذات مهمة، وهذا يقلل الحفظ الأعمى."
+      }
+    },
+    {
+      "conceptCode": "SEQ_INDEX_LANGUAGE",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-index-language",
+      "roadmapTitle": "لغة الحدود",
+      "title": "العنوان والرتبة والحد الأول",
+      "summary": "تفكيك لغة u_n: الدليل، الرتبة، الحد الأول، ومجال التعريف.",
+      "learningObjective": "يميز الطالب بين الدليل والرتبة ويحدد أول حد صالح دون أخطاء في المجاميع أو الحدود.",
+      "estimatedMinutes": 12,
+      "steps": [
+        {
+          "id": "address-vs-position",
+          "type": "HOOK",
+          "eyebrow": "لغة الرمز",
+          "title": "u_6 ليس دائما الحد السادس",
+          "body": "الدليل هو العنوان المكتوب على الحد، أما الرتبة فهي مكانه في الطابور. إذا بدأت المتتالية من n=0 فالحد u_6 رتبته السابعة. وإذا بدأت من n=3 فالحد u_6 رتبته الرابعة.",
+          "bullets": [
+            "الدليل: العدد أسفل الرمز.",
+            "الحد الأول: أول قيمة مسموحة للدليل.",
+            "الرتبة: كم حد مر قبل هذا الحد مع احتسابه."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "عنوان مقابل رتبة",
+            "description": "طابور حدود يبدأ من n=3 ويظهر u_3 كرتبة أولى وu_6 كرتبة رابعة.",
+            "prompt": "Create a clean sequence queue starting at n=3: u_3, u_4, u_5, u_6. Show labels in Arabic: الدليل and الرتبة. Highlight u_6 with index 6 and rank 4.",
+            "altText": "رسم يميز دليل الحد عن رتبته.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-index-language/address-vs-position.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-index-language/address-vs-position.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:49.174Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "إذا بدأت المتتالية من n=3، فما رتبة u_9؟",
+            "items": [
+              "6",
+              "7",
+              "9",
+              "10"
+            ],
+            "answer": "7"
+          },
+          "examLens": {
+            "bacSkill": "ضبط بدايات المجاميع والرتب",
+            "prompt": "أخطاء الرتبة تظهر في أسئلة: هل عدد ما حد من المتتالية؟ وكم عدد حدود المجموع؟",
+            "trap": "اعتبار الدليل والرتبة شيئا واحدا دائما."
+          }
+        },
+        {
+          "id": "sequence-as-function",
+          "type": "RULE",
+          "eyebrow": "تعريف مضبوط",
+          "title": "المتتالية دالة مجالها أعداد طبيعية",
+          "body": "يمكن النظر إلى المتتالية على أنها دالة تأخذ n من مجموعة طبيعية مناسبة وتعطي عددا حقيقيا u_n. لذلك يجب دائما معرفة من أين يبدأ n وما القيم المسموحة.",
+          "bullets": [
+            "إذا كان الحد العام فيه مقام، افحص القيم الممنوعة.",
+            "إذا كتب n >= n_0 فالحد الأول هو u_{n_0}.",
+            "الرمز (u_n) يعني المتتالية كلها، وu_n يعني حدا واحدا."
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "من n إلى u_n",
+            "description": "آلة تدخل n وتخرج u_n مع حارس مجال التعريف.",
+            "prompt": "Show an input-output machine: n enters from natural-number track and u_n exits as real value. Include a small red guard labeled قيم ممنوعة for invalid indices.",
+            "altText": "آلة تحول الدليل n إلى الحد u_n.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-index-language/sequence-as-function.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-index-language/sequence-as-function.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:49.305Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "اضغط على الجزء الذي يخبرك ببداية المتتالية في الرمز (u_n)_{n >= 2}.",
+            "items": [
+              "u",
+              "n",
+              "n >= 2",
+              "القوسان"
+            ],
+            "answer": "n >= 2"
+          },
+          "examLens": {
+            "bacSkill": "قراءة المعطيات بدقة",
+            "prompt": "قبل أي حساب، حدد الحد الأول ومجال n؛ هذا يحميك من استعمال حد غير معرف.",
+            "trap": "حساب u_0 رغم أن المتتالية تبدأ من n=1 أو n=2."
+          }
+        },
+        {
+          "id": "index-language-takeaway",
+          "type": "QUICK_CHECK",
+          "eyebrow": "تثبيت",
+          "title": "قاعدة الرتبة السريعة",
+          "body": "إذا بدأ الطابور عند u_a وكان b >= a، فإن رتبة u_b هي b-a+1. هذه القاعدة الصغيرة تنقذ كثيرا من المجاميع والعضوية.",
+          "bullets": [
+            "ابدأ من أول دليل a.",
+            "اطرح: b-a.",
+            "أضف 1 لأنك تعد الحدين الطرفيين."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "index-shifts-with-sums",
+          "kind": "EXAM_EXTENSION",
+          "title": "لماذا تخرب الإزاحات المجاميع؟",
+          "summary": "توضيح اختياري لكيف تؤثر بداية n على عدد الحدود في المجموع.",
+          "body": "عندما يبدأ المجموع من n=2 إلى n=10 فعدد الحدود ليس 10 بل 9. نفس منطق الرتبة يحكم المجاميع: النهاية ناقص البداية زائد واحد.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "متتالية تبدأ من u_4. ما رتبة u_12؟",
+        "options": [
+          "8",
+          "9",
+          "12",
+          "16"
+        ],
+        "correctIndex": 1,
+        "explanation": "الرتبة هي 12-4+1 = 9."
+      }
+    },
+    {
+      "conceptCode": "SEQ_BUILDERS",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-builders",
+      "roadmapTitle": "كيف تولد المتتالية؟",
+      "title": "ثلاث طرق لبناء نفس العالم",
+      "summary": "تمييز الحد العام، العلاقة التراجعية، والنمط الأولي، مع أثر كل طريقة على الحل.",
+      "learningObjective": "يصنف الطالب طريقة تعريف المتتالية ويعرف ما الذي تسهله أو تصعبه كل طريقة.",
+      "estimatedMinutes": 13,
+      "steps": [
+        {
+          "id": "three-definition-doors",
+          "type": "INSPECT",
+          "eyebrow": "أبواب التعريف",
+          "title": "هل أعطاك التمرين العنوان أم الآلة؟",
+          "body": "أحيانا يعطيك التمرين u_n مباشرة بدلالة n. هذا عنوان مباشر. وأحيانا يعطيك u_{n+1} بدلالة u_n. هذه آلة تحتاج الحد السابق. وأحيانا يعطيك حدودا أولى لتكتشف النمط.",
+          "bullets": [
+            "حد عام: أسرع نحو النهاية والدراسة بالدالة.",
+            "تراجعية: تحتاج حد أول وتكرار أو برهان.",
+            "نمط: يحتاج ترجمة قبل استعمال القوانين."
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "ثلاثة أبواب",
+            "description": "ثلاث بطاقات: حد عام، علاقة تراجعية، قائمة حدود.",
+            "prompt": "Create three clean math doors labeled: حد عام u_n=f(n), تراجعية u_{n+1}=f(u_n), نمط من الحدود. Show each door opening to a different tool path.",
+            "altText": "ثلاث طرق لتعريف المتتالية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-builders/three-definition-doors.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-builders/three-definition-doors.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:49.715Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "صنف الأمثلة حسب طريقة التعريف.",
+            "items": [
+              "u_n=2n+5 -> حد عام",
+              "u_0=1 و u_{n+1}=2u_n+3 -> تراجعية",
+              "1,4,7,10,... -> نمط"
+            ],
+            "answer": "الحد العام يعطي u_n مباشرة، التراجعية تحتاج السابق، والنمط يحتاج اكتشاف القانون."
+          },
+          "examLens": {
+            "bacSkill": "تحديد مدخل الحل",
+            "prompt": "طريقة التعريف تحدد الأدوات: الدالة للحد العام، التراجع والحصر للمعادلة التراجعية، والاكتشاف للنمط.",
+            "trap": "معاملة العلاقة التراجعية كأنها حد عام مباشر."
+          }
+        },
+        {
+          "id": "recurrence-needs-seed",
+          "type": "RULE",
+          "eyebrow": "شرط التشغيل",
+          "title": "العلاقة التراجعية بلا حد أول آلة بلا بداية",
+          "body": "إذا كان u_{n+1}=f(u_n)، فلا يكفي القانون وحده. تحتاج قيمة البداية مثل u_0 أو u_1. منها تولد الحدود واحدا بعد آخر، وقد تحتاج لاحقا برهانا لتعميم ما تلاحظه.",
+          "bullets": [
+            "u_0 يطلق الآلة.",
+            "u_1 ينتج من u_0.",
+            "التخمين لا يصبح نتيجة إلا ببرهان."
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "تشغيل آلة تراجعية",
+            "description": "u_0 يدخل في f فيخرج u_1 ثم يعاد إدخاله.",
+            "prompt": "Show a feedback loop recurrence machine: u_0 enters f, output u_1 loops back to produce u_2 and u_3. Use teal arrows and a highlighted starting seed labeled الحد الأول.",
+            "altText": "آلة تراجعية تحتاج حدا أوليا.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-builders/recurrence-needs-seed.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-builders/recurrence-needs-seed.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:49.829Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "FILL_BLANK",
+            "prompt": "إذا كان u_0=2 و u_{n+1}=3u_n-1، فأكمل u_1.",
+            "items": [
+              "u_1 = ____"
+            ],
+            "answer": "5"
+          },
+          "examLens": {
+            "bacSkill": "إنشاء الحدود والتخمين",
+            "prompt": "حساب الحدود الأولى يساعد في التخمين، لكنه لا يعوض البرهان المطلوب لاحقا.",
+            "trap": "استخراج ثلاثة حدود ثم إعلان الرتابة أو النهاية دون برهان."
+          }
+        },
+        {
+          "id": "definition-door-takeaway",
+          "type": "TAKEAWAY",
+          "eyebrow": "قرار سريع",
+          "title": "أول سؤال داخلي: كيف تولدت؟",
+          "body": "قبل دراسة أي متتالية، اسأل: هل لدي u_n مباشرة؟ هل لدي علاقة تربط الحد التالي بالسابق؟ أم لدي نمط يجب ترجمته؟ هذا السؤال يختصر نصف التردد.",
+          "bullets": [
+            "نوع التعريف ليس تفصيلا شكليا.",
+            "إنه يحدد مسار الأدوات.",
+            "وهو أول عنوان في حل منظم."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "recurrences-as-algorithms",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "العلاقات التراجعية كخوارزميات",
+          "summary": "ربط اختياري بين التراجع والخوارزميات المتكررة.",
+          "body": "كل مرة تأخذ الناتج السابق وتعيد استعماله، فأنت تفكر كخوارزمية. لهذا تظهر المتتاليات في الحساب العددي والبرمجة، لكن الطريق الرئيسي في BAC يبقى على البرهان والحساب.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "أي تعريف يحتاج حدا أوليا حتى يبدأ؟",
+        "options": [
+          "u_n=4n-1",
+          "u_{n+1}=2u_n+5",
+          "u_n=n^2",
+          "u_n=1/n مع n>=1"
+        ],
+        "correctIndex": 1,
+        "explanation": "العلاقة التراجعية تحتاج حدا أوليا مثل u_0 أو u_1 لإنتاج باقي الحدود."
+      }
+    },
+    {
+      "conceptCode": "SEQ_DIRECTION",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-direction",
+      "roadmapTitle": "اتجاه الحركة",
+      "title": "مستشعر الصعود والنزول",
+      "summary": "اختيار طريقة دراسة الرتابة: الفرق، الدالة، أو النسبة مع شروطها.",
+      "learningObjective": "يثبت الطالب اتجاه تغير المتتالية باستعمال أداة قانونية مناسبة.",
+      "estimatedMinutes": 16,
+      "steps": [
+        {
+          "id": "direction-sensor",
+          "type": "HOOK",
+          "eyebrow": "رتابة",
+          "title": "قبل النهاية، اسأل: إلى أين تتحرك؟",
+          "body": "المتتالية قد تصعد، تنزل، تثبت، أو تتذبذب. دراسة الاتجاه ليست زينة؛ غالبا هي الجسر نحو التقارب والحصر والنهاية.",
+          "bullets": [
+            "متزايدة: u_{n+1} >= u_n.",
+            "متناقصة: u_{n+1} <= u_n.",
+            "ثابتة: u_{n+1}=u_n.",
+            "غير رتيبة: لا يوجد اتجاه واحد دائم."
+          ],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "مستشعر الاتجاه",
+            "description": "ثلاث سلاسل نقاط: صاعدة، نازلة، ومتذبذبة.",
+            "prompt": "Show three discrete sequence plots: increasing teal dots, decreasing amber dots, alternating red-teal dots. Label them in Arabic: متزايدة، متناقصة، غير رتيبة.",
+            "altText": "ثلاثة اتجاهات ممكنة للمتتالية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-direction/direction-sensor.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-direction/direction-sensor.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:50.202Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "أي علامة تكفي لإثبات أن المتتالية متزايدة؟",
+            "items": [
+              "u_{n+1}-u_n >= 0",
+              "u_{n+1}-u_n <= 0",
+              "u_n >= 0 فقط",
+              "u_n له حد أول"
+            ],
+            "answer": "u_{n+1}-u_n >= 0"
+          },
+          "examLens": {
+            "bacSkill": "إثبات الرتابة",
+            "prompt": "اكتب الأداة صراحة: ندرس إشارة الفرق أو نستعمل دالة رتيبة على المجال المناسب.",
+            "trap": "الاكتفاء بملاحظة الحدود الأولى للحكم على كل المتتالية."
+          }
+        },
+        {
+          "id": "choose-the-legal-sensor",
+          "type": "RULE",
+          "eyebrow": "اختيار الأداة",
+          "title": "ثلاث حساسات، ولكل واحد شروط",
+          "body": "الحساس الأول هو الفرق u_{n+1}-u_n. الحساس الثاني هو الدالة عندما يكون u_n=f(n). الحساس الثالث هو النسبة u_{n+1}/u_n، لكنه يحتاج حدودا موجبة أو تحكما واضحا في الإشارة.",
+          "bullets": [
+            "الفرق هو الأكثر أمانا.",
+            "طريقة الدالة مفيدة للحد العام.",
+            "النسبة قوية مع القوى والجداءات لكن لا تستعملها عمياء.",
+            "عكس طريقة الدالة غير صحيح عموما."
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "لوحة اختيار الحساس",
+            "description": "ثلاث أدوات رتابة مع شرط استعمال كل واحدة.",
+            "prompt": "Create a decision board with three sensors: فرق, دالة, نسبة. Under نسبة show a red condition chip: حدود موجبة؟ Use clean mathematical icons.",
+            "altText": "لوحة تقارن طرق دراسة اتجاه تغير متتالية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-direction/choose-the-legal-sensor.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-direction/choose-the-legal-sensor.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:50.580Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "اختر الحساس المناسب لكل حالة.",
+            "items": [
+              "u_n=n^2-3n -> طريقة الدالة أو الفرق",
+              "u_n=(2/3)^n موجب -> النسبة ممكنة",
+              "u_{n+1}=f(u_n) -> الفرق أو دراسة f حسب الحالة"
+            ],
+            "answer": "الأداة تعتمد على شكل التعريف وشروط الإشارة."
+          },
+          "examLens": {
+            "bacSkill": "تبرير الاختيار",
+            "prompt": "عندما تستعمل النسبة، اذكر أن الحدود موجبة. عندما تستعمل الدالة، اذكر المجال الذي تدرس عليه رتابتها.",
+            "trap": "استعمال u_{n+1}/u_n مع حدود قد تكون سالبة."
+          }
+        },
+        {
+          "id": "direction-checklist",
+          "type": "COMMON_TRAP",
+          "eyebrow": "فخ مشهور",
+          "title": "النسبة ليست زر اختصار دائما",
+          "body": "إذا كانت u_n سالبة أو قد تغير الإشارة، فمقارنة u_{n+1}/u_n مع 1 قد تعطي استنتاجا خاطئا. في هذه الحالة عد إلى الفرق أو اضبط الإشارة أولا.",
+          "bullets": [
+            "افحص الإشارة قبل القسمة.",
+            "لا تقسم على حد قد يساوي صفرا.",
+            "اكتب النتيجة: متزايدة، متناقصة، أو غير رتيبة."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "non-monotone-but-convergent",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "هل يمكن أن تتقارب متتالية غير رتيبة؟",
+          "summary": "توسيع اختياري يكسر فكرة أن الرتابة شرط ضروري للتقارب.",
+          "body": "نعم، قد تتقارب متتالية وهي غير رتيبة، مثل متتالية تتذبذب حول الصفر بقيم تصغر. الرتابة مع الحصر طريق قوي للتقارب، لكنها ليست الطريق الوحيد.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "متى تكون طريقة النسبة آمنة مباشرة لدراسة الرتابة؟",
+        "options": [
+          "دائما",
+          "عندما تكون الحدود موجبة تماما أو الإشارة مضبوطة",
+          "عندما تكون المتتالية تراجعية فقط",
+          "عندما لا نعرف الحد الأول"
+        ],
+        "correctIndex": 1,
+        "explanation": "مقارنة النسبة مع 1 تحتاج شروط إشارة؛ وإلا قد تنقلب الاستنتاجات."
+      }
+    },
+    {
+      "conceptCode": "SEQ_RAILS_LIMITS",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-rails-limits",
+      "roadmapTitle": "القضبان والنهاية",
+      "title": "عندما تقترب الحدود من مصيرها",
+      "summary": "ربط الحصر، النهايات، التقارب، التباعد، ومعادلة النقطة الثابتة.",
+      "learningObjective": "يستعمل الطالب الحصر والرتابة لإثبات التقارب ثم يعين النهاية بطريقة قانونية.",
+      "estimatedMinutes": 18,
+      "steps": [
+        {
+          "id": "rails-and-destination",
+          "type": "HOOK",
+          "eyebrow": "حصر ونهاية",
+          "title": "القضبان تمنع الهروب، والاتجاه يقود إلى المصير",
+          "body": "إذا كانت المتتالية تتحرك في اتجاه واحد وتبقى بين قضبان، فهي لا تستطيع الهروب إلى ما لا نهاية. هنا يظهر معنى التقارب: الحدود تستقر قرب مقصد.",
+          "bullets": [
+            "محدودة من الأعلى: لا تتجاوز سقفا.",
+            "محدودة من الأسفل: لا تنزل تحت أرضية.",
+            "محدودة: بين سقف وأرضية.",
+            "رتيبة ومحدودة: تتقارب."
+          ],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "متتالية بين قضبان",
+            "description": "نقاط تصعد بين حدين أفقيين وتقترب من خط هدف.",
+            "prompt": "Show a discrete increasing sequence trapped between a lower rail and an upper rail, approaching an amber destination line. Arabic labels: حد أدنى، حد أعلى، نهاية.",
+            "altText": "متتالية محصورة تقترب من نهاية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-rails-limits/rails-and-destination.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-rails-limits/rails-and-destination.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:50.840Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "اضغط على العنصر الذي يمثل الحاجز الأعلى.",
+            "items": [
+              "خط الحد الأعلى",
+              "النقاط",
+              "المحور",
+              "سهم الحركة"
+            ],
+            "answer": "خط الحد الأعلى"
+          },
+          "examLens": {
+            "bacSkill": "إثبات التقارب",
+            "prompt": "في الحل: برهن الحصر، ثم الرتابة، ثم استنتج التقارب. لا تبدأ بمعادلة النهاية.",
+            "trap": "حل l=f(l) قبل إثبات أن النهاية l موجودة."
+          }
+        },
+        {
+          "id": "limit-legal-route",
+          "type": "RULE",
+          "eyebrow": "المسار القانوني",
+          "title": "النهاية لا تعطى بالنية",
+          "body": "إذا كانت u_{n+1}=f(u_n) وتريد نهاية l، فالطريق القانوني هو: أثبت التقارب أولا، ثم مرر النهاية في العلاقة إذا كانت الدالة مناسبة، فتحصل على l=f(l).",
+          "bullets": [
+            "التقارب أولا.",
+            "التمرير في العلاقة ثانيا.",
+            "حل المعادلة ثالثا.",
+            "اختيار الجذر الموافق للحصر رابعا."
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "بوابة النقطة الثابتة",
+            "description": "بوابة لا تسمح بحل l=f(l) إلا بعد ختم التقارب.",
+            "prompt": "Create a process diagram: إثبات الحصر -> إثبات الرتابة -> استنتاج التقارب -> حل l=f(l). Show a red blocked shortcut from start directly to l=f(l).",
+            "altText": "مسار قانوني لتعيين نهاية متتالية تراجعية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-rails-limits/limit-legal-route.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-rails-limits/limit-legal-route.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:50.950Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب الخطوات القانونية لتعيين نهاية متتالية تراجعية.",
+            "items": [
+              "إثبات التقارب",
+              "تمرير النهاية في العلاقة",
+              "حل معادلة النقطة الثابتة",
+              "استعمال الحصر لاختيار الحل"
+            ],
+            "answer": "إثبات التقارب -> تمرير النهاية -> حل المعادلة -> اختيار الحل الموافق للحصر"
+          },
+          "examLens": {
+            "bacSkill": "تعيين النهاية بعد التقارب",
+            "prompt": "عندما توجد عدة حلول لمعادلة النهاية، الحصر السابق يختار الحل الصحيح.",
+            "trap": "قبول كل حلول l=f(l) كنهايات محتملة دون الرجوع إلى الحصر."
+          }
+        },
+        {
+          "id": "limit-classifier",
+          "type": "QUICK_CHECK",
+          "eyebrow": "تمييز",
+          "title": "تقارب، تباعد، أم لا يكفي؟",
+          "body": "إذا اقتربت الحدود من عدد حقيقي، فهي متقاربة. إذا هربت نحو +infty أو -infty فهي متباعدة. وإذا بقيت محصورة لكنها تتذبذب دون استقرار، فالحصر وحده لا يكفي.",
+          "bullets": [
+            "الحد الحقيقي يعني تقارب.",
+            "+infty و -infty تباعد.",
+            "الحصر دون رتابة لا يضمن التقارب."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "bounded-does-not-mean-convergent",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "لماذا الحصر وحده لا يكفي؟",
+          "summary": "مثال اختياري على متتالية محصورة لكنها غير متقاربة.",
+          "body": "المتتالية التي تتناوب بين 1 و -1 محصورة بين -1 و1، لكنها لا تقترب من عدد واحد. لذلك نحتاج غالبا الرتابة أو أداة أخرى بجانب الحصر.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "ما الخطأ في حل يبدأ مباشرة من l=f(l) لمتتالية تراجعية؟",
+        "options": [
+          "لا يوجد أي خطأ",
+          "لم يثبت أولا أن النهاية موجودة",
+          "استعمل الحصر كثيرا",
+          "حسب الحدود الأولى"
+        ],
+        "correctIndex": 1,
+        "explanation": "معادلة النقطة الثابتة لا تستعمل لتعيين النهاية إلا بعد إثبات التقارب."
+      }
+    },
+    {
+      "conceptCode": "SEQ_INDUCTION_LOCK",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-induction-lock",
+      "roadmapTitle": "البرهان بالتراجع",
+      "title": "سلسلة لا تنكسر",
+      "summary": "بناء برهان بالتراجع مضبوط: بداية، وراثة، وخاتمة لكل n.",
+      "learningObjective": "ينجز الطالب برهان تراجع صحيحا للحدود، الصيغ، والمتباينات.",
+      "estimatedMinutes": 17,
+      "steps": [
+        {
+          "id": "domino-lock",
+          "type": "HOOK",
+          "eyebrow": "برهان",
+          "title": "لا تفحص ألف حد؛ أغلق السلسلة",
+          "body": "التراجع لا يعني تجربة حالات كثيرة. يعني أن تثبت أول حلقة، ثم تثبت أن كل حلقة صحيحة تدفع الحلقة التالية. هكذا تمتد الخاصية إلى كل الرتب.",
+          "bullets": [
+            "حدد P(n).",
+            "ثبت البداية عند الرتبة الصحيحة.",
+            "افترض P(n) وأثبت P(n+1).",
+            "اختم: إذن لكل n في المجال."
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "دومينو البرهان",
+            "description": "سلسلة دومينو رياضية يظهر فيها قفل البداية وقفل الوراثة.",
+            "prompt": "Show a premium induction domino chain with three highlighted locks labeled in Arabic: الانطلاق، الوراثة، الخلاصة. Mathematical property P(n) appears on each tile.",
+            "altText": "سلسلة دومينو تمثل البرهان بالتراجع.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-induction-lock/domino-lock.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-induction-lock/domino-lock.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:51.032Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب أجزاء البرهان بالتراجع.",
+            "items": [
+              "تعريف P(n)",
+              "التحقق من البداية",
+              "فرض P(n)",
+              "إثبات P(n+1)",
+              "الخلاصة"
+            ],
+            "answer": "تعريف P(n) -> البداية -> فرض P(n) -> إثبات P(n+1) -> الخلاصة"
+          },
+          "examLens": {
+            "bacSkill": "إثبات خاصية لكل n",
+            "prompt": "التراجع يظهر كثيرا لإثبات الحصر مثل a <= u_n <= b أو صيغة حد عام أو مجموع.",
+            "trap": "نسيان التحقق من البداية الصحيحة."
+          }
+        },
+        {
+          "id": "proof-repair",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "ترميم البرهان",
+          "title": "أين انكسرت السلسلة؟",
+          "body": "برهان ناقص يقول: إذا كانت الخاصية صحيحة من أجل n فهي صحيحة من أجل n+1، إذن الخاصية صحيحة لكل n. هذا ناقص؛ لم يثبت البداية. بدون أول حلقة، لا تبدأ السلسلة.",
+          "bullets": [
+            "ابدأ دائما من أول رتبة مسموحة.",
+            "في الوراثة استعمل فرضية P(n)، لا النتيجة التي تريدها.",
+            "الخاتمة يجب أن تذكر المجال: لكل n >= n_0."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "برهان مكسور",
+            "description": "سلسلة دومينو مع أول قطعة ناقصة.",
+            "prompt": "Create an induction proof repair board. Show a missing first domino labeled P(n0) in red, then a valid implication arrow P(n) -> P(n+1) in teal.",
+            "altText": "برهان تراجع ناقص بسبب غياب البداية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-induction-lock/proof-repair.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-induction-lock/proof-repair.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:51.212Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الجزء الناقص في البرهان السابق؟",
+            "items": [
+              "البداية",
+              "اسم المتتالية",
+              "لون الرسم",
+              "حساب النهاية"
+            ],
+            "answer": "البداية"
+          },
+          "examLens": {
+            "bacSkill": "سلامة البرهان",
+            "prompt": "المصحح يبحث عن الانطلاق والوراثة والخلاصة. غياب واحد منها يضعف البرهان ولو كانت الفكرة صحيحة.",
+            "trap": "استعمال P(n+1) داخل إثبات P(n+1)."
+          }
+        },
+        {
+          "id": "induction-template",
+          "type": "TAKEAWAY",
+          "eyebrow": "قالب آمن",
+          "title": "قالب تراجع لا يخونك",
+          "body": "اكتب: لتكن P(n) الخاصية... نتحقق عند n_0... نفرض صحتها عند n... نثبت عند n+1... إذن حسب مبدأ التراجع فهي صحيحة لكل n >= n_0.",
+          "bullets": [
+            "لا تغير بداية n.",
+            "لا تنس الكم.",
+            "افصل الفرضية عن المطلوب."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "strong-induction-preview",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "لمحة عن التراجع القوي",
+          "summary": "فكرة اختيارية: أحيانا تحتاج كل ما سبق، لا الحد السابق فقط.",
+          "body": "في التراجع القوي نفترض صحة الخاصية لكل الرتب حتى n ثم نثبتها عند n+1. هذه لمحة ثقافية وليست مسارا رئيسيا إلا إذا احتاجها برنامج أو تمرين مؤكد.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "أي جزء لا بد منه في كل برهان بالتراجع؟",
+        "options": [
+          "رسم بياني",
+          "الانطلاق والوراثة والخلاصة",
+          "حساب مشتقة",
+          "استعمال متتالية هندسية"
+        ],
+        "correctIndex": 1,
+        "explanation": "البرهان بالتراجع يقوم على ثلاث ركائز: بداية صحيحة، انتقال صحيح، وخاتمة دقيقة."
+      }
+    },
+    {
+      "conceptCode": "SEQ_ADJACENT_WALLS",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-adjacent-walls",
+      "roadmapTitle": "التجاور",
+      "title": "جداران يلتقيان في نفس النقطة",
+      "summary": "فهم المتتاليات المتجاورة كجدارين يقتربان حتى تنعدم المسافة بينهما.",
+      "learningObjective": "يثبت الطالب التجاور باستعمال الرتابة المعاكسة ونهاية الفرق ثم يستنتج النهاية المشتركة.",
+      "estimatedMinutes": 14,
+      "steps": [
+        {
+          "id": "two-walls-hook",
+          "type": "HOOK",
+          "eyebrow": "تجاور",
+          "title": "عندما يحاصر جداران نفس النقطة",
+          "body": "تخيل متتالية تصعد من الأسفل وأخرى تنزل من الأعلى، والمسافة بينهما تصغر حتى تؤول إلى الصفر. عندها لا يبقى لهما إلا مصير واحد.",
+          "bullets": [
+            "إحداهما متزايدة.",
+            "الأخرى متناقصة.",
+            "الفرق بينهما يؤول إلى 0.",
+            "النتيجة: نفس النهاية."
+          ],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "جداران متجاوران",
+            "description": "متتالية صاعدة وأخرى نازلة تقتربان من نفس الخط.",
+            "prompt": "Show two discrete sequences as walls: lower teal sequence increasing, upper amber sequence decreasing, both closing toward one shared dashed destination line. Arabic labels: متزايدة، متناقصة، فرق نحو 0.",
+            "altText": "متتاليتان متجاورتان تلتقيان في نفس النهاية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-adjacent-walls/two-walls-hook.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-adjacent-walls/two-walls-hook.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:51.499Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "اضغط على الشرط الذي يقول إن المسافة تختفي.",
+            "items": [
+              "u_n متزايدة",
+              "v_n متناقصة",
+              "v_n-u_n -> 0",
+              "u_0 معروف"
+            ],
+            "answer": "v_n-u_n -> 0"
+          },
+          "examLens": {
+            "bacSkill": "إثبات نهاية مشتركة",
+            "prompt": "التجاور طريق أنيق عندما يصعب حساب النهاية مباشرة لكن توجد متتاليتان تحاصرانها.",
+            "trap": "إثبات أن الفرق يؤول إلى 0 فقط ونسيان الرتابة."
+          }
+        },
+        {
+          "id": "adjacency-checklist",
+          "type": "RULE",
+          "eyebrow": "قائمة الشروط",
+          "title": "لا تعلن التجاور قبل ختم الشروط",
+          "body": "حتى تقول إن متتاليتين متجاورتان، احتج إلى اتجاهين متعاكسين ونهاية فرق تساوي الصفر. في بعض التمارين تحتاج أيضا ترتيبهما حتى تفهم الحصر.",
+          "bullets": [
+            "رتابة أولى.",
+            "رتابة ثانية عكسية.",
+            "فرق يذهب إلى 0.",
+            "استنتاج تقارب ونهاية مشتركة."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "ختم التجاور",
+            "description": "ثلاث خانات يجب أن تكتمل قبل الاستنتاج.",
+            "prompt": "Create a checklist stamp board for adjacent sequences with three boxes: اتجاه أول، اتجاه معاكس، فرق نحو 0. Only after all checked, show shared limit badge.",
+            "altText": "قائمة شروط التجاور.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-adjacent-walls/adjacency-checklist.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-adjacent-walls/adjacency-checklist.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:51.682Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما الشرط الناقص إذا أثبتنا أن u_n متزايدة وv_n متناقصة فقط؟",
+            "items": [
+              "نهاية الفرق تساوي 0",
+              "حساب مشتقة",
+              "معرفة u_100",
+              "وجود مجموع"
+            ],
+            "answer": "نهاية الفرق تساوي 0"
+          },
+          "examLens": {
+            "bacSkill": "عدم إسقاط شرط",
+            "prompt": "كل شرط من شروط التجاور له علامة. لا تخلط بين الحصر والتجاور.",
+            "trap": "اعتبار كل متتاليتين رتيبتين متعاكستين متجاورتين مباشرة."
+          }
+        },
+        {
+          "id": "adjacent-takeaway",
+          "type": "TAKEAWAY",
+          "eyebrow": "خلاصة",
+          "title": "التجاور هو ضغط المسافة إلى الصفر",
+          "body": "احفظ الصورة قبل العبارة: جدار من الأسفل، جدار من الأعلى، والمسافة بينهما تختفي. بعدها تصبح الشروط سهلة التذكر ودقيقة في الحل.",
+          "bullets": [
+            "اتجاهان متعاكسان.",
+            "مسافة تؤول إلى الصفر.",
+            "نهاية مشتركة."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "nested-intervals-idea",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "التجاور كفكرة تقريب",
+          "summary": "توسيع اختياري يربط التجاور بتضييق مجال الحل.",
+          "body": "يمكن رؤية كل زوج من الحدود كفاصل يحصر النهاية. كلما تقدم n ضاق الفاصل، وعندما يؤول طوله إلى صفر نحصل على قيمة واحدة.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "أي مجموعة شروط تكفي لفكرة التجاور الأساسية؟",
+        "options": [
+          "كلاهما متزايدتان فقط",
+          "إحداهما متزايدة والأخرى متناقصة والفرق يؤول إلى 0",
+          "لهما نفس الحد الأول",
+          "كلتاهما هندسيتان"
+        ],
+        "correctIndex": 1,
+        "explanation": "التجاور يحتاج اتجاهين متعاكسين مع اختفاء المسافة بين المتتاليتين."
+      }
+    },
+    {
+      "conceptCode": "SEQ_STAIRCASE",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-staircase",
+      "roadmapTitle": "السلم البياني",
+      "title": "عندما ترسم المتتالية طريقها",
+      "summary": "قراءة العلاقة التراجعية u_{n+1}=f(u_n) على منحنى C_f والمستقيم y=x.",
+      "learningObjective": "يفسر الطالب البناء البياني لمتتالية تراجعية ويستعمله للتخمين قبل البرهان.",
+      "estimatedMinutes": 15,
+      "steps": [
+        {
+          "id": "staircase-motion",
+          "type": "HOOK",
+          "eyebrow": "تمثيل بياني",
+          "title": "السلم بين المنحنى والمستقيم",
+          "body": "عندما تكون u_{n+1}=f(u_n)، يمكن رسم الحركة: من u_n إلى المنحنى C_f، ثم أفقيا أو عموديا إلى المستقيم y=x، ثم نكرر. السلم يكشف التخمين: صعود، نزول، أو اقتراب من نقطة ثابتة.",
+          "bullets": [
+            "C_f يعطي القيمة التالية.",
+            "y=x يعيد القيمة إلى المحور المناسب.",
+            "تقاطع C_f مع y=x مرشح للنهاية.",
+            "الرسم يوجه البرهان ولا يعوضه."
+          ],
+          "visual": {
+            "kind": "GRAPH",
+            "title": "سلم تراجعي",
+            "description": "منحنى C_f ومستقيم y=x مع خطوات سلمية من u_0.",
+            "prompt": "Create a clean recurrence staircase graph with curve C_f, line y=x, starting value u_0, teal staircase steps approaching an amber fixed point. Use minimal Arabic labels.",
+            "altText": "سلم بياني لمتتالية معرفة تراجعيا.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-staircase/staircase-motion.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-staircase/staircase-motion.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:51.931Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "أين تظهر النقطة الثابتة المرشحة للنهاية؟",
+            "items": [
+              "تقاطع C_f مع y=x",
+              "نقطة u_0 فقط",
+              "محور التراتيب",
+              "أعلى الرسم"
+            ],
+            "answer": "تقاطع C_f مع y=x"
+          },
+          "examLens": {
+            "bacSkill": "استثمار التمثيل البياني",
+            "prompt": "الرسم يساعدك على التخمين، ثم يطلب منك BAC عادة إثبات الحصر والرتابة جبريا.",
+            "trap": "اعتبار الرسم وحده برهانا كافيا عندما يطلب السؤال البرهان."
+          }
+        },
+        {
+          "id": "fixed-point-graph",
+          "type": "RULE",
+          "eyebrow": "نقطة ثابتة",
+          "title": "لماذا y=x مهم؟",
+          "body": "إذا استقرت المتتالية عند عدد l، فسيحقق l=f(l). بيانيا هذا يعني أن النقطة تقع على المنحنى C_f وعلى المستقيم y=x في نفس الوقت. لذلك تقاطعاتهما هي مرشحات النهاية.",
+          "bullets": [
+            "النقطة الثابتة تحقق f(l)=l.",
+            "قد توجد عدة نقاط ثابتة.",
+            "الحصر والرتابة يحددان أي مرشح مناسب.",
+            "الاستقرار البياني يحتاج برهانا لاحقا."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "مرشحو النهاية",
+            "description": "عدة تقاطعات محتملة مع تمييز المرشح الموافق للحصر.",
+            "prompt": "Show a graph with two fixed point intersections between C_f and y=x. Highlight one inside allowed rails in amber and another outside rails in red.",
+            "altText": "تقاطعات C_f وy=x كمرشحات للنهاية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-staircase/fixed-point-graph.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-staircase/fixed-point-graph.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:52.103Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "إذا كان الحصر 1 <= u_n <= 3، فأي نقطة ثابتة ممكنة؟",
+            "items": [
+              "l=2",
+              "l=5",
+              "l=-1",
+              "كلها"
+            ],
+            "answer": "l=2"
+          },
+          "examLens": {
+            "bacSkill": "اختيار النهاية الموافقة للحصر",
+            "prompt": "إذا أعطت معادلة l=f(l) حلين، فلا تقبل الحل الخارج عن المجال الذي أثبته.",
+            "trap": "نسيان استعمال الحصر بعد إيجاد النقاط الثابتة."
+          }
+        },
+        {
+          "id": "staircase-takeaway",
+          "type": "TAKEAWAY",
+          "eyebrow": "وظيفة الرسم",
+          "title": "الرسم بوصلة، لا ختم نهائي",
+          "body": "السلم البياني يجعلك ترى الحركة بسرعة. لكنه في الحل الرسمي غالبا يمهد لتخمين يجب دعمه بالتراجع، الحصر، الرتابة، ومعادلة النهاية.",
+          "bullets": [
+            "استعمل الرسم لتفهم.",
+            "استعمل البرهان لتقنع.",
+            "اربط الاثنين في ذهنك."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "fixed-point-stability",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "لماذا تجذب بعض النقاط الثابتة ولا تجذب أخرى؟",
+          "summary": "نظرة اختيارية إلى فكرة الاستقرار حول النقطة الثابتة.",
+          "body": "أحيانا تكون النقطة الثابتة جاذبة: إذا بدأت قريبا منها اقتربت الحدود أكثر. وأحيانا تكون طاردة. هذه فكرة قوية لكنها تبقى بوابة فضول خارج المطلوب الرئيسي.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "ماذا تمثل تقاطعات C_f مع y=x في متتالية u_{n+1}=f(u_n)؟",
+        "options": [
+          "قيما ممنوعة دائما",
+          "مرشحات للنهاية أو نقاطا ثابتة",
+          "مجاميع حدود",
+          "رتب الحدود"
+        ],
+        "correctIndex": 1,
+        "explanation": "إذا وجدت نهاية l وسمح بتمرير النهاية، فهي تحقق f(l)=l، أي تقع على C_f وعلى y=x."
+      }
+    },
+    {
+      "conceptCode": "SEQ_FAMILIES",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-families",
+      "roadmapTitle": "حسابية وهندسية",
+      "title": "خطوتان مشهورتان",
+      "summary": "إتقان العائلتين الأساسيتين: خطوة ثابتة وضرب ثابت، مع الحدود والمجاميع والنهايات.",
+      "learningObjective": "يتعرف الطالب على المتتاليات الحسابية والهندسية ويستعمل صيغها وشروطها دون خلط.",
+      "estimatedMinutes": 20,
+      "steps": [
+        {
+          "id": "step-vs-multiplier",
+          "type": "HOOK",
+          "eyebrow": "عائلات مشهورة",
+          "title": "هل تتحرك بخطوة أم بمضاعف؟",
+          "body": "المتتالية الحسابية تضيف نفس العدد كل مرة. المتتالية الهندسية تضرب في نفس العدد كل مرة. هذا الفرق الصغير يغير الحد العام والمجموع والنهاية.",
+          "bullets": [
+            "حسابية: u_{n+1}-u_n = r.",
+            "هندسية: u_{n+1}/u_n = q عندما يسمح بذلك.",
+            "الخطوة الثابتة خطية.",
+            "المضاعف الثابت أسي."
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "خطوة ثابتة مقابل مضاعف ثابت",
+            "description": "مساران: واحد يزيد بنفس المسافة وآخر تتسع قفزاته.",
+            "prompt": "Show two sequence paths: arithmetic path with equal teal steps and geometric path with growing amber jumps. Arabic labels: خطوة ثابتة r، مضاعف ثابت q.",
+            "altText": "مقارنة بين متتالية حسابية ومتتالية هندسية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-families/step-vs-multiplier.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-families/step-vs-multiplier.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:52.427Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "2, 5, 8, 11,... أي عائلة؟",
+            "items": [
+              "حسابية",
+              "هندسية",
+              "ليست أي منهما",
+              "متجاورة"
+            ],
+            "answer": "حسابية"
+          },
+          "examLens": {
+            "bacSkill": "التعرف على العائلة",
+            "prompt": "قبل استعمال أي صيغة، أثبت أولا أن الفرق ثابت أو النسبة ثابتة.",
+            "trap": "استعمال صيغة هندسية لمجرد أن الحدود تكبر."
+          }
+        },
+        {
+          "id": "family-formulas-with-conditions",
+          "type": "RULE",
+          "eyebrow": "دفتر القوانين",
+          "title": "الصيغة لا تعمل بلا بداية صحيحة",
+          "body": "إذا عرفت الحد u_p، فالحسابية تكتب غالبا u_n=u_p+(n-p)r. والهندسية تكتب u_n=u_p q^{n-p}. أما المجاميع فتحتاج عدد الحدود وبداية واضحة، والهندسية تحتاج الانتباه إلى q=1.",
+          "bullets": [
+            "لا تفترض دائما أن p=0.",
+            "عدد الحدود = دليل النهاية - دليل البداية + 1.",
+            "مجموع الحسابية يعتمد على المتوسط.",
+            "مجموع الهندسية له حالة خاصة عند q=1."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "صيغ مع بداية p",
+            "description": "بطاقتا قانون للحد العام من حد u_p.",
+            "prompt": "Create two formula cards in a clean math layout: حسابية u_n=u_p+(n-p)r and هندسية u_n=u_p q^(n-p). Add small guard chips: بداية p and q != 1 for geometric sums.",
+            "altText": "صيغ الحد العام للمتتاليات الحسابية والهندسية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-families/family-formulas-with-conditions.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-families/family-formulas-with-conditions.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:52.614Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "FILL_BLANK",
+            "prompt": "إذا كانت هندسية وu_2=3 وq=2، فأكمل u_n = ____.",
+            "items": [
+              "u_n = 3 * 2^(n-2)"
+            ],
+            "answer": "3 * 2^(n-2)"
+          },
+          "examLens": {
+            "bacSkill": "استعمال الصيغ مع الإزاحة",
+            "prompt": "كثير من أخطاء BAC تأتي من نسيان n-p عندما لا يبدأ الحد المعروف من u_0.",
+            "trap": "كتابة u_n=u_0 q^n رغم أن المعطى هو u_2."
+          }
+        },
+        {
+          "id": "q-case-warning",
+          "type": "COMMON_TRAP",
+          "eyebrow": "حالات q",
+          "title": "المضاعف السالب ليس مجرد تفصيل",
+          "body": "في الهندسية، قيمة q تتحكم في الرتابة والنهاية. إذا كان 0<q<1 مع حد أول موجب فالحدود تقترب من الصفر. إذا كان q>1 تكبر. إذا كان q سالبا قد تظهر ذبذبة، فلا تعلن الرتابة بسرعة.",
+          "bullets": [
+            "افصل حالات q.",
+            "انتبه إلى q=1.",
+            "انتبه إلى -1<q<0 وq<=-1.",
+            "لا تنس إشارة الحد الأول."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "compound-growth-as-geometric",
+          "kind": "ADVANCED_CONTEXT",
+          "title": "النمو المركب كمتتالية هندسية",
+          "summary": "ربط اختياري بين المتتالية الهندسية والنمو بنسبة ثابتة.",
+          "body": "عندما تزيد كمية بنسبة ثابتة كل مرة، فأنت لا تضيف نفس العدد بل تضرب في نفس العامل. لهذا تكون النماذج المالية أو السكانية المبسطة هندسية.",
+          "estimatedMinutes": 4
+        }
+      ],
+      "quiz": {
+        "question": "متتالية تحقق u_{n+1}=u_n+4. ماذا تثبت مباشرة؟",
+        "options": [
+          "حسابية أساسها 4",
+          "هندسية أساسها 4",
+          "متجاورة",
+          "غير معرفة"
+        ],
+        "correctIndex": 0,
+        "explanation": "ثبات الفرق u_{n+1}-u_n=4 يعني أنها حسابية أساسها 4."
+      }
+    },
+    {
+      "conceptCode": "SEQ_TRANSFORM_LENS",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-transform-lens",
+      "roadmapTitle": "تحويل المتتاليات",
+      "title": "العدسة التي تكشف السر",
+      "summary": "تعلم المتتالية المساعدة واختيار alpha أو beta لتحويل التراجعية إلى عائلة معروفة.",
+      "learningObjective": "يبني الطالب متتالية مساعدة تكشف بنية حسابية أو هندسية ثم يعود إلى u_n.",
+      "estimatedMinutes": 21,
+      "steps": [
+        {
+          "id": "wrong-lens-hook",
+          "type": "HOOK",
+          "eyebrow": "تحويل",
+          "title": "أحيانا الصعوبة في العدسة لا في المتتالية",
+          "body": "بعض العلاقات التراجعية تبدو معقدة لأنها مكتوبة حول مركز غير مناسب. عندما نطرح القيمة الصحيحة alpha، قد تتحول المتتالية فجأة إلى هندسية واضحة.",
+          "bullets": [
+            "ابحث عن النقطة الثابتة.",
+            "جرّب v_n = u_n - alpha.",
+            "اجعل الثابت يختفي.",
+            "اكتب v_n ثم ارجع إلى u_n."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "عدسة التحويل",
+            "description": "قبل التحويل علاقة مشوشة، وبعده متتالية هندسية واضحة.",
+            "prompt": "Show a before-after lens diagram: left side messy recurrence u_{n+1}=a u_n+b, right side clean v_{n+1}=q v_n after subtracting alpha. Use a glowing lens labeled alpha.",
+            "altText": "تحويل علاقة تراجعية إلى متتالية هندسية.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-transform-lens/wrong-lens-hook.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-transform-lens/wrong-lens-hook.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:52.805Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "في علاقة من الشكل u_{n+1}=0.5u_n+3، ما أول قيمة تبحث عنها غالبا؟",
+            "items": [
+              "نقطة ثابتة alpha",
+              "مجموع الحدود",
+              "رتبة u_10",
+              "احتمال حدث"
+            ],
+            "answer": "نقطة ثابتة alpha"
+          },
+          "examLens": {
+            "bacSkill": "بناء متتالية مساعدة",
+            "prompt": "سؤال عين alpha حتى تكون v_n هندسية هو من أعلى حركات المتتاليات مردودية.",
+            "trap": "إيجاد v_n ثم نسيان الرجوع إلى u_n."
+          }
+        },
+        {
+          "id": "alpha-removes-constant",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "فكرة alpha",
+          "title": "اجعل الثابت يختفي",
+          "body": "إذا كانت u_{n+1}=a u_n+b واخترنا v_n=u_n-alpha، فنريد v_{n+1}=a v_n. هذا يحدث عندما تكون alpha نقطة ثابتة: alpha=a alpha+b. هكذا يصبح التحويل منظما لا تخمينا.",
+          "bullets": [
+            "حل alpha=a alpha+b.",
+            "عرّف v_n=u_n-alpha.",
+            "أثبت v_{n+1}=a v_n.",
+            "استنتج v_n ثم u_n."
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "اختفاء الثابت",
+            "description": "رسم جبري يبين انتقال u إلى v واختفاء b.",
+            "prompt": "Create a clean algebra flow: u_{n+1}=a u_n+b, choose alpha with alpha=a alpha+b, define v_n=u_n-alpha, obtain v_{n+1}=a v_n. Use formula chips and teal arrows.",
+            "altText": "خطوات اختيار alpha لتحويل العلاقة.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-transform-lens/alpha-removes-constant.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-transform-lens/alpha-removes-constant.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:52.886Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "FILL_BLANK",
+            "prompt": "إذا كانت alpha تحقق alpha=0.5alpha+3، فما alpha؟",
+            "items": [
+              "alpha = ____"
+            ],
+            "answer": "6"
+          },
+          "examLens": {
+            "bacSkill": "تحويل تراجعية affine",
+            "prompt": "بعد إثبات أن v_n هندسية، لا تنس أن u_n=v_n+alpha.",
+            "trap": "اعتبار alpha أساس المتتالية الهندسية بدلا من مركز التحويل."
+          }
+        },
+        {
+          "id": "transform-route",
+          "type": "TAKEAWAY",
+          "eyebrow": "خريطة التحويل",
+          "title": "من u إلى v ثم العودة",
+          "body": "التحويل ليس نهاية الحل. هو جسر: تبدأ من u_n، تصنع v_n البسيطة، تستعمل قوانين العائلة، ثم تعود إلى u_n لتجيب عن المطلوب الأصلي.",
+          "bullets": [
+            "لا تقف عند v_n.",
+            "كل نتيجة عن v_n يجب ترجمتها.",
+            "النهاية والمجموع قد يعودان إلى u_n."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "affine-recurrence-shortcut",
+          "kind": "EXAM_EXTENSION",
+          "title": "اختصار العلاقة التراجعية affine",
+          "summary": "بوابة اختيارية للطلاب الأقوياء حول الصيغة العامة باستعمال النقطة الثابتة.",
+          "body": "للعلاقة u_{n+1}=a u_n+b، إذا كانت alpha نقطة ثابتة، فإن u_n-alpha=(u_0-alpha)a^n عندما يبدأ n من 0. هذا اختصار قوي، لكنه لا يغني عن البرهان عندما يطلبه التمرين.",
+          "estimatedMinutes": 6
+        }
+      ],
+      "quiz": {
+        "question": "بعد أن تثبت أن v_n هندسية حيث v_n=u_n-alpha، ما الخطوة التي لا يجب نسيانها؟",
+        "options": [
+          "العودة إلى u_n",
+          "حذف الحد الأول",
+          "إعلان أن u_n هندسية دائما",
+          "تغيير مجال n"
+        ],
+        "correctIndex": 0,
+        "explanation": "المطلوب الأصلي غالبا عن u_n، لذلك يجب ترجمة نتائج v_n بالرجوع إلى u_n."
+      }
+    },
+    {
+      "conceptCode": "SEQ_SUM_PRODUCT_ENGINE",
+      "unitCode": "SEQUENCES",
+      "role": "LESSON",
+      "quality": "POLISHED",
+      "slug": "sequence-sum-product-engine",
+      "roadmapTitle": "المجاميع والجداءات",
+      "title": "فك الشفرة المخفية",
+      "summary": "تحويل المجاميع والجداءات الكثيفة إلى عائلات معروفة مع ضبط عدد الحدود.",
+      "learningObjective": "يفكك الطالب المجاميع والجداءات بتحديد الحد المتحرك وعدد الحدود والعائلة المخفية.",
+      "estimatedMinutes": 19,
+      "steps": [
+        {
+          "id": "masked-sum",
+          "type": "HOOK",
+          "eyebrow": "مجاميع",
+          "title": "المجموع الغريب غالبا يرتدي قناعا",
+          "body": "لا تبدأ بجمع أعمى. انظر إلى الحد العام داخل المجموع، خصوصا آخر حد. اسأل: هل يتحرك كحسابية؟ كهندسية؟ هل يمكن تقسيمه؟ هل يخفي تحويلا؟",
+          "bullets": [
+            "حدد بداية ونهاية الدليل.",
+            "احسب عدد الحدود.",
+            "تعرف على العائلة.",
+            "استعمل الصيغة المناسبة فقط بعد ذلك."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "مفكك المجموع",
+            "description": "مجموع يدخل في آلة تفككه إلى بداية، نهاية، عدد حدود، وعائلة.",
+            "prompt": "Show a sum expression entering a decoding machine. Outputs are Arabic chips: البداية، النهاية، عدد الحدود، العائلة المخفية. Use teal arrows and amber final formula.",
+            "altText": "آلة تفكيك مجموع في المتتاليات.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-sum-product-engine/masked-sum.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-sum-product-engine/masked-sum.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:53.075Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "HOTSPOT",
+            "prompt": "في المجموع من k=2 إلى k=8، اضغط على ما يحدد عدد الحدود.",
+            "items": [
+              "8-2+1",
+              "8+2",
+              "2 فقط",
+              "8 فقط"
+            ],
+            "answer": "8-2+1"
+          },
+          "examLens": {
+            "bacSkill": "ضبط المجاميع",
+            "prompt": "قبل الصيغة، اكتب عدد الحدود. هذا يمنع أكثر أخطاء المجموع شيوعا.",
+            "trap": "استعمال عدد الحدود n مباشرة دون حساب البداية والنهاية."
+          }
+        },
+        {
+          "id": "route-picker",
+          "type": "RULE",
+          "eyebrow": "اختيار الطريق",
+          "title": "افصل، تعرف، ثم طبق",
+          "body": "إذا كان الحد داخل المجموع مجموع جزأين، قد تفصل المجموعين. إذا كان هندسيا، استعمل صيغة هندسية مع شرط q != 1. إذا كان حسابيا، استعمل المتوسط أو صيغة الحد العام. أما الجداءات فقد تتحول إلى قوى أو جداءات هندسية بعد تبسيط الحد.",
+          "bullets": [
+            "الفصل مسموح للجمع لا لكل شيء.",
+            "راقب q=1.",
+            "في الجداء، ابحث عن عوامل متكررة.",
+            "اكتب الحدود الأولى والأخيرة عند الشك."
+          ],
+          "visual": {
+            "kind": "COMPARISON",
+            "title": "طرق المجموع والجداء",
+            "description": "لوحة قرار بين فصل، حسابية، هندسية، جداء قوى.",
+            "prompt": "Create a decision board for sums/products: split sum, arithmetic block, geometric block, product of powers. Use clean formula chips and warning for q=1.",
+            "altText": "لوحة طرق حساب المجاميع والجداءات.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-sum-product-engine/route-picker.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-sum-product-engine/route-picker.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:53.394Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "SIMPLE_CHOICE",
+            "prompt": "ما أول فحص قبل استعمال مجموع هندسي؟",
+            "items": [
+              "q != 1",
+              "u_0 موجب",
+              "المتتالية متجاورة",
+              "وجود رسم"
+            ],
+            "answer": "q != 1"
+          },
+          "examLens": {
+            "bacSkill": "حساب مجموع أو جداء بكفاءة",
+            "prompt": "في الحل الجيد، لا تظهر الصيغة فجأة؛ تظهر بعد تحديد العائلة وعدد الحدود.",
+            "trap": "خلط صيغة مجموع حسابي بصيغة مجموع هندسي."
+          }
+        },
+        {
+          "id": "sum-product-calm",
+          "type": "TAKEAWAY",
+          "eyebrow": "هدوء",
+          "title": "الكثافة ليست صعوبة إذا قسمت الشفرة",
+          "body": "المجاميع والجداءات تبدو مرعبة لأنها طويلة. لكن أغلبها ينكسر إلى أسئلة قصيرة: ما الحد المتحرك؟ ما العائلة؟ كم عدد الحدود؟ ما الصيغة القانونية؟",
+          "bullets": [
+            "لا تهاجم التعبير كله مرة واحدة.",
+            "استخرج الحركة.",
+            "ثم طبق القانون بشروطه."
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "telescoping-sums-preview",
+          "kind": "EXAM_EXTENSION",
+          "title": "لمحة عن المجاميع المتداخلة",
+          "summary": "بوابة اختيارية حول فكرة حذف الحدود المتتالية.",
+          "body": "بعض المجاميع تتبسط لأن معظم الحدود تلغي بعضها بعضا. هذه تقنية قوية، لكنها تبقى اختيارية هنا إلى أن نثبت حاجتها في النطاق الحالي.",
+          "estimatedMinutes": 5
+        }
+      ],
+      "quiz": {
+        "question": "كم عدد الحدود في مجموع يبدأ من k=3 وينتهي عند k=12؟",
+        "options": [
+          "9",
+          "10",
+          "12",
+          "15"
+        ],
+        "correctIndex": 1,
+        "explanation": "عدد الحدود = 12-3+1 = 10."
+      }
+    },
+    {
+      "conceptCode": "SEQ_BAC_BOSS",
+      "unitCode": "SEQUENCES",
+      "role": "FIELD_SYNTHESIS",
+      "quality": "POLISHED",
+      "slug": "sequence-bac-boss",
+      "roadmapTitle": "مسألة شاملة",
+      "title": "تشغيل كل الأدوات في معركة واحدة",
+      "summary": "مسألة BAC أصلية تجمع الدالة، التراجع، الحصر، الرتابة، النهاية، التحويل، والمجموع.",
+      "learningObjective": "يتعامل الطالب مع مسألة متتاليات شاملة كمسار أدوات منظم لا كسلسلة أسئلة مفككة.",
+      "estimatedMinutes": 24,
+      "steps": [
+        {
+          "id": "boss-map",
+          "type": "INSPECT",
+          "eyebrow": "تركيب",
+          "title": "المسألة الشاملة لها خريطة",
+          "body": "في المسألة الشاملة، لا تحاول ابتلاع كل شيء. اقرأ البنية: دالة مرتبطة، علاقة تراجعية، حصر، رتابة، تقارب، نهاية، متتالية مساعدة، ثم مجموع أو جداء.",
+          "bullets": [
+            "الدالة تساعد على فهم f.",
+            "التراجع يولد u_n.",
+            "الحصر والرتابة يثبتان التقارب.",
+            "التحويل يكشف العائلة.",
+            "المجموع يختم السيطرة على الرموز."
+          ],
+          "visual": {
+            "kind": "SEQUENCE",
+            "title": "خريطة مسألة BAC",
+            "description": "مسار من دراسة الدالة إلى المجموع النهائي.",
+            "prompt": "Create a BAC sequence boss map: function study -> recurrence -> induction bound -> monotonicity -> convergence -> fixed point -> auxiliary sequence -> sum. Use station badges and a final amber victory node.",
+            "altText": "خريطة مسألة شاملة في المتتاليات.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-bac-boss/boss-map.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-bac-boss/boss-map.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:53.476Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "ORDERING",
+            "prompt": "رتب أدوات المسألة الشاملة.",
+            "items": [
+              "دراسة f",
+              "برهنة الحصر",
+              "دراسة الرتابة",
+              "استنتاج النهاية",
+              "تعريف v_n",
+              "حساب المجموع"
+            ],
+            "answer": "دراسة f -> برهنة الحصر -> دراسة الرتابة -> استنتاج النهاية -> تعريف v_n -> حساب المجموع"
+          },
+          "examLens": {
+            "bacSkill": "تنظيم حل طويل",
+            "prompt": "العناوين الصغيرة داخل الحل تمنح المصحح طريقا واضحا وتمنعك من الضياع.",
+            "trap": "حل الأسئلة كقطع منفصلة دون استعمال نتائج الأسئلة السابقة."
+          }
+        },
+        {
+          "id": "original-bac-scenario",
+          "type": "WORKED_EXAMPLE",
+          "eyebrow": "سيناريو أصلي",
+          "title": "مثال مصمم على شكل BAC لا منقول من مصدر",
+          "body": "ابدأ بدالة f معرفة على مجال مناسب، ثم u_0 داخل المجال وu_{n+1}=f(u_n). المطلوب: أثبت أن الحدود تبقى في المجال، ادرس الاتجاه، استنتج التقارب، حل l=f(l)، ثم عرّف v_n=u_n-l لتكشف هندسية أو حصر سرعة الاقتراب.",
+          "bullets": [
+            "كل سؤال يخدم التالي.",
+            "لا تستعمل النهاية قبل التقارب.",
+            "إذا ظهر v_n، اسأل لماذا اختير بهذا الشكل.",
+            "في المجموع، عد الحدود قبل الصيغة."
+          ],
+          "visual": {
+            "kind": "DIAGRAM",
+            "title": "سلسلة الاعتماد",
+            "description": "كل نتيجة تفتح السؤال التالي في تمرين شامل.",
+            "prompt": "Show dependency chain in a BAC problem: bounds unlock monotonicity, monotonicity unlocks convergence, convergence unlocks limit, transformation unlocks explicit formula, explicit formula unlocks sum.",
+            "altText": "سلسلة اعتماد بين أسئلة تمرين شامل.",
+            "asset": {
+              "status": "GENERATED",
+              "path": "assets/generated/sequence-bac-boss/original-bac-scenario.png",
+              "url": "/api/course-assets/math/SE-M-MT/sequences/assets/generated/sequence-bac-boss/original-bac-scenario.png",
+              "mimeType": "image/png",
+              "width": 1536,
+              "height": 1024,
+              "model": "local-sharp-svg-v1",
+              "generatedAt": "2026-05-06T15:12:53.647Z",
+              "reviewStatus": "UNREVIEWED"
+            }
+          },
+          "interaction": {
+            "kind": "DRAG_MATCH",
+            "prompt": "طابق كل نتيجة بالسؤال الذي تفتحه.",
+            "items": [
+              "الحصر والرتابة -> التقارب",
+              "التقارب -> معادلة النهاية",
+              "v_n هندسية -> حد عام",
+              "حد عام -> مجموع"
+            ],
+            "answer": "كل نتيجة تمهد للأداة التالية في المسألة."
+          },
+          "examLens": {
+            "bacSkill": "استثمار النتائج السابقة",
+            "prompt": "إذا طلب السؤال 4 نتيجة تبدو غريبة، فتش في السؤال 2 أو 3؛ غالبا أعطاك المفتاح مسبقا.",
+            "trap": "إعادة حل كل سؤال من الصفر وتضييع الروابط."
+          }
+        },
+        {
+          "id": "boss-final-checklist",
+          "type": "TAKEAWAY",
+          "eyebrow": "قائمة المعركة",
+          "title": "قبل تسليم الحل، افحص هذه الخمس",
+          "body": "هل حددت بداية n؟ هل برهنت الحصر قبل النهاية؟ هل اخترت أداة الرتابة بشروطها؟ هل رجعت من v_n إلى u_n؟ هل حسبت عدد الحدود في المجموع؟ إذا نعم، فأنت لا تحل فقط؛ أنت تقود التمرين.",
+          "bullets": [
+            "بداية n",
+            "حصر وتقارب",
+            "أداة رتابة قانونية",
+            "عودة من المتتالية المساعدة",
+            "عدد حدود المجموع"
+          ],
+          "visual": null,
+          "interaction": null,
+          "examLens": null
+        }
+      ],
+      "depthPortals": [
+        {
+          "slug": "design-your-own-sequence-problem",
+          "kind": "EXAM_EXTENSION",
+          "title": "اصنع تمرينك الخاص",
+          "summary": "نشاط اختياري يجعل الطالب يرى المسألة من جهة واضعها.",
+          "body": "اختر نقطة ثابتة alpha ونسبة q، ثم ابن علاقة تجعل v_n=u_n-alpha هندسية. بعدها أضف سؤال حصر ورتابة ومجموع. عندما تصمم تمرينا، تصبح قراءة تمارين BAC أسهل بكثير.",
+          "estimatedMinutes": 7
+        }
+      ],
+      "quiz": {
+        "question": "في مسألة تراجعية شاملة، ما الترتيب الأكثر أمانا؟",
+        "options": [
+          "حل النهاية ثم إثبات التقارب لاحقا",
+          "الحصر والرتابة ثم التقارب ثم النهاية",
+          "المجموع أولا ثم الحد الأول",
+          "تعريف v_n دون معرفة الهدف"
+        ],
+        "correctIndex": 1,
+        "explanation": "الطريق القانوني يبدأ بإثبات ما يسمح باستعمال النهاية، ثم تعيينها، ثم استعمال التحويلات والمجاميع."
+      }
+    }
+  ]
+}

@@ -181,6 +181,8 @@ Positioning rule:
 - `skills` represent the abilities being tested and remediated across or within topics.
 - The student roadmap is a curated product surface built on top of curriculum and read models, not the raw taxonomy itself.
 - The first roadmap should be a calm ordered unit map per subject rather than a highly branching graph.
+- Student-facing curriculum should resolve through the student's selected leaf stream; stream-family overlap is an internal authoring convenience, not a repeated student filter.
+- Canonical course authoring rules live in `bac_theory_content/canonical/README.md`: respected sources are internal curriculum intelligence, while published lessons must be original, stream-scoped BAC Bank content.
 
 ### Subject interaction formats
 

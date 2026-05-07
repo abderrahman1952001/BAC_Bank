@@ -156,6 +156,7 @@ const conceptRoleLabels: Record<CourseConceptRole, string> = {
 };
 
 const courseUnitLabels: Record<string, string> = {
+  SEQUENCES: "المتتاليات",
   PROTEIN_SYNTHESIS: "تركيب البروتين",
   STRUCTURE_FUNCTION: "البنية والوظيفة",
   ENZYMES: "الإنزيمات",
@@ -311,10 +312,12 @@ export function buildCourseTopicPageModel(
     description: courseTopic.description,
     progressPercent: courseTopic.progressPercent,
     statusLabel: status.statusLabel,
-    continueHref: buildStudentCourseTopicRoute(
-      courseTopic.subject.code,
-      courseTopic.topic.slug,
-    ),
+    continueHref:
+      concepts[0]?.href ??
+      buildStudentCourseTopicRoute(
+        courseTopic.subject.code,
+        courseTopic.topic.slug,
+      ),
     conceptCount: concepts.length,
     concepts,
     conceptGroups,

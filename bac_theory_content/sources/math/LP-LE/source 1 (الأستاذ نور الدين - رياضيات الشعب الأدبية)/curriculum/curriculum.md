@@ -5,9 +5,13 @@ streams:
   - LP
   - LE
 source: الأستاذ نور الدين - الرياضيات من الألف إلى الياء - الشعب الأدبية
+extractionModel: source-faithful-curriculum-index
 sourcePages:
   - 3
   - 4
+assetStrategy: "صورة كاملة لكل صفحة فهرس مع علامة source-page مستقلة؛ هذا ملف فهرسة لا استخراج درس."
+reviewStatus:
+  text: "مرور تشديد بنيوي للفهرس: وُضعت علامات الصفحات وروابط الصور في مواضعها."
 ---
 
 # برنامج الرياضيات للشعب الأدبية
@@ -20,6 +24,14 @@ sourcePages:
 
 كما يحتوي الفهرس على قائمة طويلة من مواضيع البكالوريا حسب السنوات والموضوع الأول أو الثاني.
 
-![فهرس الرياضيات للشعب الأدبية - الصفحة 3](assets/literary-curriculum-page-3.jpg)
+## صفحة المصدر 3
 
-![فهرس الرياضيات للشعب الأدبية - الصفحة 4](assets/literary-curriculum-page-4.jpg)
+<!-- source-page: 3 -->
+
+![صفحة المصدر 3](assets/literary-curriculum-page-3.jpg)
+
+## صفحة المصدر 4
+
+<!-- source-page: 4 -->
+
+![صفحة المصدر 4](assets/literary-curriculum-page-4.jpg)

@@ -27,6 +27,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const content = (
+    <>
+      <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
+      {children}
+    </>
+  );
+
   return (
     <html
       lang="ar"
@@ -44,8 +51,7 @@ export default function RootLayout({
           signInUrl="/auth/sign-in"
           signUpUrl="/auth/sign-up"
         >
-          <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
-          {children}
+          {content}
         </ClerkProvider>
       </body>
     </html>

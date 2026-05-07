@@ -187,6 +187,36 @@ const authoredSvtTopicFixture: AuthoredCourseTopicContent = {
   ],
 };
 
+const authoredMathSequencesTopicFixture: AuthoredCourseTopicContent = {
+  subjectCode: 'MATHEMATICS',
+  stream: 'SE-M-MT',
+  fieldCode: 'SEQUENCES',
+  topicCode: 'SEQUENCES',
+  topicSlug: 'sequences',
+  title: 'Sequences: Machines Of Prediction',
+  description: 'A full sequence journey.',
+  requiredUnitCodes: ['SEQUENCES'],
+  concepts: [
+    {
+      conceptCode: 'SEQUENCE_FIELD_GATE',
+      slug: 'sequence-field-gate',
+      unitCode: 'SEQUENCES',
+      role: 'FIELD_INTRO',
+      roadmapTitle: 'بوابة المتتاليات',
+      title: 'آلة تتنبأ بالمستقبل',
+      summary: 'المتتالية آلة تنتج عددا جديدا في كل رتبة.',
+      estimatedMinutes: 8,
+      steps: [],
+      quiz: {
+        question: 'ما الفكرة الأساسية في المتتالية؟',
+        options: ['دالة على الرتب الطبيعية', 'منحنى عشوائي'],
+        correctIndex: 0,
+        explanation: 'المتتالية تقرأ الرتبة ثم تعطي حدا.',
+      },
+    },
+  ],
+};
+
 describe('courses read-model builders', () => {
   it('builds course subject cards without web routes', () => {
     expect(buildCourseSubjectCardsResponse(roadmapsFixture)).toEqual({
@@ -414,6 +444,43 @@ describe('courses read-model builders', () => {
         description: 'كل قيمة من المجال تقود إلى صورة وحيدة.',
       },
     ]);
+  });
+
+  it('uses the math sequences authored presentation on the normal API path', () => {
+    const response = buildCourseTopicResponse({
+      subjectCode: 'MATHEMATICS',
+      topicSlug: 'sequences',
+      roadmaps: roadmapsFixture,
+      filters: filtersFixture,
+      authoredTopic: authoredMathSequencesTopicFixture,
+    });
+
+    expect(response).toMatchObject({
+      subject: {
+        code: 'MATHEMATICS',
+        name: 'الرياضيات',
+      },
+      topic: {
+        code: 'SEQUENCES',
+        slug: 'sequences',
+        title: 'المتتاليات',
+        shortTitle: 'المتتاليات',
+      },
+      parentUnitTitle: 'المتتاليات',
+      description: 'الأنماط والتقارب.',
+      progressPercent: 100,
+      status: 'COMPLETED',
+      concepts: [
+        {
+          conceptCode: 'SEQUENCE_FIELD_GATE',
+          slug: 'sequence-field-gate',
+          unitCode: 'SEQUENCES',
+          role: 'FIELD_INTRO',
+          title: 'بوابة المتتاليات',
+          description: 'المتتالية آلة تنتج عددا جديدا في كل رتبة.',
+        },
+      ],
+    });
   });
 
   it('builds a course concept response from authored concept content', () => {

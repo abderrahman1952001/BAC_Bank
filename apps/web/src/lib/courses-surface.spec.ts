@@ -219,6 +219,9 @@ describe("courses surface builders", () => {
     expect(model.concepts[0].href).toBe(
       "/student/courses/MATHEMATICS/topics/functions/concepts/exponential",
     );
+    expect(model.continueHref).toBe(
+      "/student/courses/MATHEMATICS/topics/functions/concepts/exponential",
+    );
   });
 
   it("builds a concept page model with navigation routes", () => {

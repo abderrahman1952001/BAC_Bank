@@ -35,6 +35,14 @@ const authoredTopicPresentation: Record<
   string,
   Partial<AuthoredTopicPresentation>
 > = {
+  'MATHEMATICS:sequences': {
+    topicCode: 'SEQUENCES',
+    title: 'المتتاليات',
+    shortTitle: 'المتتاليات',
+    description:
+      'رحلة رياضية لشعب SE وM وMT تجعل المتتاليات آلات توقع: قراءة، اتجاه، حصر، نهاية، تحويل، ومسألة BAC شاملة.',
+    parentUnitTitle: 'التحليل',
+  },
   'NATURAL_SCIENCES:proteins': {
     topicCode: 'PROTEINS',
     title: 'التخصص الوظيفي للبروتينات',

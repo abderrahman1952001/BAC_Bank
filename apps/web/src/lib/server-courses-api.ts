@@ -24,10 +24,10 @@ import {
   playwrightTestCourseTopic,
 } from "@/lib/playwright-test-fixtures";
 import {
-  buildPlaywrightSvtCourseConceptResponse,
-  buildPlaywrightSvtCourseSubjectCard,
-  buildPlaywrightSvtCourseSubjectResponse,
-  buildPlaywrightSvtCourseTopicResponse,
+  buildPlaywrightCanonicalCourseConceptResponse,
+  buildPlaywrightCanonicalCourseSubjectCards,
+  buildPlaywrightCanonicalCourseSubjectResponse,
+  buildPlaywrightCanonicalCourseTopicResponse,
 } from "@/lib/playwright-svt-course-preview";
 import { fetchServerApiJson } from "@/lib/server-api";
 
@@ -37,14 +37,12 @@ function shouldUsePlaywrightFixtures() {
 
 export async function fetchServerCourseSubjectCards() {
   if (shouldUsePlaywrightFixtures()) {
-    const svtCard = await buildPlaywrightSvtCourseSubjectCard();
+    const canonicalCards = await buildPlaywrightCanonicalCourseSubjectCards();
 
-    return buildCourseSubjectCards(
-      [
-        ...clonePlaywrightFixture(playwrightTestCourseSubjectCards).data,
-        ...(svtCard ? [svtCard] : []),
-      ],
-    );
+    return buildCourseSubjectCards([
+      ...clonePlaywrightFixture(playwrightTestCourseSubjectCards).data,
+      ...canonicalCards,
+    ]);
   }
 
   const response = await fetchServerApiJson<CourseSubjectCardsResponse>(
@@ -68,12 +66,11 @@ export async function fetchServerCourseSubjectPageModel(subjectCode: string) {
   }
 
   if (shouldUsePlaywrightFixtures()) {
-    const svtSubject = await buildPlaywrightSvtCourseSubjectResponse(
-      subjectCode,
-    );
+    const canonicalSubject =
+      await buildPlaywrightCanonicalCourseSubjectResponse(subjectCode);
 
-    if (svtSubject) {
-      return buildCourseSubjectPageModel(svtSubject);
+    if (canonicalSubject) {
+      return buildCourseSubjectPageModel(canonicalSubject);
     }
   }
 
@@ -102,13 +99,13 @@ export async function fetchServerCourseTopicPageModel(
   }
 
   if (shouldUsePlaywrightFixtures()) {
-    const svtTopic = await buildPlaywrightSvtCourseTopicResponse(
+    const canonicalTopic = await buildPlaywrightCanonicalCourseTopicResponse(
       subjectCode,
       topicSlug,
     );
 
-    if (svtTopic) {
-      return buildCourseTopicPageModel(svtTopic);
+    if (canonicalTopic) {
+      return buildCourseTopicPageModel(canonicalTopic);
     }
   }
 
@@ -141,14 +138,15 @@ export async function fetchServerCourseConceptPageModel(
   }
 
   if (shouldUsePlaywrightFixtures()) {
-    const svtConcept = await buildPlaywrightSvtCourseConceptResponse(
-      subjectCode,
-      topicSlug,
-      conceptSlug,
-    );
+    const canonicalConcept =
+      await buildPlaywrightCanonicalCourseConceptResponse(
+        subjectCode,
+        topicSlug,
+        conceptSlug,
+      );
 
-    if (svtConcept) {
-      return buildCourseConceptPageModel(svtConcept);
+    if (canonicalConcept) {
+      return buildCourseConceptPageModel(canonicalConcept);
     }
   }
 

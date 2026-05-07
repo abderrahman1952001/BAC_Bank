@@ -57,4 +57,41 @@ describe('course authored content registry', () => {
       slug: 'numeric-function',
     });
   });
+
+  it('serves the scientific math sequences canonical blueprint', () => {
+    const topic = getAuthoredCourseTopicContent('MATHEMATICS', 'sequences');
+
+    expect(topic).toMatchObject({
+      subjectCode: 'MATHEMATICS',
+      stream: 'SE-M-MT',
+      topicSlug: 'sequences',
+      requiredUnitCodes: ['SEQUENCES'],
+    });
+    expect(topic?.concepts).toHaveLength(13);
+    expect(topic?.concepts[0]).toMatchObject({
+      conceptCode: 'SEQ_FIELD_GATE',
+      role: 'FIELD_INTRO',
+      quality: 'POLISHED',
+      roadmapTitle: 'مدخل المتتاليات',
+    });
+    expect(topic?.concepts[1]).toMatchObject({
+      conceptCode: 'SEQ_UNIT_MAP',
+      role: 'UNIT_INTRO',
+    });
+    const lastConcept = topic?.concepts[topic.concepts.length - 1];
+
+    expect(lastConcept).toMatchObject({
+      conceptCode: 'SEQ_BAC_BOSS',
+      role: 'FIELD_SYNTHESIS',
+    });
+    expect(
+      topic?.concepts.every(
+        (concept) =>
+          concept.steps.length >= 3 &&
+          concept.steps.filter((step) => step.visual).length >= 2 &&
+          concept.steps.filter((step) => step.interaction).length >= 2 &&
+          concept.steps.filter((step) => step.examLens).length >= 2,
+      ),
+    ).toBe(true);
+  });
 });

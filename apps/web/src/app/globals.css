@@ -8900,7 +8900,7 @@ textarea {
 }
 
 .course-concept-step-card.has-visual {
-  grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(300px, 1.2fr) minmax(0, 0.95fr);
   gap: 0;
   align-content: stretch;
   align-items: stretch;
@@ -8949,9 +8949,18 @@ textarea {
 
 .course-concept-step-visual img {
   width: 100%;
-  height: 100%;
-  min-height: 300px;
-  object-fit: cover;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  align-self: center;
+  padding: clamp(0.45rem, 1.4vw, 0.9rem);
+}
+
+.course-concept-step-visual.is-caption-only {
+  min-height: 100%;
+  grid-template-rows: auto;
+  align-content: center;
 }
 
 .course-concept-step-visual figcaption {
@@ -8975,6 +8984,12 @@ textarea {
   color: var(--ink-soft);
   font-size: 0.86rem;
   line-height: 1.6;
+}
+
+.course-concept-step-visual.is-caption-only figcaption {
+  border-top: 0;
+  background: transparent;
+  padding: clamp(1rem, 3vw, 1.4rem);
 }
 
 .course-concept-visual-placeholder {
@@ -9315,7 +9330,7 @@ textarea {
 }
 
 .course-player-card.has-visual .course-card-front {
-  grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(300px, 1.2fr) minmax(0, 0.95fr);
 }
 
 .course-player-card:not(.has-visual) .course-card-front {
@@ -9398,6 +9413,17 @@ textarea {
 [data-theme="light"] .course-player-premium .course-concept-step-visual figcaption {
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
+}
+
+.course-player-premium
+  .course-concept-step-visual.is-caption-only
+  figcaption,
+[data-theme="light"]
+  .course-player-premium
+  .course-concept-step-visual.is-caption-only
+  figcaption {
+  background: transparent;
+  backdrop-filter: none;
 }
 
 .course-roadblock-prompt {
@@ -9796,6 +9822,10 @@ textarea {
   .course-concept-step-visual img,
   .course-concept-visual-placeholder {
     min-height: 220px;
+  }
+
+  .course-concept-step-visual.is-caption-only {
+    min-height: auto;
   }
 
   .course-player-premium .course-player-theater {

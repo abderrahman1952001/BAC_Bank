@@ -5,6 +5,7 @@ import { parseCourseBlueprint } from './course-blueprint';
 import {
   buildCourseVisualAssetPlan,
   buildCourseVisualGenerationPrompt,
+  buildCourseVisualLocalSvg,
 } from './course-visual-assets';
 
 const blueprint = parseCourseBlueprint({
@@ -254,5 +255,29 @@ describe('course visual asset planner', () => {
     ).toHaveLength(1);
     expect(generationPrompt).toContain('Show the diagram.');
     expect(generationPrompt).toContain('Avoid: No clutter.');
+  });
+
+  it('builds a local SVG fallback for course visual assets', () => {
+    const prepared = buildCourseVisualAssetPlan({
+      blueprint,
+      courseFilePath:
+        '/workspace/bac_theory_content/canonical/svt/SE/proteins/course.json',
+      canonicalRootDir: '/workspace/bac_theory_content/canonical',
+      limit: 1,
+    });
+    const visual = prepared.updatedBlueprint.concepts[0].steps[0].visual;
+
+    expect(visual?.asset).toBeTruthy();
+
+    const svg = buildCourseVisualLocalSvg({
+      visualStyle: prepared.updatedBlueprint.visualStyle,
+      visual: visual!,
+      asset: visual!.asset!,
+    });
+
+    expect(svg).toContain('<svg');
+    expect(svg).toContain('direction="rtl"');
+    expect(svg).toContain('آلة خلوية');
+    expect(svg).toContain('generated locally');
   });
 });

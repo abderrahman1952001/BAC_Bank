@@ -1,5 +1,9 @@
+import { redirect } from "next/navigation";
 import { CourseConceptPage } from "@/components/course-concept-page";
-import { fetchServerCourseConceptPageModel } from "@/lib/server-courses-api";
+import {
+  fetchServerCourseConceptPageModel,
+  fetchServerCourseTopicPageModel,
+} from "@/lib/server-courses-api";
 
 export default async function StudentCourseConceptRoutePage({
   params,
@@ -12,6 +16,19 @@ export default async function StudentCourseConceptRoutePage({
 }) {
   const { subjectCode: rawSubjectCode, topicSlug, conceptSlug } = await params;
   const subjectCode = rawSubjectCode.trim().toUpperCase();
+
+  if (conceptSlug.trim().toLowerCase() === topicSlug.trim().toLowerCase()) {
+    const topic = await fetchServerCourseTopicPageModel(
+      subjectCode,
+      topicSlug,
+    ).catch(() => null);
+    const firstConceptHref = topic?.concepts[0]?.href;
+
+    if (firstConceptHref) {
+      redirect(firstConceptHref);
+    }
+  }
+
   const model = await fetchServerCourseConceptPageModel(
     subjectCode,
     topicSlug,

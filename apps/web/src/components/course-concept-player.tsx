@@ -100,23 +100,27 @@ function CourseStepVisual({
     return null;
   }
 
+  const renderableAsset =
+    asset && shouldRenderVisualAsset(asset) ? asset : null;
+
   return (
-    <figure className="course-concept-step-visual">
-      {asset && shouldRenderVisualAsset(asset) ? (
+    <figure
+      className={cn(
+        "course-concept-step-visual",
+        !renderableAsset && "is-caption-only",
+      )}
+    >
+      {renderableAsset ? (
         <Image
-          src={asset.url}
+          src={renderableAsset.url}
           alt={step.visual.altText}
-          width={asset.width}
-          height={asset.height}
+          width={renderableAsset.width}
+          height={renderableAsset.height}
           loading="eager"
           sizes="(max-width: 720px) 100vw, 34vw"
           unoptimized
         />
-      ) : (
-        <div className="course-concept-visual-placeholder">
-          <span>{step.visual.kind}</span>
-        </div>
-      )}
+      ) : null}
       <figcaption>
         <strong>{step.visual.title}</strong>
         <span>{step.visual.description}</span>

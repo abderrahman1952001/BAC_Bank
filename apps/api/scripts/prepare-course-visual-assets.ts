@@ -1,9 +1,11 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import sharp from 'sharp';
 import type { CourseBlueprint } from '../src/courses/course-blueprint';
 import { parseCourseBlueprint } from '../src/courses/course-blueprint';
 import { resolveCanonicalCourseRoot } from '../src/courses/course-blueprint-files';
 import {
+  buildCourseVisualLocalSvg,
   buildCourseVisualAssetPlan,
   buildCourseVisualGenerationPrompt,
   collectGeneratedVisualAssets,
@@ -15,6 +17,7 @@ type CliOptions = {
   apply: boolean;
   force: boolean;
   generate: boolean;
+  generateLocal: boolean;
 };
 
 function parseArgs(argv: string[]): CliOptions {
@@ -24,6 +27,7 @@ function parseArgs(argv: string[]): CliOptions {
     apply: false,
     force: false,
     generate: false,
+    generateLocal: false,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -48,9 +52,17 @@ function parseArgs(argv: string[]): CliOptions {
         options.generate = true;
         options.apply = true;
         break;
+      case '--generate-local':
+        options.generateLocal = true;
+        options.apply = true;
+        break;
       default:
         throw new Error(`Unknown argument: ${arg}`);
     }
+  }
+
+  if (options.generate && options.generateLocal) {
+    throw new Error('Use either --generate or --generate-local, not both.');
   }
 
   return options;
@@ -91,14 +103,15 @@ async function main() {
     canonicalRootDir,
     limit: options.limit,
     force: options.force,
-    includeExistingPending: options.generate,
+    includeExistingPending: options.generate || options.generateLocal,
   });
 
-  if (options.generate) {
+  if (options.generate || options.generateLocal) {
     await generatePlannedAssets({
       blueprint: plan.updatedBlueprint,
       courseFilePath,
       jobAssetPaths: plan.jobs.map((job) => job.assetPath),
+      mode: options.generateLocal ? 'local' : 'openai',
     });
   }
 
@@ -152,15 +165,18 @@ async function generatePlannedAssets(input: {
   blueprint: CourseBlueprint;
   courseFilePath: string;
   jobAssetPaths: string[];
+  mode: 'openai' | 'local';
 }) {
-  const apiKey = process.env.OPENAI_API_KEY;
   const jobAssetPaths = new Set(input.jobAssetPaths);
 
-  if (!apiKey) {
+  if (input.mode === 'openai' && !process.env.OPENAI_API_KEY) {
     throw new Error('OPENAI_API_KEY is required when --generate is used.');
   }
 
-  for (const asset of collectGeneratedVisualAssets(input.blueprint)) {
+  const assets = collectGeneratedVisualAssets(input.blueprint);
+
+  for (let index = 0; index < assets.length; index += 1) {
+    const asset = assets[index];
     if (!asset.visual.asset || asset.visual.asset.status !== 'PENDING') {
       continue;
     }
@@ -175,12 +191,27 @@ async function generatePlannedAssets(input: {
     );
     mkdirSync(dirname(outputPath), { recursive: true });
 
+    if (input.mode === 'local') {
+      const svg = buildCourseVisualLocalSvg({
+        visualStyle: input.blueprint.visualStyle,
+        visual: asset.visual,
+        asset: asset.visual.asset,
+        variantIndex: index,
+      });
+
+      await sharp(Buffer.from(svg)).png().toFile(outputPath);
+      asset.visual.asset.status = 'GENERATED';
+      asset.visual.asset.model = 'local-sharp-svg-v1';
+      asset.visual.asset.generatedAt = new Date().toISOString();
+      continue;
+    }
+
     const response = await fetch(
       'https://api.openai.com/v1/images/generations',
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${apiKey}`,
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
