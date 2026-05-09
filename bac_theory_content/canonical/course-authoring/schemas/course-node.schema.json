@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bac-bank.local/schemas/course-node.schema.json",
+  "title": "BAC Bank Course Node Draft Frontmatter",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "node_code",
+    "curriculum_node_code",
+    "subject_code",
+    "unit_code",
+    "stream_scope",
+    "status",
+    "evidence_level",
+    "programme_evidence",
+    "source_evidence",
+    "review"
+  ],
+  "properties": {
+    "node_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "curriculum_node_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "unit_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stream_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["DRAFT", "REVIEWED", "APPROVED", "PUBLISHED", "REVIEWED_EXAMPLE"]
+    },
+    "evidence_level": {
+      "type": "string",
+      "enum": [
+        "SOURCE_EXTRACTED",
+        "STRUCTURE_VERIFIED",
+        "COVERAGE_VERIFIED",
+        "LINE_VERIFIED"
+      ]
+    },
+    "programme_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "note"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["math", "style", "originality", "json_ready"],
+      "properties": {
+        "math": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "originality": {
+          "type": "string"
+        },
+        "json_ready": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

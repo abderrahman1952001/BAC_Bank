@@ -3,8 +3,9 @@
 Status: `BLUEPRINT_V0`
 
 This is the first whole-subject map for the platform-authored Math curriculum.
-It is not a lesson file and it is not a source extraction. It defines the route
-we will use before creating unit-level `course.json` journeys.
+It is not a lesson file and it is not a source extraction. It defines the
+`CurriculumNode` route we will use before creating reviewed lesson drafts and
+compiled course artifacts.
 
 Subject-agnostic curriculum rules live in `../README.md`.
 
@@ -45,10 +46,10 @@ Current exclusions and caveats:
 The student should experience Math as a guided journey for their own stream,
 not as a copied table of contents. The canonical layer should use four levels:
 
-1. `roadmap`: the visible subject journey for the student's leaf stream.
+1. `curriculum journey`: the visible projection for the student's leaf stream.
 2. `station`: a coherent unit or phase of the journey.
-3. `node`: a student-recognizable learning chunk.
-4. `step`: the interactive lesson material inside a node.
+3. `CurriculumNode`: the canonical learning chunk.
+4. `CourseLesson` step: the interactive teaching material attached to a node.
 
 Every node should eventually carry:
 
@@ -346,11 +347,13 @@ Canonical Math should teach not only topics but reusable BAC actions:
 
 1. Create a full concept inventory for scientific and literary Math from this blueprint.
 2. Build the golden unit: scientific `SEQUENCES`.
-3. Convert its nodes into a production-quality `course.json` pattern.
-4. Reuse the pattern for literary `SEQUENCES` with simpler scope.
-5. Build scientific `FUNCTIONS` in phases because it is the largest unit.
-6. Build `PROBABILITY`, `COMPLEX_NUMBERS`, and `ARITHMETIC`.
-7. Build literary `FUNCTIONS` and `EUCLIDEAN_DIVISION_IN_Z`.
+3. Draft its nodes one by one in Markdown using the course-authoring workflow.
+4. Review the drafts for correctness, scope, tone, and originality.
+5. Compile approved drafts into a production-quality course artifact.
+6. Reuse the pattern for literary `SEQUENCES` with simpler scope.
+7. Build scientific `FUNCTIONS` in phases because it is the largest unit.
+8. Build `PROBABILITY`, `COMPLEX_NUMBERS`, and `ARITHMETIC`.
+9. Build literary `FUNCTIONS` and `EUCLIDEAN_DIVISION_IN_Z`.
 
 ## Modeling Decisions
 
@@ -375,6 +378,10 @@ The golden unit design note now lives at:
 
 `bac_theory_content/canonical/math/SE-M-MT/sequences/README.md`
 
-The next artifact should be:
+The next artifacts should be one reviewed node draft at a time under:
 
-`bac_theory_content/canonical/math/SE-M-MT/sequences/course.json`
+`bac_theory_content/canonical/math/SE-M-MT/sequences/nodes/`
+
+Use the authoring workflow in:
+
+`bac_theory_content/canonical/course-authoring/`

@@ -14,21 +14,23 @@ Each student belongs to one leaf stream, such as `SE`, `M`, `MT`, `LP`, or
 `LE`. In normal study mode, the student should see only the curriculum for that
 stream.
 
-The sane normalized model is:
+The normalized model is:
 
 1. `Stream`: the student's chosen leaf stream.
-2. `SubjectCurriculum`: the active curriculum for one subject, one stream, and
-   one validity window.
-3. `SubjectRoadmap`: the visible journey for that curriculum.
-4. `RoadmapSection` / `RoadmapNode`: the ordered stations and nodes the student
-   uses.
-5. Shared canonical modules: internal authoring units reused across multiple
-   stream roadmaps when the learning substance is truly shared.
+2. `Subject`: a studied subject such as Math, SVT, Arabic, or Islamic studies.
+3. `SubjectOffering`: the stream-subject relationship, including coefficient
+   and the active curriculum.
+4. `Curriculum`: the actual programme for one subject and validity window. It
+   may be shared by several streams when the scope is genuinely identical.
+5. `CurriculumNode`: the canonical learning spine. A node can represent a
+   field, unit, chapter, concept, optional portal, skill, or checkpoint.
+6. `CourseLesson`: the teaching layer attached to a `CurriculumNode`.
 
-So yes: the product should resolve to a roadmap per stream. Internally, we can
-author shared modules for overlapping material, then project them into each
-stream's roadmap with the correct scope, order, depth, examples, and optional
-portals.
+So yes: the product should resolve to a curriculum journey per stream. The
+student-facing roadmap is a visual projection of `CurriculumNode`, not a second
+curriculum. Internally, we can author shared modules for overlapping material,
+then project them into each stream with the correct scope, order, depth,
+examples, lessons, exam mappings, and optional portals.
 
 Stream families like `SE-M-MT` or `LP-LE` are authoring conveniences, not the
 student's primary browsing model. A scientific shared module may feed `SE`,
@@ -122,7 +124,7 @@ subjects:
 3. Build a thin whole-subject authoring map, using stream families only when
    the overlap is real.
 4. Normalize shared modules internally.
-5. Produce a student-facing roadmap per leaf stream.
+5. Produce a student-facing curriculum journey per leaf stream.
 6. Build one golden unit to prove the tone, node shape, visuals, interactions,
    and validation rules.
 7. Expand unit by unit, keeping optional portals clearly separate from the
@@ -134,8 +136,9 @@ subjects:
 - `bac_theory_content/programmes/**`: official programme scope and unit codes.
 - `bac_theory_content/sources/**`: source-faithful internal extraction and
   audit material.
-- `bac_theory_content/canonical/**`: BAC Bank's authored curriculum, roadmaps,
-  course blueprints, interactions, and publishing-ready lesson structure.
+- `bac_theory_content/canonical/**`: BAC Bank's authored curriculum nodes,
+  curriculum journeys, course lesson drafts, interactions, and publishing-ready
+  lesson structure.
 
 The canonical layer may depend on internal evidence. It must not become a
 second source-extraction layer.

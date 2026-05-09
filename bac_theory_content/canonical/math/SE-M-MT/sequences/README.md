@@ -8,7 +8,7 @@ titles, visual prompts, metaphors, or prose tone when authoring production
 lessons.
 
 This is the first full unit design note for canonical Math. It defines the
-student journey before we write `course.json`.
+student journey before we write reviewed node-level lesson drafts.
 
 Subject-level rules live in:
 
@@ -131,13 +131,12 @@ layouts.
 
 Visual asset status:
 
-- `course.json` has pending asset metadata for every planned visual.
-- The generated-asset manifest lives at
-  `assets/generated/visual-assets.json`.
-- Actual image files are not generated yet. Generate them through the existing
-  `prepare:course-visual-assets` workflow with explicit generation enabled, then
-  review each image before marking it approved.
-- Do not generate visuals from source page layouts; use the authored prompts.
+- The old generated `course.json` draft and generated-asset manifest were
+  removed because they were not approved lesson copy.
+- Future visual plans should be written inside reviewed node Markdown drafts.
+- Generate actual assets only after the lesson node passes math, style, and
+  originality review.
+- Do not generate visuals from source page layouts; use authored visual prompts.
 
 Visual language:
 
@@ -873,57 +872,32 @@ The following need additional visual/line audit before final production:
 
 This audit is for scope and correctness, not for public reuse.
 
-## Course JSON Draft Shape
+## Course Authoring Workflow
 
-The next artifact should be:
+Do not recreate a unit-level `course.json` directly from this README.
 
-`bac_theory_content/canonical/math/SE-M-MT/sequences/course.json`
+The next artifact should be one Markdown lesson draft at a time under:
 
-Expected top-level fields:
+`bac_theory_content/canonical/math/SE-M-MT/sequences/nodes/`
 
-- `id`: `math-scientific-sequences`
-- `status`: `draft`
-- `title`: `Sequences: Core Language And Methods`
-- `subjectCode`: `MATHEMATICS`
-- `stream`: `SE-M-MT`
-- `fieldCode`: `SEQUENCES`
-- `requiredUnitCodes`: `["SEQUENCES"]`
-- projection note: this authoring blueprint feeds the leaf stream roadmaps for
-  `SE`, `M`, and `MT`
-- `visualStyle`: `precision-motion-math`
-- `topicCode`: `SEQUENCES`
-- `topicSlug`: `sequences`
-- `sourceIntelligence`: private evidence paths and notes
-- `concepts`: the node map above
+Start with:
 
-Expected concept fields should follow the current course blueprint validator:
+`SEQ_INDEX_LANGUAGE`
 
-- `conceptCode`
-- `unitCode`
-- `role`
-- `quality`
-- `slug`
-- `roadmapTitle`
-- `title`
-- `summary`
-- `learningObjective`
-- `estimatedMinutes`
-- `steps`
-- `depthPortals`
-- `quiz`
+Each node draft must use the shared course-authoring pack:
 
-Design-only notes in this README, such as traps, authority warnings, and
-internal evidence, should be translated into step bodies, `examLens` fields,
-`depthPortals`, `quiz`, and top-level `sourceIntelligence` rather than added as
-unsupported JSON fields.
+- `bac_theory_content/canonical/course-authoring/style-guide.md`
+- `bac_theory_content/canonical/course-authoring/node-template.md`
+- `bac_theory_content/canonical/course-authoring/quality-rubric.md`
 
-Quality target for the first JSON pass:
+Quality target for reviewed drafts:
 
-- All concepts: at least `SKELETON`
-- Intro, index language, direction, rails/limits, transform lens, and synthesis:
-  aim for `POLISHED`
-- Every concept: at least one interaction, one BAC lens, and one trap
-- No public source citations or copied source examples
+- one node per file;
+- objective, intuition, formal rule, worked example, interaction, trap, BAC
+  lens, micro-quiz, and optional portal only when useful;
+- legal conditions stated beside every method or formula;
+- no public source citations or copied source examples;
+- `json_ready: true` only after math, style, and originality review pass.
 
 ## Success Criteria
 
@@ -935,5 +909,5 @@ This unit design is acceptable when:
 - authority is visible through legal conditions and traps;
 - optional portals deepen curiosity without expanding the required exam scope;
 - internal source evidence remains private QA evidence;
-- the path can become a validated `course.json` without changing the unit
-  philosophy.
+- approved node drafts can later be compiled into a validated course artifact
+  without changing the unit philosophy.
