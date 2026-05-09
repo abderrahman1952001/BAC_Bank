@@ -74,7 +74,7 @@ function makeSharedExamWithExercise(
               maxPoints: null,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [],
             },
             {
@@ -86,7 +86,7 @@ function makeSharedExamWithExercise(
               maxPoints: 5,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [
                 {
                   id: `prompt-${examId}`,
@@ -138,7 +138,7 @@ function makeOfficialSimulationExam() {
               maxPoints: null,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [],
             },
             {
@@ -150,7 +150,7 @@ function makeOfficialSimulationExam() {
               maxPoints: 5,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [
                 {
                   id: 'prompt-sim-1',
@@ -200,9 +200,9 @@ function makeExerciseTopicTaggedExam() {
               maxPoints: null,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [
+              curriculumNodeMappings: [
                 {
-                  topic: {
+                  curriculumNode: {
                     code: 'ALG',
                     name: 'Algebre',
                     studentLabel: null,
@@ -221,7 +221,7 @@ function makeExerciseTopicTaggedExam() {
               maxPoints: 5,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [
                 {
                   id: 'prompt-topic',
@@ -287,7 +287,7 @@ function makeVariantWithOfferings() {
         maxPoints: null,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [],
+        curriculumNodeMappings: [],
         blocks: [],
       },
       {
@@ -299,7 +299,7 @@ function makeVariantWithOfferings() {
         maxPoints: 5,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [],
+        curriculumNodeMappings: [],
         blocks: [
           {
             id: 'prompt-session',
@@ -346,7 +346,7 @@ function makeStructuredSearchExam() {
               maxPoints: null,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [],
             },
             {
@@ -358,7 +358,7 @@ function makeStructuredSearchExam() {
               maxPoints: 5,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [
                 {
                   id: 'graph-block',
@@ -446,9 +446,9 @@ function makeVariantWithContextAndInheritedTopics() {
         maxPoints: null,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [
+        curriculumNodeMappings: [
           {
-            topic: {
+            curriculumNode: {
               code: 'ALG',
               name: 'Algebre',
               studentLabel: 'Algebra',
@@ -477,7 +477,7 @@ function makeVariantWithContextAndInheritedTopics() {
         maxPoints: null,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [],
+        curriculumNodeMappings: [],
         blocks: [
           {
             id: 'nested-context',
@@ -499,7 +499,7 @@ function makeVariantWithContextAndInheritedTopics() {
         maxPoints: 5,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [],
+        curriculumNodeMappings: [],
         blocks: [
           {
             id: 'prompt-1',
@@ -519,8 +519,8 @@ function makeVariantWithContextAndInheritedTopics() {
 describe('StudyService study sessions', () => {
   let prisma: {
     subject: { findUnique: jest.Mock };
-    topic: { findMany: jest.Mock };
-    studentTopicRollup: { findMany: jest.Mock };
+    curriculumNode: { findMany: jest.Mock };
+    studentCurriculumNodeRollup: { findMany: jest.Mock };
     exam: { findMany: jest.Mock; findUnique: jest.Mock };
     user: { findUnique: jest.Mock };
     studySession: {
@@ -536,15 +536,15 @@ describe('StudyService study sessions', () => {
   };
   let catalogCurriculumService: {
     listActiveFilterTopics: jest.Mock;
-    resolveSubjectCurriculumScope: jest.Mock;
+    resolveCurriculumScope: jest.Mock;
   };
   let service: StudyService;
 
   beforeEach(() => {
     prisma = {
       subject: { findUnique: jest.fn() },
-      topic: { findMany: jest.fn() },
-      studentTopicRollup: { findMany: jest.fn() },
+      curriculumNode: { findMany: jest.fn() },
+      studentCurriculumNodeRollup: { findMany: jest.fn() },
       exam: { findMany: jest.fn(), findUnique: jest.fn() },
       user: {
         findUnique: jest
@@ -566,7 +566,7 @@ describe('StudyService study sessions', () => {
     };
     catalogCurriculumService = {
       listActiveFilterTopics: jest.fn().mockResolvedValue([]),
-      resolveSubjectCurriculumScope: jest
+      resolveCurriculumScope: jest
         .fn()
         .mockResolvedValue(makeSubjectScope(['SE'])),
     };
@@ -587,7 +587,7 @@ describe('StudyService study sessions', () => {
   });
 
   it('counts shared paper offerings in preview without duplicating exercise candidates', async () => {
-    catalogCurriculumService.resolveSubjectCurriculumScope.mockResolvedValue(
+    catalogCurriculumService.resolveCurriculumScope.mockResolvedValue(
       makeSubjectScope(['SE', 'TM']),
     );
     prisma.exam.findMany.mockResolvedValue([
@@ -648,7 +648,7 @@ describe('StudyService study sessions', () => {
   });
 
   it('stores the chosen exam offering when creating a study session', async () => {
-    catalogCurriculumService.resolveSubjectCurriculumScope.mockResolvedValue(
+    catalogCurriculumService.resolveCurriculumScope.mockResolvedValue(
       makeSubjectScope(['SE']),
     );
     prisma.exam.findMany.mockResolvedValue([
@@ -719,7 +719,7 @@ describe('StudyService study sessions', () => {
   });
 
   it('creates an exact drill when exercise node ids are provided', async () => {
-    catalogCurriculumService.resolveSubjectCurriculumScope.mockResolvedValue(
+    catalogCurriculumService.resolveCurriculumScope.mockResolvedValue(
       makeSubjectScope(['SE']),
     );
     prisma.exam.findMany.mockResolvedValue([
@@ -779,10 +779,10 @@ describe('StudyService study sessions', () => {
   });
 
   it('tags topic-filtered drill sessions as topic drills', async () => {
-    catalogCurriculumService.resolveSubjectCurriculumScope.mockResolvedValue(
+    catalogCurriculumService.resolveCurriculumScope.mockResolvedValue(
       makeSubjectScope(['SE']),
     );
-    prisma.topic.findMany.mockResolvedValue([
+    prisma.curriculumNode.findMany.mockResolvedValue([
       {
         code: 'ALG',
         parent: null,
@@ -818,7 +818,7 @@ describe('StudyService study sessions', () => {
   });
 
   it('rejects new free drill starts after the monthly quota is exhausted', async () => {
-    catalogCurriculumService.resolveSubjectCurriculumScope.mockResolvedValue(
+    catalogCurriculumService.resolveCurriculumScope.mockResolvedValue(
       makeSubjectScope(['SE']),
     );
     prisma.exam.findMany.mockResolvedValue([
@@ -944,10 +944,10 @@ describe('StudyService study sessions', () => {
   });
 
   it('matches exercise-level topic tags when previewing a study session', async () => {
-    catalogCurriculumService.resolveSubjectCurriculumScope.mockResolvedValue(
+    catalogCurriculumService.resolveCurriculumScope.mockResolvedValue(
       makeSubjectScope(['SE']),
     );
-    prisma.topic.findMany.mockResolvedValue([
+    prisma.curriculumNode.findMany.mockResolvedValue([
       {
         code: 'ALG',
         parent: null,
@@ -971,7 +971,7 @@ describe('StudyService study sessions', () => {
   });
 
   it('matches search against structured block content in preview', async () => {
-    catalogCurriculumService.resolveSubjectCurriculumScope.mockResolvedValue(
+    catalogCurriculumService.resolveCurriculumScope.mockResolvedValue(
       makeSubjectScope(['SE']),
     );
     prisma.exam.findMany.mockResolvedValue([makeStructuredSearchExam()]);
@@ -1113,7 +1113,7 @@ describe('StudyService study sessions', () => {
       ],
     });
     prisma.examVariant.findMany.mockResolvedValue([makeVariantWithOfferings()]);
-    prisma.topic.findMany.mockResolvedValue([
+    prisma.curriculumNode.findMany.mockResolvedValue([
       {
         id: 'topic-1',
         code: 'FUNC',
@@ -1139,9 +1139,9 @@ describe('StudyService study sessions', () => {
         ],
       },
     ]);
-    prisma.studentTopicRollup.findMany.mockResolvedValue([
+    prisma.studentCurriculumNodeRollup.findMany.mockResolvedValue([
       {
-        topicId: 'topic-1',
+        curriculumNodeId: 'topic-1',
         missedCount: 4,
         hardCount: 1,
         skippedCount: 0,

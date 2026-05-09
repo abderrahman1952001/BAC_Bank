@@ -40,7 +40,7 @@ export class IngestionPublishedVariantService {
     const subjectScope =
       subjectCode === null
         ? null
-        : await this.catalogCurriculumService.resolveSubjectCurriculumScope(
+        : await this.catalogCurriculumService.resolveCurriculumScope(
             {
               subjectCode,
               streamCodes,
@@ -49,7 +49,7 @@ export class IngestionPublishedVariantService {
             tx,
           );
 
-    const topics = await tx.topic.findMany({
+    const topics = await tx.curriculumNode.findMany({
       where: {
         subjectId,
         ...(subjectScope?.curriculumIds.length
@@ -212,10 +212,10 @@ export class IngestionPublishedVariantService {
       return topicId;
     });
 
-    await tx.examNodeTopic.createMany({
+    await tx.examNodeCurriculumNode.createMany({
       data: topicIds.map((topicId) => ({
         nodeId,
-        topicId,
+        curriculumNodeId: topicId,
       })),
       skipDuplicates: true,
     });
@@ -299,7 +299,7 @@ export class IngestionPublishedVariantService {
       >();
     }
 
-    const topics = await tx.topic.findMany({
+    const topics = await tx.curriculumNode.findMany({
       where: {
         id: {
           in: topicIds,

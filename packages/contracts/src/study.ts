@@ -818,6 +818,10 @@ export type StudyRoadmapsResponse = {
   }>;
 };
 
+export type CurriculumJourneyNodeStatus = StudyRoadmapNodeStatus;
+export type CurriculumJourneyActionType = StudyRoadmapActionType;
+export type CurriculumJourneysResponse = StudyRoadmapsResponse;
+
 const familySchema = z.object({
   code: z.string(),
   name: z.string(),
@@ -1675,6 +1679,9 @@ export const studyRoadmapsResponseSchema: z.ZodType<StudyRoadmapsResponse> =
     });
   })();
 
+export const curriculumJourneysResponseSchema: z.ZodType<CurriculumJourneysResponse> =
+  studyRoadmapsResponseSchema;
+
 export function parseFiltersResponse(value: unknown) {
   return parseContract(filtersResponseSchema, value, "FiltersResponse");
 }
@@ -1868,5 +1875,13 @@ export function parseStudyRoadmapsResponse(value: unknown) {
     studyRoadmapsResponseSchema,
     value,
     "StudyRoadmapsResponse",
+  );
+}
+
+export function parseCurriculumJourneysResponse(value: unknown) {
+  return parseContract(
+    curriculumJourneysResponseSchema,
+    value,
+    "CurriculumJourneysResponse",
   );
 }

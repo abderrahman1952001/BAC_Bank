@@ -15,7 +15,7 @@ describe('StudyReadModelService', () => {
     studentExerciseState: {
       findMany: jest.Mock;
     };
-    studentTopicRollup: {
+    studentCurriculumNodeRollup: {
       deleteMany: jest.Mock;
       createMany: jest.Mock;
     };
@@ -40,7 +40,7 @@ describe('StudyReadModelService', () => {
       studentExerciseState: {
         findMany: jest.fn(),
       },
-      studentTopicRollup: {
+      studentCurriculumNodeRollup: {
         deleteMany: jest.fn().mockResolvedValue(undefined),
         createMany: jest.fn().mockResolvedValue(undefined),
       },
@@ -87,15 +87,15 @@ describe('StudyReadModelService', () => {
               },
             },
           ],
-          topicMappings: [],
+          curriculumNodeMappings: [],
         },
         sessionExercise: {
           exerciseNodeId: 'exercise-1',
           exerciseNode: {
             skillMappings: [],
-            topicMappings: [
+            curriculumNodeMappings: [
               {
-                topic: {
+                curriculumNode: {
                   id: 'topic-functions',
                   code: 'FUNCTIONS',
                   name: 'الدوال',
@@ -151,9 +151,9 @@ describe('StudyReadModelService', () => {
         updatedAt: new Date('2026-04-09T11:10:00.000Z'),
         questionNode: {
           skillMappings: [],
-          topicMappings: [
+          curriculumNodeMappings: [
             {
-              topic: {
+              curriculumNode: {
                 id: 'topic-geometry',
                 code: 'GEOMETRY',
                 name: 'الهندسة',
@@ -185,7 +185,7 @@ describe('StudyReadModelService', () => {
           exerciseNodeId: 'exercise-2',
           exerciseNode: {
             skillMappings: [],
-            topicMappings: [],
+            curriculumNodeMappings: [],
           },
         },
       },
@@ -200,7 +200,7 @@ describe('StudyReadModelService', () => {
 
     await service.refreshUserReadModels('user-1');
 
-    expect(prisma.studentTopicRollup.deleteMany).toHaveBeenCalledWith({
+    expect(prisma.studentCurriculumNodeRollup.deleteMany).toHaveBeenCalledWith({
       where: {
         userId: 'user-1',
       },
@@ -230,11 +230,11 @@ describe('StudyReadModelService', () => {
       },
     });
     expect(prisma.studentReviewQueueItem.deleteMany).not.toHaveBeenCalled();
-    expect(prisma.studentTopicRollup.createMany).toHaveBeenCalledWith({
+    expect(prisma.studentCurriculumNodeRollup.createMany).toHaveBeenCalledWith({
       data: [
         {
           userId: 'user-1',
-          topicId: 'topic-functions',
+          curriculumNodeId: 'topic-functions',
           attemptedQuestions: 1,
           correctCount: 1,
           incorrectCount: 0,
@@ -248,7 +248,7 @@ describe('StudyReadModelService', () => {
         },
         {
           userId: 'user-1',
-          topicId: 'topic-geometry',
+          curriculumNodeId: 'topic-geometry',
           attemptedQuestions: 1,
           correctCount: 0,
           incorrectCount: 0,
@@ -390,13 +390,13 @@ describe('StudyReadModelService', () => {
         updatedAt: new Date('2026-04-09T09:10:00.000Z'),
         questionNode: {
           skillMappings: [],
-          topicMappings: [],
+          curriculumNodeMappings: [],
         },
         sessionExercise: {
           exerciseNodeId: 'exercise-1',
           exerciseNode: {
             skillMappings: [],
-            topicMappings: [],
+            curriculumNodeMappings: [],
           },
         },
       },

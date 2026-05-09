@@ -24,6 +24,7 @@ export * from "./ingestion.js";
 export {
   parseCatalogResponse,
   parseCreateSessionResponse,
+  parseCurriculumJourneysResponse,
   parseExamResponse,
   parseFiltersResponse,
   parseMyMistakesResponse,

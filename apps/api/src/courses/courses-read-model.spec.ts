@@ -193,7 +193,7 @@ const authoredMathSequencesTopicFixture: AuthoredCourseTopicContent = {
   fieldCode: 'SEQUENCES',
   topicCode: 'SEQUENCES',
   topicSlug: 'sequences',
-  title: 'Sequences: Machines Of Prediction',
+  title: 'Sequences: Core Language And Methods',
   description: 'A full sequence journey.',
   requiredUnitCodes: ['SEQUENCES'],
   concepts: [
@@ -202,9 +202,9 @@ const authoredMathSequencesTopicFixture: AuthoredCourseTopicContent = {
       slug: 'sequence-field-gate',
       unitCode: 'SEQUENCES',
       role: 'FIELD_INTRO',
-      roadmapTitle: 'بوابة المتتاليات',
-      title: 'آلة تتنبأ بالمستقبل',
-      summary: 'المتتالية آلة تنتج عددا جديدا في كل رتبة.',
+      roadmapTitle: 'مدخل المتتاليات',
+      title: 'مدخل إلى المتتاليات',
+      summary: 'المتتالية دالة معرفة على رتب طبيعية وتنتج حدا لكل رتبة مسموحة.',
       estimatedMinutes: 8,
       steps: [],
       quiz: {
@@ -476,8 +476,9 @@ describe('courses read-model builders', () => {
           slug: 'sequence-field-gate',
           unitCode: 'SEQUENCES',
           role: 'FIELD_INTRO',
-          title: 'بوابة المتتاليات',
-          description: 'المتتالية آلة تنتج عددا جديدا في كل رتبة.',
+          title: 'مدخل المتتاليات',
+          description:
+            'المتتالية دالة معرفة على رتب طبيعية وتنتج حدا لكل رتبة مسموحة.',
         },
       ],
     });

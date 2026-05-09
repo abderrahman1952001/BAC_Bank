@@ -62,7 +62,7 @@ async function main() {
           code: true,
         },
       }),
-      prisma.streamSubject.findMany({
+      prisma.subjectOffering.findMany({
         select: {
           validFromYear: true,
           validToYear: true,
@@ -249,8 +249,8 @@ async function loadCanonicalCounts() {
         },
       },
     }),
-    prisma.streamSubject.count(),
-    prisma.streamSubject.count({
+    prisma.subjectOffering.count(),
+    prisma.subjectOffering.count({
       where: {
         OR: [
           {

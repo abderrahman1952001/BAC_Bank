@@ -428,9 +428,9 @@ export class StudySessionService {
                 maxPoints: true,
                 status: true,
                 metadata: true,
-                topicMappings: {
+                curriculumNodeMappings: {
                   select: {
-                    topic: {
+                    curriculumNode: {
                       select: {
                         code: true,
                         name: true,
@@ -1234,7 +1234,7 @@ export class StudySessionService {
     }
 
     const requestedTopicCodes = Array.from(new Set(input.topicCodes));
-    const topics = await this.prisma.topic.findMany({
+    const topics = await this.prisma.curriculumNode.findMany({
       where: {
         code: {
           in: requestedTopicCodes,
@@ -1276,15 +1276,15 @@ export class StudySessionService {
       return null;
     }
 
-    const topicRollups = await this.prisma.studentTopicRollup.findMany({
+    const topicRollups = await this.prisma.studentCurriculumNodeRollup.findMany({
       where: {
         userId: input.userId,
-        topicId: {
+        curriculumNodeId: {
           in: topics.map((topic) => topic.id),
         },
       },
       select: {
-        topicId: true,
+        curriculumNodeId: true,
         missedCount: true,
         hardCount: true,
         skippedCount: true,
@@ -1294,7 +1294,10 @@ export class StudySessionService {
     return buildWeakPointIntroPayload({
       requestedTopicCodes,
       topics,
-      topicRollups,
+      topicRollups: topicRollups.map((rollup) => ({
+        ...rollup,
+        topicId: rollup.curriculumNodeId,
+      })),
       exercises: input.exercises,
       supportStyle: input.supportStyle,
     });
@@ -1538,9 +1541,9 @@ export class StudySessionService {
                     maxPoints: true,
                     status: true,
                     metadata: true,
-                    topicMappings: {
+                    curriculumNodeMappings: {
                       select: {
-                        topic: {
+                        curriculumNode: {
                           select: {
                             code: true,
                             name: true,
@@ -1663,9 +1666,9 @@ export class StudySessionService {
                     maxPoints: true,
                     status: true,
                     metadata: true,
-                    topicMappings: {
+                    curriculumNodeMappings: {
                       select: {
-                        topic: {
+                        curriculumNode: {
                           select: {
                             code: true,
                             name: true,
@@ -1719,7 +1722,7 @@ export class StudySessionService {
       max: SESSION_YEAR_MAX,
     });
     const subjectScope =
-      await this.catalogCurriculumService.resolveSubjectCurriculumScope({
+      await this.catalogCurriculumService.resolveCurriculumScope({
         subjectCode: normalizedRequest.subjectCode,
         streamCodes: normalizedRequest.streamCodes,
         years: normalizedRequest.years,
@@ -1754,7 +1757,7 @@ export class StudySessionService {
     let topicMatchCodes = normalizedRequest.topicMatchCodes;
 
     if (normalizedRequest.topicCodes.length) {
-      const subjectTopics = await this.prisma.topic.findMany({
+      const subjectTopics = await this.prisma.curriculumNode.findMany({
         where: {
           subjectId: subjectScope.subjectId,
           curriculumId: {

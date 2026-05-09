@@ -5,10 +5,10 @@ import { type IngestionDraft } from './ingestion.contract';
 describe('IngestionPublishedVariantService', () => {
   let service: IngestionPublishedVariantService;
   let catalogCurriculumService: {
-    resolveSubjectCurriculumScope: jest.Mock;
+    resolveCurriculumScope: jest.Mock;
   };
   let tx: {
-    topic: {
+    curriculumNode: {
       findMany: jest.Mock;
     };
     examNodeSkill: {
@@ -20,7 +20,7 @@ describe('IngestionPublishedVariantService', () => {
     examNode: {
       create: jest.Mock;
     };
-    examNodeTopic: {
+    examNodeCurriculumNode: {
       createMany: jest.Mock;
     };
     examNodeBlock: {
@@ -104,7 +104,7 @@ describe('IngestionPublishedVariantService', () => {
 
   beforeEach(() => {
     catalogCurriculumService = {
-      resolveSubjectCurriculumScope: jest.fn().mockResolvedValue({
+      resolveCurriculumScope: jest.fn().mockResolvedValue({
         subjectId: 'subject-1',
         subjectCode: 'MATH',
         allowedStreamCodes: ['SE'],
@@ -115,7 +115,7 @@ describe('IngestionPublishedVariantService', () => {
       catalogCurriculumService as never,
     );
     tx = {
-      topic: {
+      curriculumNode: {
         findMany: jest.fn(),
       },
       examNodeSkill: {
@@ -127,7 +127,7 @@ describe('IngestionPublishedVariantService', () => {
       examNode: {
         create: jest.fn().mockResolvedValue(undefined),
       },
-      examNodeTopic: {
+      examNodeCurriculumNode: {
         createMany: jest.fn().mockResolvedValue(undefined),
       },
       examNodeBlock: {
@@ -137,7 +137,7 @@ describe('IngestionPublishedVariantService', () => {
   });
 
   it('builds subject topic maps and rejects invalid draft topic codes', async () => {
-    tx.topic.findMany.mockResolvedValueOnce([
+    tx.curriculumNode.findMany.mockResolvedValueOnce([
       {
         id: 'topic-1',
         code: 'ALG',
@@ -154,7 +154,7 @@ describe('IngestionPublishedVariantService', () => {
     ).rejects.toThrow(
       new BadRequestException('Invalid topic codes for MATH: FUNC.'),
     );
-    expect(tx.topic.findMany).toHaveBeenCalledWith({
+    expect(tx.curriculumNode.findMany).toHaveBeenCalledWith({
       where: {
         subjectId: 'subject-1',
         curriculumId: {
@@ -172,7 +172,7 @@ describe('IngestionPublishedVariantService', () => {
   });
 
   it('creates published variants, nodes, topics, and blocks with structured metadata', async () => {
-    tx.topic.findMany.mockResolvedValueOnce([
+    tx.curriculumNode.findMany.mockResolvedValueOnce([
       {
         id: 'topic-1',
         skillMappings: [
@@ -257,11 +257,11 @@ describe('IngestionPublishedVariantService', () => {
         },
       },
     });
-    expect(tx.examNodeTopic.createMany).toHaveBeenNthCalledWith(1, {
+    expect(tx.examNodeCurriculumNode.createMany).toHaveBeenNthCalledWith(1, {
       data: [
         {
           nodeId: 'node-exercise-1',
-          topicId: 'topic-1',
+          curriculumNodeId: 'topic-1',
         },
       ],
       skipDuplicates: true,

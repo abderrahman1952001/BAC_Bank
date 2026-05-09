@@ -69,7 +69,7 @@ export class StudyService {
     const [streams, subjects, topics] = await Promise.all([
       this.prisma.stream.findMany({
         where: {
-          subjectMappings: {
+          subjectOfferings: {
             some: {},
           },
         },
@@ -83,7 +83,7 @@ export class StudyService {
               name: true,
             },
           },
-          subjectMappings: {
+          subjectOfferings: {
             select: {
               subject: {
                 select: {
@@ -106,7 +106,7 @@ export class StudyService {
               name: true,
             },
           },
-          streamMappings: {
+          subjectOfferings: {
             select: {
               stream: {
                 select: {
@@ -194,7 +194,7 @@ export class StudyService {
         family: stream.family,
         subjectCodes: Array.from(
           new Set(
-            stream.subjectMappings.map((mapping) => mapping.subject.code),
+            stream.subjectOfferings.map((mapping) => mapping.subject.code),
           ),
         ).sort((a, b) => a.localeCompare(b)),
       })),
@@ -205,14 +205,16 @@ export class StudyService {
         family: subject.family,
         streams: Array.from(
           new Map(
-            subject.streamMappings.map((mapping) => [
+            subject.subjectOfferings.map((mapping) => [
               mapping.stream.code,
               mapping.stream,
             ]),
           ).values(),
         ).sort((a, b) => a.name.localeCompare(b.name)),
         streamCodes: Array.from(
-          new Set(subject.streamMappings.map((mapping) => mapping.stream.code)),
+          new Set(
+            subject.subjectOfferings.map((mapping) => mapping.stream.code),
+          ),
         ).sort((a, b) => a.localeCompare(b)),
       })),
       years: Array.from(
@@ -518,9 +520,9 @@ export class StudyService {
                     maxPoints: true,
                     status: true,
                     metadata: true,
-                    topicMappings: {
+                    curriculumNodeMappings: {
                       select: {
-                        topic: {
+                        curriculumNode: {
                           select: {
                             code: true,
                             name: true,

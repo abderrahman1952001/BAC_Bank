@@ -1,4 +1,4 @@
-type RoadmapTopicSummary = {
+type CurriculumJourneyNodeSummary = {
   code: string;
   name: string;
   studentLabel: string | null;
@@ -6,7 +6,7 @@ type RoadmapTopicSummary = {
   displayOrder: number;
 };
 
-type RoadmapNodeSeedDefinition = {
+type CurriculumJourneyNodeDefinition = {
   topicCode: string;
   title?: string;
   description?: string;
@@ -15,20 +15,20 @@ type RoadmapNodeSeedDefinition = {
   recommendedPreviousTopicCode?: string | null;
 };
 
-type RoadmapSectionSeedDefinition = {
+type CurriculumJourneySectionDefinition = {
   code: string;
   title: string;
   description?: string;
-  nodes: RoadmapNodeSeedDefinition[];
+  nodes: CurriculumJourneyNodeDefinition[];
 };
 
-type SubjectRoadmapSeedDefinition = {
+type SubjectCurriculumJourneyDefinition = {
   title?: string;
   description?: string;
-  sections: RoadmapSectionSeedDefinition[];
+  sections: CurriculumJourneySectionDefinition[];
 };
 
-export type ResolvedRoadmapNodeDefinition = {
+export type ResolvedCurriculumJourneyNodeDefinition = {
   topicCode: string;
   title: string;
   description: string | null;
@@ -37,20 +37,20 @@ export type ResolvedRoadmapNodeDefinition = {
   recommendedPreviousTopicCode: string | null;
 };
 
-export type ResolvedRoadmapSectionDefinition = {
+export type ResolvedCurriculumJourneySectionDefinition = {
   code: string;
   title: string;
   description: string | null;
-  nodes: ResolvedRoadmapNodeDefinition[];
+  nodes: ResolvedCurriculumJourneyNodeDefinition[];
 };
 
-export type ResolvedSubjectRoadmapDefinition = {
+export type ResolvedSubjectCurriculumJourneyDefinition = {
   title: string;
   description: string | null;
-  sections: ResolvedRoadmapSectionDefinition[];
+  sections: ResolvedCurriculumJourneySectionDefinition[];
 };
 
-const CURATED_ROADMAP_OVERRIDES: Record<string, SubjectRoadmapSeedDefinition> = {
+const CURATED_CURRICULUM_JOURNEY_OVERRIDES: Record<string, SubjectCurriculumJourneyDefinition> = {
   MATHEMATICS: {
     title: "خارطة الرياضيات",
     description:
@@ -202,7 +202,7 @@ const CURATED_ROADMAP_OVERRIDES: Record<string, SubjectRoadmapSeedDefinition> = 
   },
 };
 
-function buildDefaultNodeDescription(topic: RoadmapTopicSummary) {
+function buildDefaultNodeDescription(topic: CurriculumJourneyNodeSummary) {
   const label = topic.studentLabel ?? topic.name;
 
   if (topic.childrenCount > 0) {
@@ -212,7 +212,7 @@ function buildDefaultNodeDescription(topic: RoadmapTopicSummary) {
   return `ثبّت ${label} عبر جلسات قصيرة، ثم اختبر نفسك على تمارين BAC من نفس المحور.`;
 }
 
-function defaultEstimatedSessions(topic: RoadmapTopicSummary) {
+function defaultEstimatedSessions(topic: CurriculumJourneyNodeSummary) {
   return Math.max(1, Math.min(5, topic.childrenCount || 1));
 }
 
@@ -238,8 +238,8 @@ function chunkTopics<T>(items: T[], chunkCount: number) {
 
 function buildFallbackSections(
   subjectName: string,
-  topics: RoadmapTopicSummary[],
-): RoadmapSectionSeedDefinition[] {
+  topics: CurriculumJourneyNodeSummary[],
+): CurriculumJourneySectionDefinition[] {
   const sectionShells =
     topics.length <= 3
       ? [
@@ -294,16 +294,16 @@ function buildFallbackSections(
   }));
 }
 
-export function resolveSubjectRoadmapDefinition(input: {
+export function resolveSubjectCurriculumJourneyDefinition(input: {
   subjectCode: string;
   subjectName: string;
-  topics: RoadmapTopicSummary[];
-}): ResolvedSubjectRoadmapDefinition {
+  topics: CurriculumJourneyNodeSummary[];
+}): ResolvedSubjectCurriculumJourneyDefinition {
   const sortedTopics = [...input.topics].sort(
     (left, right) => left.displayOrder - right.displayOrder,
   );
   const topicByCode = new Map(sortedTopics.map((topic) => [topic.code, topic]));
-  const override = CURATED_ROADMAP_OVERRIDES[input.subjectCode];
+  const override = CURATED_CURRICULUM_JOURNEY_OVERRIDES[input.subjectCode];
   const sourceSections =
     override?.sections ?? buildFallbackSections(input.subjectName, sortedTopics);
   const seenTopicCodes = new Set<string>();
@@ -318,13 +318,13 @@ export function resolveSubjectRoadmapDefinition(input: {
 
       if (!topic) {
         throw new Error(
-          `Roadmap definition for ${input.subjectCode} references unknown topic ${node.topicCode}.`,
+          `Curriculum journey definition for ${input.subjectCode} references unknown topic ${node.topicCode}.`,
         );
       }
 
       seenTopicCodes.add(topic.code);
 
-      const resolvedNode: ResolvedRoadmapNodeDefinition = {
+      const resolvedNode: ResolvedCurriculumJourneyNodeDefinition = {
         topicCode: topic.code,
         title: node.title ?? topic.studentLabel ?? topic.name,
         description: node.description ?? buildDefaultNodeDescription(topic),
@@ -356,7 +356,7 @@ export function resolveSubjectRoadmapDefinition(input: {
 
     fallbackSection.nodes.push(
       ...missingTopics.map((topic) => {
-        const resolvedNode: ResolvedRoadmapNodeDefinition = {
+        const resolvedNode: ResolvedCurriculumJourneyNodeDefinition = {
           topicCode: topic.code,
           title: topic.studentLabel ?? topic.name,
           description: buildDefaultNodeDescription(topic),

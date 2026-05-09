@@ -100,15 +100,47 @@ enum StudyReviewOutcome {
   INCORRECT
 }
 
-enum TopicKind {
+enum CurriculumNodeKind {
+  FIELD
   UNIT
   TOPIC
-  SUBTOPIC
+  CONCEPT
+  SKILL
+  OPTIONAL_PORTAL
 }
 
 enum PublicationStatus {
   DRAFT
   PUBLISHED
+}
+
+enum CourseLessonStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  REJECTED
+}
+
+enum CourseStepKind {
+  OBJECTIVE
+  INTUITION
+  FORMAL_RULE
+  WORKED_EXAMPLE
+  INTERACTION
+  COMMON_TRAP
+  BAC_LENS
+  MICRO_QUIZ
+  OPTIONAL_PORTAL
+  SUMMARY
+  CUSTOM
+}
+
+enum CourseLessonProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  NEEDS_REVIEW
 }
 
 enum ExamNodeSkillSource {
@@ -217,21 +249,20 @@ model StreamFamily {
 }
 
 model Stream {
-  id                  String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  familyId            String                    @map("family_id") @db.Uuid
-  code                String                    @unique
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  familyId            String              @map("family_id") @db.Uuid
+  code                String              @unique
   name                String
-  slug                String?                   @unique
-  description         String?                   @db.Text
-  isDefault           Boolean                   @default(false) @map("is_default")
-  family              StreamFamily              @relation(fields: [familyId], references: [id], onDelete: Restrict)
-  subjectMappings     StreamSubject[]
-  curriculumMappings  SubjectCurriculumStream[]
+  slug                String?             @unique
+  description         String?             @db.Text
+  isDefault           Boolean             @default(false) @map("is_default")
+  family              StreamFamily        @relation(fields: [familyId], references: [id], onDelete: Restrict)
+  subjectOfferings    SubjectOffering[]
   exams               Exam[]
   paperSourceMappings PaperSourceStream[]
   users               User[]
-  createdAt           DateTime                  @default(now()) @map("created_at")
-  updatedAt           DateTime                  @updatedAt @map("updated_at")
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
 
   @@index([familyId])
   @@index([familyId, isDefault])
@@ -252,82 +283,72 @@ model SubjectFamily {
 }
 
 model Subject {
-  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  familyId       String              @map("family_id") @db.Uuid
-  code           String              @unique
-  name           String
-  slug           String?             @unique
-  description    String?             @db.Text
-  isDefault      Boolean             @default(false) @map("is_default")
-  family         SubjectFamily       @relation(fields: [familyId], references: [id], onDelete: Restrict)
-  streamMappings StreamSubject[]
-  exams          Exam[]              @relation("SubjectExams")
-  papers         Paper[]             @relation("SubjectPapers")
-  paperSources   PaperSource[]
-  curricula      SubjectCurriculum[]
-  topics         Topic[]
-  skills         Skill[]
-  createdAt      DateTime            @default(now()) @map("created_at")
-  updatedAt      DateTime            @updatedAt @map("updated_at")
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  familyId         String            @map("family_id") @db.Uuid
+  code             String            @unique
+  name             String
+  slug             String?           @unique
+  description      String?           @db.Text
+  isDefault        Boolean           @default(false) @map("is_default")
+  family           SubjectFamily     @relation(fields: [familyId], references: [id], onDelete: Restrict)
+  subjectOfferings SubjectOffering[]
+  exams            Exam[]            @relation("SubjectExams")
+  papers           Paper[]           @relation("SubjectPapers")
+  paperSources     PaperSource[]
+  curricula        Curriculum[]
+  curriculumNodes  CurriculumNode[]
+  skills           Skill[]
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
 
   @@index([familyId])
   @@index([familyId, isDefault])
   @@map("subjects")
 }
 
-model SubjectCurriculum {
-  id             String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subjectId      String                    @map("subject_id") @db.Uuid
-  code           String
-  familyCode     String                    @default("legacy") @map("family_code")
-  title          String
-  validFromYear  Int                       @default(0) @map("valid_from_year")
-  validToYear    Int?                      @map("valid_to_year")
-  isActive       Boolean                   @default(true) @map("is_active")
-  subject        Subject                   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  streamMappings SubjectCurriculumStream[]
-  topics         Topic[]
-  skills         Skill[]
-  roadmaps       SubjectRoadmap[]
-  createdAt      DateTime                  @default(now()) @map("created_at")
-  updatedAt      DateTime                  @updatedAt @map("updated_at")
+model Curriculum {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId        String            @map("subject_id") @db.Uuid
+  code             String
+  familyCode       String            @default("legacy") @map("family_code")
+  title            String
+  validFromYear    Int               @default(0) @map("valid_from_year")
+  validToYear      Int?              @map("valid_to_year")
+  isActive         Boolean           @default(true) @map("is_active")
+  subject          Subject           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subjectOfferings SubjectOffering[]
+  curriculumNodes  CurriculumNode[]
+  skills           Skill[]
+  courseLessons    CourseLesson[]
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
 
   @@unique([subjectId, code])
   @@index([subjectId, isActive])
   @@index([subjectId, familyCode])
   @@index([subjectId, validFromYear, validToYear])
-  @@map("subject_curricula")
+  @@map("curricula")
 }
 
-model SubjectCurriculumStream {
-  curriculumId String            @map("curriculum_id") @db.Uuid
-  streamId     String            @map("stream_id") @db.Uuid
-  createdAt    DateTime          @default(now()) @map("created_at")
-  curriculum   SubjectCurriculum @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
-  stream       Stream            @relation(fields: [streamId], references: [id], onDelete: Restrict)
-
-  @@id([curriculumId, streamId])
-  @@index([streamId])
-  @@index([curriculumId])
-  @@map("subject_curriculum_streams")
-}
-
-model StreamSubject {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  streamId      String   @map("stream_id") @db.Uuid
-  subjectId     String   @map("subject_id") @db.Uuid
+model SubjectOffering {
+  id            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  streamId      String     @map("stream_id") @db.Uuid
+  subjectId     String     @map("subject_id") @db.Uuid
+  curriculumId  String     @map("curriculum_id") @db.Uuid
   coefficient   Int?
-  isOptional    Boolean  @default(false) @map("is_optional")
-  validFromYear Int      @default(0) @map("valid_from_year")
-  validToYear   Int?     @map("valid_to_year")
-  createdAt     DateTime @default(now()) @map("created_at")
-  stream        Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
-  subject       Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  isOptional    Boolean    @default(false) @map("is_optional")
+  validFromYear Int        @default(0) @map("valid_from_year")
+  validToYear   Int?       @map("valid_to_year")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  stream        Stream     @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  subject       Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  curriculum    Curriculum @relation(fields: [curriculumId], references: [id], onDelete: Restrict)
 
   @@unique([streamId, subjectId, validFromYear])
   @@index([subjectId])
+  @@index([curriculumId])
   @@index([streamId, validFromYear, validToYear])
-  @@map("stream_subjects")
+  @@map("subject_offerings")
 }
 
 model PaperSource {
@@ -445,7 +466,7 @@ model ExamNode {
   parent                   ExamNode?                @relation("ExamNodeHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
   children                 ExamNode[]               @relation("ExamNodeHierarchy")
   blocks                   ExamNodeBlock[]
-  topicMappings            ExamNodeTopic[]
+  curriculumNodeMappings   ExamNodeCurriculumNode[]
   skillMappings            ExamNodeSkill[]
   studySessionExercises    StudySessionExercise[]
   studySessionQuestions    StudySessionQuestion[]
@@ -481,31 +502,32 @@ model ExamNodeBlock {
   @@map("exam_node_blocks")
 }
 
-model Topic {
-  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subjectId      String               @map("subject_id") @db.Uuid
-  curriculumId   String               @map("curriculum_id") @db.Uuid
-  code           String
-  name           String
-  slug           String
-  parentId       String?              @map("parent_id") @db.Uuid
-  kind           TopicKind            @default(SUBTOPIC)
-  depth          Int                  @default(0)
-  path           String               @db.Text
-  displayOrder   Int                  @default(0) @map("display_order")
-  isSelectable   Boolean              @default(true) @map("is_selectable")
-  studentLabel   String?              @map("student_label")
-  subject        Subject              @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  curriculum     SubjectCurriculum    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
-  parent         Topic?               @relation("TopicHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
-  children       Topic[]              @relation("TopicHierarchy")
-  examNodeTopics ExamNodeTopic[]
-  skillMappings  TopicSkill[]
-  topicStats     UserTopicStats[]
-  studentRollups StudentTopicRollup[]
-  roadmapNodes   RoadmapNode[]
-  createdAt      DateTime             @default(now()) @map("created_at")
-  updatedAt      DateTime             @updatedAt @map("updated_at")
+model CurriculumNode {
+  id               String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId        String                        @map("subject_id") @db.Uuid
+  curriculumId     String                        @map("curriculum_id") @db.Uuid
+  code             String
+  name             String
+  slug             String
+  parentId         String?                       @map("parent_id") @db.Uuid
+  kind             CurriculumNodeKind            @default(CONCEPT)
+  depth            Int                           @default(0)
+  path             String                        @db.Text
+  displayOrder     Int                           @default(0) @map("display_order")
+  isSelectable     Boolean                       @default(true) @map("is_selectable")
+  studentLabel     String?                       @map("student_label")
+  metadata         Json?
+  subject          Subject                       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  curriculum       Curriculum                    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  parent           CurriculumNode?               @relation("CurriculumNodeHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children         CurriculumNode[]              @relation("CurriculumNodeHierarchy")
+  examNodeMappings ExamNodeCurriculumNode[]
+  skillMappings    CurriculumNodeSkill[]
+  nodeStats        UserCurriculumNodeStats[]
+  studentRollups   StudentCurriculumNodeRollup[]
+  courseLessons    CourseLesson[]
+  createdAt        DateTime                      @default(now()) @map("created_at")
+  updatedAt        DateTime                      @updatedAt @map("updated_at")
 
   @@unique([curriculumId, code])
   @@unique([curriculumId, slug])
@@ -515,94 +537,26 @@ model Topic {
   @@index([curriculumId, displayOrder])
   @@index([curriculumId, path])
   @@index([parentId])
-  @@map("topics")
-}
-
-model SubjectRoadmap {
-  id           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  curriculumId String            @map("curriculum_id") @db.Uuid
-  code         String
-  title        String
-  description  String?           @db.Text
-  version      Int               @default(1)
-  isActive     Boolean           @default(true) @map("is_active")
-  curriculum   SubjectCurriculum @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
-  sections     RoadmapSection[]
-  nodes        RoadmapNode[]
-  createdAt    DateTime          @default(now()) @map("created_at")
-  updatedAt    DateTime          @updatedAt @map("updated_at")
-
-  @@unique([curriculumId, code])
-  @@index([curriculumId, isActive])
-  @@map("subject_roadmaps")
-}
-
-model RoadmapSection {
-  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  roadmapId   String         @map("roadmap_id") @db.Uuid
-  code        String
-  title       String
-  description String?        @db.Text
-  orderIndex  Int            @map("order_index")
-  roadmap     SubjectRoadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
-  nodes       RoadmapNode[]
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @updatedAt @map("updated_at")
-
-  @@unique([roadmapId, code])
-  @@unique([roadmapId, orderIndex])
-  @@index([roadmapId, orderIndex])
-  @@map("roadmap_sections")
-}
-
-model RoadmapNode {
-  id                               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  roadmapId                        String          @map("roadmap_id") @db.Uuid
-  sectionId                        String?         @map("section_id") @db.Uuid
-  topicId                          String          @map("topic_id") @db.Uuid
-  title                            String
-  description                      String?         @db.Text
-  orderIndex                       Int             @map("order_index")
-  parentRoadmapNodeId              String?         @map("parent_roadmap_node_id") @db.Uuid
-  recommendedPreviousRoadmapNodeId String?         @map("recommended_previous_roadmap_node_id") @db.Uuid
-  estimatedSessions                Int?            @map("estimated_sessions")
-  isOptional                       Boolean         @default(false) @map("is_optional")
-  roadmap                          SubjectRoadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
-  section                          RoadmapSection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
-  topic                            Topic           @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  parent                           RoadmapNode?    @relation("RoadmapNodeHierarchy", fields: [parentRoadmapNodeId], references: [id], onDelete: SetNull)
-  children                         RoadmapNode[]   @relation("RoadmapNodeHierarchy")
-  recommendedPrevious              RoadmapNode?    @relation("RoadmapNodeRecommendation", fields: [recommendedPreviousRoadmapNodeId], references: [id], onDelete: SetNull)
-  recommendedNext                  RoadmapNode[]   @relation("RoadmapNodeRecommendation")
-  createdAt                        DateTime        @default(now()) @map("created_at")
-  updatedAt                        DateTime        @updatedAt @map("updated_at")
-
-  @@unique([roadmapId, topicId])
-  @@unique([roadmapId, orderIndex])
-  @@index([sectionId])
-  @@index([topicId])
-  @@index([parentRoadmapNodeId])
-  @@index([recommendedPreviousRoadmapNodeId])
-  @@map("roadmap_nodes")
+  @@map("curriculum_nodes")
 }
 
 model Skill {
-  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subjectId      String               @map("subject_id") @db.Uuid
-  curriculumId   String               @map("curriculum_id") @db.Uuid
-  code           String
-  name           String
-  slug           String
-  description    String?              @db.Text
-  displayOrder   Int                  @default(0) @map("display_order")
-  isAssessable   Boolean              @default(true) @map("is_assessable")
-  subject        Subject              @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  curriculum     SubjectCurriculum    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
-  topicMappings  TopicSkill[]
-  nodeMappings   ExamNodeSkill[]
-  studentRollups StudentSkillRollup[]
-  createdAt      DateTime             @default(now()) @map("created_at")
-  updatedAt      DateTime             @updatedAt @map("updated_at")
+  id                     String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId              String                @map("subject_id") @db.Uuid
+  curriculumId           String                @map("curriculum_id") @db.Uuid
+  code                   String
+  name                   String
+  slug                   String
+  description            String?               @db.Text
+  displayOrder           Int                   @default(0) @map("display_order")
+  isAssessable           Boolean               @default(true) @map("is_assessable")
+  subject                Subject               @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  curriculum             Curriculum            @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  curriculumNodeMappings CurriculumNodeSkill[]
+  nodeMappings           ExamNodeSkill[]
+  studentRollups         StudentSkillRollup[]
+  createdAt              DateTime              @default(now()) @map("created_at")
+  updatedAt              DateTime              @updatedAt @map("updated_at")
 
   @@unique([curriculumId, code])
   @@unique([curriculumId, slug])
@@ -612,28 +566,28 @@ model Skill {
   @@map("skills")
 }
 
-model TopicSkill {
-  topicId   String  @map("topic_id") @db.Uuid
-  skillId   String  @map("skill_id") @db.Uuid
-  weight    Decimal @default(1) @db.Decimal(4, 2)
-  isPrimary Boolean @default(false) @map("is_primary")
-  topic     Topic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
-  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+model CurriculumNodeSkill {
+  curriculumNodeId String         @map("curriculum_node_id") @db.Uuid
+  skillId          String         @map("skill_id") @db.Uuid
+  weight           Decimal        @default(1) @db.Decimal(4, 2)
+  isPrimary        Boolean        @default(false) @map("is_primary")
+  curriculumNode   CurriculumNode @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
+  skill            Skill          @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
-  @@id([topicId, skillId])
+  @@id([curriculumNodeId, skillId])
   @@index([skillId])
-  @@map("topic_skills")
+  @@map("curriculum_node_skills")
 }
 
-model ExamNodeTopic {
-  nodeId  String   @map("node_id") @db.Uuid
-  topicId String   @map("topic_id") @db.Uuid
-  node    ExamNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
-  topic   Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+model ExamNodeCurriculumNode {
+  nodeId           String         @map("node_id") @db.Uuid
+  curriculumNodeId String         @map("curriculum_node_id") @db.Uuid
+  node             ExamNode       @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  curriculumNode   CurriculumNode @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
 
-  @@id([nodeId, topicId])
-  @@index([topicId])
-  @@map("exam_node_topics")
+  @@id([nodeId, curriculumNodeId])
+  @@index([curriculumNodeId])
+  @@map("exam_node_curriculum_nodes")
 }
 
 model ExamNodeSkill {
@@ -655,27 +609,173 @@ model ExamNodeSkill {
   @@map("exam_node_skills")
 }
 
+model CourseLesson {
+  id                 String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  curriculumId       String                        @map("curriculum_id") @db.Uuid
+  curriculumNodeId   String                        @map("curriculum_node_id") @db.Uuid
+  code               String
+  slug               String
+  title              String
+  description        String?                       @db.Text
+  language           String                        @default("ar-DZ")
+  status             CourseLessonStatus            @default(DRAFT)
+  version            Int                           @default(1)
+  estimatedMinutes   Int?                          @map("estimated_minutes")
+  sourceMarkdownPath String?                       @map("source_markdown_path") @db.Text
+  contentHash        String?                       @map("content_hash")
+  metadata           Json?
+  curriculum         Curriculum                    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  curriculumNode     CurriculumNode                @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
+  steps              CourseStep[]
+  visualAssets       CourseVisualAsset[]
+  quizzes            CourseQuiz[]
+  depthPortals       CourseDepthPortal[]
+  studentProgress    StudentCourseLessonProgress[]
+  createdAt          DateTime                      @default(now()) @map("created_at")
+  updatedAt          DateTime                      @updatedAt @map("updated_at")
+
+  @@unique([curriculumId, code])
+  @@index([curriculumId, status])
+  @@index([curriculumNodeId, status])
+  @@map("course_lessons")
+}
+
+model CourseStep {
+  id           String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lessonId     String              @map("lesson_id") @db.Uuid
+  kind         CourseStepKind
+  title        String?
+  body         String              @db.Text
+  orderIndex   Int                 @map("order_index")
+  data         Json?
+  lesson       CourseLesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  visualAssets CourseVisualAsset[]
+  quizzes      CourseQuiz[]
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  @@unique([lessonId, orderIndex])
+  @@index([lessonId, kind])
+  @@map("course_steps")
+}
+
+model CourseVisualAsset {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lessonId   String       @map("lesson_id") @db.Uuid
+  stepId     String?      @map("step_id") @db.Uuid
+  code       String
+  title      String?
+  kind       String
+  url        String?      @db.Text
+  prompt     String?      @db.Text
+  orderIndex Int          @default(0) @map("order_index")
+  metadata   Json?
+  lesson     CourseLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  step       CourseStep?  @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+
+  @@unique([lessonId, code])
+  @@index([lessonId, orderIndex])
+  @@index([stepId])
+  @@map("course_visual_assets")
+}
+
+model CourseDepthPortal {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lessonId   String       @map("lesson_id") @db.Uuid
+  code       String
+  title      String
+  body       String       @db.Text
+  orderIndex Int          @default(0) @map("order_index")
+  metadata   Json?
+  lesson     CourseLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+
+  @@unique([lessonId, code])
+  @@index([lessonId, orderIndex])
+  @@map("course_depth_portals")
+}
+
+model CourseQuiz {
+  id          String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lessonId    String             @map("lesson_id") @db.Uuid
+  stepId      String?            @map("step_id") @db.Uuid
+  code        String
+  prompt      String             @db.Text
+  explanation String?            @db.Text
+  orderIndex  Int                @default(0) @map("order_index")
+  metadata    Json?
+  lesson      CourseLesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  step        CourseStep?        @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  options     CourseQuizOption[]
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+
+  @@unique([lessonId, code])
+  @@index([lessonId, orderIndex])
+  @@index([stepId])
+  @@map("course_quizzes")
+}
+
+model CourseQuizOption {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  quizId     String     @map("quiz_id") @db.Uuid
+  orderIndex Int        @map("order_index")
+  text       String     @db.Text
+  isCorrect  Boolean    @default(false) @map("is_correct")
+  feedback   String?    @db.Text
+  quiz       CourseQuiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+
+  @@unique([quizId, orderIndex])
+  @@index([quizId, isCorrect])
+  @@map("course_quiz_options")
+}
+
+model StudentCourseLessonProgress {
+  userId          String                     @map("user_id") @db.Uuid
+  lessonId        String                     @map("lesson_id") @db.Uuid
+  status          CourseLessonProgressStatus @default(NOT_STARTED)
+  progressPercent Int                        @default(0) @map("progress_percent")
+  lastSeenAt      DateTime?                  @map("last_seen_at")
+  completedAt     DateTime?                  @map("completed_at")
+  user            User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson          CourseLesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdAt       DateTime                   @default(now()) @map("created_at")
+  updatedAt       DateTime                   @updatedAt @map("updated_at")
+
+  @@id([userId, lessonId])
+  @@index([lessonId])
+  @@index([userId, status])
+  @@index([userId, lastSeenAt])
+  @@map("student_course_lesson_progress")
+}
+
 model User {
-  id                 String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  clerkUserId        String?                  @unique @map("clerk_user_id")
-  email              String                   @unique
-  fullName           String?                  @map("full_name")
-  role               UserRole                 @default(USER)
-  subscriptionStatus SubscriptionStatus       @default(FREE) @map("subscription_status")
-  subscriptionEndsAt DateTime?                @map("subscription_ends_at")
-  streamId           String?                  @map("stream_id") @db.Uuid
-  stream             Stream?                  @relation(fields: [streamId], references: [id], onDelete: SetNull)
-  topicStats         UserTopicStats[]
-  topicRollups       StudentTopicRollup[]
-  skillRollups       StudentSkillRollup[]
-  uploadedMedia      Media[]                  @relation("UserUploadedMedia")
-  studySessions      StudySession[]
-  examActivities     ExamActivity[]
-  exerciseStates     StudentExerciseState[]
-  reviewQueueItems   StudentReviewQueueItem[]
-  billingCheckouts   BillingCheckout[]
-  createdAt          DateTime                 @default(now()) @map("created_at")
-  updatedAt          DateTime                 @updatedAt @map("updated_at")
+  id                    String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  clerkUserId           String?                       @unique @map("clerk_user_id")
+  email                 String                        @unique
+  fullName              String?                       @map("full_name")
+  role                  UserRole                      @default(USER)
+  subscriptionStatus    SubscriptionStatus            @default(FREE) @map("subscription_status")
+  subscriptionEndsAt    DateTime?                     @map("subscription_ends_at")
+  streamId              String?                       @map("stream_id") @db.Uuid
+  stream                Stream?                       @relation(fields: [streamId], references: [id], onDelete: SetNull)
+  curriculumNodeStats   UserCurriculumNodeStats[]
+  curriculumNodeRollups StudentCurriculumNodeRollup[]
+  skillRollups          StudentSkillRollup[]
+  courseLessonProgress  StudentCourseLessonProgress[]
+  uploadedMedia         Media[]                       @relation("UserUploadedMedia")
+  studySessions         StudySession[]
+  examActivities        ExamActivity[]
+  exerciseStates        StudentExerciseState[]
+  reviewQueueItems      StudentReviewQueueItem[]
+  billingCheckouts      BillingCheckout[]
+  createdAt             DateTime                      @default(now()) @map("created_at")
+  updatedAt             DateTime                      @updatedAt @map("updated_at")
 
   @@index([streamId])
   @@index([subscriptionStatus, subscriptionEndsAt])
@@ -862,18 +962,18 @@ model SourcePage {
   @@map("source_pages")
 }
 
-model UserTopicStats {
-  userId             String   @map("user_id") @db.Uuid
-  topicId            String   @map("topic_id") @db.Uuid
-  accuracyPercentage Decimal  @default(0) @map("accuracy_percentage") @db.Decimal(5, 2)
-  totalAttempts      Int      @default(0) @map("total_attempts")
-  updatedAt          DateTime @updatedAt @map("updated_at")
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  topic              Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+model UserCurriculumNodeStats {
+  userId             String         @map("user_id") @db.Uuid
+  curriculumNodeId   String         @map("curriculum_node_id") @db.Uuid
+  accuracyPercentage Decimal        @default(0) @map("accuracy_percentage") @db.Decimal(5, 2)
+  totalAttempts      Int            @default(0) @map("total_attempts")
+  updatedAt          DateTime       @updatedAt @map("updated_at")
+  user               User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  curriculumNode     CurriculumNode @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
 
-  @@id([userId, topicId])
-  @@index([topicId])
-  @@map("user_topic_stats")
+  @@id([userId, curriculumNodeId])
+  @@index([curriculumNodeId])
+  @@map("user_curriculum_node_stats")
 }
 
 model ExamActivity {
@@ -897,9 +997,9 @@ model ExamActivity {
   @@map("exam_activities")
 }
 
-model StudentTopicRollup {
+model StudentCurriculumNodeRollup {
   userId             String               @map("user_id") @db.Uuid
-  topicId            String               @map("topic_id") @db.Uuid
+  curriculumNodeId   String               @map("curriculum_node_id") @db.Uuid
   attemptedQuestions Int                  @default(0) @map("attempted_questions")
   correctCount       Int                  @default(0) @map("correct_count")
   incorrectCount     Int                  @default(0) @map("incorrect_count")
@@ -911,16 +1011,16 @@ model StudentTopicRollup {
   weaknessScore      Decimal              @default(0) @map("weakness_score") @db.Decimal(8, 2)
   masteryBucket      StudentMasteryBucket @default(NEW) @map("mastery_bucket")
   user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  topic              Topic                @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  curriculumNode     CurriculumNode       @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
   createdAt          DateTime             @default(now()) @map("created_at")
   updatedAt          DateTime             @updatedAt @map("updated_at")
 
-  @@id([userId, topicId])
-  @@index([topicId])
+  @@id([userId, curriculumNodeId])
+  @@index([curriculumNodeId])
   @@index([userId, masteryBucket])
   @@index([userId, weaknessScore])
   @@index([userId, lastSeenAt])
-  @@map("student_topic_rollups")
+  @@map("student_curriculum_node_rollups")
 }
 
 model StudentSkillRollup {

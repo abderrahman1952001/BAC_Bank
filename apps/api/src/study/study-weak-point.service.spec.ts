@@ -6,7 +6,7 @@ describe('StudyWeakPointService', () => {
     user: {
       findUnique: jest.Mock;
     };
-    studentTopicRollup: {
+    studentCurriculumNodeRollup: {
       findMany: jest.Mock;
     };
     studentSkillRollup: {
@@ -23,7 +23,7 @@ describe('StudyWeakPointService', () => {
       user: {
         findUnique: jest.fn(),
       },
-      studentTopicRollup: {
+      studentCurriculumNodeRollup: {
         findMany: jest.fn(),
       },
       studentSkillRollup: {
@@ -47,7 +47,7 @@ describe('StudyWeakPointService', () => {
       enabled: false,
       data: [],
     });
-    expect(prisma.studentTopicRollup.findMany).not.toHaveBeenCalled();
+    expect(prisma.studentCurriculumNodeRollup.findMany).not.toHaveBeenCalled();
     expect(prisma.studentSkillRollup.findMany).not.toHaveBeenCalled();
     expect(prisma.studentReviewQueueItem.findMany).not.toHaveBeenCalled();
   });
@@ -56,7 +56,7 @@ describe('StudyWeakPointService', () => {
     prisma.user.findUnique.mockResolvedValue({
       subscriptionStatus: SubscriptionStatus.ACTIVE,
     });
-    prisma.studentTopicRollup.findMany.mockResolvedValue([
+    prisma.studentCurriculumNodeRollup.findMany.mockResolvedValue([
       {
         weaknessScore: new Prisma.Decimal(7),
         revealedCount: 1,
@@ -64,7 +64,7 @@ describe('StudyWeakPointService', () => {
         hardCount: 0,
         missedCount: 1,
         lastSeenAt: new Date('2026-04-09T10:00:00.000Z'),
-        topic: {
+        curriculumNode: {
           code: 'FUNCTIONS',
           name: 'الدوال',
           studentLabel: null,
@@ -166,7 +166,7 @@ describe('StudyWeakPointService', () => {
     prisma.user.findUnique.mockResolvedValue({
       subscriptionStatus: SubscriptionStatus.ACTIVE,
     });
-    prisma.studentTopicRollup.findMany.mockResolvedValue([
+    prisma.studentCurriculumNodeRollup.findMany.mockResolvedValue([
       {
         weaknessScore: new Prisma.Decimal(7.5),
         revealedCount: 0,
@@ -174,7 +174,7 @@ describe('StudyWeakPointService', () => {
         hardCount: 0,
         missedCount: 1,
         lastSeenAt: new Date('2026-04-09T12:00:00.000Z'),
-        topic: {
+        curriculumNode: {
           code: 'FUNCTIONS',
           name: 'الدوال',
           studentLabel: 'الدوال',
@@ -247,13 +247,13 @@ describe('StudyWeakPointService', () => {
               },
             },
           ],
-          topicMappings: [],
+          curriculumNodeMappings: [],
         },
         exerciseNode: {
           skillMappings: [],
-          topicMappings: [
+          curriculumNodeMappings: [
             {
-              topic: {
+              curriculumNode: {
                 id: 'topic-functions',
                 code: 'FUNCTIONS',
                 name: 'الدوال',
@@ -360,9 +360,9 @@ function makeReviewQueueItem(
     questionNode: null,
     exerciseNode: {
       skillMappings: [],
-      topicMappings: [
+      curriculumNodeMappings: [
         {
-          topic: {
+          curriculumNode: {
             id: 'topic-functions',
             code: 'FUNCTIONS',
             name: 'الدوال',

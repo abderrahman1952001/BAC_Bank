@@ -1,12 +1,12 @@
 import {
+  resolveCurriculumDefinitions,
   resolveCurriculumStreamCodes,
-  resolveSubjectCurriculumDefinitions,
 } from './curriculum-sharing';
 
 describe('curriculum-sharing', () => {
   it('keeps exact TM family codes intact for technology subjects', () => {
     expect(
-      resolveSubjectCurriculumDefinitions({
+      resolveCurriculumDefinitions({
         subjectCode: 'TECHNOLOGY_CIVIL',
         subjectStreamCodes: ['MT_CIVIL'],
       }),

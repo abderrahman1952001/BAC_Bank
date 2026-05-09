@@ -1,14 +1,16 @@
-export type SubjectCurriculumWindowDefinition = {
+export type CurriculumWindowDefinition = {
   familyCode: string;
   validFromYear: number;
   validToYear?: number | null;
 };
 
-export type ResolvedSubjectCurriculumDefinition =
-  SubjectCurriculumWindowDefinition & {
+export type ResolvedCurriculumDefinition = CurriculumWindowDefinition & {
     code: string;
     streamCodes: string[];
   };
+
+export type SubjectCurriculumWindowDefinition = CurriculumWindowDefinition;
+export type ResolvedSubjectCurriculumDefinition = ResolvedCurriculumDefinition;
 
 const STREAM_ORDER: Record<string, number> = {
   SE: 10,
@@ -27,7 +29,7 @@ const STREAM_ORDER: Record<string, number> = {
 
 export const SUBJECT_CURRICULUM_WINDOWS: Record<
   string,
-  SubjectCurriculumWindowDefinition[]
+  CurriculumWindowDefinition[]
 > = {
   ACCOUNTING_FINANCE: [{ familyCode: 'ge', validFromYear: 2008 }],
   AMAZIGH: [{ familyCode: 'all', validFromYear: 2008 }],
@@ -91,9 +93,7 @@ export const SUBJECT_CURRICULUM_WINDOWS: Record<
   TECHNOLOGY_PROCESS: [{ familyCode: 'mt-proc', validFromYear: 2008 }],
 };
 
-export function buildSubjectCurriculumCode(
-  definition: SubjectCurriculumWindowDefinition,
-) {
+export function buildCurriculumCode(definition: CurriculumWindowDefinition) {
   const familySegment = definition.familyCode
     .toUpperCase()
     .replace(/[^A-Z0-9]+/g, '_');
@@ -105,9 +105,9 @@ export function buildSubjectCurriculumCode(
   return `${familySegment}__${definition.validFromYear}__${endYear}`;
 }
 
-export function buildSubjectCurriculumTitle(
+export function buildCurriculumTitle(
   subjectName: string,
-  definition: SubjectCurriculumWindowDefinition,
+  definition: CurriculumWindowDefinition,
 ) {
   const familyLabel = definition.familyCode.toUpperCase();
   const rangeLabel =
@@ -118,21 +118,25 @@ export function buildSubjectCurriculumTitle(
   return `${subjectName} • ${familyLabel} • ${rangeLabel}`;
 }
 
-export function resolveSubjectCurriculumDefinitions(input: {
+export function resolveCurriculumDefinitions(input: {
   subjectCode: string;
   subjectStreamCodes: string[];
-}) {
+}): ResolvedCurriculumDefinition[] {
   const windows = SUBJECT_CURRICULUM_WINDOWS[input.subjectCode] ?? [];
 
   return windows.map((definition) => ({
     ...definition,
-    code: buildSubjectCurriculumCode(definition),
+    code: buildCurriculumCode(definition),
     streamCodes: resolveCurriculumStreamCodes({
       familyCode: definition.familyCode,
       subjectStreamCodes: input.subjectStreamCodes,
     }),
   }));
 }
+
+export const buildSubjectCurriculumCode = buildCurriculumCode;
+export const buildSubjectCurriculumTitle = buildCurriculumTitle;
+export const resolveSubjectCurriculumDefinitions = resolveCurriculumDefinitions;
 
 export function resolveCurriculumStreamCodes(input: {
   familyCode: string;

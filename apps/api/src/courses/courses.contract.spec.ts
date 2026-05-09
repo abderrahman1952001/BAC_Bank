@@ -4,8 +4,98 @@ import {
   parseCourseSubjectResponse,
   parseCourseTopicResponse,
 } from '@bac-bank/contracts/courses';
+import { parseCurriculumJourneysResponse } from '@bac-bank/contracts/study';
 
 describe('courses contracts', () => {
+  it('parses curriculum journey responses through the roadmap-compatible shape', () => {
+    expect(
+      parseCurriculumJourneysResponse({
+        data: [
+          {
+            id: 'journey-math',
+            title: 'خارطة الرياضيات',
+            description: null,
+            subject: {
+              code: 'MATHEMATICS',
+              name: 'الرياضيات',
+            },
+            curriculum: {
+              code: 'SE__2008__OPEN',
+              title: 'الرياضيات • SE • 2008+',
+            },
+            totalNodeCount: 1,
+            solidNodeCount: 0,
+            needsReviewNodeCount: 0,
+            inProgressNodeCount: 0,
+            notStartedNodeCount: 1,
+            openReviewItemCount: 0,
+            progressPercent: 0,
+            updatedAt: null,
+            nextAction: {
+              type: 'TOPIC_DRILL',
+              label: 'ابدأ بالدوال',
+              topicCode: 'FUNCTIONS',
+              topicName: 'الدوال',
+            },
+            sections: [
+              {
+                id: 'section-analysis',
+                code: 'ANALYSIS',
+                title: 'التحليل',
+                description: null,
+                orderIndex: 1,
+                nodes: [
+                  {
+                    id: 'node-functions',
+                    title: 'الدوال',
+                    description: null,
+                    topicCode: 'FUNCTIONS',
+                    topicName: 'الدوال',
+                    orderIndex: 1,
+                    estimatedSessions: 4,
+                    isOptional: false,
+                    sectionId: 'section-analysis',
+                    recommendedPreviousNodeId: null,
+                    recommendedPreviousNodeTitle: null,
+                    status: 'NOT_STARTED',
+                    progressPercent: 0,
+                    weaknessScore: 0,
+                    attemptedQuestions: 0,
+                    correctCount: 0,
+                    incorrectCount: 0,
+                    lastSeenAt: null,
+                  },
+                ],
+              },
+            ],
+            nodes: [
+              {
+                id: 'node-functions',
+                title: 'الدوال',
+                description: null,
+                topicCode: 'FUNCTIONS',
+                topicName: 'الدوال',
+                orderIndex: 1,
+                estimatedSessions: 4,
+                isOptional: false,
+                sectionId: 'section-analysis',
+                recommendedPreviousNodeId: null,
+                recommendedPreviousNodeTitle: null,
+                status: 'NOT_STARTED',
+                progressPercent: 0,
+                weaknessScore: 0,
+                attemptedQuestions: 0,
+                correctCount: 0,
+                incorrectCount: 0,
+                lastSeenAt: null,
+              },
+            ],
+          },
+        ],
+      }).data[0]?.subject.code,
+    ).toBe('MATHEMATICS');
+  });
+
   it('parses course subject card responses', () => {
     expect(
       parseCourseSubjectCardsResponse({

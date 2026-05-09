@@ -123,9 +123,9 @@ export class StudyReadModelService {
                     },
                   },
                 },
-                topicMappings: {
+                curriculumNodeMappings: {
                   select: {
-                    topic: {
+                    curriculumNode: {
                       select: {
                         id: true,
                         code: true,
@@ -186,9 +186,9 @@ export class StudyReadModelService {
                         },
                       },
                     },
-                    topicMappings: {
+                    curriculumNodeMappings: {
                       select: {
-                        topic: {
+                        curriculumNode: {
                           select: {
                             id: true,
                             code: true,
@@ -271,11 +271,11 @@ export class StudyReadModelService {
       const topics = selectSignalTopics({
         questionSkills: signal.questionNode.skillMappings,
         exerciseSkills: signal.sessionExercise.exerciseNode.skillMappings,
-        questionTopics: signal.questionNode.topicMappings.map(
-          (mapping) => mapping.topic,
+        questionTopics: signal.questionNode.curriculumNodeMappings.map(
+          (mapping) => mapping.curriculumNode,
         ),
-        exerciseTopics: signal.sessionExercise.exerciseNode.topicMappings.map(
-          (mapping) => mapping.topic,
+        exerciseTopics: signal.sessionExercise.exerciseNode.curriculumNodeMappings.map(
+          (mapping) => mapping.curriculumNode,
         ),
         requestedSubjectCode: null,
       });
@@ -410,7 +410,7 @@ export class StudyReadModelService {
       });
     }
 
-    await db.studentTopicRollup.deleteMany({
+    await db.studentCurriculumNodeRollup.deleteMany({
       where: {
         userId,
       },
@@ -422,10 +422,10 @@ export class StudyReadModelService {
     });
 
     if (topicRollups.size > 0) {
-      await db.studentTopicRollup.createMany({
+      await db.studentCurriculumNodeRollup.createMany({
         data: Array.from(topicRollups.values()).map((rollup) => ({
           userId,
-          topicId: rollup.topicId,
+          curriculumNodeId: rollup.topicId,
           attemptedQuestions: rollup.attemptedQuestions,
           correctCount: rollup.correctCount,
           incorrectCount: rollup.incorrectCount,

@@ -1,8 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-import { resolveSubjectRoadmapDefinition } from './roadmap-definitions';
 import {
-  buildSubjectCurriculumTitle,
-  resolveSubjectCurriculumDefinitions,
+  buildCurriculumTitle,
+  resolveCurriculumDefinitions,
 } from '../src/catalog/curriculum-sharing';
 
 const prisma = new PrismaClient();
@@ -59,18 +58,8 @@ type CurriculumRuleDefinition = {
   }>;
 };
 
-const DEFAULT_SUBJECT_ROADMAP_CODE = 'CORE_PATH';
-
 function slugFromCode(code: string): string {
   return code.toLowerCase().replace(/_/g, '-');
-}
-
-function findSubjectName(subjectCode: string): string {
-  return (
-    SUBJECT_CATALOG.flatMap((family) => family.subjects).find(
-      (subject) => subject.code === subjectCode,
-    )?.name ?? subjectCode
-  );
 }
 
 const STREAM_CATALOG: StreamFamilyDefinition[] = [
@@ -1719,9 +1708,30 @@ async function seedSubjects(): Promise<Map<string, string>> {
   return subjectIds;
 }
 
+function resolveSubjectStreamCodes(subjectCode: string): string[] {
+  return Array.from(
+    new Set(
+      CURRICULUM_RULES.flatMap((rule) =>
+        rule.subjects.some((subject) => subject.subjectCode === subjectCode)
+          ? [rule.streamCode]
+          : [],
+      ),
+    ),
+  );
+}
+
+type SeededCurriculumRecord = {
+  id: string;
+  code: string;
+  streamCodes: string[];
+  validFromYear: number;
+  validToYear: number | null;
+};
+
 async function seedSubjectCurricula(
   subjectIds: Map<string, string>,
-): Promise<Map<string, Array<{ id: string; code: string }>>> {
+  streamIds: Map<string, string>,
+): Promise<Map<string, SeededCurriculumRecord[]>> {
   const subjects = await prisma.subject.findMany({
     where: {
       id: {
@@ -1732,37 +1742,22 @@ async function seedSubjectCurricula(
       id: true,
       code: true,
       name: true,
-      streamMappings: {
-        select: {
-          stream: {
-            select: {
-              id: true,
-              code: true,
-            },
-          },
-        },
-      },
     },
   });
-  const curriculumIds = new Map<string, Array<{ id: string; code: string }>>();
+  const curriculumIds = new Map<string, SeededCurriculumRecord[]>();
 
   for (const subject of subjects) {
-    const definitions = resolveSubjectCurriculumDefinitions({
+    const subjectStreamCodes = resolveSubjectStreamCodes(subject.code);
+    const definitions = resolveCurriculumDefinitions({
       subjectCode: subject.code,
-      subjectStreamCodes: subject.streamMappings.map(
-        (mapping) => mapping.stream.code,
-      ),
-    });
-    const streamIdByCode = new Map(
-      subject.streamMappings.map((mapping) => [
-        mapping.stream.code,
-        mapping.stream.id,
-      ]),
+      subjectStreamCodes,
+    }).filter((definition) =>
+      definition.streamCodes.every((streamCode) => streamIds.has(streamCode)),
     );
-    const subjectCurricula: Array<{ id: string; code: string }> = [];
+    const subjectCurricula: SeededCurriculumRecord[] = [];
 
     for (const definition of definitions) {
-      const curriculum = await prisma.subjectCurriculum.upsert({
+      const curriculum = await prisma.curriculum.upsert({
         where: {
           subjectId_code: {
             subjectId: subject.id,
@@ -1771,7 +1766,7 @@ async function seedSubjectCurricula(
         },
         update: {
           familyCode: definition.familyCode,
-          title: buildSubjectCurriculumTitle(subject.name, definition),
+          title: buildCurriculumTitle(subject.name, definition),
           validFromYear: definition.validFromYear,
           validToYear: definition.validToYear ?? null,
           isActive: true,
@@ -1780,50 +1775,19 @@ async function seedSubjectCurricula(
           subjectId: subject.id,
           code: definition.code,
           familyCode: definition.familyCode,
-          title: buildSubjectCurriculumTitle(subject.name, definition),
+          title: buildCurriculumTitle(subject.name, definition),
           validFromYear: definition.validFromYear,
           validToYear: definition.validToYear ?? null,
           isActive: true,
         },
       });
-      const resolvedStreamIds = definition.streamCodes.map((streamCode) => {
-        const streamId = streamIdByCode.get(streamCode);
-
-        if (!streamId) {
-          throw new Error(
-            `Could not resolve stream ${streamCode} for ${subject.code}:${definition.familyCode}.`,
-          );
-        }
-
-        return streamId;
-      });
-
-      await prisma.subjectCurriculumStream.deleteMany({
-        where: {
-          curriculumId: curriculum.id,
-          ...(resolvedStreamIds.length > 0
-            ? {
-                streamId: {
-                  notIn: resolvedStreamIds,
-                },
-              }
-            : {}),
-        },
-      });
-
-      if (resolvedStreamIds.length > 0) {
-        await prisma.subjectCurriculumStream.createMany({
-          data: resolvedStreamIds.map((streamId) => ({
-            curriculumId: curriculum.id,
-            streamId,
-          })),
-          skipDuplicates: true,
-        });
-      }
 
       subjectCurricula.push({
         id: curriculum.id,
         code: definition.code,
+        streamCodes: definition.streamCodes,
+        validFromYear: definition.validFromYear,
+        validToYear: definition.validToYear ?? null,
       });
     }
 
@@ -1833,16 +1797,20 @@ async function seedSubjectCurricula(
   return curriculumIds;
 }
 
-async function syncCurriculumRules(
+async function syncSubjectOfferings(
   streamIds: Map<string, string>,
   subjectIds: Map<string, string>,
+  curriculaBySubject: Map<string, SeededCurriculumRecord[]>,
 ): Promise<void> {
-  const expectedPairs = new Map<
+  const expectedOfferings = new Map<
     string,
     {
       streamId: string;
       subjectId: string;
+      curriculumId: string;
       isOptional: boolean;
+      validFromYear: number;
+      validToYear: number | null;
     }
   >();
 
@@ -1862,34 +1830,61 @@ async function syncCurriculumRules(
         );
       }
 
-      expectedPairs.set(`${streamId}:${subjectId}`, {
-        streamId,
-        subjectId,
-        isOptional: subjectRule.isOptional ?? false,
-      });
+      const curricula = curriculaBySubject.get(subjectRule.subjectCode) ?? [];
+      const matchingCurricula = curricula.filter((curriculum) =>
+        curriculum.streamCodes.includes(rule.streamCode),
+      );
+
+      if (!matchingCurricula.length) {
+        throw new Error(
+          `Missing curriculum for ${rule.streamCode}:${subjectRule.subjectCode}.`,
+        );
+      }
+
+      for (const curriculum of matchingCurricula) {
+        expectedOfferings.set(
+          `${streamId}:${subjectId}:${curriculum.validFromYear}`,
+          {
+            streamId,
+            subjectId,
+            curriculumId: curriculum.id,
+            isOptional: subjectRule.isOptional ?? false,
+            validFromYear: curriculum.validFromYear,
+            validToYear: curriculum.validToYear,
+          },
+        );
+      }
     }
   }
 
-  const currentMappings = await prisma.streamSubject.findMany({
+  const currentMappings = await prisma.subjectOffering.findMany({
     where: {
-      validFromYear: 0,
+      streamId: {
+        in: Array.from(streamIds.values()),
+      },
+      subjectId: {
+        in: Array.from(subjectIds.values()),
+      },
     },
     select: {
       id: true,
       streamId: true,
       subjectId: true,
+      validFromYear: true,
     },
   });
 
   const mappingIdsToDelete = currentMappings
     .filter(
       (mapping: (typeof currentMappings)[number]) =>
-        !expectedPairs.has(`${mapping.streamId}:${mapping.subjectId}`),
+        !expectedOfferings.has(
+          `${mapping.streamId}:${mapping.subjectId}:${mapping.validFromYear}`,
+        ),
     )
     .map((mapping: (typeof currentMappings)[number]) => mapping.id);
 
   if (mappingIdsToDelete.length > 0) {
-    await prisma.streamSubject.deleteMany({
+    await prisma.subjectOffering.deleteMany({
       where: {
         id: {
           in: mappingIdsToDelete,
@@ -1898,25 +1893,29 @@ async function syncCurriculumRules(
     });
   }
 
-  for (const rule of expectedPairs.values()) {
-    await prisma.streamSubject.upsert({
+  for (const rule of expectedOfferings.values()) {
+    await prisma.subjectOffering.upsert({
       where: {
         streamId_subjectId_validFromYear: {
           streamId: rule.streamId,
           subjectId: rule.subjectId,
-          validFromYear: 0,
+          validFromYear: rule.validFromYear,
         },
       },
       update: {
+        curriculumId: rule.curriculumId,
         coefficient: null,
         isOptional: rule.isOptional,
-        validToYear: null,
+        validToYear: rule.validToYear,
       },
       create: {
         streamId: rule.streamId,
         subjectId: rule.subjectId,
+        curriculumId: rule.curriculumId,
         coefficient: null,
         isOptional: rule.isOptional,
+        validFromYear: rule.validFromYear,
+        validToYear: rule.validToYear,
       },
     });
   }
@@ -1928,8 +1927,8 @@ async function cleanupObsoleteCatalog(): Promise<void> {
       code: 'THIRD_FOREIGN_LANGUAGE',
       papers: { none: {} },
       exams: { none: {} },
-      topics: { none: {} },
-      streamMappings: { none: {} },
+      curriculumNodes: { none: {} },
+      subjectOfferings: { none: {} },
     },
   });
 }
@@ -1948,7 +1947,7 @@ async function syncSubjectTopics(
 ): Promise<void> {
   const validCodes = collectTopicCodes(topicTree);
 
-  await prisma.topic.deleteMany({
+  await prisma.curriculumNode.deleteMany({
     where: {
       curriculumId,
       code: {
@@ -1965,7 +1964,7 @@ async function syncSubjectTopics(
   ): Promise<void> {
     for (const [index, topic] of nodes.entries()) {
       const path = parentPath ? `${parentPath}/${topic.code}` : topic.code;
-      const savedTopic = await prisma.topic.upsert({
+      const savedTopic = await prisma.curriculumNode.upsert({
         where: {
           curriculumId_code: {
             curriculumId,
@@ -1977,7 +1976,7 @@ async function syncSubjectTopics(
           name: topic.name,
           slug: slugFromCode(topic.code),
           parentId,
-          kind: depth === 0 ? 'UNIT' : depth === 1 ? 'TOPIC' : 'SUBTOPIC',
+          kind: depth === 0 ? 'UNIT' : depth === 1 ? 'TOPIC' : 'CONCEPT',
           depth,
           path,
           displayOrder: index + 1,
@@ -1991,7 +1990,7 @@ async function syncSubjectTopics(
           name: topic.name,
           slug: slugFromCode(topic.code),
           parentId,
-          kind: depth === 0 ? 'UNIT' : depth === 1 ? 'TOPIC' : 'SUBTOPIC',
+          kind: depth === 0 ? 'UNIT' : depth === 1 ? 'TOPIC' : 'CONCEPT',
           depth,
           path,
           displayOrder: index + 1,
@@ -2014,7 +2013,7 @@ async function syncSubjectSkills(
   curriculumId: string,
   skills: SkillDefinition[],
 ): Promise<void> {
-  const topicRows = await prisma.topic.findMany({
+  const topicRows = await prisma.curriculumNode.findMany({
     where: {
       curriculumId,
     },
@@ -2084,10 +2083,10 @@ async function syncSubjectSkills(
 
       expectedMappings.add(`${topicId}:${skillId}`);
 
-      await prisma.topicSkill.upsert({
+      await prisma.curriculumNodeSkill.upsert({
         where: {
-          topicId_skillId: {
-            topicId,
+          curriculumNodeId_skillId: {
+            curriculumNodeId: topicId,
             skillId,
           },
         },
@@ -2096,7 +2095,7 @@ async function syncSubjectSkills(
           isPrimary: mapping.isPrimary ?? false,
         },
         create: {
-          topicId,
+          curriculumNodeId: topicId,
           skillId,
           weight: mapping.weight ?? 1,
           isPrimary: mapping.isPrimary ?? false,
@@ -2105,27 +2104,28 @@ async function syncSubjectSkills(
     }
   }
 
-  const currentMappings = await prisma.topicSkill.findMany({
+  const currentMappings = await prisma.curriculumNodeSkill.findMany({
     where: {
       skill: {
         curriculumId,
       },
     },
     select: {
-      topicId: true,
+      curriculumNodeId: true,
       skillId: true,
     },
   });
 
   const mappingsToDelete = currentMappings.filter(
-    (mapping) => !expectedMappings.has(`${mapping.topicId}:${mapping.skillId}`),
+    (mapping) =>
+      !expectedMappings.has(`${mapping.curriculumNodeId}:${mapping.skillId}`),
   );
 
   if (mappingsToDelete.length) {
-    await prisma.topicSkill.deleteMany({
+    await prisma.curriculumNodeSkill.deleteMany({
       where: {
         OR: mappingsToDelete.map((mapping) => ({
-          topicId: mapping.topicId,
+          curriculumNodeId: mapping.curriculumNodeId,
           skillId: mapping.skillId,
         })),
       },
@@ -2142,281 +2142,14 @@ async function syncSubjectSkills(
   });
 }
 
-async function syncSubjectRoadmap(
-  curriculumId: string,
-  subjectCode: string,
-): Promise<void> {
-  const subjectName = findSubjectName(subjectCode);
-  const roadmap = await prisma.subjectRoadmap.upsert({
-    where: {
-      curriculumId_code: {
-        curriculumId,
-        code: DEFAULT_SUBJECT_ROADMAP_CODE,
-      },
-    },
-    update: {
-      title: `خارطة ${subjectName}`,
-      description: null,
-      version: 1,
-      isActive: true,
-    },
-    create: {
-      curriculumId,
-      code: DEFAULT_SUBJECT_ROADMAP_CODE,
-      title: `خارطة ${subjectName}`,
-      description: null,
-      version: 1,
-      isActive: true,
-    },
-  });
-  const rootTopics = await prisma.topic.findMany({
-    where: {
-      curriculumId,
-      parentId: null,
-    },
-    select: {
-      id: true,
-      code: true,
-      name: true,
-      studentLabel: true,
-      displayOrder: true,
-      _count: {
-        select: {
-          children: true,
-        },
-      },
-    },
-    orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }],
-  });
-  const roadmapDefinition = resolveSubjectRoadmapDefinition({
-    subjectCode,
-    subjectName,
-    topics: rootTopics.map((topic) => ({
-      code: topic.code,
-      name: topic.name,
-      studentLabel: topic.studentLabel,
-      childrenCount: topic._count.children,
-      displayOrder: topic.displayOrder,
-    })),
-  });
-  const topicByCode = new Map(rootTopics.map((topic) => [topic.code, topic]));
-
-  await prisma.subjectRoadmap.update({
-    where: {
-      id: roadmap.id,
-    },
-    data: {
-      title: roadmapDefinition.title,
-      description: roadmapDefinition.description,
-    },
-  });
-  const desiredSectionCodes = roadmapDefinition.sections.map(
-    (section) => section.code,
-  );
-
-  // Shift existing section order indexes out of the way so reseeding can
-  // safely rewrite the curated order without unique-order collisions.
-  await prisma.roadmapSection.updateMany({
-    where: {
-      roadmapId: roadmap.id,
-    },
-    data: {
-      orderIndex: {
-        increment: 1000,
-      },
-    },
-  });
-
-  await prisma.roadmapSection.deleteMany({
-    where: {
-      roadmapId: roadmap.id,
-      ...(desiredSectionCodes.length > 0
-        ? {
-            code: {
-              notIn: desiredSectionCodes,
-            },
-          }
-        : {}),
-    },
-  });
-
-  for (const [index, section] of roadmapDefinition.sections.entries()) {
-    await prisma.roadmapSection.upsert({
-      where: {
-        roadmapId_code: {
-          roadmapId: roadmap.id,
-          code: section.code,
-        },
-      },
-      update: {
-        title: section.title,
-        description: section.description,
-        orderIndex: index + 1,
-      },
-      create: {
-        roadmapId: roadmap.id,
-        code: section.code,
-        title: section.title,
-        description: section.description,
-        orderIndex: index + 1,
-      },
-    });
-  }
-
-  const sections = await prisma.roadmapSection.findMany({
-    where: {
-      roadmapId: roadmap.id,
-    },
-    select: {
-      id: true,
-      code: true,
-    },
-  });
-  const sectionIdsByCode = new Map(
-    sections.map((section) => [section.code, section.id]),
-  );
-  const expectedTopicIds: string[] = [];
-  let orderIndex = 1;
-
-  await prisma.roadmapNode.updateMany({
-    where: {
-      roadmapId: roadmap.id,
-    },
-    data: {
-      orderIndex: {
-        increment: 1000,
-      },
-    },
-  });
-
-  for (const section of roadmapDefinition.sections) {
-    const sectionId = sectionIdsByCode.get(section.code);
-
-    if (!sectionId) {
-      throw new Error(
-        `Could not resolve roadmap section ${section.code} for ${subjectCode}.`,
-      );
-    }
-
-    for (const node of section.nodes) {
-      const topic = topicByCode.get(node.topicCode);
-
-      if (!topic) {
-        throw new Error(
-          `Could not resolve roadmap topic ${node.topicCode} for ${subjectCode}.`,
-        );
-      }
-
-      expectedTopicIds.push(topic.id);
-
-      await prisma.roadmapNode.upsert({
-        where: {
-          roadmapId_topicId: {
-            roadmapId: roadmap.id,
-            topicId: topic.id,
-          },
-        },
-        update: {
-          sectionId,
-          title: node.title,
-          description: node.description,
-          orderIndex,
-          parentRoadmapNodeId: null,
-          recommendedPreviousRoadmapNodeId: null,
-          estimatedSessions: node.estimatedSessions,
-          isOptional: node.isOptional,
-        },
-        create: {
-          roadmapId: roadmap.id,
-          sectionId,
-          topicId: topic.id,
-          title: node.title,
-          description: node.description,
-          orderIndex,
-          parentRoadmapNodeId: null,
-          recommendedPreviousRoadmapNodeId: null,
-          estimatedSessions: node.estimatedSessions,
-          isOptional: node.isOptional,
-        },
-      });
-
-      orderIndex += 1;
-    }
-  }
-
-  await prisma.roadmapNode.deleteMany({
-    where: {
-      roadmapId: roadmap.id,
-      ...(expectedTopicIds.length > 0
-        ? {
-            topicId: {
-              notIn: expectedTopicIds,
-            },
-          }
-        : {}),
-    },
-  });
-
-  await prisma.roadmapSection.deleteMany({
-    where: {
-      roadmapId: roadmap.id,
-      ...(desiredSectionCodes.length > 0
-        ? {
-            code: {
-              notIn: desiredSectionCodes,
-            },
-          }
-        : {}),
-    },
-  });
-
-  const roadmapNodes = await prisma.roadmapNode.findMany({
-    where: {
-      roadmapId: roadmap.id,
-    },
-    select: {
-      id: true,
-      topic: {
-        select: {
-          code: true,
-        },
-      },
-    },
-  });
-  const nodeIdsByTopicCode = new Map(
-    roadmapNodes.map((node) => [node.topic.code, node.id]),
-  );
-
-  for (const section of roadmapDefinition.sections) {
-    for (const node of section.nodes) {
-      const nodeId = nodeIdsByTopicCode.get(node.topicCode);
-
-      if (!nodeId) {
-        throw new Error(
-          `Could not resolve roadmap node for ${subjectCode}:${node.topicCode}.`,
-        );
-      }
-
-      await prisma.roadmapNode.update({
-        where: {
-          id: nodeId,
-        },
-        data: {
-          recommendedPreviousRoadmapNodeId: node.recommendedPreviousTopicCode
-            ? (nodeIdsByTopicCode.get(node.recommendedPreviousTopicCode) ??
-              null)
-            : null,
-        },
-      });
-    }
-  }
-}
-
 export async function runCatalogSeed() {
   const streamIds = await seedStreams();
   const subjectIds = await seedSubjects();
-  await syncCurriculumRules(streamIds, subjectIds);
-  const subjectCurriculumIds = await seedSubjectCurricula(subjectIds);
+  const subjectCurriculumIds = await seedSubjectCurricula(
+    subjectIds,
+    streamIds,
+  );
+  await syncSubjectOfferings(streamIds, subjectIds, subjectCurriculumIds);
   await cleanupObsoleteCatalog();
 
   for (const [subjectCode, topicTree] of Object.entries(SUBJECT_TOPIC_TREES)) {
@@ -2449,22 +2182,8 @@ export async function runCatalogSeed() {
     }
   }
 
-  for (const subjectCode of Object.keys(SUBJECT_TOPIC_TREES)) {
-    const curricula = subjectCurriculumIds.get(subjectCode) ?? [];
-
-    if (curricula.length === 0) {
-      throw new Error(
-        `Could not resolve the ${subjectCode} curriculum while syncing roadmaps.`,
-      );
-    }
-
-    for (const curriculum of curricula) {
-      await syncSubjectRoadmap(curriculum.id, subjectCode);
-    }
-  }
-
   console.log(
-    'Seed complete: BAC catalog families, pathways, active curricula, starter topic trees, skill mappings, and roadmap shells synced.',
+    'Seed complete: BAC catalog families, pathways, subject offerings, active curricula, starter curriculum nodes, and skill mappings synced.',
   );
 }
 

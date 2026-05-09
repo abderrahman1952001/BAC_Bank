@@ -335,9 +335,9 @@ export class IngestionDraftIntakeService {
                 orderIndex: true,
                 label: true,
                 maxPoints: true,
-                topicMappings: {
+                curriculumNodeMappings: {
                   select: {
-                    topic: {
+                    curriculumNode: {
                       select: {
                         code: true,
                       },
@@ -542,8 +542,8 @@ export class IngestionDraftIntakeService {
         orderIndex: number;
         label: string | null;
         maxPoints: Prisma.Decimal | null;
-        topicMappings: Array<{
-          topic: {
+        curriculumNodeMappings: Array<{
+          curriculumNode: {
             code: string;
           };
         }>;
@@ -655,8 +655,8 @@ export class IngestionDraftIntakeService {
       orderIndex: number;
       label: string | null;
       maxPoints: Prisma.Decimal | null;
-      topicMappings: Array<{
-        topic: {
+      curriculumNodeMappings: Array<{
+        curriculumNode: {
           code: string;
         };
       }>;
@@ -682,7 +682,7 @@ export class IngestionDraftIntakeService {
       orderIndex: node.orderIndex,
       label: node.label,
       maxPoints: node.maxPoints !== null ? Number(node.maxPoints) : null,
-      topicCodes: node.topicMappings.map((mapping) => mapping.topic.code),
+      topicCodes: node.curriculumNodeMappings.map((mapping) => mapping.curriculumNode.code),
       blocks: node.blocks.map((block) =>
         this.mapPublishedBlockToDraft(block, context),
       ),

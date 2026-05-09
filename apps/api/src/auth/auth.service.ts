@@ -58,7 +58,7 @@ export class AuthService {
         name: true,
         pathways: {
           where: {
-            subjectMappings: {
+            subjectOfferings: {
               some: {},
             },
           },

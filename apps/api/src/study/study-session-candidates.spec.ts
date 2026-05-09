@@ -67,8 +67,8 @@ function makeExamWithExercise(input: {
               maxPoints: null,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: (input.topicCodes ?? []).map((code, index) => ({
-                topic: {
+              curriculumNodeMappings: (input.topicCodes ?? []).map((code, index) => ({
+                curriculumNode: {
                   code,
                   name: code,
                   studentLabel: null,
@@ -86,7 +86,7 @@ function makeExamWithExercise(input: {
               maxPoints: null,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [
                 {
                   id: `prompt-${input.questionId}`,

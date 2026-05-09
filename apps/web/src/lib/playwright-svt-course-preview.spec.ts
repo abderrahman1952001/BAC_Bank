@@ -34,7 +34,7 @@ describe("playwright SVT course preview", () => {
     );
   });
 
-  it("builds contract-valid canonical math sequence preview models", async () => {
+  it("does not expose the removed canonical math sequence draft", async () => {
     const cards = await buildPlaywrightCanonicalCourseSubjectCards();
     const subject =
       await buildPlaywrightCanonicalCourseSubjectResponse("MATHEMATICS");
@@ -49,14 +49,10 @@ describe("playwright SVT course preview", () => {
     );
 
     expect(cards.some((card) => card.subject.code === "MATHEMATICS")).toBe(
-      true,
+      false,
     );
-    expect(subject?.units[0]?.topics[0]?.slug).toBe("sequences");
-    expect(topic?.concepts).toHaveLength(13);
-    expect(concept?.concept.slug).toBe("sequence-field-gate");
-    expect(concept?.steps[0]?.visual?.asset?.status).toBe("GENERATED");
-    expect(concept?.steps[0]?.visual?.asset?.url).toContain(
-      "/api/course-assets/math/SE-M-MT/sequences/",
-    );
+    expect(subject).toBeNull();
+    expect(topic).toBeNull();
+    expect(concept).toBeNull();
   });
 });

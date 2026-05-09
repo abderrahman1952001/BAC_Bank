@@ -14,6 +14,7 @@ import { ClerkAuthGuard } from '../auth/clerk-auth.guard';
 import type {
   CatalogResponse,
   CreateSessionResponse,
+  CurriculumJourneysResponse,
   ExamResponse,
   FiltersResponse,
   MyMistakesResponse,
@@ -136,6 +137,18 @@ export class StudyController {
     @Query() query: GetStudyRoadmapsQueryDto,
   ): Promise<StudyRoadmapsResponse> {
     return this.studyRoadmapService.listStudyRoadmaps(request.user!.id, {
+      limit: query.limit,
+      subjectCode: query.subjectCode,
+    });
+  }
+
+  @UseGuards(ClerkAuthGuard)
+  @Get('curriculum-journeys')
+  listCurriculumJourneys(
+    @Req() request: AuthenticatedRequest,
+    @Query() query: GetStudyRoadmapsQueryDto,
+  ): Promise<CurriculumJourneysResponse> {
+    return this.studyRoadmapService.listCurriculumJourneys(request.user!.id, {
       limit: query.limit,
       subjectCode: query.subjectCode,
     });

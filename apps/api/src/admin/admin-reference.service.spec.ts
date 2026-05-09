@@ -15,7 +15,7 @@ describe('AdminReferenceService', () => {
     stream: {
       findMany: jest.Mock;
     };
-    topic: {
+    curriculumNode: {
       findMany: jest.Mock;
     };
   };
@@ -39,7 +39,7 @@ describe('AdminReferenceService', () => {
       stream: {
         findMany: jest.fn(),
       },
-      topic: {
+      curriculumNode: {
         findMany: jest.fn(),
       },
     };

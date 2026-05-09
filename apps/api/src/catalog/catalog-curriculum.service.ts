@@ -11,7 +11,7 @@ export class CatalogCurriculumService {
   async listActiveFilterTopics(client?: CatalogReadClient) {
     const db = client ?? this.prisma;
     const currentYear = this.getCurrentCatalogYear();
-    const topicRows = await db.topic.findMany({
+    const topicRows = await db.curriculumNode.findMany({
       where: {
         curriculum: {
           isActive: true,
@@ -36,7 +36,7 @@ export class CatalogCurriculumService {
         },
         curriculum: {
           select: {
-            streamMappings: {
+            subjectOfferings: {
               select: {
                 stream: {
                   select: {
@@ -57,7 +57,7 @@ export class CatalogCurriculumService {
                 name: true,
               },
             },
-            streamMappings: {
+            subjectOfferings: {
               select: {
                 stream: {
                   select: {
@@ -96,9 +96,11 @@ export class CatalogCurriculumService {
     for (const row of topicRows) {
       const key = `${row.subject.code}:${row.code}`;
       const streamCodes =
-        row.curriculum.streamMappings.length > 0
-          ? row.curriculum.streamMappings.map((mapping) => mapping.stream.code)
-          : row.subject.streamMappings.map((mapping) => mapping.stream.code);
+        row.curriculum.subjectOfferings.length > 0
+          ? row.curriculum.subjectOfferings.map(
+              (mapping) => mapping.stream.code,
+            )
+          : row.subject.subjectOfferings.map((mapping) => mapping.stream.code);
       const current = mergedTopics.get(key);
 
       if (!current) {
@@ -164,6 +166,17 @@ export class CatalogCurriculumService {
     },
     client?: CatalogReadClient,
   ) {
+    return this.resolveCurriculumScope(input, client);
+  }
+
+  async resolveCurriculumScope(
+    input: {
+      subjectCode: string;
+      streamCodes?: string[];
+      years?: number[];
+    },
+    client?: CatalogReadClient,
+  ) {
     const db = client ?? this.prisma;
     const subjectCode = input.subjectCode.trim().toUpperCase();
     const streamCodes = Array.from(
@@ -182,7 +195,7 @@ export class CatalogCurriculumService {
       select: {
         id: true,
         code: true,
-        streamMappings: {
+        subjectOfferings: {
           select: {
             validFromYear: true,
             validToYear: true,
@@ -202,7 +215,7 @@ export class CatalogCurriculumService {
             familyCode: true,
             validFromYear: true,
             validToYear: true,
-            streamMappings: {
+            subjectOfferings: {
               select: {
                 stream: {
                   select: {
@@ -222,7 +235,7 @@ export class CatalogCurriculumService {
 
     const allowedStreamCodes = Array.from(
       new Set(
-        subject.streamMappings
+        subject.subjectOfferings
           .filter((mapping) => this.matchesYearWindow(mapping, effectiveYears))
           .map((mapping) => mapping.stream.code),
       ),
@@ -237,7 +250,7 @@ export class CatalogCurriculumService {
         : subject.curricula;
     const streamMatchedCurricula = streamCodes.length
       ? relevantCurricula.filter((curriculum) =>
-          curriculum.streamMappings.some((mapping) =>
+          curriculum.subjectOfferings.some((mapping) =>
             streamCodes.includes(mapping.stream.code),
           ),
         )

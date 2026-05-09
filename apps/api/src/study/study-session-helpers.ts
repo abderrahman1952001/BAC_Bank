@@ -63,8 +63,8 @@ export type ExamVariantWithNodes = {
     maxPoints: Prisma.Decimal | null;
     status: PublicationStatus;
     metadata: Prisma.JsonValue | null;
-    topicMappings: Array<{
-      topic: {
+    curriculumNodeMappings: Array<{
+      curriculumNode: {
         code: string;
         name: string;
         studentLabel: string | null;
@@ -193,7 +193,7 @@ export function mapVariantHierarchy(variant: ExamVariantWithNodes): {
       maxPoints: node.maxPoints !== null ? Number(node.maxPoints) : null,
       status: node.status,
       metadata: node.metadata,
-      topics: mapTopicTags(node.topicMappings),
+      topics: mapTopicTags(node.curriculumNodeMappings),
       blocks: [...node.blocks]
         .sort((a, b) => {
           const roleDelta = getBlockRoleRank(a.role) - getBlockRoleRank(b.role);
@@ -653,7 +653,7 @@ function getBlockRoleRank(role: BlockRole): number {
 
 function mapTopicTags(
   mappings: Array<{
-    topic: {
+    curriculumNode: {
       code: string;
       name: string;
       studentLabel: string | null;
@@ -663,8 +663,8 @@ function mapTopicTags(
 ): HierarchyTopicTagPayload[] {
   return sortTopicTags(
     mappings.map((mapping) => ({
-      code: mapping.topic.code,
-      name: mapping.topic.studentLabel ?? mapping.topic.name,
+      code: mapping.curriculumNode.code,
+      name: mapping.curriculumNode.studentLabel ?? mapping.curriculumNode.name,
     })),
   );
 }

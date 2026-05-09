@@ -135,12 +135,12 @@ export class StudyWeakPointService {
     const requestedSubjectCode =
       input?.subjectCode?.trim().toUpperCase() ?? null;
     const [topicRollups, skillRollups, reviewQueueItems] = await Promise.all([
-      this.prisma.studentTopicRollup.findMany({
+      this.prisma.studentCurriculumNodeRollup.findMany({
         where: {
           userId,
           ...(requestedSubjectCode
             ? {
-                topic: {
+                curriculumNode: {
                   subject: {
                     code: requestedSubjectCode,
                   },
@@ -155,7 +155,7 @@ export class StudyWeakPointService {
           hardCount: true,
           missedCount: true,
           lastSeenAt: true,
-          topic: {
+          curriculumNode: {
             select: {
               code: true,
               name: true,
@@ -248,9 +248,9 @@ export class StudyWeakPointService {
                   },
                 },
               },
-              topicMappings: {
+              curriculumNodeMappings: {
                 select: {
-                  topic: {
+                  curriculumNode: {
                     select: {
                       id: true,
                       code: true,
@@ -308,9 +308,9 @@ export class StudyWeakPointService {
                   },
                 },
               },
-              topicMappings: {
+              curriculumNodeMappings: {
                 select: {
-                  topic: {
+                  curriculumNode: {
                     select: {
                       id: true,
                       code: true,
@@ -356,14 +356,14 @@ export class StudyWeakPointService {
     for (const rollup of topicRollups) {
       const subject = this.getOrCreateSubjectAggregate(
         subjects,
-        rollup.topic.subject,
+        rollup.curriculumNode.subject,
       );
       const topicAggregate = this.getOrCreateTopicAggregate(subject, {
-        code: rollup.topic.code,
-        name: rollup.topic.name,
-        studentLabel: rollup.topic.studentLabel,
-        subject: rollup.topic.subject,
-        skillMappings: rollup.topic.skillMappings,
+        code: rollup.curriculumNode.code,
+        name: rollup.curriculumNode.name,
+        studentLabel: rollup.curriculumNode.studentLabel,
+        subject: rollup.curriculumNode.subject,
+        skillMappings: rollup.curriculumNode.skillMappings,
       });
 
       topicAggregate.weaknessScore += Number(rollup.weaknessScore);
@@ -402,11 +402,11 @@ export class StudyWeakPointService {
         questionSkills: queueItem.questionNode?.skillMappings ?? [],
         exerciseSkills: queueItem.exerciseNode.skillMappings,
         questionTopics:
-          queueItem.questionNode?.topicMappings.map(
-            (mapping) => mapping.topic,
+          queueItem.questionNode?.curriculumNodeMappings.map(
+            (mapping) => mapping.curriculumNode,
           ) ?? [],
-        exerciseTopics: queueItem.exerciseNode.topicMappings.map(
-          (mapping) => mapping.topic,
+        exerciseTopics: queueItem.exerciseNode.curriculumNodeMappings.map(
+          (mapping) => mapping.curriculumNode,
         ),
         requestedSubjectCode,
       });
@@ -647,7 +647,7 @@ export class StudyWeakPointService {
 
   private getOrCreateTopicAggregate(
     subject: SubjectAggregate,
-    topic: {
+    curriculumNode: {
       code: string;
       name: string;
       studentLabel: string | null;
@@ -666,15 +666,15 @@ export class StudyWeakPointService {
       }>;
     },
   ) {
-    const existing = subject.topics.get(topic.code);
+    const existing = subject.topics.get(curriculumNode.code);
 
     if (existing) {
       return existing;
     }
 
     const created: TopicAggregate = {
-      code: topic.code,
-      name: topic.studentLabel ?? topic.name,
+      code: curriculumNode.code,
+      name: curriculumNode.studentLabel ?? curriculumNode.name,
       weaknessScore: 0,
       weakSignalCount: 0,
       lastSeenAt: null,
@@ -685,7 +685,7 @@ export class StudyWeakPointService {
         revealed: 0,
         flagged: 0,
       },
-      skillMappings: topic.skillMappings.map((mapping) => ({
+      skillMappings: curriculumNode.skillMappings.map((mapping) => ({
         weight: Number(mapping.weight),
         isPrimary: mapping.isPrimary,
         skill: {
@@ -696,7 +696,7 @@ export class StudyWeakPointService {
       })),
     };
 
-    subject.topics.set(topic.code, created);
+    subject.topics.set(curriculumNode.code, created);
     return created;
   }
 

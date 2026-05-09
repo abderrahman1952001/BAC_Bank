@@ -54,7 +54,7 @@ function makeSimulationExam(input?: {
               maxPoints: null,
               status: PublicationStatus.PUBLISHED,
               metadata: null,
-              topicMappings: [],
+              curriculumNodeMappings: [],
               blocks: [],
             },
           ];
@@ -69,7 +69,7 @@ function makeSimulationExam(input?: {
             maxPoints: 5,
             status: PublicationStatus.PUBLISHED,
             metadata: null,
-            topicMappings: [],
+            curriculumNodeMappings: [],
             blocks: [
               {
                 id: `prompt-${index + 1}`,

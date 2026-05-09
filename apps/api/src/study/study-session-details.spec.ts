@@ -42,9 +42,9 @@ function makeVariantWithContextAndOfferings() {
         maxPoints: null,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [
+        curriculumNodeMappings: [
           {
-            topic: {
+            curriculumNode: {
               code: 'ALG',
               name: 'Algebra',
               studentLabel: null,
@@ -73,7 +73,7 @@ function makeVariantWithContextAndOfferings() {
         maxPoints: 5,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [],
+        curriculumNodeMappings: [],
         blocks: [
           {
             id: 'prompt-1',
@@ -95,7 +95,7 @@ function makeVariantWithContextAndOfferings() {
         maxPoints: null,
         status: PublicationStatus.PUBLISHED,
         metadata: null,
-        topicMappings: [],
+        curriculumNodeMappings: [],
         blocks: [
           {
             id: 'nested-context',

@@ -6,10 +6,10 @@ describe('StudyRoadmapService', () => {
     user: {
       findUnique: jest.Mock;
     };
-    subjectRoadmap: {
+    curriculum: {
       findMany: jest.Mock;
     };
-    studentTopicRollup: {
+    studentCurriculumNodeRollup: {
       findMany: jest.Mock;
     };
     studentReviewQueueItem: {
@@ -23,10 +23,10 @@ describe('StudyRoadmapService', () => {
       user: {
         findUnique: jest.fn(),
       },
-      subjectRoadmap: {
+      curriculum: {
         findMany: jest.fn(),
       },
-      studentTopicRollup: {
+      studentCurriculumNodeRollup: {
         findMany: jest.fn(),
       },
       studentReviewQueueItem: {
@@ -36,100 +36,63 @@ describe('StudyRoadmapService', () => {
     service = new StudyRoadmapService(prisma as never);
   });
 
-  it('builds roadmap summaries and next actions from topic rollups', async () => {
-    prisma.user.findUnique.mockResolvedValue({
-      streamId: 'stream-se',
-    });
-    prisma.subjectRoadmap.findMany.mockResolvedValue([
+  function mockMathCurriculum() {
+    prisma.curriculum.findMany.mockResolvedValue([
       {
-        id: 'roadmap-math',
-        code: 'CORE_PATH',
-        title: 'مسار الرياضيات',
-        description: 'مسار هادئ لبناء الثبات في الرياضيات.',
-        version: 1,
-        curriculum: {
-          id: 'curriculum-math',
-          code: 'GENERAL',
-          title: 'الرياضيات',
-          validFromYear: 2008,
-          validToYear: null,
-          streamMappings: [],
-          subject: {
-            code: 'MATH',
-            name: 'الرياضيات',
-          },
+        id: 'curriculum-math',
+        code: 'GENERAL',
+        title: 'الرياضيات',
+        validFromYear: 2008,
+        validToYear: null,
+        subject: {
+          code: 'MATH',
+          name: 'الرياضيات',
         },
-        sections: [
+        subjectOfferings: [{ streamId: 'stream-se' }],
+        curriculumNodes: [
           {
-            id: 'section-foundation',
-            code: 'FOUNDATION',
-            title: 'الانطلاقة',
-            description: 'ابدأ بالمحاور الأساسية.',
-            orderIndex: 1,
-          },
-          {
-            id: 'section-build',
-            code: 'BUILD',
-            title: 'التثبيت',
-            description: 'ثبت ما تبقى من المحاور.',
-            orderIndex: 2,
-          },
-        ],
-        nodes: [
-          {
-            id: 'node-algebra',
-            title: 'الجبر',
-            description: 'ثبّت الجبر.',
-            orderIndex: 1,
-            estimatedSessions: 3,
-            isOptional: false,
-            sectionId: 'section-foundation',
-            recommendedPreviousRoadmapNodeId: null,
-            topicId: 'topic-algebra',
-            topic: {
-              code: 'ALGEBRA',
-              name: 'الجبر',
-              studentLabel: null,
+            id: 'topic-algebra',
+            code: 'ALGEBRA',
+            name: 'الجبر',
+            studentLabel: null,
+            displayOrder: 1,
+            _count: {
+              children: 2,
             },
           },
           {
-            id: 'node-geometry',
-            title: 'الهندسة',
-            description: 'راجع الهندسة.',
-            orderIndex: 2,
-            estimatedSessions: 2,
-            isOptional: false,
-            sectionId: 'section-foundation',
-            recommendedPreviousRoadmapNodeId: 'node-algebra',
-            topicId: 'topic-geometry',
-            topic: {
-              code: 'GEOMETRY',
-              name: 'الهندسة',
-              studentLabel: 'الهندسة',
+            id: 'topic-geometry',
+            code: 'GEOMETRY',
+            name: 'الهندسة',
+            studentLabel: 'الهندسة',
+            displayOrder: 2,
+            _count: {
+              children: 1,
             },
           },
           {
-            id: 'node-analysis',
-            title: 'الدوال',
-            description: 'ابدأ الدوال.',
-            orderIndex: 3,
-            estimatedSessions: 2,
-            isOptional: false,
-            sectionId: 'section-build',
-            recommendedPreviousRoadmapNodeId: 'node-geometry',
-            topicId: 'topic-analysis',
-            topic: {
-              code: 'FUNCTIONS',
-              name: 'الدوال',
-              studentLabel: null,
+            id: 'topic-analysis',
+            code: 'FUNCTIONS',
+            name: 'الدوال',
+            studentLabel: null,
+            displayOrder: 3,
+            _count: {
+              children: 1,
             },
           },
         ],
       },
     ]);
-    prisma.studentTopicRollup.findMany.mockResolvedValue([
+  }
+
+  it('builds roadmap summaries and next actions from curriculum-node rollups', async () => {
+    prisma.user.findUnique.mockResolvedValue({
+      streamId: 'stream-se',
+    });
+    mockMathCurriculum();
+    prisma.studentCurriculumNodeRollup.findMany.mockResolvedValue([
       {
-        topicId: 'topic-algebra',
+        curriculumNodeId: 'topic-algebra',
         attemptedQuestions: 14,
         correctCount: 12,
         incorrectCount: 1,
@@ -138,7 +101,7 @@ describe('StudyRoadmapService', () => {
         lastSeenAt: new Date('2026-04-09T09:00:00.000Z'),
       },
       {
-        topicId: 'topic-geometry',
+        curriculumNodeId: 'topic-geometry',
         attemptedQuestions: 6,
         correctCount: 2,
         incorrectCount: 3,
@@ -166,236 +129,91 @@ describe('StudyRoadmapService', () => {
       limit: 4,
     });
 
-    expect(result).toEqual({
-      data: [
-        {
-          id: 'roadmap-math',
-          title: 'مسار الرياضيات',
-          description: 'مسار هادئ لبناء الثبات في الرياضيات.',
-          subject: {
-            code: 'MATH',
-            name: 'الرياضيات',
-          },
-          curriculum: {
-            code: 'GENERAL',
-            title: 'الرياضيات',
-          },
-          totalNodeCount: 3,
-          solidNodeCount: 1,
-          needsReviewNodeCount: 1,
-          inProgressNodeCount: 0,
-          notStartedNodeCount: 1,
-          openReviewItemCount: 1,
-          progressPercent: 42,
-          updatedAt: '2026-04-09T10:00:00.000Z',
-          nextAction: {
-            type: 'TOPIC_DRILL',
-            label: 'راجع الهندسة',
-            topicCode: 'GEOMETRY',
-            topicName: 'الهندسة',
-          },
-          sections: [
-            {
-              id: 'section-foundation',
-              code: 'FOUNDATION',
-              title: 'الانطلاقة',
-              description: 'ابدأ بالمحاور الأساسية.',
-              orderIndex: 1,
-              nodes: [
-                {
-                  id: 'node-algebra',
-                  title: 'الجبر',
-                  description: 'ثبّت الجبر.',
-                  topicCode: 'ALGEBRA',
-                  topicName: 'الجبر',
-                  orderIndex: 1,
-                  estimatedSessions: 3,
-                  isOptional: false,
-                  sectionId: 'section-foundation',
-                  recommendedPreviousNodeId: null,
-                  recommendedPreviousNodeTitle: null,
-                  status: 'SOLID',
-                  progressPercent: 100,
-                  weaknessScore: 1,
-                  attemptedQuestions: 14,
-                  correctCount: 12,
-                  incorrectCount: 1,
-                  lastSeenAt: '2026-04-09T09:00:00.000Z',
-                },
-                {
-                  id: 'node-geometry',
-                  title: 'الهندسة',
-                  description: 'راجع الهندسة.',
-                  topicCode: 'GEOMETRY',
-                  topicName: 'الهندسة',
-                  orderIndex: 2,
-                  estimatedSessions: 2,
-                  isOptional: false,
-                  sectionId: 'section-foundation',
-                  recommendedPreviousNodeId: 'node-algebra',
-                  recommendedPreviousNodeTitle: 'الجبر',
-                  status: 'NEEDS_REVIEW',
-                  progressPercent: 25,
-                  weaknessScore: 8,
-                  attemptedQuestions: 6,
-                  correctCount: 2,
-                  incorrectCount: 3,
-                  lastSeenAt: '2026-04-09T10:00:00.000Z',
-                },
-              ],
-            },
-            {
-              id: 'section-build',
-              code: 'BUILD',
-              title: 'التثبيت',
-              description: 'ثبت ما تبقى من المحاور.',
-              orderIndex: 2,
-              nodes: [
-                {
-                  id: 'node-analysis',
-                  title: 'الدوال',
-                  description: 'ابدأ الدوال.',
-                  topicCode: 'FUNCTIONS',
-                  topicName: 'الدوال',
-                  orderIndex: 3,
-                  estimatedSessions: 2,
-                  isOptional: false,
-                  sectionId: 'section-build',
-                  recommendedPreviousNodeId: 'node-geometry',
-                  recommendedPreviousNodeTitle: 'الهندسة',
-                  status: 'NOT_STARTED',
-                  progressPercent: 0,
-                  weaknessScore: 0,
-                  attemptedQuestions: 0,
-                  correctCount: 0,
-                  incorrectCount: 0,
-                  lastSeenAt: null,
-                },
-              ],
-            },
-          ],
-          nodes: [
-            {
-              id: 'node-algebra',
-              title: 'الجبر',
-              description: 'ثبّت الجبر.',
-              topicCode: 'ALGEBRA',
-              topicName: 'الجبر',
-              orderIndex: 1,
-              estimatedSessions: 3,
-              isOptional: false,
-              sectionId: 'section-foundation',
-              recommendedPreviousNodeId: null,
-              recommendedPreviousNodeTitle: null,
-              status: 'SOLID',
-              progressPercent: 100,
-              weaknessScore: 1,
-              attemptedQuestions: 14,
-              correctCount: 12,
-              incorrectCount: 1,
-              lastSeenAt: '2026-04-09T09:00:00.000Z',
-            },
-            {
-              id: 'node-geometry',
-              title: 'الهندسة',
-              description: 'راجع الهندسة.',
-              topicCode: 'GEOMETRY',
-              topicName: 'الهندسة',
-              orderIndex: 2,
-              estimatedSessions: 2,
-              isOptional: false,
-              sectionId: 'section-foundation',
-              recommendedPreviousNodeId: 'node-algebra',
-              recommendedPreviousNodeTitle: 'الجبر',
-              status: 'NEEDS_REVIEW',
-              progressPercent: 25,
-              weaknessScore: 8,
-              attemptedQuestions: 6,
-              correctCount: 2,
-              incorrectCount: 3,
-              lastSeenAt: '2026-04-09T10:00:00.000Z',
-            },
-            {
-              id: 'node-analysis',
-              title: 'الدوال',
-              description: 'ابدأ الدوال.',
-              topicCode: 'FUNCTIONS',
-              topicName: 'الدوال',
-              orderIndex: 3,
-              estimatedSessions: 2,
-              isOptional: false,
-              sectionId: 'section-build',
-              recommendedPreviousNodeId: 'node-geometry',
-              recommendedPreviousNodeTitle: 'الهندسة',
-              status: 'NOT_STARTED',
-              progressPercent: 0,
-              weaknessScore: 0,
-              attemptedQuestions: 0,
-              correctCount: 0,
-              incorrectCount: 0,
-              lastSeenAt: null,
-            },
-          ],
+    expect(result.data[0]).toEqual(
+      expect.objectContaining({
+        id: 'curriculum-math',
+        title: 'خارطة الرياضيات',
+        subject: {
+          code: 'MATH',
+          name: 'الرياضيات',
         },
-      ],
-    });
+        curriculum: {
+          code: 'GENERAL',
+          title: 'الرياضيات',
+        },
+        totalNodeCount: 3,
+        solidNodeCount: 1,
+        needsReviewNodeCount: 1,
+        notStartedNodeCount: 1,
+        openReviewItemCount: 1,
+        progressPercent: 42,
+        updatedAt: '2026-04-09T10:00:00.000Z',
+        nextAction: {
+          type: 'TOPIC_DRILL',
+          label: 'راجع الهندسة',
+          topicCode: 'GEOMETRY',
+          topicName: 'الهندسة',
+        },
+      }),
+    );
+    expect(result.data[0]?.sections[0]).toEqual(
+      expect.objectContaining({
+        id: 'curriculum-math:CORE',
+        code: 'CORE',
+        title: 'المسار الأساسي',
+      }),
+    );
+    expect(result.data[0]?.nodes).toEqual([
+      expect.objectContaining({
+        id: 'topic-algebra',
+        topicCode: 'ALGEBRA',
+        recommendedPreviousNodeId: null,
+        status: 'SOLID',
+        progressPercent: 100,
+      }),
+      expect.objectContaining({
+        id: 'topic-geometry',
+        topicCode: 'GEOMETRY',
+        recommendedPreviousNodeId: 'topic-algebra',
+        recommendedPreviousNodeTitle: 'الجبر',
+        status: 'NEEDS_REVIEW',
+        progressPercent: 25,
+      }),
+      expect.objectContaining({
+        id: 'topic-analysis',
+        topicCode: 'FUNCTIONS',
+        recommendedPreviousNodeId: 'topic-geometry',
+        status: 'NOT_STARTED',
+      }),
+    ]);
   });
 
-  it('surfaces review-mistakes as the next action when roadmap nodes are stable but open review items remain', async () => {
+  it('surfaces review-mistakes as the next action when curriculum nodes are stable but open review items remain', async () => {
     prisma.user.findUnique.mockResolvedValue({
       streamId: 'stream-se',
     });
-    prisma.subjectRoadmap.findMany.mockResolvedValue([
+    mockMathCurriculum();
+    prisma.studentCurriculumNodeRollup.findMany.mockResolvedValue([
       {
-        id: 'roadmap-math',
-        code: 'CORE_PATH',
-        title: 'مسار الرياضيات',
-        description: 'مسار الرياضيات.',
-        version: 1,
-        curriculum: {
-          id: 'curriculum-math',
-          code: 'GENERAL',
-          title: 'الرياضيات',
-          validFromYear: 2008,
-          validToYear: null,
-          streamMappings: [],
-          subject: {
-            code: 'MATH',
-            name: 'الرياضيات',
-          },
-        },
-        sections: [
-          {
-            id: 'section-foundation',
-            code: 'FOUNDATION',
-            title: 'الانطلاقة',
-            description: 'ابدأ بالمحاور الأساسية.',
-            orderIndex: 1,
-          },
-        ],
-        nodes: [
-          {
-            id: 'node-algebra',
-            title: 'الجبر',
-            description: 'ثبّت الجبر.',
-            orderIndex: 1,
-            estimatedSessions: 3,
-            isOptional: false,
-            sectionId: 'section-foundation',
-            recommendedPreviousRoadmapNodeId: null,
-            topicId: 'topic-algebra',
-            topic: {
-              code: 'ALGEBRA',
-              name: 'الجبر',
-              studentLabel: null,
-            },
-          },
-        ],
+        curriculumNodeId: 'topic-algebra',
+        attemptedQuestions: 12,
+        correctCount: 10,
+        incorrectCount: 1,
+        masteryBucket: 'SOLID',
+        weaknessScore: new Prisma.Decimal(1),
+        lastSeenAt: new Date('2026-04-09T09:00:00.000Z'),
       },
-    ]);
-    prisma.studentTopicRollup.findMany.mockResolvedValue([
       {
-        topicId: 'topic-algebra',
+        curriculumNodeId: 'topic-geometry',
+        attemptedQuestions: 12,
+        correctCount: 10,
+        incorrectCount: 1,
+        masteryBucket: 'SOLID',
+        weaknessScore: new Prisma.Decimal(1),
+        lastSeenAt: new Date('2026-04-09T09:00:00.000Z'),
+      },
+      {
+        curriculumNodeId: 'topic-analysis',
         attemptedQuestions: 12,
         correctCount: 10,
         incorrectCount: 1,

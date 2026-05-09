@@ -1,6 +1,11 @@
 # Scientific Math Sequences golden unit
 
-Status: `GOLDEN_UNIT_DESIGN_V0`
+Status: `DESIGN_DRAFT_NEEDS_REWRITE`
+
+This file is a planning note, not approved lesson copy. Use it for scope,
+evidence, trap targets, and rough ordering only. Do not reuse its old generated
+titles, visual prompts, metaphors, or prose tone when authoring production
+lessons.
 
 This is the first full unit design note for canonical Math. It defines the
 student journey before we write `course.json`.
@@ -26,18 +31,16 @@ Unit code: `SEQUENCES`
 
 Canonical promise:
 
-> By the end of this unit, the student should feel that a sequence is not a
-> dry list of formulas. It is a machine that produces future values, and every
-> BAC question is asking one of four things: read the machine, predict its
-> direction, prove its destination, or unlock it with a transformation.
+> By the end of this unit, the student should read a sequence as an indexed
+> mathematical object, choose valid methods for its behavior, justify limits
+> carefully, and recognize the transformations used in BAC problems.
 
 Student-facing feeling:
 
 - precise, serious, and exam-trustworthy;
-- cinematic enough to pull the student forward;
 - calm enough that formulas feel controlled rather than dumped;
-- repeatedly rewarding: every node gives the student a new "power" they can
-  use immediately in BAC-style questions.
+- repeatedly rewarding: every node gives the student one useful BAC move they
+  can use immediately.
 
 ## Alignment
 
@@ -70,10 +73,8 @@ gamification.
 
 Use these devices throughout:
 
-- Start with mystery: show the student a machine and ask what it will do after
-  `1000` turns before revealing the formal method.
-- Give every node a named power, such as "direction sensor", "bounded rail",
-  "domino proof", or "staircase vision".
+- Start with a concrete BAC-style question before revealing the formal method.
+- Give every node a named method or checkpoint, not a theatrical title.
 - Put a fast interaction before the full rule when possible.
 - Use original examples that look BAC-realistic but are not copied from any
   source.
@@ -150,7 +151,7 @@ Visual language:
 
 Core visual motifs:
 
-- sequence as a machine: input `n`, output `u_n`;
+- sequence as an indexed object: valid rank `n`, term `u_n`;
 - recurrence as a feedback loop;
 - monotonicity as a direction arrow;
 - boundedness as rails;
@@ -168,7 +169,7 @@ The unit is not a list of rules. It is a journey in five acts.
 
 | Act | Purpose | Student Feeling |
 | --- | --- | --- |
-| 0. Immersion | Make sequences feel like prediction machines. | "I want to know where this goes." |
+| 0. Orientation | Explain why sequences matter in BAC problems. | "I know what this unit is for." |
 | 1. Reading | Control notation, index, rank, explicit form, recurrence. | "I can read the object without panic." |
 | 2. Behavior | Study monotonicity, bounds, limits, convergence. | "I can predict motion and destination." |
 | 3. Proof | Use induction, adjacency, and graphical recurrence. | "I can justify, not just guess." |
@@ -177,21 +178,21 @@ The unit is not a list of rules. It is a journey in five acts.
 
 ## Node Map
 
-| Code | Role | Roadmap Title | In-Node Title | Power |
+| Code | Role | Roadmap Title | In-Node Title | Method |
 | --- | --- | --- | --- | --- |
-| `SEQ_FIELD_GATE` | `FIELD_INTRO` | مدخل المتتاليات | آلة تتنبأ بالمستقبل | See a sequence as motion, not a list. |
-| `SEQ_UNIT_MAP` | `UNIT_INTRO` | خريطة الرحلة | القوى الست قبل القوانين | See the unit path before formal rules arrive. |
+| `SEQ_FIELD_GATE` | `FIELD_INTRO` | مدخل المتتاليات | مدخل إلى المتتاليات | See a sequence as an indexed object. |
+| `SEQ_UNIT_MAP` | `UNIT_INTRO` | خريطة الرحلة | خريطة وحدة المتتاليات | See the unit path before formal rules arrive. |
 | `SEQ_INDEX_LANGUAGE` | `LESSON` | لغة الحدود | العنوان والرتبة والحد الأول | Decode index, rank, first term, and notation. |
 | `SEQ_BUILDERS` | `LESSON` | كيف تولد المتتالية؟ | ثلاث طرق لبناء نفس العالم | Recognize explicit, recurrence, and pattern definitions. |
-| `SEQ_DIRECTION` | `LESSON` | اتجاه الحركة | مستشعر الصعود والنزول | Choose difference, function, or ratio method safely. |
+| `SEQ_DIRECTION` | `LESSON` | اتجاه الحركة | طرق دراسة الرتابة | Choose difference, function, or ratio method safely. |
 | `SEQ_RAILS_LIMITS` | `LESSON` | القضبان والنهاية | عندما تقترب الحدود من مصيرها | Link boundedness, limits, convergence, and divergence. |
 | `SEQ_INDUCTION_LOCK` | `LESSON` | البرهان بالتراجع | سلسلة لا تنكسر | Prove statements for every rank. |
 | `SEQ_ADJACENT_WALLS` | `LESSON` | التجاور | جداران يلتقيان في نفس النقطة | Prove shared convergence with adjacent sequences. |
 | `SEQ_STAIRCASE` | `LESSON` | السلم البياني | عندما ترسم المتتالية طريقها | Read recurrence behavior through `C_f` and `y=x`. |
 | `SEQ_FAMILIES` | `LESSON` | حسابية وهندسية | خطوتان مشهورتان | Master constant step and constant multiplier sequences. |
-| `SEQ_TRANSFORM_LENS` | `LESSON` | تحويل المتتاليات | العدسة التي تكشف السر | Build auxiliary sequences and choose alpha/beta. |
+| `SEQ_TRANSFORM_LENS` | `LESSON` | تحويل المتتاليات | المتتاليات المساعدة | Build auxiliary sequences and choose alpha/beta. |
 | `SEQ_SUM_PRODUCT_ENGINE` | `LESSON` | المجاميع والجداءات | فك الشفرة المخفية | Reduce sums/products to known families. |
-| `SEQ_BAC_BOSS` | `FIELD_SYNTHESIS` | مسألة شاملة | تشغيل كل الأدوات في معركة واحدة | Solve a full BAC-style sequence problem. |
+| `SEQ_BAC_SYNTHESIS` | `FIELD_SYNTHESIS` | مسألة شاملة | مسألة BAC شاملة | Solve a full BAC-style sequence problem. |
 
 ## Introductory Experience
 
@@ -199,16 +200,16 @@ The opening should not begin with a definition.
 
 ### Opening Scene
 
-Show three machines side by side:
+Show three sequence definitions side by side:
 
-1. A machine that adds `3` each time.
-2. A machine that multiplies by `1.5` each time.
-3. A machine that feeds the previous output into a function.
+1. A sequence defined by adding `3` each time.
+2. A sequence defined by multiplying by `1.5` each time.
+3. A sequence defined by a recurrence relation.
 
 Ask:
 
-> Which machine will cross `1000` first? Which one may never cross it? Which
-> one cannot be judged until we understand its graph?
+> Which sequence crosses `1000` first? Which one may never cross it? Which one
+> cannot be judged until we understand its recurrence?
 
 The student guesses, then the unit reveals the core promise:
 
@@ -220,9 +221,9 @@ The student guesses, then the unit reveals the core promise:
 
 ### Unit Map Moment
 
-Before rules, show the student the six powers they will unlock:
+Before rules, show the student the six methods they will practice:
 
-1. Read the machine.
+1. Read the notation.
 2. Detect direction.
 3. Trap the sequence between rails.
 4. Prove with domino logic.
@@ -237,7 +238,7 @@ This becomes the unit progress spine.
 
 Roadmap title: `مدخل المتتاليات`
 
-Title: `آلة تتنبأ بالمستقبل`
+Title: `مدخل إلى المتتاليات`
 
 Learning objective:
 
@@ -252,7 +253,7 @@ falls, gets trapped, approaches a destination, or hides a famous pattern.
 
 Interaction:
 
-- `PREDICT_THE_MACHINE`: show three original machines and ask which crosses a
+- `PREDICT_THE_SEQUENCE`: show three original sequences and ask which crosses a
   threshold first.
 - Reveal: the answer depends on structure, not on instinct.
 
@@ -274,7 +275,7 @@ Keep it short and clearly optional.
 
 Roadmap title: `خريطة الرحلة`
 
-Title: `القوى الست قبل القوانين`
+Title: `خريطة وحدة المتتاليات`
 
 Learning objective:
 
@@ -289,7 +290,7 @@ solve the full BAC architecture.
 
 Interaction:
 
-- `POWER_MAP`: show six locked powers. Each power previews a future BAC move
+- `METHOD_MAP`: show six core methods. Each method previews a future BAC move
   with one tiny animated example.
 - `WHAT_COMES_FIRST`: student orders the usual BAC chain: bound, monotonicity,
   convergence, fixed-point limit, transformation, sum.
@@ -361,8 +362,9 @@ pattern/list definitions, and knows what each one makes easy or hard.
 
 Mental model:
 
-An explicit formula is a direct address. A recurrence is a machine that needs
-the previous output. A pattern is a clue that must be translated into a formula.
+An explicit formula is a direct address. A recurrence definition needs a
+starting value and the previous term. A pattern is a clue that must be
+translated into a formula.
 
 Authoritative core:
 
@@ -376,7 +378,7 @@ Interaction:
 - `BUILD_TYPE_SORT`: classify original examples into explicit, recurrence, and
   pattern.
 - `NEXT_THREE_TERMS`: compute the next terms for a recurrence and feel the
-  machine.
+  step-by-step dependency.
 
 BAC lens:
 
@@ -395,7 +397,7 @@ Why repeated algorithms in computing are often recurrence sequences.
 
 Roadmap title: `اتجاه الحركة`
 
-Title: `مستشعر الصعود والنزول`
+Title: `طرق دراسة الرتابة`
 
 Learning objective:
 
@@ -662,7 +664,7 @@ Compound growth and decay as a geometric mental model.
 
 Roadmap title: `تحويل المتتاليات`
 
-Title: `العدسة التي تكشف السر`
+Title: `المتتاليات المساعدة`
 
 Learning objective:
 
@@ -701,7 +703,7 @@ Finding `v_n` correctly but forgetting to convert back to `u_n`.
 
 Optional portal:
 
-Affine recurrence formula and fixed-point viewpoint, as a powerful shortcut for
+Affine recurrence formula and fixed-point viewpoint, as an efficient shortcut for
 strong students.
 
 ### `SEQ_SUM_PRODUCT_ENGINE`
@@ -749,14 +751,14 @@ nonzero index.
 
 Optional portal:
 
-Telescoping sums as an optional high-power technique only if confirmed useful
+Telescoping sums as an optional advanced technique only if confirmed useful
 for current BAC scope.
 
-### `SEQ_BAC_BOSS`
+### `SEQ_BAC_SYNTHESIS`
 
 Roadmap title: `مسألة شاملة`
 
-Title: `تشغيل كل الأدوات في معركة واحدة`
+Title: `مسألة BAC شاملة`
 
 Learning objective:
 
@@ -881,7 +883,7 @@ Expected top-level fields:
 
 - `id`: `math-scientific-sequences`
 - `status`: `draft`
-- `title`: `Sequences: Predicting Discrete Motion`
+- `title`: `Sequences: Core Language And Methods`
 - `subjectCode`: `MATHEMATICS`
 - `stream`: `SE-M-MT`
 - `fieldCode`: `SEQUENCES`
@@ -918,7 +920,7 @@ unsupported JSON fields.
 Quality target for the first JSON pass:
 
 - All concepts: at least `SKELETON`
-- Intro, index language, direction, rails/limits, transform lens, and BAC boss:
+- Intro, index language, direction, rails/limits, transform lens, and synthesis:
   aim for `POLISHED`
 - Every concept: at least one interaction, one BAC lens, and one trap
 - No public source citations or copied source examples

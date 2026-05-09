@@ -117,7 +117,7 @@ export class AdminReferenceService {
       }),
       this.prisma.stream.findMany({
         where: {
-          subjectMappings: {
+          subjectOfferings: {
             some: {},
           },
         },

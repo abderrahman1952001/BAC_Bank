@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type {
+  CurriculumJourneysResponse,
   StudyRoadmapsResponse,
   StudyRoadmapNodeStatus,
 } from '@bac-bank/contracts/study';
 import { StudyReviewQueueStatus } from '@prisma/client';
+import { resolveSubjectCurriculumJourneyDefinition } from '../catalog/curriculum-journey-definitions';
 import { PrismaService } from '../prisma/prisma.service';
 
 const NODE_STATUS_PROGRESS: Record<StudyRoadmapNodeStatus, number> = {
@@ -24,6 +26,16 @@ export class StudyRoadmapService {
       limit?: number;
     },
   ): Promise<StudyRoadmapsResponse> {
+    return this.listCurriculumJourneys(userId, input);
+  }
+
+  async listCurriculumJourneys(
+    userId: string,
+    input?: {
+      subjectCode?: string;
+      limit?: number;
+    },
+  ): Promise<CurriculumJourneysResponse> {
     const cappedLimit = Math.min(Math.max(input?.limit ?? 4, 1), 8);
     const requestedSubjectCode =
       input?.subjectCode?.trim().toUpperCase() ?? null;
@@ -41,93 +53,68 @@ export class StudyRoadmapService {
       throw new NotFoundException('Student account not found.');
     }
 
-    const roadmapRows = await this.prisma.subjectRoadmap.findMany({
+    const curricula = await this.prisma.curriculum.findMany({
       where: {
         isActive: true,
-        curriculum: {
-          isActive: true,
-          validFromYear: {
-            lte: currentYear,
-          },
-          OR: [{ validToYear: null }, { validToYear: { gte: currentYear } }],
-          ...(requestedSubjectCode
-            ? {
-                subject: {
-                  code: requestedSubjectCode,
-                },
-              }
-            : {}),
-          ...(user.streamId
-            ? {
-                subject: {
-                  ...(requestedSubjectCode
-                    ? {
-                        code: requestedSubjectCode,
-                      }
-                    : {}),
-                  streamMappings: {
-                    some: {
-                      streamId: user.streamId,
-                    },
-                  },
-                },
-              }
-            : {}),
+        validFromYear: {
+          lte: currentYear,
         },
+        OR: [{ validToYear: null }, { validToYear: { gte: currentYear } }],
+        ...(requestedSubjectCode
+          ? {
+              subject: {
+                code: requestedSubjectCode,
+              },
+            }
+          : {}),
+        ...(user.streamId
+          ? {
+              subjectOfferings: {
+                some: {
+                  streamId: user.streamId,
+                  validFromYear: {
+                    lte: currentYear,
+                  },
+                  OR: [
+                    { validToYear: null },
+                    { validToYear: { gte: currentYear } },
+                  ],
+                },
+              },
+            }
+          : {}),
       },
       select: {
         id: true,
         code: true,
         title: true,
-        description: true,
-        version: true,
-        curriculum: {
+        validFromYear: true,
+        validToYear: true,
+        subject: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+        subjectOfferings: {
+          select: {
+            streamId: true,
+          },
+        },
+        curriculumNodes: {
+          where: {
+            parentId: null,
+          },
+          orderBy: [{ displayOrder: 'asc' }, { name: 'asc' }],
           select: {
             id: true,
             code: true,
-            validFromYear: true,
-            validToYear: true,
-            title: true,
-            streamMappings: {
+            name: true,
+            studentLabel: true,
+            displayOrder: true,
+            _count: {
               select: {
-                streamId: true,
-              },
-            },
-            subject: {
-              select: {
-                code: true,
-                name: true,
-              },
-            },
-          },
-        },
-        sections: {
-          orderBy: [{ orderIndex: 'asc' }],
-          select: {
-            id: true,
-            code: true,
-            title: true,
-            description: true,
-            orderIndex: true,
-          },
-        },
-        nodes: {
-          orderBy: [{ orderIndex: 'asc' }],
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            orderIndex: true,
-            estimatedSessions: true,
-            isOptional: true,
-            sectionId: true,
-            recommendedPreviousRoadmapNodeId: true,
-            topicId: true,
-            topic: {
-              select: {
-                code: true,
-                name: true,
-                studentLabel: true,
+                children: true,
               },
             },
           },
@@ -135,43 +122,39 @@ export class StudyRoadmapService {
       },
       orderBy: [
         {
-          curriculum: {
-            subject: {
-              name: 'asc',
-            },
+          subject: {
+            name: 'asc',
           },
         },
-        { version: 'desc' },
+        { validFromYear: 'desc' },
       ],
     });
 
-    const preferredRoadmaps = this.selectPreferredRoadmaps(
-      roadmapRows,
+    const preferredCurricula = this.selectPreferredCurricula(
+      curricula,
       user.streamId,
     ).slice(0, cappedLimit);
     const subjectCodes = Array.from(
-      new Set(
-        preferredRoadmaps.map((roadmap) => roadmap.curriculum.subject.code),
-      ),
+      new Set(preferredCurricula.map((curriculum) => curriculum.subject.code)),
     );
-    const topicIds = Array.from(
+    const curriculumNodeIds = Array.from(
       new Set(
-        preferredRoadmaps.flatMap((roadmap) =>
-          roadmap.nodes.map((node) => node.topicId),
+        preferredCurricula.flatMap((curriculum) =>
+          curriculum.curriculumNodes.map((node) => node.id),
         ),
       ),
     );
-    const [topicRollups, openReviewQueueItems] = await Promise.all([
-      topicIds.length
-        ? this.prisma.studentTopicRollup.findMany({
+    const [nodeRollups, openReviewQueueItems] = await Promise.all([
+      curriculumNodeIds.length
+        ? this.prisma.studentCurriculumNodeRollup.findMany({
             where: {
               userId,
-              topicId: {
-                in: topicIds,
+              curriculumNodeId: {
+                in: curriculumNodeIds,
               },
             },
             select: {
-              topicId: true,
+              curriculumNodeId: true,
               attemptedQuestions: true,
               correctCount: true,
               incorrectCount: true,
@@ -221,8 +204,8 @@ export class StudyRoadmapService {
           })
         : Promise.resolve([]),
     ]);
-    const topicRollupsByTopicId = new Map(
-      topicRollups.map((rollup) => [rollup.topicId, rollup]),
+    const rollupsByNodeId = new Map(
+      nodeRollups.map((rollup) => [rollup.curriculumNodeId, rollup]),
     );
     const openReviewExerciseIdsBySubjectCode = new Map<string, Set<string>>();
 
@@ -235,37 +218,64 @@ export class StudyRoadmapService {
     }
 
     return {
-      data: preferredRoadmaps.map((roadmap) => {
-        const baseNodes = roadmap.nodes.map((node) => {
-          const rollup = topicRollupsByTopicId.get(node.topicId);
-          const status = this.deriveNodeStatus(rollup);
-          const progressPercent = rollup
-            ? this.deriveNodeProgressPercent(
-                status,
-                Number(rollup.weaknessScore),
-              )
-            : NODE_STATUS_PROGRESS.NOT_STARTED;
-
-          return {
-            id: node.id,
-            title: node.title,
-            description: node.description,
-            topicCode: node.topic.code,
-            topicName: node.topic.studentLabel ?? node.topic.name,
-            orderIndex: node.orderIndex,
-            estimatedSessions: node.estimatedSessions,
-            isOptional: node.isOptional,
-            sectionId: node.sectionId,
-            recommendedPreviousNodeId: node.recommendedPreviousRoadmapNodeId,
-            status,
-            progressPercent,
-            weaknessScore: rollup ? Number(rollup.weaknessScore) : 0,
-            attemptedQuestions: rollup?.attemptedQuestions ?? 0,
-            correctCount: rollup?.correctCount ?? 0,
-            incorrectCount: rollup?.incorrectCount ?? 0,
-            lastSeenAt: rollup?.lastSeenAt?.toISOString() ?? null,
-          };
+      data: preferredCurricula.map((curriculum) => {
+        const nodeByCode = new Map(
+          curriculum.curriculumNodes.map((node) => [node.code, node]),
+        );
+        const journeyDefinition = resolveSubjectCurriculumJourneyDefinition({
+          subjectCode: curriculum.subject.code,
+          subjectName: curriculum.subject.name,
+          topics: curriculum.curriculumNodes.map((node) => ({
+            code: node.code,
+            name: node.name,
+            studentLabel: node.studentLabel,
+            childrenCount: node._count.children,
+            displayOrder: node.displayOrder,
+          })),
         });
+        const baseNodes = journeyDefinition.sections.flatMap((section) =>
+          section.nodes.flatMap((definitionNode, nodeIndex) => {
+            const curriculumNode = nodeByCode.get(definitionNode.topicCode);
+
+            if (!curriculumNode) {
+              return [];
+            }
+
+            const rollup = rollupsByNodeId.get(curriculumNode.id);
+            const status = this.deriveNodeStatus(rollup);
+            const progressPercent = rollup
+              ? this.deriveNodeProgressPercent(
+                  status,
+                  Number(rollup.weaknessScore),
+                )
+              : NODE_STATUS_PROGRESS.NOT_STARTED;
+
+            return [
+              {
+                id: curriculumNode.id,
+                title: definitionNode.title,
+                description: definitionNode.description,
+                topicCode: curriculumNode.code,
+                topicName: curriculumNode.studentLabel ?? curriculumNode.name,
+                orderIndex: nodeIndex + 1,
+                estimatedSessions: definitionNode.estimatedSessions,
+                isOptional: definitionNode.isOptional,
+                sectionId: `${curriculum.id}:${section.code}`,
+                recommendedPreviousNodeId: definitionNode.recommendedPreviousTopicCode
+                  ? (nodeByCode.get(definitionNode.recommendedPreviousTopicCode)
+                      ?.id ?? null)
+                  : null,
+                status,
+                progressPercent,
+                weaknessScore: rollup ? Number(rollup.weaknessScore) : 0,
+                attemptedQuestions: rollup?.attemptedQuestions ?? 0,
+                correctCount: rollup?.correctCount ?? 0,
+                incorrectCount: rollup?.incorrectCount ?? 0,
+                lastSeenAt: rollup?.lastSeenAt?.toISOString() ?? null,
+              },
+            ];
+          }),
+        );
         const nodeTitleById = new Map(
           baseNodes.map((node) => [node.id, node.title]),
         );
@@ -275,58 +285,18 @@ export class StudyRoadmapService {
             ? (nodeTitleById.get(node.recommendedPreviousNodeId) ?? null)
             : null,
         }));
-        const sections =
-          roadmap.sections.length > 0
-            ? [
-                ...roadmap.sections
-                  .map((section) => ({
-                    id: section.id,
-                    code: section.code,
-                    title: section.title,
-                    description: section.description,
-                    orderIndex: section.orderIndex,
-                    nodes: nodes.filter(
-                      (node) => node.sectionId === section.id,
-                    ),
-                  }))
-                  .filter((section) => section.nodes.length > 0),
-                ...(() => {
-                  const unsectionedNodes = nodes.filter((node) => {
-                    if (!node.sectionId) {
-                      return true;
-                    }
-
-                    return !roadmap.sections.some(
-                      (section) => section.id === node.sectionId,
-                    );
-                  });
-
-                  if (!unsectionedNodes.length) {
-                    return [];
-                  }
-
-                  return [
-                    {
-                      id: `overflow:${roadmap.id}`,
-                      code: 'MORE',
-                      title: 'محاور إضافية',
-                      description: null,
-                      orderIndex: roadmap.sections.length + 1,
-                      nodes: unsectionedNodes,
-                    },
-                  ];
-                })(),
-              ]
-            : [
-                {
-                  id: `fallback:${roadmap.id}`,
-                  code: 'CORE',
-                  title: 'المسار',
-                  description: roadmap.description,
-                  orderIndex: 1,
-                  nodes,
-                },
-              ];
+        const sections = journeyDefinition.sections
+          .map((section, index) => ({
+            id: `${curriculum.id}:${section.code}`,
+            code: section.code,
+            title: section.title,
+            description: section.description,
+            orderIndex: index + 1,
+            nodes: nodes.filter(
+              (node) => node.sectionId === `${curriculum.id}:${section.code}`,
+            ),
+          }))
+          .filter((section) => section.nodes.length > 0);
         const solidNodeCount = nodes.filter(
           (node) => node.status === 'SOLID',
         ).length;
@@ -340,9 +310,8 @@ export class StudyRoadmapService {
           (node) => node.status === 'NOT_STARTED',
         ).length;
         const openReviewItemCount =
-          openReviewExerciseIdsBySubjectCode.get(
-            roadmap.curriculum.subject.code,
-          )?.size ?? 0;
+          openReviewExerciseIdsBySubjectCode.get(curriculum.subject.code)
+            ?.size ?? 0;
         const updatedAt = nodes.reduce<Date | null>((latest, node) => {
           if (!node.lastSeenAt) {
             return latest;
@@ -359,13 +328,13 @@ export class StudyRoadmapService {
         const nextAction = this.buildNextAction(nodes, openReviewItemCount);
 
         return {
-          id: roadmap.id,
-          title: roadmap.title,
-          description: roadmap.description,
-          subject: roadmap.curriculum.subject,
+          id: curriculum.id,
+          title: journeyDefinition.title,
+          description: journeyDefinition.description,
+          subject: curriculum.subject,
           curriculum: {
-            code: roadmap.curriculum.code,
-            title: roadmap.curriculum.title,
+            code: curriculum.code,
+            title: curriculum.title,
           },
           totalNodeCount: nodes.length,
           solidNodeCount,
@@ -388,60 +357,39 @@ export class StudyRoadmapService {
     };
   }
 
-  private selectPreferredRoadmaps(
-    roadmaps: Array<{
+  private selectPreferredCurricula(
+    curricula: Array<{
       id: string;
       code: string;
       title: string;
-      description: string | null;
-      version: number;
-      curriculum: {
-        id: string;
+      validFromYear: number;
+      validToYear: number | null;
+      subject: {
         code: string;
-        title: string;
-        validFromYear: number;
-        validToYear: number | null;
-        streamMappings: Array<{
-          streamId: string;
-        }>;
-        subject: {
-          code: string;
-          name: string;
-        };
+        name: string;
       };
-      sections: Array<{
+      subjectOfferings: Array<{
+        streamId: string;
+      }>;
+      curriculumNodes: Array<{
         id: string;
         code: string;
-        title: string;
-        description: string | null;
-        orderIndex: number;
-      }>;
-      nodes: Array<{
-        id: string;
-        title: string;
-        description: string | null;
-        orderIndex: number;
-        estimatedSessions: number | null;
-        isOptional: boolean;
-        sectionId: string | null;
-        recommendedPreviousRoadmapNodeId: string | null;
-        topicId: string;
-        topic: {
-          code: string;
-          name: string;
-          studentLabel: string | null;
+        name: string;
+        studentLabel: string | null;
+        displayOrder: number;
+        _count: {
+          children: number;
         };
       }>;
     }>,
     streamId: string | null,
   ) {
-    const grouped = new Map<string, (typeof roadmaps)[number][]>();
+    const grouped = new Map<string, (typeof curricula)[number][]>();
 
-    for (const roadmap of roadmaps) {
-      const key = `${roadmap.curriculum.subject.code}:${roadmap.code}`;
-      const current = grouped.get(key) ?? [];
-      current.push(roadmap);
-      grouped.set(key, current);
+    for (const curriculum of curricula) {
+      const current = grouped.get(curriculum.subject.code) ?? [];
+      current.push(curriculum);
+      grouped.set(curriculum.subject.code, current);
     }
 
     return Array.from(grouped.values())
@@ -450,15 +398,15 @@ export class StudyRoadmapService {
           group.sort((left, right) => {
             const leftStreamRank =
               streamId &&
-              left.curriculum.streamMappings.some(
-                (mapping) => mapping.streamId === streamId,
+              left.subjectOfferings.some(
+                (offering) => offering.streamId === streamId,
               )
                 ? 0
                 : 1;
             const rightStreamRank =
               streamId &&
-              right.curriculum.streamMappings.some(
-                (mapping) => mapping.streamId === streamId,
+              right.subjectOfferings.some(
+                (offering) => offering.streamId === streamId,
               )
                 ? 0
                 : 1;
@@ -468,29 +416,19 @@ export class StudyRoadmapService {
             }
 
             const leftRecency =
-              left.curriculum.validToYear ?? Number.MAX_SAFE_INTEGER;
+              left.validToYear ?? Number.MAX_SAFE_INTEGER;
             const rightRecency =
-              right.curriculum.validToYear ?? Number.MAX_SAFE_INTEGER;
+              right.validToYear ?? Number.MAX_SAFE_INTEGER;
 
             if (leftRecency !== rightRecency) {
               return rightRecency - leftRecency;
             }
 
-            if (
-              left.curriculum.validFromYear !== right.curriculum.validFromYear
-            ) {
-              return (
-                right.curriculum.validFromYear - left.curriculum.validFromYear
-              );
-            }
-
-            return right.version - left.version;
+            return right.validFromYear - left.validFromYear;
           })[0],
       )
       .sort((left, right) =>
-        left.curriculum.subject.name.localeCompare(
-          right.curriculum.subject.name,
-        ),
+        left.subject.name.localeCompare(right.subject.name),
       );
   }
 

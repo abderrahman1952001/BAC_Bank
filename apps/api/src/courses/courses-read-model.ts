@@ -40,7 +40,7 @@ const authoredTopicPresentation: Record<
     title: 'المتتاليات',
     shortTitle: 'المتتاليات',
     description:
-      'رحلة رياضية لشعب SE وM وMT تجعل المتتاليات آلات توقع: قراءة، اتجاه، حصر، نهاية، تحويل، ومسألة BAC شاملة.',
+      'مسار رياضي لشعب SE وM وMT يثبت لغة المتتاليات، الرتابة، الحصر، النهايات، التحويلات، ومسائل BAC المركبة.',
     parentUnitTitle: 'التحليل',
   },
   'NATURAL_SCIENCES:proteins': {
