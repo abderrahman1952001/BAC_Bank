@@ -1,11 +1,13 @@
 import type { ApiJsonParser } from "@/lib/api-client";
 import {
   parseAdminBillingSettingsResponse,
+  parseAdminIngestionCropQueueResponse,
   parseAdminIngestionJobResponse,
   parseAdminIngestionJobListResponse,
   parseAdminSourceWorkbenchSourceListResponse,
   parseAdminSourceWorkbenchSourceResponse,
   type AdminBillingSettingsResponse,
+  type AdminIngestionCropQueueResponse,
   type AdminIngestionJobResponse,
   type AdminIngestionJobListResponse,
   type AdminSourceWorkbenchSourceListResponse,
@@ -14,6 +16,7 @@ import {
 import {
   clonePlaywrightFixture,
   playwrightTestAdminBillingSettings,
+  playwrightTestAdminCropQueueResponse,
   playwrightTestAdminJobResponse,
   playwrightTestAdminJobSummary,
 } from "@/lib/playwright-test-fixtures";
@@ -64,6 +67,18 @@ export async function fetchServerAdminIngestionJob(
     `/ingestion/jobs/${encodeURIComponent(jobId)}`,
     undefined,
     parseAdminIngestionJobResponse,
+  );
+}
+
+export async function fetchServerAdminIngestionCropQueue(): Promise<AdminIngestionCropQueueResponse> {
+  if (shouldUsePlaywrightFixtures()) {
+    return clonePlaywrightFixture(playwrightTestAdminCropQueueResponse);
+  }
+
+  return fetchServerAdminJson<AdminIngestionCropQueueResponse>(
+    "/ingestion/crops",
+    undefined,
+    parseAdminIngestionCropQueueResponse,
   );
 }
 

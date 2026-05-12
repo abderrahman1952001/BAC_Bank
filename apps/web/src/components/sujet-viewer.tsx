@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Maximize2, Minimize2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   startTransition,
@@ -89,6 +90,7 @@ export function SujetViewer({
   const [startingDrillExerciseId, setStartingDrillExerciseId] = useState<
     string | null
   >(null);
+  const [focusMode, setFocusMode] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
 
   const decodedStreamCode = decodeURIComponent(streamCode);
@@ -295,14 +297,18 @@ export function SujetViewer({
       <StudyShell>
         <StudentNavbar />
 
-        <section className="student-main-frame student-main-frame-sujet student-main-frame-paper">
+        <section
+          className={`student-main-frame student-main-frame-sujet student-main-frame-paper${
+            focusMode ? " is-focus-mode" : ""
+          }`}
+        >
           <SujetViewerHero
             exam={exam}
             backToLibraryHref={backToLibraryHref}
             simulationAction={
               <Button
                 type="button"
-                className="h-11 rounded-full px-5"
+                className="sujet-primary-action h-9 rounded-full px-4"
                 onClick={() => {
                   void handleStartSimulation();
                 }}
@@ -336,7 +342,7 @@ export function SujetViewer({
               <Button
                 type="button"
                 variant="outline"
-                className="h-10 rounded-full px-5"
+                className="sujet-secondary-action h-9 rounded-full px-4"
                 onClick={() => {
                   void handleStartExerciseDrill(activeExercise);
                 }}
@@ -350,6 +356,22 @@ export function SujetViewer({
                   : drillQuota?.exhausted
                     ? "نفدت حصة الدريل"
                     : "ابدأ دريل هذا التمرين"}
+              </Button>
+            }
+            focusAction={
+              <Button
+                type="button"
+                variant="ghost"
+                className="sujet-focus-action h-9 rounded-full px-4"
+                aria-pressed={focusMode}
+                onClick={() => setFocusMode((current) => !current)}
+              >
+                {focusMode ? (
+                  <Minimize2 size={16} data-icon aria-hidden="true" />
+                ) : (
+                  <Maximize2 size={16} data-icon aria-hidden="true" />
+                )}
+                {focusMode ? "إنهاء التركيز" : "وضع التركيز"}
               </Button>
             }
           />

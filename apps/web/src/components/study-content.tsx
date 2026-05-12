@@ -35,6 +35,61 @@ function readStringField(value: unknown, field: string): string | null {
   return typeof candidate === 'string' ? candidate : null;
 }
 
+type ScripturePresentation = {
+  kind: 'quran' | 'hadith';
+  displayText: string;
+  intro: string | null;
+  reference: string | null;
+  sourceLabel: string | null;
+  riwaya: string | null;
+};
+
+function resolveScripturePresentation(
+  block: ExamHierarchyBlock,
+): ScripturePresentation | null {
+  const payload = isRecord(block.data)
+    ? isRecord(block.data.scripture)
+      ? block.data.scripture
+      : block.data
+    : null;
+
+  if (!payload) {
+    return null;
+  }
+
+  const rawKind = readStringField(payload, 'kind');
+  const kind =
+    rawKind === 'quran' || rawKind === 'quran_quote'
+      ? 'quran'
+      : rawKind === 'hadith' || rawKind === 'hadith_quote'
+        ? 'hadith'
+        : null;
+
+  if (!kind) {
+    return null;
+  }
+
+  const displayText = readStringField(payload, 'displayText');
+  const resolvedDisplayText = displayText ?? block.textValue ?? '';
+
+  if (!resolvedDisplayText.trim()) {
+    return null;
+  }
+
+  return {
+    kind,
+    displayText: resolvedDisplayText,
+    intro:
+      readStringField(payload, 'intro') ??
+      (displayText ? (kind === 'quran' ? 'قال تعالى' : 'حديث شريف') : null),
+    reference: readStringField(payload, 'reference'),
+    sourceLabel:
+      readStringField(payload, 'sourceLabel') ??
+      readStringField(payload, 'collection'),
+    riwaya: readStringField(payload, 'riwaya'),
+  };
+}
+
 function renderKatexToHtml(latex: string, displayMode: boolean): string {
   return katex.renderToString(latex, {
     displayMode,
@@ -399,6 +454,49 @@ export function StudySectionCard({
   );
 }
 
+function StudyScriptureBlock({
+  blockKey,
+  compact,
+  presentation,
+}: {
+  blockKey: string;
+  compact: boolean;
+  presentation: ScripturePresentation;
+}) {
+  const metaItems = [
+    presentation.reference,
+    presentation.kind === 'quran' ? presentation.riwaya : null,
+    presentation.sourceLabel,
+  ].filter((item): item is string => Boolean(item));
+  const className = [
+    'study-scripture-block',
+    `study-scripture-${presentation.kind}`,
+    compact ? 'study-block-compact' : null,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <figure key={blockKey} className={className} dir="rtl">
+      {presentation.intro ? (
+        <figcaption className="study-scripture-intro">
+          {presentation.intro}
+        </figcaption>
+      ) : null}
+      <blockquote className="study-scripture-text">
+        {renderInlineMathText(presentation.displayText, blockKey)}
+      </blockquote>
+      {metaItems.length ? (
+        <figcaption className="study-scripture-meta">
+          {metaItems.map((item, index) => (
+            <span key={`${blockKey}-meta-${index}`}>{item}</span>
+          ))}
+        </figcaption>
+      ) : null}
+    </figure>
+  );
+}
+
 export function StudyHierarchyBlockView({
   block,
   blockKey,
@@ -428,6 +526,7 @@ export function StudyHierarchyBlockView({
   const tableWrapClassName = compact
     ? 'study-table-wrap study-block-compact'
     : 'study-table-wrap';
+  const scripturePresentation = resolveScripturePresentation(block);
 
   if (block.blockType === 'GRAPH') {
     if (resolvedFormulaGraph) {
@@ -537,6 +636,16 @@ export function StudyHierarchyBlockView({
       <pre key={blockKey}>
         <code>{block.textValue ?? ''}</code>
       </pre>
+    );
+  }
+
+  if (scripturePresentation) {
+    return (
+      <StudyScriptureBlock
+        blockKey={blockKey}
+        compact={compact}
+        presentation={scripturePresentation}
+      />
     );
   }
 

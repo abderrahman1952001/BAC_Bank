@@ -1,0 +1,2923 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي",
+    "year": 2010,
+    "streamCode": "تقني رياضي",
+    "subjectCode": "هندسة ميكانيكية",
+    "sessionType": "normal",
+    "durationMinutes": 270,
+    "totalPoints": 20,
+    "sourceLanguage": "Arabic",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_ctx_1",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الموضوع الأول:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يحتوي ملف الدراسة على جزئين:\n1. ملف تقني : وثائق { 1 \\ 24 ، 2 \\ 24 ، 3 \\ 24 ، 4 \\ 24 ، 5 \\ 24 }\n2. ملف الأجوبة : وثائق { 6 \\ 24 ، 7 \\ 24 ، 8 \\ 24 ، 9\\ 24 ، 10\\ 24 ، 11\\ 24 ، 12\\ 24 }\nملاحظة:\n• لا يسمح باستعمال أية وثيقة خارجية عن الاختبار.\n• يسلم ملف الأجوبة بكامل وثائقه {6 \\ 24 ، 7 \\ 24 ، 8 \\ 24 ، 9 \\ 24 ، 10:24 \\11:24\\ 12/24}"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الملف التقني"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1- تحديد الموقع:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ينتمي النظام المراد دراسته لسلسلة تصنيع هياكل معدنية داخل مصنع خاص بتصنيع عناصر المكاتب (كراسي،طاولات....الخ)."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "2- التقديم:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يسمح هذا النظام بتقطيع أنابيب من الصلب إلى جزئين انطلاقا من قضيب طوله 4m يضبط الطول المراد تقطيعه بواسطة كوس مجهز بملتقط نهاية المشوار (S3)."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "3- دفتر الشروط"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يسمح النظام الآلي الممثل بالرسم التخطيطي لتحديد الموقع (صفحة 24/2):\n- بتغذية المنصب الآلي بالأنابيب .\n- تقطيع الأنبوب حسب طول محدد."
+            }
+          ],
+          "assetIds": [
+            "s1_img_1"
+          ]
+        },
+        {
+          "localId": "s1_ctx_2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "4 -الوصف و التشغيل:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تتكون وحدة التقطيع من بساط مائل يسمح بنزول الأنبوب،محرك (Mt1) يسمح بتغذية نظام برغي وصامولة الذي يقوم بتقديم الأنبوب ، فكين أحدهما متحرك و مثبت على الدافعة (C)مزدوجة الفعل التي تسمح بشد الأنبوب و أخيرا آلة تقطيع مغذات من طرف المحرك (Mt2) .صعود و هبوط آلة التقطيع يتم بواسطة الدافعة(B) .\no الطول المراد تقطيعه يتم تحديده مسبقا من طرف المستعمل وهذا بتحريك كوس نهاية المشوار.\no الدافعة(A) ذات مفعول بسيط ساقها في حالة خروج وهذا لتوقيف الأنابيب الآتية من البساط المائل.\no الدافع للأنبوب موجود على اليسار(يكشف عنه من طرف الملتقط S1) ليستقبل الأنبوب المنحدر من البساط المائل .\no الأنبوب المراد تقطيعه محرر.\no أداة التقطيع في الأعلى."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "5- منتج محل الدراسة:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نقترح دراسة جزء من الوحدة المتمثل في عملية نقل الحركة من المحرك Mt1 (9) إلى الدافع(10) الذي يقوم بدفع الأنبوب إلى وضعية التقطيع."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "6- سير جهاز الدفع: أنظر إلى الصفحة( 24/3)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ينقل المحرك الحركة الدورانية إلى العمود ذو أخاديد(5) بواسطة العجلات المسننة(25)و(3) ومنه إلى الصامولة(13) بواسطة التسنن ما بين(7) و(11) مما يؤدي إلى تنقل الدافع(10)."
+            }
+          ],
+          "assetIds": [
+            "s1_img_2"
+          ]
+        },
+        {
+          "localId": "s1_ctx_3",
+          "nodeType": "CONTEXT",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "7- العمل المطلوب:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "أ - دراسة الإنشاء : ( 13.5 نقطة)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- تحليل وظيفي : الوثائق (24/6،24/7،24/8)\n2 - تحليل بنيوي: 2-1: دراسة تصميمية جزئية: (الوثيقة 24/9،24/8)\n2-2: دراسة تعريفية: الوثيقة (24/9)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "ب - دراسة التحضير: ( 6.5 نقطة )"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- تكنولوجيا وسائل الصنع: الوثيقة (24/10)\n2- تكنولوجيا طرق الصنع: الوثيقة (24/11)\n3- دراسة الآليات : الوثيقة (24/12)"
+            }
+          ],
+          "assetIds": [
+            "s1_img_3",
+            "s1_img_4",
+            "s1_img_5"
+          ]
+        },
+        {
+          "localId": "s1_part_1",
+          "nodeType": "PART",
+          "orderIndex": 4,
+          "label": "أ - دراسة الإنشاء",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1. التحليل الوظيفي"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_1_1",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "1-1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم المخطط الوظيفي (0 -A) للنظام:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x7 = 0.7"
+            }
+          ],
+          "assetIds": [
+            "s1_img_6",
+            "s1_sol_img_1"
+          ]
+        },
+        {
+          "localId": "s1_q_1_2",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "2.1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أكمل المخطط التجميعي لجهاز دفع الأنابيب بوضع الوظائف ثم صياغتها داخل الجدول:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2x6 = 1.2"
+            }
+          ],
+          "assetIds": [
+            "s1_img_7",
+            "s1_sol_img_2"
+          ]
+        },
+        {
+          "localId": "s1_q_1_3",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 7,
+          "label": "3.1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مستعينا بمخطط FAST أذكر الحلول التكنولوجية التي تحقق الوظائفFT3, FT2, FT1 ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2x3 = 0.6"
+            }
+          ],
+          "assetIds": [
+            "s1_img_8",
+            "s1_sol_img_3"
+          ]
+        },
+        {
+          "localId": "s1_q_1_4",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 8,
+          "label": "4-1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أكمل جدول الوصلات الحركية:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x10 = 1"
+            }
+          ],
+          "assetIds": [
+            "s1_img_9",
+            "s1_sol_img_4"
+          ]
+        },
+        {
+          "localId": "s1_q_1_5",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 9,
+          "label": "5-1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم الرسم التخطيطي الحركي:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x5 = 0.5"
+            }
+          ],
+          "assetIds": [
+            "s1_img_10",
+            "s1_sol_img_5"
+          ]
+        },
+        {
+          "localId": "s1_q_1_6",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 10,
+          "label": "6-1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بماذا تم التوجيه الدوراني للعمود (5)؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بواسطة الوسادات (4) و(15)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_1_7",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 11,
+          "label": "7-1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "صنع الجسم (1) من Al Si 10 Mg .\nأ- ما هو أسم هذه المادة؟\nب- اشرح هذا التعيين:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "أ- ما هو اسم هذه المادة؟ ألباكس.\nب- اشرح هذا التعيين:\nAl : ألمنيوم\nSi : سيليسيوم\n10 : النسبة المئوية لسيليسيوم 10%\nMg : مغنيزيوم"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2 = 0.2\n0.1x4 = 0.4"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_1_8",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 12,
+          "label": "8-1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نفترض أن التوافق بين القطع(23) و (25) هو : $\\text{Ø20H7g6}$ حيث:\n$\\text{Ø20H7=20 } \\begin{subarray}{c} +21 \\\\ 0 \\end{subarray}$\n$\\text{Ø20g6=20 } \\begin{subarray}{c} -7 \\\\ -20 \\end{subarray}$\nأ- احسب:\n- الخلوص الأقصى.\n- الخلوص الأدنى.\nب- استنتج نوع التوافق:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "أ- أحسب:\n- الخلوص الأقصى= جوف أقصى - عمود أدنى\n$\\text{mm 0.041} = 19.98 - 20.021 =$\n- الخلوص الأدنى= جوف أدنى - عمود أقصى\n$\\text{mm 0.007} = 19.993 - 20 =$\nب- استنتج نوع التوافق: بخلوص"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.3x2 = 0.6\n0.2 = 0.2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_1_9",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 13,
+          "label": "9.1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "التحديد الوظيفي للأبعاد:\n- أنجز سلسلة الأبعاد الخاصة بالشرط (A)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.6"
+            }
+          ],
+          "assetIds": [
+            "s1_img_11",
+            "s1_sol_img_6"
+          ]
+        },
+        {
+          "localId": "s1_q_1_10",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 14,
+          "label": "10.1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حساب عناصر نقل الحركة :\n- احسب مميزات العجلات المسننة(25) و(3) ثم أملأ الجدول.\nالمعطيات: a= 70mm"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$a= 70mm \\text{:المعطيات.}$ \n$a=(d_{25}+d_{3})/2 \\Rightarrow 2a=d_{25}+d_{3}=140-80=60mm$\n$m = d_{25}/Z_{25} = 60 / 30 = 2 mm$\n$Z_{3} = d_{3} / m = 80 / 2 = 40 \\text{سن}$\n$d_{a25} = d_{25} + 2m = 60 + 4= 64mm$\n$d_{a3} = d_{3} + 2m = 80 + 4= 84mm$\n$d_{f25} = d_{25} - 2.5m =60-5=55mm$\n$d_{f3} = d_{3} - 2.5m =80-5=75mm$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x8 = 0.8"
+            }
+          ],
+          "assetIds": [
+            "s1_img_12",
+            "s1_sol_img_7"
+          ]
+        },
+        {
+          "localId": "s1_q_1_11",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 15,
+          "label": "11.1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أحسب سرعة الصامولة (13) علما أن سرعة المحرك $Nm=1000tr/mn$ و نسبة النقل :\n$\\text{r}_{11-7}=0.84$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$\\text{r} = \\text{r}_{11-7} \\times \\text{r}_{25-3} = 0.84 \\times (80/60) = 0.63$\n$N_{13} = r \\times N_{m} = 1000 \\times 0.63 = 630 tr/mn$\n$N_{13} = 630_{tr/mn}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x2 = 0.2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_1_12",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 16,
+          "label": "12.1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما هي سرعة تقدم الدافع(10) بـ (m/s) علما أن خطوة البرغي (6) p= 7.5mm"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$V_{10} = N_{13} \\times p = 630 \\times 7.5 = 4725 mm/mn$\n$V_{10} = 4725 / 60.10^3 = 0.0787 m/s$\n$V_{10} = 0.0787_{m/s}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2 = 0.2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_1_13",
+          "parentLocalId": "s1_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 17,
+          "label": "13.1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مقاومة المواد :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تنقل الحركة الدورانية بين العمود (23) والعجلة المسننة (25) بواسطة الخابور (26) متوازي شكل B ( 6×6×24) كما هو ممثل في الشكل المقابل."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- ما نوع التأثير المطبق على الخابور؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "القص البسيط"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.3 = 0.3"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- احسب الإجهاد المماسي الذي يتحمله الخابور علما أن استطاعة المحرك P=10kw ، سرعة دوران العمود (23) $N_{23}=1000tr/mn$ ،وقطره $d_{23}=20mm$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\left. \\begin{matrix} P = C . \\omega \\\\ C = T . \\frac{d}{2} \\end{matrix} \\right\\} \\Rightarrow \\left. \\begin{matrix} P = T . \\frac{d}{2} . \\omega \\\\ \\omega = \\frac{2 \\pi N}{60} \\end{matrix} \\right\\} \\Rightarrow T = \\frac{60 . P}{\\pi d N} \\quad T = \\frac{60 \\times 10 \\times 10^3}{3.14 \\times 1000 \\times 20 \\times 10^{-3}} = 9554.14 N"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\tau = \\frac{T}{S} = \\frac{T}{a \\times l} = \\frac{9554.14}{6 \\times 24} = 66.35 N/mm^2"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\tau = 66.35 N/mm^2"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4x2 = 0.8"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ج- تحقق من شرط المقاومة علما أن $Reg=280N/mm^2$ ومعامل الأمن s=3 ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\tau \\leq \\frac{Reg}{s} = \\frac{280}{3} = 93.33 N/mm^2 \\quad \\tau \\leq 93.33 N/mm^2"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "إذن شرط المقاومة محقق"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.25x2 = 0.5"
+            }
+          ],
+          "assetIds": [
+            "s1_img_13"
+          ]
+        },
+        {
+          "localId": "s1_part_2",
+          "nodeType": "PART",
+          "orderIndex": 18,
+          "label": "2. تحليل بنيوي:",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1-2 دراسة تصميمية جزئية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لتحسين مردود الجهاز نقترح التغييرات التالية:\nأ- تحقيق الوصلة المتمحورة بين (2) / (5) و (16)/ (5) بمدحرجات ذات صف واحد من الكريات بتلامس نصف قطري مشحمة ومحمية من الجهتين.\nب- إتمام الوصلة الإندماجية بين (3) و (5).\nج- ضع توافقات التركيب على مستوى مدحرجة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "1.8\n0.8\n2x0.1 = 0.2"
+            }
+          ],
+          "assetIds": [
+            "s1_img_14",
+            "s1_sol_img_8"
+          ]
+        },
+        {
+          "localId": "s1_q_2_2",
+          "parentLocalId": "s1_part_2",
+          "nodeType": "QUESTION",
+          "orderIndex": 19,
+          "label": "2-2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 9
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "2-2 دراسة تعريفية :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "- أتمم الرسم التعريفي للعجلة (25) بمقياس 1:1 حسب ما يلي:\nأ - مسقط أمامي بقطاع A-A\nب - مسقط جانبي أيسر.\nج - تحديد الأبعاد الوظيفية بدون قيمة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.6\n0.4\n0.5"
+            }
+          ],
+          "assetIds": [
+            "s1_img_15",
+            "s1_sol_img_9"
+          ]
+        },
+        {
+          "localId": "s1_part_3",
+          "nodeType": "PART",
+          "orderIndex": 20,
+          "label": "ب- دراسة التحضير",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 10
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1- تكنولوجيا وسائل الصنع :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد دراسة وسائل الصنع من حيث الآلات، أدوات القطع والمراقبة للبرغي (6) في ورشة الصناعة الميكانيكية."
+            }
+          ],
+          "assetIds": [
+            "s1_img_16"
+          ]
+        },
+        {
+          "localId": "s1_q_3_1_1",
+          "parentLocalId": "s1_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 21,
+          "label": "1-1-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 10
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "البرغي (6) من الصلب 10-18 X5Cr Ni مصنع على 3 مناصب للعمل و3 وحدات مختلفة ومتجاورة.\n1-1- باستعمال علامة ( X ) أعطي اسم وحدات التصنيع والآلات الصناعية المستعملة حسب الشكل أعلاه."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x6 = 0.6"
+            }
+          ],
+          "assetIds": [
+            "s1_img_17",
+            "s1_sol_img_10"
+          ]
+        },
+        {
+          "localId": "s1_q_3_1_2",
+          "parentLocalId": "s1_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 22,
+          "label": "1-2-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 10
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مستعينا بأرقام أشكال السطوح الموجودة على الرسم ، رتبها حسب وحدة الصنع المناسبة.\nالوحدة :........................ [.................] ، الوحدة : ........................ [.................] الوحدة :........................ [.................]"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الوحدة : خراطـة [ (1، 2، 3) ] ، الوحدة : (تفريز) [(4و5)] الوحدة : تثقيب [(6) ]"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.3x3 = 0.9"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_3_1_3",
+          "parentLocalId": "s1_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 23,
+          "label": "1-3-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 10
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعط اسم كل عملية حسب شكل السطوح.\n(1):.................................(2): .................................(3): .................................[(4)،(5)]:................................. (6):................................."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "(1): تسوية (2): خرط طولي (3): لولبة [(4)،(5)]: تسنيد (6): تثقيب"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x5 = 0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_3_2",
+          "parentLocalId": "s1_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 24,
+          "label": "2.",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 11
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "تكنولوجيا طرق الصنع:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نقترح دراسة صنع العجلة (3) من مادة : EN_GJL 200"
+            }
+          ],
+          "assetIds": [
+            "s1_img_18"
+          ]
+        },
+        {
+          "localId": "s1_q_3_2_1",
+          "parentLocalId": "s1_q_3_2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 25,
+          "label": "1.2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 11
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نقترح السير المنطقي للصنع التالي\n-أتمم الجدول بتعيين المناصب المناسبة لكل مرحلة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2x2 = 0.4"
+            }
+          ],
+          "assetIds": [
+            "s1_img_19",
+            "s1_sol_img_11"
+          ]
+        },
+        {
+          "localId": "s1_q_3_2_2",
+          "parentLocalId": "s1_q_3_2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 26,
+          "label": "2.2-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 11
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تنجز العجلة المسننة (3) في ورشة مجهزة للعمل بسلسلة، نريد إنجاز السطحين (2) و (3) فقط.\n- بين على رسم المرحلة 200: أبعاد الصنع، الوضعية السكونية و أدوات القطع."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.25x2 = 0.5\n0.8\n0.4x2 = 0.8"
+            }
+          ],
+          "assetIds": [
+            "s1_img_20",
+            "s1_sol_img_12"
+          ]
+        },
+        {
+          "localId": "s1_q_3_3",
+          "parentLocalId": "s1_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 27,
+          "label": "3.",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 12
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الآليات:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "- الدافعة (A) ذات مفعول بسيط :"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_3_3_1",
+          "parentLocalId": "s1_q_3_3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 28,
+          "label": "1.3-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 12
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اشرح كيفية تشغيلها؟ علما أن ساق الدافعة في حالة خروج عند الراحة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عند التغذية تنزل ساق الدافعة (دخولها إلى جسم الأسطوانة) (A) للسماح بنزول أنبوب واحد من البساط المائل إلى الدافع (10). عند قطع التغذية، يتم صعود ساق الدافعة (خروجها من الأسطوانة وضعية الراحة) بواسطة النابض لتوقيف الأنابيب الآتية من البساط المائل ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "1"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q_3_3_2",
+          "parentLocalId": "s1_q_3_3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 29,
+          "label": "2.3-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 12
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما هو نوع الموزع المتحكم فيها؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "موزع 3 / 2"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "1"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_ctx_1",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 13
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الموضوع: نظام آلي لتصنيع قطع معدنية"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يحتوي ملف الدراسة على جزئين:\n1- الملف التقني: الوثائق { 13/ 24 ، 14/ 24 ، 15/ 24 ، 16/ 24 ، 17/ 24}\n2- ملف الأجوبة: الوثائق { 18/ 24 ، 19/ 24 ، 20/ 24 ، 21/ 24 ، 22/ 24 ، 23/ 24 ، 24/ 24 }"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "ملاحظة:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لا يسمح باستعمال أية وثيقة خارجية عن الاختبار.\nيسلم ملف الأجوبة بكامل وثائقه { 18/ 24 ، 19/ 24، 20/ 24، 21/ 24، 22/ 24، 23/ 24، 24/ 24 }"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الملف التقني"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1- وصف وتشغيل :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يهدف هذا النظام إلى تصنيع قطع معدنية بصفة مستمرة( شكل -1- وثيقة 14/ 24 )، فوق صحن دوار أين تمر على المراكز التالية:\n- مركز الشحن (1) - مركز التثقيب (2) - مركز التفريز(3) - مركز الإخلاء (4)\nيتطلب استغلال هذا النظام الآلي المعطيات التالية :\n- عمليات القيادة، المراقبة، الضبط والصيانة.\n- عمليات التنظيف وإخلاء القطع بعد تشغيلها.\n- الأمن حسب القوانين المعمول بها."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "2- منتج محل الدراسة :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "انطلاقا من مركز الاهتمام والمتمثل في مركز التفريز (3) ( الوثيقة 14/ 24 )، نقوم بدراسة جهاز \" رأس المفرزة \" الذي يشتغل بمحرك كهربائي (غير مرسوم) على الوثيقة 15/ 24."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "3- معطيات تقنية :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "• استطاعة المحرك : P = 1kw ، سرعة دوران المحرك : $N_3=1000 \\text{tr/mn}$\nالمسننات مخروطية ذات أسنان قائمة (4) و (5) : $r = 14 / 11$ ، $m=1.5mm$ ، $d_4=126mm$"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "4- سير الجهاز :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يمثل الرسم التجميعي وثيقة 15/ 24 جهاز\" رأس مفرزة \"، تنقل الحركة الدورانية من العمود (3) إلى العمود حامل الأداة (2) بواسطة المتسننات المخروطية (4) و (5)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ctx_2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 14
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "5- العمل المطلوب :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1-5- دراسة الإنشاء : ( 12,5 نقطة)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1-1-5- التحليل الوظيفي : أجب مباشرة على الوثيقتين 18/ 24 و 19/ 24 ."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "2-1-5-التحليل البنيوي :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- دراسة تصميمية جزئية : أتمم الدراسة التصميمية الجزئية مباشرة على الوثيقة 20/ 24 .\nب- دراسة تعريفية: أتمم الدراسة التعريفية مباشرة على الوثيقة 21/ 24 ."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "2-5- دراسة التحضير: ( 7,5 نقطة)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1-2-5- تكنولوجيا وسائل الصنع: أجب مباشرة على الوثيقة 22/ 24.\n2-2-5- تكنولوجيا طرق الصنع : أجب مباشرة على الوثيقة 23/ 24 و 24/ 24.\n3-2-5- دراسة الآليات : أجب مباشرة على الوثيقة 24/ 24."
+            }
+          ],
+          "assetIds": [
+            "s2_img_1"
+          ]
+        },
+        {
+          "localId": "s2_ctx_3",
+          "nodeType": "CONTEXT",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            }
+          ],
+          "blocks": [],
+          "assetIds": [
+            "s2_img_2"
+          ]
+        },
+        {
+          "localId": "s2_ctx_4",
+          "nodeType": "CONTEXT",
+          "orderIndex": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 16
+            }
+          ],
+          "blocks": [],
+          "assetIds": [
+            "s2_img_3"
+          ]
+        },
+        {
+          "localId": "s2_ctx_5",
+          "nodeType": "CONTEXT",
+          "orderIndex": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 17
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "ملف الموارد"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "صامولة محززة و حلقة كبح:"
+            }
+          ],
+          "assetIds": [
+            "s2_img_4",
+            "s2_img_5"
+          ]
+        },
+        {
+          "localId": "s2_part_1",
+          "nodeType": "PART",
+          "orderIndex": 6,
+          "label": "1-5- دراسة الإنشاء :",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 18
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1-1-5- التحليل الوظيفي:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q_1_1",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 7,
+          "label": "1-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 18
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم المخطط الوظيفي(0-A) للنظام الآلي:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x7 = 0.7"
+            }
+          ],
+          "assetIds": [
+            "s2_img_6",
+            "s2_sol_img_1"
+          ]
+        },
+        {
+          "localId": "s2_q_1_2",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 8,
+          "label": "2-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 18
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم المخطط للوسط المحيطي للمنتج( رأس المفرزة ) مع إتمام الجدول:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2x6 = 1.2"
+            }
+          ],
+          "assetIds": [
+            "s2_img_7",
+            "s2_sol_img_2"
+          ]
+        },
+        {
+          "localId": "s2_q_1_3",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 9,
+          "label": "3-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 18
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم جدول الوصلات الحركية التالي :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x6 = 0.6"
+            }
+          ],
+          "assetIds": [
+            "s2_img_8",
+            "s2_sol_img_3"
+          ]
+        },
+        {
+          "localId": "s2_q_1_4",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 10,
+          "label": "4-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 18
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم الرسم التخطيطي الحركي التالي :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x5 = 0.5"
+            }
+          ],
+          "assetIds": [
+            "s2_img_9",
+            "s2_sol_img_4"
+          ]
+        },
+        {
+          "localId": "s2_q_1_5",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 11,
+          "label": "5-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 18
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "التحديد الوظيفي للأبعاد:\n• أنجز سلسلة الأبعاد الخاصة بالشرط JA :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.8\n0.8"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "• سجل على الجدول التالي التوافقات الخاصة بالقطرين $\\text{Ø}_1$ و $\\text{Ø}_2$ الموجودين على الرسم التجميعي :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4x2 = 0.8"
+            }
+          ],
+          "assetIds": [
+            "s2_img_10",
+            "s2_sol_img_5",
+            "s2_img_11",
+            "s2_sol_img_6"
+          ]
+        },
+        {
+          "localId": "s2_q_1_6",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 12,
+          "label": "6-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 19
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 13
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "حسابات النقل:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1-6- أكمل الجدول التالي بحساب مميزات المتسننات المخروطية (4) و (5) :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2x4 = 0.8"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2-6- احسب المزدوجة المحركة :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "C = \\frac{P}{\\omega} = \\frac{1000 \\times 30}{\\pi \\times N} = \\frac{1000 \\times 30}{3.14 \\times 1000} = 9.55 m.N"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4x2 = 0.8"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3-6- احسب سرعة الدوران $N_2$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "r = \\frac{N_2}{N_3} \\\\ N_2 = r \\times N_3 = \\frac{14}{11} \\times 1000 = 1272.72 tr/mn"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.3x2 = 0.6"
+            }
+          ],
+          "assetIds": [
+            "s2_img_12",
+            "s2_sol_img_7"
+          ]
+        },
+        {
+          "localId": "s2_q_1_7",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 13,
+          "label": "7-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 19
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 13
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "دراسة المواد:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1-7- الكارتر (1) مصنوع من مادة EN-GJL300 ، اشرح هذا التعيين:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "مواصفة الأروبية EN\nزهر غرافيتي صفائحي GJL\nمقاومة الدنيا للإنكسار بالشد $\\text{300 N/mm}^2$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.5"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2-7- أعط كيفية الحصول على خام الكارتر (1) :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "- القولبة بالرمل-"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3-7- صنع العمود (2) من مادة 25CrMo4 ، اشرح هذا التعيين:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "صلب ضعيف المزج يحتوي على %0,25 من الكربون\n1% من الكروم (Cr)\nو نسبة قليلة أقل من %1 من الموليبدان (Mo)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q_1_8",
+          "parentLocalId": "s2_part_1",
+          "nodeType": "QUESTION",
+          "orderIndex": 14,
+          "label": "8-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 19
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 13
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "دراسة المقاومة :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نفترض أن العمود (3) مستند على ركيزتين A و B وتؤثر عليه حمولة $\\vec{P}$ تقدر ب 40N المتمركزة في النقطة C ، حسب الشكل التالي:\n1-8- ما نوع التأثير المطبق على العمود (3) ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "- الإنحناء المستوي البسيط -"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2-8- احسب الجهود القاطعة $\\vec{T}$ المؤثرة على العمود (3) بحيث نعطي $\\left\\|\\vec{F_1}\\right\\|=\\left\\|\\vec{F_2}\\right\\| \\text{=20N}$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\underline{\\text{منطقة }} \\underline{\\text{AC}} \\quad 0 \\leq X \\leq 0.08m \\\\ \\overline{T} = +F_1 \\longrightarrow \\overline{T} = +20N"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\underline{\\text{منطقة }} \\underline{\\text{CB}} \\quad 0.08 \\leq X \\leq 0.16m \\\\ \\overline{T} = +F_1 - P \\longrightarrow \\overline{T} = 20 - 40 = -20N"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.6"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3-8- ارسم المنحنى البياني للجهود القاطعة $\\vec{T}$ \nسلم القوى : 1mm → 1N"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4"
+            }
+          ],
+          "assetIds": [
+            "s2_img_13",
+            "s2_sol_img_8"
+          ]
+        },
+        {
+          "localId": "s2_part_2",
+          "nodeType": "PART",
+          "orderIndex": 15,
+          "label": "2-1-5- التحليل البنيوي",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 20
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "أ- الدراسة التصميمية الجزئية :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لتحسين مردود الجهاز ، نقترح القيام ببعض التعديلات التالية :\n1- دراسة الوصلة المتمحورة للعمود(3) مع الكارتر(1) باستعمال مدحرجات ذات دحاريج مخروطية (6) و (7) .\n2- دراسة الوصلة الاندماجية للعجلة(4) مع العمود (3) باستعمال صامولة محززة (KM-M17x1) مع حلقة كبح.\nتنبيه : استعن بملف الموارد على الوثيقة 17/ 24."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "1.2\n0.5"
+            }
+          ],
+          "assetIds": [
+            "s2_img_14",
+            "s2_sol_img_9"
+          ]
+        },
+        {
+          "localId": "s2_q_2_1",
+          "parentLocalId": "s2_part_2",
+          "nodeType": "QUESTION",
+          "orderIndex": 16,
+          "label": "ب-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 21
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الدراسة التعريفية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم الرسم التعريفي للعلبة (11) موضحا كل التفاصيل البيانية مع تسجيل المواصفات الهندسية فقط حسب المساقط التالية:\n- المسقط الأمامي بقطاع A-A.\n- نصف مسقط أيمن."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.5\n0.3\n0.4"
+            }
+          ],
+          "assetIds": [
+            "s2_img_15",
+            "s2_sol_img_10"
+          ]
+        },
+        {
+          "localId": "s2_part_3",
+          "nodeType": "PART",
+          "orderIndex": 17,
+          "label": "2-5- دراسة التحضير",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 22
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "1-2-5- تكنولوجيا وسائل الصنع :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد دراسة وسائل الصنع من حيث الآلات، أدوات القطع والمراقبة للصامولة المحززة (18) في ورشة الصناعة الميكانيكية."
+            }
+          ],
+          "assetIds": [
+            "s2_img_16"
+          ]
+        },
+        {
+          "localId": "s2_q_3_1",
+          "parentLocalId": "s2_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 18,
+          "label": "1-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 22
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 16
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "الصامولة من مادة C22 إستصنعت على منصبين عمل لوحدتين مختلفتين.\n1- باستعمال علامة ( x ) أعط اسم وحدات التصنيع والآلات الصناعية المستعملة حسب شكل الصامولة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.2x2 = 0.4\n0.2x2 = 0.4"
+            }
+          ],
+          "assetIds": [
+            "s2_img_17",
+            "s2_sol_img_11"
+          ]
+        },
+        {
+          "localId": "s2_q_3_2",
+          "parentLocalId": "s2_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 19,
+          "label": "2-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 22
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 16
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مستعينا بأرقام السطوح الموجودة على الصامولة، رتب السطوح حسب وحدة الصنع المناسبة.\nالوحدة :...................... [.......................] ، الوحدة : ..................... [.......................]"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الوحدة :الخراطة [ 1، 2، 3، 4، 5، 6 ] ، الوحدة : التفريز [.......7.......]"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.1x5 = 0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q_3_3",
+          "parentLocalId": "s2_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 20,
+          "label": "3-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 22
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 16
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعط اسم كل عملية حسب شكل السطوح.\n(1):................................(3):................................(4):................................(5):................................(7):................................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "(1): التسوية (3): خرط طولي (4): تثقيب (5): تشطيف (7): إنجاز مجرى"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.3"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q_3_4",
+          "parentLocalId": "s2_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 21,
+          "label": "4-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 22
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 16
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أذكر وسائل المراقبة المناسبة المستعملة للبعد \"a\" المحددة على الرسم بحيث a=M20"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "برغي معياري M20"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q_3_5",
+          "parentLocalId": "s2_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 22,
+          "label": "2-2-5-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 23
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 17
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "تكنولوجيا طرق الصنع :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نقترح دراسة صنع الغطاء (19) من مادة : EN-GJL250\n1- أتمم الشكل الأولي لخام الغطاء (19) على الرسم التالي :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.9"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- نقترح التجميع التالي لإنجاز الغطاء (19)\n{ (1)،(2) } ، { (3)،(4) }\n- استنتج السير المنطقي للصنع."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.4"
+            }
+          ],
+          "assetIds": [
+            "s2_img_18",
+            "s2_sol_img_12",
+            "s2_img_19",
+            "s2_sol_img_13"
+          ]
+        },
+        {
+          "localId": "s2_q_3_6",
+          "parentLocalId": "s2_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 23,
+          "label": "3-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 24
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 18
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد انجاز مجموعة السطوح { (1) ، (2) } للغطاء (19) .\nالورشة مجهزة بآلات وأدوات للعمل بالسلسلة الصغيرة والمتوسطة.السمك الإضافي للتشغيل 2 mm .\n- رسم المرحلة : بين أبعاد الصنع ، الوضعية الإيزوستاتية والأدوات الخاصة لإنجاز السطحين (1) و (2)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.8\n1\n0.8"
+            }
+          ],
+          "assetIds": [
+            "s2_img_20",
+            "s2_sol_img_14"
+          ]
+        },
+        {
+          "localId": "s2_q_3_7",
+          "parentLocalId": "s2_part_3",
+          "nodeType": "QUESTION",
+          "orderIndex": 24,
+          "label": "3-2-5-",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 24
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 18
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "دراسة الآليات :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "- الدافعة (A) متحكم فيها بواسطة موزع هوائي 5/ 2.\n1- اشرح هذا الموزع :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "موزع ثنائي الاستقرار ذو وضعيتين و 05 منافذ"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.5"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- ما نوع هذه الدافعة؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "دافعة مزدوجة المفعول"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "0.5"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- أتمم التركيب الهوائي بين الدافعة والموزع."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "1"
+            }
+          ],
+          "assetIds": [
+            "s2_img_21",
+            "s2_sol_img_15"
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_img_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ctx_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 1
+    },
+    {
+      "id": "s1_img_2",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ctx_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 2
+    },
+    {
+      "id": "s1_img_3",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ctx_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_img_4",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ctx_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 4
+    },
+    {
+      "id": "s1_img_5",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ctx_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5
+    },
+    {
+      "id": "s1_img_6",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6
+    },
+    {
+      "id": "s1_sol_img_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_img_7",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6
+    },
+    {
+      "id": "s1_sol_img_2",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_img_8",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 6
+    },
+    {
+      "id": "s1_sol_img_3",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_3",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_img_9",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 6
+    },
+    {
+      "id": "s1_sol_img_4",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_img_10",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6
+    },
+    {
+      "id": "s1_sol_img_5",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_img_11",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_9",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7
+    },
+    {
+      "id": "s1_sol_img_6",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_9",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4
+    },
+    {
+      "id": "s1_img_12",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_10",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 7
+    },
+    {
+      "id": "s1_sol_img_7",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_10",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 4
+    },
+    {
+      "id": "s1_img_13",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_1_13",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 8
+    },
+    {
+      "id": "s1_img_14",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_part_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "s1_sol_img_8",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_part_2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 6
+    },
+    {
+      "id": "s1_img_15",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_2_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "s1_sol_img_9",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_2_2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 6
+    },
+    {
+      "id": "s1_img_16",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_part_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 10
+    },
+    {
+      "id": "s1_img_17",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_3_1_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 10
+    },
+    {
+      "id": "s1_sol_img_10",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_3_1_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 7
+    },
+    {
+      "id": "s1_img_18",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_3_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 11
+    },
+    {
+      "id": "s1_img_19",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_3_2_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 11
+    },
+    {
+      "id": "s1_sol_img_11",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_3_2_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 8
+    },
+    {
+      "id": "s1_img_20",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_3_2_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 11
+    },
+    {
+      "id": "s1_sol_img_12",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_q_3_2_2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 8
+    },
+    {
+      "id": "s2_img_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ctx_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 14
+    },
+    {
+      "id": "s2_img_2",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ctx_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 15
+    },
+    {
+      "id": "s2_img_3",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ctx_4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 16
+    },
+    {
+      "id": "s2_img_4",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ctx_5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 17
+    },
+    {
+      "id": "s2_img_5",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ctx_5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 17
+    },
+    {
+      "id": "s2_img_6",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 18
+    },
+    {
+      "id": "s2_sol_img_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 12
+    },
+    {
+      "id": "s2_img_7",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 18
+    },
+    {
+      "id": "s2_sol_img_2",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 12
+    },
+    {
+      "id": "s2_img_8",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 18
+    },
+    {
+      "id": "s2_sol_img_3",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_3",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 12
+    },
+    {
+      "id": "s2_img_9",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 18
+    },
+    {
+      "id": "s2_sol_img_4",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 12
+    },
+    {
+      "id": "s2_img_10",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 18
+    },
+    {
+      "id": "s2_sol_img_5",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 12
+    },
+    {
+      "id": "s2_img_11",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 18
+    },
+    {
+      "id": "s2_sol_img_6",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 12
+    },
+    {
+      "id": "s2_img_12",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_6",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 19
+    },
+    {
+      "id": "s2_sol_img_7",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_6",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 13
+    },
+    {
+      "id": "s2_img_13",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_8",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 19
+    },
+    {
+      "id": "s2_sol_img_8",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_1_8",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 13
+    },
+    {
+      "id": "s2_img_14",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_part_2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 20
+    },
+    {
+      "id": "s2_sol_img_9",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_part_2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 14
+    },
+    {
+      "id": "s2_img_15",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_2_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 21
+    },
+    {
+      "id": "s2_sol_img_10",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_2_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 15
+    },
+    {
+      "id": "s2_img_16",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_part_3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 22
+    },
+    {
+      "id": "s2_img_17",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 22
+    },
+    {
+      "id": "s2_sol_img_11",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 16
+    },
+    {
+      "id": "s2_img_18",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 23
+    },
+    {
+      "id": "s2_sol_img_12",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 17
+    },
+    {
+      "id": "s2_img_19",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 23
+    },
+    {
+      "id": "s2_sol_img_13",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 17
+    },
+    {
+      "id": "s2_img_20",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_6",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 24
+    },
+    {
+      "id": "s2_sol_img_14",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_6",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 18
+    },
+    {
+      "id": "s2_img_21",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_7",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 24
+    },
+    {
+      "id": "s2_sol_img_15",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_q_3_7",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 18
+    }
+  ],
+  "nativeRenderCandidates": [],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 8,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 9,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 10,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 11,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 12,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 13,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 14,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 15,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 16,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 17,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 18,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 19,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 20,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 21,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 22,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 23,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 24,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 8,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 9,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 10,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 11,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 12,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 13,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 14,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 15,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 16,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 17,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 18,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": [
+    "Mapping point allocations from the bareme table on correction pages 1, 2, 10, 11 to specific subquestions might not be perfectly matched due to the layout."
+  ]
+}

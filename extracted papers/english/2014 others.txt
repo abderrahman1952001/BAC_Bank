@@ -1,0 +1,961 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي",
+    "year": 2014,
+    "streamCode": "علوم تجريبية، رياضيات، تقني رياضي، تسيير واقتصاد",
+    "subjectCode": "اللغة الانجليزية",
+    "sessionType": "normal",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "S1_PART_1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "Part One: Reading",
+          "maxPoints": 15,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Part One: Reading"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART_1_A",
+          "parentLocalId": "S1_PART_1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "A. Comprehension",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "A. Comprehension"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_A_CTX",
+          "parentLocalId": "S1_PART_1_A",
+          "nodeType": "CONTEXT",
+          "orderIndex": 0,
+          "label": "",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Read the text carefully then do the following activities.\n\nThe study of consumer behaviour examines all aspects of consumer's feelings, thoughts and reasons for making particular decisions in purchasing products or services, and also how consumers use and dispose of products. A consumer's choice or practices may be influenced by family and friends, religious beliefs, cultural attitudes, social expectations, professional standards, advertising appeals, or by any combination of these factors.\n\nThe most obvious application for knowledge of consumer behaviour is marketing strategy. For instance, understanding that a large number of consumers are on low carbohydrate diets has led to an increasing number of products that are labelled as \"Low Carb\". But the study of consumer behaviour also has a lot of repercussions on public policy, social marketing and consumer education.\n\nMarketers may examine consumer behaviour using either primary or secondary research. Primary research is conducted by asking a lot of consumers to answer survey questions, either by mail, Internet, telephone or in person. Mail surveys are useful because they are inexpensive and may ask as many questions as desired. Internet surveys can be cheap to set up but exposure to a great deal of aggressive advertising has made many consumers resistant to this method.\n\nAdapted from the Advertopedia Staff"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_A_Q1",
+          "parentLocalId": "S1_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Choose the right answer\nThe text is: a- prescriptive b- narrative c- expository"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "c- expository"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_A_Q2",
+          "parentLocalId": "S1_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Are these statements true or false? Write T or F next to the letter corresponding to the statement.\na. The study of consumer behaviour examines few aspects of consumer's feelings.\nb. A consumer's attitude can be influenced by his family and friends.\nc. Marketers have to answer a lot of questions in surveys.\nd. Consumers prefer Internet surveys because they are cheap."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. F\nb. T\nc. F\nd. T"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "02 points (0.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_A_Q3",
+          "parentLocalId": "S1_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Answer the following questions according to the text.\na. What are the factors that may influence a consumer's behaviour?\nb. How can marketers examine consumer behaviour?"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Family and friends, religious beliefs, cultural attitudes, social expectations, professional standards, advertising appeals, or by any combination of these factors.\nb. Marketers can examine consumer behaviour using either primary or secondary research"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "03 points (1.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_A_Q4",
+          "parentLocalId": "S1_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "In which paragraph is it mentioned how to check the consumer's behaviour?"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "In paragraph 3"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_A_Q5",
+          "parentLocalId": "S1_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Who or what do the underlined words refer to in the text?\na. that (§2)\nb. they (§3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. that § 2 → products\nb. they § 3 → mail surveys"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point (0.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART_1_B",
+          "parentLocalId": "S1_PART_1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "B. Text Exploration",
+          "maxPoints": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "B. Text Exploration"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_B_Q1",
+          "parentLocalId": "S1_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Find in the text words or phrases that are closest in meaning to the following.\na. comportment (§1) b. evident (§2) c. for example (§2)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "comportment (§1) = behaviour\nevident (§2) = obvious\nfor example (§2) = for instance"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 points (0.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_B_Q2",
+          "parentLocalId": "S1_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Complete the following chart as shown in the example."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| | Verb | Noun | Adjective |\n|---|---|---|---|\n| example | to resist | resistance | resistant |\n| | ......... | behaviour | ......... |\n| | to consume | ......... | ......... |\n| | ......... | ......... | educational |"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| Verb | Noun | Adjective |\n|---|---|---|\n| behave | behaviour | behavioural/ behaved |\n| consume | consumer / consumption / consumerism | consumable / consumed / consuming |\n| educate | education / educator | educational |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 points (0.25 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_B_Q3",
+          "parentLocalId": "S1_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ask the questions which the underlined words answer.\na. Marketers may examine consumer behaviour.\nb. The study of consumer behaviour examines all aspects of consumer's feelings."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Who may examine consumer behaviour?\nb. What does the study of consumer behaviour examine?"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point (0.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_B_Q4",
+          "parentLocalId": "S1_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Classify the words according to the number of their syllables.\nadvertising - consumers - obvious - cheap"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| One syllable | Two syllables | Three syllables | Four syllables |\n|---|---|---|---|"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| One syllable | Two syllables | Three syllables | Four syllables |\n|---|---|---|---|\n| cheap | obvious | consumers | advertising |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point (0.25 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_B_Q5",
+          "parentLocalId": "S1_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Re-order the following sentences to make a coherent passage.\na. For example, they are entitled to products\nb. Consumers have several basic rights.\nc. They are also entitled to the protection against unsafe food.\nd. whose quality is consistent with their prices."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| a | b | c | d |\n|---|---|---|---|\n| 2 | 1 | 4 | 3 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "02 points (0.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART_2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "Part Two: Written Expression",
+          "maxPoints": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Part Two: Written Expression"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Choose ONE of the following topics:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2_TOPIC_1",
+          "parentLocalId": "S1_PART_2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "Topic One",
+          "maxPoints": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "In your city you feel that consumers are not protected against the effects of the goods they buy. So, with a group of friends, you decide to create an association of consumers.\nWrite a composition of about 80 to 120 words in which you expose the reasons and objectives of this association.\nYou may use the following notes:\n- Reasons: counterfeit / cheap products / lower quality / harmful / not lasting\n- Objectives: to sensitize the consumers / to protect them / to buy safe products"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Topic One : Form: 02.5 Content: 02.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2_TOPIC_2",
+          "parentLocalId": "S1_PART_2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "Topic Two",
+          "maxPoints": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Write a composition of about 80 to 120 words on the following:\nSome people think space tourism is just a wild dream and a waste of money. Do you agree with them?"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Topic Two : Form: 02 Content: 03"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "S2_PART_1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "Part One: Reading",
+          "maxPoints": 15,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Part One: Reading"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART_1_A",
+          "parentLocalId": "S2_PART_1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "A. Comprehension",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "A. Comprehension"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_A_CTX",
+          "parentLocalId": "S2_PART_1_A",
+          "nodeType": "CONTEXT",
+          "orderIndex": 0,
+          "label": "",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Read the text carefully then do the following activities.\n\nSince money came into use in the ancient world, there has been counterfeiting. Early money was in the form of coins with a specific content of gold, silver, or any other metal. Making counterfeit coins was relatively easy. A metal of equal weight could be gold or silver-plated and passed on to the public as genuine.\n\nCounterfeiting paper currency is a highly technical skill that calls for a talented draftsman, photographer, plate maker and printer. Also necessary for the counterfeit money to be convincing are high quality rag paper and the proper kind of ink.\n\nWith such technological advances as high-speed cameras and engraving machines, the time needed to produce counterfeit money has been shortened and the quality of the work improved. To combat these problems, the United States government has attempted to make detection of fraud easier by the use of very high quality rag paper and ink. Other nations also use special paper and ink. In much foreign currency a distinctive watermark can be seen by holding the money up to the light.\n\nCounterfeiting is a criminal offence in nearly every country. A convention signed by many nations in Switzerland in 1929, provided for the centralization and cooperation of international police action to combat counterfeiting.\n\nAdapted from Wise Geek .com"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_A_Q1",
+          "parentLocalId": "S2_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Circle the letter that corresponds to the right answer.\nThe text is taken from: a. a magazine b. the Internet c. a newspaper"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "b. the Internet"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_A_Q2",
+          "parentLocalId": "S2_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Are these statements true or false? Write T or F next to the letter corresponding to the statement.\na. Counterfeiting existed since the appearance of money.\nb. Low quality paper and ink are necessary to counterfeit money.\nc. Technological development helped counterfeiters.\nd. Counterfeiting is legal in some countries."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. T\nb. F\nc. T\nd. F"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "02 points (0.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_A_Q3",
+          "parentLocalId": "S2_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Answer the following questions according to the text.\na. Why was counterfeiting easy in the past?\nb. What has the United States government done to combat counterfeiting money?"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Counterfeiting was easy in the past because early money was in the form of simple coins (with a specific content of gold, silver, or any other metal).\nb. The United States government has attempted to make detection of fraud easier by the use of very high quality rag paper and ink."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "03 points (1.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_A_Q4",
+          "parentLocalId": "S2_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "In which paragraph is it mentioned how to fight counterfeiting money?"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "In paragraph 3"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_A_Q5",
+          "parentLocalId": "S2_PART_1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Copy the title you think is the most appropriate.\na. The history of Counterfeiting\nb. Money Laundering\nc. Counterfeiting Money"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "c. Counterfeiting Money."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART_1_B",
+          "parentLocalId": "S2_PART_1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "B. Text Exploration",
+          "maxPoints": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "B. Text Exploration"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_B_Q1",
+          "parentLocalId": "S2_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Find in the text words or phrases that are opposites to the following.\na. late (§1)\nb. more difficult (§3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. late (§1) ≠ early\nc. more difficult (§3) ≠ easier"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 point (0.5 each)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_B_Q2",
+          "parentLocalId": "S2_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Divide the following words into root and affixes."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Words | Prefix | Root | Suffix |\n|---|---|---|---|\n| international | | | |\n| distinctive | | | |\n| shortened | | | |"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| Word | Prefix | Root | Suffix |\n|---|---|---|---|\n| international | inter | nation | al |\n| distinctive | | distinct | ive |\n| shortened | | short | en / ed |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01.5 points (0.5 each line)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_B_Q3",
+          "parentLocalId": "S2_PART_1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Rewrite sentence B so that it means the same as sentence A.\n1.a. A convention was signed by many nations in Switzerland.\nb. Many nations .........................................\n2.a. \

@@ -11,9 +11,9 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { getReviewReasonWeaknessWeight } from './study-review-signals';
 import {
-  selectSignalSkillMappings,
+  selectSignalLearningTargetMappings,
   selectSignalTopics,
-  type EffectiveSignalSkillMapping,
+  type EffectiveSignalLearningTargetMapping,
   type SignalTopic,
 } from './study-signal-mappings';
 
@@ -27,7 +27,7 @@ type SubjectAggregate = {
   flaggedExerciseCount: number;
   lastSeenAt: Date | null;
   topics: Map<string, TopicAggregate>;
-  skills: Map<string, SkillAggregate>;
+  learningTargets: Map<string, LearningTargetAggregate>;
 };
 
 type TopicAggregate = {
@@ -43,10 +43,10 @@ type TopicAggregate = {
     revealed: number;
     flagged: number;
   };
-  skillMappings: EffectiveSignalSkillMapping[];
+  learningTargetMappings: EffectiveSignalLearningTargetMapping[];
 };
 
-type SkillAggregate = {
+type LearningTargetAggregate = {
   code: string;
   name: string;
   weaknessScore: number;
@@ -118,9 +118,9 @@ export class StudyWeakPointService {
         0,
         input.limitTopics ?? 3,
       ),
-      skillCodes: subjectInsight.topSkills
+      learningTargetCodes: subjectInsight.topLearningTargets
         .slice(0, 4)
-        .map((skill) => skill.code),
+        .map((learningTarget) => learningTarget.code),
     };
   }
 
@@ -134,147 +134,210 @@ export class StudyWeakPointService {
     const cappedLimit = Math.min(Math.max(input?.limit ?? 4, 1), 12);
     const requestedSubjectCode =
       input?.subjectCode?.trim().toUpperCase() ?? null;
-    const [topicRollups, skillRollups, reviewQueueItems] = await Promise.all([
-      this.prisma.studentCurriculumNodeRollup.findMany({
-        where: {
-          userId,
-          ...(requestedSubjectCode
-            ? {
-                curriculumNode: {
-                  subject: {
-                    code: requestedSubjectCode,
-                  },
-                },
-              }
-            : {}),
-        },
-        select: {
-          weaknessScore: true,
-          revealedCount: true,
-          skippedCount: true,
-          hardCount: true,
-          missedCount: true,
-          lastSeenAt: true,
-          curriculumNode: {
-            select: {
-              code: true,
-              name: true,
-              studentLabel: true,
-              subject: {
-                select: {
-                  code: true,
-                  name: true,
-                },
-              },
-              skillMappings: {
-                select: {
-                  weight: true,
-                  isPrimary: true,
-                  skill: {
-                    select: {
-                      id: true,
-                      code: true,
-                      name: true,
-                      subject: {
-                        select: {
-                          code: true,
-                          name: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      }),
-      this.prisma.studentSkillRollup.findMany({
-        where: {
-          userId,
-          ...(requestedSubjectCode
-            ? {
-                skill: {
-                  subject: {
-                    code: requestedSubjectCode,
-                  },
-                },
-              }
-            : {}),
-        },
-        select: {
-          weaknessScore: true,
-          lastSeenAt: true,
-          skill: {
-            select: {
-              code: true,
-              name: true,
-              subject: {
-                select: {
-                  code: true,
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      }),
-      this.prisma.studentReviewQueueItem.findMany({
-        where: {
-          userId,
-          status: StudyReviewQueueStatus.OPEN,
-        },
-        select: {
-          reasonType: true,
-          lastPromotedAt: true,
-          questionNode: {
-            select: {
-              skillMappings: {
-                select: {
-                  weight: true,
-                  isPrimary: true,
-                  skill: {
-                    select: {
-                      id: true,
-                      code: true,
-                      name: true,
-                      subject: {
-                        select: {
-                          code: true,
-                          name: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              curriculumNodeMappings: {
-                select: {
+
+    const [topicRollups, learningTargetRollups, reviewQueueItems] =
+      await Promise.all([
+        this.prisma.studentCurriculumNodeRollup.findMany({
+          where: {
+            userId,
+            ...(requestedSubjectCode
+              ? {
                   curriculumNode: {
-                    select: {
-                      id: true,
-                      code: true,
-                      name: true,
-                      studentLabel: true,
-                      subject: {
-                        select: {
-                          code: true,
-                          name: true,
+                    subject: {
+                      code: requestedSubjectCode,
+                    },
+                  },
+                }
+              : {}),
+          },
+          select: {
+            weaknessScore: true,
+            revealedCount: true,
+            skippedCount: true,
+            hardCount: true,
+            missedCount: true,
+            lastSeenAt: true,
+            curriculumNode: {
+              select: {
+                code: true,
+                name: true,
+                studentLabel: true,
+                subject: {
+                  select: {
+                    code: true,
+                    name: true,
+                  },
+                },
+                learningTargetMappings: {
+                  select: {
+                    weight: true,
+                    isPrimary: true,
+                    learningTarget: {
+                      select: {
+                        id: true,
+                        code: true,
+                        name: true,
+                        subject: {
+                          select: {
+                            code: true,
+                            name: true,
+                          },
                         },
                       },
-                      skillMappings: {
-                        select: {
-                          weight: true,
-                          isPrimary: true,
-                          skill: {
-                            select: {
-                              id: true,
-                              code: true,
-                              name: true,
-                              subject: {
-                                select: {
-                                  code: true,
-                                  name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        }),
+        this.prisma.studentLearningTargetRollup.findMany({
+          where: {
+            userId,
+            ...(requestedSubjectCode
+              ? {
+                  learningTarget: {
+                    subject: {
+                      code: requestedSubjectCode,
+                    },
+                  },
+                }
+              : {}),
+          },
+          select: {
+            weaknessScore: true,
+            lastSeenAt: true,
+            learningTarget: {
+              select: {
+                code: true,
+                name: true,
+                subject: {
+                  select: {
+                    code: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        }),
+        this.prisma.studentReviewQueueItem.findMany({
+          where: {
+            userId,
+            status: StudyReviewQueueStatus.OPEN,
+          },
+          select: {
+            reasonType: true,
+            lastPromotedAt: true,
+            questionNode: {
+              select: {
+                learningTargetMappings: {
+                  select: {
+                    weight: true,
+                    isPrimary: true,
+                    learningTarget: {
+                      select: {
+                        id: true,
+                        code: true,
+                        name: true,
+                        subject: {
+                          select: {
+                            code: true,
+                            name: true,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                curriculumNodeMappings: {
+                  select: {
+                    curriculumNode: {
+                      select: {
+                        id: true,
+                        code: true,
+                        name: true,
+                        studentLabel: true,
+                        subject: {
+                          select: {
+                            code: true,
+                            name: true,
+                          },
+                        },
+                        learningTargetMappings: {
+                          select: {
+                            weight: true,
+                            isPrimary: true,
+                            learningTarget: {
+                              select: {
+                                id: true,
+                                code: true,
+                                name: true,
+                                subject: {
+                                  select: {
+                                    code: true,
+                                    name: true,
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            exerciseNode: {
+              select: {
+                learningTargetMappings: {
+                  select: {
+                    weight: true,
+                    isPrimary: true,
+                    learningTarget: {
+                      select: {
+                        id: true,
+                        code: true,
+                        name: true,
+                        subject: {
+                          select: {
+                            code: true,
+                            name: true,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                curriculumNodeMappings: {
+                  select: {
+                    curriculumNode: {
+                      select: {
+                        id: true,
+                        code: true,
+                        name: true,
+                        studentLabel: true,
+                        subject: {
+                          select: {
+                            code: true,
+                            name: true,
+                          },
+                        },
+                        learningTargetMappings: {
+                          select: {
+                            weight: true,
+                            isPrimary: true,
+                            learningTarget: {
+                              select: {
+                                id: true,
+                                code: true,
+                                name: true,
+                                subject: {
+                                  select: {
+                                    code: true,
+                                    name: true,
+                                  },
                                 },
                               },
                             },
@@ -287,69 +350,8 @@ export class StudyWeakPointService {
               },
             },
           },
-          exerciseNode: {
-            select: {
-              skillMappings: {
-                select: {
-                  weight: true,
-                  isPrimary: true,
-                  skill: {
-                    select: {
-                      id: true,
-                      code: true,
-                      name: true,
-                      subject: {
-                        select: {
-                          code: true,
-                          name: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              curriculumNodeMappings: {
-                select: {
-                  curriculumNode: {
-                    select: {
-                      id: true,
-                      code: true,
-                      name: true,
-                      studentLabel: true,
-                      subject: {
-                        select: {
-                          code: true,
-                          name: true,
-                        },
-                      },
-                      skillMappings: {
-                        select: {
-                          weight: true,
-                          isPrimary: true,
-                          skill: {
-                            select: {
-                              id: true,
-                              code: true,
-                              name: true,
-                              subject: {
-                                select: {
-                                  code: true,
-                                  name: true,
-                                },
-                              },
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      }),
-    ]);
+        }),
+      ]);
 
     const subjects = new Map<string, SubjectAggregate>();
 
@@ -363,7 +365,7 @@ export class StudyWeakPointService {
         name: rollup.curriculumNode.name,
         studentLabel: rollup.curriculumNode.studentLabel,
         subject: rollup.curriculumNode.subject,
-        skillMappings: rollup.curriculumNode.skillMappings,
+        learningTargetMappings: rollup.curriculumNode.learningTargetMappings,
       });
 
       topicAggregate.weaknessScore += Number(rollup.weaknessScore);
@@ -383,15 +385,21 @@ export class StudyWeakPointService {
       subject.lastSeenAt = this.maxDate(subject.lastSeenAt, rollup.lastSeenAt);
     }
 
-    for (const rollup of skillRollups) {
+    for (const rollup of learningTargetRollups) {
       const subject = this.getOrCreateSubjectAggregate(
         subjects,
-        rollup.skill.subject,
+        rollup.learningTarget.subject,
       );
-      const skill = this.getOrCreateSkillAggregate(subject, rollup.skill);
+      const learningTarget = this.getOrCreateLearningTargetAggregate(
+        subject,
+        rollup.learningTarget,
+      );
 
-      skill.weaknessScore += Number(rollup.weaknessScore);
-      skill.lastSeenAt = this.maxDate(skill.lastSeenAt, rollup.lastSeenAt);
+      learningTarget.weaknessScore += Number(rollup.weaknessScore);
+      learningTarget.lastSeenAt = this.maxDate(
+        learningTarget.lastSeenAt,
+        rollup.lastSeenAt,
+      );
       subject.totalWeaknessScore += Number(rollup.weaknessScore);
       subject.lastSeenAt = this.maxDate(subject.lastSeenAt, rollup.lastSeenAt);
     }
@@ -399,8 +407,8 @@ export class StudyWeakPointService {
     for (const queueItem of reviewQueueItems) {
       const reason = queueItem.reasonType as StudyReviewReasonType;
       const topics = selectSignalTopics({
-        questionSkills: queueItem.questionNode?.skillMappings ?? [],
-        exerciseSkills: queueItem.exerciseNode.skillMappings,
+        questionLearningTargets: queueItem.questionNode?.learningTargetMappings ?? [],
+        exerciseLearningTargets: queueItem.exerciseNode.learningTargetMappings,
         questionTopics:
           queueItem.questionNode?.curriculumNodeMappings.map(
             (mapping) => mapping.curriculumNode,
@@ -415,9 +423,9 @@ export class StudyWeakPointService {
         continue;
       }
 
-      const skillMappings = selectSignalSkillMappings({
-        questionSkills: queueItem.questionNode?.skillMappings ?? [],
-        exerciseSkills: queueItem.exerciseNode.skillMappings,
+      const learningTargetMappings = selectSignalLearningTargetMappings({
+        questionLearningTargets: queueItem.questionNode?.learningTargetMappings ?? [],
+        exerciseLearningTargets: queueItem.exerciseNode.learningTargetMappings,
         topics,
         requestedSubjectCode,
       });
@@ -425,14 +433,17 @@ export class StudyWeakPointService {
       this.applyQueueSignal({
         subjects,
         topics,
-        skillMappings,
+        learningTargetMappings,
         reason,
         updatedAt: queueItem.lastPromotedAt,
       });
     }
 
     return Array.from(subjects.values())
-      .filter((subject) => subject.topics.size > 0 && subject.skills.size > 0)
+      .filter(
+        (subject) =>
+          subject.topics.size > 0 && subject.learningTargets.size > 0,
+      )
       .sort((left, right) => {
         if (right.totalWeaknessScore !== left.totalWeaknessScore) {
           return right.totalWeaknessScore - left.totalWeaknessScore;
@@ -443,7 +454,8 @@ export class StudyWeakPointService {
         }
 
         return (
-          this.toTimestamp(right.lastSeenAt) - this.toTimestamp(left.lastSeenAt)
+          this.toTimestamp(right.lastSeenAt) -
+          this.toTimestamp(left.lastSeenAt)
         );
       })
       .slice(0, cappedLimit)
@@ -465,12 +477,12 @@ export class StudyWeakPointService {
           })
           .slice(0, 4)
           .map((topic) => {
-            const preferredTopicSkills = topic.skillMappings.filter((mapping) =>
-              subject.skills.has(mapping.skill.code),
+            const preferredMappings = topic.learningTargetMappings.filter((mapping) =>
+              subject.learningTargets.has(mapping.learningTarget.code),
             );
-            const topicSkillMappings = preferredTopicSkills.length
-              ? preferredTopicSkills
-              : topic.skillMappings;
+            const topicLearningTargetMappings = preferredMappings.length
+              ? preferredMappings
+              : topic.learningTargetMappings;
 
             return {
               code: topic.code,
@@ -479,16 +491,18 @@ export class StudyWeakPointService {
               weakSignalCount: topic.weakSignalCount,
               lastSeenAt: topic.lastSeenAt?.toISOString() ?? null,
               signalCounts: topic.signalCounts,
-              topSkills: topicSkillMappings
+              topLearningTargets: topicLearningTargetMappings
                 .map((mapping) => {
-                  const subjectSkill = subject.skills.get(mapping.skill.code);
+                  const subjectLearningTarget = subject.learningTargets.get(
+                    mapping.learningTarget.code,
+                  );
                   const weaknessScore =
-                    (subjectSkill?.weaknessScore ?? topic.weaknessScore) *
+                    (subjectLearningTarget?.weaknessScore ?? topic.weaknessScore) *
                     mapping.weight;
 
                   return {
-                    code: mapping.skill.code,
-                    name: mapping.skill.name,
+                    code: mapping.learningTarget.code,
+                    name: mapping.learningTarget.name,
                     weaknessScore: this.roundWeaknessScore(weaknessScore),
                   };
                 })
@@ -508,13 +522,13 @@ export class StudyWeakPointService {
           weakSignalCount: subject.weakSignalCount,
           flaggedExerciseCount: subject.flaggedExerciseCount,
           lastSeenAt: subject.lastSeenAt?.toISOString() ?? null,
-          topSkills: Array.from(subject.skills.values())
+          topLearningTargets: Array.from(subject.learningTargets.values())
             .sort((left, right) => right.weaknessScore - left.weaknessScore)
             .slice(0, 4)
-            .map((skill) => ({
-              code: skill.code,
-              name: skill.name,
-              weaknessScore: this.roundWeaknessScore(skill.weaknessScore),
+            .map((learningTarget) => ({
+              code: learningTarget.code,
+              name: learningTarget.name,
+              weaknessScore: this.roundWeaknessScore(learningTarget.weaknessScore),
             })),
           topTopics,
         };
@@ -524,7 +538,7 @@ export class StudyWeakPointService {
   private applyQueueSignal(input: {
     subjects: Map<string, SubjectAggregate>;
     topics: SignalTopic[];
-    skillMappings: EffectiveSignalSkillMapping[];
+    learningTargetMappings: EffectiveSignalLearningTargetMapping[];
     reason: StudyReviewReasonType;
     updatedAt: Date;
   }) {
@@ -535,7 +549,13 @@ export class StudyWeakPointService {
         input.subjects,
         topic.subject,
       );
-      const topicAggregate = this.getOrCreateTopicAggregate(subject, topic);
+      const topicAggregate = this.getOrCreateTopicAggregate(subject, {
+        code: topic.code,
+        name: topic.name,
+        studentLabel: topic.name,
+        subject: topic.subject,
+        learningTargetMappings: topic.learningTargetMappings,
+      });
 
       if (!subjectsTouched.has(subject.subject.code)) {
         subject.weakSignalCount += 1;
@@ -549,9 +569,9 @@ export class StudyWeakPointService {
 
       if (!subjectsTouched.has(`${subject.subject.code}:flagged`)) {
         subject.flaggedExerciseCount += 1;
-        this.applySubjectSkillMappings(
+        this.applySubjectLearningTargetMappings(
           subject,
-          input.skillMappings,
+          input.learningTargetMappings,
           getReviewReasonWeaknessWeight('FLAGGED'),
           input.updatedAt,
         );
@@ -567,48 +587,55 @@ export class StudyWeakPointService {
 
       const distributedWeight =
         getReviewReasonWeaknessWeight('FLAGGED') / input.topics.length;
-      const topicSkillMappings = this.selectTopicSkillMappings(
+      const topicLearningTargetMappings = this.selectTopicLearningTargetMappings(
         topicAggregate,
-        input.skillMappings,
+        input.learningTargetMappings,
       );
 
-      for (const mapping of topicSkillMappings) {
+      for (const mapping of topicLearningTargetMappings) {
         topicAggregate.weaknessScore += distributedWeight * mapping.weight;
       }
     }
   }
 
-  private applySubjectSkillMappings(
+  private applySubjectLearningTargetMappings(
     subject: SubjectAggregate,
-    skillMappings: EffectiveSignalSkillMapping[],
+    learningTargetMappings: EffectiveSignalLearningTargetMapping[],
     signalWeight: number,
     updatedAt: Date,
   ) {
-    for (const mapping of skillMappings) {
+    for (const mapping of learningTargetMappings) {
       const contribution = signalWeight * mapping.weight;
-      const skill = this.getOrCreateSkillAggregate(subject, mapping.skill);
+      const learningTarget = this.getOrCreateLearningTargetAggregate(
+        subject,
+        mapping.learningTarget,
+      );
 
       subject.totalWeaknessScore += contribution;
-      skill.weaknessScore += contribution;
-      skill.lastSeenAt = this.maxDate(skill.lastSeenAt, updatedAt);
+      learningTarget.weaknessScore += contribution;
+      learningTarget.lastSeenAt = this.maxDate(
+        learningTarget.lastSeenAt,
+        updatedAt,
+      );
     }
   }
 
-  private selectTopicSkillMappings(
+  private selectTopicLearningTargetMappings(
     topic: TopicAggregate,
-    preferredMappings: EffectiveSignalSkillMapping[],
+    preferredMappings: EffectiveSignalLearningTargetMapping[],
   ) {
     if (!preferredMappings.length) {
-      return topic.skillMappings;
+      return topic.learningTargetMappings;
     }
 
-    const preferredBySkillCode = new Map(
-      preferredMappings.map((mapping) => [mapping.skill.code, mapping]),
+    const preferredByLearningTargetCode = new Map(
+      preferredMappings.map((mapping) => [mapping.learningTarget.code, mapping]),
     );
-    const overlappingMappings = topic.skillMappings
-      .map((mapping) => preferredBySkillCode.get(mapping.skill.code))
-      .filter((mapping): mapping is EffectiveSignalSkillMapping =>
-        Boolean(mapping),
+    const overlappingMappings = topic.learningTargetMappings
+      .map((mapping) => preferredByLearningTargetCode.get(mapping.learningTarget.code))
+      .filter(
+        (mapping): mapping is EffectiveSignalLearningTargetMapping =>
+          Boolean(mapping),
       );
 
     if (overlappingMappings.length) {
@@ -638,7 +665,7 @@ export class StudyWeakPointService {
       flaggedExerciseCount: 0,
       lastSeenAt: null,
       topics: new Map(),
-      skills: new Map(),
+      learningTargets: new Map(),
     };
 
     subjects.set(subject.code, created);
@@ -655,10 +682,10 @@ export class StudyWeakPointService {
         code: string;
         name: string;
       };
-      skillMappings: Array<{
+      learningTargetMappings: Array<{
         weight: Prisma.Decimal | number;
         isPrimary: boolean;
-        skill: {
+        learningTarget: {
           id: string;
           code: string;
           name: string;
@@ -685,42 +712,44 @@ export class StudyWeakPointService {
         revealed: 0,
         flagged: 0,
       },
-      skillMappings: curriculumNode.skillMappings.map((mapping) => ({
-        weight: Number(mapping.weight),
-        isPrimary: mapping.isPrimary,
-        skill: {
-          id: mapping.skill.id,
-          code: mapping.skill.code,
-          name: mapping.skill.name,
-        },
-      })),
+      learningTargetMappings: curriculumNode.learningTargetMappings.map(
+        (mapping) => ({
+          weight: Number(mapping.weight),
+          isPrimary: mapping.isPrimary,
+          learningTarget: {
+            id: mapping.learningTarget.id,
+            code: mapping.learningTarget.code,
+            name: mapping.learningTarget.name,
+          },
+        }),
+      ),
     };
 
     subject.topics.set(curriculumNode.code, created);
     return created;
   }
 
-  private getOrCreateSkillAggregate(
+  private getOrCreateLearningTargetAggregate(
     subject: SubjectAggregate,
-    skill: {
+    learningTarget: {
       code: string;
       name: string;
     },
   ) {
-    const existing = subject.skills.get(skill.code);
+    const existing = subject.learningTargets.get(learningTarget.code);
 
     if (existing) {
       return existing;
     }
 
-    const created: SkillAggregate = {
-      code: skill.code,
-      name: skill.name,
+    const created: LearningTargetAggregate = {
+      code: learningTarget.code,
+      name: learningTarget.name,
       weaknessScore: 0,
       lastSeenAt: null,
     };
 
-    subject.skills.set(skill.code, created);
+    subject.learningTargets.set(learningTarget.code, created);
     return created;
   }
 

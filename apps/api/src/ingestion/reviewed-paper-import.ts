@@ -1,6 +1,7 @@
 import type {
   DraftAsset,
   DraftAssetClassification,
+  DraftAssetCleanupMask,
   DraftAssetNativeSuggestionSource,
   DraftAssetNativeSuggestionStatus,
   DraftAssetNativeSuggestionType,
@@ -70,6 +71,8 @@ type ReviewedAsset = {
   classification: DraftAssetClassification;
   pageNumber: number;
   cropBox: DraftCropBox | null;
+  cleanupRequired: boolean;
+  cleanupMasks: DraftAssetCleanupMask[];
   label: string | null;
   caption: string | null;
   notes: string | null;
@@ -207,7 +210,11 @@ export function importReviewedPaperExtract(input: {
       existingAsset.documentKind === asset.documentKind
         ? existingAsset.cropBox
         : null;
-    const cropBox = asset.cropBox ?? preservedCropBox ?? fullPageCrop(sourcePage);
+    const canPreserveCleanup =
+      existingAsset?.sourcePageId === sourcePage.id &&
+      existingAsset.documentKind === asset.documentKind;
+    const cropBox =
+      asset.cropBox ?? preservedCropBox ?? fullPageCrop(sourcePage);
 
     const importedAsset: DraftAsset = {
       id: asset.id,
@@ -218,6 +225,15 @@ export function importReviewedPaperExtract(input: {
       role: asset.role,
       classification: asset.classification,
       cropBox,
+      cleanupRequired:
+        asset.cleanupRequired ||
+        (canPreserveCleanup && existingAsset?.cleanupRequired === true),
+      cleanupMasks:
+        asset.cleanupMasks.length > 0
+          ? asset.cleanupMasks
+          : canPreserveCleanup
+            ? (existingAsset?.cleanupMasks ?? [])
+            : [],
       label: asset.label ?? asset.caption,
       notes:
         asset.notes ??
@@ -225,7 +241,7 @@ export function importReviewedPaperExtract(input: {
           ? 'Imported from reviewed extract with crop geometry; verify before publication.'
           : preservedCropBox && !isFullPageCrop(preservedCropBox, sourcePage)
             ? 'Preserved existing crop geometry during reviewed extract import; verify before publication.'
-          : 'Imported without crop geometry; refine before approval or publish.'),
+            : 'Imported without crop geometry; refine before approval or publish.'),
       nativeSuggestion: asset.nativeSuggestion,
     };
 
@@ -391,9 +407,22 @@ function buildExerciseNodes(input: {
       return existing;
     }
 
+    const highestDirectQuestionOrder =
+      childQuestionCounters.get(exerciseNodeId) ?? 0;
+    const highestPartOrder = Math.max(
+      0,
+      ...[...partsByIndex.values()].map((part) => part.orderIndex),
+    );
+    const orderIndex = Math.max(
+      marker.partIndex,
+      highestDirectQuestionOrder + 1,
+      highestPartOrder + 1,
+    );
+
     const part: PendingReviewedPart = {
       id: buildPartNodeId(variantCode, exercise.orderIndex, marker.partIndex),
-      orderIndex: marker.partIndex,
+      partIndex: marker.partIndex,
+      orderIndex,
       label: marker.label,
       contextBlocks: [],
     };
@@ -421,7 +450,7 @@ function buildExerciseNodes(input: {
       ? buildPartQuestionNodeId(
           variantCode,
           exercise.orderIndex,
-          input.parentPart.orderIndex,
+          input.parentPart.partIndex,
           questionOrderIndex,
         )
       : buildQuestionNodeId(
@@ -699,6 +728,7 @@ function buildExerciseNodes(input: {
 
 type PendingReviewedPart = {
   id: string;
+  partIndex: number;
   orderIndex: number;
   label: string;
   contextBlocks: ReviewedTextBlock[];
@@ -1596,6 +1626,13 @@ function parseReviewedAsset(
       record.cropBox === undefined || record.cropBox === null
         ? null
         : parseCropBox(record.cropBox, `${sourceLabel}.cropBox`),
+    cleanupRequired: record.cleanupRequired === true,
+    cleanupMasks: readArray(
+      record.cleanupMasks ?? [],
+      `${sourceLabel}.cleanupMasks`,
+    ).map((entry, index) =>
+      parseCleanupMask(entry, `${sourceLabel}.cleanupMasks[${index}]`),
+    ),
     label: normalizeOptionalString(record.label),
     caption: normalizeOptionalString(record.caption),
     notes: normalizeOptionalString(record.notes),
@@ -1644,6 +1681,16 @@ function parseCropBox(value: unknown, sourceLabel: string): DraftCropBox {
     y: readNonNegativeNumber(record.y, `${sourceLabel}.y`),
     width: readPositiveNumber(record.width, `${sourceLabel}.width`),
     height: readPositiveNumber(record.height, `${sourceLabel}.height`),
+  };
+}
+
+function parseCleanupMask(
+  value: unknown,
+  sourceLabel: string,
+): DraftAssetCleanupMask {
+  return {
+    ...parseCropBox(value, sourceLabel),
+    fill: 'white',
   };
 }
 

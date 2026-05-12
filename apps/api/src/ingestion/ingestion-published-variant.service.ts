@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   BlockRole,
   BlockType as PrismaBlockType,
-  ExamNodeSkillSource,
+  ExamNodeLearningTargetSource,
   ExamNodeType,
   ExamVariantCode,
   Prisma,
@@ -92,7 +92,8 @@ export class IngestionPublishedVariantService {
     createId?: () => string;
   }) {
     const createId = input.createId ?? randomUUID;
-    const skillMappingsByTopicId = await this.listSkillMappingsByTopicId(
+    const learningTargetMappingsByTopicId =
+      await this.listLearningTargetMappingsByTopicId(
       input.tx,
       Array.from(input.topicIdsByCode.values()),
     );
@@ -121,7 +122,7 @@ export class IngestionPublishedVariantService {
         nodesByParent,
         assetMediaIds: input.assetMediaIds,
         topicIdsByCode: input.topicIdsByCode,
-        skillMappingsByTopicId,
+        learningTargetMappingsByTopicId,
         createId,
       });
     }
@@ -134,10 +135,10 @@ export class IngestionPublishedVariantService {
     nodesByParent: Map<string | null, DraftNode[]>;
     assetMediaIds: Map<string, string>;
     topicIdsByCode: Map<string, string>;
-    skillMappingsByTopicId: Map<
+    learningTargetMappingsByTopicId: Map<
       string,
       Array<{
-        skillId: string;
+        learningTargetId: string;
         weight: Prisma.Decimal;
         isPrimary: boolean;
       }>
@@ -182,7 +183,7 @@ export class IngestionPublishedVariantService {
         input.tx,
         nodeId,
         topicIds,
-        input.skillMappingsByTopicId,
+        input.learningTargetMappingsByTopicId,
       );
       await this.createVariantNodes({
         ...input,
@@ -227,10 +228,10 @@ export class IngestionPublishedVariantService {
     tx: Prisma.TransactionClient,
     nodeId: string,
     topicIds: string[],
-    skillMappingsByTopicId: Map<
+    learningTargetMappingsByTopicId: Map<
       string,
       Array<{
-        skillId: string;
+        learningTargetId: string;
         weight: Prisma.Decimal;
         isPrimary: boolean;
       }>
@@ -240,18 +241,18 @@ export class IngestionPublishedVariantService {
       return;
     }
 
-    const aggregatedSkills = new Map<
+    const aggregatedLearningTargets = new Map<
       string,
       {
-        skillId: string;
+        learningTargetId: string;
         weight: number;
         isPrimary: boolean;
       }
     >();
 
     for (const topicId of topicIds) {
-      for (const mapping of skillMappingsByTopicId.get(topicId) ?? []) {
-        const existing = aggregatedSkills.get(mapping.skillId);
+      for (const mapping of learningTargetMappingsByTopicId.get(topicId) ?? []) {
+        const existing = aggregatedLearningTargets.get(mapping.learningTargetId);
 
         if (existing) {
           existing.weight += Number(mapping.weight);
@@ -259,44 +260,44 @@ export class IngestionPublishedVariantService {
           continue;
         }
 
-        aggregatedSkills.set(mapping.skillId, {
-          skillId: mapping.skillId,
+        aggregatedLearningTargets.set(mapping.learningTargetId, {
+          learningTargetId: mapping.learningTargetId,
           weight: Number(mapping.weight),
           isPrimary: mapping.isPrimary,
         });
       }
     }
 
-    if (!aggregatedSkills.size) {
+    if (!aggregatedLearningTargets.size) {
       return;
     }
 
-    await tx.examNodeSkill.createMany({
-      data: Array.from(aggregatedSkills.values()).map((mapping) => ({
+    await tx.examNodeLearningTarget.createMany({
+      data: Array.from(aggregatedLearningTargets.values()).map((mapping) => ({
         nodeId,
-        skillId: mapping.skillId,
+        learningTargetId: mapping.learningTargetId,
         weight: mapping.weight,
         isPrimary: mapping.isPrimary,
-        source: ExamNodeSkillSource.TOPIC_DERIVED,
+        source: ExamNodeLearningTargetSource.TOPIC_DERIVED,
         confidence: 1,
       })),
       skipDuplicates: true,
     });
   }
 
-  private async listSkillMappingsByTopicId(
+  private async listLearningTargetMappingsByTopicId(
     tx: Prisma.TransactionClient,
     topicIds: string[],
   ) {
     if (!topicIds.length) {
-      return new Map<
-        string,
-        Array<{
-          skillId: string;
-          weight: Prisma.Decimal;
-          isPrimary: boolean;
-        }>
-      >();
+    return new Map<
+      string,
+      Array<{
+        learningTargetId: string;
+        weight: Prisma.Decimal;
+        isPrimary: boolean;
+      }>
+    >();
     }
 
     const topics = await tx.curriculumNode.findMany({
@@ -307,9 +308,9 @@ export class IngestionPublishedVariantService {
       },
       select: {
         id: true,
-        skillMappings: {
+        learningTargetMappings: {
           select: {
-            skillId: true,
+            learningTargetId: true,
             weight: true,
             isPrimary: true,
           },
@@ -317,7 +318,9 @@ export class IngestionPublishedVariantService {
       },
     });
 
-    return new Map(topics.map((topic) => [topic.id, topic.skillMappings]));
+    return new Map(
+      topics.map((topic) => [topic.id, topic.learningTargetMappings]),
+    );
   }
 
   private async createNodeBlocks(

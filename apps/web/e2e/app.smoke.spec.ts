@@ -1,5 +1,6 @@
 import { expect, Page, Route, test } from "@playwright/test";
 import {
+  playwrightTestAdminCropQueueResponse,
   playwrightTestAdminJobResponse,
   playwrightTestAdminJobSummary,
   playwrightTestAdminUser,
@@ -183,6 +184,10 @@ async function installMockApi(
       });
     }
 
+    if (path === "/api/v1/admin/ingestion/crops" && method === "GET") {
+      return jsonResponse(route, playwrightTestAdminCropQueueResponse);
+    }
+
     if (path === "/api/v1/admin/ingestion/intake/manual" && method === "POST") {
       return jsonResponse(route, playwrightTestAdminJobResponse, 201);
     }
@@ -205,6 +210,17 @@ async function installMockApi(
     }
 
     if (path === "/api/v1/ingestion/jobs/job-1/assets/asset-table/preview") {
+      return route.fulfill({
+        status: 200,
+        contentType: "image/png",
+        body: Buffer.from(
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=",
+          "base64",
+        ),
+      });
+    }
+
+    if (path === "/api/v1/ingestion/pages/page-1/image") {
       return route.fulfill({
         status: 200,
         contentType: "image/png",
@@ -296,13 +312,16 @@ test("opens the new courses surface and enters a subject", async ({ page }) => {
   await page.goto("/student/courses");
 
   await expect(
-    page.getByRole("heading", { name: "خارطة مفاهيمية دقيقة لكل مادة" }),
+    page.getByRole("heading", { name: "مسارات المواد" }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Mathematics" }),
   ).toBeVisible();
 
-  await page.getByRole("link", { name: "افتح المادة" }).first().click();
+  await page
+    .getByRole("link", { name: /Mathematics/ })
+    .first()
+    .click();
 
   await expect(page).toHaveURL(/\/student\/courses\/MATH$/);
   await expect(

@@ -714,7 +714,7 @@ export type WeakPointInsightsResponse = {
     weakSignalCount: number;
     flaggedExerciseCount: number;
     lastSeenAt: string | null;
-    topSkills: Array<{
+    topLearningTargets: Array<{
       code: string;
       name: string;
       weaknessScore: number;
@@ -732,7 +732,7 @@ export type WeakPointInsightsResponse = {
         revealed: number;
         flagged: number;
       };
-      topSkills: Array<{
+      topLearningTargets: Array<{
         code: string;
         name: string;
         weaknessScore: number;
@@ -1579,7 +1579,7 @@ export const weakPointInsightsResponseSchema: z.ZodType<WeakPointInsightsRespons
         weakSignalCount: z.number(),
         flaggedExerciseCount: z.number(),
         lastSeenAt: z.string().nullable(),
-        topSkills: z.array(
+        topLearningTargets: z.array(
           z.object({
             code: z.string(),
             name: z.string(),
@@ -1600,7 +1600,7 @@ export const weakPointInsightsResponseSchema: z.ZodType<WeakPointInsightsRespons
               revealed: z.number(),
               flagged: z.number(),
             }),
-            topSkills: z.array(
+            topLearningTargets: z.array(
               z.object({
                 code: z.string(),
                 name: z.string(),

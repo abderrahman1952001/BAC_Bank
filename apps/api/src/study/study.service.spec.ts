@@ -1125,11 +1125,11 @@ describe('StudyService study sessions', () => {
           name: 'Algebre',
           studentLabel: 'Algebra',
         },
-        skillMappings: [
+        learningTargetMappings: [
           {
             weight: 1,
             isPrimary: true,
-            skill: {
+            learningTarget: {
               name: 'Exponential functions',
               description:
                 'Identify the rule before expanding the calculation.',

@@ -167,7 +167,7 @@ const weakPointInsights = {
       weakSignalCount: 4,
       flaggedExerciseCount: 1,
       lastSeenAt: "2026-04-17T12:00:00.000Z",
-      topSkills: [
+      topLearningTargets: [
         {
           code: "SK1",
           name: "المشتقات",
@@ -193,7 +193,7 @@ const weakPointInsights = {
             revealed: 0,
             flagged: 0,
           },
-          topSkills: [
+          topLearningTargets: [
             {
               code: "SK1",
               name: "المشتقات",

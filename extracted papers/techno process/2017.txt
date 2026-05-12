@@ -1,0 +1,791 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي دورة 2017",
+    "year": 2017,
+    "streamCode": "تقني رياضي",
+    "subjectCode": "هندسة الطرائق",
+    "sessionType": "unknown",
+    "durationMinutes": 270,
+    "totalPoints": 20.0,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "S1_EX1",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "التمرين الأول: (08 نقاط)",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 1},
+            {"documentKind": "CORRECTION", "pageNumber": 1},
+            {"documentKind": "CORRECTION", "pageNumber": 2}
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_EX1_EXAM",
+          "parentLocalId": "S1_EX1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "نص الامتحان",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 1}
+          ],
+          "blocks": [
+            {"role": "PROMPT", "type": "paragraph", "text": "I- 1) مركب عضوي (X) صيغته العامة من الشكل: $C_n H_{2n}O_2$ عند إحراق 0,70 g منه أعطى 1,25 g من ثنائي أكسيد الكربون $CO_2$ ."},
+            {"role": "PROMPT", "type": "paragraph", "text": "أ) اكتب معادلة تفاعل الاحتراق التام للمركب (X) بدلالة n."},
+            {"role": "PROMPT", "type": "paragraph", "text": "ب) جد الصيغة المجملة للمركب (X)."},
+            {"role": "PROMPT", "type": "paragraph", "text": "جـ) عيّن الصيغ نصف المفصلة الممكنة لهذا المركب."},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: H = 1 g/mol ، C = 12 g/mol ، O = 16 g/mol"},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) لمعرفة صيغة المركب (X) نجري سلسلة التفاعلات الآتية:"},
+            {"role": "PROMPT", "type": "latex", "text": "\\begin{aligned} 1) \\quad & C_2H_2 + H_2 \\xrightarrow{Pd} A \\\\ 2) \\quad & A + O_3 \\longrightarrow B \\\\ 3) \\quad & B + H_2O \\longrightarrow 2C + H_2O_2 \\\\ 4) \\quad & C + CH_3-MgCl \\longrightarrow D \\\\ 5) \\quad & D + H_2O \\longrightarrow E + MgCl(OH) \\\\ 6) \\quad & E \\xrightarrow[H_2SO_4]{KMnO_4} F \\\\ 7) \\quad & F + CH_3-OH \\rightleftharpoons X + H_2O \\end{aligned}"},
+            {"role": "PROMPT", "type": "paragraph", "text": "- اكتب الصيغ نصف المفصلة للمركبات: (A) ، (B) ، (C) ، (D) ، (E) ، (F) ، (X) ."}
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_EX1_CORR",
+          "parentLocalId": "S1_EX1",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "التصحيح الرسمي",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            {"documentKind": "CORRECTION", "pageNumber": 1},
+            {"documentKind": "CORRECTION", "pageNumber": 2}
+          ],
+          "blocks": [
+            {"role": "SOLUTION", "type": "heading", "text": "-I"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1- أ- إيجاد الصيغ نصف المفصلة للمركبات: A ، B ، C ، D ، M1 ."},
+            {"role": "SOLUTION", "type": "paragraph", "text": "A: $CH_3-CO-CH_3$"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "B: $CH_3-CH_2-CH_3$"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "C: $CH_3-CHCl-CH_3$"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5x5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "ب- استنتاج صيغة المونومير M2"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "ج- كتابة معادلة تحضير المركب C انطالقا من البروبان-2- ول مباشرة ."},
+            {"role": "SOLUTION", "type": "latex", "text": "CH_3-CH(OH)-CH_3 + SOCl_2 \\longrightarrow CH_3-CHCl-CH_3 + SO_2 + HCl"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "ملاحظة: يمكن استخدام PCl_5 بدل SOCl_2"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,75"},
+            {"role": "SOLUTION", "type": "heading", "text": "-2 ايجاد الصيغ نصف المفصلة للمركبات: C' ، E ، F ، I ."},
+            {"role": "SOLUTION", "type": "paragraph", "text": "C': $CH_3-CH_2-CH_2-Cl$"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "E: $CH_3-CH_2-CH_2-MgCl$"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "F: $CH_3-CH_2-CH_2-C(=O)OMgCl$"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "I: $CH_3-CH_2-CH_2-COOH$"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5x4"},
+            {"role": "SOLUTION", "type": "heading", "text": "-II"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1- كتابة معادلة التفاعل الحادث."},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2 - نوع ثلاثي الغليسيريد الناتج هو: ثلاثي غليسيريد متجانس. اسمه: ثلاثي بوتيرين."},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25 + 0,25"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3 - كتابة معادلة تفاعل تصبن ثلاثي الغليسيريد الناتج:"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "4-حساب قرينة التصبن النظرية (Is) له:"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "$M_{TG} = 302g/mol$"},
+            {"role": "SOLUTION", "type": "latex", "text": "1 \\text{ mol (TG)} \\longrightarrow 3 \\text{ mol (KOH)}"},
+            {"role": "SOLUTION", "type": "latex", "text": "302 \\text{ g} \\longrightarrow 3 \\times 56 \\times 10^3 \\text{ mg}"},
+            {"role": "SOLUTION", "type": "latex", "text": "1\\text{g} \\longrightarrow I_s"},
+            {"role": "SOLUTION", "type": "latex", "text": "I_s = \\frac{3 \\times 56}{302} \\times 10^3 = 556,29"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x3"}
+          ],
+          "assetIds": [
+            "asset_s1_ex1_corr_structures",
+            "asset_s1_ex1_corr_m2",
+            "asset_s1_ex1_corr_esterification",
+            "asset_s1_ex1_corr_saponification"
+          ]
+        },
+        {
+          "localId": "S1_EX2",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "التمرين الثاني: (06 نقاط)",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 2},
+            {"documentKind": "EXAM", "pageNumber": 3},
+            {"documentKind": "CORRECTION", "pageNumber": 3},
+            {"documentKind": "CORRECTION", "pageNumber": 4}
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_EX2_EXAM",
+          "parentLocalId": "S1_EX2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "نص الامتحان",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 2},
+            {"documentKind": "EXAM", "pageNumber": 3}
+          ],
+          "blocks": [
+            {"role": "PROMPT", "type": "heading", "text": "I- لتحديد قرينة الحموضة (Ia) لزيت الزيتون استخدمنا:"},
+            {"role": "PROMPT", "type": "paragraph", "text": "باعتبار أن كتلة العينة (زيت الزيتون) mE = 5g قد تفاعلت مع 1,5ml من محلول KOH ( 0,1mol/L )"},
+            {"role": "PROMPT", "type": "paragraph", "text": "المطلوب:"},
+            {"role": "PROMPT", "type": "paragraph", "text": "1) ما دور الكحول الإيثيلي في التجربة؟"},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) جد عبارة قرينة الحموضة (Ia)."},
+            {"role": "PROMPT", "type": "paragraph", "text": "3) احسب قيمة (Ia) وهل هي متطابقة مع المواصفات الدولية حيث: ( 2 - 0,6 = Ia )"},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: H = 1 g/mol ، O = 16 g/mol ، K = 39 g/mol"},
+            {"role": "PROMPT", "type": "heading", "text": "II- ثلاثي ببتيد Glu-Cys-Ala ذو الصيغة الكيميائية الآتية:"},
+            {"role": "PROMPT", "type": "paragraph", "text": "1) أعط الصيغ الكيميائية للأحماض الأمينية المكونة لثلاثي الببتيد، ثم صنفها."},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) اكتب الصيغ الأيونية للحمض الأميني الغلوتاميك (Glu) عند تغير الـ pH من 1 إلى 12 ، ثم أحسب قيمة pHi له."},
+            {"role": "PROMPT", "type": "paragraph", "text": "تعطى قيم pKa للحمض الأميني الغلوتاميك (Glu): pKa1 = 2,19 ، pKaR = 4,25 ، pKa2= 9,67"},
+            {"role": "PROMPT", "type": "paragraph", "text": "3) أكمل التفاعلات الآتية:"},
+            {"role": "PROMPT", "type": "latex", "text": "\\begin{aligned} 1) \\quad & Ala \\xrightarrow{\\Delta} \\dots + \\dots \\\\ 2) \\quad & 2Cys \\xrightarrow[+ 2H^+]{- 2H^+} \\dots \\\\ 3) \\quad & Glu + HNO_2 \\longrightarrow \\dots + \\dots + \\dots \\end{aligned}"}
+          ],
+          "assetIds": [
+            "asset_s1_ex2_exam_peptide"
+          ]
+        },
+        {
+          "localId": "S1_EX2_CORR",
+          "parentLocalId": "S1_EX2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "التصحيح الرسمي",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "CORRECTION", "pageNumber": 3},
+            {"documentKind": "CORRECTION", "pageNumber": 4}
+          ],
+          "blocks": [
+            {"role": "SOLUTION", "type": "heading", "text": "-I"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1- كتابة الصيغ نصف المفصلة للأحماض الأمينية ."},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x4"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2- الصورتان D و L للحمض الأميني Phe"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5x2"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "- حساب pHi لـلحمض الأميني: Phe"},
+            {"role": "SOLUTION", "type": "latex", "text": "pH_i = \\frac{pka_1 + pka_2}{2}"},
+            {"role": "SOLUTION", "type": "latex", "text": "pH_i = \\frac{1,83 + 9,13}{2} = 5,48"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x2"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3- أ- مواقع الأحماض الأمينية على شريط الهجرة الكهربائية:"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x3"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "ب- التعليل:"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "Asp: pH < pHi : أيون سالب (أنيون) يهجر نحو القطب الموجب (+)."},
+            {"role": "SOLUTION", "type": "paragraph", "text": "Gly: pH = pHi : أيون متعادل كهربائيا فلا يهاجر."},
+            {"role": "SOLUTION", "type": "paragraph", "text": "Lys: pH > pHi : أيون موجب (كاتيون) يهجر نحو القطب السالب (-)."},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x3"},
+            {"role": "SOLUTION", "type": "heading", "text": "-II"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1- الأحماض الأمينية المكونة للعينة (M) هي: Asp , Lys"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x2"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2- دور النينهيدرين في التحليل الكروماتوغرافي هو: إظهار مواقع الأحماض الأمينية على شكل بقع ذات لون بنفسجي."},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3- حساب معامل السريان Rf للأحماض الأمينية المكونة للعينة (M) من خلال وثيقة التحليل الكروماتوغرافي:"},
+            {"role": "SOLUTION", "type": "latex", "text": "R_f = \\frac{l}{d}"},
+            {"role": "SOLUTION", "type": "latex", "text": "R_{f(Asp)} = \\frac{7,3}{10} = 0,73"},
+            {"role": "SOLUTION", "type": "latex", "text": "R_{f(Lys)} = \\frac{2,4}{10} = 0,24"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25 + 0,5 + 0,5"}
+          ],
+          "assetIds": [
+            "asset_s1_ex2_corr_amino_acids",
+            "asset_s1_ex2_corr_fischer",
+            "asset_s1_ex2_corr_electro"
+          ]
+        },
+        {
+          "localId": "S1_EX3",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "التمرين الثالث: (06 نقاط)",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 3},
+            {"documentKind": "CORRECTION", "pageNumber": 5},
+            {"documentKind": "CORRECTION", "pageNumber": 6},
+            {"documentKind": "CORRECTION", "pageNumber": 7}
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_EX3_EXAM",
+          "parentLocalId": "S1_EX3",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "نص الامتحان",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 3}
+          ],
+          "blocks": [
+            {"role": "PROMPT", "type": "paragraph", "text": "1) احتراق حمض البنزويك الصلب عند 25°C وفق التفاعل الأتي :"},
+            {"role": "PROMPT", "type": "latex", "text": "C_6H_5-COOH_{(s)} + \\dots O_{2(g)} \\longrightarrow \\dots CO_{2(g)} + \\dots H_2O_{(l)}"},
+            {"role": "PROMPT", "type": "paragraph", "text": "أ) وازن معادلة التفاعل."},
+            {"role": "PROMPT", "type": "paragraph", "text": "ب) احسب الأنطالبي المعياري ($\\Delta H_f^\\circ$) لتشكل حمض البنزويك الصلب."},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: $\\Delta H_{comb}^\\circ = -3227 \\text{ kJ/mol}$ ، $\\Delta H_f^\\circ(CO_{2(g)}) = -393 \\text{ kJ/mol}$ ، $\\Delta H_f^\\circ(H_2O_{(l)}) = -286 \\text{ kJ/mol}$"},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) احسب أنطالبي احتراق ($\\Delta H_{comb}^\\circ$) حمض البنزويك الصلب عند 50°C حيث:"},
+            {"role": "PROMPT", "type": "paragraph", "text": "3) احسب أنطالبي انصهار حمض البنزويك ($\\Delta H_{fus}$). علما أن: $\\Delta H_f^\\circ(C_6H_5-COOH_{(l)}) = -362.4 \\text{ kJ/mol}$"},
+            {"role": "PROMPT", "type": "paragraph", "text": "4) احسب كمية الحرارة (Q) اللازمة لانصهار 24.4 g من حمض البنزويك."},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: H = 1 g/mol ، C = 12 g/mol ، O = 16 g/mol"}
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_EX3_CORR",
+          "parentLocalId": "S1_EX3",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "التصحيح الرسمي",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "CORRECTION", "pageNumber": 5},
+            {"documentKind": "CORRECTION", "pageNumber": 6},
+            {"documentKind": "CORRECTION", "pageNumber": 7}
+          ],
+          "blocks": [
+            {"role": "SOLUTION", "type": "paragraph", "text": "1- أ- حساب كمية الحرارة (Q1) التي أكتسبتها الجملة ( مسعر+ ماء ):"},
+            {"role": "SOLUTION", "type": "latex", "text": "Q_1 = (m_{H_2O} \\times c_e + C_{cal}) \\times \\Delta T"},
+            {"role": "SOLUTION", "type": "latex", "text": "Q_1 = (400 \\times 4,18 + 130,8) \\times (341,2 - 293)"},
+            {"role": "SOLUTION", "type": "latex", "text": "Q_1 = 86991,36 \\text{ J}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5 + 0,25 + 0,25"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "ب- استنتاج كمية الحرارة (Q2) الناتجة عن تفاعل الاحتراق:"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "لدينا مسعر(نظام معزول)"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\sum Q_i = 0 \\implies Q_1 + Q_2 = 0"},
+            {"role": "SOLUTION", "type": "latex", "text": "Q_2 = -Q_1 = -86991,36 \\text{ J}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5 + 0,25"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2- أحسب أنطالبي تفاعل الاحتراق ($\\Delta H_{comb}^\\circ$):"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_{comb}^\\circ = \\frac{Q_2}{n}"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "حيث: n عدد مولات إيثيل أمين"},
+            {"role": "SOLUTION", "type": "latex", "text": "M_{(C_2H_5NH_2)} = (12 \\times 2) + (7 \\times 1) + 14 = 45 \\text{ g/mol}"},
+            {"role": "SOLUTION", "type": "latex", "text": "n_{(C_2H_5NH_2)} = \\frac{m_{(C_2H_5NH_2)}}{M_{(C_2H_5NH_2)}} = \\frac{2,25}{45} = 0,05 \\text{ mol}"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_{comb}^\\circ = \\frac{-86991,36}{0,05} = -1739827,2 \\text{ J/mol}"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_{comb}^\\circ = -1739,83 \\text{ kJ/mol}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5 + 0,25 + 0,25 + 0,5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3- حساب أنطالبي تشكيل إيثيل أمين الغازي ($\\Delta H_f^\\circ(C_2H_5NH_{2(g)})$)"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "بتطبيق قانون هيس"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_{comb}^\\circ = \\sum \\Delta H_f^\\circ(\\text{produits}) - \\sum \\Delta H_f^\\circ(\\text{réactifs})"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_{comb}^\\circ = 2\\Delta H_f^\\circ(CO_{2(g)}) + \\frac{7}{2}\\Delta H_f^\\circ(H_2O_{(l)}) + \\frac{1}{2}\\Delta H_f^\\circ(N_{2(g)}) - \\Delta H_f^\\circ(C_2H_5NH_{2(g)}) - \\frac{15}{4}\\Delta H_f^\\circ(O_{2(g)})"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_f^\\circ(C_2H_5NH_{2(g)}) = 2\\Delta H_f^\\circ(CO_{2(g)}) + \\frac{7}{2}\\Delta H_f^\\circ(H_2O_{(l)}) - \\Delta H_{comb}^\\circ"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_f^\\circ(C_2H_5NH_{2(g)}) = 2(-393) + \\frac{7}{2}(-286) - (-1739,83) = -47,17 \\text{ kJ.mol}^{-1}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x3"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "4- تحديد قيمة طاقة تشكيل الرابطة (N-H) في جزيئ ($C_2H_5NH_2$) الغازي :"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_f^\\circ(C_2H_5NH_{2(g)}) = 2 \\Delta H_{sub}^\\circ(C_{(s)}) + \\frac{7}{2}\\Delta H_d^\\circ(H-H) + \\frac{1}{2}\\Delta H_d^\\circ(N \\equiv N) - 5\\Delta H_d^\\circ(C-H) - \\Delta H_d^\\circ(C-C) - \\Delta H_d^\\circ(C-N) - 2\\Delta H_d^\\circ(N-H)"},
+            {"role": "SOLUTION", "type": "latex", "text": "- 47,17 = 2 (717) + \\frac{7}{2}(436) + \\frac{1}{2}(945) - 5(413) - 348 - 292 - 2\\Delta H_d^\\circ(N-H)"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_d^\\circ(N-H) = \\frac{727,5 + 47,17}{2} = 387,335 \\text{ kJ.mol}^{-1}"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_f^\\circ(N-H) = - 387,335 \\text{ kJ.mol}^{-1}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5 + 0,25x3"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "-5 حساب كتلة المسعر المصنوع من مادة (Al)"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "لدينا: C = n \\times c أي C_{cal} = n_{Al} c_{Al} ومنه : n_{Al} = C_{cal} / c_{Al}"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "التطبيق العددي :"},
+            {"role": "SOLUTION", "type": "latex", "text": "n_{Al} = \\frac{130,8}{24,35} = 5,37 \\text{ mol}"},
+            {"role": "SOLUTION", "type": "latex", "text": "n_{Al} = \\frac{m_{cal}}{M_{Al}} \\implies m_{cal} = n_{Al} \\times M_{Al} = 5,37 \\times 27 = 145,03 \\text{ g}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x3"}
+          ],
+          "assetIds": [
+            "asset_s1_ex3_corr_hess"
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "S2_EX1",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "التمرين الأول: (08 نقاط)",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 4},
+            {"documentKind": "CORRECTION", "pageNumber": 8},
+            {"documentKind": "CORRECTION", "pageNumber": 9}
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_EX1_EXAM",
+          "parentLocalId": "S2_EX1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "نص الامتحان",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 4}
+          ],
+          "blocks": [
+            {"role": "PROMPT", "type": "paragraph", "text": "مركب عضوي مغنزيومي (A) صيغته R-MgCl ، كتلته المولية 74,5 g/mol ، حيث (R) جذر ألكيلي."},
+            {"role": "PROMPT", "type": "paragraph", "text": "1) جد الصيغة نصف المفصلة للمركب (A)."},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: Cl = 35,5 g/mol ، Mg = 24 g/mol ، H = 1 g/mol ، C = 12g/mol"},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) اكتب التفاعلات الكيميائية التي تسمح بالحصول على المركب (A) انطلاقا من الميثانول وكواشف أخرى."},
+            {"role": "PROMPT", "type": "paragraph", "text": "3) نجري انطلاقا من المركب (A) سلسلة التفاعلات الكيميائية الأتية:"},
+            {"role": "PROMPT", "type": "paragraph", "text": "أ) جد الصيغ نصف المفصلة للمركبات: (B) ، (C) ، (D) ، (E) ، (F) ، (G) ."},
+            {"role": "PROMPT", "type": "paragraph", "text": "ب) استنتج مردود التفاعل (7) علما أن المزيج الابتدائي متساوي المولات."},
+            {"role": "PROMPT", "type": "paragraph", "text": "جـ) يتشكل عند التوازن 0,3mol من الأستر ."},
+            {"role": "PROMPT", "type": "paragraph", "text": "- احسب عدد المولات الابتدائية لكل من المركبين (G) و (D) ."},
+            {"role": "PROMPT", "type": "paragraph", "text": "4) إرجاع المركب (G) بواسطة $LiAlH_4$ المتبوع بالإماهة يؤدي إلى مركب (H)"},
+            {"role": "PROMPT", "type": "paragraph", "text": "- نزع الماء من المركب (H) في وجود $H_2SO_4$ عند $170^\\circ C$ يعطي مركب (I)"},
+            {"role": "PROMPT", "type": "paragraph", "text": "- بلمرة المركب (I) تؤدي إلى بوليمير (J)"},
+            {"role": "PROMPT", "type": "paragraph", "text": "أ) اكتب الصيغة نصف المفصلة لكل من المركبين (H) و (I) ."},
+            {"role": "PROMPT", "type": "paragraph", "text": "ب) أعط الصيغة العامة للبوليمير (J) ."}
+          ],
+          "assetIds": [
+            "asset_s2_ex1_exam_sequence"
+          ]
+        },
+        {
+          "localId": "S2_EX1_CORR",
+          "parentLocalId": "S2_EX1",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "التصحيح الرسمي",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            {"documentKind": "CORRECTION", "pageNumber": 8},
+            {"documentKind": "CORRECTION", "pageNumber": 9}
+          ],
+          "blocks": [
+            {"role": "SOLUTION", "type": "heading", "text": "(I"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1) الصيغ نصف المفصلة للمركبين (A) و (B):"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "(A) H_3C-C \\equiv CH \\quad (B) H_3C-C(=O)-CH_3"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x2"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2) الصيغ نصف المفصلة للمركبين C ، D :"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "(C) H_3C-CH(OH)-CH_3 \\quad (D) H_3C-CH=CH_2"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x2"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3) استنتاج الصيغ نصف المفصلة للمركبات E،F، G ،H ،I :"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5x5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "4) الصيغة العامة للبوليمير (K) :"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,75"},
+            {"role": "SOLUTION", "type": "heading", "text": "(II"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1) تصنيف الأحماض الأمينية السابقة :"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "Gly : حمض أميني خطي بسيط"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "Cys : حمض أميني خطي كبريتي"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "Pro : حمض أميني حلقي غير عطري"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,25x3"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2) تمثيل المماكبات الضوئية D و L لسيستئين Cys :"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,5x2"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3) حساب pHi للبرولين:"},
+            {"role": "SOLUTION", "type": "latex", "text": "pH_i = \\frac{pKa_1 + pKa_2}{2} = \\frac{1,99 + 10,60}{2} = 6,295"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0.5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "4) كتابة الصيغ نصف المفصلة للببتيد :"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "- عند pH = 1 :"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,75"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "- عند pH = 12 :"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,75"}
+          ],
+          "assetIds": [
+            "asset_s2_ex1_corr_structures",
+            "asset_s2_ex1_corr_polymer",
+            "asset_s2_ex1_corr_cys_fischer",
+            "asset_s2_ex1_corr_peptide_ph1",
+            "asset_s2_ex1_corr_peptide_ph12"
+          ]
+        },
+        {
+          "localId": "S2_EX2",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "التمرين الثاني: (06 نقاط)",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 5},
+            {"documentKind": "CORRECTION", "pageNumber": 10},
+            {"documentKind": "CORRECTION", "pageNumber": 11},
+            {"documentKind": "CORRECTION", "pageNumber": 12}
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_EX2_EXAM",
+          "parentLocalId": "S2_EX2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "نص الامتحان",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 5}
+          ],
+          "blocks": [
+            {"role": "PROMPT", "type": "heading", "text": "I - ثلاثي غليسريد متجانس (TG) يدخل في تركيبه حمض دهني (A) رمزه: $C 16 : 1 \\Delta^9$."},
+            {"role": "PROMPT", "type": "paragraph", "text": "1) اكتب الصيغة نصف المفصلة لثلاثي الغليسريد المتجانس (TG)."},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) اكتب تفاعل ثلاثي غليسريد (TG) مع اليود ($I_2$) ، ثم أحسب قرينة اليود ($I_i$) له."},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: I = 127 g/mol ، O = 16 g/mol ، H = 1 g/mol ، C = 12 g/mol"},
+            {"role": "PROMPT", "type": "heading", "text": "II- لديك الأحماض الأمينية الأتية:"},
+            {"role": "PROMPT", "type": "paragraph", "text": "1) صنّف هذه الأحماض الأمينية."},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) احسب $pH_i$ للحمض الأميني فينيل الانين Phe إذا علمت أنّ $pKa_1= 1.83$ ، $pKa_2= 9.13$."},
+            {"role": "PROMPT", "type": "paragraph", "text": "3) اكتب الصيغ الأيونية للحمض الأميني فينيل الانين Phe عند تغير الـ pH من 1 إلى 12 ."},
+            {"role": "PROMPT", "type": "paragraph", "text": "4) نضع مزيج الأحماض الأمينية السابقة في جهاز الهجرة الكهربائية عند pH= 5.48"},
+            {"role": "PROMPT", "type": "paragraph", "text": "- وضّح بالرسم مواقع هذه الأحماض الأمينية على شريط الهجرة الكهربائية."},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: $pH_{i(Arg)} = 10.76$ و $pH_{i(Glu)} = 3.22"}
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_EX2_CORR",
+          "parentLocalId": "S2_EX2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "التصحيح الرسمي",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "CORRECTION", "pageNumber": 10},
+            {"documentKind": "CORRECTION", "pageNumber": 11},
+            {"documentKind": "CORRECTION", "pageNumber": 12}
+          ],
+          "blocks": [
+            {"role": "SOLUTION", "type": "heading", "text": "(I"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1 ) حساب كمية حرارة التفاعل Qr :"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\sum Q = Q_{sol} + Q_r + Q_{cal} = 0"},
+            {"role": "SOLUTION", "type": "latex", "text": "Q_r = - 5444,25 \\text{ J}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1.0"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2) استنتاج $\\Delta H_1^\\circ$ :"},
+            {"role": "SOLUTION", "type": "latex", "text": "M_{MgO} = 24,3 + 16 = 40,3 \\text{ g.mol}^{-1}"},
+            {"role": "SOLUTION", "type": "latex", "text": "n_{MgO} = \\frac{1,5}{40,3} = 3,72 \\times 10^{-2} \\text{ mol}"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_1^\\circ = \\frac{Q_r}{n_{MgO}} = -146,35 \\text{ kJ.mol}^{-1}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1.0"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3) قيمة أنطالبي التفاعل التالي :"},
+            {"role": "SOLUTION", "type": "latex", "text": "Mg_{(s)} + \\frac{1}{2}O_{2(g)} \\longrightarrow MgO_{(s)} \\quad \\Delta H_f^\\circ(MgO_{(s)})"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "باستعمال التفاعلات الوسطية :"},
+            {"role": "SOLUTION", "type": "latex", "text": "\\Delta H_f^\\circ(MgO_{(s)}) = - 601,6 \\text{ kJ.mol}^{-1}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1.5"},
+            {"role": "SOLUTION", "type": "heading", "text": "(II"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1) إكمال الجدول :"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0,75"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2) حساب العمل و كمية الحرارة للتحولين a و b :"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "- التحول a :"},
+            {"role": "SOLUTION", "type": "latex", "text": "1 \\xrightarrow{P=Cte} 2"},
+            {"role": "SOLUTION", "type": "latex", "text": "Q_{1 \\to 2} = n.C_p.(T_2 - T_1) = 1499,7 \\text{ J}"},
+            {"role": "SOLUTION", "type": "latex", "text": "W_{1 \\to 2} = -P_2.(V_2 - V_1) = -600 \\text{ J}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1,75"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "- التحول b :"},
+            {"role": "SOLUTION", "type": "latex", "text": "2 \\xrightarrow{V=Cte} 3"},
+            {"role": "SOLUTION", "type": "latex", "text": "Q_{2 \\to 3} = nC_v(T_3 - T_2) = 2698,889 \\text{ J}"},
+            {"role": "SOLUTION", "type": "latex", "text": "W_{2 \\to 3} = 0"}
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_EX3",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "التمرين الثالث: (06 نقاط)",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 6},
+            {"documentKind": "CORRECTION", "pageNumber": 12},
+            {"documentKind": "CORRECTION", "pageNumber": 13}
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_EX3_EXAM",
+          "parentLocalId": "S2_EX3",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "نص الامتحان",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "EXAM", "pageNumber": 6}
+          ],
+          "blocks": [
+            {"role": "PROMPT", "type": "heading", "text": "I- يحترق البوت - 1 - ن الغازي $C_4H_{8(g)}$ عند درجة حرارة 25°C وضغط 1atm احتراقا تاما."},
+            {"role": "PROMPT", "type": "paragraph", "text": "1) اكتب معادلة تفاعل احتراق البوت - 1 - ن الغازي ."},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) احسب أنطالبي احتراق البوت - 1 - ن الغازي."},
+            {"role": "PROMPT", "type": "paragraph", "text": "3) أ) مثّل مخطط تشكل البوت - 1 - ن الغازي."},
+            {"role": "PROMPT", "type": "paragraph", "text": "ب) احسب أنطالبي التصعيد للكربون الصلب ($\\Delta H_{sub}^\\circ(C_{(s)})$) ."},
+            {"role": "PROMPT", "type": "heading", "text": "II- لديك البيان P = f(V) الذي يمثل انتقال غاز مثالي من الحالة الابتدائية 1 إلى الحالة النهائية 2:"},
+            {"role": "PROMPT", "type": "paragraph", "text": "1) ما نوع كل من التحولين (a) و (b) ؟"},
+            {"role": "PROMPT", "type": "paragraph", "text": "2) احسب العمل W لكل تحوّل."},
+            {"role": "PROMPT", "type": "paragraph", "text": "يعطى: $1atm = 1,013.10^5 Pa$"}
+          ],
+          "assetIds": [
+            "asset_s2_ex3_exam_pv_diagram"
+          ]
+        },
+        {
+          "localId": "S2_EX3_CORR",
+          "parentLocalId": "S2_EX3",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "التصحيح الرسمي",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {"documentKind": "CORRECTION", "pageNumber": 12},
+            {"documentKind": "CORRECTION", "pageNumber": 13}
+          ],
+          "blocks": [
+            {"role": "SOLUTION", "type": "paragraph", "text": "يتفكك مركب اليوريا بوجود وسيط مناسب وفق التفاعل الآتي :"},
+            {"role": "SOLUTION", "type": "latex", "text": "(H_2N)_2CO \\longrightarrow NH_4^+ + ^-O-C \\equiv N"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "1) إكمال الجدول :"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1.5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "2) رسم المنحنى البياني: $ln(\\frac{C_0}{C_t}) = f(t)$"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1.0"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "3) استنتاج أن التفاعل من الرتبة الأولى :"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "بما أن المنحنى $ln(\\frac{C_0}{C_t}) = f(t)$ عبارة عن خط مستقيم يمر من المبدأ فإن التفاعل من الرتبة الأولى ."},
+            {"role": "RUBRIC", "type": "paragraph", "text": "0.5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "4) حساب زمن نصف التفاعل $t_{1/2}$ :"},
+            {"role": "SOLUTION", "type": "latex", "text": "k = tg(\\alpha) = \\frac{0,750}{20} = 0,0375 \\text{ min}^{-1}"},
+            {"role": "SOLUTION", "type": "latex", "text": "t_{1/2} = \\frac{0,69}{k} = 18,4 \\text{ min}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1.5"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "5) إيجاد التركيز (Ct) عند t=25 min :"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "- بيانيا : بالإسقاط على المنحنى نستنتج :"},
+            {"role": "SOLUTION", "type": "latex", "text": "ln\\frac{C_0}{C_t} = 0,93 \\implies C_t = 0,927 \\text{ mol.L}^{-1}"},
+            {"role": "SOLUTION", "type": "paragraph", "text": "- حسابيا :"},
+            {"role": "SOLUTION", "type": "latex", "text": "Ln\\frac{C_0}{C_t} = k \\times t \\implies C_t = 0,92 \\text{ mol.L}^{-1}"},
+            {"role": "RUBRIC", "type": "paragraph", "text": "1.5"}
+          ],
+          "assetIds": [
+            "asset_s2_ex3_corr_kinetics_graph"
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset_s1_ex1_corr_structures",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 1
+    },
+    {
+      "id": "asset_s1_ex1_corr_m2",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 1
+    },
+    {
+      "id": "asset_s1_ex1_corr_esterification",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2
+    },
+    {
+      "id": "asset_s1_ex1_corr_saponification",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2
+    },
+    {
+      "id": "asset_s1_ex2_exam_peptide",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX2_EXAM",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 2
+    },
+    {
+      "id": "asset_s1_ex2_corr_amino_acids",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX2_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "asset_s1_ex2_corr_fischer",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX2_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "asset_s1_ex2_corr_electro",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX2_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4
+    },
+    {
+      "id": "asset_s1_ex3_corr_hess",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX3_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 6
+    },
+    {
+      "id": "asset_s2_ex1_exam_sequence",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX1_EXAM",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 4
+    },
+    {
+      "id": "asset_s2_ex1_corr_structures",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 8
+    },
+    {
+      "id": "asset_s2_ex1_corr_polymer",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 8
+    },
+    {
+      "id": "asset_s2_ex1_corr_cys_fischer",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "asset_s2_ex1_corr_peptide_ph1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "asset_s2_ex1_corr_peptide_ph12",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX1_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "asset_s2_ex3_exam_pv_diagram",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX3_EXAM",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6
+    },
+    {
+      "id": "asset_s2_ex3_corr_kinetics_graph",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX3_CORR",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 12
+    }
+  ],
+  "nativeRenderCandidates": [
+    {
+      "id": "table_s1_ex2_exam",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX2_EXAM",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "sourceText": "الأدوات والمواد لتحديد قرينة الحموضة"
+    },
+    {
+      "id": "table_s1_ex3_exam",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_EX3_EXAM",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "sourceText": "جدول السعات الحرارية"
+    },
+    {
+      "id": "table_s2_ex2_exam",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX2_EXAM",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "sourceText": "جدول الأحماض الأمينية"
+    },
+    {
+      "id": "table_s2_ex3_exam",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX3_EXAM",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 6,
+      "sourceText": "جدول الأنطالبيات"
+    },
+    {
+      "id": "table_s2_ex2_corr",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX2_CORR",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 11,
+      "sourceText": "جدول الحالات 1 و 2 و 3"
+    },
+    {
+      "id": "table_s2_ex3_corr",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_EX3_CORR",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 12,
+      "sourceText": "جدول تفكك مركب اليوريا"
+    }
+  ],
+  "coverageLog": [
+    {"documentKind": "EXAM", "pageNumber": 1, "status": "covered"},
+    {"documentKind": "EXAM", "pageNumber": 2, "status": "covered"},
+    {"documentKind": "EXAM", "pageNumber": 3, "status": "covered"},
+    {"documentKind": "EXAM", "pageNumber": 4, "status": "covered"},
+    {"documentKind": "EXAM", "pageNumber": 5, "status": "covered"},
+    {"documentKind": "EXAM", "pageNumber": 6, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 1, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 2, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 3, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 4, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 5, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 6, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 7, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 8, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 9, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 10, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 11, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 12, "status": "covered"},
+    {"documentKind": "CORRECTION", "pageNumber": 13, "status": "covered"}
+  ],
+  "uncertainties": [
+    "Severe Content Mismatch: The provided Exam PDF is from the Normal session, while the Correction PDF is explicitly from the Exceptional (Makeup) session. Their contents are completely different chemical problems. To preserve both faithfully without creating false logical correlations, the extraction creates separated PART nodes inside each EXERCISE for the Exam text ('نص الامتحان') and Correction text ('التصحيح الرسمي'). This ensures all documents are comprehensively extracted while maintaining correct physical alignment."
+  ]
+}

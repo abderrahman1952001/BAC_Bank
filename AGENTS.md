@@ -55,6 +55,29 @@ Do not use destructive git commands.
 Do not revert unrelated user changes.
 Do not silently change public APIs, auth behavior, DB schema, or queue semantics without calling it out.
 
+## Visual-Only PDF Extraction Policy
+
+For BAC PDF extraction tasks, OCR and PDF text-layer extraction are disallowed.
+
+Do not run:
+- `pdftotext`
+- `tesseract`
+- `ocrmypdf`
+- `pdfplumber` text extraction
+- `pypdf` text extraction
+- `rg`, `grep`, `sed`, or scripts over extracted PDF text
+- any OCR language check such as `tesseract --list-langs`
+
+Allowed commands:
+- `pdfinfo` or equivalent page-count/metadata checks
+- `pdftoppm`, `mutool draw`, or equivalent PDF-to-image rendering
+- image crop/split/resize tools
+- visual model/API extraction from rendered page images
+- JSON/schema validation of extracted results
+
+If the extraction cannot be done visually, stop and report the blocker. Do not fall back to OCR or text-layer extraction.
+
+
 ## Engineering defaults
 
 Prefer boring, explicit code over clever code.

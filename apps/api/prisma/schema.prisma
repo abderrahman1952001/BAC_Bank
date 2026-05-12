@@ -109,6 +109,18 @@ enum CurriculumNodeKind {
   OPTIONAL_PORTAL
 }
 
+enum LearningTargetKind {
+  CONCEPTUAL_UNDERSTANDING
+  PROCEDURE
+  FORMULA_APPLICATION
+  VISUAL_INTERPRETATION
+  MEMORY_FACT
+  METHOD
+  COMMON_TRAP
+  EXAM_STRUCTURE
+  BAC_MARKING_PATTERN
+}
+
 enum PublicationStatus {
   DRAFT
   PUBLISHED
@@ -120,6 +132,36 @@ enum CourseLessonStatus {
   APPROVED
   PUBLISHED
   REJECTED
+}
+
+enum FlashcardSourceType {
+  PLATFORM
+  USER_CREATED
+  COURSE_STEP
+  COURSE_LESSON
+  OFFICIAL_CORRECTION
+  STUDENT_MISTAKE
+  AI_DRAFT
+}
+
+enum FlashcardType {
+  FRONT_BACK
+  CLOZE
+  IMAGE_LABEL
+  ORDERED_STEPS
+}
+
+enum FlashcardReviewRating {
+  AGAIN
+  HARD
+  GOOD
+  EASY
+}
+
+enum LabToolStatus {
+  READY
+  DRAFT
+  HIDDEN
 }
 
 enum CourseStepKind {
@@ -143,7 +185,7 @@ enum CourseLessonProgressStatus {
   NEEDS_REVIEW
 }
 
-enum ExamNodeSkillSource {
+enum ExamNodeLearningTargetSource {
   TOPIC_DERIVED
   MANUAL_REVIEW
 }
@@ -297,7 +339,10 @@ model Subject {
   paperSources     PaperSource[]
   curricula        Curriculum[]
   curriculumNodes  CurriculumNode[]
-  skills           Skill[]
+  learningTargets  LearningTarget[]
+  flashcardDecks   FlashcardDeck[]
+  flashcards       Flashcard[]
+  labTools         LabTool[]
   createdAt        DateTime          @default(now()) @map("created_at")
   updatedAt        DateTime          @updatedAt @map("updated_at")
 
@@ -318,8 +363,9 @@ model Curriculum {
   subject          Subject           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   subjectOfferings SubjectOffering[]
   curriculumNodes  CurriculumNode[]
-  skills           Skill[]
+  learningTargets  LearningTarget[]
   courseLessons    CourseLesson[]
+  flashcardDecks   FlashcardDeck[]
   createdAt        DateTime          @default(now()) @map("created_at")
   updatedAt        DateTime          @updatedAt @map("updated_at")
 
@@ -467,12 +513,14 @@ model ExamNode {
   children                 ExamNode[]               @relation("ExamNodeHierarchy")
   blocks                   ExamNodeBlock[]
   curriculumNodeMappings   ExamNodeCurriculumNode[]
-  skillMappings            ExamNodeSkill[]
+  learningTargetMappings   ExamNodeLearningTarget[]
   studySessionExercises    StudySessionExercise[]
   studySessionQuestions    StudySessionQuestion[]
   studentExerciseStates    StudentExerciseState[]
   reviewQuestionQueueItems StudentReviewQueueItem[] @relation("StudyReviewQueueQuestionNode")
   reviewExerciseQueueItems StudentReviewQueueItem[] @relation("StudyReviewQueueExerciseNode")
+  flashcards               Flashcard[]
+  learningEvents           StudentLearningEvent[]
   createdAt                DateTime                 @default(now()) @map("created_at")
   updatedAt                DateTime                 @updatedAt @map("updated_at")
 
@@ -503,31 +551,34 @@ model ExamNodeBlock {
 }
 
 model CurriculumNode {
-  id               String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subjectId        String                        @map("subject_id") @db.Uuid
-  curriculumId     String                        @map("curriculum_id") @db.Uuid
-  code             String
-  name             String
-  slug             String
-  parentId         String?                       @map("parent_id") @db.Uuid
-  kind             CurriculumNodeKind            @default(CONCEPT)
-  depth            Int                           @default(0)
-  path             String                        @db.Text
-  displayOrder     Int                           @default(0) @map("display_order")
-  isSelectable     Boolean                       @default(true) @map("is_selectable")
-  studentLabel     String?                       @map("student_label")
-  metadata         Json?
-  subject          Subject                       @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  curriculum       Curriculum                    @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
-  parent           CurriculumNode?               @relation("CurriculumNodeHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
-  children         CurriculumNode[]              @relation("CurriculumNodeHierarchy")
-  examNodeMappings ExamNodeCurriculumNode[]
-  skillMappings    CurriculumNodeSkill[]
-  nodeStats        UserCurriculumNodeStats[]
-  studentRollups   StudentCurriculumNodeRollup[]
-  courseLessons    CourseLesson[]
-  createdAt        DateTime                      @default(now()) @map("created_at")
-  updatedAt        DateTime                      @updatedAt @map("updated_at")
+  id                     String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId              String                         @map("subject_id") @db.Uuid
+  curriculumId           String                         @map("curriculum_id") @db.Uuid
+  code                   String
+  name                   String
+  slug                   String
+  parentId               String?                        @map("parent_id") @db.Uuid
+  kind                   CurriculumNodeKind             @default(CONCEPT)
+  depth                  Int                            @default(0)
+  path                   String                         @db.Text
+  displayOrder           Int                            @default(0) @map("display_order")
+  isSelectable           Boolean                        @default(true) @map("is_selectable")
+  studentLabel           String?                        @map("student_label")
+  metadata               Json?
+  subject                Subject                        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  curriculum             Curriculum                     @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  parent                 CurriculumNode?                @relation("CurriculumNodeHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children               CurriculumNode[]               @relation("CurriculumNodeHierarchy")
+  examNodeMappings       ExamNodeCurriculumNode[]
+  learningTargetMappings CurriculumNodeLearningTarget[]
+  nodeStats              UserCurriculumNodeStats[]
+  studentRollups         StudentCurriculumNodeRollup[]
+  courseLessons          CourseLesson[]
+  labMissions            LabMission[]
+  flashcards             Flashcard[]
+  learningEvents         StudentLearningEvent[]
+  createdAt              DateTime                       @default(now()) @map("created_at")
+  updatedAt              DateTime                       @updatedAt @map("updated_at")
 
   @@unique([curriculumId, code])
   @@unique([curriculumId, slug])
@@ -540,43 +591,48 @@ model CurriculumNode {
   @@map("curriculum_nodes")
 }
 
-model Skill {
-  id                     String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  subjectId              String                @map("subject_id") @db.Uuid
-  curriculumId           String                @map("curriculum_id") @db.Uuid
+model LearningTarget {
+  id                     String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId              String                         @map("subject_id") @db.Uuid
+  curriculumId           String                         @map("curriculum_id") @db.Uuid
   code                   String
   name                   String
   slug                   String
-  description            String?               @db.Text
-  displayOrder           Int                   @default(0) @map("display_order")
-  isAssessable           Boolean               @default(true) @map("is_assessable")
-  subject                Subject               @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  curriculum             Curriculum            @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
-  curriculumNodeMappings CurriculumNodeSkill[]
-  nodeMappings           ExamNodeSkill[]
-  studentRollups         StudentSkillRollup[]
-  createdAt              DateTime              @default(now()) @map("created_at")
-  updatedAt              DateTime              @updatedAt @map("updated_at")
+  description            String?                        @db.Text
+  displayOrder           Int                            @default(0) @map("display_order")
+  kind                   LearningTargetKind             @default(PROCEDURE)
+  isAssessable           Boolean                        @default(true) @map("is_assessable")
+  isReviewable           Boolean                        @default(true) @map("is_reviewable")
+  subject                Subject                        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  curriculum             Curriculum                     @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
+  curriculumNodeMappings CurriculumNodeLearningTarget[]
+  examNodeMappings       ExamNodeLearningTarget[]
+  studentRollups         StudentLearningTargetRollup[]
+  flashcards             Flashcard[]
+  labMissions            LabMission[]
+  learningEvents         StudentLearningEvent[]
+  createdAt              DateTime                       @default(now()) @map("created_at")
+  updatedAt              DateTime                       @updatedAt @map("updated_at")
 
   @@unique([curriculumId, code])
   @@unique([curriculumId, slug])
   @@index([subjectId])
   @@index([curriculumId])
   @@index([curriculumId, displayOrder])
-  @@map("skills")
+  @@map("learning_targets")
 }
 
-model CurriculumNodeSkill {
+model CurriculumNodeLearningTarget {
   curriculumNodeId String         @map("curriculum_node_id") @db.Uuid
-  skillId          String         @map("skill_id") @db.Uuid
+  learningTargetId String         @map("learning_target_id") @db.Uuid
   weight           Decimal        @default(1) @db.Decimal(4, 2)
   isPrimary        Boolean        @default(false) @map("is_primary")
   curriculumNode   CurriculumNode @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
-  skill            Skill          @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  learningTarget   LearningTarget @relation(fields: [learningTargetId], references: [id], onDelete: Cascade)
 
-  @@id([curriculumNodeId, skillId])
-  @@index([skillId])
-  @@map("curriculum_node_skills")
+  @@id([curriculumNodeId, learningTargetId])
+  @@index([learningTargetId])
+  @@map("curriculum_node_learning_targets")
 }
 
 model ExamNodeCurriculumNode {
@@ -590,23 +646,23 @@ model ExamNodeCurriculumNode {
   @@map("exam_node_curriculum_nodes")
 }
 
-model ExamNodeSkill {
-  nodeId     String              @map("node_id") @db.Uuid
-  skillId    String              @map("skill_id") @db.Uuid
-  weight     Decimal             @default(1) @db.Decimal(4, 2)
-  isPrimary  Boolean             @default(false) @map("is_primary")
-  source     ExamNodeSkillSource @default(TOPIC_DERIVED)
-  confidence Decimal?            @db.Decimal(4, 2)
-  reviewedAt DateTime?           @map("reviewed_at")
-  node       ExamNode            @relation(fields: [nodeId], references: [id], onDelete: Cascade)
-  skill      Skill               @relation(fields: [skillId], references: [id], onDelete: Cascade)
-  createdAt  DateTime            @default(now()) @map("created_at")
-  updatedAt  DateTime            @updatedAt @map("updated_at")
+model ExamNodeLearningTarget {
+  nodeId           String                       @map("node_id") @db.Uuid
+  learningTargetId String                       @map("learning_target_id") @db.Uuid
+  weight           Decimal                      @default(1) @db.Decimal(4, 2)
+  isPrimary        Boolean                      @default(false) @map("is_primary")
+  source           ExamNodeLearningTargetSource @default(TOPIC_DERIVED)
+  confidence       Decimal?                     @db.Decimal(4, 2)
+  reviewedAt       DateTime?                    @map("reviewed_at")
+  node             ExamNode                     @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  learningTarget   LearningTarget               @relation(fields: [learningTargetId], references: [id], onDelete: Cascade)
+  createdAt        DateTime                     @default(now()) @map("created_at")
+  updatedAt        DateTime                     @updatedAt @map("updated_at")
 
-  @@id([nodeId, skillId])
-  @@index([skillId])
+  @@id([nodeId, learningTargetId])
+  @@index([learningTargetId])
   @@index([source])
-  @@map("exam_node_skills")
+  @@map("exam_node_learning_targets")
 }
 
 model CourseLesson {
@@ -631,28 +687,34 @@ model CourseLesson {
   quizzes            CourseQuiz[]
   depthPortals       CourseDepthPortal[]
   studentProgress    StudentCourseLessonProgress[]
+  flashcards         Flashcard[]
+  learningEvents     StudentLearningEvent[]
+  labMissions        LabMission[]
   createdAt          DateTime                      @default(now()) @map("created_at")
   updatedAt          DateTime                      @updatedAt @map("updated_at")
 
   @@unique([curriculumId, code])
+  @@unique([curriculumId, slug])
   @@index([curriculumId, status])
   @@index([curriculumNodeId, status])
   @@map("course_lessons")
 }
 
 model CourseStep {
-  id           String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  lessonId     String              @map("lesson_id") @db.Uuid
-  kind         CourseStepKind
-  title        String?
-  body         String              @db.Text
-  orderIndex   Int                 @map("order_index")
-  data         Json?
-  lesson       CourseLesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  visualAssets CourseVisualAsset[]
-  quizzes      CourseQuiz[]
-  createdAt    DateTime            @default(now()) @map("created_at")
-  updatedAt    DateTime            @updatedAt @map("updated_at")
+  id             String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lessonId       String                      @map("lesson_id") @db.Uuid
+  kind           CourseStepKind
+  title          String?
+  body           String                      @db.Text
+  orderIndex     Int                         @map("order_index")
+  data           Json?
+  lesson         CourseLesson                @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  visualAssets   CourseVisualAsset[]
+  quizzes        CourseQuiz[]
+  flashcards     Flashcard[]
+  stepProgresses StudentCourseStepProgress[]
+  createdAt      DateTime                    @default(now()) @map("created_at")
+  updatedAt      DateTime                    @updatedAt @map("updated_at")
 
   @@unique([lessonId, orderIndex])
   @@index([lessonId, kind])
@@ -699,19 +761,20 @@ model CourseDepthPortal {
 }
 
 model CourseQuiz {
-  id          String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  lessonId    String             @map("lesson_id") @db.Uuid
-  stepId      String?            @map("step_id") @db.Uuid
+  id          String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lessonId    String                     @map("lesson_id") @db.Uuid
+  stepId      String?                    @map("step_id") @db.Uuid
   code        String
-  prompt      String             @db.Text
-  explanation String?            @db.Text
-  orderIndex  Int                @default(0) @map("order_index")
+  prompt      String                     @db.Text
+  explanation String?                    @db.Text
+  orderIndex  Int                        @default(0) @map("order_index")
   metadata    Json?
-  lesson      CourseLesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  step        CourseStep?        @relation(fields: [stepId], references: [id], onDelete: SetNull)
+  lesson      CourseLesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  step        CourseStep?                @relation(fields: [stepId], references: [id], onDelete: SetNull)
   options     CourseQuizOption[]
-  createdAt   DateTime           @default(now()) @map("created_at")
-  updatedAt   DateTime           @updatedAt @map("updated_at")
+  attempts    StudentCourseQuizAttempt[]
+  createdAt   DateTime                   @default(now()) @map("created_at")
+  updatedAt   DateTime                   @updatedAt @map("updated_at")
 
   @@unique([lessonId, code])
   @@index([lessonId, orderIndex])
@@ -720,15 +783,16 @@ model CourseQuiz {
 }
 
 model CourseQuizOption {
-  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  quizId     String     @map("quiz_id") @db.Uuid
-  orderIndex Int        @map("order_index")
-  text       String     @db.Text
-  isCorrect  Boolean    @default(false) @map("is_correct")
-  feedback   String?    @db.Text
-  quiz       CourseQuiz @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  createdAt  DateTime   @default(now()) @map("created_at")
-  updatedAt  DateTime   @updatedAt @map("updated_at")
+  id         String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  quizId     String                     @map("quiz_id") @db.Uuid
+  orderIndex Int                        @map("order_index")
+  text       String                     @db.Text
+  isCorrect  Boolean                    @default(false) @map("is_correct")
+  feedback   String?                    @db.Text
+  quiz       CourseQuiz                 @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  attempts   StudentCourseQuizAttempt[]
+  createdAt  DateTime                   @default(now()) @map("created_at")
+  updatedAt  DateTime                   @updatedAt @map("updated_at")
 
   @@unique([quizId, orderIndex])
   @@index([quizId, isCorrect])
@@ -754,6 +818,22 @@ model StudentCourseLessonProgress {
   @@map("student_course_lesson_progress")
 }
 
+model StudentCourseStepProgress {
+  userId      String     @map("user_id") @db.Uuid
+  stepId      String     @map("step_id") @db.Uuid
+  viewedAt    DateTime?  @map("viewed_at")
+  completedAt DateTime?  @map("completed_at")
+  metadata    Json?
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  step        CourseStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@id([userId, stepId])
+  @@index([userId, viewedAt])
+  @@map("student_course_step_progress")
+}
+
 model User {
   id                    String                        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   clerkUserId           String?                       @unique @map("clerk_user_id")
@@ -766,8 +846,17 @@ model User {
   stream                Stream?                       @relation(fields: [streamId], references: [id], onDelete: SetNull)
   curriculumNodeStats   UserCurriculumNodeStats[]
   curriculumNodeRollups StudentCurriculumNodeRollup[]
-  skillRollups          StudentSkillRollup[]
+  learningTargetRollups StudentLearningTargetRollup[]
+  createdFlashcardDecks FlashcardDeck[]
+  createdFlashcards     Flashcard[]
+  flashcardStates       StudentFlashcardState[]
+  flashcardReviewLogs   FlashcardReviewLog[]
+  flashcardOverrides    UserFlashcardOverride[]
+  learningEvents        StudentLearningEvent[]
+  labMissionAttempts    StudentLabMissionAttempt[]
+  courseQuizAttempts    StudentCourseQuizAttempt[]
   courseLessonProgress  StudentCourseLessonProgress[]
+  courseStepProgress    StudentCourseStepProgress[]
   uploadedMedia         Media[]                       @relation("UserUploadedMedia")
   studySessions         StudySession[]
   examActivities        ExamActivity[]
@@ -1023,9 +1112,9 @@ model StudentCurriculumNodeRollup {
   @@map("student_curriculum_node_rollups")
 }
 
-model StudentSkillRollup {
+model StudentLearningTargetRollup {
   userId             String               @map("user_id") @db.Uuid
-  skillId            String               @map("skill_id") @db.Uuid
+  learningTargetId   String               @map("learning_target_id") @db.Uuid
   attemptedQuestions Int                  @default(0) @map("attempted_questions")
   correctCount       Int                  @default(0) @map("correct_count")
   incorrectCount     Int                  @default(0) @map("incorrect_count")
@@ -1037,16 +1126,16 @@ model StudentSkillRollup {
   weaknessScore      Decimal              @default(0) @map("weakness_score") @db.Decimal(8, 2)
   masteryBucket      StudentMasteryBucket @default(NEW) @map("mastery_bucket")
   user               User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  skill              Skill                @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  learningTarget     LearningTarget       @relation(fields: [learningTargetId], references: [id], onDelete: Cascade)
   createdAt          DateTime             @default(now()) @map("created_at")
   updatedAt          DateTime             @updatedAt @map("updated_at")
 
-  @@id([userId, skillId])
-  @@index([skillId])
+  @@id([userId, learningTargetId])
+  @@index([learningTargetId])
   @@index([userId, masteryBucket])
   @@index([userId, weaknessScore])
   @@index([userId, lastSeenAt])
-  @@map("student_skill_rollups")
+  @@map("student_learning_target_rollups")
 }
 
 model StudentExerciseState {
@@ -1184,4 +1273,235 @@ model StudySessionQuestion {
   @@unique([sessionExerciseId, sequenceIndex])
   @@index([questionNodeId])
   @@map("study_session_questions")
+}
+
+model StudentCourseQuizAttempt {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String            @map("user_id") @db.Uuid
+  quizId           String            @map("quiz_id") @db.Uuid
+  isCorrect        Boolean           @map("is_correct")
+  selectedOptionId String?           @map("selected_option_id") @db.Uuid
+  answerJson       Json?             @map("answer_json")
+  attemptedAt      DateTime          @default(now()) @map("attempted_at")
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz             CourseQuiz        @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  selectedOption   CourseQuizOption? @relation(fields: [selectedOptionId], references: [id], onDelete: SetNull)
+
+  @@index([userId, quizId, attemptedAt])
+  @@index([selectedOptionId])
+  @@map("student_course_quiz_attempts")
+}
+
+model FlashcardDeck {
+  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ownerUserId    String?             @map("owner_user_id") @db.Uuid
+  subjectId      String?             @map("subject_id") @db.Uuid
+  curriculumId   String?             @map("curriculum_id") @db.Uuid
+  title          String
+  description    String?             @db.Text
+  sourceType     FlashcardSourceType @default(USER_CREATED) @map("source_type")
+  isPlatformSeed Boolean             @default(false) @map("is_platform_seed")
+  metadata       Json?
+  ownerUser      User?               @relation(fields: [ownerUserId], references: [id], onDelete: Cascade)
+  subject        Subject?            @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  curriculum     Curriculum?         @relation(fields: [curriculumId], references: [id], onDelete: SetNull)
+  cards          FlashcardDeckCard[]
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+
+  @@index([ownerUserId])
+  @@index([subjectId])
+  @@index([curriculumId])
+  @@index([sourceType])
+  @@map("flashcard_decks")
+}
+
+model Flashcard {
+  id               String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdByUserId  String?                 @map("created_by_user_id") @db.Uuid
+  subjectId        String?                 @map("subject_id") @db.Uuid
+  curriculumNodeId String?                 @map("curriculum_node_id") @db.Uuid
+  learningTargetId String?                 @map("learning_target_id") @db.Uuid
+  courseLessonId   String?                 @map("course_lesson_id") @db.Uuid
+  courseStepId     String?                 @map("course_step_id") @db.Uuid
+  examNodeId       String?                 @map("exam_node_id") @db.Uuid
+  type             FlashcardType
+  sourceType       FlashcardSourceType     @default(USER_CREATED) @map("source_type")
+  front            String                  @db.Text
+  back             String                  @db.Text
+  data             Json?
+  createdByUser    User?                   @relation(fields: [createdByUserId], references: [id], onDelete: Cascade)
+  subject          Subject?                @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  curriculumNode   CurriculumNode?         @relation(fields: [curriculumNodeId], references: [id], onDelete: SetNull)
+  learningTarget   LearningTarget?         @relation(fields: [learningTargetId], references: [id], onDelete: SetNull)
+  courseLesson     CourseLesson?           @relation(fields: [courseLessonId], references: [id], onDelete: SetNull)
+  courseStep       CourseStep?             @relation(fields: [courseStepId], references: [id], onDelete: SetNull)
+  examNode         ExamNode?               @relation(fields: [examNodeId], references: [id], onDelete: SetNull)
+  deckCards        FlashcardDeckCard[]
+  reviewStates     StudentFlashcardState[]
+  reviewLogs       FlashcardReviewLog[]
+  overrides        UserFlashcardOverride[]
+  createdAt        DateTime                @default(now()) @map("created_at")
+  updatedAt        DateTime                @updatedAt @map("updated_at")
+
+  @@index([createdByUserId])
+  @@index([learningTargetId])
+  @@index([curriculumNodeId])
+  @@index([courseLessonId])
+  @@index([courseStepId])
+  @@index([examNodeId])
+  @@index([subjectId])
+  @@map("flashcards")
+}
+
+model FlashcardDeckCard {
+  deckId     String        @map("deck_id") @db.Uuid
+  cardId     String        @map("card_id") @db.Uuid
+  orderIndex Int           @default(0) @map("order_index")
+  deck       FlashcardDeck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  card       Flashcard     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@id([deckId, cardId])
+  @@index([cardId])
+  @@index([deckId, orderIndex])
+  @@map("flashcard_deck_cards")
+}
+
+model StudentFlashcardState {
+  userId         String    @map("user_id") @db.Uuid
+  cardId         String    @map("card_id") @db.Uuid
+  dueAt          DateTime  @map("due_at")
+  intervalDays   Int       @default(0) @map("interval_days")
+  easeFactor     Decimal   @default(2.5) @map("ease_factor") @db.Decimal(4, 2)
+  reviewCount    Int       @default(0) @map("review_count")
+  lapseCount     Int       @default(0) @map("lapse_count")
+  lastReviewedAt DateTime? @map("last_reviewed_at")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card           Flashcard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@id([userId, cardId])
+  @@index([userId, dueAt])
+  @@map("student_flashcard_states")
+}
+
+model FlashcardReviewLog {
+  id         String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String                @map("user_id") @db.Uuid
+  cardId     String                @map("card_id") @db.Uuid
+  rating     FlashcardReviewRating
+  reviewedAt DateTime              @default(now()) @map("reviewed_at")
+  metadata   Json?
+  user       User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card       Flashcard             @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@index([userId, reviewedAt])
+  @@index([cardId])
+  @@map("flashcard_review_logs")
+}
+
+model UserFlashcardOverride {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  cardId    String    @map("card_id") @db.Uuid
+  isHidden  Boolean   @default(false) @map("is_hidden")
+  dueAt     DateTime? @map("due_at")
+  metadata  Json?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card      Flashcard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@unique([userId, cardId])
+  @@index([userId])
+  @@index([cardId])
+  @@index([dueAt])
+  @@map("user_flashcard_overrides")
+}
+
+model LabTool {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId   String?       @map("subject_id") @db.Uuid
+  slug        String
+  title       String
+  description String        @db.Text
+  status      LabToolStatus @default(READY)
+  metadata    Json?
+  subject     Subject?      @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  missions    LabMission[]
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@unique([slug])
+  @@index([subjectId])
+  @@index([status])
+  @@map("lab_tools")
+}
+
+model LabMission {
+  id               String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  toolId           String                     @map("tool_id") @db.Uuid
+  curriculumNodeId String?                    @map("curriculum_node_id") @db.Uuid
+  learningTargetId String?                    @map("learning_target_id") @db.Uuid
+  courseLessonId   String?                    @map("course_lesson_id") @db.Uuid
+  title            String
+  goal             String                     @db.Text
+  preset           Json?
+  exitCheck        Json?                      @map("exit_check")
+  orderIndex       Int                        @default(0) @map("order_index")
+  tool             LabTool                    @relation(fields: [toolId], references: [id], onDelete: Cascade)
+  curriculumNode   CurriculumNode?            @relation(fields: [curriculumNodeId], references: [id], onDelete: SetNull)
+  learningTarget   LearningTarget?            @relation(fields: [learningTargetId], references: [id], onDelete: SetNull)
+  courseLesson     CourseLesson?              @relation(fields: [courseLessonId], references: [id], onDelete: SetNull)
+  attempts         StudentLabMissionAttempt[]
+  createdAt        DateTime                   @default(now()) @map("created_at")
+  updatedAt        DateTime                   @updatedAt @map("updated_at")
+
+  @@index([toolId, orderIndex])
+  @@index([curriculumNodeId])
+  @@index([learningTargetId])
+  @@index([courseLessonId])
+  @@map("lab_missions")
+}
+
+model StudentLabMissionAttempt {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String     @map("user_id") @db.Uuid
+  missionId   String     @map("mission_id") @db.Uuid
+  status      String     @default("IN_PROGRESS")
+  resultJson  Json?      @map("result_json")
+  startedAt   DateTime   @default(now()) @map("started_at")
+  completedAt DateTime?  @map("completed_at")
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mission     LabMission @relation(fields: [missionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+  @@index([missionId])
+  @@map("student_lab_mission_attempts")
+}
+
+model StudentLearningEvent {
+  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String          @map("user_id") @db.Uuid
+  eventType        String          @map("event_type")
+  sourceType       String          @map("source_type")
+  sourceId         String?         @map("source_id") @db.Uuid
+  curriculumNodeId String?         @map("curriculum_node_id") @db.Uuid
+  learningTargetId String?         @map("learning_target_id") @db.Uuid
+  courseLessonId   String?         @map("course_lesson_id") @db.Uuid
+  examNodeId       String?         @map("exam_node_id") @db.Uuid
+  value            Json?
+  occurredAt       DateTime        @default(now()) @map("occurred_at")
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  curriculumNode   CurriculumNode? @relation(fields: [curriculumNodeId], references: [id], onDelete: SetNull)
+  learningTarget   LearningTarget? @relation(fields: [learningTargetId], references: [id], onDelete: SetNull)
+  courseLesson     CourseLesson?   @relation(fields: [courseLessonId], references: [id], onDelete: SetNull)
+  examNode         ExamNode?       @relation(fields: [examNodeId], references: [id], onDelete: SetNull)
+
+  @@index([userId, occurredAt])
+  @@index([userId, eventType, occurredAt])
+  @@index([userId, learningTargetId, occurredAt])
+  @@index([userId, curriculumNodeId, occurredAt])
+  @@map("student_learning_events")
 }

@@ -162,6 +162,27 @@ export class IngestionReadService {
     };
   }
 
+  async listJobsForReview(): Promise<FullIngestionJobRecord[]> {
+    const jobs = await this.prisma.ingestionJob.findMany({
+      ...fullIngestionJobInclude,
+      where: {
+        status: {
+          in: [
+            IngestionJobStatus.DRAFT,
+            IngestionJobStatus.FAILED,
+            IngestionJobStatus.IN_REVIEW,
+            IngestionJobStatus.APPROVED,
+          ],
+        },
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+
+    return jobs.map((rawJob) => this.attachSourceDocuments(rawJob));
+  }
+
   async getJob(jobId: string): Promise<AdminIngestionJobResponse> {
     const job = await this.findJobOrThrow(jobId);
     const draft = this.hydrateDraft(job);

@@ -1,0 +1,813 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي دورة 2025",
+    "year": 2025,
+    "streamCode": "آداب وفلسفة",
+    "subjectCode": "اللغة الإنجليزية",
+    "sessionType": "normal",
+    "durationMinutes": 150,
+    "totalPoints": 20.0,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "S1_PART1",
+          "parentLocalId": "",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "Part one: Reading.",
+          "maxPoints": 15.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Part one: Reading."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_CTX",
+          "parentLocalId": "S1_PART1",
+          "nodeType": "CONTEXT",
+          "orderIndex": 2,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "*Read the text carefully to do the following activities.*\n\nCultural heritage involves both tangible and intangible elements that define the identity and history of communities all over the world. Preserving **these elements** is necessary for maintaining cultural diversity and encouraging a sense of belonging.\nTangible cultural heritage includes physical artifacts and structures such as monuments, buildings, and artworks. A notable example of tangible heritage is the Great Wall of China. Spanning over 13.000 miles, it exemplifies ancient engineering ability and functions as a symbol of cultural identity and historical significance.\nIntangible cultural heritage refers to oral traditions, performing arts, local knowledge, and traditional skills recognized by communities as part of their cultural heritage. The UNESCO emphasizes that safeguarding intangible heritage means transferring **it** to future generations.\nThe preservation of both tangible and intangible cultural heritage is vital for supporting cultural diversity and identity. For example, the restoration of the Acropolis in Greece has been a significant effort to preserve ancient architecture and archaeological sites. Besides, through international recognition and dedicated efforts, communities can protect and promote **their** cultural heritage."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "*Adapted from: https://www.unesco.org/november 2015.*"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A",
+          "parentLocalId": "S1_PART1",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "A/ Comprehension.",
+          "maxPoints": 7.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "A/ Comprehension."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q1",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "1",
+          "maxPoints": 2.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**1- Say whether the following statements are true or false.**\na- Cultural heritage includes only physical elements.\nb- China has no physical cultural heritage.\nc- Intangible cultural heritage should be transmitted to generations.\nd- Safeguarding cultural heritage is unimportant."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2 pts (0.5 x 4)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. False\nb. False\nc. True\nd. False"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q2",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "2",
+          "maxPoints": 3.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**2- Answer the following questions according to the text.**\na- Why is it important to preserve cultural heritage?\nb- What does tangible heritage mean?\nc- How can communities protect their cultural heritage?"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3 pts (1 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Maintaining cultural diversity .....of belonging/ Or supporting cultural ..........and identity.\nb. Tangible cultural heritage includes....... and artworks.\nc. Through international.........dedicated efforts."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q3",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "3",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**3- Find what or who the underlined words refer to in the text.**\na- these elements (§1) ...........\nb- it (§3) ..................\nc- their (§4) ............."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 pts (0.5 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. These elements §1: tangible and intangible elements.\nb. It §3: intangible heritage.\nc. their §4: communities."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q4",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 7,
+          "label": "4",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**4- Choose the most appropriate title.**\na- Definition of Tangible Cultural Heritage.\nb- Intangible and Tangible Cultural Heritage.\nc- The Destruction of Cultural Heritage."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 pts (0.5)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "b. Intangible and Tangible Cultural Heritage."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B",
+          "parentLocalId": "S1_PART1",
+          "nodeType": "PART",
+          "orderIndex": 8,
+          "label": "B/ Text Exploration.",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "B/ Text Exploration."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q1",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 9,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**1- Find in the text words, phrases, or expressions that are opposite in meaning to the following.**\na- uniformity (§1) ≠ .........\nb- modern (§2) ≠ .........\nc- national (§4) ≠ ........."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 pts (0.5 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. diversity\nb. ancient\nc. international."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q2",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 10,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**2- Divide the following words into roots and affixes.**\n- disappear - cultural - international"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Prefix | Root | Suffix |\n|---|---|---|\n| | | |\n| | | |\n| | | |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 pts (0.5 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| Prefix | Root | Suffix |\n|---|---|---|\n| dis | appear | // |\n| // | cultur(e) | al |\n| inter | nation | al |"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q3",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 11,
+          "label": "3",
+          "maxPoints": 3.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**3- Combine each pair of sentences with the connectors given between brackets. Make changes where necessary.**\na- The Greek government decided to restore the Acropolis. The Acropolis was in danger of destruction. (because)\nb- Some historical monuments fall into ruins. They are not restored. (if)\nc- Governments signed the UNESCO convention on preserving archaeological sites. Some archaeological sites are decaying. (Although)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3 pts (1 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. The Greek government decided to restore the Acropolis because it was in danger of destruction.\nOr Because the Acropolis was in danger of destruction, the Greek government decided to restore it.\nb. Some historical monuments will fall into ruins if they are not restored.\nOr If some historical monuments are not restored, they will fall into ruins.\nAccept: If some historical monuments were not restored, they would fall into ruins\nc. Although governments signed the UNESCO convention on preserving archaeological sites, some of them are decaying.\nOr Some archaeological sites are decaying although governments signed the UNESCO convention on preserving archaeological sites"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q4",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 12,
+          "label": "4",
+          "maxPoints": 2.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**4- Reorder the following sentences to get a coherent passage.**\na- The convention insists on the preservation of intangible cultural heritage\nb- It also stipulates the relation between tangible and intangible cultural heritage.\nc- and it recognizes the role of intangible heritage as a source of cultural diversity.\nd- In 2003, the UNESCO ratified a convention on intangible cultural heritage."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2 pts (0.5 x 4)\n(0.5 for opening sentence and 0.5 for each correct link)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1) d\n2) a\n3) c\n4) b"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART2",
+          "parentLocalId": "",
+          "nodeType": "PART",
+          "orderIndex": 13,
+          "label": "Part two: Written Expression.",
+          "maxPoints": 5.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Part two: Written Expression."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Choose **ONE** of the following topics.\n\n**Topic One:**\nAlgeria is famous for its rich tangible and intangible cultural heritage. However, some of its elements are in danger of disappearance. As a social media influencer, write an article of about 80 to 120 words to be published on your blog in order to suggest ways to preserve these historical sites.\n**Make the best use of the following notes:**\n- Restoring archaeological sites.\n- Involving society/raising awareness.\n- Implementing laws.\n\n**Topic Two:**\nIn your town, many people believe that the government is the only body responsible for combating corruption. As a member of a local anti - corruption association, write an opinion article of about 80 to 120 words for the local newspaper in which you stress the role of both the individuals and society in fighting corruption."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "| Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocabulary and creativity) | Final score |\n|---|---|---|---|---|---|\n| **LPH** | 01 | 01 | 02 | 01 | 05 |"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "S2_PART1",
+          "parentLocalId": "",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "Part one: Reading.",
+          "maxPoints": 15.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Part one: Reading."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_CTX",
+          "parentLocalId": "S2_PART1",
+          "nodeType": "CONTEXT",
+          "orderIndex": 2,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "*Read the text carefully to do the following activities.*\n\nForeign languages were introduced formally within the primary school curriculum in England in 2014 for the first time. All children from age 7 to 11 are now expected to study one foreign language for one hour per week. **It** can be any modern or ancient foreign language.\nThere are two main reasons behind the introduction of foreign languages in primary classrooms. The first is the belief that children learn foreign languages more quickly and more proficiently. After all, we learn our mother tongue effortlessly as young children, so the logic is that if you teach children early enough the same will happen with foreign languages. The second is that in an increasingly globalized world it is important to awaken **their** interests in other people and cultures.\nTo conclude, teaching foreign languages in primary can bring good results, but **its** goals need to be clear and realistic taking into account what research has shown about how children learn and the context in which schools and teachers have to operate."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "*Adapted from: “An Investigation into Starting Ages”, Florence Myles, 2012.*"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A",
+          "parentLocalId": "S2_PART1",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "A/ Comprehension.",
+          "maxPoints": 7.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "A/ Comprehension."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q1",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**1- Choose the answer to complete each statement.**\nA. Foreign languages were introduced in primary schools in England ................\na- 2 years ago\nb- 9 years ago\nc- 11 years ago.\nB. Foreign languages are taught in ................. schools for several reasons.\na- primary\nb- private\nc- secondary\nC. Children acquire their native language ............ .\na- hardly\nb- easily\nc- carefully"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 pts (0.5 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "A- c\nB- a\nC- b"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q2",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "2",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**2- Identify the paragraph in which the following ideas are mentioned.**\na- Teaching foreign languages to children can be successful.\nb- Foreign languages help children to know about other people."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 pt (0.5 x 2)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a- § 3\nb- § 2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q3",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "3",
+          "maxPoints": 3.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**3- Answer the following questions according to the text.**\na- Which category of pupils is concerned by studying foreign languages?\nb- How many reasons are behind the introduction of foreign languages in primary?\nc- How can the introduction of foreign languages in primary be successful?"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3 pts (1 + 1 + 1)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. ........children from age 7 to 11 Or primary school pupils.\nb. There are two main reasons....... .\nc. If its goals are clear and realistic.....have to operate."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q4",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 7,
+          "label": "4",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**4- Find what or who the underlined words refer to in the text.**\na- it (§1) ...\nb- their (§2) ...\nc- its (§3) ..."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 pts (0.5 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. it §1:one foreign language\nb-their §2 : children\nc- its §3: teaching foreign languages (in primary)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B",
+          "parentLocalId": "S2_PART1",
+          "nodeType": "PART",
+          "orderIndex": 8,
+          "label": "B/ Text Exploration.",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "B/ Text Exploration."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q1",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 9,
+          "label": "1",
+          "maxPoints": 2.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**1- Find in the text words or phrases that are closest in meaning to the following.**\na- supposed (§1) = ........\nb- rapidly (§2) = ........\nc- educators (§3) = ........"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2.25 pts (0.75 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. expected\nb. quickly\nc. teachers"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q2",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 10,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**2- Give the opposites of the following words keeping the same root.**\n- important\n- formally\n- belief"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 pts (0.5 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. unimportant\nb. informally\nc. misbelief / disbelief / unbelief."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q3",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 11,
+          "label": "3",
+          "maxPoints": 2.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**3- Complete sentence \"b\" so that it means the same as \"a\".**\n1- a- I regret not having studied English in primary school.\nb- I wish.......................................................................\n2- a- Children learn foreign languages more quickly.\nb- Foreign languages.....................................................\n3- a- If we teach children foreign languages, they will get better job opportunities.\nb- Unless......................................................................"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2.25 pts (0.75 x 3)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1) b. I wish I had studied English in primary school.\n2) b. Foreign languages are learned / learnt more quickly by children.\n3) b. Unless we teach children foreign languages, they won't / will not get better job opportunities.\nOr Children won't / will not get better job opportunities unless we teach them foreign languages."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q4",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 12,
+          "label": "4",
+          "maxPoints": 2.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "**4- Fill in each gap with the appropriate word from the list given.**\n- their - age - international - communicate\nTeaching English in primary school is important for several reasons. English is an .........1.........language spoken by millions of people around the world. So, by learning English at an early.........2........., children become global citizens, .........3.........better with people from different cultures and are well-prepared for.........4.........future professional life."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2 pts (0.5 x 4)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1) international\n2) age\n3) communicate\n4) their"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART2",
+          "parentLocalId": "",
+          "nodeType": "PART",
+          "orderIndex": 13,
+          "label": "Part Two: Written expression.",
+          "maxPoints": 5.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Part Two: Written expression."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Choose **ONE** of the following topics.\n\n**Topic One:**\nYou read an advert on the net about a job offer at an international airport. You wanted to apply for it. Unfortunately, you could not because you do not master foreign languages. Write a public statement of about 80 to 120 words to sensitize young people on the importance of learning foreign languages.\n**Make the best use of the following notes.**\n- Get a better job / good salary.\n- Possibilities of working abroad.\n- Meet people / other countries/ different cultures.\n\n**Topic Two:**\nYou have recently visited a historical site in your country. You were shocked by the state of degradation of the site. Write an opinion article of about 80 to 120 words to raise awareness about the importance of preserving our cultural heritage."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "table",
+              "text": "| Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocabulary and creativity) | Final score |\n|---|---|---|---|---|---|\n| **LPH** | 01 | 01 | 02 | 01 | 05 |"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "nativeRenderCandidates": [
+    {
+      "id": "NRC_S1_B_Q2_TABLE",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_PART1_B_Q2",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "sourceText": "Prefix | Root | Suffix \n \n \n",
+      "notes": "Morphology table dividing words into roots and affixes"
+    },
+    {
+      "id": "NRC_S1_WRITING_RUBRIC",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_PART2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "sourceText": "Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocabulary and creativity) | Final score \n LPH | 01 | 01 | 02 | 01 | 05",
+      "notes": "Rubric table for Written Expression scoring"
+    },
+    {
+      "id": "NRC_S2_WRITING_RUBRIC",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_PART2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "sourceText": "Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocabulary and creativity) | Final score \n LPH | 01 | 01 | 02 | 01 | 05",
+      "notes": "Rubric table for Written Expression scoring"
+    }
+  ],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered",
+      "notes": "Sujet 1 Reading Text and Comprehension."
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered",
+      "notes": "Sujet 1 Text Exploration and Written Expression."
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered",
+      "notes": "Sujet 2 Reading Text and Comprehension."
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered",
+      "notes": "Sujet 2 Text Exploration and Written Expression."
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered",
+      "notes": "Sujet 1 correction."
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered",
+      "notes": "Sujet 2 correction."
+    }
+  ],
+  "uncertainties": []
+}

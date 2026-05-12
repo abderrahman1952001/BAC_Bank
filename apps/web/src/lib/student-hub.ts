@@ -356,9 +356,9 @@ export function buildWeakPointItems(
     key: `weak-point:${subject.subject.code}`,
     href: buildStudentTrainingWeakPointsRoute(subject.subject.code),
     title: subject.subject.name,
-    subtitle: subject.topSkills
+    subtitle: subject.topLearningTargets
       .slice(0, 3)
-      .map((skill) => skill.name)
+      .map((learningTarget) => learningTarget.name)
       .join(" · "),
     topicsLabel: subject.topTopics
       .slice(0, 3)

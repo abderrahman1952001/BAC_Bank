@@ -1256,11 +1256,11 @@ export class StudySessionService {
             studentLabel: true,
           },
         },
-        skillMappings: {
+        learningTargetMappings: {
           select: {
             weight: true,
             isPrimary: true,
-            skill: {
+            learningTarget: {
               select: {
                 name: true,
                 description: true,

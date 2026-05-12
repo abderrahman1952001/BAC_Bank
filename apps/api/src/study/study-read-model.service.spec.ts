@@ -19,7 +19,7 @@ describe('StudyReadModelService', () => {
       deleteMany: jest.Mock;
       createMany: jest.Mock;
     };
-    studentSkillRollup: {
+    studentLearningTargetRollup: {
       deleteMany: jest.Mock;
       createMany: jest.Mock;
     };
@@ -44,7 +44,7 @@ describe('StudyReadModelService', () => {
         deleteMany: jest.fn().mockResolvedValue(undefined),
         createMany: jest.fn().mockResolvedValue(undefined),
       },
-      studentSkillRollup: {
+      studentLearningTargetRollup: {
         deleteMany: jest.fn().mockResolvedValue(undefined),
         createMany: jest.fn().mockResolvedValue(undefined),
       },
@@ -58,7 +58,7 @@ describe('StudyReadModelService', () => {
     service = new StudyReadModelService(prisma as never);
   });
 
-  it('rebuilds topic, skill, and review-queue read models from canonical study signals', async () => {
+  it('rebuilds topic, learning-target, and review-queue read models from canonical study signals', async () => {
     prisma.studySessionQuestion.findMany.mockResolvedValue([
       {
         questionNodeId: 'question-1',
@@ -72,12 +72,12 @@ describe('StudyReadModelService', () => {
         solutionViewedAt: new Date('2026-04-09T10:04:00.000Z'),
         updatedAt: new Date('2026-04-09T10:05:00.000Z'),
         questionNode: {
-          skillMappings: [
+          learningTargetMappings: [
             {
               weight: new Prisma.Decimal(1.5),
               isPrimary: true,
-              skill: {
-                id: 'skill-limits',
+              learningTarget: {
+                id: 'learning-target-limits',
                 code: 'LIMITS',
                 name: 'النهايات',
                 subject: {
@@ -90,9 +90,9 @@ describe('StudyReadModelService', () => {
           curriculumNodeMappings: [],
         },
         sessionExercise: {
-          exerciseNodeId: 'exercise-1',
+            exerciseNodeId: 'exercise-1',
           exerciseNode: {
-            skillMappings: [],
+            learningTargetMappings: [],
             curriculumNodeMappings: [
               {
                 curriculumNode: {
@@ -104,12 +104,12 @@ describe('StudyReadModelService', () => {
                     code: 'MATHEMATICS',
                     name: 'الرياضيات',
                   },
-                  skillMappings: [
+                  learningTargetMappings: [
                     {
                       weight: new Prisma.Decimal(1),
                       isPrimary: true,
-                      skill: {
-                        id: 'skill-functions',
+                      learningTarget: {
+                        id: 'learning-target-functions',
                         code: 'FUNCTION_ANALYSIS',
                         name: 'تحليل الدوال',
                         subject: {
@@ -121,8 +121,8 @@ describe('StudyReadModelService', () => {
                     {
                       weight: new Prisma.Decimal(1),
                       isPrimary: false,
-                      skill: {
-                        id: 'skill-limits',
+                      learningTarget: {
+                        id: 'learning-target-limits',
                         code: 'LIMITS',
                         name: 'النهايات',
                         subject: {
@@ -150,7 +150,7 @@ describe('StudyReadModelService', () => {
         solutionViewedAt: null,
         updatedAt: new Date('2026-04-09T11:10:00.000Z'),
         questionNode: {
-          skillMappings: [],
+          learningTargetMappings: [],
           curriculumNodeMappings: [
             {
               curriculumNode: {
@@ -162,12 +162,12 @@ describe('StudyReadModelService', () => {
                   code: 'MATHEMATICS',
                   name: 'الرياضيات',
                 },
-                skillMappings: [
+                learningTargetMappings: [
                   {
                     weight: new Prisma.Decimal(1),
                     isPrimary: true,
-                    skill: {
-                      id: 'skill-geometry',
+                    learningTarget: {
+                      id: 'learning-target-geometry',
                       code: 'SPATIAL_REASONING',
                       name: 'الاستدلال الهندسي',
                       subject: {
@@ -184,7 +184,7 @@ describe('StudyReadModelService', () => {
         sessionExercise: {
           exerciseNodeId: 'exercise-2',
           exerciseNode: {
-            skillMappings: [],
+            learningTargetMappings: [],
             curriculumNodeMappings: [],
           },
         },
@@ -205,7 +205,7 @@ describe('StudyReadModelService', () => {
         userId: 'user-1',
       },
     });
-    expect(prisma.studentSkillRollup.deleteMany).toHaveBeenCalledWith({
+    expect(prisma.studentLearningTargetRollup.deleteMany).toHaveBeenCalledWith({
       where: {
         userId: 'user-1',
       },
@@ -262,11 +262,11 @@ describe('StudyReadModelService', () => {
         },
       ],
     });
-    expect(prisma.studentSkillRollup.createMany).toHaveBeenCalledWith({
+    expect(prisma.studentLearningTargetRollup.createMany).toHaveBeenCalledWith({
       data: [
         {
           userId: 'user-1',
-          skillId: 'skill-limits',
+          learningTargetId: 'learning-target-limits',
           attemptedQuestions: 1,
           correctCount: 1,
           incorrectCount: 0,
@@ -280,7 +280,7 @@ describe('StudyReadModelService', () => {
         },
         {
           userId: 'user-1',
-          skillId: 'skill-geometry',
+          learningTargetId: 'learning-target-geometry',
           attemptedQuestions: 1,
           correctCount: 0,
           incorrectCount: 0,
@@ -389,13 +389,13 @@ describe('StudyReadModelService', () => {
         solutionViewedAt: null,
         updatedAt: new Date('2026-04-09T09:10:00.000Z'),
         questionNode: {
-          skillMappings: [],
+          learningTargetMappings: [],
           curriculumNodeMappings: [],
         },
         sessionExercise: {
           exerciseNodeId: 'exercise-1',
           exerciseNode: {
-            skillMappings: [],
+            learningTargetMappings: [],
             curriculumNodeMappings: [],
           },
         },

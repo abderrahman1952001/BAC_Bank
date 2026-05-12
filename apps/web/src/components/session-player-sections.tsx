@@ -1,17 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import {
-  BookOpen,
-  FileText,
-  Lightbulb,
-  X,
-} from "lucide-react";
+import { BookOpen, FileText, Lightbulb, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   StudyHierarchyBlocks,
   StudySectionCard,
 } from "@/components/study-content";
+import { SaveFlashcardButton } from "@/components/save-flashcard-button";
 import {
   StudyQuestionAssistCard,
   StudyQuestionMethodPanel,
@@ -50,9 +46,8 @@ import {
   shouldOfferMethodGuidance,
   shouldCollectDiagnosis,
 } from "@/lib/study-pedagogy";
-import {
-  type ExerciseCheckpointSummary,
-} from "@/lib/session-player";
+import { buildStudyQuestionFlashcardDraft } from "@/lib/flashcards-surface";
+import { type ExerciseCheckpointSummary } from "@/lib/session-player";
 import {
   buildSessionPlayerMobileTools,
   type SessionPlayerMobileTools,
@@ -123,7 +118,10 @@ type SessionPlayerQuestionPaneProps = {
   answerDraftValue: string;
   answerSubmitting: boolean;
   answerError: string | null;
-  evaluationDraftResultStatus: Exclude<StudyQuestionResultStatus, "UNKNOWN"> | null;
+  evaluationDraftResultStatus: Exclude<
+    StudyQuestionResultStatus,
+    "UNKNOWN"
+  > | null;
   evaluationSubmitting: boolean;
   evaluationError: string | null;
   completionOpen: boolean;
@@ -376,7 +374,9 @@ export function SessionPlayerContextPane({
           {activeExerciseTopics.length ? (
             <div className="topic-chip-row theater-context-topics">
               {activeExerciseTopics.slice(0, 8).map((topic) => (
-                <span key={`${activeExercise.id}:${topic.code}`}>{topic.name}</span>
+                <span key={`${activeExercise.id}:${topic.code}`}>
+                  {topic.name}
+                </span>
               ))}
             </div>
           ) : null}
@@ -570,12 +570,32 @@ export function SessionPlayerQuestionPane({
 
   function renderSolutionSheetContent() {
     if (solutionVisible) {
-      return <StudyQuestionSolutionStack question={activeQuestion} />;
+      return (
+        <>
+          <SaveFlashcardButton
+            draft={buildStudyQuestionFlashcardDraft(activeQuestion, {
+              exerciseLabel: `التمرين ${activeExercise.displayOrder}`,
+              subjectName: activeExercise.sourceExam?.subject.name ?? null,
+              sourceLabel: activeExercise.sourceExam
+                ? `${activeExercise.sourceExam.year} · ${formatSessionType(
+                    activeExercise.sourceExam.sessionType,
+                  )}`
+                : null,
+            })}
+            label="احفظ التصحيح كبطاقة"
+            successLabel="حُفظ التصحيح"
+            compact
+          />
+          <StudyQuestionSolutionStack question={activeQuestion} />
+        </>
+      );
     }
 
     return (
       <StudySectionCard tone="commentary" title={mobileTools.solutionLabel}>
-        <p className="pedagogy-support-copy">{mobileTools.solutionDescription}</p>
+        <p className="pedagogy-support-copy">
+          {mobileTools.solutionDescription}
+        </p>
         {canRevealSolution && !isActiveSimulation ? (
           <div className="study-action-row">
             <Button
@@ -663,7 +683,8 @@ export function SessionPlayerQuestionPane({
                 <p className="pedagogy-support-copy">
                   {getAutoAnswerCopy({
                     question: activeQuestion,
-                    resultStatus: activeQuestionState?.resultStatus ?? "UNKNOWN",
+                    resultStatus:
+                      activeQuestionState?.resultStatus ?? "UNKNOWN",
                   })}
                 </p>
                 <form
@@ -683,7 +704,9 @@ export function SessionPlayerQuestionPane({
                     className="study-answer-input"
                     value={answerDraftValue}
                     placeholder={getAutoAnswerPlaceholder(activeQuestion)}
-                    onChange={(event) => onSetAnswerDraftValue(event.target.value)}
+                    onChange={(event) =>
+                      onSetAnswerDraftValue(event.target.value)
+                    }
                     disabled={answerSubmitting || questionMotionLocked}
                     autoComplete="off"
                     dir={
@@ -704,7 +727,9 @@ export function SessionPlayerQuestionPane({
                     {answerSubmitting ? "جارٍ التحقق..." : "تحقق"}
                   </Button>
                 </form>
-                {answerError ? <p className="error-text">{answerError}</p> : null}
+                {answerError ? (
+                  <p className="error-text">{answerError}</p>
+                ) : null}
                 <div className="pedagogy-support-actions">
                   <Button
                     type="button"
@@ -814,6 +839,23 @@ export function SessionPlayerQuestionPane({
               className={`theater-desktop-flow solution-reveal-wrapper${solutionVisible ? " is-open" : ""}`}
             >
               <div className="solution-reveal-inner">
+                {solutionVisible ? (
+                  <SaveFlashcardButton
+                    draft={buildStudyQuestionFlashcardDraft(activeQuestion, {
+                      exerciseLabel: `التمرين ${activeExercise.displayOrder}`,
+                      subjectName:
+                        activeExercise.sourceExam?.subject.name ?? null,
+                      sourceLabel: activeExercise.sourceExam
+                        ? `${activeExercise.sourceExam.year} · ${formatSessionType(
+                            activeExercise.sourceExam.sessionType,
+                          )}`
+                        : null,
+                    })}
+                    label="احفظ التصحيح كبطاقة"
+                    successLabel="حُفظ التصحيح"
+                    compact
+                  />
+                ) : null}
                 <StudyQuestionSolutionStack question={activeQuestion} />
               </div>
             </div>
@@ -850,7 +892,11 @@ export function SessionPlayerQuestionPane({
         </AnimatePresence>
 
         <div className="theater-actions-bar">
-          {!(canRevealSolution && !solutionVisible && progressMode !== "REVIEW") ? (
+          {!(
+            canRevealSolution &&
+            !solutionVisible &&
+            progressMode !== "REVIEW"
+          ) ? (
             <Button
               type="button"
               data-testid="session-primary-action"
@@ -903,7 +949,9 @@ export function SessionPlayerQuestionPane({
                 </FilterChip>
               ))}
             </div>
-            {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
+            {evaluationError ? (
+              <p className="error-text">{evaluationError}</p>
+            ) : null}
           </StudySectionCard>
         ) : null}
 
@@ -926,7 +974,9 @@ export function SessionPlayerQuestionPane({
                 </FilterChip>
               ))}
             </div>
-            {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
+            {evaluationError ? (
+              <p className="error-text">{evaluationError}</p>
+            ) : null}
           </StudySectionCard>
         ) : null}
 
@@ -941,28 +991,38 @@ export function SessionPlayerQuestionPane({
                 : "اختر السبب الأقرب حتى نبني العلاج على إشارة أوضح."}
             </p>
             <div className="chip-grid">
-              {(["CONCEPT", "METHOD", "CALCULATION"] as const).map((diagnosis) => (
-                <FilterChip
-                  key={diagnosis}
-                  type="button"
-                  onClick={() => onSubmitIncorrectQuestionDiagnosis(diagnosis)}
-                  disabled={evaluationSubmitting}
-                >
-                  {formatStudyQuestionDiagnosisForSupportStyle({
-                    diagnosis,
-                    supportStyle,
-                  })}
-                </FilterChip>
-              ))}
+              {(["CONCEPT", "METHOD", "CALCULATION"] as const).map(
+                (diagnosis) => (
+                  <FilterChip
+                    key={diagnosis}
+                    type="button"
+                    onClick={() =>
+                      onSubmitIncorrectQuestionDiagnosis(diagnosis)
+                    }
+                    disabled={evaluationSubmitting}
+                  >
+                    {formatStudyQuestionDiagnosisForSupportStyle({
+                      diagnosis,
+                      supportStyle,
+                    })}
+                  </FilterChip>
+                ),
+              )}
             </div>
-            {evaluationError ? <p className="error-text">{evaluationError}</p> : null}
+            {evaluationError ? (
+              <p className="error-text">{evaluationError}</p>
+            ) : null}
           </StudySectionCard>
         ) : null}
 
         {showReflectionSection ? (
           <StudySectionCard
             tone="commentary"
-            title={progressMode === "REVIEW" ? "تقديرك بعد المراجعة" : "قيّم هذا السؤال"}
+            title={
+              progressMode === "REVIEW"
+                ? "تقديرك بعد المراجعة"
+                : "قيّم هذا السؤال"
+            }
           >
             {requiresReflection ? (
               <p className="completion-summary-copy">
@@ -997,19 +1057,21 @@ export function SessionPlayerQuestionPane({
             title={getDiagnosisPromptTitle(supportStyle)}
           >
             <div className="chip-grid">
-              {(["CONCEPT", "METHOD", "CALCULATION"] as const).map((diagnosis) => (
-                <FilterChip
-                  key={diagnosis}
-                  type="button"
-                  active={activeQuestionState?.diagnosis === diagnosis}
-                  onClick={() => onSetQuestionDiagnosis(diagnosis)}
-                >
-                  {formatStudyQuestionDiagnosisForSupportStyle({
-                    diagnosis,
-                    supportStyle,
-                  })}
-                </FilterChip>
-              ))}
+              {(["CONCEPT", "METHOD", "CALCULATION"] as const).map(
+                (diagnosis) => (
+                  <FilterChip
+                    key={diagnosis}
+                    type="button"
+                    active={activeQuestionState?.diagnosis === diagnosis}
+                    onClick={() => onSetQuestionDiagnosis(diagnosis)}
+                  >
+                    {formatStudyQuestionDiagnosisForSupportStyle({
+                      diagnosis,
+                      supportStyle,
+                    })}
+                  </FilterChip>
+                ),
+              )}
             </div>
           </StudySectionCard>
         ) : null}
@@ -1024,10 +1086,14 @@ export function SessionPlayerQuestionPane({
                 onClick={onRequestAiExplanation}
                 disabled={aiExplanationLoading}
               >
-                {aiExplanationLoading ? "جارٍ توليد الشرح..." : "اشرحه بالذكاء الاصطناعي"}
+                {aiExplanationLoading
+                  ? "جارٍ توليد الشرح..."
+                  : "اشرحه بالذكاء الاصطناعي"}
               </Button>
             </div>
-            {aiExplanationError ? <p className="error-text">{aiExplanationError}</p> : null}
+            {aiExplanationError ? (
+              <p className="error-text">{aiExplanationError}</p>
+            ) : null}
             {aiExplanation ? (
               <div className="pedagogy-checklist">
                 <article>
@@ -1066,17 +1132,21 @@ export function SessionPlayerQuestionPane({
         {exerciseCheckpointSummary ? (
           <StudySectionCard tone="commentary" title="وقفة سريعة بعد التمرين">
             <p className="completion-summary-copy">
-              أنهيت {exerciseCheckpointSummary.title}. هل تريد متابعة التمرين التالي
-              الآن أم التوقف هنا والعودة لاحقاً؟
+              أنهيت {exerciseCheckpointSummary.title}. هل تريد متابعة التمرين
+              التالي الآن أم التوقف هنا والعودة لاحقاً؟
             </p>
 
             <div className="completion-summary-grid">
               <article>
-                <strong>{exerciseCheckpointSummary.counts.completedCount}</strong>
+                <strong>
+                  {exerciseCheckpointSummary.counts.completedCount}
+                </strong>
                 <span>منجزة</span>
               </article>
               <article>
-                <strong>{exerciseCheckpointSummary.counts.solutionViewedCount}</strong>
+                <strong>
+                  {exerciseCheckpointSummary.counts.solutionViewedCount}
+                </strong>
                 <span>حلول مكشوفة</span>
               </article>
               <article>
@@ -1088,7 +1158,9 @@ export function SessionPlayerQuestionPane({
             {exerciseCheckpointSummary.totalTimeSeconds > 0 ? (
               <p className="completion-summary-copy">
                 الوقت النشط في هذا التمرين:{" "}
-                {formatStudyDuration(exerciseCheckpointSummary.totalTimeSeconds)}
+                {formatStudyDuration(
+                  exerciseCheckpointSummary.totalTimeSeconds,
+                )}
               </p>
             ) : null}
 
@@ -1144,7 +1216,9 @@ export function SessionPlayerQuestionPane({
               </article>
               {progressCounts.trackedTimeSeconds > 0 ? (
                 <article>
-                  <strong>{formatStudyDuration(progressCounts.trackedTimeSeconds)}</strong>
+                  <strong>
+                    {formatStudyDuration(progressCounts.trackedTimeSeconds)}
+                  </strong>
                   <span>وقت نشط</span>
                 </article>
               ) : null}
@@ -1239,10 +1313,7 @@ function getAutoAnswerCopy(input: {
   question: StudyQuestionModel;
   resultStatus: StudyQuestionResultStatus;
 }) {
-  if (
-    input.resultStatus === "PARTIAL" ||
-    input.resultStatus === "INCORRECT"
-  ) {
+  if (input.resultStatus === "PARTIAL" || input.resultStatus === "INCORRECT") {
     return "بدّل جوابك إن أردت المحاولة من جديد، أو افتح الحل ثم حدّد سبب التعثر.";
   }
 

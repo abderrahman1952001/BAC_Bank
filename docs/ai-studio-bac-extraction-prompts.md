@@ -9,7 +9,11 @@ The intended split is:
 1. AI Studio does the first source-faithful PDF-to-JSON extraction.
 2. Codex validates and normalizes the JSON into the BAC_Bank reviewed extract
    shape.
-3. The app review UI handles human review, asset crops, approval, and publish.
+3. The app review flow handles crop review, Codex post-crop/presentation review,
+   student-side draft preview, approval, and publish.
+
+This document is a prompt/schema reference only. The single end-to-end workflow
+source of truth is `docs/admin-ingestion-workflow.md`.
 
 Use a Gemini Pro-family model for the first pass. Do not use Flash models as the
 authoritative extractor for BAC papers.
@@ -48,7 +52,18 @@ Core rules:
 - Use table blocks only when the table is simple enough to transcribe textually.
 - Detect meaningful assets: graphs, tables, probability trees, diagrams, and images.
 - Graphs must stay as image assets. Do not recreate graphs natively.
-- Native render candidates are allowed only for simple tables, sign tables, variation tables, and probability trees when the structure is visibly clear.
+- Native render candidates are the default for simple tables, correction tables,
+  sign tables, variation tables, truth tables, and probability trees when the
+  structure is visibly clear and can be transcribed faithfully.
+- Treat tables, probability trees, sign tables, and variation tables as
+  native-first, not crop-first. Do not leave obvious native-renderable structures
+  as image/crop-only assets for human crop review.
+- Keep an asset reference only when useful for provenance, fallback, or visual
+  verification, or when the structure is too difficult, ambiguous, or unreadable
+  to render natively.
+- For sign and variation tables, use the most faithful structured form
+  available. KaTeX/LaTeX inside table cells is acceptable when it best preserves
+  the source notation and layout.
 - Do not invent crop boxes.
 - Asset page numbers are 1-based within the EXAM or CORRECTION document.
 - If wording, structure, or mapping is uncertain, preserve the closest faithful result and record the uncertainty.
@@ -83,7 +98,11 @@ Extraction target:
 - Preserve visible bareme and point allocations exactly in RUBRIC blocks.
 - Use assetIds to attach assets to the nearest relevant node.
 - Graphs stay as image assets only.
-- Put simple tables, sign tables, variation tables, and probability trees in nativeRenderCandidates only when they are clearly readable.
+- Put every clearly readable simple table, correction table, sign table,
+  variation table, truth table, and probability tree in nativeRenderCandidates
+  when it can be transcribed faithfully.
+- Do not make those native-renderable structures human crop work unless native
+  transcription is blocked by real ambiguity or unreadability.
 - If a field is unknown, omit it or use an empty string; do not guess.
 - Return strict JSON only.
 ```

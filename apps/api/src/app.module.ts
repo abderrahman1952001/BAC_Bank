@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { BillingModule } from './billing/billing.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CoursesModule } from './courses/courses.module';
+import { FlashcardsModule } from './flashcards/flashcards.module';
 import { HealthModule } from './health/health.module';
 import { IngestionModule } from './ingestion/ingestion.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -24,6 +25,7 @@ import { StudyModule } from './study/study.module';
     AuthModule,
     BillingModule,
     CoursesModule,
+    FlashcardsModule,
     HealthModule,
     StudyModule,
     AdminModule,

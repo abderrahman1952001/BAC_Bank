@@ -15,12 +15,24 @@ The success criterion is not "got some JSON back." The success criterion is:
 This playbook follows the canonical workflow in
 `docs/admin-ingestion-workflow.md`.
 
+This document is a narrow agent reference, not a second workflow definition.
+When it conflicts with or feels broader than `docs/admin-ingestion-workflow.md`,
+the canonical workflow document wins.
+
 For subject-neutral premium extraction, native asset rendering, crop policy,
 and corpus sweeps, also follow `docs/premium-ingestion-extraction.md`.
 
 ## Default Route
 
-Use `codex_app_reviewed_extraction`:
+Follow `docs/admin-ingestion-workflow.md` for route selection.
+
+For corpus-scale work, the default route is raw Gemini Pro-family extraction,
+Codex normalization/audit, reviewed-extract import, crop review, Codex
+post-crop/presentation review, student-side draft preview, approval, and
+publish.
+
+Direct `codex_app_reviewed_extraction` remains a fallback for small exceptional
+papers, recovery work, or when model access is unavailable:
 
 - inspect the canonical PDFs and rendered source pages
 - create a durable reviewed extract artifact in the premium draft graph shape
@@ -111,6 +123,35 @@ not summarize, paraphrase, omit, or replace source content with its own wording.
 The exam PDF is the source of truth for prompts. The correction PDF is the
 source of truth for solutions, rubrics, and barèmes.
 
+All Codex review passes are visual-first. Use OCR or extracted text only as a
+helper for search, comparison, and initial transcription; visually verify the
+canonical PDF or stored page PNG before trusting the result. When Codex finds a
+fixable fidelity, crop, cleanup, duplicate, stale native data, or presentation
+issue, it should repair it through the normal draft/crop/native path instead of
+only reporting it.
+
+The pre-crop normalization pass, post-crop audit, and presentation pass each
+redo visual source-faithfulness checks. Post-crop is not crop-only; presentation
+is not layout-only. If either later pass finds a mismatch in prompt text,
+solutions, barèmes, native data, asset placement, crops, or source structure,
+Codex fixes it during that pass.
+
+In every pass, repeat visual inspection over dense, low-quality, messy,
+unusual, or high-risk regions until the draft is faithful or the unresolved
+uncertainty is specific enough for human judgment. This especially applies to
+crowded tables, formulas, diagrams, correction grids, poor scans, handwritten
+marks, and awkward layouts.
+
+Use a safely aggressive resolution stance for contradictions and ambiguities.
+Before handing off a hard case, zoom and re-check visually, compare nearby
+source context, compare exam and correction references, reconcile numbering and
+barème totals, and use OCR/search/model text only as helper evidence. If the
+evidence strongly supports a faithful reading or scan repair, make the fix.
+Official-source contradictions and typos should also be corrected when the
+correction is obvious and source-supported. Record a concrete audit note for the
+correction. Leave only non-obvious official-source contradictions or unresolved
+readings for human judgment, and make those notes concrete.
+
 The standard extraction sequence is:
 
 1. Inspect the canonical exam PDF and correction PDF.
@@ -134,6 +175,14 @@ Before saving the JSON, run a self-review pass:
 - compare each solution and rubric block back to the official correction
 - verify that no prompt, condition, unit, formula, point split, or repeated
   instruction was compressed away
+- repeat visual passes over dense, low-quality, messy, unusual, or high-risk
+  regions before treating them as reviewed
+- actively resolve contradictions and ambiguities from source evidence before
+  adding an uncertainty
+- correct obvious official-source contradictions or typos when the correction is
+  source-supported, and record the evidence
+- remove duplicate blocks/assets, stale native suggestions, stale placeholders,
+  and non-semantic scan/provider noise when source meaning is preserved
 - move uncertain readings into `uncertainties[]` instead of hiding them in
   polished prose
 
@@ -143,7 +192,9 @@ Take the reviewed extract JSON and turn it into the job's `draft_json`.
 
 At minimum, preserve extraction provenance in `draft.exam.metadata`:
 
-- route: `codex_app_reviewed_extraction`
+- route: the route used from `docs/admin-ingestion-workflow.md`, such as
+  `gemini_3_pro_batch_source_extract` plus `codex_normalization_and_audit`, or
+  `codex_app_reviewed_extraction` for direct fallback work
 - extracted timestamp
 - source artifact path
 
@@ -193,7 +244,8 @@ Use it to check:
 
 - hierarchy and exercise navigation
 - crop fit and image clarity
-- native table, graph, tree, and formula rendering
+- native table, tree, and formula rendering
+- graph/image fallback rendering under the current sealed graph policy
 - solution reveal behavior
 - mobile and desktop layout issues
 
@@ -260,8 +312,17 @@ Before handing off, verify all of the following.
 - standalone formulas use `latex` blocks when needed
 - prose with inline notation stays readable
 - duplicated chrome or numbering noise is removed from block text
-- tables, graphs, trees, and formula-heavy visuals are native blocks when that
-  is faithful and faster to review than an image
+- straightforward structured assets are native by default when the app can
+  render them faithfully
+- tables, simple correction tables, probability trees, sign tables, variation
+  tables, truth tables, and formula-heavy visuals are native blocks whenever
+  faithful native rendering is possible
+- tables, probability trees, sign tables, and variation tables are native-first,
+  not crop-first; do not hand obvious native-renderable structures to humans as
+  crop work
+- sign and variation tables use the best faithful renderer available; KaTeX is
+  acceptable when it best preserves the source layout, while a dedicated native
+  table renderer is better when it is more faithful and inspectable
 
 ### Correction Fidelity
 
@@ -276,9 +337,15 @@ Before handing off, verify all of the following.
 - assets are attached to the right question or exercise
 - assets that should remain structured blocks are not reduced carelessly to
   images
+- native-rendered assets are visually rechecked against the source page or crop
+  and repaired before handoff
+- crops for native-rendered tables/trees/sign/variation tables are provenance or
+  fallback, not human crop debt, unless Codex could not safely render them
 - crops are tight enough that the student-side preview looks intentional
 - any remaining full-page or broad placeholder crops are explicitly called out
   and are not publish-ready
+- duplicate assets, stale native suggestions, and cleanup noise are fixed before
+  handoff whenever they can be fixed without changing source meaning
 
 ### Readability
 
@@ -296,7 +363,7 @@ When handing off to the human reviewer, report:
 - which extraction route was used
 - whether the draft was created fresh or refreshed
 - what major normalization fixes were applied
-- any remaining risks or open questions
+- any remaining risks or open questions that could not be safely fixed
 
 Do not claim the draft is verified unless it was actually reviewed against the
 PDFs.

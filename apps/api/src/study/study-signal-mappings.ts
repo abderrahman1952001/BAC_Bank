@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
 
-export type SignalSkillMapping = {
+export type SignalLearningTargetMapping = {
   weight: Prisma.Decimal;
   isPrimary: boolean;
-  skill: {
+  learningTarget: {
     id: string;
     code: string;
     name: string;
@@ -23,13 +23,13 @@ export type SignalTopic = {
     code: string;
     name: string;
   };
-  skillMappings: SignalSkillMapping[];
+  learningTargetMappings: SignalLearningTargetMapping[];
 };
 
-export type EffectiveSignalSkillMapping = {
+export type EffectiveSignalLearningTargetMapping = {
   weight: number;
   isPrimary: boolean;
-  skill: {
+  learningTarget: {
     id: string;
     code: string;
     name: string;
@@ -37,21 +37,22 @@ export type EffectiveSignalSkillMapping = {
 };
 
 export function selectSignalTopics(input: {
-  questionSkills: SignalSkillMapping[];
-  exerciseSkills: SignalSkillMapping[];
+  questionLearningTargets: SignalLearningTargetMapping[];
+  exerciseLearningTargets: SignalLearningTargetMapping[];
   questionTopics: SignalTopic[];
   exerciseTopics: SignalTopic[];
   requestedSubjectCode: string | null;
 }) {
   const allowUnmappedTopics =
-    input.questionSkills.length > 0 || input.exerciseSkills.length > 0;
+    input.questionLearningTargets.length > 0 ||
+    input.exerciseLearningTargets.length > 0;
 
   const filterBySubject = (topics: SignalTopic[]) =>
     topics.filter(
       (topic) =>
         (!input.requestedSubjectCode ||
           topic.subject.code === input.requestedSubjectCode) &&
-        (allowUnmappedTopics || topic.skillMappings.length > 0),
+        (allowUnmappedTopics || topic.learningTargetMappings.length > 0),
     );
 
   const directQuestionTopics = filterBySubject(
@@ -65,45 +66,47 @@ export function selectSignalTopics(input: {
   return filterBySubject(uniqueSignalTopics(input.exerciseTopics));
 }
 
-export function selectSignalSkillMappings(input: {
-  questionSkills: SignalSkillMapping[];
-  exerciseSkills: SignalSkillMapping[];
+export function selectSignalLearningTargetMappings(input: {
+  questionLearningTargets: SignalLearningTargetMapping[];
+  exerciseLearningTargets: SignalLearningTargetMapping[];
   topics: SignalTopic[];
   requestedSubjectCode: string | null;
 }) {
-  const filterBySubject = (mappings: SignalSkillMapping[]) =>
+  const filterBySubject = (mappings: SignalLearningTargetMapping[]) =>
     mappings.filter(
       (mapping) =>
         !input.requestedSubjectCode ||
-        mapping.skill.subject.code === input.requestedSubjectCode,
+        mapping.learningTarget.subject.code === input.requestedSubjectCode,
     );
 
-  const directQuestionSkills = normalizeSignalSkillMappings(
-    filterBySubject(input.questionSkills),
+  const directQuestionTargets = normalizeSignalLearningTargetMappings(
+    filterBySubject(input.questionLearningTargets),
   );
 
-  if (directQuestionSkills.length) {
-    return directQuestionSkills;
+  if (directQuestionTargets.length) {
+    return directQuestionTargets;
   }
 
-  const directExerciseSkills = normalizeSignalSkillMappings(
-    filterBySubject(input.exerciseSkills),
+  const directExerciseTargets = normalizeSignalLearningTargetMappings(
+    filterBySubject(input.exerciseLearningTargets),
   );
 
-  if (directExerciseSkills.length) {
-    return directExerciseSkills;
+  if (directExerciseTargets.length) {
+    return directExerciseTargets;
   }
 
-  return normalizeSignalSkillMappings(
-    input.topics.flatMap((topic) => topic.skillMappings),
+  return normalizeSignalLearningTargetMappings(
+    input.topics.flatMap((topic) => topic.learningTargetMappings),
   );
 }
 
-export function normalizeSignalSkillMappings(mappings: SignalSkillMapping[]) {
-  const bySkillId = new Map<string, EffectiveSignalSkillMapping>();
+function normalizeSignalLearningTargetMappings(
+  mappings: SignalLearningTargetMapping[],
+) {
+  const byLearningTargetId = new Map<string, EffectiveSignalLearningTargetMapping>();
 
   for (const mapping of mappings) {
-    const existing = bySkillId.get(mapping.skill.id);
+    const existing = byLearningTargetId.get(mapping.learningTarget.id);
 
     if (existing) {
       existing.weight += Number(mapping.weight);
@@ -111,18 +114,18 @@ export function normalizeSignalSkillMappings(mappings: SignalSkillMapping[]) {
       continue;
     }
 
-    bySkillId.set(mapping.skill.id, {
+    byLearningTargetId.set(mapping.learningTarget.id, {
       weight: Number(mapping.weight),
       isPrimary: mapping.isPrimary,
-      skill: {
-        id: mapping.skill.id,
-        code: mapping.skill.code,
-        name: mapping.skill.name,
+      learningTarget: {
+        id: mapping.learningTarget.id,
+        code: mapping.learningTarget.code,
+        name: mapping.learningTarget.name,
       },
     });
   }
 
-  return Array.from(bySkillId.values());
+  return Array.from(byLearningTargetId.values());
 }
 
 function uniqueSignalTopics(topics: SignalTopic[]) {

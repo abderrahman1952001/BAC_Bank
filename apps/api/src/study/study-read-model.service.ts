@@ -16,7 +16,7 @@ import {
   getReviewReasonPriority,
 } from './study-review-signals';
 import {
-  selectSignalSkillMappings,
+  selectSignalLearningTargetMappings,
   selectSignalTopics,
 } from './study-signal-mappings';
 
@@ -35,8 +35,8 @@ type TopicRollupAggregate = {
   weaknessScore: number;
 };
 
-type SkillRollupAggregate = {
-  skillId: string;
+type LearningTargetRollupAggregate = {
+  learningTargetId: string;
   attemptedQuestions: number;
   correctCount: number;
   incorrectCount: number;
@@ -104,11 +104,11 @@ export class StudyReadModelService {
             updatedAt: true,
             questionNode: {
               select: {
-                skillMappings: {
+                learningTargetMappings: {
                   select: {
                     weight: true,
                     isPrimary: true,
-                    skill: {
+                    learningTarget: {
                       select: {
                         id: true,
                         code: true,
@@ -137,11 +137,11 @@ export class StudyReadModelService {
                             name: true,
                           },
                         },
-                        skillMappings: {
+                        learningTargetMappings: {
                           select: {
                             weight: true,
                             isPrimary: true,
-                            skill: {
+                            learningTarget: {
                               select: {
                                 id: true,
                                 code: true,
@@ -167,11 +167,11 @@ export class StudyReadModelService {
                 exerciseNodeId: true,
                 exerciseNode: {
                   select: {
-                    skillMappings: {
+                    learningTargetMappings: {
                       select: {
                         weight: true,
                         isPrimary: true,
-                        skill: {
+                        learningTarget: {
                           select: {
                             id: true,
                             code: true,
@@ -200,11 +200,11 @@ export class StudyReadModelService {
                                 name: true,
                               },
                             },
-                            skillMappings: {
+                            learningTargetMappings: {
                               select: {
                                 weight: true,
                                 isPrimary: true,
-                                skill: {
+                                learningTarget: {
                                   select: {
                                     id: true,
                                     code: true,
@@ -264,13 +264,15 @@ export class StudyReadModelService {
       ]);
 
     const topicRollups = new Map<string, TopicRollupAggregate>();
-    const skillRollups = new Map<string, SkillRollupAggregate>();
+    const learningTargetRollups =
+      new Map<string, LearningTargetRollupAggregate>();
     const reviewQueueItems = new Map<string, ReviewQueueAggregate>();
 
     for (const signal of questionSignals) {
       const topics = selectSignalTopics({
-        questionSkills: signal.questionNode.skillMappings,
-        exerciseSkills: signal.sessionExercise.exerciseNode.skillMappings,
+        questionLearningTargets: signal.questionNode.learningTargetMappings,
+        exerciseLearningTargets:
+          signal.sessionExercise.exerciseNode.learningTargetMappings,
         questionTopics: signal.questionNode.curriculumNodeMappings.map(
           (mapping) => mapping.curriculumNode,
         ),
@@ -279,9 +281,10 @@ export class StudyReadModelService {
         ),
         requestedSubjectCode: null,
       });
-      const skillMappings = selectSignalSkillMappings({
-        questionSkills: signal.questionNode.skillMappings,
-        exerciseSkills: signal.sessionExercise.exerciseNode.skillMappings,
+      const learningTargetMappings = selectSignalLearningTargetMappings({
+        questionLearningTargets: signal.questionNode.learningTargetMappings,
+        exerciseLearningTargets:
+          signal.sessionExercise.exerciseNode.learningTargetMappings,
         topics,
         requestedSubjectCode: null,
       });
@@ -341,9 +344,10 @@ export class StudyReadModelService {
         topicRollups.set(topic.id, current);
       }
 
-      for (const mapping of skillMappings) {
-        const current = skillRollups.get(mapping.skill.id) ?? {
-          skillId: mapping.skill.id,
+      for (const mapping of learningTargetMappings) {
+        const current =
+          learningTargetRollups.get(mapping.learningTarget.id) ?? {
+            learningTargetId: mapping.learningTarget.id,
           attemptedQuestions: 0,
           correctCount: 0,
           incorrectCount: 0,
@@ -388,7 +392,7 @@ export class StudyReadModelService {
 
         current.lastSeenAt = this.maxDate(current.lastSeenAt, lastSeenAt);
         current.weaknessScore += weaknessWeight * mapping.weight;
-        skillRollups.set(mapping.skill.id, current);
+        learningTargetRollups.set(mapping.learningTarget.id, current);
       }
 
       for (const reason of collectQuestionReviewReasons(signal)) {
@@ -415,7 +419,7 @@ export class StudyReadModelService {
         userId,
       },
     });
-    await db.studentSkillRollup.deleteMany({
+    await db.studentLearningTargetRollup.deleteMany({
       where: {
         userId,
       },
@@ -440,11 +444,11 @@ export class StudyReadModelService {
       });
     }
 
-    if (skillRollups.size > 0) {
-      await db.studentSkillRollup.createMany({
-        data: Array.from(skillRollups.values()).map((rollup) => ({
+    if (learningTargetRollups.size > 0) {
+      await db.studentLearningTargetRollup.createMany({
+        data: Array.from(learningTargetRollups.values()).map((rollup) => ({
           userId,
-          skillId: rollup.skillId,
+          learningTargetId: rollup.learningTargetId,
           attemptedQuestions: rollup.attemptedQuestions,
           correctCount: rollup.correctCount,
           incorrectCount: rollup.incorrectCount,

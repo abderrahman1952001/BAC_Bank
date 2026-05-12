@@ -162,20 +162,20 @@ describe('IngestionPublishedAssetsService', () => {
         id: 'page-1',
         storageKey: 'page-1.png',
         document: {
-          jobId: 'job-1',
+          paperSourceId: 'paper-source-1',
         },
       })
       .mockResolvedValueOnce({
         id: 'page-2',
         storageKey: 'page-2.png',
         document: {
-          jobId: 'job-1',
+          paperSourceId: 'paper-source-1',
         },
       });
     storageClient.getObjectBuffer.mockResolvedValue(await buildPageBuffer());
 
     const preparedAssets = await service.preparePublishedAssets({
-      jobId: 'job-1',
+      paperSourceId: 'paper-source-1',
       draft,
       paperId: 'paper-1',
       storageClient: storageClient as never,
@@ -206,10 +206,93 @@ describe('IngestionPublishedAssetsService', () => {
     });
   });
 
+  it('applies cleanup masks before uploading published assets', async () => {
+    prisma.sourcePage.findUnique.mockResolvedValue({
+      id: 'page-1',
+      storageKey: 'page-1.png',
+      document: {
+        paperSourceId: 'paper-source-1',
+      },
+    });
+    storageClient.getObjectBuffer.mockResolvedValue(
+      await sharp({
+        create: {
+          width: 6,
+          height: 6,
+          channels: 3,
+          background: {
+            r: 0,
+            g: 0,
+            b: 0,
+          },
+        },
+      })
+        .png()
+        .toBuffer(),
+    );
+
+    await service.preparePublishedAssets({
+      paperSourceId: 'paper-source-1',
+      draft: {
+        ...draft,
+        assets: [
+          {
+            ...draft.assets[0],
+            cropBox: {
+              x: 0,
+              y: 0,
+              width: 4,
+              height: 4,
+            },
+            cleanupRequired: true,
+            cleanupMasks: [
+              {
+                x: 1,
+                y: 1,
+                width: 2,
+                height: 1,
+                fill: 'white',
+              },
+            ],
+          },
+        ],
+        variants: [
+          {
+            ...draft.variants[0],
+            nodes: [
+              {
+                ...draft.variants[0].nodes[0],
+                blocks: [draft.variants[0].nodes[0].blocks[0]],
+              },
+            ],
+          },
+        ],
+      },
+      paperId: 'paper-1',
+      storageClient: storageClient as never,
+    });
+
+    const [uploaded] = storageClient.putObject.mock.calls[0] ?? [];
+    expect(uploaded).toBeDefined();
+    const raw = await sharp(uploaded!.body).raw().toBuffer({
+      resolveWithObject: true,
+    });
+    const channels = raw.info.channels;
+    const pixelOffset = (1 * raw.info.width + 1) * channels;
+    const untouchedOffset = 0;
+
+    expect([...raw.data.subarray(pixelOffset, pixelOffset + 3)]).toEqual([
+      255, 255, 255,
+    ]);
+    expect([
+      ...raw.data.subarray(untouchedOffset, untouchedOffset + 3),
+    ]).toEqual([0, 0, 0]);
+  });
+
   it('rejects missing assets referenced by draft blocks', async () => {
     await expect(
       service.preparePublishedAssets({
-        jobId: 'job-1',
+        paperSourceId: 'paper-source-1',
         draft: {
           ...draft,
           assets: [],
@@ -228,7 +311,7 @@ describe('IngestionPublishedAssetsService', () => {
         id: 'page-1',
         storageKey: 'page-1.png',
         document: {
-          jobId: 'job-1',
+          paperSourceId: 'paper-source-1',
         },
       })
       .mockResolvedValueOnce(null);
@@ -236,7 +319,7 @@ describe('IngestionPublishedAssetsService', () => {
 
     await expect(
       service.preparePublishedAssets({
-        jobId: 'job-1',
+        paperSourceId: 'paper-source-1',
         draft,
         paperId: 'paper-1',
         storageClient: storageClient as never,
@@ -269,6 +352,16 @@ describe('IngestionPublishedAssetsService', () => {
             width: 3,
             height: 4,
           },
+          cleanupRequired: true,
+          cleanupMasks: [
+            {
+              x: 10,
+              y: 12,
+              width: 20,
+              height: 24,
+              fill: 'white',
+            },
+          ],
         },
         'http://localhost:3001',
       ),
@@ -289,6 +382,17 @@ describe('IngestionPublishedAssetsService', () => {
           width: 3,
           height: 4,
         },
+        cleanupRequired: true,
+        cleanupMaskCount: 1,
+        cleanupMasks: [
+          {
+            x: 10,
+            y: 12,
+            width: 20,
+            height: 24,
+            fill: 'white',
+          },
+        ],
       },
     });
   });

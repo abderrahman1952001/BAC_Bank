@@ -353,15 +353,15 @@ export function TrainingWeakPointBuilder({
             </section>
 
             <section className="builder-preview-card">
-              <h3>المهارات الأكثر تأثراً</h3>
+              <h3>أهداف التعلم الأكثر تأثراً</h3>
               <div className="chip-grid">
-                {selectedInsight.topSkills.map((skill) => (
+                {selectedInsight.topLearningTargets.map((learningTarget) => (
                   <Badge
-                    key={skill.code}
+                    key={learningTarget.code}
                     variant="secondary"
                     className="px-3 py-1.5"
                   >
-                    {skill.name}
+                    {learningTarget.name}
                   </Badge>
                 ))}
               </div>

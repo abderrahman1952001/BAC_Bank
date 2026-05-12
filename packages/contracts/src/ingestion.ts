@@ -49,6 +49,10 @@ export type DraftCropBox = {
   height: number;
 };
 
+export type DraftAssetCleanupMask = DraftCropBox & {
+  fill: "white";
+};
+
 export type DraftAsset = {
   id: string;
   sourcePageId: string;
@@ -58,6 +62,8 @@ export type DraftAsset = {
   role: DraftBlockRole;
   classification: DraftAssetClassification;
   cropBox: DraftCropBox;
+  cleanupRequired?: boolean;
+  cleanupMasks?: DraftAssetCleanupMask[];
   label: string | null;
   notes: string | null;
   nativeSuggestion?: {
@@ -252,6 +258,54 @@ export type UpdateIngestionJobPayload = {
   review_notes?: string | null;
 };
 
+export type AdminIngestionCropQueueItem = {
+  job_id: string;
+  job_label: string;
+  job_status: AdminIngestionStatus;
+  draft_kind: AdminIngestionDraftKind;
+  year: number;
+  subject_code: string | null;
+  stream_codes: string[];
+  asset_id: string;
+  asset_label: string | null;
+  classification: DraftAssetClassification;
+  role: DraftBlockRole;
+  variant_code: DraftVariantCode | null;
+  source_page_id: string;
+  source_document_kind: DraftDocumentKind;
+  source_page_number: number;
+  source_page_width: number;
+  source_page_height: number;
+  page_image_url: string;
+  asset_preview_url: string;
+  crop_box: DraftCropBox;
+  placeholder: boolean;
+  needs_cleanup: boolean;
+  cleanup_mask_count: number;
+  notes: string | null;
+  linked_node_id: string | null;
+  linked_node_path: string[];
+  updated_at: string | Date;
+};
+
+export type AdminIngestionCropQueueResponse = {
+  summary: {
+    job_count: number;
+    placeholder_count: number;
+  };
+  data: AdminIngestionCropQueueItem[];
+};
+
+export type UpdateIngestionAssetCropPayload = {
+  crop_box: DraftCropBox;
+  needs_cleanup?: boolean;
+  notes?: string | null;
+};
+
+export type UpdateIngestionAssetCropResponse = {
+  item: AdminIngestionCropQueueItem;
+};
+
 export type PublishIngestionJobResponse = {
   job_id: string;
   published_paper_id: string;
@@ -330,6 +384,15 @@ export const draftCropBoxSchema: z.ZodType<DraftCropBox> = z.object({
   height: z.number(),
 });
 
+export const draftAssetCleanupMaskSchema: z.ZodType<DraftAssetCleanupMask> =
+  z.object({
+    x: z.number(),
+    y: z.number(),
+    width: z.number(),
+    height: z.number(),
+    fill: z.literal("white"),
+  });
+
 const draftAssetNativeSuggestionSchema = z.object({
   type: draftAssetNativeSuggestionTypeSchema,
   value: z.string(),
@@ -348,6 +411,8 @@ export const draftAssetSchema: z.ZodType<DraftAsset> = z.object({
   role: draftBlockRoleSchema,
   classification: draftAssetClassificationSchema,
   cropBox: draftCropBoxSchema,
+  cleanupRequired: z.boolean().optional(),
+  cleanupMasks: z.array(draftAssetCleanupMaskSchema).optional(),
   label: z.string().nullable(),
   notes: z.string().nullable(),
   nativeSuggestion: draftAssetNativeSuggestionSchema.nullable().optional(),
@@ -712,9 +777,34 @@ function normalizeAsset(value: unknown): DraftAsset | null {
     role: normalizeBlockRole(raw.role) ?? "PROMPT",
     classification: normalizeAssetKind(raw.classification) ?? "image",
     cropBox: normalizeCropBox(raw.cropBox),
+    cleanupRequired: raw.cleanupRequired === true,
+    cleanupMasks: normalizeCleanupMasks(raw.cleanupMasks),
     label: normalizeOptionalString(raw.label),
     notes: normalizeOptionalString(raw.notes),
     nativeSuggestion: normalizeAssetNativeSuggestion(raw.nativeSuggestion),
+  };
+}
+
+function normalizeCleanupMasks(value: unknown): DraftAssetCleanupMask[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((entry) => normalizeCleanupMask(entry))
+    .filter((entry): entry is DraftAssetCleanupMask => Boolean(entry));
+}
+
+function normalizeCleanupMask(value: unknown): DraftAssetCleanupMask | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  const raw = value as JsonRecord;
+
+  return {
+    ...normalizeCropBox(raw),
+    fill: "white",
   };
 }
 
@@ -1096,6 +1186,58 @@ export const updateIngestionJobPayloadSchema: z.ZodType<UpdateIngestionJobPayloa
     review_notes: z.string().nullable().optional(),
   });
 
+const adminIngestionCropQueueItemSchema: z.ZodType<AdminIngestionCropQueueItem> =
+  z.object({
+    job_id: z.string(),
+    job_label: z.string(),
+    job_status: adminIngestionStatusSchema,
+    draft_kind: adminIngestionDraftKindSchema,
+    year: z.number(),
+    subject_code: z.string().nullable(),
+    stream_codes: z.array(z.string()),
+    asset_id: z.string(),
+    asset_label: z.string().nullable(),
+    classification: draftAssetClassificationSchema,
+    role: draftBlockRoleSchema,
+    variant_code: draftVariantCodeSchema.nullable(),
+    source_page_id: z.string(),
+    source_document_kind: draftDocumentKindSchema,
+    source_page_number: z.number(),
+    source_page_width: z.number(),
+    source_page_height: z.number(),
+    page_image_url: z.string(),
+    asset_preview_url: z.string(),
+    crop_box: draftCropBoxSchema,
+    placeholder: z.boolean(),
+    needs_cleanup: z.boolean(),
+    cleanup_mask_count: z.number().int().min(0),
+    notes: z.string().nullable(),
+    linked_node_id: z.string().nullable(),
+    linked_node_path: z.array(z.string()),
+    updated_at: dateLikeSchema,
+  });
+
+export const adminIngestionCropQueueResponseSchema: z.ZodType<AdminIngestionCropQueueResponse> =
+  z.object({
+    summary: z.object({
+      job_count: z.number().int().min(0),
+      placeholder_count: z.number().int().min(0),
+    }),
+    data: z.array(adminIngestionCropQueueItemSchema),
+  });
+
+export const updateIngestionAssetCropPayloadSchema: z.ZodType<UpdateIngestionAssetCropPayload> =
+  z.object({
+    crop_box: draftCropBoxSchema,
+    needs_cleanup: z.boolean().optional(),
+    notes: z.string().nullable().optional(),
+  });
+
+export const updateIngestionAssetCropResponseSchema: z.ZodType<UpdateIngestionAssetCropResponse> =
+  z.object({
+    item: adminIngestionCropQueueItemSchema,
+  });
+
 export function parseAdminIngestionJobListResponse(value: unknown) {
   return parseContract(
     adminIngestionJobListResponseSchema,
@@ -1117,5 +1259,29 @@ export function parseUpdateIngestionJobPayload(value: unknown) {
     updateIngestionJobPayloadSchema,
     value,
     "UpdateIngestionJobPayload",
+  );
+}
+
+export function parseAdminIngestionCropQueueResponse(value: unknown) {
+  return parseContract(
+    adminIngestionCropQueueResponseSchema,
+    value,
+    "AdminIngestionCropQueueResponse",
+  );
+}
+
+export function parseUpdateIngestionAssetCropPayload(value: unknown) {
+  return parseContract(
+    updateIngestionAssetCropPayloadSchema,
+    value,
+    "UpdateIngestionAssetCropPayload",
+  );
+}
+
+export function parseUpdateIngestionAssetCropResponse(value: unknown) {
+  return parseContract(
+    updateIngestionAssetCropResponseSchema,
+    value,
+    "UpdateIngestionAssetCropResponse",
   );
 }

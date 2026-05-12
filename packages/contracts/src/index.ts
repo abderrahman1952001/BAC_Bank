@@ -20,6 +20,7 @@ export {
   parseCourseSubjectResponse,
   parseCourseTopicResponse,
 } from "./courses.js";
+export * from "./flashcards.js";
 export * from "./ingestion.js";
 export {
   parseCatalogResponse,

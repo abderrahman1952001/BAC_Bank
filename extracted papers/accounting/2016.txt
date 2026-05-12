@@ -1,0 +1,2018 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "بكالوريا 2016 - تسيير محاسبي ومالي - تسيير واقتصاد",
+    "year": 2016,
+    "streamCode": "GE",
+    "subjectCode": "Comptabilite",
+    "sessionType": "normal",
+    "durationMinutes": 270,
+    "totalPoints": 20,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_e1",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "الجزء الأول: تحليل الميزانية الوظيفية وتمويل المشاريع الاستثمارية (08 نقاط)",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p1",
+          "parentLocalId": "s1_e1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "أولا",
+          "maxPoints": 4.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بهدف دراسة الوضعية المالية لمؤسسة \" الطاسيلي\" قُدمت لك الميزانية الوظيفية المختصرة التالية بتاريخ 31/12/2015:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| الأصول | المبالغ | % | الخصوم | المبالغ | % |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| الاستخدامات الثابتة | ........ | ..... | الموارد الثابتة: | 1800000 | ..... |\n| | | | الموارد الخاصة | ..... | ..... |\n| | | | الديون المالية | 430000 | ..... |\n| الأصول المتداولة: | 900000 | ..... | الخصوم المتداولة: | ..... | ..... |\n| للاستغلال | 600000 | ..... | للاستغلال | ..... | 18 |\n| خارج الاستغلال | ........ | ..... | خارج الاستغلال | ..... | ..... |\n| خزينة الأصول | ........ | ..... | خزينة الخصوم | 90000 | ..... |\n| المجموع | ........ | ..... | المجموع | ..... | ..... |"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "معلومات إضافية:\nرأس المال العامل الصافي الإجمالي = - 300000 دج (سالب).\nالخزينة الصافية = 30000 دج"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p1_q1",
+          "parentLocalId": "s1_e1_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1-",
+          "maxPoints": 4.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أكمل الميزانية الوظيفية المختصرة السابقة مع إظهار العمليات الحسابية على ورقة الإجابة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- إتمام الميزانية الوظيفية :\n*رأس المال العامل الصافي الإجمالي(FRNG) = الموارد الثابتة – الاستخدامات الثابتة\n-300000 = 1800000 - الاستخدامات الثابتة و منه الاستخدامات الثابتة = 2100000 دج\n*مجموع الميزانية = الاستخدامات الثابتة + الأصول المتداولة = 2100000 + 900000\nمجموع الميزانية = 3000000 دج\n*الموارد الثابتة + الخصوم المتداولة = مجموع الميزانية\n1800000 + الخصوم المتداولة = 3000000 و منه الخصوم المتداولة = 1200000 دج\n*الخصوم المتداولة للاستغلال = 3000000 × 0,18 = 540000 دج\n*الخصوم المتداولة خارج الاستغلال = الخصوم المتداولة - خ.م للاستغلال - خزينة الخصوم\nالخصوم المتداولة خارج الاستغلال = 1200000 - 540000 - 90000 = 570000 دج\nخزينة الأصول = خزينة الخصوم + الخزينة الصافية = 90000 + 30000 = 120000 دج\nخزينة الأصول = 120000 دج\n*الموارد الخاصة = الموارد الثابتة – الديون المالية = 1800000 - 430000 = 1370000 دج\n*أ.المتداولة خ الاستغلال = الأصول المتداولة - الأصول المتداولة للاستغلال - خزينة الأصول\nالأصول المتداولة خارج الاستغلال = 900000 - 600000 - 120000 = 180000 دج"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "الميزانية الوظيفية:\n| الأصول | المبالغ | % | الخصوم | المبالغ | % |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| الاستخدامات الثابتة | 2100000 | 70 | الموارد الثابتة | 1800000 | 60 |\n| | | | الموارد الخاصة | 1370000 | 45,67 |\n| | | | الديون المالية | 430000 | 14,33 |\n| الأصول المتداولة | 900000 | 30 | الخصوم المتداولة | 1200000 | 40 |\n| - للاستغلال | 600000 | 20 | - للاستغلال | 540000 | 18 |\n| - خارج الاستغلال | 180000 | 6 | - خارج الاستغلال | 570000 | 19 |\n| - خزينة الأصول | 120000 | 4 | - خزينة الخصوم | 90000 | 03 |\n| المجموع | 3000000 | 100 | المجموع | 3000000 | 100 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x7 + 0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p1_q2",
+          "parentLocalId": "s1_e1_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2-",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب ما يلي:\n- احتياجات رأس المال العامل (BFR).\n- نسبة تغطية الاستخدامات الثابتة.\n- نسبة الاستدانة المالية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2) حساب كلا من:\nأ) احتياجات رأس المال العامل (BFR) :\nBFR = أصول متداولة ما عدا خزينة الأصول - خصوم متداولة ما عدا خزينة الخصوم\nBFR=(600000+180000)-(540000+570000)=-330000 دج\nب) نسبة تغطية الاستخدامات الثابتة = الموارد الثابتة ÷ الاستخدامات الثابتة \nنسبة تغطية الاستخدامات الثابتة = 1800000 ÷ 2100000 = 0,857\nج) نسبة الاستدانة المالية = الاستدانة المالية ÷ التمويل الخاص\nنسبة الاستدانة المالية = (الديون المالية + خزينة الخصوم) ÷ التمويل الخاص\nنسبة الاستدانة المالية = (430000 + 90000) ÷ 1370000 = 0,379"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 لكل حساب (المجموع 0,75)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p1_q3",
+          "parentLocalId": "s1_e1_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "علّق على الوضعية المالية للمؤسسة مقترحا حلولا لها في حالة عدم توفر شروط الهيكلة المالية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3) التعليق:\nالمؤسسة لم تحقق شروط التوازن المالي، كون أن FRNG سالب مما يشير إلى أنها لم تتمكن من تغطية استخداماتها الثابتة انطالقا من الموارد الثابتة\nالحلول المقترحة:\nعلى المؤسسة الرفع من قيمة (FRNG) من خلال الزيادة (الرفع) في رأس مال المؤسسة أو اللجوء للاقتراض (قروض طويلة الأجل)، أو التنازل عن بعض التثبيتات غير الضرورية مثل التثبيتات المالية."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "التعليق 0,25 ، الحلول 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p1_q4",
+          "parentLocalId": "s1_e1_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4-",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "من أجل رفع نسبة تغطية الاستخدامات الثابتة إلى 1,1، تبنّت المؤسسة الحل التالي:\nرفع الموارد الخاصة بـ 310000 دج واقتراض مبلغ من البنك."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p1_q4_a",
+          "parentLocalId": "s1_e1_p1_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حدّد مبلغ القرض."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4) أ –تحديد مبلغ القرض:\nنسبة تغطية الاستخدامات الثابتة=1,1 وبالتالي:\nالموارد الثابتة =1,1×الاستخدامات الثابتة=1,1×2100000=2310000 دج\nالموارد الثابتة=2310000 دج\nالموارد الخاصة=1370000+310000=1680000 دج\nالديون المالية=430000+مبلغ القرض\nالموارد الثابتة = الموارد الخاصة +الديون المالية\n2310000=1680000+430000+مبلغ القرض و منه مبلغ القرض=200000دج"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p1_q4_b",
+          "parentLocalId": "s1_e1_p1_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "هل يوافق البنك على منح القرض للمؤسسة؟ برّر إجابتك."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب) نعم يوافق البنك على طلب المؤسسة في الحصول على القرض\nلأن نسبة الاستدانة المالية بعد الحصول على القرض تبقى دون حدها الأقصى(0,5)\nنسبة الاستدانة المالية= (430000+200000+90000) ÷ (1370000+310000)=0,42"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2×0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p2",
+          "parentLocalId": "s1_e1",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "ثانيا",
+          "maxPoints": 3.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نفرض أن المؤسسة تحصلت بتاريخ 02/01/2016 على قرض من \"بنك التنمية المحلية\"، يُسدد بواسطة 04 دفعات سنوية ثابتة بفائدة مركبة، الدفعة الأولى تُستحق بتاريخ 31/12/2016.\nمن جدول استهلاك هذا القرض استخرجنا المعلومات التالية:\n- الاستهلاك الأول يساوي 43094,16 دج.\n- الاستهلاك الثاني يساوي 47403,58 دج."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p2_q1",
+          "parentLocalId": "s1_e1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب معدل الفائدة المطبق ($i$)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "i = 10\\% \\text{ ومنه } (1+i) = \\frac{A_2}{A_1} = \\frac{47403,58}{43094,16} = 1,1"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p2_q2",
+          "parentLocalId": "s1_e1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب مبلغ الدفعة الثابتة ($a$)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "a = A_1(1+i)^n \\text{ و منه } a = 43094,16(1,1)^4 = 63094,16"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p2_q3",
+          "parentLocalId": "s1_e1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب مبلغ القرض ($V_0$)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "V_0 = a \\cdot \\frac{1 - (1+i)^{-n}}{i}\nV_0 = 63094,16 \\cdot \\frac{1 - (1,1)^{-4}}{0,1} = 200000"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p2_q4",
+          "parentLocalId": "s1_e1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4-",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنجز السطرين الثاني والأخير من جدول استهلاك القرض."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| السنوات | المبلغ في نهاية السنة | الفائدة | الاستهلاك | الدفعة | المبلغ في نهاية السنة |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| 2016 | ..... | ..... | ..... | ..... | ..... |\n| 2017 | 156905,80 | 15690,58 | 47403,58 | 63094,16 | 109502,22 |\n| 2018 | ..... | ..... | ..... | ..... | ..... |\n| 2019 | 57358,3 | 5735,83 | 57358,3 | 63094,16 | 0 |"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "العمليات الحسابية:\nالسطر الثاني: $A_2 = 47403,58$ ، $a = 63094,16$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "I_2 = a - A_2 \\Rightarrow I_2 = 63094,16 - 47403,58 = 15690,58\nV_1 = \\frac{I_2}{i} = \\frac{15690,58}{0,1} = 156905,80\nV_2 = V_1 - A_2 = 156905,8 - 47403,58 = 109502,22"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "السطر الأخير:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "A_4 = A_2(1+i)^2\nA_4 = 47403,58(1,1)^2 = 57358,33\nI_4 = a - A_4 = 63094,16 - 57358,33 = 5735,83\nV_3 = \\frac{I_4}{i} = \\frac{5735,83}{0,1} = 57358,3\nV_4 = V_3 - A_4 = 57358,3 - 57358,3 = 0"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الجدول 0,25x2 ، العمليات 3x0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e1_p2_q5",
+          "parentLocalId": "s1_e1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سجّل في الدفتر اليومي لمؤسسة \"الطاسيلي\" عملية تسديد الدفعة الأخيرة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 57358,33 | | إقترضات لدى مؤسسات القرض | 164 |\n| 5735,83 | | أعباء الفوائد | 661 |\n| | 63094,16 | البنوك الحسابات الجارية | 512 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الجزء الثاني: حساب وتحليل التكاليف الكلية (08 نقاط)",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تنتج مؤسسة \"الساحل\" وتبيع نوعين من المنتجات \" كراسي \" و\" طاوالت \" باستعمال مادة \"البلاستيك\" و \" لوازم \" ولشهر مارس 2016 استخرجنا المعلومات التالية:\n1- وضعية المواد الأولية واللوازم والمنتجات تامة الصنع خلال الشهر:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| البيان | مخزون أول الشهر (الكمية) | مخزون أول الشهر (المبلغ الإجمالي دج) | مشتريات و إنتاج الشهر (الكمية) | مشتريات و إنتاج الشهر (المبلغ الإجمالي دج) | مخزون آخر الشهر (الكمية) | مخزون آخر الشهر (المبلغ الإجمالي دج) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| بلاستيك | 200 Kg | 22600 | 2400 Kg | 240000 | 180kg | ..؟.. |\n| لوازم | – | 5500 | – | 75000 | – | ..؟.. |\n| كراسي | 60 | 25550 | ..؟.. | ..؟.. | 40 | ..؟.. |\n| طاولات | 15 | 9775 | ..؟.. | ..؟.. | 10 | ..؟.. |"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "- أعباء الشراء المباشرة: بلغت 31500 دج توزع على البلاستيك واللوازم حسب ثمن الشراء.\n2- الاستعمالات:\nالجدول التالي يوضح الاستعمالات للوحدة المنتجة:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| البيــان | البلاستيك (Kg) | اللوازم (دج) | اليد العاملة المباشرة (دقيقة) |\n| :--- | :--- | :--- | :--- |\n| الكراسي | 1,5Kg | 50 | 15 |\n| الطاولات | 2,8Kg | 80 | 30 |"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ملاحظة:\n- الكمية المستعملة من البلاستيك في إنتاج الكراسي هي 1650 Kg.\n- تكلفة اليد العاملة 300 دج للساعة.\n3- الأعباء غير المباشرة:\nلُخصت في الجدول التالي مع اعتبار 5200 دج عناصر إضافية و 5000 دج أعباء غير معتبرة."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| البيـــان | الإدارة | الصيانة | التموين | القولبة | الإنهاء | التوزيع |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| مجموع التوزيع الأولي | 31950 | 36000 | 31950 | 33300 | 25475 | 23250 |\n| التوزيع الثانوي: | | | | | | |\n| - الإدارة | (100%) | 10% | 20% | 20% | 30% | 20% |\n| - الصيانة | 3 | (12) | 3 | 2 | 3 | 1 |\n| طبيعة وحدة العمل | | | 1000 دج من ثمن الشراء | Kg بلاستيك مستعمل | وحدة منتجة | وحدة مباعة |"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- المبيعات:\n- سعر بيع الكرسي الواحد 600 دج.\n- سعر بيع الطاولة الواحدة 1200 دج.\nملاحظة: تقيم الإخراجات بالتكلفة المتوسطة للوحدة المرجحة مع مخزون أول المدة (cmup)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2_q1",
+          "parentLocalId": "s1_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1-",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب الكمية المستعملة من البلاستيك."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تحديد الكمية المستعملة من البلاستيك:\nالاستعمالات = مخ1 + الإدخالات – مخ2\nالاستعمالات = 200 + 2400 – 180 = 2420 كلغ"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2_q2",
+          "parentLocalId": "s1_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب الكمية المنتجة لكل من الكراسي والطاولات."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- تحديد الكميات المنتجة من الكراسي و الطاولات:\nعدد الكراسي المنتجة = 1650 ÷ 1,5 = 1100 كرسي\nعدد الطاولات المنتجة = (2420-1650) ÷ 2,8 = 275 طاولة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25×2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2_q3",
+          "parentLocalId": "s1_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب الكمية المباعة لكل من الكراسي والطاولات."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- تحديد الكميات المباعة من الكراسي و الطاولات:\nالإخراجات= مخزون أول المدة + الإدخالات – مخزون آخر المدة\nعدد الكراسي المباعة = 60+1100-40 = 1120 كرسي\nعدد الطاولات المباعة = 15+275-10 = 280 طاولة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25×2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2_q4",
+          "parentLocalId": "s1_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4-",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنجز جدول توزيع الأعباء غير المباشرة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- إتمام جدول توزيع الأعباء غير المباشرة:\nنرمز بـ $x$ تكلفة قسم الإدارة و $y$ لتكلفة قسم الصيانة نحصل على:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{cases} x = 31950 + \\frac{3}{12}y \\\\ y = 36000 + 0,1x \\end{cases}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "و بحل الجملة نجد: $x = 42000$ و $y = 40200$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| البيان | الإدارة | الصيانة | التموين | القولبة | الإنهاء | التوزيع |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| مج التوزيع الأولي | 31950 | 36000 | 31950 | 33300 | 25475 | 23250 |\n| التوزيع الثانوي: | | | | | | |\n| الإدارة | -42000 | 4200 | 8400 | 8400 | 12600 | 8400 |\n| الصيانة | 10050 | -40200 | 10050 | 6700 | 10050 | 3350 |\n| مجموع التوزيع الثانوي | 0 | 0 | 50400 | 48400 | 48125 | 35000 |\n| طبيعة وحدة العمل | | | 1000دج من ثمن الشراء | Kg بلاستيك مستعمل | وحدة منتجة | وحدة مباعة |\n| عدد وحدات القياس | | | 315 | 2420 | 1375 | 1400 |\n| تكلفة وحدة القياس | | | 160 | 20 | 35 | 25 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الجملة وحلها 0,25x2 ، الجدول 0,25x4"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2_q5",
+          "parentLocalId": "s1_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5-",
+          "maxPoints": 1.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب تكلفة الشراء لكل من البلاستيك واللوازم."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "5- حساب تكلفة الشراء لكل من البلاستيك واللوازم:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| البيان | البلاستيك (ك) | البلاستيك (س.و) | البلاستيك (المبلغ) | اللوازم (ك) | اللوازم (س.و) | اللوازم (المبلغ) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| ثمن الشراء | 2400 | 100 | 240000 | - | - | 75000 |\n| مصاريف الشراء المباشرة | 240000 | 0,1 | 24000 | 75000 | 0,1 | 7500 |\n| م.الشراء.غ.المباشرة (التموين) | 240 | 160 | 38400 | 75 | 160 | 12000 |\n| تكلفة شراء الفترة | 2400 | 126 | 302400 | - | - | 94500 |"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حساب التكلفة الوسطية المرجحة:\nت و م = (تكلفة مخ1 + تكلفة الشراء) ÷ (كمية مخ1 + كمية الشراء)\nت و م للبلاستيك = (22600 + 302400) ÷ (200 + 2400) = 125 دج لـ kg"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,75×2 للجدول ، 0,25 للتكلفة الوسطية"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2_q6",
+          "parentLocalId": "s1_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6-",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب تكلفة الإنتاج لكل من الكراسي والطاولات."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| البيان | الكراسي (ك) | الكراسي (س.و) | الكراسي (المبلغ) | الطاولات (ك) | الطاولات (س.و) | الطاولات (المبلغ) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| تكلفة المواد المستعملة: | | | | | | |\n| مادة البلاستيك | 1650 | 125 | 206250 | 770 | 125 | 96250 |\n| اللوازم | 1100 | 50 | 55000 | 275 | 80 | 22000 |\n| اليد العاملة المباشرة | 275 | 300 | 82500 | 137,5 | 300 | 41250 |\n| الأعباء غ. م. | | | | | | |\n| - القولبة | 1650 | 20 | 33000 | 770 | 20 | 15400 |\n| - الإنهاء | 1100 | 35 | 38500 | 275 | 35 | 9625 |\n| تكلفة إنتاج الفترة | 1100 | 377,5 | 415250 | 275 | 671 | 184525 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,75×2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e2_q7",
+          "parentLocalId": "s1_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 7,
+          "label": "7-",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب سعر التكلفة والنتيجة التحليلية لكل منتج ثم النتيجة التحليلية الصافية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التكلفة الوسطية المرجحة:\nت و م = (تكلفة مخ1 + تكلفة الإنتاج) ÷ (كمية مخ1 + كمية الإنتاج)\nت و م للكراسي = (25550 + 415250) ÷ (60 + 1100) = 380 دج للوحدة\nت و م للطاولات = (9775 + 184525) ÷ (15 + 275) = 670 دج للوحدة\n7- حساب سعر التكلفة والنتيجة التحليلية للمنتجين:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| البيان | الكراسي (ك) | الكراسي (س.و) | الكراسي (المبلغ) | الطاولات (ك) | الطاولات (س.و) | الطاولات (المبلغ) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| تكلفة الإنتاج المباع | 1120 | 380 | 425600 | 280 | 670 | 187600 |\n| م. التوزيع غير المباشرة | 1120 | 25 | 28000 | 280 | 25 | 7000 |\n| سعر التكلفة | 1120 | 405 | 453600 | 280 | 695 | 194600 |\n| المبيعات | 1120 | 600 | 672000 | 280 | 1200 | 336000 |\n| النتيجة التحليلية | 1120 | 195 | 218400 | 280 | 505 | 141400 |"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حساب النتيجة التحليلية الصافية:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| البيان | المبلغ |\n| :--- | :--- |\n| النتيجة التحليلية للمنتج (الكراسي) | 218400 |\n| النتيجة التحليلية للمنتج (الطاولات) | 141400 |\n| +العناصر الإضافية | 5200 |\n| (-)الأعباء غير المعتبرة | -5000 |\n| النتيجة التحليلية الصافية | 360000 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "التكلفة الوسطية 0,25x2 ، سعر التكلفة والنتيجة 0,5x2 ، النتيجة الصافية 0,5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e3",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "الجزء الثالث: أعمال نهاية السنة – التسويات (04 نقاط)",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "من مخطط الإهتلاك لمعدات نقل تهتلك بطريقة الإهتلاك المتزايد تحصلنا على ما يلي:\n- تاريخ الاقتناء: 02/01/2012\n- المدة النفعية 05 سنوات والقيمة المتبقية معدومة\n- القيمة المحاسبية الصافية في نهاية السنة الثالثة (31/12/2014) بلغت 540000 دج"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e3_q1",
+          "parentLocalId": "s1_e3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1-",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب القيمة المحاسبية الأصلية لمعدات النقل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- حساب القيمة الأصلية:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "VNC = VC - \\sum A_n = VC - (A_1 + A_2 + A_3)\n540000 = VC - \\left[ \\frac{1}{15}VC + \\frac{2}{15}VC + \\frac{3}{15}VC \\right]\n540000 = VC \\left[ 1 - \\frac{6}{15} \\right] = \\frac{9}{15}VC\nVC = \\frac{540000 \\times 15}{9} = 900000"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e3_q2",
+          "parentLocalId": "s1_e3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2-",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب وسجّل في الدفتر اليومي قسط إهتلاك السنة الثالثة (31/12/2014)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- حساب و تسجيل قسط اهتلاك السنة الثالثة:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "A_3 = 900000 \\times \\frac{3}{15} = 180000"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 180000 | | م.إ و المؤونات و خ.القيمة –أ.غ.جارية | 681 |\n| | 180000 | إهتلاك معدات النقل | 28182 |\n| | | تسجيل قسط إهتلاك الدورة | |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للحساب ، 0,75 للتسجيل"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_e3_q3",
+          "parentLocalId": "s1_e3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3-",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تنازلت المؤسسة عن هذه المعدات على الحساب في نهاية السنة الرابعة (31/12/2015) محققة ناقص قيمة بمبلغ 140000 دج.\nسجّل القيود اللازمة لعملية التنازل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- تسجيل قسط الإهتلاك وعملية التنازل في 31/12/2015\nقسط الاهتلاك:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "A_4 = 900000 \\times \\frac{4}{15} = 240000"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الاهتلاك المتراكم :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\sum A = A_1 + A_2 + A_3 + A_4 = 900000 \\times \\frac{10}{15} = 600000"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "سعر البيع + $\\sum A$ - $VC$ =نتيجة التنازل\nنتيجة التنازل = سعر البيع + مج الاهتلاكات +خ.ق – القيمة الأصلية\nسعر البيع = نتيجة التنازل – مج الاهتلاكات – خ.ق + القيمة الأصلية\nو منه سعر البيع = 140000 – 600000 - 0 + 900000\nسعر البيع=160000دج ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 240000 | | م.إ و المؤونات و خ.القيمة –أ.غ.جارية | 681 |\n| | 240000 | إهتلاك معدات النقل | 28182 |\n| | | تسجيل قسط إهتلاك الدورة | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 160000 | | ح الدائنة عن عمليات التنازل عن التثبيتات | 462 |\n| 600000 | | إهتلاك معدات النقل | 28182 |\n| 140000 | | نواقص ق. عن خروج أصول مثبتة غ مالية | 652 |\n| | 900000 | معدات نقل | 2182 |\n| | | تسجيل عملية التنازل | |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ، 0,25 ، 0,5 ، 0,25 ، 0,75"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_e1",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "الجزء الأول: أعمال نهاية السنة- التسويات (08 نقاط)",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "من الدفاتر المحاسبية لمؤسسة \" الأمير\" في 31/12/2014 قبل الجرد استخرجنا ما يلي:\n1- أرصدة بعض حسابات ميزان المراجعة:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| رقم الحساب | اسم الحساب | مدين | دائن |\n| :--- | :--- | :--- | :--- |\n| 151 | مؤونة الأخطار | | 150000 |\n| 2182 | معدات النقل | 8000000 | |\n| 28182 | اهتلاك معدات النقل | | 2400000 |\n| 30 | مخزونات البضائع | 2500000 | |\n| 380 | البضائع المخزنة | 1300000 | |\n| 411 | الزبائن | 585000 | |\n| 613 | الإيجارات | 300000 | |"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- معلومات خاصة بعملية الجرد:\n- مؤونة الأخطار تتعلق بنزاع مع زبون فصلت فيه المحكمة لصالح المؤسسة بتاريخ 30/12/2014\n- معدات النقل اقتنتها المؤسسة بتاريخ 01/07/2012 تهتلك خطيا لمدة 5 سنوات وقدر سعر بيعها الصافي المحتمل بتاريخ 31/12/2014 بـ 3900000 دج\n- تطبق المؤسسة طريقة الجرد المتناوب في تقييم مخزونات البضائع، حيث أثبت الجرد المادي أن قيمتها 3000000 دج\n- من بين الزبائن العاديين الزبون \" علي\" دينه 269100 دج متضمنا الرسم (TTC)، يحتمل عدم تحصيل 25% من دينه، أما الزبون \" يوسف \" فدينه 140400 دج متضمنا الرسم (TTC) أُشْهِرَ إفلاسه.\nمعدل الرسم على القيمة المضافة 17%\n- مبلغ الإيجارات يخص إيجار محل تجاري سُدد بتاريخ 01/11/2014 لمدة 6 أشهر."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e1_q1",
+          "parentLocalId": "s2_e1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1-",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب قسط إهتلاك معدات النقل في 31/12/2014"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "A_{2014} = MA / n = 8000000 / 5 = 1600000\\text{ DA}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e1_q2",
+          "parentLocalId": "s2_e1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2-",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اختبر خسارة قيمة معدات النقل في 31/12/2014"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "VCN_{2014} = V_0 - \\sum A = 8000000 - ( 2400000 + 1600000 ) = 4000000\\text{ DA}\nPVN = 3900000\\text{ DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "نلاحظ أن PVN أقل من VCN و عليه توجد خسارة قيمة.\nخسارة القيمة :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "PV = VCN - PVN = 4000000 - 3900000 = 100000\\text{ DA}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 + 0,25 + 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e1_q3",
+          "parentLocalId": "s2_e1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3-",
+          "maxPoints": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سجل قيود التسوية في 31/12/2014، مع تبرير العمليات الحسابية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3-1- تبرير العمليات الحسابية :\nأ- حساب مبلغ الدين خارج الرسم :\nللزبون علي:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "HT = \\frac{269100}{1.17} = 230000\\text{ DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "للزبون يوسف:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "HT = \\frac{140400}{1.17} = 120000\\text{ DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - حساب خسارة القيمة للزبون علي:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "PV = \\frac{230000 \\times 25}{100} = 57500\\text{ DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج- حساب مبلغ إيجار المحل التجاري ($x$) لسنة 2015 :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "x = \\frac{300000 \\times 4}{6} = 200000\\text{ DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3-2- التسجيل في دفتر اليومية :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 150000 | | مؤونة الأخطار | 151 |\n| | 150000 | استرجاعات الإستغلال المؤونات - خ غ جارية | 783 |\n| | | ( إلغاء مؤونة الأخطار ) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 1600000 | | م الاهتلاكات والمؤونات وخ .ق- الأصول غ الجارية | 681 |\n| | 1600000 | اهتلاك معدات النقل | 28182 |\n| | | (تسجيل الإ هتلاك ) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 100000 | | م الاهتلاكات والمؤونات وخ .ق- الأصول غ الجارية | 681 |\n| | 100000 | خسائر القيمة عن معدات النقل | 29182 |\n| | | ( تسجيل خسارة القيمة ) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 2500000 | | تغيرات المخزونات | 603 |\n| | 2500000 | مخزونات البضائع | 30 |\n| | | ( إلغاء مخ1 ) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 1300000 | | مشتريات البضائع المبيعة | 600 |\n| | 1300000 | البضائع المخزنة | 380 |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 3000000 | | مخزونات البضائع | 30 |\n| | 3000000 | تغيرات المخزونات | 603 |\n| | | ( إثبات مخ2 ) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 269100 | | الزبائن المشكوك فيهم | 416 |\n| | 269100 | الزبائن | 411 |\n| | | (تحويل الزبون علي إلى زبون مشكوك فيه) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 57500 | | المخصصات للاهتلاكات و المؤونات وخسائر القيمة-الاصول الجارية | 685 |\n| | 57500 | خسائر القيمة عن حسابات الزبائن | 491 |\n| | | ( إثبات خسارة الزبون علي) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 120000 | | خسائر عن حسابات دائنة غير قابلة للتحصيل | 654 |\n| 20400 | | الرسم على القيمة المضافة المحصل | 4457 |\n| | 140400 | الزبائن | 411 |\n| | | ( ترصيد حساب الزبون يوسف ) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 200000 | | أعباء معاينة مسبقا | 486 |\n| | 200000 | الإيجارات | 613 |\n| | | ( إثبات الأعباء المعاينة مسبقا) | |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "التبرير: 0,25x4 ، القيود: 0,50 + 0,50 + 0,50 + 0,50 + 0,50 + 0,50 + 0,50 + 0,50 + 0,75 + 0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e1_q4",
+          "parentLocalId": "s2_e1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4-",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنجز السطرين المتعلقين بسنتي 2014 و 2015 من جدول إهتلاك معدات النقل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "A_{2015} = \\frac{MA}{\\text{المدة المتبقية}} = \\frac{3900000}{2,5} = 1560000\\text{DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| السنوات | المبلغ القابل للإهتلاك | قسط الاهتلاك | الاهتلاك المتراكم | خسارة القيمة | القيمة المحاسبية الصافية |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| 2014 | 8000000 | 1600000 | 4000000 | 100000 | 3900000 |\n| 2015 | 3900000 | 1560000 | 5560000 | / | 2340000 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للحساب ، 2x0,25 للجدول"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الجزء الثاني: حساب وتحليل التكاليف الكلية (08 نقاط)",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تنتج مؤسسة \" الهضاب\" وتبيع منتجين \"$P_1$\" و\"$P_2$\" باستعمال مادتين أوليتين \"$M_1$\" و\"$M_2$\" ولوازم \"$F$\" \nحيث:\n- ينتج المنتج \"$P_1$\" في الورشتين 1 و 2 باستعمال المادة الأولية \"$M_1$\" واللوازم \"$F$\".\nبينما ينتج المنتج \"$P_2$\" في الورشة 2 باستعمال المادة الأولية \"$M_2$\" واللوازم \"$F$\".\nللفترة المعتبرة شهر أفريل 2015 تحصلنا على المعلومات التالية:\n1) المخزونات في بداية الشهر:\nالمادة الأولية \"$M_1$\": $1300\\text{ kg}$ بمبلغ 31574,4 دج للإجمالي.\nالمادة الأولية \"$M_2$\": $1460\\text{ kg}$ بمبلغ 36898 دج للإجمالي.\nاللوازم \"$F$\": 41510 دج\nالمنتج \"$P_1$\": 500 وحدة بمبلغ 154400 دج للإجمالي.\nالمنتج \"$P_2$\": 150 وحدة بمبلغ 33900 دج للإجمالي.\nإنتاج جاري: للمنتج \"$P_1$\" بمبلغ 4080 دج وللمنتج \"$P_2$\" بمبلغ 2380 دج\n2) مشتريات الشهر: \nالمادة الأولية \"$M_1$\": $15600\\text{ kg}$ بـ $18\\text{ دج / kg}$\nالمادة الأولية \"$M_2$\": $12800\\text{ kg}$ بـ $20\\text{ دج / kg}$\nاللوازم \"$F$\" بـ 53200 دج\n3) الإنتاج والاستعمالات خلال الشهر:\nيتطلب إنتاج وحدة من المنتج \"$P_1$\" استعمال $4,2\\text{ kg}$ من المادة الأولية \"$M_1$\"، وما قيمته 12 دج من اللوازم \"$F$\".\nبينما يتطلب إنتاج وحدة من المنتج \"$P_2$\" استعمال $4,8\\text{ kg}$ من المادة الأولية \"$M_2$\"، وما قيمته 11 دج من اللوازم \"$F$\".\n4) الأعباء المباشرة:\n- للشراء: %8 من ثمن الشراء.\n- للإنتاج: بالنسبة للمنتج \"$P_1$\" 2200 ساعة يد عمل مباشرة ، %50 منها في الورشة 1 والباقي في الورشة 2، أما للمنتج \"$P_2$\" 850 ساعة يد عمل مباشرة. \nمعدل أجرة الساعة 250 دج في الورشتين.\n- للتوزيع: 22720 دج يوزع على أساس عدد الوحدات المباعة.\n5) الأعباء غير المباشرة: توزع حسب الجدول التالي مع اعتبار مبلغ 3000 دج كأعباء غير محملة ومبلغ 5220 دج كعناصر إضافية."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| البيان | الإدارة | الصيانة | التموين | الورشة 1 | الورشة 2 | التوزيع |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| مج التوزيع الأولي | 46200 | 39900 | 127610 | 86100 | 84570 | 65150 |\n| التوزيع الثانوي: | | | | | | |\n| - الإدارة | - | 60 | 10 | 15 | 15 | 14 | 6 |\n| - الصيانة | ـــــ | - 40 | 8 | 15 | 10 | 7 |\n| طبيعة وحدة العمل | | | 1000 دج من ثمن الشراء | ساعة يد عمل مباشرة | ساعة يد عمل مباشرة | وحدة مباعة |"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "6) الإنتاج المباع:\nالمنتج \"$P_1$\": 4200 وحدة بسعر 350 دج للوحدة.\nالمنتج \"$P_2$\": 2900 وحدة بسعر 242 دج للوحدة.\n7) مخزون آخر الشهر:\nالمنتج \"$P_1$\": 200 وحدة.\nالمنتج \"$P_2$\": 100 وحدة."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q1",
+          "parentLocalId": "s2_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حدّد الكمية المنتجة من المنتج \"$P_1$\"."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "مخ1 + إنتاج الفترة = مبيعات الفترة + مخ2\nإنتاج الفترة = مبيعات الفترة + مخ2 – مخ1\nإنتاج الفترة من المنتج \"$P_1$\" :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\"P_1\" = 4200 + 200 - 500 = 3900U"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q2",
+          "parentLocalId": "s2_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2-",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حدّد الكميات المستعملة من المادة الأولية \"$M_1$\" في إنتاج المنتج \"$P_1$\"."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "3900 \\times 4,2 = 16380\\text{Kg}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q3",
+          "parentLocalId": "s2_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3-",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أتمم جدول توزيع الأعباء غير المباشرة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| العناصر | الإدارة | الصيانة | التموين | الورشة 1 | الورشة 2 | التوزيع |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| مج التوزيع الأولي | 46200 | 39900 | 127610 | 86100 | 84570 | 65150 |\n| الإدارة | -46200 | 7700 | 11550 | 11550 | 10780 | 4620 |\n| الصيانة | 9520 | -47600 | 17850 | 11900 | 11900 | 8330 |\n| مج .ت Ⅱ | 0 | 0 | 148680 | 115500 | 107250 | 78100 |\n| طبيعة وحدة العمل | | | 1000DA من ثمن الشراء | ساعة يد عمل مباشرة | ساعة يد عمل مباشرة | وحدات مباعة |\n| عدد وحدات العمل | | | 590 | 1100 | 1950 | 7100 |\n| تكلفة وحدة العمل | | | 252 | 105 | 55 | 11 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "4x0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q4",
+          "parentLocalId": "s2_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4-",
+          "maxPoints": 4.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب كلا من :"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q4_a",
+          "parentLocalId": "s2_e2_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ-",
+          "maxPoints": 1.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تكلفة شراء المادة الأولية \"$M_1$\" فقط واللوازم \"$F$\" والتكلفة المتوسطة المرجحة للوحدة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| العناصر | المادة الأولية $M_1$ (الكمية) | المادة الأولية $M_1$ (س. و) | المادة الأولية $M_1$ (المبلغ) | اللوازم \"F\" (الكمية) | اللوازم \"F\" (س. و) | اللوازم \"F\" (المبلغ) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| ثمن الشراء | 15600 | 18 | 280800 | - | - | 53200 |\n| أعباء الشراء المباشرة | 280800 | 0,08 | 22464 | 53200 | 0,08 | 4256 |\n| أعباء الشراء غ المباشرة | 280,8 | 252 | 70761,6 | 53,2 | 252 | 13406,4 |\n| تكلفة الشراء | 15600 | 23,976 | 374025,6 | - | - | 70862,4 |"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التكلفة المتوسطة المرجحة للوحدة :\nت.م.م.و= ( تكلفة مخ1+ تكلفة الإدخالات) ÷ (كمية مخ1+ كمية الإدخالات)\nالمادة الأولية \"$M_1$\" :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CMPU = \\frac{31574,4+374025,6}{1300+15600} = \\frac{405600}{16900} = 24\\text{ DA}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الجدول 3x0,50 ، التكلفة المتوسطة 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q4_b",
+          "parentLocalId": "s2_e2_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب-",
+          "maxPoints": 1.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تكلفة إنتاج المنتج \"$P_1$\" والتكلفة المتوسطة المرجحة للوحدة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| العناصر | الكمية | س. و | المبلغ |\n| :--- | :--- | :--- | :--- |\n| الإنتاج الجاري \"$P_1$\" | | | 4080 |\n| تكلفة شراء المادة المستعملة ($M_1$) | 16380 | 24 | 393120 |\n| اللوازم المستعملة \"F\" | 3900 | 12 | 46800 |\n| الأعباء المباشرة للإنتاج | 2200 | 250 | 550000 |\n| الأعباء غير المباشرة : | | | |\n| - الورشة 1 | 1100 | 105 | 115500 |\n| - الورشة 2 | 1100 | 55 | 60500 |\n| تكلفة الإنتاج | 3900 | 300 | 1170000 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "6x0,25 للجدول ، 0,25 للتكلفة المتوسطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q4_c",
+          "parentLocalId": "s2_e2_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "ج-",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سعر التكلفة للمنتج \"$P_1$\"."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "أعباء التوزيع المباشرة = 22720 x 4200 / ( 4200 + 2900 ) = 13440"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| العناصر | الكمية | س. و | المبلغ |\n| :--- | :--- | :--- | :--- |\n| تكلفة إنتاج المنتجات المباعة | 4200 | 301 | 1264200 |\n| أعباء التوزيع المباشرة | 4200 | 3,2 | 13440 |\n| أعباء التوزيع غير المباشرة | 4200 | 11 | 46200 |\n| سعر التكلفة | 4200 | 315,2 | 1323840 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للأعباء ، 2x0,25 للجدول"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q4_d",
+          "parentLocalId": "s2_e2_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 4,
+          "label": "د-",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "النتيجة التحليلية للمنتج \"$P_1$\"."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| العناصر | الكمية | س. و | المبلغ |\n| :--- | :--- | :--- | :--- |\n| رقم الأعمال | 4200 | 350 | 1470000 |\n| سعر التكلفة | 4200 | 315,2 | 1323840 |\n| النتيجة التحليلية | 4200 | 34.8 | 146160 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e2_q5",
+          "parentLocalId": "s2_e2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5-",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب النتيجة التحليلية الصافية علما أن النتيجة التحليلية للمنتج \"$P_2$\" بلغت 5800 دج (خسارة)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| العناصر | المبالغ |\n| :--- | :--- |\n| النتيجة التحليلية للمنتج \"$P_1$\" | 146160 |\n| النتيجة التحليلية للمنتج \"$P_2$\" | - 5800 |\n| العناصر الاضافية | 5220 |\n| الأعباء غير المحملة | - 3000 |\n| النتيجة التحليلية الصافية | 142580 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e3",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "الجزء الثالث: تمويل واختيار المشاريع الاستثمارية (04 نقاط)",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بتاريخ 01/07/2014 تحصلت مؤسسة \"الأمير\" على قرض عادي يسدد بواسطة 8 دفعات سنوية ثابتة تدفع الأولى منها في نهاية السنة الأولى من تاريخ القرض.\nمن جدول استهلاك القرض استخرجنا المعلومات التالية:\nالاستهلاك الثالث: 283809,9629 دج\nالاستهلاك الخامس: 318888,8743 دج"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e3_q1",
+          "parentLocalId": "s2_e3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1-",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب معدل الفائدة المركبة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\frac{A_5}{A_3} = \\frac{318888.8743}{283809.9629} = 1.1236\n(1+i)^2 \\Rightarrow A_5 =A_3 \\times (1+i)^2\ni = \\sqrt{1.1236} - 1 = 1.06 - 1 = 0.06"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "أي $i=6\\%$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25 ، 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e3_q2",
+          "parentLocalId": "s2_e3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2-",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنجز السطر الأول من جدول استهلاك القرض."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "A_1 =A_3 \\times (1+i)^{-2} \\Rightarrow A_1 = 283809,9629 \\times 0,88999644\nA_1 = 252589,8566\\text{ DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "أو"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "A_1 = A_5 ( 1+ i) ^{-4}\nV_0 = A_1 \\frac{(1+i)^n - 1}{i} = 252589.8566 \\frac{(1+0.06)^8 - 1}{0.06}\n= 252589.8566 \\times 9.897467909 = 2500000\\text{DA}\nI_1 = V_0 \\times i = 2500000 \\times 0.06 = 150000\\text{ DA}\na = A_1 + I_1= 252589,8566 + 150000 = 402589,8566\nV_1 = V_0 - A_1 = 2500000 - 252589,8566 = 2247410,143\\text{ DA}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| السنوات | رأس المال في بداية المدة | الفائدة | الإستهلاك | الدفعة | رأس المال نهاية المدة |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| 1 | 2500000 | 150000 | 252589,8566 | 402589,8566 | 2247410,143 |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25 ، 0,25 ، 0,25 ، 0,25 ، 0,25 ، 0,25 ، 0,25 ، 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_e3_q3",
+          "parentLocalId": "s2_e3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3-",
+          "maxPoints": 1.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سجّل في دفتر اليومية عملية الحصول على القرض وتسديد الدفعة الأولى."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 2500000 | | البنوك الحسابات الجارية | 512 |\n| | 2500000 | الاقتراضات لدى مؤسسات القرض | 164 |\n| | | (الحصول على القرض) | |\n\n| المدين | الدائن | اسم الحساب | رقم الحساب |\n| :--- | :--- | :--- | :--- |\n| 252589,8566 | | الاقتراضات لدى مؤسسات القرض | 164 |\n| 150000 | | أعباء الفوائد | 661 |\n| | 402589,8566 | البنوك الحسابات الجارية | 512 |\n| | | (تسديد الدفعة الأولى) | |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 للحصول ، 0,75 للتسديد"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "nativeRenderCandidates": [
+    {
+      "id": "s1_e1_p1_table1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_e1_p1",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "sourceText": "| الأصول | المبالغ | % | الخصوم | المبالغ | % |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| الاستخدامات الثابتة | ........ | ..... | الموارد الثابتة: | 1800000 | ..... |\n| | | | الموارد الخاصة | ..... | ..... |\n| | | | الديون المالية | 430000 | ..... |\n| الأصول المتداولة: | 900000 | ..... | الخصوم المتداولة: | ..... | ..... |\n| للاستغلال | 600000 | ..... | للاستغلال | ..... | 18 |\n| خارج الاستغلال | ........ | ..... | خارج الاستغلال | ..... | ..... |\n| خزينة الأصول | ........ | ..... | خزينة الخصوم | 90000 | ..... |\n| المجموع | ........ | ..... | المجموع | ..... | ..... |"
+    },
+    {
+      "id": "s1_e2_table1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_e2",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "sourceText": "| البيان | مخزون أول الشهر (الكمية) | مخزون أول الشهر (المبلغ الإجمالي دج) | مشتريات و إنتاج الشهر (الكمية) | مشتريات و إنتاج الشهر (المبلغ الإجمالي دج) | مخزون آخر الشهر (الكمية) | مخزون آخر الشهر (المبلغ الإجمالي دج) |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| بلاستيك | 200 Kg | 22600 | 2400 Kg | 240000 | 180kg | ..؟.. |\n| لوازم | – | 5500 | – | 75000 | – | ..؟.. |\n| كراسي | 60 | 25550 | ..؟.. | ..؟.. | 40 | ..؟.. |\n| طاولات | 15 | 9775 | ..؟.. | ..؟.. | 10 | ..؟.. |"
+    },
+    {
+      "id": "s1_e2_table2",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_e2",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "sourceText": "| البيــان | البلاستيك (Kg) | اللوازم (دج) | اليد العاملة المباشرة (دقيقة) |\n| :--- | :--- | :--- | :--- |\n| الكراسي | 1,5Kg | 50 | 15 |\n| الطاولات | 2,8Kg | 80 | 30 |"
+    },
+    {
+      "id": "s1_e2_table3",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_e2",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "sourceText": "| البيـــان | الإدارة | الصيانة | التموين | القولبة | الإنهاء | التوزيع |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| مجموع التوزيع الأولي | 31950 | 36000 | 31950 | 33300 | 25475 | 23250 |\n| التوزيع الثانوي: | | | | | | |\n| - الإدارة | (100%) | 10% | 20% | 20% | 30% | 20% |\n| - الصيانة | 3 | (12) | 3 | 2 | 3 | 1 |\n| طبيعة وحدة العمل | | | 1000 دج من ثمن الشراء | Kg بلاستيك مستعمل | وحدة منتجة | وحدة مباعة |"
+    },
+    {
+      "id": "s2_e1_table1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_e1",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "sourceText": "| رقم الحساب | اسم الحساب | مدين | دائن |\n| :--- | :--- | :--- | :--- |\n| 151 | مؤونة الأخطار | | 150000 |\n| 2182 | معدات النقل | 8000000 | |\n| 28182 | اهتلاك معدات النقل | | 2400000 |\n| 30 | مخزونات البضائع | 2500000 | |\n| 380 | البضائع المخزنة | 1300000 | |\n| 411 | الزبائن | 585000 | |\n| 613 | الإيجارات | 300000 | |"
+    },
+    {
+      "id": "s2_e2_table1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_e2",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "sourceText": "| البيان | الإدارة | الصيانة | التموين | الورشة 1 | الورشة 2 | التوزيع |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| مج التوزيع الأولي | 46200 | 39900 | 127610 | 86100 | 84570 | 65150 |\n| التوزيع الثانوي: | | | | | | |\n| - الإدارة | - | 60 | 10 | 15 | 15 | 14 | 6 |\n| - الصيانة | ـــــ | - 40 | 8 | 15 | 10 | 7 |\n| طبيعة وحدة العمل | | | 1000 دج من ثمن الشراء | ساعة يد عمل مباشرة | ساعة يد عمل مباشرة | وحدة مباعة |"
+    }
+  ],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 8,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 8,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 9,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 10,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 11,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": []
+}

@@ -1,4 +1,11 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
+import {
+  ArrowLeft,
+  BookOpenCheck,
+  Command,
+  Search,
+} from "lucide-react";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
@@ -11,6 +18,17 @@ export function CoursesHomePage({
   cards?: CourseSubjectCard[];
 }) {
   const subjectCards = cards ?? [];
+  const totalUnits = subjectCards.reduce((sum, card) => sum + card.unitCount, 0);
+  const totalConcepts = subjectCards.reduce(
+    (sum, card) => sum + card.conceptCount,
+    0,
+  );
+  const averageProgress = subjectCards.length
+    ? Math.round(
+        subjectCards.reduce((sum, card) => sum + card.progressPercent, 0) /
+          subjectCards.length,
+      )
+    : 0;
 
   if (subjectCards.length === 0) {
     return (
@@ -33,103 +51,83 @@ export function CoursesHomePage({
     <StudyShell>
       <StudentNavbar />
 
-      <div className="hub-page roadmap-page">
-        <section className="roadmap-hero course-hero">
-          <div className="roadmap-hero-copy">
-            <p className="page-kicker">الدورات</p>
-            <h1>خارطة مفاهيمية دقيقة لكل مادة</h1>
-            <p>
-              اختر المادة، ثم تحرك بين الوحدات والمفاهيم بخطوات قصيرة مرتبطة
-              بالتدريب والمراجعة.
-            </p>
-            <div className="roadmap-hero-meta">
-              <StudyBadge tone="brand">
-                {subjectCards.length} مواد جاهزة للمسار
-              </StudyBadge>
-              <StudyBadge tone="accent">شرح نشط</StudyBadge>
-              <StudyBadge tone="success">مرتبط بالتدريب</StudyBadge>
+      <div className="hub-page course-space">
+        <section className="course-command-panel">
+          <div className="course-board-toolbar">
+            <div className="course-board-search" aria-hidden="true">
+              <Search />
+              <span>ابحث عن مادة أو مفهوم...</span>
+              <kbd>
+                <Command aria-hidden="true" /> K
+              </kbd>
             </div>
+            <StudyBadge tone="brand">متابعة سريعة</StudyBadge>
           </div>
 
-          <div className="roadmap-hero-panel">
-            <div className="roadmap-hero-panel-grid">
-              <article>
-                <strong>{subjectCards.reduce((sum, card) => sum + card.unitCount, 0)}</strong>
-                <span>وحدات منظمة</span>
-              </article>
-              <article>
-                <strong>
-                  {subjectCards.reduce((sum, card) => sum + card.conceptCount, 0)}
-                </strong>
-                <span>محاور قابلة للتقدم</span>
-              </article>
-              <article>
-                <strong>
-                  {Math.round(
-                    subjectCards.reduce(
-                      (sum, card) => sum + card.progressPercent,
-                      0,
-                    ) / subjectCards.length,
-                  )}
-                  %
-                </strong>
-                <span>متوسط التقدم</span>
-              </article>
-            </div>
-            <div className="roadmap-hero-actions">
-              <Button asChild className="h-11 rounded-full px-5">
-                <Link href={subjectCards[0].continueHref}>واصل آخر مسار</Link>
-              </Button>
-              <Button asChild variant="outline" className="h-11 rounded-full px-5">
-                <Link href={subjectCards[0].href}>افتح أول مادة</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <section className="roadmap-map-shell">
-          <div className="roadmap-map-head">
+          <div className="course-command-head">
             <div>
-              <p className="page-kicker">المواد</p>
-              <h2>اختر مادة وابدأ من الخارطة</h2>
-              <p>
-                كل مادة تعرض تقدمك العام، الوحدات النشطة، وأسرع عودة إلى آخر
-                مفهوم يحتاج تثبيتاً.
-              </p>
+              <p className="page-kicker">الدورات</p>
+              <h1>مسارات المواد</h1>
+            </div>
+            <div className="course-command-metrics" aria-label="ملخص الدورات">
+              <span>
+                <strong>{averageProgress}%</strong>
+                تقدم
+              </span>
+              <span>
+                <strong>{totalUnits}</strong>
+                وحدات
+              </span>
+              <span>
+                <strong>{totalConcepts}</strong>
+                مفاهيم
+              </span>
             </div>
           </div>
 
-          <div className="course-home-grid">
+          <div className="course-subject-chip-grid" aria-label="مواد المسار">
             {subjectCards.map((card) => (
-              <article key={card.subjectCode} className="course-subject-card">
-                <div className="course-subject-card-head">
-                  <div>
-                    <p className="page-kicker">المادة</p>
-                    <h3>{card.title}</h3>
-                  </div>
-                  <StudyBadge tone="brand">{card.progressPercent}%</StudyBadge>
-                </div>
-
-                <p className="course-subject-card-copy">
-                  {card.description ??
-                    "مسار منظم يجمع بين فهم المفاهيم الأساسية والعودة السريعة إلى آخر نقطة توقفت عندها."}
-                </p>
-
-                <div className="course-subject-card-meta">
-                  <span>{card.unitCount} وحدات</span>
-                  <span>{card.conceptCount} محاور</span>
-                  <span>{card.completedTopicCount} ثابتة</span>
-                </div>
-
-                <div className="course-subject-card-actions">
-                  <Button asChild className="h-11 rounded-full px-5">
-                    <Link href={card.href}>افتح المادة</Link>
-                  </Button>
-                  <Button asChild variant="outline" className="h-11 rounded-full px-5">
-                    <Link href={card.continueHref}>واصل</Link>
-                  </Button>
-                </div>
-              </article>
+              <Link
+                key={card.subjectCode}
+                href={card.href}
+                className="course-subject-chip"
+                style={
+                  {
+                    "--course-progress": `${card.progressPercent}%`,
+                  } as CSSProperties
+                }
+              >
+                <span className="course-subject-orb" aria-hidden="true">
+                  <BookOpenCheck />
+                </span>
+                <span className="course-subject-chip-copy">
+                  <span className="course-subject-chip-head">
+                    <h2>{card.subjectName}</h2>
+                    <StudyBadge
+                      tone={card.progressPercent >= 80 ? "success" : "brand"}
+                    >
+                      {card.progressPercent}%
+                    </StudyBadge>
+                  </span>
+                  <span className="course-subject-chip-meta">
+                    <span>{card.unitCount} وحدات</span>
+                    <span>{card.conceptCount} مفاهيم</span>
+                    <span>{card.completedTopicCount} مكتملة</span>
+                  </span>
+                  <span className="course-subject-chip-track" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                    <i />
+                    <i />
+                    <em />
+                  </span>
+                </span>
+                <span className="course-subject-chip-action">
+                  الخريطة
+                  <ArrowLeft aria-hidden="true" />
+                </span>
+              </Link>
             ))}
           </div>
         </section>

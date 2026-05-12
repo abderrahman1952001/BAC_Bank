@@ -18,6 +18,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import {
   DraftAsset,
+  DraftAssetCleanupMask,
   DraftAssetClassification,
   DraftBlock,
   DraftBlockRole,
@@ -682,7 +683,9 @@ export class IngestionDraftIntakeService {
       orderIndex: node.orderIndex,
       label: node.label,
       maxPoints: node.maxPoints !== null ? Number(node.maxPoints) : null,
-      topicCodes: node.curriculumNodeMappings.map((mapping) => mapping.curriculumNode.code),
+      topicCodes: node.curriculumNodeMappings.map(
+        (mapping) => mapping.curriculumNode.code,
+      ),
       blocks: node.blocks.map((block) =>
         this.mapPublishedBlockToDraft(block, context),
       ),
@@ -799,6 +802,8 @@ export class IngestionDraftIntakeService {
         blockType,
       ),
       cropBox,
+      cleanupRequired: metadata?.cleanupRequired === true,
+      cleanupMasks: this.readPublishedCleanupMasks(metadata?.cleanupMasks),
       label: readOptionalString(block.textValue),
       notes: 'Preserved from published human-verified crop.',
       nativeSuggestion: null,
@@ -852,6 +857,20 @@ export class IngestionDraftIntakeService {
       width,
       height,
     };
+  }
+
+  private readPublishedCleanupMasks(value: unknown): DraftAssetCleanupMask[] {
+    if (!Array.isArray(value)) {
+      return [];
+    }
+
+    return value
+      .map((entry) => this.readPublishedCropBox(entry))
+      .filter((entry): entry is DraftCropBox => entry !== null)
+      .map((entry) => ({
+        ...entry,
+        fill: 'white' as const,
+      }));
   }
 
   private fromSourceDocumentKind(kind: SourceDocumentKind): DraftDocumentKind {

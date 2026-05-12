@@ -1,0 +1,2172 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 270,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "ar",
+    "streamCode": "TM_GE",
+    "subjectCode": "GE",
+    "title": "اختبار في مادة: التكنولوجيا (هندسة كهربائية)",
+    "totalPoints": 20.0,
+    "year": 2013
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_context",
+          "nodeType": "CONTEXT",
+          "orderIndex": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "I- دفتر الشروط:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1-I هدف النظام: يهدف النظام إلى ملء دلاء بلاستيكية ذات سعة 5 لتر بالزيت الصناعي، غلقها وعدها ثم إخلائها."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2-I المواد الأولية: - زيت محضر مسبقا - دلاء بلاستيكية فارغة - أغطية معدنية."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3-I الوصف:\nأ - النظام: يحتوي النظام على 5 مراكز وهي:\n- مركز (1): تدوير الصحن.\n- مركز (2): التقديم.\n- مركز (3): الملء.\n- مركز (4): الغلق.\n- مركز (5): العد والإخلاء."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب - التشغيل:\n- تأتي الدلاء إلى مركز التقديم عبر قناة عمودية، حيث يتم تحويلها من مركز إلى آخر بواسطة صحن دوار.\n- يُفتح الكهروصمام EV1 لمدة 10 ثوان، ثم يُفتح الكهروصمام EV2 لمدة 10 ثوان.\n- يُغلق الدلو بواسطة الرافعتين B و C.\n- تدفع الدلاء المملوءة بواسطة الرافعة D إلى بساط يديره المحرك M1، لتحول إلى طبع تاريخ الإنتاج ومدة صلاحية الاستهلاك على الغطاء بعدد 12 دلوا (خارج النظام المدروس).\nملاحظة: عند بلوغ كمية الزيت في الخزان المستوى الأدنى V0، يتم التنبيه عنه بواسطة جرس."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4-I الاستغلال: - عامل مختص للقيادة والصيانة الدورية.\n- عاملان دون اختصاص، يقومان بتزويد القناة العمودية بالدلاء الفارغة، وملء الخزان عندما يدق جرس التنبيه."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "5-I الأمن: حسب الاتفاقيات المعتمدة والمعمول بها."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "II- التحليل الوظيفي: الوظيفة الشاملة: نشاط بياني (A-0)."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ee: طاقة كهربائية\nEp: طاقة هوائية\nE: تعليمات الاستغلال\nN: عدد الدلاء على البساط.\nt1, t2: زمن فتح EV1, EV2."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "III- المناولة الهيكلية"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "IV- الاختيارات التكنولوجية للمنفذات والمنفذات المتصدرة والملتقطات"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "V- التحليل الزمني:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "VI- الإنجازات التكنولوجية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "دارة الكشف عن مرور وعد الدلاء:"
+            }
+          ],
+          "assetIds": [
+            "s1_a0_exam",
+            "s1_struct",
+            "s1_actuators",
+            "s1_gpn",
+            "s1_gci",
+            "s1_gs",
+            "s1_grafcet5",
+            "s1_grafcet2",
+            "s1_detect"
+          ]
+        },
+        {
+          "localId": "s1_p1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "التحليل الوظيفي:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س1- أكمل النشاط البياني التنازلي A-0 على وثيقة الإجابة 2/1 (الصفحة 17/7)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج1- التحليل الوظيفي التنازلي"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.5 نقطة (5 × 0.3)"
+            }
+          ],
+          "assetIds": [
+            "s1_ans1_exam",
+            "s1_a0_sol"
+          ],
+          "parentLocalId": "s1_p1"
+        },
+        {
+          "localId": "s1_p2",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "التحليل الزمني:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س2- ارسم متمن من وجهة نظر جزء التحكم للأشغولة 3 (أشغولة الملء)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج2- متمن الأشغولة 3:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 2.0 نقطة (4 × 0.5)"
+            }
+          ],
+          "assetIds": [
+            "s1_grafcet3_sol"
+          ],
+          "parentLocalId": "s1_p2"
+        },
+        {
+          "localId": "s1_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 16
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س3- اكتب على شكل جدول، معادلات التنشيط والتخميل والمخارج للأشغولة 5 (أشغولة عد وإخلاء الدلاء) (الصفحة 17/5)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج3- جدول معادلات التنشيط والتخميل للأشغولة (5) أشغولة إخلاء العلب وعدها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| المراحل | التنشيط | التخميل | المخارج |\n|---|---|---|---|\n| X50 | X55 . X5 + X200 | X51 | RAZ |\n| X51 | X50 . X5 . X104 + X53 . $\\overline{N}$ | X52 + X200 | dD+ العد |\n| X52 | X51 . d1 | X53 + X200 | dD- |\n| X53 | X52 . d0 | X54 + X51 + X200 | |\n| X54 | X53 . N | X55 + X200 | KM1 |\n| X55 | X54 . e | X50 + X200 | |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.5 نقطة (3 × 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p2"
+        },
+        {
+          "localId": "s1_q4",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س4- ارسم تدرج المتامن (GS-GCI-GPN)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج4- رسم تدرج المتامن:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.75 نقطة (3 × 0.25)"
+            }
+          ],
+          "assetIds": [
+            "s1_gpn_sol"
+          ],
+          "parentLocalId": "s1_p2"
+        },
+        {
+          "localId": "s1_p3",
+          "nodeType": "PART",
+          "orderIndex": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "إنجازات مادية:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q5",
+          "nodeType": "QUESTION",
+          "orderIndex": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س5- لماذا استعملنا ملتقط سيعي (h) وآخر حثي (k) في المناولة الهيكلية (الصفحة 17/2)؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج5-\n- الملتقط السيعي (h) يكشف عن الدلاء البلاستيكية\n- الملتقط الحثي (k) يكشف عن الأغطية المعدنية"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (2 × 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p3"
+        },
+        {
+          "localId": "s1_p4",
+          "nodeType": "PART",
+          "orderIndex": 9,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "دارة الكشف عن مرور وعد الدلاء (الصفحة 17/5)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q6",
+          "nodeType": "QUESTION",
+          "orderIndex": 10,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س6- ما هي وظيفة كل من الطوابق F1 ، F2 و F3؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج6-\n- F1: دارة الكشف عن مرور الدلاء.\n- F2: دارة ضد الارتداد\n- F3: دارة العد"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.75 نقطة (3 × 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p4"
+        },
+        {
+          "localId": "s1_p5",
+          "nodeType": "PART",
+          "orderIndex": 11,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "دراسة الطابق F1 (الصفحة 17/5)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q7",
+          "nodeType": "QUESTION",
+          "orderIndex": 12,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س7- ما هو دور كل من العناصر التالية:\n- المقاومة R1 - الصمام D - المقحل T2 ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج7 - دور العناصر :\n- المقاومة R1 : حماية الصمام D1 .\n- الصمام D : حماية المقحل T2 .\n- المقحل T2 : تبديلي"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.75 نقطة (3 × 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p5"
+        },
+        {
+          "localId": "s1_q8",
+          "nodeType": "QUESTION",
+          "orderIndex": 13,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س8- احسب قيمة المقاومة R1، علما أنّ خصائص الثنائي D1 هي (1,2V; 9mA)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج8 - حساب قيمة المقاومة R1 :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "Vcc = R_1 . I_{D1} + V_{D1} \\Rightarrow R_1 = (Vcc - V_{D1}) / I_{D1} = (12 - 1.2) / 9 \\times 10^{-3} = 1.2 k\\Omega"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (2 × 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p5"
+        },
+        {
+          "localId": "s1_q9",
+          "nodeType": "QUESTION",
+          "orderIndex": 14,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س9- ما نوع البوابة المنطقية المستعملة مع مخارج العداد في تركيب الطابق F3؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج9 - نوع البوابة المستعملة في التركيب: بوابة \" و \" - \"AND\" بأربع مداخل."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.25 نقطة (0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p5"
+        },
+        {
+          "localId": "s1_q10",
+          "nodeType": "QUESTION",
+          "orderIndex": 15,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س10- أكمل رسم دارة العداد اللامتزامن لعد 12 دلوا على وثيقة الإجابة 2/2 (الصفحة 17/8)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج10- دارة العداد اللامتزامن لعد 12 دلوا"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 2.0 نقطة (4 × 0.5)"
+            }
+          ],
+          "assetIds": [
+            "s1_ans2_exam",
+            "s1_counter_sol"
+          ],
+          "parentLocalId": "s1_p5"
+        },
+        {
+          "localId": "s1_q11",
+          "nodeType": "QUESTION",
+          "orderIndex": 16,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س11- أكمل ربط كل من: المعقب الكهربائي، المنفذ المتصدر ودارة استطاعة الرافعة A للأشغولة 2 على وثيقة الإجابة 2/1 (الصفحة 17/7)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج11- المعقب الكهربائي:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المعقب: المجموع 2.0 نقطة (4 × 0.5)\nالرافعة A: المجموع 0.5 نقطة (2 × 0.25)"
+            }
+          ],
+          "assetIds": [
+            "s1_ans1_exam",
+            "s1_seq_sol"
+          ],
+          "parentLocalId": "s1_p5"
+        },
+        {
+          "localId": "s1_p6",
+          "nodeType": "PART",
+          "orderIndex": 17,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "دراسة الميكرومراقب:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نرغب في تجسيد الأشغولة 2 بالتكنولوجيا المبرمجة باستعمال المكرومراقب PIC 16F84A على وثيقة الإجابة 2/2 (الصفحة 17/8)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q12",
+          "nodeType": "QUESTION",
+          "orderIndex": 18,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س12- فسّر مدلول رموز الـ: PIC 16F84A."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج12 - تفسير البيانات PIC 16F84A .\nPIC : مراقبة الربط الخارجي/التحكم في الأجهزة المحيطة.\n16 : mide Range المدى المتوسط .\nF : ذاكرة من نوع فلاش.\n84 : نوع المكرومراقب.\nA : كوارتز أعظمي 20MHz ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (5 × 0.2)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p6"
+        },
+        {
+          "localId": "s1_q13",
+          "nodeType": "QUESTION",
+          "orderIndex": 19,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س13- أتمم كتابة التعليمات والتعليقات الخاصة ببرنامج تهيئة المداخل والمخارج للميكرومراقب."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج13 - التعليقات والتعليمات الخاصة ببرنامج تهيئة المداخل و المخارج"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| Instruction | Comment |\n|---|---|\n| `BSF STATUS, RP0` | التحويل إلى البنك 1 |\n| `MOVLW 0X1F` | وضع القيمة 1F (السداسي عشر) في السجل W |\n| `MOVWF TRISA` | برمجة منافذ المرفأ A كمداخل |\n| `MOVLW 0X00` | وضع القيمة 00 (السداسي عشر) في السجل W |\n| `MOVWF TRISB` | برمجة منافذ المرفأ B كمخرج |\n| `BCF STATUS, RP0` | التحويل إلى البنك 0 حيث توجد السجلات PORTA |\n| `CLRF PORTA` | مسح السجل PORTA |\n| `CLRF PORTB` | مسح السجل PORTB |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (4 × 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p6"
+        },
+        {
+          "localId": "s1_p7",
+          "nodeType": "PART",
+          "orderIndex": 20,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "دارة تحويل الطاقة:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يُغذى الملامس KM1 بمحول كهربائي، كتب على لوحة مواصفاته ما يلي:\n80VA ; 220 V / 24 V ; 50Hz"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_q14",
+          "nodeType": "QUESTION",
+          "orderIndex": 21,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س14- احسب القيمة الاسمية لشدة التيار في الثانوي $I_{2n}$ .\nيُغذي هذا المحول حمولة حثية معامل استطاعتها 0,86 بتيار $I_{2n}$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج14 - حساب القيمة الاسمية لشدة التيار:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "I_{2n} = S_n / U_{2n} = 80 / 24 = 3.33A"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (2 × 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p7"
+        },
+        {
+          "localId": "s1_q15",
+          "nodeType": "QUESTION",
+          "orderIndex": 22,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س15- احسب قيمة الهبوط في التوتر الثانوي $\\Delta U_2$، علما أنّ $Rs = 0,1 \\Omega$ و $Xs = 0,6 \\Omega$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج15 - حساب قيمة الهبوط في التوتر:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\Delta U_2 = Rs.I_{2n}.\\cos\\varphi_2 + Xs.I_{2n}.\\sin\\varphi_2\n\\Delta U_2 = 0.1 \\times 3.33 \\times 0.86 + 0.6 \\times 3.33 \\times 0.51\n\\Delta U_2 = 1.3V"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (2 × 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p7"
+        },
+        {
+          "localId": "s1_q16",
+          "nodeType": "QUESTION",
+          "orderIndex": 23,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س16- استنتج نسبة التحويل $m_0$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج16 - حساب نسبة التحويل $m_0$ :\nحساب التوتر $U_{20}$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "U_{20} = U_{2n} + \\Delta U_2\nU_{20} = 24 + 1.30 = 25.30V\nm_0 = U_{20} / U_{1n}\nm_0 = 25.30 / 220 = 0.11"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 2.0 نقطة (4 × 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s1_p7"
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_context",
+          "nodeType": "CONTEXT",
+          "orderIndex": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 9
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 10
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 11
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 12
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 13
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 14
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الموضوع الثاني: موزع آلي لمشروب القهوة"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "I- دفتر الشروط المبسط:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1-I الهدف من التآلية: يهدف هذا النظام إلى توزيع مشروب القهوة الساخن لعمال وأساتذة الثانوية أثناء فترة الاستراحة."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2-I الوصف: يحتوي النظام على أربعة (4) أشغولات:\n- الأشغولة (1): طحن حبيبات القهوة وتكديسها.\n- الأشغولة (2): امتصاص وتسخين الماء.\n- الأشغولة (3): توزيع القهوة.\n- الأشغولة (4): التخلص من النفايات."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3-I كيفية التشغيل:\n- عند وضع قطعة نقود (20 DA) داخل الموزع مع حضور كأس فارغة أمام خلية الكشف الكهروضوئية cp والضغط على الضاغطة (Dcy)، تؤدي إلى:\n- طحن حبيبات القهوة لمدة 15 ثانية بواسطة سكين الطحن.\n- امتصاص الماء بواسطة المكبس بدخول ساق الرافعة A، ثمّ تسخينه بواسطة مقاومة التسخين $R_\\theta$ لمدة 10 ثوان.\n- تفريغ مسحوق القهوة في المصفاة بفتح الكهروصمام EV لمدة زمنية تقدر بـ 5 ثوان، ثمّ نزول الماء الساخن والمضغوط لينفذ عبر مسحوق القهوة إلى الكأس بواسطة خروج ساق الرافعة A.\n- التخلص من مسحوق القهوة المستعمل بخروج ساق الرافعة B نحو سلة النفايات وذلك عند سحب كأس القهوة من أمام خلية الكشف الكهروضوئية cp، ثمّ تعود الساق لتنتهي الدورة.\nملاحظة: نظام ملء الطاحونة بحبيبات القهوة، خزان الماء؛ تقديم كل من الكؤوس الفارغة، السكر، الملاعق البلاستيكية؛ ونظام مراقبة قطع النقود خارجة عن الدراسة."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4-I الاستغلال: النظام يتطلب وجود عاملين:\n- الأول متخصص في: التهيئة، المراقبة والصيانة الدورية.\n- الثاني دون اختصاص: يزود النظام بالكؤوس الفارغة، السكر، الملاعق البلاستيكية، حبيبات القهوة وصرف سلة النفايات."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "5-I الأمن: حسب القوانين المعمول بها."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لاحظ العامل المكلف بصيانة النظام انكسار سكين الطحن، فكلف التلميذ إبراهيم من قسم 3 تقني رياضي لشراء سكين حسب النموذج شكل a، فوجد نموذجا آخر للوجه الحاد يمينا شكل b، فاقترح عليه تغيير برنامج دارة التحكم الآلي المبرمج الصناعي API (المكتوب بلغة الملامس LADDER)."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "II- التحليل الوظيفي: الوظيفة الشاملة"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "III- المناولة الهيكلية"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "IV - الاختيارات التكنولوجية للمنفذات والمنفذات المتصدرة والملتقطات:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "V- المناولة الزمنية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "VI- إنجازات تكنولوجية:"
+            }
+          ],
+          "assetIds": [
+            "s2_blades",
+            "s2_a0_exam",
+            "s2_struct",
+            "s2_actuators",
+            "s2_gs",
+            "s2_gci",
+            "s2_gct",
+            "s2_grafcet3",
+            "s2_circ1",
+            "s2_circ2",
+            "s2_circ3"
+          ]
+        },
+        {
+          "localId": "s2_p1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "التحليل الوظيفي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مستعينا بالمعطيات في (صفحة 17/10)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 16
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س1: أكمل النشاط البياني 0-A على وثيقة الإجابة 2/1(صفحة 17/16)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج1- الوظيفة الشاملة A-0 :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.5 نقطة (15 × 0.1)"
+            }
+          ],
+          "assetIds": [
+            "s2_ans1_exam",
+            "s2_a0_sol"
+          ],
+          "parentLocalId": "s2_p1"
+        },
+        {
+          "localId": "s2_p2",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "التحليل الزمني:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س2: ارسم متمن (أشغولة 2) من وجهة نظر جزء التحكم وفقا لدفتر المعطيات."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج2- متمن الأشغولة 2:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 2.0 نقطة (4 × 0.5)"
+            }
+          ],
+          "assetIds": [
+            "s2_grafcet2_sol"
+          ],
+          "parentLocalId": "s2_p2"
+        },
+        {
+          "localId": "s2_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 16
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س3: أكمل جدول معادلات التنشيط والتخميل والأفعال للأشغولة 3 على وثيقة الإجابة 2/1 (صفحة 17/16)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج3- جدول معادلات التنشيط والتخميل لبعض مراحل الأشغولة 3 :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| المراحل | التنشيط | التخميل | الأفعال |\n|---|---|---|---|\n| X30 | X33 . $\\overline{X3}$ + X200 | X31 | / |\n| X31 | X30 . X3 . X104 | X32 + X200 | KEv , T3 |\n| X32 | X31 . t3 | X33 + X200 | dA+ |\n| X33 | X32 . a1 | X30 + X200 | / |"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.5 نقطة (3 × 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p2"
+        },
+        {
+          "localId": "s2_q4",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س4: فسّر الأوامر التالية: (10,20,30,40)F/GPN و (12-4)I /GPN (صفحة 17/13)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج4- تفسير التعيين:\n- (10,20,30,40)F/GPN: أمر إرغام صادر من متمن الأمن إلى متمن الإنتاج العادي بتنشيط المراحل الابتدائية وتخميل بقية المراحل ويبقى ساري المفعول حتى زوال الخلل.\n- (4-12)I/GPN: أمر التهيئة صادر من متمن القيادة والتهيئة إلى المرحلة (12-4) في متمن الإنتاج العادي ويزول بمجرد تنفيذه."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (0.5 + 0.5)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p2"
+        },
+        {
+          "localId": "s2_q5",
+          "nodeType": "QUESTION",
+          "orderIndex": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 16
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س5: أكمل رسم دارة العداد لعد 12 كأس مملوءة بالقهوة على وثيقة الإجابة 2/1(صفحة 17/16)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج5- عداد لا تزامني لعد 12 كأسا:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 2.5 نقطة (5 × 0.5)"
+            }
+          ],
+          "assetIds": [
+            "s2_counter_sol"
+          ],
+          "parentLocalId": "s2_p2"
+        },
+        {
+          "localId": "s2_q6",
+          "nodeType": "QUESTION",
+          "orderIndex": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 17
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س6: أكمل البيان الزمني لعد 12 كأسًا على وثيقة الإجابة 2/2 (صفحة 17/17)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج6- البيان الزمني للعداد لعد 12 كأس:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.25 نقطة (5 × 0.25)"
+            }
+          ],
+          "assetIds": [
+            "s2_ans2_exam",
+            "s2_chrono_sol"
+          ],
+          "parentLocalId": "s2_p2"
+        },
+        {
+          "localId": "s2_p3",
+          "nodeType": "PART",
+          "orderIndex": 9,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "إنجازات تكنولوجية:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q7",
+          "nodeType": "QUESTION",
+          "orderIndex": 10,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س7: ما هو دور كل من (AU - Dcy - AT) في لوحة التحكم في المناولة الهيكلية (صفحة 17/11)؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج7- دور كل من:\n- Dcy: ضاغطة لانطلاق الدورة.\n- AT: ضاغطة لتوقيف الدورة.\n- AU: ضاغطة لتوقف الاستعجالي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.75 نقطة (3 × 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p3"
+        },
+        {
+          "localId": "s2_q8",
+          "nodeType": "QUESTION",
+          "orderIndex": 11,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س8: احسب قيمة C2 لدارة إشارة الساعة، علما أن دورة الإشارة Ts = 4s الشكل 2 (صفحة 17/14)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج8- حساب سعة المكثفة: من التركيب نكتب"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "T = Ln2.C.(R_1 + 2R_2)\nC = \\frac{T}{(R_1 + 2R_2).Ln2} = \\frac{4}{(5 + 2.10).10^3.0,7}\nC = 228 \\mu F"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (0.75 + 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p3"
+        },
+        {
+          "localId": "s2_q9",
+          "nodeType": "QUESTION",
+          "orderIndex": 12,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س9: ما هو اسم ودور كل من AOP1 و AOP2 في دارة المؤجلة بالقلاب أحادي الاستقرار شكل 3 (صفحة 17/14)؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج9- دور كل من AOP1 و AOP2:\n- AOP1: مضخم عملي يعمل كمقارن لوضع القلاب RS في 0 منطقي.\n- AOP2: مضخم عملي يعمل كمقارن لوضع القلاب RS في 1 منطقي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.5 نقطة (0.25 + 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p3"
+        },
+        {
+          "localId": "s2_q10",
+          "nodeType": "QUESTION",
+          "orderIndex": 13,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س10: احسب قيمة R لدارة المؤجلة بالقلاب أحادي الاستقرار في الشكل 3 (صفحة 17/14).\nنأخذ: $Ln3 \\approx 1,1$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج10- حساب المقاومة R :\n- العلاقة العامة :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "t_2 = RC \\ln 3\nR = \\frac{t_2}{C . \\ln 3} = \\frac{10}{200.10^{-6} . 1,1}\nR = 0,045 . 10^6 \\Omega\nR = 45,45 k\\Omega"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (0.75 + 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p3"
+        },
+        {
+          "localId": "s2_q11",
+          "nodeType": "QUESTION",
+          "orderIndex": 14,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 17
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س11: أكمل دارة المعقب الكهربائي للأشغولة 3 على وثيقة الإجابة 2/2 (صفحة 17/17)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج11- المعقب الكهربائي للأشغولة 3 :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 2.5 نقطة (5 × 0.5)"
+            }
+          ],
+          "assetIds": [
+            "s2_seq_sol"
+          ],
+          "parentLocalId": "s2_p3"
+        },
+        {
+          "localId": "s2_q12",
+          "nodeType": "QUESTION",
+          "orderIndex": 15,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س12: في رأيك ما هو الحل الذي اقترحه إبراهيم على العامل المختص لحل الإشكال المطروح في تغيير الجهة الحادة للسكين كما هو موضح في الشكل a والشكل b (الصفحة 17/10)؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج12- الاقتراح:\nالحل الذي أقترحه التلميذ إبراهيم هو تغيير جهة دوران المحرك بتبديل طورين من الشبكة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.25 نقطة (0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p3"
+        },
+        {
+          "localId": "s2_p4",
+          "nodeType": "PART",
+          "orderIndex": 16,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الآلي المبرمج الصناعي API:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q13",
+          "nodeType": "QUESTION",
+          "orderIndex": 17,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 17
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س13: أكمل البرنامج المقترح للتحكم في محرك الطاحونة بلغة الملامس (LADDER) على وثيقة الإجابة 2/2 (صفحة 17/17). مخرج :Q ; مدخل :I"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج13- دارة تحكم محرك الطحن باستعمال الآلي المبرمج الصناعي API بلغة الملامس LADDER"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (2 × 0.5)"
+            }
+          ],
+          "assetIds": [
+            "s2_ladder_sol"
+          ],
+          "parentLocalId": "s2_p4"
+        },
+        {
+          "localId": "s2_p5",
+          "nodeType": "PART",
+          "orderIndex": 18,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "محرك سكين الطحن M:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_q14",
+          "nodeType": "QUESTION",
+          "orderIndex": 19,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س14: ما نوع الإقران المناسب للمحرك على الشبكة؟ علّل إجابتك."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج14- نوع إقران المحرك:\n- اقتران نجمي.\n- لأن كل ملف المحرك يتحمل 220V."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 0.75 نقطة (0.5 + 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p5"
+        },
+        {
+          "localId": "s2_q15",
+          "nodeType": "QUESTION",
+          "orderIndex": 20,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س15: من جدول الاختيارات التكنولوجية (الصفحة 17/12)، فسّر المقادير المسجلة من لوحة مواصفات المحرك."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج15- تفسير المقادير المسجلة على لوحة مواصفات المحرك:\n- 220/380V : التوتران الممكنان لتشغيل المحرك.\n- 50Hz : تواتر الشبكة.\n- 0.5kW : الاستطاعة الاسمية المفيدة (Pu).\n- 0.5A : تيار الممتص من خط الشبكة.\n- 1425tr/mn : سرعة الدوار الاسمية.\n- $\\cos\\varphi=0.8$ : معامل الاستطاعة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.5 نقطة (6 × 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p5"
+        },
+        {
+          "localId": "s2_q16",
+          "nodeType": "QUESTION",
+          "orderIndex": 21,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 15
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "س16: في جدول الاختيارات التكنولوجية، ماذا يعني التعيين 2/5 للموزع الكهروهوائي dA ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج16- تفسير التعيين 2/5 الموزع الكهروهوائي:\n- 5 : عدد المنافذ ( 02 مخارج لتغذية الرافعة + 02 مخارج للتفريغ + 01 للتغذية بالهواء المضغوط).\n- 2 : عدد الوضعيات ( 1 وضعية الراحة + 1 وضعية عمل )."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المجموع 1.0 نقطة (4 × 0.25)"
+            }
+          ],
+          "assetIds": [],
+          "parentLocalId": "s2_p5"
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_a0_exam",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 1,
+      "caption": "التحليل الوظيفي الشامل A-0"
+    },
+    {
+      "id": "s1_struct",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 2,
+      "caption": "المناولة الهيكلية"
+    },
+    {
+      "id": "s1_actuators",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 3,
+      "caption": "الاختيارات التكنولوجية للمنفذات والمنفذات المتصدرة والملتقطات"
+    },
+    {
+      "id": "s1_gpn",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4,
+      "caption": "متمن تنسيق الأشغولات (GPN)"
+    },
+    {
+      "id": "s1_gci",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4,
+      "caption": "متمن القيادة والتهيئة (GCI)"
+    },
+    {
+      "id": "s1_gs",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4,
+      "caption": "متمن الأمن (GS)"
+    },
+    {
+      "id": "s1_grafcet5",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 5,
+      "caption": "متمن أشغولة 5"
+    },
+    {
+      "id": "s1_grafcet2",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 5,
+      "caption": "متمن أشغولة 2"
+    },
+    {
+      "id": "s1_detect",
+      "nearestNodeLocalId": "s1_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5,
+      "caption": "دارة الكشف عن مرور وعد الدلاء"
+    },
+    {
+      "id": "s1_ans1_exam",
+      "nearestNodeLocalId": "s1_q1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7,
+      "caption": "وثيقة الإجابة 1/2"
+    },
+    {
+      "id": "s1_ans2_exam",
+      "nearestNodeLocalId": "s1_q10",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 8,
+      "caption": "وثيقة الإجابة 2/2"
+    },
+    {
+      "id": "s1_a0_sol",
+      "nearestNodeLocalId": "s1_q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 1,
+      "caption": "حل التحليل الوظيفي التنازلي"
+    },
+    {
+      "id": "s1_grafcet3_sol",
+      "nearestNodeLocalId": "s1_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 1,
+      "caption": "متمن الأشغولة 3"
+    },
+    {
+      "id": "s1_gpn_sol",
+      "nearestNodeLocalId": "s1_q4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 2,
+      "caption": "رسم تدرج المتامن"
+    },
+    {
+      "id": "s1_counter_sol",
+      "nearestNodeLocalId": "s1_q10",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3,
+      "caption": "دارة العداد اللامتزامن لعد 12 دلوا"
+    },
+    {
+      "id": "s1_seq_sol",
+      "nearestNodeLocalId": "s1_q11",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3,
+      "caption": "المعقب الكهربائي"
+    },
+    {
+      "id": "s2_blades",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 10,
+      "caption": "الوجه الحاد للسكين a و b"
+    },
+    {
+      "id": "s2_a0_exam",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 10,
+      "caption": "التحليل الوظيفي: الوظيفة الشاملة A-0"
+    },
+    {
+      "id": "s2_struct",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 11,
+      "caption": "المناولة الهيكلية"
+    },
+    {
+      "id": "s2_actuators",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 12,
+      "caption": "الاختيارات التكنولوجية للمنفذات والملتقطات"
+    },
+    {
+      "id": "s2_gs",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 13,
+      "caption": "متمن الأمن GS"
+    },
+    {
+      "id": "s2_gci",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 13,
+      "caption": "متمن القيادة والتهيئة GCI"
+    },
+    {
+      "id": "s2_gct",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 13,
+      "caption": "متمن تنسيق الأشغولات GCT"
+    },
+    {
+      "id": "s2_grafcet3",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 13,
+      "caption": "أشغولة 3"
+    },
+    {
+      "id": "s2_circ1",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 14,
+      "caption": "دارة الكشف والعد (شكل 1)"
+    },
+    {
+      "id": "s2_circ2",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 14,
+      "caption": "دارة إشارة الساعة (شكل 2)"
+    },
+    {
+      "id": "s2_circ3",
+      "nearestNodeLocalId": "s2_context",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 14,
+      "caption": "دارة المؤجلة (شكل 3)"
+    },
+    {
+      "id": "s2_ans1_exam",
+      "nearestNodeLocalId": "s2_q1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 16,
+      "caption": "وثيقة الإجابة 1/2"
+    },
+    {
+      "id": "s2_ans2_exam",
+      "nearestNodeLocalId": "s2_q6",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 17,
+      "caption": "وثيقة الإجابة 2/2"
+    },
+    {
+      "id": "s2_a0_sol",
+      "nearestNodeLocalId": "s2_q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 5,
+      "caption": "الوظيفة الشاملة A-0"
+    },
+    {
+      "id": "s2_grafcet2_sol",
+      "nearestNodeLocalId": "s2_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 5,
+      "caption": "متمن الأشغولة 2"
+    },
+    {
+      "id": "s2_counter_sol",
+      "nearestNodeLocalId": "s2_q5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 6,
+      "caption": "عداد لا تزامني لعد 12 كأس"
+    },
+    {
+      "id": "s2_chrono_sol",
+      "nearestNodeLocalId": "s2_q6",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 6,
+      "caption": "البيان الزمني للعداد"
+    },
+    {
+      "id": "s2_seq_sol",
+      "nearestNodeLocalId": "s2_q11",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 7,
+      "caption": "المعقب الكهربائي للأشغولة 3"
+    },
+    {
+      "id": "s2_ladder_sol",
+      "nearestNodeLocalId": "s2_q13",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 8,
+      "caption": "دارة تحكم محرك الطحن LADDER"
+    }
+  ],
+  "nativeRenderCandidates": [
+    {
+      "id": "s1_table_q3",
+      "nearestNodeLocalId": "s1_q3",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "sourceText": "جدول معادلات التنشيط والتخميل",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s1_table_q13",
+      "nearestNodeLocalId": "s1_q13",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "sourceText": "جدول التعليقات والتعليمات لـ PIC",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "s2_table_q3",
+      "nearestNodeLocalId": "s2_q3",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "sourceText": "جدول معادلات التنشيط والتخميل للأشغولة 3",
+      "variantCode": "SUJET_2"
+    }
+  ],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 8,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 9,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 10,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 11,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 12,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 13,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 14,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 15,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 16,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 17,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 8,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": [
+    "In Subject 2 Question 8 correction, the formula sets T to 4 (despite reading somewhat ambiguously in the handwritten part), calculated from C=228 microFarad. Value 4 was preserved in latex."
+  ]
+}

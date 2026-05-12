@@ -1,0 +1,1383 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "نظام آلي لتصنيع لوحات عاكسة الإضاءة",
+      "exercises": [
+        {
+          "orderIndex": 1,
+          "title": "دراسة تصميم المشروع",
+          "contextBlocks": [
+            {
+              "type": "paragraph",
+              "text": "يحتوي الموضوع على ملفين:\nI- الملف التقني.\nII- ملف الأجوبة."
+            },
+            {
+              "type": "heading",
+              "text": "I- الملف التقني"
+            },
+            {
+              "type": "heading",
+              "text": "1- تحديد الموقع:"
+            },
+            {
+              "type": "paragraph",
+              "text": "يمثل المخطط أدناه مناصب تصنيع لوحات عاكسة الإضاءة المستعملة في توجيه السائق على الطريق. تقتصر دراستنا على منصب الطي."
+            },
+            {
+              "type": "paragraph",
+              "text": "يمثل (الشكل 1) صفحة (2 من 24) نظام آلي للطي."
+            },
+            {
+              "type": "heading",
+              "text": "2- وصف وتشغيل:"
+            },
+            {
+              "type": "paragraph",
+              "text": "تتم عملية الطي على النحو التالي:"
+            },
+            {
+              "type": "paragraph",
+              "text": "- الضغط على الزر (a) يؤدي إلى خروج ساق الدافعة ($V_1$) لتقديم الصفيحة إلى وضعية التثبيت."
+            },
+            {
+              "type": "paragraph",
+              "text": "- الضغط على الزر (b) يؤدي إلى دخول ساق الدافعة ($V_1$) وخروج ساق الدافعة ($V_2$) لتثبيت الصفيحة."
+            },
+            {
+              "type": "paragraph",
+              "text": "- الضغط على الزر (c) يؤدي إلى خروج ساقي الدافعتين ($V_3$) و($V_4$) معا، لإنجاز عملية الطي من الجهتين في آن واحد."
+            },
+            {
+              "type": "paragraph",
+              "text": "- تحرير الزر (a) يؤدي إلى دخول ساقي الدافعتين ($V_3$) و($V_4$)."
+            },
+            {
+              "type": "paragraph",
+              "text": "- تحرير الزرين (b) و(c) يؤدي إلى دخول ساق الدافعة ($V_2$) لتحرير الصفيحة المطوية."
+            },
+            {
+              "type": "heading",
+              "text": "ملاحظة:"
+            },
+            {
+              "type": "paragraph",
+              "text": "- إزاحة الصفيحة المطوية إلى بساط الإخلاء يتم بحضور صفيحة موالية إلى وضعية التثبيت."
+            },
+            {
+              "type": "paragraph",
+              "text": "- $V_1$، $V_2$، $V_3$ و $V_4$: دافعات مزدوجة المفعول مغذاة بموزعات هوائية (5/2) أحادية الاستقرار بتحكم هوائي."
+            },
+            {
+              "type": "paragraph",
+              "text": "- الأزرار الضاغطة (a)، (b) و (c): موزعات هوائية 3/2NF ثنائية الاستقرار (حافظة للوضعية)."
+            },
+            {
+              "type": "heading",
+              "text": "3- المنتج محل الدراسة:"
+            },
+            {
+              "type": "paragraph",
+              "text": "نقترح دراسة مخفض السرعة الممثل بالرسم التجميعي على الصفحة (4 من 24)."
+            },
+            {
+              "type": "paragraph",
+              "text": "تنقل الحركة الدورانية من العمود (1) إلى الطبل (27) بواسطة متسننات مخروطية ذات أسنان قائمة {(7)-(8)} ومجموعة متسننات أسطوانية ذات أسنان قائمة {(21)-(37)، (39)-(24)}."
+            },
+            {
+              "type": "heading",
+              "text": "4- معطيات تقنية:"
+            },
+            {
+              "type": "paragraph",
+              "text": "- المحرك الكهربائي: $N_m=750 tr/min$ ، $P_m=0,75 Kw$"
+            },
+            {
+              "type": "paragraph",
+              "text": "- المتسننات المخروطية ذات الأسنان القائمة {(7)-(8)}: $m=1,25 mm$ ، $Z_7=30 dents$ ، $d_8=50 mm$"
+            },
+            {
+              "type": "paragraph",
+              "text": "- المتسننات الأسطوانية ذات الأسنان القائمة {(21)-(37)}: $Z_{21}=18 dents$ ، $Z_{37}=54 dents$"
+            },
+            {
+              "type": "paragraph",
+              "text": "- المتسننات الأسطوانية ذات الأسنان القائمة {(39)-(24)}: $m=1,5 mm$ ، $d_{39}=22,5 mm$"
+            },
+            {
+              "type": "paragraph",
+              "text": "- نسبة نقل الحركة $r_{(39-24)} = \\frac{1}{5}$"
+            }
+          ],
+          "assetIds": [
+            "exam_system_components_pg1",
+            "exam_system_figure1_pg2",
+            "exam_assembly_drawing_pg4",
+            "exam_nomenclature_pg5",
+            "exam_resources_pg6"
+          ],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "أ- التحليل الوظيفي والتكنولوجي:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1- أتمم مخطط الوظيفة الإجمالية للعلبة (A-0) للنظام الآلي للطي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "طاقة كهربائية وهوائية، الضبط، أوامر، صفيحة، صفيحة مطوية، طي الصفيحة، النظام الآلي للطي."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مخطط الوظيفة الإجمالية (A-0) للنظام: 6x0,1"
+                }
+              ],
+              "assetIds": [
+                "exam_a0_prompt_pg7",
+                "corr_a0_sol_pg2"
+              ],
+              "label": "1",
+              "maxPoints": 0.6
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2- مستعينا بالملف التقني، أكمل مخطط (FAST) لوظيفة الخدمة FS طي الصفائح."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "دفع الصفيحة إلى وضعية التثبيت -> الدافعة $V_1$\nتثبيت الصفيحة -> الدافعة $V_2$\nإنجاز عملية الطي -> الدافعتين $V_3$ و $V_4$\nتحويل الصفيحة إلى البساط -> الدافعة $V_1$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مخطط الوظائف التقنية FAST: 4x0,2"
+                }
+              ],
+              "assetIds": [
+                "exam_fast_prompt_pg7",
+                "corr_fast_sol_pg2"
+              ],
+              "label": "2",
+              "maxPoints": 0.8
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3- أكمل مخطط الدورة الوظيفية لمخفض السرعة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1 -> 7 -> 8 -> 17 -> 21 -> 37 -> 39 -> 24 -> 27 -> 28"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مخطط الدورة الوظيفية: 8x0,05"
+                }
+              ],
+              "assetIds": [
+                "exam_cycle_prompt_pg7",
+                "corr_cycle_sol_pg2"
+              ],
+              "label": "3",
+              "maxPoints": 0.4
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4- أكمل جدول الوصلات الحركية الآتي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم إكمال الجدول كما هو موضح:"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "جدول الوصلات الحركية: 6x0,15"
+                }
+              ],
+              "assetIds": [
+                "exam_joints_prompt_pg7",
+                "corr_joints_sol_pg2"
+              ],
+              "label": "4",
+              "maxPoints": 0.9
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "5- مستعينا بالرسم التجميعي الصفحة (4 من 24)، أتمم المجموعة المتكافئة حركيا.\n$A=\\{........ ، (36)\\}$"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$A=\\{(12) ، (38) ، (37) ، (39) ، (36)\\}$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "المجموعة الجزئية المتكافئة: 4x0,05"
+                }
+              ],
+              "assetIds": [],
+              "label": "5",
+              "maxPoints": 0.2
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "6- أتمم الرسم التخطيطي الحركي للمخفض."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم إتمام الرسم التخطيطي الحركي كما هو مبين في التصحيح."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الرسم التخطيطي الحركي: 6x0,1"
+                }
+              ],
+              "assetIds": [
+                "exam_kinematic_prompt_pg7",
+                "corr_kinematic_sol_pg2"
+              ],
+              "label": "6",
+              "maxPoints": 0.6
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "7- تم تحقيق التوجيه الدوراني بين الطبل (27) والهيكل (20) بواسطة المدحرجتين (34)، ضع علامة (X) أمام الإجابة الصحيحة:\nعمود دوار\nجوف دوار"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الإجابة الصحيحة:\nجوف دوار [X]"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التوجيه الدوراني بين (27) و (20): 0,2"
+                }
+              ],
+              "assetIds": [],
+              "label": "7",
+              "maxPoints": 0.2
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "8- التحديد الوظيفي للأبعاد."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1-8- سجل توافقات حوامل المدحرجات على الرسم أدناه."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تسجيل التوافقات: $Ø55N7$ بالنسبة للجوف، و $Ø30g6$ بالنسبة للعمود."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تقبل الإجابة: $Ø30h6$ بالنسبة للعمود أو $Ø55M7$ بالنسبة للجوف."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تسجيل التوافقات: 2x0,2"
+                }
+              ],
+              "assetIds": [
+                "exam_tolerances_prompt_pg7",
+                "corr_tolerances_sol_pg2"
+              ],
+              "label": "1-8",
+              "maxPoints": 0.4
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2-8- أنجز سلسلة الأبعاد الخاصة ببعد الشرط $J_A$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم إنجاز سلسلة الأبعاد بالمتجهات: $A_{31}$، $A_{20}$، $A_{34B}$، $A_{26}$، $A_{34A}$."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "سلسلة الأبعاد $J_A$: 0,5"
+                }
+              ],
+              "assetIds": [
+                "exam_chain_prompt_pg7",
+                "corr_chain_sol_pg2"
+              ],
+              "label": "2-8",
+              "maxPoints": 0.5
+            },
+            {
+              "orderIndex": 10,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "9- دراسة عناصر النقل."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1-9- أتمم جدول مميزات التسنن."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم إتمام الجدول بالاعتماد على العلاقات التالية:"
+                },
+                {
+                  "type": "latex",
+                  "text": "z = \\frac{d}{m} ; d = m \\times z ; tg\\delta_7 = \\frac{d_7}{d_8}"
+                },
+                {
+                  "type": "latex",
+                  "text": "a_{39-24} = \\frac{d_{24} + d_{39}}{2} ; r_{7-8} = \\frac{d_7}{d_8} ; \\delta_7 + \\delta_8 = 90^\\circ"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "جدول المميزات: 9x0,1"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "العلاقات: 5x0,1"
+                }
+              ],
+              "assetIds": [
+                "exam_gears_table_pg8",
+                "corr_gears_table_sol_pg3"
+              ],
+              "label": "1-9",
+              "maxPoints": 1.4
+            },
+            {
+              "orderIndex": 11,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2-9- احسب نسبة نقل الحركة الإجمالية للمخفض ($r_g$)، علما أن $Z_{21}=18$، $Z_{37}=54$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "latex",
+                  "text": "r_g = r_{7-8} \\times r_{21-37} \\times r_{39-24} = \\frac{3}{4} \\times \\frac{18}{54} \\times \\frac{1}{5}"
+                },
+                {
+                  "type": "latex",
+                  "text": "r_g = \\frac{1}{20}"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "نسبة النقل الإجمالية $r_g$: 0,3"
+                }
+              ],
+              "assetIds": [],
+              "label": "2-9",
+              "maxPoints": 0.3
+            },
+            {
+              "orderIndex": 12,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3-9- احسب سرعة دوران الطبل (27)."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "latex",
+                  "text": "r_g = \\frac{N_{24}}{N_m} = \\frac{N_{27}}{N_m} \\Rightarrow N_{27} = r_g \\times N_m"
+                },
+                {
+                  "type": "latex",
+                  "text": "N_{27} = \\frac{1}{20} \\cdot 750"
+                },
+                {
+                  "type": "latex",
+                  "text": "N_{27} = 37,5 tr/mn"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "سرعة دوران الطبل (27): 0,3"
+                }
+              ],
+              "assetIds": [],
+              "label": "3-9",
+              "maxPoints": 0.3
+            },
+            {
+              "orderIndex": 13,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "10- دراسة مقاومة المواد."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1-10- نعتبر العمود المسنن (39) عارضة أسطوانية مجوفة خاضعة لعزم الالتواء $Mt=40 N.m$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "أ- احسب الإجهاد المماسي الأقصى الخاضع له العمود المسنن (39). تعطى عبارة العزم التربيعي القطبي $I_0 = \\frac{\\pi (D^4 - d^4)}{32}$"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "latex",
+                  "text": "I_0 = \\frac{\\pi (16^4 - 12^4)}{32} = 4396 mm^4"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\tau_{max} = \\frac{M_t}{\\left(\\frac{I_0}{v}\\right)} ; v = \\frac{D}{2} ; \\frac{I_0}{v} = \\frac{4396}{8} = 549,5 mm^3"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\tau_{max} = \\frac{40 \\cdot 10^3}{549,5} = 72,8 N/mm^2"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بحساب الإجهاد المماسي الأقصى: 3x0,2"
+                }
+              ],
+              "assetIds": [],
+              "label": "1-10-أ",
+              "maxPoints": 0.6
+            },
+            {
+              "orderIndex": 14,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ب- احسب المقاومة التطبيقية للانزلاق لكل مادة إذا علمت أن عبارة المقاومة الحدية للمرونة للانزلاق هي $Reg = 0,5 Re$. يعطى معامل الأمن $s=3$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "- اختر من بين المواد المذكورة في الجدول أعلاه المادة التي تقاوم تأثير الالتواء بكل أمان."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "34 Cr 4: $Rpg = \\frac{Reg}{s} = \\frac{0,5 \\cdot 660}{3} = 110 N/mm^2$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "C 25: $Rpg = \\frac{0,5 \\cdot 285}{3} = 47,5 N/mm^2$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "S 275: $Rpg = \\frac{0,5 \\cdot 275}{3} = 45,83 N/mm^2$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "المادة التي تقاوم تأثير الالتواء بكل أمان:"
+                },
+                {
+                  "type": "latex",
+                  "text": "\\tau_{max} = 72,8 N/mm^2 < 110 N/mm^2"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "منه نختار مادة (34 Cr 4)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بحساب المقاومة التطبيقية للانزلاق لكل مادة: 3x0,1"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "المادة التي تقاوم تأثير الالتواء: 0,2"
+                }
+              ],
+              "assetIds": [],
+              "label": "1-10-ب",
+              "maxPoints": 0.5
+            },
+            {
+              "orderIndex": 15,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2-10- تم تجميع العجلة المسننة (24) مع الطبل (27) بواسطة براغي (25) ذات قطر $M4$."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "أ- ما هو التأثير الذي تخضع له هذه البراغي؟"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "البراغي خاضعة لتأثير القص البسيط."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "التأثير الذي تخضع له البراغي: 0,2"
+                }
+              ],
+              "assetIds": [],
+              "label": "2-10-أ",
+              "maxPoints": 0.2
+            },
+            {
+              "orderIndex": 16,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ب- احسب الجهد المماسي المطبق على هذه البراغي، إذا علمت أن المزدوجة المنقولة إلى الطبل هي: $C=195 N.m$ وقطر المتوسط: $Ø=126 mm$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "latex",
+                  "text": "C = T \\times \\frac{d}{2} \\Rightarrow T = \\frac{2 C}{d} = \\frac{2 \\cdot 195 \\cdot 10^3}{126}"
+                },
+                {
+                  "type": "latex",
+                  "text": "T = 3095,24 N"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "بحساب الجهد المماسي: 2x0,15"
+                }
+              ],
+              "assetIds": [],
+              "label": "2-10-ب",
+              "maxPoints": 0.3
+            },
+            {
+              "orderIndex": 17,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ج- احسب عدد البراغي ($n$) اللازم لنقل هذه المزدوجة، إذا علمت أن المقاومة الحدية للمرونة للانزلاق هي: $Reg=180 N/mm^2$ ومعامل الأمن $s=3$."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "latex",
+                  "text": "\\tau = \\frac{T}{n \\cdot S} ; S = \\frac{\\pi d_{25}^2}{4} \\Rightarrow \\tau = \\frac{4T}{n \\cdot \\pi d_{25}^2} \\leq Rpg ; Rpg = \\frac{Reg}{s}"
+                },
+                {
+                  "type": "latex",
+                  "text": "n \\geq \\frac{4T \\cdot s}{\\pi d_{25}^2 \\cdot Reg} = \\frac{4 \\cdot 3095,24 \\cdot 3}{3,14 \\cdot 4^2 \\cdot 180} = 4,1"
+                },
+                {
+                  "type": "latex",
+                  "text": "n \\geq 4,1"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "منه العدد اللازم من البراغي هو $n=5$"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "تقبل الإجابة: $n=6$"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "حساب عدد البراغي (n): 2x0,2"
+                }
+              ],
+              "assetIds": [],
+              "label": "2-10-ج",
+              "maxPoints": 0.4
+            },
+            {
+              "orderIndex": 18,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "ب- التحليل البنيوي:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* الدراسة التصميمية الجزئية: أجب مباشرة على الصفحة (9 من 24).\nنظرا للتآكل السريع للوسادتين (5) والتدخل المتكرر لتغييرهما، أتمم الدراسة التصميمية الجزئية مستعينا بملف الموارد الصفحة (6 من 24) بدراسة التغييرات التالية:\n- تعويض الوسادتين (5) بمدحرجتين ذات دحاريج مخروطية لتوجيه عمود الدخول (1) دورانيا داخل العلبة (3).\n- تحقيق وصلة اندماجية قابلة للفك بين العجلة (7) وعمود الدخول (1).\n- ضمان كتامة المخفض.\n- تسجيل التوافقات على مستوى حوامل المدحرجات وفاصل الكتامة."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "* الدراسة التعريفية الجزئية: مستعينا بالرسم التجميعي الصفحة (4 من 24)، أكمل الرسم التعريفي الجزئي للعمود الوسيط (17) مباشرة على الصفحة (9 من 24) بتسجيل قيم الأقطار والأبعاد الوظيفية، قيم الخشونة المواصفات الهندسية للسطوح المحددة على الرسم.\n- أنجز المقطع B-B."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الرسم التجميعي والتعريفي موضح في التصحيح، مع الملاحظات التالية:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "- يقبل الـ توافق Ø17h6 عوض Ø17j6.\n- يقبل التوافق Ø17k6 عوض Ø17m6.\n- يقبل التمثيل الاتفاقي للمدحرجات ذات الدحاريج المخروطية.\n- تقبل الحلول التي تحقق الوصلة الاندماجية."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "1- الدراسة التصميمية الجزئية:\nتحقيق الوصلة المتمحورة: تمثيل المدحرجات 0,4، تركيب المدحرجات 4x0,2\nتحقيق الوصلة الاندماجية بين (7) و (1): 3x0,3\nالكتامة: الغطاء 0,1، فاصل الكتامة 0,3\nتسجيل التوافقات: 5x0,1\n2- دراسة تعريفية جزئية:\nالمواصفات الهندسية 15x0,05\nالأقطار والأبعاد الوظيفية 5x0,05\nحالة السطوح 3x0,05\nإنجاز المقطع B-B 0,25"
+                }
+              ],
+              "assetIds": [
+                "exam_design_prompt_pg9",
+                "corr_design_sol_pg4"
+              ],
+              "label": "ب",
+              "maxPoints": 4.4
+            }
+          ],
+          "maxPoints": 13.0
+        },
+        {
+          "orderIndex": 2,
+          "title": "دراسة تحضير المشروع",
+          "contextBlocks": [],
+          "assetIds": [],
+          "questions": [
+            {
+              "orderIndex": 1,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "أ- تكنولوجيا لوسائل وطرق الصنع:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "1- صنع العمود المسنن (39) من مادة $34 Cr 4$. اشرح هذا التعيين."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$34 Cr 4$: صلب ضعيف المزج"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$34$: $0,34\\%$ من الكربون"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$Cr$: الكروم عنصر مضاف"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "$4$: $\\frac{4}{4} = 1\\%$ من الكروم"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "شرح مادة العمود المسنن (39): 4x0,1"
+                }
+              ],
+              "assetIds": [],
+              "label": "1",
+              "maxPoints": 0.4
+            },
+            {
+              "orderIndex": 2,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "2- تم الحصول على خام العمود المسنن (39) بالقولبة الرملية بنواة $Ø8$، اشرح باختصار مبدأ هذه الطريقة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "- يصنع القالب من الرمل الحراري المتكون من جزئيين (علوي وسفلي)، للحصول على بصمة نستعمل نموذج للقطعة.\n- توضع النواة $Ø8$ داخل القالب ثم يصب المعدن المنصهر ويترك للتبريد.\n- يفكك القالب وتستخرج القطعة الخامة."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "مبدأ القولبة الرملية: 0,4"
+                }
+              ],
+              "assetIds": [],
+              "label": "2",
+              "maxPoints": 0.4
+            },
+            {
+              "orderIndex": 3,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "3- مثل الشكل الأولي لخام العمود المسنن (39) على الرسم أدناه، علما أن السمك الإضافي للتشغيل يساوي $2 mm$، وقطر الثقب $Ø8$ متحصل عليه بالقولبة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم تمثيل الشكل الأولي بإضافة السمك الإضافي للتشغيل كما في التصحيح."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الشكل الأولي لخام العمود المسنن (39): 0,4"
+                }
+              ],
+              "assetIds": [
+                "exam_rawpart_prompt_pg10",
+                "corr_rawpart_sol_pg5"
+              ],
+              "label": "3",
+              "maxPoints": 0.4
+            },
+            {
+              "orderIndex": 4,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "4- مستعينا بملف الموارد (الصفحة 6 من 24)، أكمل الجدول الخاص بعمليات تشغيل السطوح الآتية:"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم إكمال الجدول كما هو موضح:"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "جدول عمليات تشغيل السطوح: 12x0,05"
+                }
+              ],
+              "assetIds": [
+                "exam_machining_table_pg11",
+                "corr_machining_table_sol_pg6"
+              ],
+              "label": "4",
+              "maxPoints": 0.6
+            },
+            {
+              "orderIndex": 5,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "5- اختر وسيلة القياس لمراقبة الأبعاد الآتية:\n$Ø12H7$ -\n$5^{\\pm0,2}$ -"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "$Ø12H7$: سدادة ملساء مزدوجة (TLD)\n$5^{\\pm0,2}$: قدم قياس"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "(تقبل الإجابة استعمال ميكرومتر داخلي لمراقبة $Ø12H7$)"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "وسيلة القياس لمراقبة الأبعاد: 2x0,1"
+                }
+              ],
+              "assetIds": [],
+              "label": "5",
+              "maxPoints": 0.2
+            },
+            {
+              "orderIndex": 6,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "6- يتم تصنيع العمود المسنن (39) وفق مراحل حسب التجميعات الآتية: {(1)، (2)، (3)، (7)، (8)، (9)، (12)، (17)، (18)}، {(4)، (5)، (10)، (11)، (16)، (19)، (20)}، {(6)}، {(13)، (14)، (15)}.\nأكمل جدول السير المنطقي للصنع الموالي:"
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم إكمال جدول السير المنطقي كما هو موضح:"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "السير المنطقي للصنع: 6x0,15"
+                }
+              ],
+              "assetIds": [
+                "exam_process_table_pg11",
+                "corr_process_table_sol_pg6"
+              ],
+              "label": "6",
+              "maxPoints": 0.9
+            },
+            {
+              "orderIndex": 7,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "7- أكمل رسم المرحلة الجزئي لإنجاز السطحين (5) و(16)، مبينا ما يلي:\n- الوضعية السكونية (الايزوستاتية).\n- تسجيل أبعاد الصنع والمواصفات الهندسية.\n- تمثيل أداة القطع وحركة التغذية."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "تمثيل رسم المرحلة مع الوضعية الإيزوستاتية وحركات القطع والتغذية كما في التصحيح."
+                },
+                {
+                  "type": "paragraph",
+                  "text": "يقبل استعمال الأداتين (1) لإنجاز الخرط الطولي و (3) لإنجاز التسوية."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "رسم المرحلة الجزئي: الوضعية الإيزوستاتية 0,5 ، أبعاد الصنع والمواصفات الهندسية 3x0,1 ، تمثيل أداة القطع 0,3 ، حركات القطع والتغذية 3x0,1"
+                }
+              ],
+              "assetIds": [
+                "exam_phase_prompt_pg11",
+                "corr_phase_sol_pg6"
+              ],
+              "label": "7",
+              "maxPoints": 1.4
+            },
+            {
+              "orderIndex": 8,
+              "promptBlocks": [
+                {
+                  "type": "heading",
+                  "text": "ب- تكنولوجيا الأنظمة الآلية:"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ب-1- انطلاقا من جدول الحقيقة أتمم ملء جداول كارنو الخاصة بالدافعات $V_1$، $V_2$، $V_3$ و $V_4$، ثم استنتج معادلاتها المنطقية المبسطة."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "latex",
+                  "text": "V_1 = a \\cdot \\bar{b}"
+                },
+                {
+                  "type": "latex",
+                  "text": "V_2 = b"
+                },
+                {
+                  "type": "latex",
+                  "text": "V_3 = V_4 = a \\cdot c"
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ملء جداول كارنو: 3x0,1"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التجميعات: 3x0,1"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "المعادلات المنطقية المبسطة: 3x0,2"
+                }
+              ],
+              "assetIds": [
+                "exam_karnaugh_prompt_pg12",
+                "corr_karnaugh_sol_pg7"
+              ],
+              "label": "1-ب",
+              "maxPoints": 1.2
+            },
+            {
+              "orderIndex": 9,
+              "promptBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ب-2- مستعينا بالمعادلات المبسطة أتمم التركيب الهوائي."
+                }
+              ],
+              "solutionBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "يتم إتمام التركيب الهوائي باستخدام بوابات (AND) كما في التصحيح."
+                }
+              ],
+              "hintBlocks": [],
+              "rubricBlocks": [
+                {
+                  "type": "paragraph",
+                  "text": "الخلايا: 3x0,1"
+                },
+                {
+                  "type": "paragraph",
+                  "text": "التكبييل: 3x0,4"
+                }
+              ],
+              "assetIds": [
+                "exam_pneumatic_prompt_pg12",
+                "corr_pneumatic_sol_pg7"
+              ],
+              "label": "2-ب",
+              "maxPoints": 1.5
+            }
+          ],
+          "maxPoints": 7.0
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "exam_system_components_pg1",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 1,
+      "caption": "مناصب تصنيع لوحات عاكسة الإضاءة",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_system_figure1_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 2,
+      "caption": "الشكل 1: نظام آلي للطي",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_assembly_drawing_pg4",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 4,
+      "caption": "الرسم التجميعي لمخفض السرعة",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_nomenclature_pg5",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 5,
+      "caption": "المدونات",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_resources_pg6",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6,
+      "caption": "ملف الموارد",
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_a0_prompt_pg7",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7,
+      "questionOrderIndex": 1,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_a0_sol_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2,
+      "questionOrderIndex": 1,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_fast_prompt_pg7",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "tree",
+      "pageNumber": 7,
+      "questionOrderIndex": 2,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_fast_sol_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "tree",
+      "pageNumber": 2,
+      "questionOrderIndex": 2,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_cycle_prompt_pg7",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 7,
+      "questionOrderIndex": 3,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_cycle_sol_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 2,
+      "questionOrderIndex": 3,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_joints_prompt_pg7",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 7,
+      "questionOrderIndex": 4,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_joints_sol_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2,
+      "questionOrderIndex": 4,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_kinematic_prompt_pg7",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7,
+      "questionOrderIndex": 6,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_kinematic_sol_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2,
+      "questionOrderIndex": 6,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_tolerances_prompt_pg7",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7,
+      "questionOrderIndex": 8,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_tolerances_sol_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2,
+      "questionOrderIndex": 8,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_chain_prompt_pg7",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7,
+      "questionOrderIndex": 9,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_chain_sol_pg2",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2,
+      "questionOrderIndex": 9,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_gears_table_pg8",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 8,
+      "questionOrderIndex": 10,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_gears_table_sol_pg3",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3,
+      "questionOrderIndex": 10,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_design_prompt_pg9",
+      "exerciseOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 9,
+      "questionOrderIndex": 18,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_design_sol_pg4",
+      "exerciseOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4,
+      "questionOrderIndex": 18,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_rawpart_prompt_pg10",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 10,
+      "questionOrderIndex": 3,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_rawpart_sol_pg5",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 5,
+      "questionOrderIndex": 3,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_machining_table_pg11",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 11,
+      "questionOrderIndex": 4,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_machining_table_sol_pg6",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 6,
+      "questionOrderIndex": 4,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_process_table_pg11",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 11,
+      "questionOrderIndex": 6,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_process_table_sol_pg6",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 6,
+      "questionOrderIndex": 6,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_phase_prompt_pg11",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 11,
+      "questionOrderIndex": 7,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_phase_sol_pg6",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 6,
+      "questionOrderIndex": 7,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_karnaugh_prompt_pg12",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 12,
+      "questionOrderIndex": 8,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_karnaugh_sol_pg7",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 7,
+      "questionOrderIndex": 8,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "exam_pneumatic_prompt_pg12",
+      "exerciseOrderIndex": 2,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 12,
+      "questionOrderIndex": 9,
+      "variantCode": "SUJET_1"
+    },
+    {
+      "id": "corr_pneumatic_sol_pg7",
+      "exerciseOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 7,
+      "questionOrderIndex": 9,
+      "variantCode": "SUJET_1"
+    }
+  ],
+  "uncertainties": [],
+  "exam": {
+    "durationMinutes": 270,
+    "hasCorrection": true,
+    "sourceLanguage": "ar",
+    "title": "نظام آلي لتصنيع لوحات عاكسة الإضاءة",
+    "totalPoints": 20.0
+  }
+}

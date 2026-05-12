@@ -18,6 +18,7 @@ import type {
 import {
   buildDraftWithSelectedStreamCodes,
   buildExtractionSummary,
+  buildFinalReviewChecklist,
   buildFocusRequest,
   buildIssueCountBySection,
   buildProcessActionLabel,
@@ -130,6 +131,17 @@ export function AdminIngestionReviewPage({
     () => buildIssueCountBySection(validationSummary.issues),
     [validationSummary.issues],
   );
+  const studentPreviewHref = buildStudentIngestionPreviewRouteWithSearch({
+    jobId,
+    streamCode: selectedStreamCodes[0] ?? data?.job.stream_codes[0] ?? null,
+  });
+  const finalReviewChecklist = draft
+    ? buildFinalReviewChecklist({
+        draft,
+        validation: validationSummary,
+        sourcePageCount: sourcePages.length,
+      })
+    : [];
 
   function handleIssueFocus(issue: AdminIngestionValidationIssue) {
     const nextSection = resolveIssueSection(issue);
@@ -217,15 +229,11 @@ export function AdminIngestionReviewPage({
         <div className="table-actions ingestion-action-bar">
           <Button asChild variant="outline" className="h-10 rounded-full px-5">
             <Link
-              href={buildStudentIngestionPreviewRouteWithSearch({
-                jobId,
-                streamCode:
-                  selectedStreamCodes[0] ?? data.job.stream_codes[0] ?? null,
-              })}
+              href={studentPreviewHref}
               target="_blank"
               rel="noreferrer"
             >
-              Student Preview
+              Final Student Preview
             </Link>
           </Button>
           {publishedExams.map((exam) => (
@@ -347,6 +355,8 @@ export function AdminIngestionReviewPage({
             onAttachCorrection={() => {
               void attachCorrection();
             }}
+            studentPreviewHref={studentPreviewHref}
+            finalReviewChecklist={finalReviewChecklist}
           />
         </section>
       ) : null}

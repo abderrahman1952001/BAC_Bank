@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import type { PointerEvent as ReactPointerEvent } from 'react';
-import { useMemo, useRef, useState } from 'react';
+import type { PointerEvent as ReactPointerEvent } from "react";
+import { useMemo, useRef, useState } from "react";
 
 export type CropBox = {
   x: number;
@@ -189,6 +189,8 @@ export function IngestionCropEditor({
             fill="#ffffff"
             fontSize="18"
             fontWeight="700"
+            direction="ltr"
+            textAnchor="start"
           >
             {Math.round(activeCrop.width)} × {Math.round(activeCrop.height)}
           </text>
@@ -220,18 +222,18 @@ export function IngestionCropPreview({
       role="img"
       aria-label={alt}
       style={{
-        overflow: 'hidden',
-        borderRadius: '1rem',
-        background: 'rgba(148, 163, 184, 0.12)',
+        overflow: "hidden",
+        borderRadius: "1rem",
+        background: "rgba(148, 163, 184, 0.12)",
       }}
     >
       <svg
         viewBox={`${cropBox.x} ${cropBox.y} ${width} ${height}`}
         preserveAspectRatio="xMidYMid meet"
         style={{
-          display: 'block',
-          width: '100%',
-          height: 'auto',
+          display: "block",
+          width: "100%",
+          height: "auto",
           aspectRatio: `${width} / ${height}`,
         }}
       >

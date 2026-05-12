@@ -13,6 +13,10 @@ grouping in the source paper.
 Prefer a faithful semantic structure over flattening everything into
 `EXERCISE -> QUESTION`.
 
+This document defines structure and presentation normalization rules only. The
+single end-to-end workflow source of truth is
+`docs/admin-ingestion-workflow.md`.
+
 This is especially important for subjects where one exercise may contain:
 
 - direct sibling questions
@@ -404,10 +408,26 @@ When the source is ambiguous:
 
 ## Asset Rules
 
-- Render faithful structured assets natively when the frontend can represent
-  them cleanly.
+- Render faithful structured assets natively by default when the frontend can
+  represent them cleanly.
+- Tables, simple correction tables, probability trees, sign tables, variation
+  tables, truth tables, and similarly clear structured assets should be native
+  whenever faithful native rendering is possible.
+- Tables, probability trees, sign tables, and variation tables are native-first,
+  not crop-first. Do not hand obvious native-renderable structures to the human
+  as crop work; keep crops only as provenance/fallback/verification when useful.
+- Send those structured assets to human crop review only when they are
+  difficult, ambiguous, unreadable, or blocked by renderer limitations Codex
+  could not safely resolve.
+- For sign and variation tables, choose the best faithful renderer. KaTeX/LaTeX
+  is acceptable when it best preserves the source layout; a dedicated native
+  table renderer is better when it is more faithful, inspectable, and
+  responsive.
 - Keep source-page asset references attached to native blocks when they exist,
   so the reviewer can compare the rendered block with the source.
+- Visually recheck native blocks against the source page or crop and repair
+  wrong cells, labels, signs, arrows, intervals, extrema, totals, or fallback
+  text before handoff.
 - Use image crops for visuals that should not be redrawn.
 - Keep image crops tight enough that the student-side preview looks intentional.
 - Treat full-page or broad placeholder crops as review debt, not publish-ready

@@ -557,6 +557,107 @@ describe('reviewed-paper-import', () => {
     expect(questions[2]?.blocks[0]?.value).toBe('اكتب نصا علميا.');
   });
 
+  it('keeps sibling order indexes unique when later Roman parts follow direct questions', () => {
+    const extract = parseReviewedPaperExtract({
+      variants: [
+        {
+          code: 'SUJET_1',
+          title: 'الموضوع الأول',
+          exercises: [
+            {
+              orderIndex: 1,
+              title: 'التمرين الأول',
+              contextBlocks: [
+                {
+                  type: 'paragraph',
+                  text: 'أولا: الدارة 1',
+                },
+              ],
+              assetIds: [],
+              questions: [
+                {
+                  orderIndex: 1,
+                  label: '1',
+                  promptBlocks: [
+                    {
+                      type: 'paragraph',
+                      text: '1. سؤال مباشر أول.',
+                    },
+                  ],
+                  solutionBlocks: [],
+                  hintBlocks: [],
+                  rubricBlocks: [],
+                  assetIds: [],
+                },
+                {
+                  orderIndex: 2,
+                  label: '2',
+                  promptBlocks: [
+                    {
+                      type: 'paragraph',
+                      text: '2. سؤال مباشر ثان.',
+                    },
+                  ],
+                  solutionBlocks: [],
+                  hintBlocks: [],
+                  rubricBlocks: [],
+                  assetIds: [],
+                },
+                {
+                  orderIndex: 3,
+                  label: 'II.1',
+                  promptBlocks: [
+                    {
+                      type: 'paragraph',
+                      text: 'ثانيا: الدارة 2\n1. سؤال في الجزء الثاني.',
+                    },
+                  ],
+                  solutionBlocks: [],
+                  hintBlocks: [],
+                  rubricBlocks: [],
+                  assetIds: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      assets: [],
+      uncertainties: [],
+      exam: {},
+    });
+
+    const { draft } = importReviewedPaperExtract({
+      baseDraft: createBaseDraft(),
+      reviewedExtract: extract,
+      importFilePath: 'extracted papers/Physics/SE 2025.txt',
+      importedAt: new Date('2026-05-12T00:00:00.000Z'),
+    });
+
+    const nodes = draft.variants[0]?.nodes ?? [];
+    const exercise = nodes.find((node) => node.id === 'sujet_1_exercise_1');
+    const exerciseChildren = nodes.filter(
+      (node) => node.parentId === exercise?.id,
+    );
+    const part = exerciseChildren.find((node) => node.nodeType === 'PART');
+    const directQuestions = exerciseChildren.filter(
+      (node) => node.nodeType === 'QUESTION',
+    );
+    const partQuestion = nodes.find(
+      (node) => node.parentId === 'sujet_1_exercise_1_part_2',
+    );
+
+    expect(directQuestions.map((question) => question.orderIndex)).toEqual([
+      1, 2,
+    ]);
+    expect(part).toMatchObject({
+      id: 'sujet_1_exercise_1_part_2',
+      orderIndex: 3,
+      label: 'الجزء الثاني',
+    });
+    expect(partQuestion?.id).toBe('sujet_1_exercise_1_part_2_question_1');
+  });
+
   it('nests Arabic-letter subquestions under numbered questions with labels and points', () => {
     const extract = parseReviewedPaperExtract({
       variants: [

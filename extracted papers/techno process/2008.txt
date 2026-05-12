@@ -1,0 +1,2354 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي",
+    "year": 2008,
+    "streamCode": "تقني رياضي",
+    "subjectCode": "هندسة الطرائق",
+    "sessionType": "normal",
+    "durationMinutes": 270,
+    "totalPoints": 20.0,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "S1_E1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "التمرين الأول",
+          "maxPoints": 7.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لديك سلسلة التفاعلات الكيميائية التالية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "\\begin{array}{l}\n\\begin{matrix} CH_3 \\\\ & \\searrow \\\\ & & C = CH - CH_3 \\\\ & \\nearrow \\\\ CH_3 \\end{matrix} + O_3 \\longrightarrow (A) \\\\\n(A) + H_2O \\longrightarrow (B) + (C) + H_2O_2 \\\\\n(B) + H_2 \\xrightarrow{Ni} (D) \\quad \\text{كحول ثانوي} \\\\\n(D) \\xrightarrow[170^\\circ C]{H_2SO_4} (E) + H_2O \\\\\n(E) + HBr \\longrightarrow (F) \\\\\n(F) + Mg \\xrightarrow{\\text{éther}} (G) \\\\\n(G) + (C) \\longrightarrow (H) \\\\\n(H) + H_2O \\longrightarrow CH_3 - \\underset{\\overset{|}{CH_3}}{CH} - \\underset{\\overset{|}{OH}}{CH} - CH_3 + MgBr(OH)\n\\end{array}"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q1",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 4.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1 - أكتب صيغ المركبات $(A)$ ، $(B)$ ، $(C)$ ، $(D)$ ، $(E)$ ، $(F)$ ، $(G)$ ، $(H)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "(C): CH_3 - \\underset{\\overset{||}{O}}{C} - H \\quad ; \\quad (B): CH_3 - \\underset{\\overset{||}{O}}{C} - CH_3 \\\\\n(E): CH_3 - CH = CH_2 \\quad ; \\quad (D): CH_3 - CH(OH) - CH_3 \\\\\n(G): CH_3 - CH(MgBr) - CH_3 \\quad ; \\quad (F): CH_3 - CH(Br) - CH_3 \\\\\n(H): CH_3 - CH(OMgBr) - CH(CH_3) - CH_3"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المركب (A): 0.50 نقطة\nالمركب (C): 0.50 نقطة\nالمركب (B): 0.50 نقطة\nالمركب (E): 0.50 نقطة\nالمركب (D): 0.50 نقطة\nالمركب (G): 0.50 نقطة\nالمركب (F): 0.50 نقطة\nالمركب (H): 0.50 نقطة\nالمجموع: 4 نقاط"
+            }
+          ],
+          "assetIds": [
+            "asset_s1_e1_q1_sol"
+          ]
+        },
+        {
+          "localId": "S1_E1_Q2",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2 - أكمل التفاعلات الكيميائية الآتية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "2(B) \\xrightarrow{OH^-} ......... \\\\\n2(C) \\xrightarrow{OH^-} ......... \\\\\n[\\text{حلقة بنزين}] + (F) \\xrightarrow{AlCl_3} ........."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "2 CH_3 - \\underset{\\overset{||}{O}}{C} - CH_3 \\xrightarrow{OH^-} CH_3 - \\underset{\\overset{|}{OH}}{\\overset{\\overset{CH_3}{|}}{C}} - CH_2 - \\underset{\\overset{||}{O}}{C} - CH_3 \\\\\n2 CH_3 - \\underset{\\overset{|}{H}}{\\overset{\\overset{||}{O}}{C}} \\xrightarrow{OH^-} CH_3 - \\underset{\\overset{|}{OH}}{CH} - CH_2 - \\underset{\\overset{|}{H}}{\\overset{\\overset{||}{O}}{C}}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل تفاعل: 0.50 نقطة\nالمجموع: 1.50 نقطة"
+            }
+          ],
+          "assetIds": [
+            "asset_s1_e1_q2_sol"
+          ]
+        },
+        {
+          "localId": "S1_E1_Q3",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3 - بلمرة المركب $(E)$ تؤدي إلى تشكل البوليمر $(I)$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q3_a",
+          "parentLocalId": "S1_E1_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- ما نوع هذه البلمرة؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "أ. نوع البلمرة: بلمرة بالضم (polyaddition)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "العلامة: 0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q3_b",
+          "parentLocalId": "S1_E1_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- أكتب الصيغة العامة للبوليمر $(I)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب. الصيغة العامة للبوليمر (I):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\left[ \\underset{\\overset{|}{CH_3}}{CH} - CH_2 \\right]_n"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "العلامة: 0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q3_c",
+          "parentLocalId": "S1_E1_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "ج",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ج- أعط اسم هذا البوليمر."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج. اسم البوليمر: البولي بروبلين (Polypropylène)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "العلامة: 0.25 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "التمرين الثاني",
+          "maxPoints": 7.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q1",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 3.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1 - ليكن الحمض الأميني الفالين $(Val)$ ذو الصيغة:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "CH_3 - \\underset{\\overset{|}{CH_3}}{CH} - \\underset{\\overset{|}{NH_2}}{CH} - COOH"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "له $pKa_1 = 2,3$ و $pKa_2 = 9,7$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q1_a",
+          "parentLocalId": "S1_E2_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أحسب قيمة $pH_i$ نقطة التعادل الكهربائي للحمض الأميني $(Val)$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1 / أ - حساب $pH_i$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "pH_i = \\frac{pKa_1 + pKa_2}{2} = \\frac{2,3 + 9,7}{2} = 6"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "العلاقة: 0.50 نقطة\nالنتيجة: 0.25 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q1_b",
+          "parentLocalId": "S1_E2_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 2.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- أكتب صيغة الفالين $(Val)$ عند $pH = 2$ ، $pH = 6$ ، $pH = 11$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - صيغة الفالين:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\text{عند } pH = 2 : CH_3 - \\underset{\\overset{|}{CH_3}}{CH} - \\underset{\\overset{|}{N^+H_3}}{CH} - COOH \\\\\n\\text{عند } pH = 6 : CH_3 - \\underset{\\overset{|}{CH_3}}{CH} - \\underset{\\overset{|}{N^+H_3}}{CH} - COO^- \\\\\n\\text{عند } pH = 11 : CH_3 - \\underset{\\overset{|}{CH_3}}{CH} - \\underset{\\overset{|}{NH_2}}{CH} - COO^-"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل صيغة: 0.75 نقطة (المجموع 2.25 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q2",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 2.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2 - صيغة ثلاثي البيبتيد $(A)$ هي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "H_2N - CH_2 - \\underset{\\overset{||}{O}}{C} - NH - \\underset{\\overset{|}{CH(CH_3)_2}}{CH} - \\underset{\\overset{||}{O}}{C} - NH - \\underset{\\overset{|}{CH_3}}{CH} - COOH"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q2_a",
+          "parentLocalId": "S1_E2_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أكتب صيغ الأحماض الأمينية المكونة لثلاثي البيبتيد $(A)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2 / أ - الأحماض الأمينية المكونة للبيبتيد (A)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "NH_2 - CH_2 - COOH \\quad ; \\quad NH_2 - \\underset{\\overset{|}{CH(CH_3)_2}}{CH} - COOH \\quad ; \\quad NH_2 - \\underset{\\overset{|}{CH_3}}{CH} - COOH"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل حمض: 0.5 نقطة (المجموع 1.5 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q2_b",
+          "parentLocalId": "S1_E2_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- من بين الأحماض الأمينية المكونة لـ $(A)$ ، ما هي التي لها نشاط ضوئي؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - التي لها نشاط ضوئي:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "NH_2 - \\underset{\\overset{|}{CH(CH_3)_2}}{\\overset{*}{C}H} - COOH \\quad ; \\quad NH_2 - \\underset{\\overset{|}{CH_3}}{\\overset{*}{C}H} - COOH"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل حمض محدد: 0.5 نقطة (المجموع 1.0 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q3",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3 - يعتبر الألانين من بين الأحماض الأمينية المكونة لثلاثي البيبتيد $(A)$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q3_a",
+          "parentLocalId": "S1_E2_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أكتب معادلة تفاعل نزع مجموعة الكربوكسيل من الألانين بوجود إنزيم الألانين ديكربوكسيلاز."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3 / أ - معادلة نزع مجموعة الكربوكسيل:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "NH_2 - \\underset{\\overset{|}{CH_3}}{CH} - COOH \\xrightarrow{\\text{ألانين ديكربوكسيلاز}} NH_2 - CH_2 - CH_3 + CO_2"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "العلامة: 0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q3_b",
+          "parentLocalId": "S1_E2_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- يمكن أن ينتج الألانين من التفاعل التالي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "B + \\text{الألانين} \\xrightleftharpoons{\\text{aminotransférase}} \\begin{matrix} COOH \\\\ | \\\\ C=O \\\\ | \\\\ CH_3 \\end{matrix} + \\begin{matrix} COOH \\\\ | \\\\ CH-NH_2 \\\\ | \\\\ (CH_2)_2 \\\\ | \\\\ COOH \\end{matrix}"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "- أوجد صيغة المركب $(B)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - صيغة المركب B:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{matrix} COOH \\\\ | \\\\ C=O \\\\ | \\\\ (CH_2)_2 \\\\ | \\\\ COOH \\end{matrix}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "العلامة: 0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "التمرين الثالث",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لدينا التفاعلين التاليين عند $25^\\circ C$:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "(1) \\ C_3H_{8(g)} + 5 O_{2(g)} \\longrightarrow 3 CO_{2(g)} + 4 H_2O_{(l)} \\quad \\Delta H^0_1 = -2218\\ kJ.mol^{-1} \\\\\n(2) \\ CO_{(g)} + \\frac{1}{2} O_{2(g)} \\longrightarrow CO_{2(g)} \\quad \\Delta H^0_2 = -282,74\\ kJ.mol^{-1}"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يعطى:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "\\Delta H^0_f(CO_{(g)}) = -110,44\\ kJ.mol^{-1} \\\\\n\\Delta H^0_f(H_2O_{(l)}) = -285,58\\ kJ.mol^{-1}"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q1",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1 - أحسب أنطالبي التشكل $\\Delta H^0_f$ لكل من المركبين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q1_a",
+          "parentLocalId": "S1_E3_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 1.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- $CO_2$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1 / أ - إيجاد $\\Delta H^0_f(CO_{2(g)})$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CO_{(g)} + 1/2 O_{2(g)} \\longrightarrow CO_{2(g)} \\\\\n\\Delta H^0_2 = \\Delta H^0_f(CO_{2(g)}) - \\Delta H^0_f(CO_{(g)}) - 1/2 \\Delta H^0_f(O_{2(g)}) \\\\\n-282,74 = \\Delta H^0_f(CO_{2(g)}) - (-110,44) - (1/2 \\times 0) \\\\\n-282,74 = \\Delta H^0_f(CO_{2(g)}) + 110,44 \\\\\n\\Rightarrow \\Delta H^0_f(CO_{2(g)}) = -393,18\\ kJ.mol^{-1}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "القانون: 0.50 نقطة\nالتعويض: 0.25 نقطة\nالنتيجة: 0.50 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q1_b",
+          "parentLocalId": "S1_E3_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 1.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- $C_3H_8$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - إيجاد $\\Delta H^0_f(C_3H_{8(g)})$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "C_3H_{8(g)} + 5 O_{2(g)} \\longrightarrow 3 CO_{2(g)} + 4 H_2O_{(l)} \\\\\n\\Delta H^0_1 = 3 \\Delta H^0_f(CO_{2(g)}) + 4 \\Delta H^0_f(H_2O_{(l)}) - \\Delta H^0_f(C_3H_{8(g)}) - 5 \\Delta H^0_f(O_{2(g)}) \\\\\n-2218 = 3(-393,18) + 4(-285,58) - \\Delta H^0_f(C_3H_{8(g)}) - 5 \\times 0 \\\\\n-2218 = -2321,86 - \\Delta H^0_f(C_3H_{8(g)}) \\\\\n\\Rightarrow \\Delta H^0_f(C_3H_{8(g)}) = -103,86\\ kJ.mol^{-1}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "القانون: 0.50 نقطة\nالتعويض: 0.25 نقطة\nالنتيجة: 0.50 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q2",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2 - حدد قيمة التغير في الطاقة الداخلية $\\Delta U$ للتفاعل (1). حيث: $R=8,314\\ J.mol^{-1}.K^{-1}$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2 - تحديد قيمة التغير في الطاقة الداخلية $\\Delta U$ للتفاعل (1):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\Delta H = \\Delta U + \\Delta n RT \\\\\n\\Delta n = 3 - (1+5) = -3 \\quad T = 273 + 25 = 298^\\circ K \\\\\n\\Delta U = \\Delta H - \\Delta n RT \\Rightarrow \\Delta U = -2218.10^3 - (-3) \\times 8,314 \\times 298 \\\\\n\\Delta U = -2218000 + 7432,716 \\\\\n\\Delta U = -2210567,3\\ J \\quad \\Delta U = -2210,567\\ kJ"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "القانون: 0.5 نقطة\nحساب $\\Delta n$ و T: 2 × 0.25 نقطة\nالتعويض: 0.25 نقطة\nالنتيجة النهائية: 0.50 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q3",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3 - أحسب أنطالبي التفاعل (2) عند $100^\\circ C$ علما أن السعة الحرارية $C_p$ لكل من $O_2$ ، $CO$ ، $CO_2$ تعطى كالآتي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "C_{P(CO_2)} = 37,45\\ J.mol^{-1}.K^{-1} \\quad C_{P(CO)} = 29,13\\ J.mol^{-1}.K^{-1} \\quad C_{P(O_2)} = 29,36\\ J.mol^{-1}.K^{-1}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3 - حساب أنطالبي التفاعل (2) عند $100^\\circ C$ : $T = 273 + 100 = 373^\\circ K$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\text{نطبق قانون كيرشوف: } \\Delta H^0_T = \\Delta H^0_{T_0} + \\int_{T_0}^{T} \\Delta C_p\\ dT \\quad \\Delta H^0_T = \\Delta H^0_{T_0} + \\Delta C_p (T - T_0) \\\\\n\\text{لدينا التفاعل الثاني: } CO_{(g)} + \\frac{1}{2} O_{2(g)} \\longrightarrow CO_{2(g)} \\\\\n\\Delta C_p = C_{P(CO_2)} - C_{P(CO)} - \\frac{1}{2} C_{P(O_2)} \\\\\n\\Delta C_p = 37,45 - 29,13 - \\frac{29,36}{2} \\\\\n\\Delta C_p = -6,36\\ J.mol^{-1}.K^{-1} \\\\\n\\Delta H^0_{373} = \\Delta H^0_{298} + \\Delta C_p(373 - 298) \\\\\n\\Delta H^0_{373} = -282,74.10^3 - 6,36 \\times 75 \\\\\n\\Delta H^0_{373} = -282740 - 477 \\\\\n\\Delta H^0_{373} = -283217\\ J.mol^{-1} \\quad \\Delta H^0_{373} = -283,22\\ kJ.mol^{-1}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "قانون كيرشوف: 0.5 نقطة\nحساب $\\Delta C_p$: 0.25 نقطة\nنتيجة $\\Delta C_p$: 0.25 نقطة\nتعويض $\\Delta H^0$: 0.25 نقطة\nالنتيجة النهائية: 0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "S2_E1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "التمرين الأول",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q1",
+          "parentLocalId": "S2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1 - يحضر البولي ستيران (Polystyrène) من بلمرة الستيران [حلقة بنزين]-$CH=CH_2$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q1_a",
+          "parentLocalId": "S2_E1_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أذكر نوع هذه البلمرة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1) أ - بلمرة بالضم."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q1_b",
+          "parentLocalId": "S2_E1_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- مثّل مقطعا من البولي ستيران يتركب من ثلاث (03) وحدات بنائية (03 مونوميرات)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - تمثيل مقطع من البولي ستيران"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 نقطة"
+            }
+          ],
+          "assetIds": [
+            "asset_s2_e1_q1_b_sol"
+          ]
+        },
+        {
+          "localId": "S2_E1_Q1_c",
+          "parentLocalId": "S2_E1_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "ج",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "جـ- استنتج الصيغة العامة للبولي ستيران."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "جـ - الصيغة العامة للبولي ستيران"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\left[ \\underset{\\overset{|}{[\\text{حلقة بنزين}]}}{CH} - CH_2 \\right]_n"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q1_d",
+          "parentLocalId": "S2_E1_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 4,
+          "label": "د",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "د- أعط أهم استخدامات البولي ستيران."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "د - أهم الاستخدامات للبولي ستيران:\n- عازل للصوت والحرارة.\n- يحفظ الأجهزة الحساسة من الصدمات خلال نقلها...\nكما تقبل إجابات أخرى صحيحة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل استخدام: 0.25 نقطة (المجموع 0.5 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q2",
+          "parentLocalId": "S2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2 - يمكن تحضير الستيران بنزع الماء من المركب العضوي $(A)$ (كحول أولي) بوجود حمض $H_2SO_4$ عند $170^\\circ C$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q2_a",
+          "parentLocalId": "S2_E1_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- استنتج صيغة المركب $(A)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2) أ - صيغة المركب A:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "[\\text{حلقة بنزين}]-CH_2-CH_2-OH"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q2_b",
+          "parentLocalId": "S2_E1_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- أكتب معادلة تفاعل نزع الماء من المركب العضوي $(A)$ عند $140^\\circ C$ في وجود حمض $H_2SO_4$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - معادلة تفاعل نزع الماء من المركب A عند $140^\\circ C$:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "asset_s2_e1_q2_b_sol"
+          ]
+        },
+        {
+          "localId": "S2_E1_Q3",
+          "parentLocalId": "S2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3 - أكتب معادلة تفاعل الستيران مع:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q3_a",
+          "parentLocalId": "S2_E1_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- $H_2$ في وجود $Ni$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3) أ - معادلة تفاعل الستيران مع $H_2$:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "asset_s2_e1_q3_a_sol"
+          ]
+        },
+        {
+          "localId": "S2_E1_Q3_b",
+          "parentLocalId": "S2_E1_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- $HBr$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - معادلة تفاعل الستيران مع $HBr$:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "asset_s2_e1_q3_b_sol"
+          ]
+        },
+        {
+          "localId": "S2_E1_Q4",
+          "parentLocalId": "S2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4 - أكسدة الستيران بالأوزون $(O_3)$ تعطي المركب $(B)$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_Q4_a",
+          "parentLocalId": "S2_E1_Q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أعط صيغة المركب $(B)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4) أ -"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "asset_s2_e1_q4_a_sol"
+          ]
+        },
+        {
+          "localId": "S2_E1_Q4_b",
+          "parentLocalId": "S2_E1_Q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- أكتب معادلة تفاعل إماهة المركب $(B)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - المعادلة:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 نقطة"
+            }
+          ],
+          "assetIds": [
+            "asset_s2_e1_q4_b_sol"
+          ]
+        },
+        {
+          "localId": "S2_E2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "التمرين الثاني",
+          "maxPoints": 7.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q1",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1 - الحليب مادة غذائية، ومن بين مكوّناته البروتينات."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q1_a",
+          "parentLocalId": "S2_E2_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- اقترح طريقة للكشف عن البروتينات."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1/ أ - الطريقة الأكثر استعمالا هي طريقة بيوري وذلك بمعالجة عينة من الحليب بواسطة قطرات من كبريتات النحاس II في وسط قاعدي فيظهر لون بنفسجي مما يدل على وجود بروتين."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q1_b",
+          "parentLocalId": "S2_E2_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- يعطي الحليب مع كاشف كزانثوبروتيك تفاعلا إيجابيا. ماذا تستنتج؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - أعطى الحليب مع كاشف كزانثوبروتيك تفاعلا إيجابيا وهذا دليل على أن بروتينات الحليب تحتوي على أحماض أمينية عطرية (آروماتية)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q2",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2 - التحلل المائي لبروتين الحليب بوجود إنزيم مناسب يعطي أحماضا أمينية من بينها:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "\\begin{array}{ccc}\nCH_2-COOH & HO-CH_2-CH-COOH & HS-CH_2-CH-COOH \\\\\n| & | & | \\\\\nNH_2 & NH_2 & NH_2 \\\\\n\\text{الغليسين}(Gly) & \\text{السيرين}(Ser) & \\text{السيستيين}(Cys)\n\\end{array}"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "\\begin{array}{c}\nHOOC-CH_2-CH-COOH \\\\\n| \\\\\nNH_2 \\\\\n\\text{حمض الأسبارتيك}(Asp)\n\\end{array}"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q2_a",
+          "parentLocalId": "S2_E2_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 2.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أذكر صنف كل حمض أميني من الأحماض الأمينية الأربعة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2 / أ - تصنيف الأحماض الأمينية:\n- الغليسين (Gly): حمض أميني خطي ذو سلسلة كربونية.\n- السيرين (Ser): حمض أميني خطي هيدروكسيلي.\n- السيستيين (Cys): حمض أميني خطي كبريتي.\n- حمض الأسبارتيك (Asp): حمض أميني خطي حامضي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل تصنيف: 0.5 نقطة (المجموع 2.0 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q2_b",
+          "parentLocalId": "S2_E2_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- أيّ الأحماض الأمينية السابقة غير نشط ضوئيا؟ علل ذلك."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - الحمض الأميني الوحيد غير النشط ضوئيا هو الغليسين (Gly) لعدم احتوائه على ذرة كربون غير متناظرة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q2_c",
+          "parentLocalId": "S2_E2_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "ج",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "جـ- اختر حمضا أمينيا نشطا ضوئيا ومثّله في صورة D وصورة L."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "جـ - تمثيل أحد الأحماض الأمينية النشطة ضوئيا التالية: (Ser) ، (Cys) ، (Asp)\nتمثيل (Asp):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{matrix}\nCOOH \\\\ | \\\\ NH_2-C-H \\\\ | \\\\ CH_2 \\\\ | \\\\ COOH \\\\ L\n\\end{matrix}\n\\quad \\quad \\quad\n\\begin{matrix}\nCOOH \\\\ | \\\\ H-C-NH_2 \\\\ | \\\\ CH_2 \\\\ | \\\\ COOH \\\\ D\n\\end{matrix}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يقبل تمثيل (Cys) وتمثيل (Ser)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل تمثيل: 0.5 نقطة (المجموع 1.0 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q2_d",
+          "parentLocalId": "S2_E2_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 4,
+          "label": "د",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "د- أكتب صيغة الغليسين (Gly) عند $pH = 2$ ، $pH = pH_i$ ، $pH = 11$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "د - * صيغة الغليسين عند pH=2 :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CH_2-COOH \\\\\n\\overset{|}{^+\\text{N}H_3}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "* صيغة الغليسين عند pH=pHi :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CH_2-COO^- \\\\\n\\overset{|}{^+\\text{N}H_3}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "* صيغة الغليسين عند pH=11 :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CH_2-COO^- \\\\\n\\overset{|}{NH_2}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل صيغة: 0.5 نقطة (المجموع 1.5 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q2_e",
+          "parentLocalId": "S2_E2_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 5,
+          "label": "هـ",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "هـ- أكتب صيغة ثلاثي البيبتيد التالي: $Gly - Asp - Ser$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "هـ - صيغة ثلاثي البيبتيد:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "H_2N-CH_2-\\underset{\\overset{||}{O}}{C}-NH-\\underset{\\overset{|}{\\begin{matrix} CH_2 \\\\ | \\\\ COOH \\end{matrix}}}{CH}-\\underset{\\overset{||}{O}}{C}-NH-\\underset{\\overset{|}{\\begin{matrix} CH_2 \\\\ | \\\\ OH \\end{matrix}}}{CH}-COOH \\\\\n(Gly) \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad (Asp) \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad (Ser)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "التمرين الثالث",
+          "maxPoints": 7.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q1",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 4.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1 - نمزج $0,5$ مول من حمض الإيثانويك $CH_3COOH$ مع $0,5$ مول من كحول $(A)$ ، ثم نضيف له بعض القطرات من حمض الكبريت المركز فنحصل على $0,3$ مول من الأستر المتشكل عند الاتزان."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q1_a",
+          "parentLocalId": "S2_E3_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أذكر خصائص تفاعل الأسترة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1) أ - خصائص تفاعل الأسترة:\n- تفاعل بطيء.\n- تفاعل محدود ومتوازن.\n- تفاعل لا حراري.\n- مردود التفاعل يرتبط بصنف الكحول المستعمل. (67% حالة كحول أولي، 60% حالة كحول ثانوي و 5% حالة كحول ثالثي)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل خاصية: 0.25 نقطة (المجموع 1.0 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q1_b",
+          "parentLocalId": "S2_E3_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- أحسب مردود تفاعل الأسترة السابق."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - مردود تفاعل الأسترة:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\text{المردود} = \\frac{0,3}{0,5} \\times 100 = 60\\%"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q1_c",
+          "parentLocalId": "S2_E3_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "ج",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "جـ- استنتج صنف الكحول $(A)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "جـ - صنف الكحول (A) المستعمل: بما أن مردود التفاعل يساوي 60% فهذا يعني أن الكحول (A) المستعمل هو كحول ثانوي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q1_d",
+          "parentLocalId": "S2_E3_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 4,
+          "label": "د",
+          "maxPoints": 1.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "د- حدّد الصيغة المفصلة للكحول $(A)$، علما أن الكتلة المولية للأستر المتشكل هي $102g/mol$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "د - الصيغة المفصلة للكحول (A): لدينا الكتلة المولية للأستر المتشكل = 102g/mol الصيغة العامة للأستر المتشكل هي:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CH_3-\\underset{\\overset{||}{O}}{C}-OR' \\\\\n2(12)+3(1)+2(16)+R' = 102 \\\\\n24+3+32+R' = 102 \\\\\nR' = 102-59 = 43"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "إذا كانت الصيغة العامة للكحول هي: $R'-OH$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "R' = C_nH_{2n+1} = 43 \\\\\n\\Rightarrow 12n+2n+1 = 43 \\\\\n14n = 42 \\Rightarrow n = 3"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ومنه فإن الصيغة العامة للكحول (A) هي: $C_3H_7OH$ وبما أن (A) هو كحول ثانوي فإن صيغته المفصلة هي:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CH_3 - \\underset{\\overset{|}{OH}}{CH} - CH_3"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الصيغة العامة للأستر: 0.25 نقطة\nحساب R': 0.5 نقطة\nاستنتاج n: 0.25 نقطة\nالصيغة العامة للكحول: 0.25 نقطة\nالصيغة المفصلة للكحول: 0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q1_e",
+          "parentLocalId": "S2_E3_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 5,
+          "label": "هـ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "هـ- أكتب معادلة تفاعل الأسترة السابق."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "هـ - معادلة تفاعل الأسترة:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CH_3COOH + CH_3-\\underset{\\overset{|}{OH}}{CH}-CH_3 \\rightleftharpoons CH_3-\\underset{\\overset{||}{O}}{C}-O-\\underset{\\overset{|}{CH_3}}{CH}-CH_3 + H_2O"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q2",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2 - يمكن الحصول على الكحول $(A)$ السابق وفق سلسلة التفاعلات التالية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "CH_4 + Cl_2 \\xrightarrow{U.V} (B) + HCl \\\\\n(B) + Mg \\xrightarrow{\\text{éther}} (C) \\\\\nCH_3 - \\underset{\\overset{|}{H}}{\\overset{\\overset{||}{O}}{C}} + (C) \\longrightarrow (D) \\\\\n(D) + H_2O \\longrightarrow (A) + MgClOH \\\\\n\\quad \\quad \\quad \\quad \\quad \\quad \\text{كحول}"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استنتج صيغ المركبات $(B)$ ، $(C)$ ، $(D)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2 ) صيغة المركب (B) :\nصيغة المركب (C) :\nصيغة المركب (D) :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "(B) : CH_3Cl \\\\\n(C) : CH_3MgCl \\\\\n(D) : CH_3-\\underset{\\overset{|}{OMgCl}}{CH}-CH_3"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "لكل صيغة: 0.5 نقطة (المجموع 1.5 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q3",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3 - نزع الماء من الكحول $(A)$ بوجود حمض الكبريت المركز وعند $170^\\circ C$ يؤدي إلى المركب $(E)$."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تعطى الكتل المولية لـ: $C=12g/mol$ ، $H=1g/mol$ ، $O=16g/mol$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q3_a",
+          "parentLocalId": "S2_E3_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- أكتب صيغة المركب $(E)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3 ) أ - صيغة المركب (E):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "CH_3 - CH = CH_2"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q3_b",
+          "parentLocalId": "S2_E3_Q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- بلمرة المركب $(E)$ تعطي البوليمر $(F)$.\n- مثّل الصيغة العامة للبوليمر $(F)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - الصيغة العامة للبوليمر (F):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\left[ \\underset{\\overset{|}{CH_3}}{CH} - CH_2 \\right]_n"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 نقطة"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "asset_s1_e1_q1_sol",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E1_Q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 1,
+      "label": "Ozonide Formula A",
+      "caption": "صيغة المركب A (أوزونيد)"
+    },
+    {
+      "id": "asset_s1_e1_q2_sol",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E1_Q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 1,
+      "label": "Reaction of F with Benzene",
+      "caption": "تفاعل المركب F مع البنزين"
+    },
+    {
+      "id": "asset_s2_e1_q1_b_sol",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_Q1_b",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4,
+      "label": "Polystyrene structure",
+      "caption": "تمثيل مقطع من البولي ستيران"
+    },
+    {
+      "id": "asset_s2_e1_q2_b_sol",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_Q2_b",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4,
+      "label": "Reaction forming ether",
+      "caption": "معادلة تفاعل نزع الماء من المركب A"
+    },
+    {
+      "id": "asset_s2_e1_q3_a_sol",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_Q3_a",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4,
+      "label": "Reaction of styrene with H2",
+      "caption": "معادلة تفاعل الستيران مع H2"
+    },
+    {
+      "id": "asset_s2_e1_q3_b_sol",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_Q3_b",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4,
+      "label": "Reaction of styrene with HBr",
+      "caption": "معادلة تفاعل الستيران مع HBr"
+    },
+    {
+      "id": "asset_s2_e1_q4_a_sol",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_Q4_a",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4,
+      "label": "Formula of Compound B",
+      "caption": "صيغة المركب B"
+    },
+    {
+      "id": "asset_s2_e1_q4_b_sol",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_Q4_b",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4,
+      "label": "Hydration of Compound B",
+      "caption": "معادلة تفاعل إماهة المركب B"
+    }
+  ],
+  "nativeRenderCandidates": [],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 6,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": [
+    "Used exact drawn LaTeX logic to approximate tree-like structures like branching methyl groups when they were simple enough, such as in S1_E2_Q2.",
+    "Used image assets for SUJET 1 Ex 1 Q1 and Q2, and SUJET 2 Ex 1 to capture accurately the 2D structures of cyclic compounds (benzene rings and ozonides) to remain maximally faithful to the original drawing without inventing notation."
+  ]
+}

@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import type {
+  AdminIngestionCropQueueResponse,
   AdminIngestionJobListResponse,
   AdminIngestionJobResponse,
+  UpdateIngestionAssetCropResponse,
 } from '@bac-bank/contracts/ingestion';
 import { ProcessIngestionJobDto } from './dto/process-ingestion-job.dto';
 import { UpdateIngestionJobDto } from './dto/update-ingestion-job.dto';
@@ -10,6 +12,7 @@ import {
   CreateManualUploadJobInput,
   IngestionDraftIntakeService,
 } from './ingestion-draft-intake.service';
+import { IngestionCropReviewService } from './ingestion-crop-review.service';
 import { IngestionQueueService } from './ingestion-queue.service';
 import { IngestionReadService } from './ingestion-read.service';
 import { IngestionReviewService } from './ingestion-review.service';
@@ -18,6 +21,7 @@ import { IngestionReviewService } from './ingestion-review.service';
 export class IngestionService {
   constructor(
     private readonly draftIntakeService: IngestionDraftIntakeService,
+    private readonly cropReviewService: IngestionCropReviewService,
     private readonly queueService: IngestionQueueService,
     private readonly readService: IngestionReadService,
     private readonly reviewService: IngestionReviewService,
@@ -25,6 +29,10 @@ export class IngestionService {
 
   async listJobs(): Promise<AdminIngestionJobListResponse> {
     return this.readService.listJobs();
+  }
+
+  async listCropQueue(): Promise<AdminIngestionCropQueueResponse> {
+    return this.cropReviewService.listCropQueue();
   }
 
   async createManualUploadJob(
@@ -66,6 +74,14 @@ export class IngestionService {
     payload: UpdateIngestionJobDto,
   ): Promise<AdminIngestionJobResponse> {
     return this.reviewService.updateJob(jobId, payload);
+  }
+
+  async updateAssetCrop(
+    jobId: string,
+    assetId: string,
+    payload: unknown,
+  ): Promise<UpdateIngestionAssetCropResponse> {
+    return this.cropReviewService.updateAssetCrop(jobId, assetId, payload);
   }
 
   async approveJob(jobId: string): Promise<AdminIngestionJobResponse> {

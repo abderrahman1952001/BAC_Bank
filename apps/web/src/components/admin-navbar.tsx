@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import {
   BookCopy,
   CreditCard,
-  Crop,
+  FileText,
   GraduationCap,
+  ImageIcon,
   Inbox,
   LibraryBig,
   LogOut,
@@ -30,6 +31,11 @@ const navItems = [
     icon: BookCopy,
   },
   {
+    href: "/admin/crops",
+    label: "Crops",
+    icon: ImageIcon,
+  },
+  {
     href: "/admin/library",
     label: "Library",
     icon: LibraryBig,
@@ -37,7 +43,7 @@ const navItems = [
   {
     href: "/admin/sources",
     label: "Sources",
-    icon: Crop,
+    icon: FileText,
   },
   {
     href: "/admin/billing",

@@ -1,0 +1,2640 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي",
+    "year": 2015,
+    "streamCode": "علوم تجريبية",
+    "subjectCode": "العلوم الفيزيائية",
+    "sessionType": "normal",
+    "durationMinutes": 180,
+    "totalPoints": 20,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "S1_E1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عند اللحظة $t=0$ نمزج حجماً $V_1 = 50 \\text{ mL}$ من محلول برمنغنات البوتاسيوم $(K^+ + MnO_4^-)$ المحمض تركيزه المولي $C_1 = 0,2 \\text{ mol/L}$ وحجماً $V_2 = 50 \\text{ mL}$ من محلول لحمض الأوكساليك $H_2C_2O_4$ تركيزه المولي $C_2 = 0,6 \\text{ mol/L}$.\nتعطى الثنائيات $(Ox/Red)$ الداخلة في التفاعل: $(CO_2(aq)/H_2C_2O_4(aq))$ و $(MnO_4^-(aq)/Mn^{2+}(aq))$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q1",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعط تعريف كل من المؤكسد والمرجع."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "المؤكسد: كل فرد كيميائي يكتسب إلكتروناً أو أكثر خلال تفاعل كيميائي.\nالمرجع: كل فرد كيميائي يتخلى عن إلكترون أو أكثر خلال تفاعل كيميائي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المؤكسد: 0,25\nالمرجع: 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q2",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب المعادلتين النصفيتين للأكسدة والإرجاع واستنتج معادلة تفاعل الأكسدة الإرجاعية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\text{م.ن.للأكسدة: } H_2C_2O_4(aq) = 2CO_2(aq) + 2H^+(aq) + 2e^- \n \\text{م.ن.للإرجاع: } MnO_4^-(aq) + 8H^+(aq) + 5e^- = Mn^{2+}(aq) + 4H_2O(\\ell) \n \\text{معادلة الأكسدة - إرجاع:} \n 5 H_2C_2O_4(aq) + 2MnO_4^-(aq) + 6H^+(aq) = 10CO_2(aq) + 2Mn^{2+}(aq) + 8H_2O(\\ell)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "م.ن.للأكسدة: 0,25\nم.ن.للإرجاع: 0,25\nمعادلة الأكسدة - إرجاع: 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q3",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنشئ جدول تقدم التفاعل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "جدول التقدم:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "المعادلة\t5 H2C2O4(aq) + 2MnO4-(aq) + 6H+(aq) = 10CO2(aq) + 2Mn2+(aq) + 8H2O(l)\nح-ابتدائية\tC2V2\tC1V1\t0\t0\tبزيادة\nح-انتقالية\tC2V2-5x\tC1V1-2x\t10x\t2x\tبزيادة\nح-نهائية\tC2V2-5xf\tC1V1-2xf\t10xf\t2xf\tبزيادة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q4",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "هل المزيج الابتدائي في الشروط الستوكيومترية للتفاعل؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "المزيج ليس ستوكيومتري لأن: $\\frac{C_1 V_1}{2} = 5 \\text{ mmol}$ و $\\frac{C_2 V_2}{5} = 6 \\text{ mmol}$\nو منه: $\\frac{C_1 V_1}{2} \\neq \\frac{C_2 V_2}{5}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q5",
+          "parentLocalId": "S1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لمتابعة تطور التفاعل نسجل خلال كل دقيقة التركيز المولي للمزيج بشوارد البرمنغنات $MnO_4^-$ في الجدول التالي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "t (min) | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7\n[MnO_4^-](x10^{-3} mol.L^{-1}) | 100 | 98 | 92 | 60 | 30 | 12 | 5 | 3"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q5_a",
+          "parentLocalId": "S1_E1_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب التركيز المولي الابتدائي لـ $MnO_4^-$ و $H_2C_2O_4$ في المزيج."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$[MnO_4^-]_0 = \\frac{C_1 V_1}{V_1+V_2} = 0,1 \\text{ mol.L}^{-1}$ و $[H_2C_2O_4]_0 = \\frac{C_2 V_2}{V_1+V_2} = 0,3 \\text{ mol.L}^{-1}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q5_b",
+          "parentLocalId": "S1_E1_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بيّن أنّ التركيز المولي $[Mn^{2+}]$ عند اللحظة $(t)$ يعطى بالعلاقة: $[Mn^{2+}](t) = \\frac{C_1}{2} - [MnO_4^-](t)$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "إثبات العلاقة:\n$[MnO_4^-] = \\frac{C_1 V_1 - 2x}{V_T} = \\frac{C_1 V_1}{V_T} - \\frac{2x}{V_T}$ و $[Mn^{2+}] = \\frac{2x}{V_T}$\nحيث: $V_T = 2 \\cdot V_1$ ومنه: $[Mn^{2+}](t) = \\frac{C_1}{2} - [MnO_4^-](t)$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E1_Q5_c",
+          "parentLocalId": "S1_E1_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "ج",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ارسم منحنى تغيرات $[MnO_4^-]$ بدلالة الزمن على ورقة ميليمترية ترفق مع ورقة الإجابة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "رسم المنحنى:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": ["S1_E1_Q5_c_graph_1"]
+        },
+        {
+          "localId": "S1_E1_Q5_d",
+          "parentLocalId": "S1_E1_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 4,
+          "label": "د",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أوجد عبارة السرعة الحجمية للتفاعل بدلالة $[MnO_4^-](t)$ ثم احسب قيمتها في اللحظة $t = 2 \\text{ min}$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "السرعة الحجمية للتفاعل:\n$V_{vol} = - \\frac{1}{2} \\frac{d[MnO_4^-]}{dt}$\n$V_{vol} \\in [7,3 \\ ; \\ 8,3] \\times 10^{-3} \\text{ mol.L}^{-1}.\\text{min}^{-1}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للعبارة\n0,25 للقيمة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "من نظائر الهيدروجين: الدوتريوم $D$ (نواته: $^2_1H$) والتريتيوم $T$ (نواته: $^3_1H$)."
+            }
+          ],
+          "assetIds": ["S1_E2_graph_1"]
+        },
+        {
+          "localId": "S1_E2_Q1",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعط تركيب نواة كل نظير."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التركيب:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "النواة\t21H\t31H\nعدد البروتونات: Z\t1\t1\nعدد النيترونات: N = A - Z\t1\t2"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q2",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرّف نظائر العنصر."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "نظائر العنصر لها العدد $Z$ نفسه و $A$ مختلف."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q3",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ماذا يمثل منحنى أستون الموضح بالشكل-1 ؟\n- ماذا تمثل المنطقة المظللة من البيان ؟\n- اذكر آلية استقرار باقي الأنوية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يمثل منحنى أستون تغيرات عكس طاقة الربط لكل نوية في نواة ذرية $^A_ZX$ بدلالة عدد نوياتها $A$\nأي: $(-E_l/A) = f(A)$\nتمثل المنطقة المظللة من البيان \"غالبية الأنوية المستقرة\" والتي تتميز بـ $40 \\leq A \\leq 190$.\n- الأنوية الخفيفة $A < 40$: تستقر بآلية \" الاندماج النووي \".\n- الأنوية الثقيلة $A > 190$: تستقر بآلية \" الانشطار النووي \"."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للمنحنى\n0,25 للمنطقة المظللة\n0,25 للأنوية الخفيفة\n0,25 للأنوية الثقيلة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q4",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرّف طاقة الربط $E_l$ للنواة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "طاقة الربط للنواة $E_l$ هي: الطاقة الواجب توفيرها لنواة ساكنة لفصلها إلى نكليوناتها المنعزلة والساكنة . (تقبل التعاريف المكافئة)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q5",
+          "parentLocalId": "S1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يتطلع علماء الذرة حالياً إلى أن يكون المزيج $(^3_1H + ^2_1H)$ هو الوقود المستقبلي للمفاعلات النووية.\nيحدث لهذا المزيج، تفاعل اندماج يؤدي إلى تشكل النواة $^4_2He$ ومنمذج بالتحول (I) على المخطط (الشكل-1)."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q5_a",
+          "parentLocalId": "S1_E2_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب المعادلة المنمذجة لتفاعل الاندماج الحادث."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "معادلة التفكك:\n$^3_1H + ^2_1H \\rightarrow ^4_2He + ^1_0n$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E2_Q5_b",
+          "parentLocalId": "S1_E2_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعط عبارة الطاقة المحررة عن هذا التفاعل بطريقتين مختلفتين ثم احسب قيمتها العددية بالـ MeV.\nتعطى:\n$E_l/A(^4_2He) = 7,1 \\text{ MeV/nucl\\text{é}on}$ و $E_l/A(^3_1H) = 2,8 \\text{ MeV/nucl\\text{é}on}$ و $E_l/A(^2_1H) = 1,1 \\text{ MeV/nucl\\text{é}on}$\n$m(^4_2He) = 4,00150 \\text{ u}$ , $m(^3_1H) = 3,01550 \\text{ u}$ , $m(^1_0n) = 1,00866 \\text{ u}$ , $1 \\text{ u} = 931,5 \\text{ MeV/c}^2$ , $m(^2_1H) = 2,01355 \\text{ u}$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "|\\Delta E| = \\left| 2 \\frac{E_l}{A}(^2_1H) + 3 \\frac{E_l}{A}(^3_1H) - 4 \\frac{E_l}{A}(^4_2He) \\right| \n = | (2 \\times 1,1) + (3 \\times 2,8) - (4 \\times 7,1) | = 17,8 \\text{ MeV}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "أو"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "|\\Delta E| = \\left| (m(^4_2He) + m(^1_0n)) - (m(^3_1H) + m(^2_1H)) \\right| \\times c^2 \n = |(4,00150 + 1,00866 - 3,01550 - 2,01355) \\times 931,5| = 17,6 \\text{ MeV}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 للطريقة الأولى\n0,50 للطريقة الثانية"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "التمرين الثالث",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نحقق التركيبة الكهربائية الموضحة بالشكل -2 حيث المولد ثابت التوتر قوته المحركة الكهربائية $E$ .\nيسمح جهاز إعلام آلي مزود ببرمجية مناسبة بمتابعة التطور الزمني للتوتر الكهربائي المطبق بين طرفي المكثفة.\nالمكثفة فارغة في البداية. عند اللحظة $t=0$ نغلق القاطعة $K$ ونباشر عملية المتابعة، فيعطي الحاسوب المنحنى البياني $f(t) = u_C$ المبين في الشكل-3."
+            }
+          ],
+          "assetIds": ["S1_E3_graph_1", "S1_E3_graph_2"]
+        },
+        {
+          "localId": "S1_E3_Q1",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "في غياب جهاز الحاسوب، ما هو الجهاز البديل الممكن استخدامه للقيام بعملية المتابعة؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "من البيان $u_C = f(t)$، فإن مدة الظاهرة قصيرة جدا، فالجهاز المناسب لمتابعتها عمليا هو «راسم اهتزازات ذو ذاكرة»."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q2",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعد رسم مخطط الدارة وبيّن عليه طريقة توصيل هذا الجهاز بالدارة لمتابعة تطور التوتر الكهربائي $u_C(t)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "طريقة توصيل راسم الاهتزازات:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للشكل"
+            }
+          ],
+          "assetIds": ["S1_E3_Q2_graph_1"]
+        },
+        {
+          "localId": "S1_E3_Q3",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بتطبيق قانون جمع التوترات، أوجد المعادلة التفاضلية التي يحققها التوتر الكهربائي $u_C(t)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بتطبيق قانون جمع التوترات في الدارة $RC$، نجد:\n$E = u_C + u_R$\nمع: $u_R = R i$ و $i = \\frac{dq}{dt} = C \\frac{du_C}{dt}$\nو منه: $E = u_C + RC \\frac{du_C}{dt}$ أو $\\frac{du_C}{dt} + \\frac{u_C}{RC} = \\frac{E}{RC}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25\n0,25\n0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q4",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تحقق من أن العبارة: $u_C(t) = E(1 - e^{-t/\\tau})$ هي حل للمعادلة التفاضلية السابقة. حيث: $\\tau = R.C$ هو ثابت الزمن للدارة $RC$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التحقق: $u_C(t) = E(1 - e^{-t/\\tau})$ بالتالي: $\\frac{du_C}{dt} = \\frac{E}{\\tau} e^{-t/\\tau}$\nوبالتعويض في م. ت السابقة نجد: $\\frac{E}{\\tau} e^{-t/\\tau} + \\frac{E}{\\tau}(1 - e^{-t/\\tau}) = \\frac{E}{\\tau}$ ومنه: $\\frac{E}{\\tau} = \\frac{E}{\\tau}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25\n0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q5",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بيّن أنّ: $u_C(\\tau) = 0,63E$ ، ثمّ حدّد بيانياً قيمة كل من $E$ و $\\tau$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "البرهان:\n$u_C(\\tau) = E(1 - e^{-\\tau/\\tau}) = E(1 - e^{-1}) = E(1 - 0,37) = 0,63E$ ومنه $u_C(t) = E(1 - e^{-t/\\tau})$\n- بيانيا: $E = 2 \\text{ V}$\n- وبإسقاط القيمة $u_C(\\tau) = 0,63E = 1,26 \\text{ V}$ على البيان نجد: $\\tau \\in [6, 7] \\text{ ms}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 للبرهان\n0,25 لبيانيا E\n0,50 لبيانيا $\\tau$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E3_Q6",
+          "parentLocalId": "S1_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استنتج قيمة السعة $C$ للمكثفة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "قيمة السعة: $\\tau = R.C \\Rightarrow C = \\frac{\\tau}{R} = \\frac{6 \\times 10^{-3}}{100} = 60 \\text{ } \\mu\\text{F}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E4",
+          "nodeType": "EXERCISE",
+          "orderIndex": 4,
+          "label": "التمرين الرابع",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "للتبسيط نعتبر مسارات حركة الكواكب السيارة حول الشمس في المرجع الهليومركزي بدوائر مركزها $O$ وأنصاف أقطارها $r$ حيث نرمز لكتلة الشمس بالرمز $M_S$."
+            }
+          ],
+          "assetIds": ["S1_E4_graph_1"]
+        },
+        {
+          "localId": "S1_E4_Q1",
+          "parentLocalId": "S1_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعد رسم الشكل-4، ومثّل عليه شعاع القوة الجاذبة المركزية $\\vec{F}_{S/P}$ المطبقة من طرف الشمس على أحد الكواكب الذي كتلته $m_P$ في مركز عطالته المتواجد في الموضع $A$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الرسم:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": ["S1_E4_Q1_graph_1"]
+        },
+        {
+          "localId": "S1_E4_Q2",
+          "parentLocalId": "S1_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عبّر عن شعاع القوة $\\vec{F}_{S/P}$ بدلالة كلّ من $G$ (ثابت التجاذب الكوني)، $M_S$ ، $m_P$ ، $r$ و $\\vec{u}$ (شعاع الوحدة)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عبارة القوة: $\\vec{F}_{S/P} = - G \\frac{m_P \\cdot M_S}{r^2} \\cdot \\vec{u}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E4_Q3",
+          "parentLocalId": "S1_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بإهمال تأثير كل القوى الأخرى أمام القوة $\\vec{F}_{S/P}$ وبتطبيق القانون الثاني لنيوتن، أوجد عبارة تسارع حركة الكوكب في الموضع $A$ بدلالة $G$ ، $M_S$ و $r$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بتطبيق القانون الثاني لنيوتن: $\\Sigma \\vec{F}_{ext} = m \\cdot \\vec{a}$\nومنه $\\vec{F}_{S/P} = m \\cdot \\vec{a}$\nوبالإسقاط على الناظم الموجه نحو مركز الشمس:\n$a_N = G \\cdot \\frac{M_S}{r^2} \\Leftarrow G \\cdot \\frac{m_P \\cdot M_S}{r^2} = m_P \\cdot a_N$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50\n0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E4_Q4",
+          "parentLocalId": "S1_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استنتج طبيعة حركة حول الشمس."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "طبيعة الحركة: $a_T = 0$ ومنه $\\frac{dv}{dt} = 0 \\Leftarrow v = C^{te}$ الحركة دائرية منتظمة\nأو: شعاع تسارع الحركة ناظميا و مركزيا و ثابت القيمة و منه الحركة دائرية منتظمة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E4_Q5",
+          "parentLocalId": "S1_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يمثل بيان الشكل- 5، تطور مربع الدور الزمني لكل من كوكب الأرض والمريخ و زحل بدلالة مكعب نصف قطر مدار كل كوكب."
+            }
+          ],
+          "assetIds": ["S1_E4_Q5_graph_1"]
+        },
+        {
+          "localId": "S1_E4_Q5_a",
+          "parentLocalId": "S1_E4_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "هل يتوافق البيان مع القانون الثالث لكبلر؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "البيان $T^2 = f(r^3)$ عبارة عن \" خط مستقيم مار من المبدأ \" أي $T^2$ متناسب طردا مع $r^3$\nو هذا يتوافق مع القانون الثالث لكبلر المعبر عنه بالعلاقة: $\\frac{T^2}{r^3} = k = C^{te}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E4_Q5_b",
+          "parentLocalId": "S1_E4_Q5",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "باستعمال البيان بيّن أن:\n$\\frac{T^2}{r^3} = 3,0 \\times 10^{-19} \\ (S.I)$ ثم استنتج قيمة كتلة الشمس $M_S$ .\nيعطى: $G = 6,67 \\times 10^{-11} \\ (S.I)$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بيانيا: $\\frac{T^2}{r^3} = k = \\frac{1,2 \\times 10^{17}}{4,0 \\times 10^{35}} = 3,0 \\times 10^{-19} \\text{ s}^2\\cdot\\text{m}^{-3}$\nكتلة الشمس: حسب القانون الثالث لكبلر:\n$\\frac{T^2}{r^3} = k = \\frac{4\\pi^2}{G \\cdot M_S} \\Leftarrow M_S = \\frac{4\\pi^2}{G \\cdot k}$\n$M_S = 2 \\times 10^{30} \\text{ kg}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 لبيانيا\n0,25 لكتلة الشمس"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E4_Q6",
+          "parentLocalId": "S1_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "علما أن البعد المتوسط بين مركزي الأرض والشمس هو $1,50 \\cdot 10^{11} \\text{ m}$ ، أوجد قيمة دور حركة الأرض حول الشمس."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "دور حركة الأرض: $\\frac{T^2}{r^3} = 3,0 \\times 10^{-19} \\text{ s}^2\\cdot\\text{m}^{-3}$\nبالتعويض $\\frac{T^2}{(1,50 \\times 10^{11})^3} = 3,0 \\times 10^{-19} \\Leftarrow T = 3,18 \\times 10^7 \\text{ s} = 368 \\text{ j}$ (في حدود أخطاء القياس)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25\n0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E5",
+          "nodeType": "EXERCISE",
+          "orderIndex": 5,
+          "label": "التمرين التجريبي",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نعاير حجما $V_a = 20 \\text{ mL}$ من محلول مائي لحمض البنزويك $C_6H_5CO_2H$ تركيزه المولي $C_a$ مجهول بمحلول مائي لهيدروكسيد الصوديوم $(Na^+_{(aq)} + HO^-_{(aq)})$ تركيزه المولي $C_b = 10^{-1} \\text{ mol.L}^{-1}$.\nالنتائج المتحصل عليها مكنت من رسم البيان $pH = f(V_b)$ (الشكل- 6 ) حيث $V_b$ هو حجم الأساس المسكوب:"
+            }
+          ],
+          "assetIds": ["S1_E5_graph_1"]
+        },
+        {
+          "localId": "S1_E5_Q1",
+          "parentLocalId": "S1_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب معادلة تفاعل المعايرة الحادث."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "معادلة تفاعل المعايرة:\n$C_6H_5CO_2H(aq) + HO^-(aq) = C_6H_5CO_2^-(aq) + H_2O(\\ell)$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E5_Q2",
+          "parentLocalId": "S1_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حدّد بيانيا إحداثيي نقطة التكافؤ $E$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "نقطة التكافؤ:\nبطريقة المماسات نجد: $E(V_{bE} = 20 \\text{ mL} \\ ; \\ pH_E = 8,4)$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E5_Q3",
+          "parentLocalId": "S1_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب التركيز المولي $C_a$ للحمض."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عند التكافؤ: $C_a V_a = C_b V_{bE}$\nو منه: $C_a = C_b \\cdot \\frac{V_{bE}}{V_a}$ و منه: $C_a = 10^{-1} \\text{ mol.L}^{-1}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E5_Q4",
+          "parentLocalId": "S1_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عيّن بيانيا قيمة $pK_a$ للثنائية: $(C_6H_5CO_2H/C_6H_5CO_2^-)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عند نقطة نصف التكافؤ $E_{1/2}$ نجد: $pH = pK_a = 4,2$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_E5_Q5",
+          "parentLocalId": "S1_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 2.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب تراكيز الأفراد الكيميائية المتواجدة في المحلول عند سكب $14 \\text{ mL}$ من المحلول الأساسي ثمّ أوجد قيمة نسبة التقدم النهائي $\\tau_f$ للتفاعل. ماذا تستنتج؟\nعلما أن المعايرة تمت عند الدرجة $25^\\circ\\text{C}$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التراكيز: $V_b = 14 \\text{ cm}^3$ و من البيان نجد: $pH = 4,5$\n\nجدول التقدم:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "المعادلة\tC6H5CO2H(aq) + HO-(aq) = C6H5CO2-(aq) + H2O(l)\nالتقدم\tح.ج\n0\tح.إ\tCaVa\tCbVb\t0\tبوفرة\nx\tح.إ\tCaVa-x\tCbVb-x\tx\tبوفرة\nxf\tح.ن\tCaVa-xf\tCbVb-xf\txf\tبوفرة"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$[H_3O^+] = 10^{-pH} = 10^{-4,5} = 3.16 \\times 10^{-5} \\text{ mol.L}^{-1}$\n$[HO^-] = 10^{pH - 14} = 10^{4,5 - 14} = 3.16 \\times 10^{-10} \\text{ mol.L}^{-1}$\n$[HO^-]_f \\times 34 \\times 10^{-3} = C_b V_b - x_f$ فنجد $x_f \\simeq 1.4 \\times 10^{-3} \\text{ mol}$\n$[C_6H_5COO^-] = \\frac{x_f}{V_a + V_b} = 4.117 \\times 10^{-2} \\text{ mol.L}^{-1}$\n$[C_6H_5COOH] = \\frac{C_a V_a - x_f}{V_a + V_b} = 1.765 \\times 10^{-2} \\text{ mol.L}^{-1}$\n$[Na^+] = \\frac{C_b V_b}{V_a + V_b} = 4.11 \\times 10^{-2} \\text{ mol.L}^{-1}$\n- نسبة التقدم النهائي:\n$HO^-$ هي المتفاعل المحد ومنه:\n$x_{max} = C_b V_b = 10^{-1} \\cdot 14 \\cdot 10^{-3} = 14 \\cdot 10^{-4} \\text{ mol} \\Leftarrow C_b V_b - x_{max} = 0$\nوبالتالي: $1 = \\frac{1,4 \\cdot 10^{-3} \\text{ mol}}{14 \\cdot 10^{-4} \\text{ mol}} = \\frac{x_f}{x_{max}} = \\tau_f \\leftarrow$ التفاعل تام"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للـ $V_b$\n0,25 لجدول التقدم\n0,25 لـ $[H_3O^+]$\n0,25 لـ $[HO^-]$\n0,25 لـ $[C_6H_5COO^-]$\n0,25 لـ $[C_6H_5COOH]$\n0,25 لـ $[Na^+]$\n0,25 لـ $x_{max}$\n0,25 لـ $\\tau_f$"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "S2_E1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نحضّر محلولا مائياً لحمض الميثانويك $HCOOH$ حجمه $V$ وتركيزه المولي $C = 10^{-2} \\text{ mol/L}$\nو له $pH = 2,9$ عند الدرجة $25^\\circ\\text{C}$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_I",
+          "parentLocalId": "S2_E1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_I_Q1",
+          "parentLocalId": "S2_E1_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب معادلة انحلال حمض الميثانويك في الماء واذكر الثنائيتين (أساس/حمض) الداخلتين في التفاعل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "معادلة الانحلال: $HCOOH_{(aq)} + H_2O_{(\\ell)} = HCOO^-_{(aq)} + H_3O^+_{(aq)}$\nالثنائيات المشاركة: $HCOOH/HCOO^-$ , $H_3O^+/H_2O$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "معادلة الانحلال: 0,50\nالثنائيات: 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_I_Q2",
+          "parentLocalId": "S2_E1_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنشئ جدول تقدم التفاعل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "جدول التقدم:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "المعادلة\tHCOOH(aq) + H2O(l) = HCOO-(aq) + H3O+(aq)\nالتقدم\tح.ج\n0\tح.إ\tC.V\tبوفرة\t0\t0\nx\tح.إ\tC.V-x\tx\tx\nxf\tح.ن\tC.V-xf\txf\txf"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_I_Q3",
+          "parentLocalId": "S2_E1_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب نسبة التقدم النهائي $\\tau_f$ للتفاعل. ماذا تستنتج؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "نسبة التقدم النهائي:\n$x_f = [H_3O^+]_f \\cdot V = 10^{-pH} \\cdot V$ و $x_{max} = C \\cdot V \\Leftarrow C \\cdot V - x_{max} = 0$\nوبالتالي: $\\tau_f = \\frac{x_f}{x_{max}} = \\frac{10^{-pH}}{C} = \\frac{10^{-2,9}}{10^{-2}} = 0,126 < 1 \\leftarrow$ التفاعل غير تام"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 للعبارة\n0,50 للحساب والاستنتاج"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_I_Q4",
+          "parentLocalId": "S2_E1_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب قيمة الـ $pK_a$ للثنائية $HCOOH/HCOO^-$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "قيمة الـ $pK_a$:\n$pK_a = pH - \\log \\frac{[HCOO^-]}{[HCOOH]} = pH - \\log \\frac{[H_3O^+]}{C - [H_3O^+]} \\Rightarrow pK_a = 3,8$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_II",
+          "parentLocalId": "S2_E1",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نحضّر عدة محاليل من حمض البنزويك $C_6H_5COOH$ مختلفة التراكيز $C$ ونحسب في كل مرة النسبة $\\frac{[C_6H_5COO^-]}{[C_6H_5COOH]}$ لنرسم البيان $pH = f \\left( \\log \\frac{[C_6H_5COO^-]}{[C_6H_5COOH]} \\right)$ المبيّن بالشكل-1."
+            }
+          ],
+          "assetIds": ["S2_E1_II_graph_1"]
+        },
+        {
+          "localId": "S2_E1_II_Q1",
+          "parentLocalId": "S2_E1_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب عبارة $K_a$ ثابت الحموضة للثنائية $(C_6H_5COOH/C_6H_5COO^-)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "العبارة: $K_a = \\frac{[H_3O^+] \\cdot [C_6H_5COO^-]}{[C_6H_5COOH]}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_II_Q2",
+          "parentLocalId": "S2_E1_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أوجد علاقة $pH$ المحلول بدلالة $pK_a$ للثنائية $(C_6H_5COOH/C_6H_5COO^-)$ والنسبة $\\frac{[C_6H_5COO^-]}{[C_6H_5COOH]}$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "العلاقة: $K_a = \\frac{[H_3O^+] \\cdot [C_6H_5COO^-]}{[C_6H_5COOH]} \\Rightarrow \\frac{K_a}{[H_3O^+]} = \\frac{[C_6H_5COO^-]}{[C_6H_5COOH]}$\nومنه: $\\log \\frac{[C_6H_5COO^-]}{[C_6H_5COOH]} = \\log \\frac{K_a}{[H_3O^+]} \\Rightarrow \\log \\frac{[C_6H_5COO^-]}{[C_6H_5COOH]} = \\log K_a - \\log [H_3O^+]$\nومنه: $-\\log [H_3O^+] = -\\log K_a + \\log \\frac{[C_6H_5COO^-]}{[C_6H_5COOH]} \\Rightarrow pH = pK_a + \\log \\frac{[C_6H_5COO^-]}{[C_6H_5COOH]}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_II_Q3",
+          "parentLocalId": "S2_E1_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اعتمادا على البيان، استنتج قيمة الثابت $pK_a$ للثنائية: $C_6H_5COOH/C_6H_5COO^-$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بيانيا: $\\log \\frac{[C_6H_5COO^-]}{[C_6H_5COOH]} = 0 \\Rightarrow pH = 4,2$\nبالتعويض نجد: $pK_a + 0 = 4,2 \\Rightarrow pK_a = 4,2$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E1_II_Q4",
+          "parentLocalId": "S2_E1_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أي الحمضين أقوى $HCOOH$ أم $C_6H_5COOH$ إذا علمت أن لهما نفس التركيز المولي؟ برّر إجابتك."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "كلما زاد الـ $pK_a$ كان الحمض أضعف. حمض البنزويك أضعف من حمض الميثانويك."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نركب الدارة المبينة بالشكل -2. يسمح جهاز $M$ برسم المنحنيين (الشكل-3) و (الشكل-4) للتوتر الكهربائي بين طرفي المكثفة $u_{AB}(t)$ في حالتي الشحن والتفريغ.\nعندما تكون المبادلة في الوضع 1 يتم شحن المكثفة الفارغة بواسطة مولد للتوتر الثابت قوته المحركة الكهربائية $E$ .\nبعد شحن المكثفة تماماً يتم نقل المبادلة إلى الوضع 2 في اللحظة $t=0$ حيث يتم تفريغ المكثفة عبر ناقل أومي مقاومته $R' = 500 \\ \\Omega$ ."
+            }
+          ],
+          "assetIds": ["S2_E2_graph_1", "S2_E2_graph_2", "S2_E2_graph_3"]
+        },
+        {
+          "localId": "S2_E2_Q1",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ألحق بكل منحنى الظاهرة الموافقة (شحن أم تفريغ) وما اسم الجهاز $M$ ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الشكل-3: تفريغ\nالشكل-4: شحن\nالجهاز $M$ المستعمل: راسم الاهتزاز ذي ذاكرة أو جهاز الـ $EXAO$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الشكل-3: 0,25\nالشكل-4: 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q2",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بتطبيق قانون جمع التوترات، اكتب المعادلة التفاضلية للدارة بدلالة $u_{AB}(t)$ خلال مرحلة التفريغ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "المعادلة التفاضلية خلال التفريغ: $u_{AB}(t) + u_{R'} = 0$ حيث:\n$u_{R'} = R' \\cdot i = R' \\cdot \\frac{dq}{dt} = R' \\cdot C \\frac{du_{AB}(t)}{dt}$\nومنه: $\\frac{du_{AB}(t)}{dt} + \\frac{1}{R'C} u_{AB}(t) = 0$ وهي معادلة تفاضلية من الرتبة الأولى بالنسبة لـ $u_{AB}(t)$ ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50\n0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q3",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تحقق من أن حل المعادلة التفاضلية من الشكل:\n$u_{AB}(t) = A \\cdot e^{- \\frac{t}{R'C}}$ حيث $A$ ثابت يطلب تحديد عبارته من الشروط الابتدائية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التحقق من الحل: $u_{AB}(t) = A \\cdot e^{- \\frac{t}{R'C}} \\Rightarrow \\frac{du_{AB}(t)}{dt} = - \\frac{A}{R'C} \\cdot e^{- \\frac{t}{R'C}}$\nبالتعويض نجد: $- \\frac{A}{R'C} \\cdot e^{- \\frac{t}{R'C}} + \\frac{1}{R'C} \\cdot A \\cdot e^{- \\frac{t}{R'C}} = 0$ (المعادلة محققة).\n- لمّا $t=0$ تكون $u_{AB}(0) = A \\cdot e^0 = A = E \\Rightarrow A = E$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للتحقق\n0,25 للمعادلة محققة\n0,25 للثابت A"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q4",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب عبارة شدة التيار الكهربائي $i(t)$ أثناء التفريغ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عبارة شدة التيار:\n$i(t) = \\frac{dq}{dt} = C \\cdot \\frac{du_{AB}(t)}{dt} = - C \\cdot \\frac{E}{R'C} \\cdot e^{- \\frac{t}{R'C}} = - \\frac{E}{R'} \\cdot e^{- \\frac{t}{R'C}}$\nملاحظة: يمكن استنتاج $i(t)$ من قانون جمع التوترات."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q5",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حدّد بيانيا قيمتي $\\tau$ و $\\tau'$ ثابتا الزمن لدارة الشحن والتفريغ على الترتيب."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "من الشكل-4: من أجل $u_{AB} = 0,63 \\cdot E = 7,56 \\text{ V}$\nوبالإسقاط نجد: $\\tau = 0,2 \\text{ s}$\nمن الشكل-3: من أجل $u_{AB} = 0,37 \\cdot E = 4,44 \\text{ V}$\nوبالإسقاط نجد: $\\tau' = 0,09 \\text{ s}$ ملاحظة: تقبل القيم القريبة من قيم $\\tau$ و $\\tau'$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 لـ $\\tau$\n0,25 لـ $\\tau'$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E2_Q6",
+          "parentLocalId": "S2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استنتج قيمة $C$ سعة المكثفة و $R$ قيمة مقاومة الناقل الأومي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "قيمة السعة: $\\tau' = R'C \\Rightarrow C = \\tau'/R' = 0,09/500 = 180 \\cdot 10^{-6}\\text{F} = 180 \\ \\mu\\text{F}$\nقيمة المقاومة: $\\tau = R \\cdot C \\Rightarrow R = \\tau/C = 0,2/(180 \\cdot 10^{-6}) = 1,1 \\cdot 10^3 \\ \\Omega$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 لـ C\n0,25 لـ R"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "التمرين الثالث",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "المعطيات: الكتلة المولية الذرية لليود $131$: $M = 131 \\text{ g/mol}$ وثابت أفوغادرو: $N_A = 6,02 \\times 10^{23} \\text{ mol}^{-1}$.\nيعطى الجدول التالي لبعض العناصر الكيميائية:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "الاسم\tسيزيوم\tكزينون\tيود\tتيلير\tأنتموان\nالرمز\tCs\tXe\tI\tTe\tSb\nالعدد الشحني (Z)\t55\t54\t53\t52\t51"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يستعمل عادة اليود 131 المشع في المجال الطبي و الذي يصدر بتفككه جسيمات ($\\beta^-$) وبزمن نصف عمر $t_{1/2}$.\nيحقن مريض بالغدة الدرقية بكمية من اليود 131 المشع في الجسم.\nيعطى المنحنى $\\ln(A) = f(t)$ في الشكل-5 حيث $A$ يمثل النشاط الإشعاعي(وحدته Bq) للعينة المحقونة في لحظة $(t)$ ."
+            }
+          ],
+          "assetIds": ["S2_E3_graph_1"]
+        },
+        {
+          "localId": "S2_E3_Q1",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعط تركيب نواة اليود 131."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التركيب $^{131}_{53}I$: عدد البروتونات: $Z = 53$ وعدد النيترونات: $N = A - Z = 78$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q2",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q2_a",
+          "parentLocalId": "S2_E3_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما هو الجسيم المنبعث خلال تفكك اليود 131 ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الجسيم المنبعث هو: $^0_{-1}e$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q2_b",
+          "parentLocalId": "S2_E3_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب معادلة تفكك اليود 131 مع ذكر قوانين الإنحفاظ المستعملة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "المعادلة: $^{131}_{53}I \\rightarrow ^A_ZX + ^0_{-1}e$\nبتطبيق قانون انحفاظ العدد الكتلي نجد: $A = 131$\nبتطبيق قانون انحفاظ العدد الشحني نجد: $Z = 54$\nومنه النواة \"الابن\" هي: $^{131}_{54}Xe$ والمعادلة تصبح: $^{131}_{53}I \\rightarrow ^{131}_{54}Xe + ^0_{-1}e$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3 × 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q3",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عبّر عن $\\ln(A)$ بدلالة $t$ ، $t_{1/2}$ و $\\ln(A_0)$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "العبارة:\n$A(t) = A_0 \\cdot e^{-\\lambda \\cdot t} \\Rightarrow \\ln A(t) = -\\lambda \\cdot t + \\ln A_0$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q4",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب العبارة البيانية (معادلة المستقيم) ثم استنتج قيمة النشاط الإشعاعي الابتدائي $A_0$ للعينة عند اللحظة $t=0$ وقيمة زمن نصف العمر $t_{1/2}$ لليود 131 ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "العبارة البيانية: $\\ln A = a \\cdot t + b \\dots (1)$\nحيث معامل التوجيه: $a = \\frac{\\Delta(\\ln A)}{\\Delta t} = \\frac{(28,8 - 36)}{80 - 0} = -0,09 \\text{ jours}^{-1}$\nومنه $\\ln A = -0,09 \\cdot t + 36 \\dots (2)$\nمع $t$ بالوحدة $\\text{jours}$ .\n- بمطابقة (1) مع (2) ينتج: $\\ln A_0 = 36 \\Rightarrow A_0 = e^{36} = 4,3 \\times 10^{15} \\text{ Bq}$\n$\\lambda = \\frac{\\ln 2}{t_{1/2}} = 0,09 \\Rightarrow t_{1/2} = \\frac{\\ln 2}{0,09} \\simeq 8 \\text{ jours}$\nملاحظة: تقبل القيم القريبة من هذه القيمة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للعبارة البيانية\n0,25 لمعامل التوجيه\n0,25 لمعادلة المستقيم\n0,25 لـ $A_0$\n0,50 لـ $t_{1/2}$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E3_Q5",
+          "parentLocalId": "S2_E3",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب الكتلة الابتدائية $m_0$ لليود 131 المستعملة في الحقنة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الكتلة الابتدائية $(m_0)$:\n$A_0 = \\lambda \\cdot N_0 = \\frac{\\ln 2}{t_{1/2}} \\cdot \\frac{m_0}{M} \\cdot N_A \\Rightarrow m_0 = \\frac{t_{1/2} \\cdot A_0 \\cdot M}{\\ln 2 \\cdot N_A}$\nومنه: $m_0 = \\frac{8 \\cdot (24 \\cdot 3600) \\cdot 4,3 \\times 10^{15} \\cdot 131}{\\ln 2 \\cdot 6,02 \\cdot 10^{23}} = 0,9 \\text{ g}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 للعبارة\n0,25 للنتيجة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E4",
+          "nodeType": "EXERCISE",
+          "orderIndex": 4,
+          "label": "التمرين الرابع",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تعطى: $g = 10 \\text{ m.s}^{-2}$ ، $\\alpha = 30^\\circ$ ، $AB = 2 \\text{ m}$ .\n1- يتحرك الجسم $(S)$ ، الذي نعتبره نقطيا، كتلته $m = 100 \\text{ g}$ ، على المسار $ABCD$ (الشكل -6).\nينطلق الجسم $(S)$ من الموضع $A$ دون سرعة ابتدائية ليصل إلى الموضع $B$ بسرعة $v_B = 2 \\text{ m.s}^{-1}$ ، ثم إلى الموضع $C$ بسرعة $\\vec{v_C}$.\nيخضع الجسم $(S)$ لقوة احتكاك $\\vec{f}$ ثابتة الشدة ومعاكسة لجهة الحركة على المسار $AB$ . تهمل قوى الاحتكاك على بقية المسار."
+            }
+          ],
+          "assetIds": ["S2_E4_graph_1"]
+        },
+        {
+          "localId": "S2_E4_Q1",
+          "parentLocalId": "S2_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E4_Q1_a",
+          "parentLocalId": "S2_E4_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بتطبيق القانون الثاني لنيوتن، أوجد عبارة تسارع الحركة على المسار $AB$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عبارة التسارع على المسار $AB$\nبتطبيق القانون الثاني لنيوتن: $\\Sigma \\vec{F}_{ext} = \\vec{P} + \\vec{R} + \\vec{f} = m \\cdot \\vec{a}$\nوبالإسقاط على محور الحركة: $m \\cdot g \\cdot \\sin \\alpha - f = m \\cdot a$\nومنه: $a = g \\cdot \\sin \\alpha - \\frac{f}{m}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للرسم\n0,25 للمعادلة"
+            }
+          ],
+          "assetIds": ["S2_E4_Q1_a_graph_1"]
+        },
+        {
+          "localId": "S2_E4_Q1_b",
+          "parentLocalId": "S2_E4_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أوجد قيمة هذا التسارع ثم استنتج شدة قوة الاحتكاك $f$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "قيمة التسارع: الحركة مستقيمة متسارعة بانتظام ومنه:\n$v_B^2 - v_A^2 = 2 a \\cdot AB \\Rightarrow a = \\frac{v_B^2}{2 \\cdot AB} = \\frac{2^2}{2 \\cdot 2} = 1 \\text{ m/s}^2$\n- شدة قوة الاحتكاك:\n$a = g \\cdot \\sin \\alpha - \\frac{f}{m} \\Rightarrow f = (g \\cdot \\sin \\alpha - a) \\cdot m = (10 \\cdot 0,5 - 1) \\cdot 0,1 = 0,4 \\text{ N}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للتسارع\n0,25 للاحتكاك\nملاحظة: يقبل استخدام مبدأ إنحفاظ الطاقة."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E4_Q1_c",
+          "parentLocalId": "S2_E4_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "جـ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما طبيعة الحركة على المسار $BC$ ؟ علّل إجابتك."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "طبيعة الحركة على المسار $BC$ :\nبتطبيق القانون الثاني لنيوتن: $\\vec{P} + \\vec{R} = m \\cdot \\vec{a}$\nبالإسقاط على محور الحركة: $m \\cdot a = 0 \\Leftarrow a = 0$\nفالحركة مستقيمة منتظمة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للرسم\n0,25 للتعليل\nملاحظة: يقبل استخدام مبدأ انحفاظ الطاقة."
+            }
+          ],
+          "assetIds": ["S2_E4_Q1_c_graph_1"]
+        },
+        {
+          "localId": "S2_E4_Q2",
+          "parentLocalId": "S2_E4",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يغادر الجسم $(S)$ الموضع $C$ الذي يقع على ارتفاع $h = 0,8 \\text{ m}$ عن المستوي الأفقي الذي يشمل النقطتين $O$ و $D$ ، ليسقط في الهواء ويصل إلى النقطة $D$ بسرعة $\\vec{v_D}$.\nباعتبار اللحظة التي يصل فيها الجسم $(S)$ إلى الموضع $C$ مبدأ للأزمنة $(t=0)$، وبإهمال دافعة أرخميدس ومقاومة الهواء."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E4_Q2_a",
+          "parentLocalId": "S2_E4_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 1.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بيّن أن معادلة مسار مركز عطالة الجسم $(S)$ في المعلم $(O ; \\vec{i} ; \\vec{k})$ هي:\n$z = - \\frac{g}{2 v_c^2} x^2 + h$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "البرهان على معادلة المسار:\nبتطبيق القانون الثاني لنيوتن: $\\Sigma \\vec{F}_{ext} = \\vec{P} = m \\cdot \\vec{a}$\nبالإسقاط على $OX$ نجد:\n$a_x = 0 \\Leftarrow v_x = v_c \\Leftarrow x(t) = v_c \\cdot t$\nبالإسقاط على $OZ$ نجد:\n$a_z = -g \\Leftarrow v_z = \\frac{dz}{dt} = -g t + c \\Leftarrow c=0 \\leftarrow t=0$\n$z = - \\frac{1}{2} g t^2 + h' \\Leftarrow h' = h \\leftarrow t=0$\n$t = \\frac{x}{v_c} \\rightarrow z = - \\frac{g}{2v_c^2} x^2 + h = -1,25 \\cdot x^2 + 0,8$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للرسم\n0,25 لـ $OX$\n0,25 لـ $OZ$ الأول\n0,25 لـ $OZ$ الثاني\n0,25 لمعادلة المسار"
+            }
+          ],
+          "assetIds": ["S2_E4_Q2_a_graph_1"]
+        },
+        {
+          "localId": "S2_E4_Q2_b",
+          "parentLocalId": "S2_E4_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حدّد بُعد النقطة $D$ عن النقطة $O$ (المسافة $OD$)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "المسافة $OD$ : $z_D = -1,25 \\cdot x_D^2 + 0,8 = 0 \\Rightarrow x_D = \\sqrt{0,8/1,25} = 0,8 \\text{ m}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E4_Q2_c",
+          "parentLocalId": "S2_E4_Q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "label": "جـ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب قيمة السرعة $v_D$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "قيمة السرعة $V_D$ :\n$x_D = v_c \\cdot t_D \\Rightarrow t_D = x_D / v_c = 0,8 / 2 = 0,4 \\text{ s}$ ومنه:\n$v_D = \\sqrt{v_{xD}^2 + v_{zD}^2} = \\sqrt{v_c^2 + (-g t)^2} = \\sqrt{2^2 + (-10 \\times 0,4)^2} = 4,47 \\text{ m/s}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للزمن\n0,25 للسرعة\nملاحظة: يقبل استخدام مبدأ إنحفاظ الطاقة."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E5",
+          "nodeType": "EXERCISE",
+          "orderIndex": 5,
+          "label": "التمرين التجريبي",
+          "maxPoints": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "في حصة للأعمال المخبرية قام فوج من التلاميذ بدراسة تحول الأسترة بين حمض الإيثانويك $CH_3COOH$ و الإيثانول $C_2H_5OH$ .\nأخذ التلاميذ 8 أنابيب إختبار ووضعوا في كل أنبوب مزيجاً يتكون من $1,40 \\text{ mol}$ من حمض الإيثانويك و $1,40 \\text{ mol}$ من الإيثانول، وبضع قطرات من حمض الكبريت المركز، ثم وضعت الأنابيب في حمام مائي درجة حرارته $\\theta_1 = 190^\\circ\\text{C}$ ، بعد سدها بإحكام في اللحظة $t=0$ .\nفي اللحظة $t = 60 \\text{ min}$ ، قام التلاميذ بإخراج أحد الأنابيب ووضعه في الماء المبرد ومعايرة كمية الحمض المتبقي بواسطة محلول هيدروكسيد الصوديوم. ثم تكررت نفس العملية مع باقي الأنابيب في لحظات زمنية مختلفة، فكانت النتائج المدونة في الجدول التالي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "t (min) | 0 | 60 | 120 | 180 | 240 | 300 | 360 | 420\nn_{acide} (mol) | 1,40 | 0,80 | 0,59 | 0,52 | 0,48 | 0,47 | 0,46 | 0,46\nn_{ester} (mol) | | | | | | | |"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E5_Q1",
+          "parentLocalId": "S2_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E5_Q1_a",
+          "parentLocalId": "S2_E5_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "label": "أ",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب معادلة التفاعل المنمذج لتحول الأسترة الحادث، وسَمّ الإستر المتشكل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "معادلة التفاعل: $CH_3COOH_{(\\ell)} + C_2H_5OH_{(\\ell)} = CH_3COOC_2H_{5(\\ell)} + H_2O_{(\\ell)}$\nالإستر: إيثانوات الإيثيل"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E5_Q1_b",
+          "parentLocalId": "S2_E5_Q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "label": "ب",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما دور حمض الكبريت في هذه التجربة ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "دور الحمض: تسريع التفاعل (وسيط)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E5_Q2",
+          "parentLocalId": "S2_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أكمل الجدول وارسم البيان الذي يمثل تطور كمية مادة الإستر المتشكل بدلالة الزمن: $n_{ester} = f(t)$ على ورقة ميليمترية ترفق مع ورقة الإجابة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الجدول:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "t (min)\t0\t60\t120\t180\t240\t300\t360\t420\nn acide (mol)\t1,40\t0,80\t0,59\t0,52\t0,48\t0,47\t0,46\t0,46\nn ester (mol)\t0\t0,60\t0,81\t0,88\t0,92\t0,93\t0,94\t0,94"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "البيان: $n_{ester} = f(t)$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 للجدول\n0,50 للبيان"
+            }
+          ],
+          "assetIds": ["S2_E5_Q2_graph_1"]
+        },
+        {
+          "localId": "S2_E5_Q3",
+          "parentLocalId": "S2_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنشئ جدولا لتقدم التفاعل، ثم بيّن أن تحول الأسترة غير تام."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "جدول التقدم:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "المعادلة\tCH3COOH(l) + C2H5OH(l) = CH3COOC2H5(l) + H2O(l)\nالتقدم\tح.ج\n0\tح.إ\tn0 = 1,40\tn0 = 1,40\t0\t0\nx\tح.إ\tn0 - x\tn0 - x\tx\tx\nxf\tح.ن\tn0 - xf\tn0 - xf\txf\txf"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "باعتبار التحول تام: $x_{max} = n_0 = 1,4 \\text{ mol}$ و بيانيا: $x_f = 1,40 - 0,46 = 0,94 \\text{ mol}$\n$x_f < x_{max}$ فالتحول غير تام. أو نحسب $\\tau_f = x_f / x_{max} = 67\\%$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 لجدول التقدم\n0,50 للبرهان"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E5_Q4",
+          "parentLocalId": "S2_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عيّن بيانياً زمن نصف التفاعل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تعيين زمن نصف التفاعل:\n$x(t_{1/2}) = x_f / 2 = 0,94 / 2 = 0,47 \\text{ mol}$\nبيانيا: $t_{1/2} \\in [38 \\ ; \\ 42] \\text{ (min)}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 للطريقة\n0,25 للنتيجة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_E5_Q5",
+          "parentLocalId": "S2_E5",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مثّل كيفيا المنحنى $n_{ester} = g(t)$ ، من أجل درجة حرارة الحمام المائي $\\theta_2 = 100^\\circ\\text{C}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تمثيل $n_{ester} = g(t)$ كيفيا عند $\\theta_2 = 100^\\circ\\text{C}$ (أنظر الشكل السابق)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "S1_E1_Q5_c_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E1_Q5_c",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 1
+    },
+    {
+      "id": "S1_E2_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 2
+    },
+    {
+      "id": "S1_E3_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 2
+    },
+    {
+      "id": "S1_E3_graph_2",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 3
+    },
+    {
+      "id": "S1_E3_Q2_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E3_Q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "S1_E4_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "S1_E4_Q1_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E4_Q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 4
+    },
+    {
+      "id": "S1_E4_Q5_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E4_Q5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4
+    },
+    {
+      "id": "S1_E5_graph_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4
+    },
+    {
+      "id": "S2_E1_II_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_II",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 5
+    },
+    {
+      "id": "S2_E2_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5
+    },
+    {
+      "id": "S2_E2_graph_2",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6
+    },
+    {
+      "id": "S2_E2_graph_3",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6
+    },
+    {
+      "id": "S2_E3_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6
+    },
+    {
+      "id": "S2_E4_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7
+    },
+    {
+      "id": "S2_E4_Q1_a_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E4_Q1_a",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "S2_E4_Q1_c_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E4_Q1_c",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "S2_E4_Q2_a_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E4_Q2_a",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 9
+    },
+    {
+      "id": "S2_E5_Q2_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E5_Q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 10
+    }
+  ],
+  "nativeRenderCandidates": [
+    {
+      "id": "S1_E1_Q3_table_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E1_Q3",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "sourceText": "المعادلة\t5 H2C2O4(aq) + 2MnO4-(aq) + 6H+(aq) = 10CO2(aq) + 2Mn2+(aq) + 8H2O(l)\nح-ابتدائية\tC2V2\tC1V1\t0\t0\tبزيادة\nح-انتقالية\tC2V2-5x\tC1V1-2x\t10x\t2x\tبزيادة\nح-نهائية\tC2V2-5xf\tC1V1-2xf\t10xf\t2xf\tبزيادة"
+    },
+    {
+      "id": "S1_E1_Q5_table_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E1_Q5",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "sourceText": "t (min) | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7\n[MnO_4^-](x10^{-3} mol.L^{-1}) | 100 | 98 | 92 | 60 | 30 | 12 | 5 | 3"
+    },
+    {
+      "id": "S1_E2_Q1_table_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E2_Q1",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "sourceText": "النواة\t21H\t31H\nعدد البروتونات: Z\t1\t1\nعدد النيترونات: N = A - Z\t1\t2"
+    },
+    {
+      "id": "S1_E5_Q5_table_1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_E5_Q5",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "sourceText": "المعادلة\tC6H5CO2H(aq) + HO-(aq) = C6H5CO2-(aq) + H2O(l)\nالتقدم\tح.ج\n0\tح.إ\tCaVa\tCbVb\t0\tبوفرة\nx\tح.إ\tCaVa-x\tCbVb-x\tx\tبوفرة\nxf\tح.ن\tCaVa-xf\tCbVb-xf\txf\tبوفرة"
+    },
+    {
+      "id": "S2_E1_I_Q2_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E1_I_Q2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 6,
+      "sourceText": "المعادلة\tHCOOH(aq) + H2O(l) = HCOO-(aq) + H3O+(aq)\nالتقدم\tح.ج\n0\tح.إ\tC.V\tبوفرة\t0\t0\nx\tح.إ\tC.V-x\tx\tx\nxf\tح.ن\tC.V-xf\txf\txf"
+    },
+    {
+      "id": "S2_E3_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E3",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 6,
+      "sourceText": "الاسم\tسيزيوم\tكزينون\tيود\tتيلير\tأنتموان\nالرمز\tCs\tXe\tI\tTe\tSb\nالعدد الشحني (Z)\t55\t54\t53\t52\t51"
+    },
+    {
+      "id": "S2_E5_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E5",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 8,
+      "sourceText": "t (min) | 0 | 60 | 120 | 180 | 240 | 300 | 360 | 420\nn_{acide} (mol) | 1,40 | 0,80 | 0,59 | 0,52 | 0,48 | 0,47 | 0,46 | 0,46\nn_{ester} (mol) | | | | | | | |"
+    },
+    {
+      "id": "S2_E5_Q2_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E5_Q2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 10,
+      "sourceText": "t (min)\t0\t60\t120\t180\t240\t300\t360\t420\nn acide (mol)\t1,40\t0,80\t0,59\t0,52\t0,48\t0,47\t0,46\t0,46\nn ester (mol)\t0\t0,60\t0,81\t0,88\t0,92\t0,93\t0,94\t0,94"
+    },
+    {
+      "id": "S2_E5_Q3_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_E5_Q3",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 10,
+      "sourceText": "المعادلة\tCH3COOH(l) + C2H5OH(l) = CH3COOC2H5(l) + H2O(l)\nالتقدم\tح.ج\n0\tح.إ\tn0 = 1,40\tn0 = 1,40\t0\t0\nx\tح.إ\tn0 - x\tn0 - x\tx\tx\nxf\tح.ن\tn0 - xf\tn0 - xf\txf\txf"
+    }
+  ],
+  "coverageLog": [
+    { "documentKind": "EXAM", "pageNumber": 1, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 2, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 3, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 4, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 5, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 6, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 7, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 8, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 1, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 2, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 3, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 4, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 5, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 6, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 7, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 8, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 9, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 10, "status": "covered" }
+  ],
+  "uncertainties": []
+}

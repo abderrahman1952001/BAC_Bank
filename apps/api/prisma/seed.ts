@@ -38,7 +38,7 @@ type TopicNodeDefinition = {
   children?: TopicNodeDefinition[];
 };
 
-type SkillDefinition = {
+type LearningTargetDefinition = {
   code: string;
   name: string;
   description?: string;
@@ -876,7 +876,7 @@ const SUBJECT_TOPIC_TREES: Record<string, TopicNodeDefinition[]> = {
   ],
 };
 
-const SUBJECT_SKILLS: Record<string, SkillDefinition[]> = {
+const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
   MATHEMATICS: [
     {
       code: 'FUNCTION_ANALYSIS',
@@ -2008,10 +2008,10 @@ async function syncSubjectTopics(
   await upsertLevel(topicTree, null, 0, null);
 }
 
-async function syncSubjectSkills(
+async function syncSubjectLearningTargets(
   subjectId: string,
   curriculumId: string,
-  skills: SkillDefinition[],
+  learningTargets: LearningTargetDefinition[],
 ): Promise<void> {
   const topicRows = await prisma.curriculumNode.findMany({
     where: {
@@ -2025,69 +2025,72 @@ async function syncSubjectSkills(
   const topicIdsByCode = new Map(
     topicRows.map((topic) => [topic.code, topic.id]),
   );
-  const validSkillCodes = skills.map((skill) => skill.code);
+  const validLearningTargetCodes = learningTargets.map((learningTarget) => learningTarget.code);
 
-  const savedSkills = await Promise.all(
-    skills.map((skill, index) =>
-      prisma.skill.upsert({
+  const savedLearningTargets = await Promise.all(
+    learningTargets.map((learningTarget, index) =>
+      prisma.learningTarget.upsert({
         where: {
           curriculumId_code: {
             curriculumId,
-            code: skill.code,
+            code: learningTarget.code,
           },
         },
         update: {
           curriculumId,
-          name: skill.name,
-          slug: slugFromCode(skill.code),
-          description: skill.description ?? null,
-          displayOrder: skill.displayOrder ?? index + 1,
+          name: learningTarget.name,
+          slug: slugFromCode(learningTarget.code),
+          description: learningTarget.description ?? null,
+          displayOrder: learningTarget.displayOrder ?? index + 1,
           isAssessable: true,
         },
         create: {
           subjectId,
           curriculumId,
-          code: skill.code,
-          name: skill.name,
-          slug: slugFromCode(skill.code),
-          description: skill.description ?? null,
-          displayOrder: skill.displayOrder ?? index + 1,
+          code: learningTarget.code,
+          name: learningTarget.name,
+          slug: slugFromCode(learningTarget.code),
+          description: learningTarget.description ?? null,
+          displayOrder: learningTarget.displayOrder ?? index + 1,
           isAssessable: true,
         },
       }),
     ),
   );
 
-  const skillIdsByCode = new Map(
-    savedSkills.map((skill) => [skill.code, skill.id]),
+  const learningTargetIdsByCode = new Map(
+    savedLearningTargets.map((learningTarget) => [
+      learningTarget.code,
+      learningTarget.id,
+    ]),
   );
   const expectedMappings = new Set<string>();
 
-  for (const skill of skills) {
-    const skillId = skillIdsByCode.get(skill.code);
+  for (const learningTarget of learningTargets) {
+    const learningTargetId = learningTargetIdsByCode.get(learningTarget.code);
 
-    if (!skillId) {
+    if (!learningTargetId) {
       throw new Error(
-        `Missing saved skill ${skill.code} while syncing mappings.`,
+        `Missing saved learning target ${learningTarget.code} while syncing mappings.`,
       );
     }
 
-    for (const mapping of skill.topicMappings) {
+    for (const mapping of learningTarget.topicMappings) {
       const topicId = topicIdsByCode.get(mapping.topicCode);
 
       if (!topicId) {
         throw new Error(
-          `Missing topic ${mapping.topicCode} while syncing skill ${skill.code}.`,
+          `Missing topic ${mapping.topicCode} while syncing learning target ${learningTarget.code}.`,
         );
       }
 
-      expectedMappings.add(`${topicId}:${skillId}`);
+      expectedMappings.add(`${topicId}:${learningTargetId}`);
 
-      await prisma.curriculumNodeSkill.upsert({
+      await prisma.curriculumNodeLearningTarget.upsert({
         where: {
-          curriculumNodeId_skillId: {
+          curriculumNodeId_learningTargetId: {
             curriculumNodeId: topicId,
-            skillId,
+            learningTargetId,
           },
         },
         update: {
@@ -2096,7 +2099,7 @@ async function syncSubjectSkills(
         },
         create: {
           curriculumNodeId: topicId,
-          skillId,
+          learningTargetId,
           weight: mapping.weight ?? 1,
           isPrimary: mapping.isPrimary ?? false,
         },
@@ -2104,39 +2107,39 @@ async function syncSubjectSkills(
     }
   }
 
-  const currentMappings = await prisma.curriculumNodeSkill.findMany({
+  const currentMappings = await prisma.curriculumNodeLearningTarget.findMany({
     where: {
-      skill: {
+      learningTarget: {
         curriculumId,
       },
     },
     select: {
       curriculumNodeId: true,
-      skillId: true,
+      learningTargetId: true,
     },
   });
 
   const mappingsToDelete = currentMappings.filter(
     (mapping) =>
-      !expectedMappings.has(`${mapping.curriculumNodeId}:${mapping.skillId}`),
+      !expectedMappings.has(`${mapping.curriculumNodeId}:${mapping.learningTargetId}`),
   );
 
   if (mappingsToDelete.length) {
-    await prisma.curriculumNodeSkill.deleteMany({
+    await prisma.curriculumNodeLearningTarget.deleteMany({
       where: {
         OR: mappingsToDelete.map((mapping) => ({
           curriculumNodeId: mapping.curriculumNodeId,
-          skillId: mapping.skillId,
+          learningTargetId: mapping.learningTargetId,
         })),
       },
     });
   }
 
-  await prisma.skill.deleteMany({
+  await prisma.learningTarget.deleteMany({
     where: {
       curriculumId,
       code: {
-        notIn: validSkillCodes,
+        notIn: validLearningTargetCodes,
       },
     },
   });
@@ -2167,23 +2170,29 @@ export async function runCatalogSeed() {
     }
   }
 
-  for (const [subjectCode, skills] of Object.entries(SUBJECT_SKILLS)) {
+  for (const [subjectCode, learningTargets] of Object.entries(
+    SUBJECT_LEARNING_TARGETS,
+  )) {
     const subjectId = subjectIds.get(subjectCode);
     const curricula = subjectCurriculumIds.get(subjectCode) ?? [];
 
     if (!subjectId || curricula.length === 0) {
       throw new Error(
-        `Could not resolve the ${subjectCode} curriculum while syncing skills.`,
+        `Could not resolve the ${subjectCode} curriculum while syncing learning targets.`,
       );
     }
 
     for (const curriculum of curricula) {
-      await syncSubjectSkills(subjectId, curriculum.id, skills);
+      await syncSubjectLearningTargets(
+        subjectId,
+        curriculum.id,
+        learningTargets,
+      );
     }
   }
 
   console.log(
-    'Seed complete: BAC catalog families, pathways, subject offerings, active curricula, starter curriculum nodes, and skill mappings synced.',
+    'Seed complete: BAC catalog families, pathways, subject offerings, active curricula, starter curriculum nodes, and learning target mappings synced.',
   );
 }
 

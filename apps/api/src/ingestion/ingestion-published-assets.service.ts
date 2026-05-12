@@ -18,6 +18,8 @@ export type PreparedPublishedAsset = {
   classification: DraftAsset['classification'];
   sourcePageId: string;
   cropBox: DraftAsset['cropBox'];
+  cleanupRequired: boolean;
+  cleanupMasks: NonNullable<DraftAsset['cleanupMasks']>;
 };
 
 export type PublishedMediaCleanupCandidate = {
@@ -105,6 +107,8 @@ export class IngestionPublishedAssetsService {
           classification: asset.classification,
           sourcePageId: asset.sourcePageId,
           cropBox: asset.cropBox,
+          cleanupRequired: asset.cleanupRequired === true,
+          cleanupMasks: asset.cleanupMasks ?? [],
         });
       }
 
@@ -256,6 +260,9 @@ export function buildPublishedMediaCreateData(
       classification: preparedAsset.classification,
       sourcePageId: preparedAsset.sourcePageId,
       cropBox: preparedAsset.cropBox,
+      cleanupRequired: preparedAsset.cleanupRequired,
+      cleanupMaskCount: preparedAsset.cleanupMasks.length,
+      cleanupMasks: preparedAsset.cleanupMasks,
     }),
   };
 }

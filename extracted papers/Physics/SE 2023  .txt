@@ -1,0 +1,1841 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي",
+    "year": 2023,
+    "streamCode": "علوم تجريبية",
+    "subjectCode": "العلوم الفيزيائية",
+    "sessionType": "normal",
+    "durationMinutes": 210,
+    "totalPoints": 20,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": []
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_ex1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "التمرين الأول: (06 نقاط)",
+          "maxPoints": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سُمّي \"اليربوع الأزرق\" اسم أُطلق على أحد التفجيرات النووية الفرنسية في الصحراء الجزائرية بمنطقة الحمودية برقان، وذلك بتاريخ 13 فيفري 1960. خلّف هذا التفجير النووي ضحايا وتشوّهات طالت الإنسان والحيوان وأضرّت بالبيئة بفعل الطاقة الهائلة المتحرّرة من التفجير والإشعاعات المنبعثة من النفايات المخلّفة.\nإنّ معظم الطاقة المُحرّرة من القنبلة النووية المفجّرة نتج عن انشطار البلوتونيوم 239 ."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "معطيات:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "* للبلوتونيوم عدة نظائر اصطناعية منها:\n- البلوتونيوم 238 : يصدر الإشعاعات ألفا $(\\alpha)$ وغاما $(\\gamma)$، $M(^{238}Pu) \\approx 238 g\\cdot mol^{-1}$\n- البلوتونيوم 239 : انشطاري."
+            },
+            {
+              "role": "PROMPT",
+              "type": "latex",
+              "text": "1an = 365jours ، 1u = 931,5 MeV/c^{2} ، N_{A} = 6,02 \\times 10^{23} mol^{-1}"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يهدف التمرين إلى دراسة النشاط الإشعاعي لعيّنة من أنوية البلوتونيوم 238، وحساب الطاقة المحرّرة من انشطار نواة البلوتونيوم 239."
+            }
+          ],
+          "assetIds": [
+            "s2_ex1_image_1",
+            "s2_ex1_table_1"
+          ]
+        },
+        {
+          "localId": "s2_ex1_part_I",
+          "parentLocalId": "s2_ex1",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "I- دراسة النشاط الإشعاعي للبلوتونيوم 238:",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q1",
+          "parentLocalId": "s2_ex1_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "1.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أعط تركيب نواة البلوتونيوم 238."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عدد البروتونات: $Z = 94$\nعدد النترونات: $N = A - Z = 238 - 94 = 144$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 + 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q2",
+          "parentLocalId": "s2_ex1_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "2.",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب معادلة التفكّك النووي لنواة البلوتونيوم 238."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بتطبيق قانوني الانحفاظ:\n$^{238}_{94}Pu \\rightarrow ^{A}_{Z}X + ^{4}_{2}He + ^{0}_{0}\\gamma$\nانحفاظ عدد النويات: $238 = A + 4 \\Leftarrow A = 234$\nانحفاظ الشحنة الكهربائية: $94 = Z + 2 \\Leftarrow Z = 92$\nالنواة المتشكلة حسب الجدول: $^{234}_{92}U$ ومنه تكون معادلة التفكك\n$^{238}_{94}Pu \\rightarrow ^{234}_{92}U + ^{4}_{2}He + ^{0}_{0}\\gamma$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 + 0,25 + 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q3",
+          "parentLocalId": "s2_ex1_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "3.",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "في 20 أوت 1977 أُطلق المسبار فواياجر2، والذي زُوّد ببطارية نووية تُنتج طاقة كهربائية مصدرها التفكّك النووي لعيّنة من البلوتونيوم 238 كتلتها $m_{0}$.\nبواسطة برمجية مناسبة تحصّلنا على المنحنى البياني الممثّل لتغيّرات $\\frac{dN(t)}{dt}$ بدلالة الزمن $t$ (الشكل(1)).\n(المستقيم $(\\Delta)$ يمثّل مماس المنحنى في اللحظة $t=0$)"
+            }
+          ],
+          "assetIds": [
+            "s2_ex1_graph_1"
+          ]
+        },
+        {
+          "localId": "s2_ex1_q3_1",
+          "parentLocalId": "s2_ex1_q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 6,
+          "label": "1.3.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب العبارة الحرفيّة لقانون التناقص الإشعاعي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "N(t) = N_{0}e^{-\\lambda t}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q3_2",
+          "parentLocalId": "s2_ex1_q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 7,
+          "label": "2.3.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عبّر عن $\\frac{dN(t)}{dt}$ بدلالة عدد الأنوية الابتدائية $N_{0}$، ثابت التفكّك الإشعاعي $\\lambda$ والزمن $t$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "باشتقاق لقانون التناقص الاشعاعي نجد $\\frac{dN(t)}{dt} = -\\lambda N_{0}e^{-\\lambda t}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q3_3",
+          "parentLocalId": "s2_ex1_q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 8,
+          "label": "3.3.",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "باستغلال المنحنى البياني، جد:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q3_3_1",
+          "parentLocalId": "s2_ex1_q3_3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 9,
+          "label": "1.3.3.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "قيمة الثّابت $B$ معطيا مدلوله الفيزيائي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بيانيا: $B = 9.10^{22} noyaux / ans$\n*المدلول الفيزيائي للثابت $B$ :\nمن معادلة البيان و لما $t=0$ فإن $(\\frac{dN(t)}{dt})_{(t=0)} = -\\lambda N_{0}$\nبالمطابقة $B = \\lambda.N_{0}$ و نعلم أن $A_{0} = \\lambda.N_{0}$ و منه $B$ يمثل النشاط الابتدائي $A_{0}$ للعينة المشعة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 + 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q3_3_2",
+          "parentLocalId": "s2_ex1_q3_3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 10,
+          "label": "2.3.3.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "قيمة ثابت التفكّك الإشعاعي $\\lambda$ ، ثُمّ استنتج قيمة $m_{0}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "من البيان : $\\tau = 126 ans$ و نعلم أن $\\lambda.\\tau = 1$ أي $\\lambda = \\frac{1}{\\tau}$\n(تطبيق عددي) $\\lambda = \\frac{1}{126}$ نجد $\\lambda = 7,94.10^{-3} ans^{-1}$\n\n*استنتاج قيمة $m_{0}$ :\nنعلم أن $A_{0} = B = \\lambda N_{0}$ و $N_{0} = \\frac{m_{0}}{M} N_{A}$ ومنه $m_{0} = \\frac{M}{\\lambda.N_{A}} A_{0}$\n(حيث $A_{0} = B = 9.10^{22} noyaux.ans^{-1}$ )\n(تطبيق عددي) $m_{0} = \\frac{238}{7,94.10^{-3} \\times 6,02.10^{23}} \\times 9.10^{22}$ نجد $m_{0} = 4481,3 g \\approx 4,5 kg$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25 + 2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q4",
+          "parentLocalId": "s2_ex1_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 11,
+          "label": "4.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نعتبر أنّ صلاحية البطّارية تنتهي عندما يتناقص نشاطها الإشعاعي بنسبة $32\\%$ من قيمته الابتدائية.\n- حدّد بالسنوات العمر الافتراضي للبطّارية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$A(t) = A_{0}.e^{-\\lambda t}$ و منه $t = \\frac{1}{\\lambda} Ln \\frac{A_{0}}{A}$ حيث $A = 68\\% A_{0} = 0,68 A_{0}$\n(تطبيق عددي) $t = \\frac{1}{7,94.10^{-3}} Ln \\frac{1}{0,68}$ نجد $t \\approx 48,6 ans$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_part_II",
+          "parentLocalId": "s2_ex1",
+          "nodeType": "PART",
+          "orderIndex": 12,
+          "label": "II- الطاقة المحرّرة من انشطار نواة البلوتونيوم 239 :",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يمكن للبلوتونيوم 239 أن ينشطر وفق المعادلة النووية: $^{239}_{94}Pu + ^{1}_{0}n \\rightarrow ^{135}_{52}Te + ^{102}_{42}Mo + 3 ^{1}_{0}n$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_II_q1",
+          "parentLocalId": "s2_ex1_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 13,
+          "label": "1.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرّف تفاعل الانشطار النووي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "هو تفاعل نووي مفتعل، ناتج عن انقسام نواة ثقيلة غير مستقرة، الى نواتين أخف وأكثر استقرار، اثر قذفها بنترون مبطأ، مع تحرير طاقة ونترونات."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_II_q2",
+          "parentLocalId": "s2_ex1_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 14,
+          "label": "2.",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "باستغلال المعطيات:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_II_q2_1",
+          "parentLocalId": "s2_ex1_II_q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 15,
+          "label": "1.2.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب الطّاقة المحرّرة من انشطار نواة البلوتونيوم 239 ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حيث $E_{lib} = \\Delta m \\times 931,5$\n$\\Delta m = m(^{239}Pu) - m(^{135}Te) - m(^{102}Mo) - 2m(n)$\n(تطبيق عددي) $E_{lib} = (239,0521 - 134,9167 - 101,9130 - 2 \\times 1,0087) \\times 931,5$\nنجد $E_{lib} \\approx 190,96 MeV$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_II_q2_2",
+          "parentLocalId": "s2_ex1_II_q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 16,
+          "label": "2.2.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استنتج طاقة الرّبط لنواة البلوتونيوم 239 ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$E_{lib} = E_{l}(^{135}_{52}Te) + E_{l}(^{102}_{42}Mo) - E_{l}(^{239}_{94}Pu)$\nو منه $E_{l}(^{239}_{94}Pu) = E_{l}(^{135}_{52}Te) + E_{l}(^{102}_{42}Mo) - E_{lib}$\n(تطبيق عددي) $E_{l}(^{239}_{94}Pu) = 1103,83 + 852,88 - 190,96$\nنجد $E_{l}(^{239}_{94}Pu) = 1765,75 MeV$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_II_q2_3",
+          "parentLocalId": "s2_ex1_II_q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 17,
+          "label": "3.2.",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "قارن معلّلا إجابتك بين استقرار النواتين $(^{102}_{42}Mo ، ^{135}_{52}Te)$ والنواة $^{239}_{94}Pu$ . هل يتوافق هذا مع تعريف الانشطار؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "مقارنة استقرار النواتين $^{135}_{52}Te$ و $^{102}_{42}Mo$ مع النواة $^{239}_{94}Pu$ :\n$\\frac{E_{l}(^{135}_{52}Te)}{A} = 8,18 MeV/nuc$ ; $\\frac{E_{l}(^{102}_{42}Mo)}{A} = 8,39 MeV/nuc$ ;\n$\\frac{E_{l}(^{239}_{94}Pu)}{A} = 7,40 MeV/nuc$\nو منه النواتين $^{135}_{52}Te$ و $^{102}_{42}Mo$ هما أكثر استقرار من النواة $^{239}_{94}Pu$ .\n*التوافق مع تعريف الانشطار النووي:\nحسب تعريف الانشطار النووي، فإن الأنوية المتشكلة تكون أكثر استقرارا من النواة المنشطرة، وهذا ما يتوافق مع الحسابات."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3x0,25 + 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 18,
+          "label": "التمرين الثاني: (07 نقاط)",
+          "maxPoints": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "التزلّج مع القفز على الثلج نوع من أنواع الرياضة الشتوية، يتزلّج فيها الرياضي على منحدر، ثمّ يقوم بالقفز للوصول إلى أبعد نقطة ممكنة.\nيهدف التّمرين إلى دراسة حركة مركز عطالة الجملة (متزحلق مع لوازمه) على مستو مائل، ثمّ حركته خلال مرحلة القفز في الهواء. نعتبر المتزحلق مع لوازمه جملة ميكانيكية $(S)$، مركز عطالتها $G$.\nندرس حركة مركز العطالة $G$ في مرجع سطحي أرضي نعتبره غاليليا."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "معطيات:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "- نهمل تأثير الهواء.\n- زاوية ميل المستوي المائل $\\alpha = 11^{\\circ}$ .\n- شدّة تسارع حقل الجاذبية الأرضية $g = 9,8 m\\cdot s^{-2}$ .\n- كتلة المتزحلق مع لوازمه $m = 70 kg$ ."
+            }
+          ],
+          "assetIds": [
+            "s2_ex2_image_1",
+            "s2_ex2_graph_1"
+          ]
+        },
+        {
+          "localId": "s2_ex2_part_I",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "PART",
+          "orderIndex": 19,
+          "label": "I- دراسة حركة مركز العطالة G على المستوي المائل AB :",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ينطلق المتزحلق من الموضع $A$ في لحظة نعتبرها مبدأ للأزمنة $(t=0)$ بدون سرعة ابتدائية، و يتُمّ حركته على مستو مائل طوله $AB = 173,7 m$ بحركة انسحابية مستقيمة (الشكل(2))."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_I_q1",
+          "parentLocalId": "s2_ex2_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 20,
+          "label": "1.",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بإهمال قوى الاحتكاك على المستوي المائل:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_I_q1_1",
+          "parentLocalId": "s2_ex2_I_q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 21,
+          "label": "1.1.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مثّل القوى الخارجية المطبّقة على الجملة الميكانيكية $(S)$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تمثيل القوى الخارجية المطبقة على الجملة $(S)$:"
+            }
+          ],
+          "assetIds": [
+            "s2_ex2_q1_1_solution_image"
+          ]
+        },
+        {
+          "localId": "s2_ex2_I_q2",
+          "parentLocalId": "s2_ex2_I_q1",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 22,
+          "label": "2.1.",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بتطبيق معادلة انحفاظ الطاقة للجملة الميكانيكية $(S)$ بيّن الموضعين $A$ و $B$ ، احسب سرعة مركز العطالة $G$ للجملة الميكانيكية $(S)$ عند المرور من الموضع $B$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "بتطبيق مبدأ انحفاظ الطاقة للجملة $(S)$ بين الموضعين $A$ و $B$ :\n$E_{c}(A) + W(\\vec{P})_{A\\rightarrow B} = E_{c}(B)$ أي $\\frac{1}{2}.m.v_{B}^{2} = mg.AB.\\sin\\alpha$ و منه\n$v_{B} = \\sqrt{2.g.AB.\\sin\\alpha}$ (تطبيق عددي) $v_{B} = \\sqrt{2 \\times 9,8 \\times 173,7 \\times \\sin 11^{\\circ}}$\nنجد $v_{B} = 25,5 m\\cdot s^{-1}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_I_q2_main",
+          "parentLocalId": "s2_ex2_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 23,
+          "label": "2.",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أشار عدّاد للسرعة إلى القيمة $83,3 km\\cdot h^{-1}$ في الموضع $B$ .\n- قارن بين قيمتي سرعة مركز العطالة $G$ للجملة $(S)$ عند الموضع $B$ (القيمة المحسوبة في السؤال 2.1 والقيمة التي يعطيها عداد السرعة). إذا كان هناك اختلاف بين القيمتين، فاحسب قيمة المقدار الفيزيائي المسبب لهذا الاختلاف."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "*نلاحظ أن: $v_{B(exp)} = 83,3 km.h^{-1} = 23,14 m.s^{-1}$ و $v_{B(th)} = 25,5 m.s^{-1}$\n*سبب اختلاف السرعتين راجع الى وجود قوة احتكاك بين المستوي المائل و المتزلج $\\vec{f}$\nو لحساب قيمتها نكتب معادلة انحفاظ طاقة الجملة $(S)$ بين الموضعين $A$ و $B$ :\n$E_{c}(A) + W(\\vec{P})_{A\\rightarrow B} - |W(\\vec{f})_{A\\rightarrow B}| = E_{c}(B)$ أي $mg.AB.\\sin\\alpha - f.AB = \\frac{1}{2}.m.v_{B}^{2}$\nو منه $f = m.(g.\\sin\\alpha - \\frac{v_{B(exp)}^{2}}{2\\cdot AB})$ (تطبيق عددي) $f = 70 \\times (9,8 \\times \\sin 11^{\\circ} - \\frac{23,14^{2}}{2 \\times 173,7})$\nنجد $f = 23 N$\nملاحظة: يمكن استخدام القانون الثاني لنيوتن:\n$m.\\vec{a}_{G} = \\vec{P} + \\vec{f}$ بالاسقاط على محور الحركة نجد $mg.\\sin\\alpha - f = m.a_{G}$ و منه\n$a_{G} = \\frac{v_{B(exp)}^{2}}{2\\cdot AB}$ حيث نعلم أن $f = m.(g.\\sin\\alpha - \\frac{v_{B(exp)}^{2}}{2\\cdot AB})$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 + 3x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_part_II",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "PART",
+          "orderIndex": 24,
+          "label": "II- دراسة حركة مركز العطالة G خلال القفز في الهواء:",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يغادر المتزحلق المستوي المائل $AB$ عند الموضع $B$ بالسرعة $v_{B} = 83,3 km\\cdot h^{-1}$ ، في لحظة نعتبرها مبدأ جديدا للأزمنة $(t=0)$ ، ويواصل حركته في الهواء ليصطدم بسطح الأرض في الموضع $C$ ( أنظر الشكل(2)).\n( لتبسيط الدّراسة نعتبر أنّ مركز العطالة $G$ للجملة $(S)$ منطبق على النقطة $B$ لحظة مغادرة المتزحلق للمستوي المائل وعلى النقطة $C$ لحظة اصطدامه بسطح الأرض).\nندرس حركة مركز العطالة $G$ في معلم متعامد ومتجانس $(B;\\vec{i};\\vec{k})$ مرتبط بمرجع سطحي أرضي نعتبره غاليليا."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_II_q1",
+          "parentLocalId": "s2_ex2_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 25,
+          "label": "1.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ذكّر بنص القانون الثاني لنيوتن."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "في مرجع غاليلي، المجموع الشعاعي للقوى الخارجية المطبقة على جملة مادية، يساوي في كل لحظة، جداء كتلتها في شعاع تسارع مركز عطالتها $\\sum \\vec{F}_{ext} = m\\vec{a}$ ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_II_q2",
+          "parentLocalId": "s2_ex2_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 26,
+          "label": "2.",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بتطبيق القانون الثاني لنيوتن على مركز العطالة $G$ للجملة الميكانيكية $(S)$ :"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_II_q2_1",
+          "parentLocalId": "s2_ex2_II_q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 27,
+          "label": "1.2.",
+          "maxPoints": 3.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 9
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أكمل الجدول أدناه:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ملأ الجدول بتطبيق القانون الثاني لنيوتن:\n$\\sum \\vec{F}_{ext} = m\\vec{a} \\Rightarrow \\vec{P} = m\\vec{a}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "12x0,25"
+            }
+          ],
+          "assetIds": [
+            "s2_ex2_table_1",
+            "s2_ex2_table_1_solution"
+          ]
+        },
+        {
+          "localId": "s2_ex2_II_q2_2",
+          "parentLocalId": "s2_ex2_II_q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 28,
+          "label": "2.2.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بيّن أنّ معادلة مسار مركز العطالة $G$ تكتب على الشكل: $z(x) = 9,5 \\times 10^{-3} \\cdot x^{2} + 0,19 \\cdot x$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تبيان أن معادلة مسار المتزحلق تكتب على الشكل: $z(x) = 9,5 \\times 10^{-3} \\cdot x^{2} + 0,19 \\cdot x$\n$\\begin{cases} x(t) = v_{B} \\cdot \\cos\\alpha \\cdot t \\cdots (1) \\\\ z(t) = \\frac{1}{2} \\cdot g \\cdot t^{2} + v_{B} \\cdot \\sin\\alpha \\cdot t \\cdots (2) \\end{cases}$\nمن (1) لدينا: $t = \\frac{x}{v_{B} \\cos\\alpha}$\nبالتعويض في (2) نجد: $z(x) = \\frac{g}{2 \\cdot v_{B}^{2} \\cdot \\cos^{2}\\alpha} \\cdot x^{2} + \\tan\\alpha \\cdot x$\n$z(x) = \\frac{9,8}{2 \\cdot (23,14)^{2} \\cdot \\cos^{2}(11)} \\cdot x^{2} + \\tan(11) \\cdot x \\leftarrow z(x) = 9,5 \\times 10^{-3} \\cdot x^{2} + 0,19 \\cdot x$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_II_q3",
+          "parentLocalId": "s2_ex2_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 29,
+          "label": "3.",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "إنّ الخط المستقيم $BC$ المار من النقطتين $B$ و $C$ معادلته الرياضياتية من الشكل: $z(x) = 0,59 \\cdot x$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_II_q3_1",
+          "parentLocalId": "s2_ex2_II_q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 30,
+          "label": "1.3.",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "جِدْ عند الموضع $C$، احداثيتي مركز العطالة $x_{C}$ و $z_{C}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "إيجاد احداثيات موضع سقوط المتزحلق $x_{C}$ و $z_{C}$ :\nإن النقطة $C$ هي نقطة مشتركة بين مسار المتزلج و الخط المستقيم $BC$\nأي $0,59 \\cdot x_{C} = 9,5 \\times 10^{-3} \\cdot x_{C}^{2} + 0,19 \\cdot x_{C}$ أي $9,5 \\times 10^{-3} \\cdot x_{C}^{2} - 0,40 \\cdot x_{C} = 0$\nبحل هذه المعادلة نجد $x_{C} \\approx 42 m$ و بالتعويض في احدى المعادلتين نجد $z_{C} \\approx 24,8 m$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_II_q3_2",
+          "parentLocalId": "s2_ex2_II_q3",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 31,
+          "label": "2.3.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب مدّة القفزة التي حققها المتزحلق انطلاقا من الموضع $B$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$t_{C} = \\frac{x_{C}}{v_{B}.\\cos\\alpha}$ (تطبيق عددي) $t_{C} = \\frac{42}{23,14 \\times \\cos 11^{\\circ}}$ نجد $t_{C} = 1,85 s$\nملاحظة: يمكن ايجاد مدة القفز من المعادلة الزمنية $z_{C} = f(t_{C})$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 32,
+          "label": "التمرين التجريبي: (07 نقاط)",
+          "maxPoints": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يُعتبر منجم \"غار جبيلات\" الواقع على بعد $130 km$ جنوب شرق ولاية تندوف من أحد أكبر مناجم الحديد في العالم.\nتُصنّف خامات الحديد حسب نسبة الحديد النّقي الموجود فيها كما هو مبيّن في الجدول الآتي:"
+            }
+          ],
+          "assetIds": [
+            "s2_ex3_image_1",
+            "s2_ex3_table_1"
+          ]
+        },
+        {
+          "localId": "s2_ex3_intro_cont",
+          "parentLocalId": "s2_ex3",
+          "nodeType": "CONTEXT",
+          "orderIndex": 33,
+          "label": "",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يهدف هذا التّمرين إلى الدّراسة التّجريبية لتطوّر تفاعل معدن الحديد مع محلول حمض كلور الهيدروجين بقياس حجم غاز، ومن ثمّ التّعرف على صنف خامات حديد منجم غار جبيلات.\nلهذا الغرض، ندخل في دورق عيّنة من مسحوق لخام الحديد المستخرج من منجم غار جبيلات كتلتها $m = 1,00 g$ ونسكب فيه في اللّحظة $t=0$ حجما $V = 100 mL$ من محلول حمض كلور الهيدروجين تركيزه المولي $c = 0,3 mol\\cdot L^{-1}$ .\nيتمّ تجميع ثنائي الهيدروجين المنطلق في مخبار مدرج مُنكّس فوق حوض من الماء، ونقيس حجمه في كل لحظة $t$ .\nنُنَمْذِجُ التحول الكيميائي الحادث بتفاعل معادلته: $Fe(s) + 2H_{3}O^{+}(aq) = H_{2}(g) + Fe^{2+}(aq) + 2H_{2}O(l)$"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "معطيات:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "- نعتبر أنّ حجم المزيج التّفاعلي يبقى ثابتا خلال مدّة التحول، وأنّ الغاز المنطلق غاز مثالي.\n- الحجم المولي للغاز في شروط التّجربة: $V_{M} = 24 L\\cdot mol^{-1}$\n- الكتلة المولية الذّرية للحديد: $M(Fe) = 56 g\\cdot mol^{-1}$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_part_I",
+          "parentLocalId": "s2_ex3",
+          "nodeType": "PART",
+          "orderIndex": 34,
+          "label": "I- الدّراسة التّجريبية:",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_I_q1",
+          "parentLocalId": "s2_ex3_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 35,
+          "label": "1.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اذكر الاحتياطات الأمنيّة الواجب اتخاذها لإجراء هذا التّحول."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الاحتياطات الأمنية الواجب اتخاذها لإجراء التحول:\nلبس المئزر ، لبس القفازات و وضع النظارات الواقية ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_I_q2",
+          "parentLocalId": "s2_ex3_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 36,
+          "label": "2.",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 10
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ارسم التّركيب التّجريبي المستعمل، موضحا عليه البيانات الكافية، ثُمّ اذكر كيف يمكن قياس حجم الغاز المنطلق."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "*رسم التركيب التجريبي مع توضيح البيانات الكافية:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "*طريقة قياس حجم الغاز المنطلق:\nقياس مباشر من تدريجات المخبار المدرج"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3x0,25 + 0,25"
+            }
+          ],
+          "assetIds": [
+            "s2_ex3_I_q2_solution_image"
+          ]
+        },
+        {
+          "localId": "s2_ex3_I_q3",
+          "parentLocalId": "s2_ex3_part_I",
+          "nodeType": "QUESTION",
+          "orderIndex": 37,
+          "label": "3.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "كيف يتُمّ الكشف عن طبيعة الغاز المنطلق عند نهاية التّحول؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الغاز المنطلق هو غاز ثنائي الهيدروجين، و للكشف عنه، نسد المخبار المدرج و نخرجه من الحوض عند نهاية التحول، ثم نقرب من فوهته عود ثقاب مشتعل فتحدث فرقعة غازية."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_part_II",
+          "parentLocalId": "s2_ex3",
+          "nodeType": "PART",
+          "orderIndex": 38,
+          "label": "II- المتابعة الزّمنية للتّحول الكيميائي بقياس حجم غاز:",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مكّنتنا المتابعة الزّمنية لهذا التّحول الكيميائي التّام، عن طريق قياس حجم غاز ثنائي الهيدروجين المنطلق تحت ضغط ثابت وفي درجة حرارة ثابتة، من رسم المنحنى البياني $V_{H_{2}} = f(t)$ (الشكل(3)).\n(يمثّل المستقيم $(\\Delta)$ مماس المنحنى البياني في اللّحظة $t=0$ )"
+            }
+          ],
+          "assetIds": [
+            "s2_ex3_graph_1"
+          ]
+        },
+        {
+          "localId": "s2_ex3_II_q1",
+          "parentLocalId": "s2_ex3_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 39,
+          "label": "1.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "صنّف التّحول الكيميائي الحادث من حيث المدّة المستغرقة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يدوم التحول الكيميائي حوالي $60min$ ، فهو تحول بطيء."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_II_q2",
+          "parentLocalId": "s2_ex3_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 40,
+          "label": "2.",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بإنجاز جدول تقدّم التّفاعل واستثمار المنحنى البياني:"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "$n_{0} = \\frac{m_{0}}{M}$\n$n_{1} = c\\cdot V = 0,03 mol$"
+            }
+          ],
+          "assetIds": [
+            "s2_ex3_table_2_solution"
+          ]
+        },
+        {
+          "localId": "s2_ex3_II_q2_1",
+          "parentLocalId": "s2_ex3_II_q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 41,
+          "label": "1.2.",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بيّن أنّ عبارة التّقدّم $x(t)$ تكتب على الشّكل: $x(t) = \\frac{V_{H_{2}}(t)}{V_{M}}$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "من جدول تقدم التفاعل لدينا: $x(t) = n_{H_{2}}(t) = \\frac{V_{H_{2}}(t)}{V_{M}}$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_II_q2_2",
+          "parentLocalId": "s2_ex3_II_q2",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 42,
+          "label": "2.2.",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 11
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "جد قيمة التّقدّم النّهائي $x_{f}$ وعيّن المتفاعل المُحِد."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "*ايجاد قيمة التقدم النهائي $X_{f}$ :\nبيانيا: $V_{f}(H_{2}) = 240 mL$ وحسب علاقة التقدم $X_{f} = \\frac{V_{f}(H_{2})}{V_{M}} = \\frac{0,240}{24}$\nنجد: $X_{f} = 0,01 mol = 10 mmol$\n\n*تعيين المتفاعل المحد:\nكمية مادة المتفاعل $(H_{3}O^{+})$ عند نهاية التفاعل:\n$n_{f}(H_{3}O^{+}) = CV - 2X_{f} = 30 - 2 \\times 10 = 10 mmol \\neq 0$ فهو غير محد\nو بما أن التحول تام إذن الحديد $(Fe)$ حتما هو المتفاعل المحد."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3x0,25 + 2x0,25 + 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_II_q3",
+          "parentLocalId": "s2_ex3_part_II",
+          "nodeType": "QUESTION",
+          "orderIndex": 43,
+          "label": "3.2.",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أثبت أنّ السّرعة الحجمية للتّفاعل عند لحظة $t$ تكتب على الشّكل: $v_{vol}(t) = \\frac{1}{V\\cdot V_{M}} \\frac{dV_{H_{2}}(t)}{dt}$ ثُمّ احسب قيمتها في اللّحظة $t=0$ بوحدة $mol\\cdot L^{-1} \\cdot min^{-1}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "*اثبات عبارة السرعة الحجمية للتفاعل:\nمن تعريف السرعة الحجمية للتفاعل، لدينا: $v_{vol}(t) = \\frac{1}{V} \\frac{dx(t)}{dt}$\nبتعويض عبارة التقدم السابقة : $x = \\frac{V_{H_{2}}(t)}{V_{M}}$ نجد العبارة المطلوبة\n$v_{vol}(t) = \\frac{1}{V\\cdot V_{M}} \\frac{dV_{H_{2}}(t)}{dt}$\n\n*حساب قيمتها في اللحظة $(t=0)$ :\nبيانيا معامل توجيه المماس $(\\Delta)$ $\\left.\\frac{dV_{H_{2}}(t)}{dt}\\right|_{t=0} = \\frac{250.10^{-3}}{12} \\approx 0,021 L\\cdot min^{-1}$\n(تطبيق عددي): $v_{vol}(0) = \\frac{1}{0,1 \\times 24} \\times 0,021$ نجد $v_{vol}(0) \\approx 8,7.10^{-3} mol\\cdot L^{-1}\\cdot min^{-1}$\n\nملاحظة:تقبل قيم السرعة الحجمية المحصورة بين:\n$8.10^{-3} mol\\cdot L^{-1}\\cdot min^{-1}$ و $9.10^{-3} mol\\cdot L^{-1}\\cdot min^{-1}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25 + 2x0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_part_III",
+          "parentLocalId": "s2_ex3",
+          "nodeType": "PART",
+          "orderIndex": 44,
+          "label": "III- التّعرّف على صنف خام حديد منجم غار جبيلات:",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يُعَبَّر عن النّسبة الكتلية للحديد الموجود في خام الحديد بالعلاقة: $\\frac{m_{0}(Fe)}{m}$ ، حيث $m_{0}(Fe)$ تمثّل كتلة الحديد النّقي، و $m$ كتلة مسحوق الحديد الخام."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_III_q1",
+          "parentLocalId": "s2_ex3_part_III",
+          "nodeType": "QUESTION",
+          "orderIndex": 45,
+          "label": "1.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب $m_{0}(Fe)$ ، ثُمّ استنتج النّسبة المئوية للحديد النّقي في خام الحديد."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حساب الكتلة $m_{0}$ كتلة الحديد النقية المتفاعلة:\nوجدنا أن المتفاعل المحد هو الحديد $(Fe)$ ، إذن: $n_{f}(Fe) = \\frac{m_{0}}{M} - X_{f} = 0$\nو منه $m_{0}(Fe) = M \\times X_{f}$ (تطبيق عددي) $m_{0}(Fe) = 56 \\times 0,01$ نجد $m_{0}(Fe) = 0,56 g$\n\n*استنتاج النسبة المئوية للحديد النقي في الخام:\n$Fe\\% = \\frac{m_{0}(Fe)}{m} \\times 100\\%$ (تطبيق عددي) $Fe\\% = \\frac{0,56}{1} \\times 100\\%$ نجد $Fe\\% = 56\\%$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "2x0,25 + 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_III_q2",
+          "parentLocalId": "s2_ex3_part_III",
+          "nodeType": "QUESTION",
+          "orderIndex": 46,
+          "label": "2.",
+          "maxPoints": 0.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 8
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 12
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تعرّف على صنف خام حديد غار جبيلات."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التعرف على صنف خام غار جبيلات:\nحسب الجدول المعطى سابقا، يصنف خام حديد غار جبيلات بالغني لأن نسبة الحديد النقي فيه أكثر من $50\\%$ ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s2_ex1_image_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5,
+      "label": "انفجار قنبلة نووية",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex1_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 5,
+      "label": "",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex1_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex1_q3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 5,
+      "label": "الشكل(1)",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex2_image_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6,
+      "label": "رياضي يتزلج على الثلج",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex2_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6,
+      "label": "الشكل(2)",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex2_q1_1_solution_image",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2_I_q1_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 9,
+      "label": "",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex2_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2_II_q2_1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 7,
+      "label": "",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex2_table_1_solution",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2_II_q2_1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 10,
+      "label": "تكملة الجدول:",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex3_image_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7,
+      "label": "خام الحديد في منجم غار جبيلات",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex3_table_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 7,
+      "label": "",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex3_I_q2_solution_image",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3_I_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 11,
+      "label": "",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex3_graph_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3_part_II",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 8,
+      "label": "الشكل(3)",
+      "caption": ""
+    },
+    {
+      "id": "s2_ex3_table_2_solution",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3_II_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 11,
+      "label": "انجاز جدول تقدم التفاعل:",
+      "caption": ""
+    }
+  ],
+  "nativeRenderCandidates": [
+    {
+      "id": "s2_ex1_table_1_cand",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex1",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "sourceText": "| النواة | $^{102}_{42}Mo$ | $^{135}_{52}Te$ | $^{239}_{94}Pu$ | $^{1}_{0}n$ | $^{92}U$ |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| الكتلة $(u)$ | $101,9130$ | $134,9167$ | $239,0521$ | $1,0087$ | |\n| طاقة الربط $(MeV)$ | $852,88$ | $1103,83$ | ........... | $0$ | |"
+    },
+    {
+      "id": "s2_ex2_table_1_cand",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2_II_q2_1",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "sourceText": "| طبيعة الحركة | المعادلة الزمنية للحركة | المعادلة الزمنية للسرعة | $\\vec{v}_{0} = \\vec{v}_{B}$ | $\\vec{a} = \\frac{\\sum \\vec{F}_{ext}}{m}$ | $\\sum \\vec{F}_{ext} = \\vec{P}$ | |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| | $x(t) = \\dots\\dots$ | $v_{x}(t) = \\dots\\dots$ | $v_{0x} = \\dots\\dots$ | $a_{x} = \\dots\\dots$ | $P_{x} = \\dots\\dots$ | المحور $Bx$ |\n| | $z(t) = \\dots\\dots$ | $v_{z}(t) = \\dots\\dots$ | $v_{0z} = \\dots\\dots$ | $a_{z} = \\dots\\dots$ | $P_{z} = \\dots\\dots$ | المحور $Bz$ |"
+    },
+    {
+      "id": "s2_ex2_table_1_solution_cand",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2_II_q2_1",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 10,
+      "sourceText": "| | $\\vec{P}$ | $\\vec{a}$ | $\\vec{v}_{0}$ | المعادلة الزمنية للسرعة | المعادلة الزمنية للحركة | طبيعة الحركة |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| $Bx$ | $0$ | $0$ | $v_{B} \\cdot \\cos\\alpha$ | $v_{B} \\cdot \\cos\\alpha$ | $v_{B} \\cdot \\cos\\alpha \\cdot t$ | ح. منتظمة |\n| $Bz$ | $P$ | $g$ | $v_{B} \\cdot \\sin\\alpha$ | $g \\cdot t + v_{B} \\cdot \\sin\\alpha$ | $\\frac{1}{2} \\cdot g \\cdot t^{2} + v_{B} \\cdot \\sin\\alpha \\cdot t$ | ح. متغيرة بانتظام |"
+    },
+    {
+      "id": "s2_ex3_table_1_cand",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "sourceText": "| صنف خام الحديد | فقير | متوسط | غني |\n| :--- | :--- | :--- | :--- |\n| نسبة الحديد النقي | أقل من $30\\%$ | بين $30\\%$ و $50\\%$ | أكثر من $50\\%$ |"
+    },
+    {
+      "id": "s2_ex3_table_2_solution_cand",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3_II_q2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 11,
+      "sourceText": "| معادلة التفاعل | $2H_{3}O^{+}(aq) + Fe(s) = H_{2}(g) + Fe^{2+}(aq) + H_{2}O(l)$ | |\n| :--- | :--- | :--- |\n| الحالة | التقدم | كميات المادة بالمول |\n| | $t = 0$ | $0$ | $n_{1}$ | $n_{0}$ | $0$ | $0$ | بوفرة |\n| | $t > 0$ | $x$ | $n_{1} - 2x$ | $n_{0} - x$ | $x$ | $x$ | بوفرة |\n| | $t_{f}$ | $x_{f}$ | $n_{1} - 2x_{f}$ | $n_{0} - x_{f}$ | $x_{f}$ | $x_{f}$ | بوفرة |"
+    }
+  ],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 8,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 8,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 9,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 10,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 11,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 12,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": []
+}

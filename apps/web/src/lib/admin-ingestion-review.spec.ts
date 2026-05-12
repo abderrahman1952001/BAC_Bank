@@ -7,6 +7,7 @@ import {
   buildProcessConfirmationMessage,
   buildDraftWithSelectedStreamCodes,
   buildExtractionSummary,
+  buildFinalReviewChecklist,
   buildFocusRequest,
   buildIssueCountBySection,
   buildProcessActionLabel,
@@ -163,6 +164,57 @@ describe("admin ingestion review helpers", () => {
       sources: 1,
       assets: 0,
     });
+  });
+
+  it("builds final review checklist from validation and draft state", () => {
+    const draft = createDraft();
+    draft.assets = [
+      {
+        id: "asset-1",
+        sourcePageId: "page-1",
+        documentKind: "EXAM",
+        pageNumber: 1,
+        variantCode: "SUJET_1",
+        role: "PROMPT",
+        classification: "image",
+        cropBox: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100,
+        },
+        label: "Figure",
+        notes: null,
+        nativeSuggestion: null,
+      },
+    ];
+
+    expect(
+      buildFinalReviewChecklist({
+        draft,
+        sourcePageCount: 3,
+        validation: {
+          errors: ["Missing subject"],
+          issues: [
+            {
+              ...issues[2]!,
+              code: "asset_crop_placeholder",
+            },
+            {
+              ...issues[1]!,
+              code: "table_will_publish_as_image",
+            },
+          ],
+        },
+      }).map((item) => [item.id, item.state]),
+    ).toEqual([
+      ["source-pages", "ready"],
+      ["validation", "needs-review"],
+      ["crops", "needs-review"],
+      ["native-rendering", "needs-review"],
+      ["codex-presentation", "manual"],
+      ["human-preview", "manual"],
+    ]);
   });
 
   it("builds review action state and process labels", () => {

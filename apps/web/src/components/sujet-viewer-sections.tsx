@@ -3,19 +3,20 @@
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import type { ReactNode } from "react";
+import { SaveFlashcardButton } from "@/components/save-flashcard-button";
 import { StudyHierarchyBlocks } from "@/components/study-content";
 import {
   StudyQuestionPromptContent,
   StudyQuestionSolutionStack,
 } from "@/components/study-stage";
 import { Button } from "@/components/ui/button";
-import { FilterChip } from "@/components/ui/filter-chip";
 import {
   type ExamHierarchyBlock,
   type ExamHierarchyNode,
   type ExamResponse,
   formatSessionType,
 } from "@/lib/study-api";
+import { buildStudyQuestionFlashcardDraft } from "@/lib/flashcards-surface";
 import {
   canRevealStudyQuestionSolution,
   type StudyExerciseModel,
@@ -78,9 +79,11 @@ export function SujetViewerHero({
           </span>
           <span className="sujet-browser-paper-label">{sujetLabel}</span>
           <div className="sujet-browser-title-stack">
-            <span className="sujet-browser-subject-name">{exam.subject.name}</span>
+            <span className="sujet-browser-subject-name">
+              {exam.subject.name}
+            </span>
             <span className="sujet-browser-title-detail">
-              نسخة رقمية للتصفح فقط
+              عرض رقمي منظّم للتصفح والتدريب
             </span>
           </div>
         </div>
@@ -120,21 +123,44 @@ export function SujetViewerNavigator({
   variantLinks: SujetVariantLink[];
   exerciseTabs: SujetExerciseTab[];
 }) {
+  const activeExerciseIndex = Math.max(
+    0,
+    exerciseTabs.findIndex((exercise) => exercise.isActive),
+  );
+  const progress =
+    exerciseTabs.length > 0
+      ? ((activeExerciseIndex + 1) / exerciseTabs.length) * 100
+      : 0;
+
   return (
-    <section className="sujet-browser-nav">
+    <section className="sujet-browser-nav" aria-label="التنقل داخل الموضوع">
+      <div className="sujet-browser-progress">
+        <span>
+          التمرين {Math.min(activeExerciseIndex + 1, exerciseTabs.length)} من{" "}
+          {exerciseTabs.length}
+        </span>
+        <div className="sujet-browser-progress-track" aria-hidden="true">
+          <span style={{ width: `${progress}%` }} />
+        </div>
+      </div>
+
       {variantLinks.length > 1 ? (
         <div className="sujet-browser-nav-group">
           <span className="sujet-browser-nav-label">الموضوع</span>
-          <div className="sujet-browser-pill-row">
+          <div className="sujet-browser-pill-row sujet-browser-sujet-row">
             {variantLinks.map((variant) => (
-              <FilterChip key={variant.href} asChild active={variant.isActive}>
-                <Link
+              <Button
                 key={variant.href}
-                href={variant.href}
+                asChild
+                variant={variant.isActive ? "secondary" : "ghost"}
+                size="sm"
+                className="sujet-variant-switch"
+                data-active={variant.isActive ? "true" : "false"}
               >
-                {variant.label}
+                <Link href={variant.href}>
+                  {variant.label}
                 </Link>
-              </FilterChip>
+              </Button>
             ))}
           </div>
         </div>
@@ -143,15 +169,21 @@ export function SujetViewerNavigator({
       <div className="sujet-browser-nav-group">
         <span className="sujet-browser-nav-label">التمارين</span>
         <div className="sujet-browser-pill-row">
-          {exerciseTabs.map((exercise) => (
-            <FilterChip
+          {exerciseTabs.map((exercise, index) => (
+            <Button
               key={exercise.id}
               type="button"
-              active={exercise.isActive}
+              variant={exercise.isActive ? "secondary" : "ghost"}
+              size="sm"
+              className="sujet-exercise-step"
+              data-active={exercise.isActive ? "true" : "false"}
               onClick={exercise.onSelect}
             >
-              {exercise.label}
-            </FilterChip>
+              <span className="sujet-exercise-step-index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span>{exercise.label}</span>
+            </Button>
           ))}
         </div>
       </div>
@@ -208,17 +240,17 @@ function QuestionSolutionToggle({
     <Button
       type="button"
       variant="ghost"
-      className="h-auto gap-1 rounded-full px-0 py-0 text-sm text-primary hover:bg-transparent"
+      className="sujet-question-action h-auto gap-1 rounded-full px-0 py-0 text-sm"
       onClick={() => onToggleQuestionSolution(question.id)}
     >
       {isSolutionOpen ? (
         <>
-          <EyeOff size={16} aria-hidden="true" />
+          <EyeOff size={16} data-icon aria-hidden="true" />
           إخفاء الحل
         </>
       ) : (
         <>
-          <Eye size={16} aria-hidden="true" />
+          <Eye size={16} data-icon aria-hidden="true" />
           إظهار الحل
         </>
       )}
@@ -243,14 +275,18 @@ function SujetViewerStructuredQuestionNode({
 }) {
   const promptBlocks = question?.promptBlocks ?? getPromptBlocks(node.blocks);
   const points = question?.points ?? node.maxPoints ?? 0;
-  const isSolutionOpen = question ? Boolean(revealedSolutions[question.id]) : false;
+  const isSolutionOpen = question
+    ? Boolean(revealedSolutions[question.id])
+    : false;
 
   return (
     <div
       className={`sujet-paper-question-row${
         node.nodeType === "SUBQUESTION" ? " is-subquestion" : ""
       }`}
-      style={depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined}
+      style={
+        depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined
+      }
     >
       <div className="sujet-paper-question-head">
         <div className="sujet-paper-question-meta">
@@ -289,6 +325,14 @@ function SujetViewerStructuredQuestionNode({
 
       {question && isSolutionOpen ? (
         <div className="sujet-paper-solution">
+          <SaveFlashcardButton
+            draft={buildStudyQuestionFlashcardDraft(question, {
+              exerciseLabel: formatNodeLabel(node, question),
+            })}
+            label="احفظ التصحيح كبطاقة"
+            successLabel="حُفظ التصحيح"
+            compact
+          />
           <StudyQuestionSolutionStack question={question} />
         </div>
       ) : null}
@@ -311,7 +355,9 @@ function SujetViewerStructuredBranchNode({
   return (
     <section
       className="sujet-paper-branch"
-      style={depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined}
+      style={
+        depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined
+      }
     >
       <div className="sujet-paper-branch-head">
         <h3 className="sujet-paper-branch-label">{label}</h3>
@@ -353,7 +399,9 @@ function SujetViewerStructuredContextNode({
   return (
     <section
       className="sujet-paper-context sujet-paper-context-inline"
-      style={depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined}
+      style={
+        depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined
+      }
     >
       {node.label?.trim() ? (
         <p className="sujet-paper-context-label">{node.label.trim()}</p>
@@ -395,7 +443,11 @@ function SujetViewerStructuredExerciseBody({
 
     if (node.nodeType === "CONTEXT") {
       return (
-        <SujetViewerStructuredContextNode key={node.id} node={node} depth={depth} />
+        <SujetViewerStructuredContextNode
+          key={node.id}
+          node={node}
+          depth={depth}
+        />
       );
     }
 
@@ -471,24 +523,11 @@ function SujetViewerFlatExerciseBody({
                 </div>
 
                 {canRevealSolution ? (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="h-auto gap-1 rounded-full px-0 py-0 text-sm text-primary hover:bg-transparent"
-                    onClick={() => onToggleQuestionSolution(question.id)}
-                  >
-                    {isSolutionOpen ? (
-                      <>
-                        <EyeOff size={16} aria-hidden="true" />
-                        إخفاء الحل
-                      </>
-                    ) : (
-                      <>
-                        <Eye size={16} aria-hidden="true" />
-                        إظهار الحل
-                      </>
-                    )}
-                  </Button>
+                  <QuestionSolutionToggle
+                    question={question}
+                    revealedSolutions={revealedSolutions}
+                    onToggleQuestionSolution={onToggleQuestionSolution}
+                  />
                 ) : null}
               </div>
 
@@ -498,6 +537,20 @@ function SujetViewerFlatExerciseBody({
 
               {isSolutionOpen ? (
                 <div className="sujet-paper-solution">
+                  <SaveFlashcardButton
+                    draft={buildStudyQuestionFlashcardDraft(question, {
+                      exerciseLabel: `التمرين ${exercise.displayOrder}`,
+                      subjectName: exercise.sourceExam?.subject.name ?? null,
+                      sourceLabel: exercise.sourceExam
+                        ? `${exercise.sourceExam.year} · ${formatSessionType(
+                            exercise.sourceExam.sessionType,
+                          )}`
+                        : null,
+                    })}
+                    label="احفظ التصحيح كبطاقة"
+                    successLabel="حُفظ التصحيح"
+                    compact
+                  />
                   <StudyQuestionSolutionStack question={question} />
                 </div>
               ) : null}
@@ -515,34 +568,25 @@ export function SujetViewerExercisePaper({
   revealedSolutions,
   onToggleQuestionSolution,
   exerciseAction,
+  focusAction,
 }: {
   exam: ExamResponse;
   exercise: StudyExerciseModel;
   revealedSolutions: Record<string, boolean>;
   onToggleQuestionSolution: (questionId: string) => void;
   exerciseAction?: ReactNode;
+  focusAction?: ReactNode;
 }) {
   const selectedSujetNumber = exam.selectedSujetNumber ?? 1;
   const exerciseNumber = String(exercise.displayOrder).padStart(2, "0");
 
   return (
     <section className="sujet-paper-shell">
-      <div className="sujet-paper-toolbar">
-        <div>
-          <span>أرشيف مِراس</span>
-          <strong>
-            {exam.subject.name} · بكالوريا {exam.year}
-          </strong>
-        </div>
-        <div className="sujet-paper-toolbar-actions">
-          {exerciseAction}
-        </div>
-      </div>
-
       <article className="sujet-paper-sheet">
         <div className="sujet-paper-head">
           <div className="sujet-paper-head-copy">
             <p className="sujet-paper-kicker">
+              {exam.subject.name} · بكالوريا {exam.year} ·{" "}
               {formatSujetLabel(selectedSujetNumber, exam.selectedSujetLabel)}
             </p>
             <div className="sujet-paper-exercise-line">
@@ -560,6 +604,12 @@ export function SujetViewerExercisePaper({
               ) : null}
               <span>{exercise.questions.length} أسئلة</span>
             </div>
+            {focusAction || exerciseAction ? (
+              <div className="sujet-paper-actions">
+                {focusAction}
+                {exerciseAction}
+              </div>
+            ) : null}
           </div>
         </div>
 

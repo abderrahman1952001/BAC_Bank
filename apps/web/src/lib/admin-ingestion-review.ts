@@ -22,6 +22,24 @@ export const REVIEW_SECTION_LABELS: Record<ReviewSection, string> = {
   assets: "Assets",
 };
 
+export type FinalReviewChecklistItem = {
+  id: string;
+  label: string;
+  detail: string;
+  state: "ready" | "needs-review" | "manual";
+};
+
+const NATIVE_RENDER_REVIEW_CODES = new Set([
+  "asset_native_suggestion_stale",
+  "asset_native_suggestion_type_mismatch",
+  "block_native_suggestion_stale",
+  "table_will_publish_as_image",
+  "graph_block_missing_structured_data",
+  "tree_block_missing_structured_data",
+  "graph_will_publish_as_image",
+  "tree_will_publish_as_image",
+]);
+
 export function formatIssueLocation(issue: AdminIngestionValidationIssue) {
   const parts: string[] = [];
 
@@ -189,6 +207,78 @@ export function buildIssueCountBySection(
   }
 
   return counts;
+}
+
+export function buildFinalReviewChecklist(input: {
+  draft: AdminIngestionDraft;
+  validation: Pick<
+    AdminIngestionJobResponse["validation"],
+    "errors" | "issues"
+  >;
+  sourcePageCount: number;
+}): FinalReviewChecklistItem[] {
+  const placeholderCropCount = input.validation.issues.filter(
+    (issue) => issue.code === "asset_crop_placeholder",
+  ).length;
+  const nativeReviewCount = input.validation.issues.filter((issue) =>
+    NATIVE_RENDER_REVIEW_CODES.has(issue.code),
+  ).length;
+  const assetCount = input.draft.assets.length;
+
+  return [
+    {
+      id: "source-pages",
+      label: "Source pages ready",
+      detail:
+        input.sourcePageCount > 0
+          ? `${input.sourcePageCount} source page(s) available for visual review.`
+          : "Prepare canonical source pages before final review.",
+      state: input.sourcePageCount > 0 ? "ready" : "needs-review",
+    },
+    {
+      id: "validation",
+      label: "Validation errors cleared",
+      detail:
+        input.validation.errors.length === 0
+          ? "No blocking validation errors are reported."
+          : `${input.validation.errors.length} blocking validation error(s) remain.`,
+      state: input.validation.errors.length === 0 ? "ready" : "needs-review",
+    },
+    {
+      id: "crops",
+      label: "Asset crops reviewed",
+      detail:
+        assetCount === 0
+          ? "No draft assets are attached."
+          : placeholderCropCount === 0
+            ? `${assetCount} asset crop(s) have non-placeholder geometry.`
+            : `${placeholderCropCount} full-page placeholder crop(s) still need review.`,
+      state: placeholderCropCount === 0 ? "ready" : "needs-review",
+    },
+    {
+      id: "native-rendering",
+      label: "Native rendering reviewed",
+      detail:
+        nativeReviewCount === 0
+          ? "No stale native-rendering warnings are reported."
+          : `${nativeReviewCount} native rendering warning(s) need a judgment call.`,
+      state: nativeReviewCount === 0 ? "ready" : "needs-review",
+    },
+    {
+      id: "codex-presentation",
+      label: "Codex presentation pass",
+      detail:
+        "Confirm headings, paragraphs, punctuation, tables, images, and mobile/desktop preview quality before approval.",
+      state: "manual",
+    },
+    {
+      id: "human-preview",
+      label: "Human student-preview pass",
+      detail:
+        "Open the student-side draft preview for the final side-by-side check before publish.",
+      state: "manual",
+    },
+  ];
 }
 
 export function buildReviewActionState({

@@ -17,12 +17,17 @@ The canonical workflow still owns source storage, rasterized pages, draft review
 approval, and publication. Extraction routes must feed that workflow; they must
 not create a second ingestion system.
 
+This document defines extraction, native-rendering, crop, and premium-quality
+rules only. The single end-to-end workflow source of truth is
+`docs/admin-ingestion-workflow.md`.
+
 ## Extraction Route
 
-The canonical extraction route is:
+Route selection is defined only in `docs/admin-ingestion-workflow.md`.
 
-- `codex_app_reviewed_extraction`: operator-assisted extraction in Codex from
-  the canonical PDFs and page renders.
+This document defines the reviewed extract contract that every route must
+produce, whether the first pass came from Gemini Batch/API, AI Studio, or direct
+Codex fallback work.
 
 Every extraction run must save a durable reviewed extract artifact and import it
 through:
@@ -36,6 +41,48 @@ npm run import:reviewed-extract -w @bac-bank/api -- --paper-source-slug <slug> -
 The extraction model or agent is allowed to normalize structure, not content.
 This contract applies no matter which model produced the reviewed extract.
 
+The standard is visual-first faithfulness to the official scans. Canonical PDFs
+and stored page PNGs are the authority for every content, structure, crop,
+native rendering, cleanup, and presentation decision. OCR, parsed text, and
+model output are useful helpers for search, comparison, and initial
+transcription, but they are not source truth and must be visually checked before
+approval.
+
+Codex should repair every fixable issue it finds during normalization,
+post-crop audit, cleanup, and presentation review. Only unresolved source
+ambiguity, missing source data, tooling gaps, or decisions that genuinely need
+human judgment should remain as handoff notes.
+
+Source-faithfulness checking repeats in every major Codex pass. The pre-crop
+normalization pass, post-crop audit, and presentation pass each perform visual
+comparison against the canonical PDFs or source page PNGs. Post-crop is not
+crop-only, and presentation is not layout-only: if a later pass sees a prompt,
+solution, barème, native-rendered asset, crop, or structure mismatch, it must
+fix it instead of assuming the earlier pass already settled extraction.
+
+Dense, low-quality, messy, unusual, or high-risk source regions require repeated
+visual passes in every stage where they matter. Codex should revisit crowded
+tables, formulas, diagrams, correction grids, poor scans, handwritten marks,
+and awkward layouts until the reviewed draft is faithful or the remaining
+uncertainty is explicit and concrete.
+
+Codex should resolve hard cases aggressively but safely. Do not stop at the
+first ambiguous symbol, contradiction, or messy crop. Re-inspect the source at
+useful zoom levels, compare surrounding notation and labels, compare exam and
+correction references, reconcile numbering and barème totals, and use OCR or
+model text only as helper evidence. When the source evidence strongly supports
+one reading or repair, apply that faithful correction in the draft.
+
+Scan damage, provider artifacts, crop noise, and obvious extraction defects are
+fixable when the intended source reading is visually supported. Official-source
+contradictions and typos are also fixable when the correction is obvious and
+source-supported, such as a point total, label, unit, sign, index, or formula
+that is contradicted by surrounding official material in only one plausible way.
+Apply that correction in the digital draft and record a concrete audit note.
+Non-obvious official-source contradictions must remain visible as source issues;
+do not invent unsupported content, but also do not hand off avoidable
+uncertainty.
+
 Required:
 
 - preserve every exam prompt, condition, figure reference, table label, unit,
@@ -46,8 +93,9 @@ Required:
   the same order explicit through parent and child nodes
 - copy official correction reasoning faithfully instead of replacing it with a
   newly solved or shorter answer
-- keep uncertainty explicit in `uncertainties[]` when a source word, symbol,
-  point split, or grouping is not fully legible
+- keep uncertainty explicit in `uncertainties[]` only after an active visual
+  resolution attempt when a source word, symbol, point split, or grouping is not
+  fully legible
 
 Forbidden:
 
@@ -62,13 +110,17 @@ Allowed cleanup:
 - move visible structural markers into `node.label`
 - remove page headers, footers, provider chrome, and duplicated labels only when
   the same meaning is already represented structurally
+- remove duplicate blocks, duplicate assets, stale native suggestions, stale
+  placeholder artifacts, and non-semantic scan/provider noise when source
+  meaning is preserved
 - fix obvious OCR spacing, punctuation, and line-join artifacts when the source
   meaning is unchanged
 - convert standalone formulas into `latex` blocks without changing notation
 
 Before import, the extractor must do a source comparison pass against the
 canonical PDFs or page PNGs. A draft that merely validates structurally is not
-reviewed unless this comparison was done.
+reviewed unless this visual comparison was done and fixable findings were
+repaired.
 
 ## Reviewed Extract Shape
 
@@ -147,24 +199,51 @@ for corpus-scale consistency.
 
 ## Native Asset Policy
 
-The app should feel premium. Anything that can be rendered reliably with web
-frontend technology should become a native block, while retaining source-page
-asset fallback for review and provenance.
+The app should feel premium. Native rendering is the default for straightforward
+structured assets when the app can represent them faithfully. Anything that can
+be rendered reliably with web frontend technology should become a native block,
+while retaining source-page asset fallback for review and provenance.
 
-Prefer native rendering for:
+Native rendering may be proposed during normalization/import whenever the source
+evidence is clear enough. It becomes trusted only after the post-crop audit
+checks the native data against the canonical source page or crop. The later
+presentation pass verifies layout and renderer quality, not basic content
+faithfulness.
+
+Render natively by default when possible:
 
 - tables
+- simple correction tables
 - sign tables
 - variation tables
 - truth tables
 - probability trees
-- simple function graphs
-- simple bar charts or line charts
 - formula-heavy boxed derivations that KaTeX can render cleanly
+
+Every table, sign table, variation table, probability tree, and similarly clear
+structured asset that can be rendered faithfully must be rendered natively.
+Leaving these as image-only assets is acceptable only when the current renderer
+cannot preserve the source meaning, layout, labels, or responsive readability.
+
+Tables, probability trees, sign tables, and variation tables are native-first,
+not crop-first. They should not be treated as human crop-review assets when
+Codex can render them faithfully. Codex may keep or create crops for provenance,
+fallback, and visual verification, but those crops should not become human crop
+debt for obvious native-renderable structures. Send these to human crop review
+only when they are difficult, ambiguous, unreadable, or blocked by renderer
+limitations that Codex could not safely resolve.
+
+For sign and variation tables, use the best faithful renderer available.
+KaTeX/LaTeX is acceptable when it best preserves the source layout and notation.
+A dedicated native table renderer is better when it is more faithful,
+inspectable, and responsive. Codex should choose the renderer that makes visual
+source comparison easiest and produces the most faithful student preview.
 
 Prefer image crops for:
 
 - experimental apparatus
+- graphs, plotted curves, bar charts, and line charts under the current sealed
+  graph policy
 - biological, geological, geographical, or technical diagrams
 - maps
 - dense multi-panel figures
@@ -180,7 +259,12 @@ When using native rendering:
 - store the same structured draft in `asset.nativeSuggestion`
 - keep image crop fallback for reviewer comparison
 - mark stale native suggestions when crop geometry changes
-- verify the native block in the student-side draft preview before approval
+- verify native data against the source page or crop during the post-crop audit
+- verify native layout in the student-side draft preview before approval
+- repair any wrong native cells, labels, signs, arrows, intervals, extrema,
+  totals, or fallback text before handoff
+- avoid creating human crop debt for native-renderable tables, probability
+  trees, sign tables, and variation tables
 
 ## Crop Policy
 
@@ -199,6 +283,13 @@ Exclude:
 - page headers and footers
 - decorative borders that add no meaning
 - duplicated prompt text already present as structured text
+
+When a rectangular crop cannot avoid adjacent noise, keep the best crop and use
+asset cleanup instead of overburdening the crop pass. The human crop reviewer
+may mark `cleanupRequired`; Codex should then propose `cleanupMasks` during the
+post-crop audit. Cleanup masks are white rectangles in cropped-asset
+coordinates and are applied during preview and publish. Do not mask text or
+labels that are actually part of the source visual's meaning.
 
 Published human-verified crops are treated as trusted source data. Revision
 passes should preserve them unless the reviewed native rendering or source
@@ -234,13 +325,19 @@ For each paper family:
    draft path.
 5. If draft quality is low, re-extract from the PDFs using the premium draft
    graph shape.
-6. Preserve or add crop geometry, or explicitly defer it as crop review debt.
-7. Add native suggestions where they are faithful and review-saving.
-8. Run validation.
-9. Open the student-side draft preview and check hierarchy, crops, and native
+6. Visually compare the draft against the canonical PDFs or page PNGs; use OCR
+   only as a helper and fix every safe source-faithfulness issue found. Repeat
+   visual passes over dense, low-quality, messy, unusual, or high-risk regions.
+7. Preserve or add crop geometry, or explicitly defer it as crop review debt.
+8. Add native suggestions where they are faithful and review-saving, then
+   verify them against the source page or crop during the post-crop audit.
+9. Remove duplicate blocks/assets, stale native data, stale placeholders, and
+   non-semantic scan/provider noise unless intentionally preserved.
+10. Run validation.
+11. Open the student-side draft preview and check hierarchy, crops, and native
    blocks in the same renderer used by students.
-10. Compare point totals and variant/exercise/question counts.
-11. Hand off remaining warnings explicitly.
+12. Compare point totals and variant/exercise/question counts.
+13. Hand off only remaining warnings that could not be safely fixed.
 
 Do not publish as part of a sweep unless the user explicitly asks for
 publication.

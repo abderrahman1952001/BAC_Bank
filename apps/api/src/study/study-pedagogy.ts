@@ -136,7 +136,7 @@ export function getFallbackPedagogyRules(supportStyle: StudySupportStyle) {
 }
 
 export function toPedagogyRule(input: {
-  skillName: string;
+  learningTargetName: string;
   description?: string | null;
 }) {
   const description = input.description?.trim();
@@ -147,7 +147,7 @@ export function toPedagogyRule(input: {
       : `${description}.`;
   }
 
-  return `ركّز على مهارة ${input.skillName}.`;
+  return `ركّز على هدف التعلم ${input.learningTargetName}.`;
 }
 
 export function buildCommonTrapMessage(input: {

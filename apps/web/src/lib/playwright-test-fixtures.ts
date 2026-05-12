@@ -12,6 +12,7 @@ import type {
   CourseTopicResponse,
 } from "@bac-bank/contracts/courses";
 import type {
+  AdminIngestionCropQueueResponse,
   AdminIngestionJobResponse,
   AdminIngestionJobSummary,
 } from "@bac-bank/contracts/ingestion";
@@ -417,7 +418,8 @@ export const playwrightTestExam = {
             role: "STEM",
             orderIndex: 1,
             blockType: "PARAGRAPH",
-            textValue: "A sequence is defined by u0 = 2 and u(n+1) = 3u(n) - 1.",
+            textValue:
+              "A sequence is defined by u0 = 2 and u(n+1) = 3u(n) - 1.",
             data: null,
             media: null,
           },
@@ -438,7 +440,8 @@ export const playwrightTestExam = {
                 role: "PROMPT",
                 orderIndex: 1,
                 blockType: "PARAGRAPH",
-                textValue: "Compute u1 and u2, then conjecture the growth trend.",
+                textValue:
+                  "Compute u1 and u2, then conjecture the growth trend.",
                 data: null,
                 media: null,
               },
@@ -1199,6 +1202,50 @@ export const playwrightTestAdminJobResponse = {
     can_publish: false,
   },
 } satisfies AdminIngestionJobResponse;
+
+export const playwrightTestAdminCropQueueResponse = {
+  summary: {
+    job_count: 1,
+    placeholder_count: 1,
+  },
+  data: [
+    {
+      job_id: "job-1",
+      job_label: "BAC 2025 · MATHEMATICS · SE",
+      job_status: "in_review",
+      draft_kind: "ingestion",
+      year: 2025,
+      subject_code: "MATHEMATICS",
+      stream_codes: ["SE"],
+      asset_id: "asset-table",
+      asset_label: "جدول المعاينة",
+      classification: "table",
+      role: "PROMPT",
+      variant_code: "SUJET_1",
+      source_page_id: "page-1",
+      source_document_kind: "EXAM",
+      source_page_number: 1,
+      source_page_width: 1200,
+      source_page_height: 1600,
+      page_image_url: "/api/v1/ingestion/pages/page-1/image",
+      asset_preview_url:
+        "/api/v1/ingestion/jobs/job-1/assets/asset-table/preview",
+      crop_box: {
+        x: 0,
+        y: 0,
+        width: 1200,
+        height: 1600,
+      },
+      placeholder: true,
+      needs_cleanup: false,
+      cleanup_mask_count: 0,
+      notes: null,
+      linked_node_id: "pw-exercise-1",
+      linked_node_path: ["التمرين الأول"],
+      updated_at: "2026-03-28T12:00:00.000Z",
+    },
+  ],
+} satisfies AdminIngestionCropQueueResponse;
 
 export function clonePlaywrightFixture<T>(value: T): T {
   return structuredClone(value);

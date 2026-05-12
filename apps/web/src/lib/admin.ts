@@ -20,6 +20,11 @@ import type {
   UpdateAdminSourceCropRequest,
   UpdateAdminSourceCropResponse,
 } from "@bac-bank/contracts/admin";
+import {
+  parseAdminIngestionCropQueueResponse,
+  parseUpdateIngestionAssetCropPayload,
+  parseUpdateIngestionAssetCropResponse,
+} from "@bac-bank/contracts/ingestion";
 export type {
   AdminBillingFeeResponsibility,
   AdminBillingSettings,
@@ -57,6 +62,8 @@ export {
   parseUpdateAdminBillingSettingsRequest,
 };
 export type {
+  AdminIngestionCropQueueItem,
+  AdminIngestionCropQueueResponse,
   AdminIngestionDraft,
   AdminIngestionDraftKind,
   AdminIngestionJobListResponse,
@@ -65,17 +72,25 @@ export type {
   AdminIngestionPublishedExam,
   AdminIngestionStatus,
   AdminIngestionValidationIssue,
+  DraftAssetCleanupMask,
   DraftAssetClassification,
   DraftAssetNativeSuggestionSource,
   DraftAssetNativeSuggestionStatus,
   DraftAssetNativeSuggestionType,
   DraftBlockRole,
   DraftBlockType,
+  DraftCropBox,
+  DraftDocumentKind,
   DraftVariantCode,
+  UpdateIngestionAssetCropPayload,
+  UpdateIngestionAssetCropResponse,
 } from "@bac-bank/contracts/ingestion";
 export {
+  parseAdminIngestionCropQueueResponse,
   parseAdminIngestionJobListResponse,
   parseAdminIngestionJobResponse,
+  parseUpdateIngestionAssetCropPayload,
+  parseUpdateIngestionAssetCropResponse,
   parseUpdateIngestionJobPayload,
 } from "@bac-bank/contracts/ingestion";
 
@@ -158,6 +173,31 @@ export async function updateAdminSourceWorkbenchCrop(
       body: JSON.stringify(payload),
     },
     parseUpdateAdminSourceCropResponse,
+  );
+}
+
+export async function fetchAdminIngestionCropQueue() {
+  return fetchAdminJson<
+    import("@bac-bank/contracts/ingestion").AdminIngestionCropQueueResponse
+  >("/ingestion/crops", undefined, parseAdminIngestionCropQueueResponse);
+}
+
+export async function updateAdminIngestionAssetCrop(
+  jobId: string,
+  assetId: string,
+  payload: import("@bac-bank/contracts/ingestion").UpdateIngestionAssetCropPayload,
+) {
+  return fetchAdminJson<
+    import("@bac-bank/contracts/ingestion").UpdateIngestionAssetCropResponse
+  >(
+    `/ingestion/jobs/${encodeURIComponent(jobId)}/assets/${encodeURIComponent(
+      assetId,
+    )}/crop`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(parseUpdateIngestionAssetCropPayload(payload)),
+    },
+    parseUpdateIngestionAssetCropResponse,
   );
 }
 

@@ -426,6 +426,75 @@ function validateAsset(
     });
   }
 
+  if (asset.cleanupRequired && !asset.cleanupMasks?.length) {
+    collector.warning({
+      code: 'asset_cleanup_required',
+      target: 'asset',
+      message: `Asset ${asset.id} is flagged as needing cleanup, but no cleanup masks have been added yet.`,
+      variantCode: asset.variantCode,
+      nodeId: null,
+      blockId: null,
+      assetId: asset.id,
+      sourcePageId: asset.sourcePageId,
+      pageNumber: page.pageNumber,
+      field: 'cleanupMasks',
+    });
+  }
+
+  for (const [index, mask] of (asset.cleanupMasks ?? []).entries()) {
+    const field = `cleanupMasks[${index}]`;
+
+    if (mask.width <= 0 || mask.height <= 0) {
+      collector.error({
+        code: 'asset_cleanup_mask_invalid_dimensions',
+        target: 'asset',
+        message: `Asset ${asset.id} cleanup mask ${index + 1} must have positive width and height.`,
+        variantCode: asset.variantCode,
+        nodeId: null,
+        blockId: null,
+        assetId: asset.id,
+        sourcePageId: asset.sourcePageId,
+        pageNumber: page.pageNumber,
+        field,
+      });
+      continue;
+    }
+
+    if (mask.x < 0 || mask.y < 0) {
+      collector.error({
+        code: 'asset_cleanup_mask_outside_crop',
+        target: 'asset',
+        message: `Asset ${asset.id} cleanup mask ${index + 1} cannot start outside the crop.`,
+        variantCode: asset.variantCode,
+        nodeId: null,
+        blockId: null,
+        assetId: asset.id,
+        sourcePageId: asset.sourcePageId,
+        pageNumber: page.pageNumber,
+        field,
+      });
+      continue;
+    }
+
+    if (
+      mask.x + mask.width > asset.cropBox.width ||
+      mask.y + mask.height > asset.cropBox.height
+    ) {
+      collector.warning({
+        code: 'asset_cleanup_mask_clamped',
+        target: 'asset',
+        message: `Asset ${asset.id} cleanup mask ${index + 1} extends beyond the crop and will be clamped on preview and publish.`,
+        variantCode: asset.variantCode,
+        nodeId: null,
+        blockId: null,
+        assetId: asset.id,
+        sourcePageId: asset.sourcePageId,
+        pageNumber: page.pageNumber,
+        field,
+      });
+    }
+  }
+
   if (asset.nativeSuggestion?.status === 'stale') {
     collector.warning({
       code: 'asset_native_suggestion_stale',

@@ -1,0 +1,571 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "اختبار في مادة: اللغة الإنجليزية",
+    "year": 2024,
+    "streamCode": "آداب وفلسفة",
+    "subjectCode": "اللغة الإنجليزية",
+    "sessionType": "normal",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول - Education in USA and Singapore",
+      "nodes": [
+        {
+          "localId": "S1_PART1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "Part One: Reading",
+          "maxPoints": 15,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "Part One: Reading (15 points)" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A",
+          "parentLocalId": "S1_PART1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A/ Comprehension",
+          "maxPoints": 7,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "A/ Comprehension: (07 points)" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_CONTEXT",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "Read the text carefully to do the activities" },
+            { "role": "PROMPT", "type": "paragraph", "text": "The USA education system and Singapore education system have some similarities, but also some significant differences. One similarity is that both countries place a high value on education and have strong education systems. However, there are some differences in terms of structure and approach." },
+            { "role": "PROMPT", "type": "paragraph", "text": "One major difference is that the education system in Singapore is highly centralised, with the Ministry of Education setting strict guidelines and standards for schools and curriculum. In contrast, the education system in the USA is more decentralised, with each state having its own education system and curriculum standards." },
+            { "role": "PROMPT", "type": "paragraph", "text": "The approach to teaching and learning is also different. In Singapore, there is a strong emphasis on mechanical memorisation and mastering content, while in the USA, there is more emphasis on critical thinking and problem solving. Additionally, the education system in Singapore is more academically focused and competitive, with a greater emphasis on STEM fields, whereas the education system in the USA is more varied, with a greater emphasis on the liberal arts, social sciences and emerging courses." },
+            { "role": "PROMPT", "type": "paragraph", "text": "Ultimately, both education systems have their strengths and weaknesses, and the choice of which system is better for a student will depend on individual needs and preferences." },
+            { "role": "PROMPT", "type": "paragraph", "text": "Adapted from: https://edvoy.com/faqs/education-in-singapore-comparison-to-usa." }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q1",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "1. Identify the type of the text.\nThe text is a- a letter b- a web article c- a report" },
+            { "role": "SOLUTION", "type": "paragraph", "text": "1) The text is: b- a web article" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "1 pt" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q2",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "2. Identify the paragraph in which each of the following ideas is mentioned.\na- Students can choose the best education system according to their interests.\nb- The educational systems in both countries are solid." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "2) a- §4 b- §1" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "1x2 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q3",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "3",
+          "maxPoints": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "3. Answer the following questions according to the text.\na- What makes the education systems in USA and Singapore similar?\nb- How many differences between the education systems in USA and Singapore are mentioned in the text?\nc- Do the two education systems focus on the same subjects? Justify from the text." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "3) a- Both countries place a high value on education and have strong education systems.\nb- There are three differences.\nc- No, they do not.\nJustification: \"The education system in Singapore is more academically focused and competitive, with a greater emphasis on STEM fields, whereas the education system in the USA is more varied, with a greater emphasis on the liberal arts, social sciences and emerging courses\"." },
+            { "role": "RUBRIC", "type": "paragraph", "text": "a- 1 pt\nb- 1 pt\nc- 0.25 pt for 'No, they do not.'\n0.75 pt for Justification." }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_A_Q4",
+          "parentLocalId": "S1_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "4",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "4. Choose the most appropriate title.\na- Education in USA.\nb- The Difference Between Education in USA and Singapore.\nc- Education in USA and Singapore: Different and Alike." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "4) The title: Education in USA and Singapore: Different and Alike." },
+            { "role": "RUBRIC", "type": "paragraph", "text": "1 pt" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B",
+          "parentLocalId": "S1_PART1",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B/ Text Exploration",
+          "maxPoints": 8,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "B/ Text Exploration (08 points)" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q1",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "1. Match the following words with the corresponding definitions.\nWords:\na- Emphasis\nb- Learning\nc- Different\n\nDefinitions:\n1- The acquisition of knowledge or skills through studies\n2- Not alike in character or quality.\n3- Special importance given to something." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "1) Lexis: a-3 b-1 c-2" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5x3 = 1.5 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q2",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "2. Divide the following words into roots and affixes.\nuneducated – preference – displace" },
+            { "role": "PROMPT", "type": "table", "text": "Prefix | Root | Suffix\n... | ... | ..." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "2) Morphology:\nun - educat(e) - ed\n/ - prefer - ence\ndis - place - /" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5 x3 = 1.5 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q3",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "3. Complete sentence \"b\" so that it means the same as \"a\".\n1) a- You should choose a school that meets your needs.\nb- If I were you, ........................................................\n2) a- The Ministry of Education sets strict guidelines for schools.\nb- Strict ........................................................................\n3) a- Both USA and Singapore place a high value on education.\nb- Like..............................................................................." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "3) \n1- b- If I were you, I would choose a school that meets my needs.\n2- b- Strict guidelines are set for schools by the Ministry of Education.\n3- b- Like USA, Singapore places a high value on education.\nOr - Like Singapore, USA places a high value on education." },
+            { "role": "RUBRIC", "type": "paragraph", "text": "1 x3 = 3 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART1_B_Q4",
+          "parentLocalId": "S1_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "4. Fill in each gap with the appropriate word from the list given.\nchildren - apply - standards - although\n\nEducation in Singapore is classified as one of the best education systems in the world. Schools are state run with very few exceptions. Private schools are almost non-existent.....(1).....there are some combined models. Parents must.....(2).....for an exemption from the Ministry of Education (MOE) if they choose to home school or send their ......(3)...... to full-time religious schools. These students are still required to meet minimum ......(4)...... set by the MOE." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "4) 1.although 2. apply 3. children 4.standards" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5x4 = 2 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_PART2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "Part Two: Written Expression",
+          "maxPoints": 5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "Part Two: Written Expression (05 points)" },
+            { "role": "PROMPT", "type": "paragraph", "text": "Choose ONE of the following topics\n\nTopic One:\nSome people claim that education does not guarantee a bright future for the individuals and the society. You totally disagree with this argument. Write an opinion article of about 80 to 120 words in which you highlight the importance of education in ensuring a better future for everyone.\nMake the best use of the following notes:\n- Better education/ more job opportunities.\n- Gain respect / human values ( tolerance – understanding)\n- Social cohesion / economic development.\n\nTopic Two:\nAfter watching a documentary on ancient Egyptian civilization, you were impressed by the role of the Nile River in the development of Ancient Egypt. Write an article of about 80 to 120 words for your school magazine to inform your schoolmates about the contribution of the Nile." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "Part Two : Written Expression\nThe following grid is used for scoring both topics." },
+            { "role": "RUBRIC", "type": "table", "text": "Criteria | relevance | Semantic coherence | Correct use of English | Excellence Vocabulary and creativity) | Final score\nL.PH | 1 | 1 | 2 | 1 | (5pts)" }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني - Babylon",
+      "nodes": [
+        {
+          "localId": "S2_PART1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "Part one: Reading",
+          "maxPoints": 15,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "Part one: Reading (15 points)" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A",
+          "parentLocalId": "S2_PART1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A/ Comprehension",
+          "maxPoints": 7,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "A/ Comprehension: (07 points)" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_CONTEXT",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "Read the text carefully to do the activities." },
+            { "role": "PROMPT", "type": "heading", "text": "Babylon" },
+            { "role": "PROMPT", "type": "paragraph", "text": "Babylon was the largest city in the vast Babylonian Empire. Founded more than 4,000 years ago as a small port on the Euphrates River, the city's ruins are located in present-day Iraq. Babylon became one of the most powerful cities of the ancient world under the rule of Hammurabi. Centuries later, a new line of kings established a Neo-Babylonian Empire that spanned from the Persian Gulf to the Mediterranean Sea." },
+            { "role": "PROMPT", "type": "paragraph", "text": "The capital city of Babylon is also famous for its impenetrable walls. Hammurabi first encircled the city with walls then Nebuchadnezzar II further fortified it with three rings of walls that were 40 feet tall. The Greek historian Herodotus wrote that the walls of Babylon were so thick that chariot races were held on top of them. The city inside the walls occupied an area of 200 square miles, roughly the size of Chicago." },
+            { "role": "PROMPT", "type": "paragraph", "text": "Today, the Iraqi government has attempted to reconstruct certain features of the ancient city. After the 2003 invasion of Iraq, United States forces built a military base on the ruins of Babylon. The UNESCO reported the base caused \"major damage\" to the archaeological site." },
+            { "role": "PROMPT", "type": "paragraph", "text": "Adapted from https://history.com/ancient-middle-east/babylon." }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q1",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "1. Choose the answer to complete each statement.\nA. Babylon was first established as..............\na – a city b – a harbour c – an empire\nB. The city of Babylon was.................for its strong walls.\na – well-known b – visited c – appreciated\nC. The Iraqi cultural heritage was..............after 2003.\na - developed b - ruined c - protected" },
+            { "role": "SOLUTION", "type": "paragraph", "text": "1. MCQ: A. b B. a C. b" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5x3 = 01.5 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q2",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "2. Identify the paragraph in which each of the following ideas is mentioned.\na- The site of Babylon was severely harmed.\nb- The establishment of the Babylonian Empire." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "2. Paragraph identification: a. §3 b. §1" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5x2 = 01 pt" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q3",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "3",
+          "maxPoints": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "3. Answer the following questions according to the text.\na- When was the city of Babylon built?\nb- How did Nebuchadnezzar manage to strengthen the protection of the city?\nc- Is the site of Babylon still intact? Justify from the text." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "3. Answering questions:\na. .... more than 4000 years ago.\nb. ...by fortifying the city with three rings of walls.\nc. No / No, it is not. The UNESCO reported the base caused \"major damage\" to the archaeological site / The Iraqi government has attempted to reconstruct certain features of the ancient city." },
+            { "role": "RUBRIC", "type": "paragraph", "text": "a. 0.5\nb. 01\nc. 01.5\nTotal: 03 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_A_Q4",
+          "parentLocalId": "S2_PART1_A",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "4",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "4. Find what or who the underlined words refer to in the text.\na – that (§1) ......... b- it (§2)........ c- them (§2)........" },
+            { "role": "SOLUTION", "type": "paragraph", "text": "4. Cohesive markers:\na. that (§1) Neo-Babylonian Empire.\nb. it (§2) the city.\nc. them (§2) the walls of Babylon/ the walls." },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.50x3 = 01.5 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B",
+          "parentLocalId": "S2_PART1",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B/ Text Exploration",
+          "maxPoints": 8,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "B/ Text Exploration (08 points)" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q1",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "1. Find in the text words or phrases that are closest in meaning to the following.\nreign (§1)= ....... approximately (§2)= ....... rebuild (§3)= ........" },
+            { "role": "SOLUTION", "type": "paragraph", "text": "1. Lexis:\nreign (§1) = rule approximately (§2) = roughly rebuild(§3)= reconstruct" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5x3 = 01.5 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q2",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "2. Complete the chart as shown in the example.\nExample: To acknowledge -> knowledge -> knowledgeable\nTo flourish -> .................... -> ....................\n.................... -> construction -> ....................\n.................... -> .................... -> powerful" },
+            { "role": "SOLUTION", "type": "paragraph", "text": "2. Morphology:\nVerb | Noun | Adjective\n// | Flourish / flourishment | Flourishing\nTo construct | // | Constructive / constructional / constructible / constructable\nTo empower / to power | Power / empowerment | //" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5x3 = 01.5 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q3",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "3. Ask questions which the underlined words answer.\na- The US forces built a military base on the ruins of Babylon.\nb- Hammurabi turned Babylon into a rich city." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "3. Grammar\na. Where did the US forces build a military base?\nb. Who turned Babylon into a rich city?" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "01.5x2 = 03 pts" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART1_B_Q4",
+          "parentLocalId": "S2_PART1_B",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "paragraph", "text": "4. Reorder the following sentences to get a coherent passage.\na- This heritage is so important in maintaining cultural diversity\nb- but it is also the living expressions inherited from our ancestors.\nc- that it is crucial to preserve it.\nd- Cultural heritage is not only limited to monuments and collections of objects," },
+            { "role": "SOLUTION", "type": "paragraph", "text": "4. Sentence reordering:\n1 -> d\n2 -> b\n3 -> a\n4 -> c" },
+            { "role": "RUBRIC", "type": "paragraph", "text": "0.5x4 = 02 pts (0.5 for topic sentence and 0.5 for each logical link)" }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_PART2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "Part Two: Written Expression",
+          "maxPoints": 5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            { "role": "PROMPT", "type": "heading", "text": "Part Two: Written Expression (05 points)" },
+            { "role": "PROMPT", "type": "paragraph", "text": "Choose ONE of the following topics\n\nTopic One:\nAlgeria has been the cradle of many ancient civilisations. All of them have left traces revealed mainly through archaeological sites. Unfortunately, these remains are daily exposed to natural and human aggressions. Write a newspaper article of about 80 to 120 words to urge the authorities to take action in order to protect this heritage.\nMake the best use of the following notes:\n- raise awareness.\n- importance of cultural heritage.\n- restore the sites.\n- strengthen control.\n\nTopic Two:\nMoney laundering seriously threatens the development of the country and its financial system. Write an article of about 80 to 120 words to your local newspaper to suggest measures to fight this unethical practice." },
+            { "role": "SOLUTION", "type": "paragraph", "text": "Part Two: Written Expression" },
+            { "role": "RUBRIC", "type": "table", "text": "Criteria | Relevance | Semantic Coherence | Correct use of English | Excellence (vocabulary and creativity) | Final score\n... | 1 | 1 | 2 | 1 | 05pts" }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "nativeRenderCandidates": [
+    {
+      "id": "S1_B_Q2_TABLE",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_PART1_B_Q2",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "sourceText": "Prefix | Root | Suffix\nuneducated | preference | displace",
+      "notes": "Representation of the prompt table"
+    },
+    {
+      "id": "S1_B_Q2_TABLE_CORR",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_PART1_B_Q2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "sourceText": "Prefix | Root | Suffix\nun | educat(e) | ed\n/ | prefer | ence\ndis | place | /",
+      "notes": "Representation of the solution table"
+    },
+    {
+      "id": "S2_B_Q2_TABLE",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_PART1_B_Q2",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "sourceText": "Example | Verb | Noun | Adjective\nTo acknowledge | knowledge | knowledgeable\nTo flourish | ......... | .........\n......... | construction | .........\n......... | ......... | powerful",
+      "notes": "Morphology table prompt"
+    },
+    {
+      "id": "S2_B_Q2_TABLE_CORR",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_PART1_B_Q2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "sourceText": "Verb | Noun | Adjective\n// | Flourish / flourishment | Flourishing\nTo construct | // | Constructive constructional constructible constructable\nTo empower / to power | Power / empowerment | //",
+      "notes": "Morphology table solution"
+    }
+  ],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered",
+      "notes": "Sujet 1 Reading Comprehension Context and Questions 1-4"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered",
+      "notes": "Sujet 1 Text Exploration and Written Expression"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered",
+      "notes": "Sujet 2 Reading Comprehension Context and Questions 1-4"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered",
+      "notes": "Sujet 2 Text Exploration and Written Expression"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered",
+      "notes": "Sujet 2 correction"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered",
+      "notes": "Sujet 1 correction"
+    }
+  ],
+  "uncertainties": [
+    "Sujet 2 B/ Q2 Barème text states '05.x3' in the correction, presumably a typo for '0.5x3' based on total point counts."
+  ]
+}

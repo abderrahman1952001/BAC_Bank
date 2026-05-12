@@ -1,0 +1,1810 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "بكالوريا 2015",
+    "year": 2015,
+    "streamCode": "رياضيات وتقني رياضي",
+    "subjectCode": "العلوم الفيزيائية",
+    "sessionType": "normal",
+    "durationMinutes": 270,
+    "totalPoints": 20.0,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_ex1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لدراسة حركية تطور التحول الكيميائي بين محلول ثيوكبريتات الصوديوم $(2Na^+_{(aq)} + S_2O_{3(aq)}^{2-})$ ومحلول حمض كلور الماء $(H_3O^+_{(aq)} + Cl^-_{(aq)})$. في اللحظة $t=0$ نمزج حجما $V_1=480mL$ من محلول ثيوكبريتات الصوديوم تركيزه $C_1=0,5mol/L$ مع حجم $V_2=20mL$ من محلول حمض كلور الماء تركيزه $C_2=5,0mol/L$. ننمذج التحول الحادث بالمعادلة الكيميائية التالية: $S_2O_{3(aq)}^{2-} + 2H_3O^+_{(aq)} = S_{(s)} + SO_{2(g)} + 3H_2O_{(l)}$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex1_q1",
+          "parentLocalId": "s1_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- أنشئ جدولا لتقدم التفاعل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- جدول تقدم التفاعل:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x3"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex1_q2",
+          "parentLocalId": "s1_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- حدّد المتفاعل المحد."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- تحديد المتفاعل المحد : $n_{01} - x_{max} = 0 \\Rightarrow x_{max} = n_{01} = C_1 V_1 = 0,5 \\times 0,480 = 0,24 mol$ و $n_{02} - 2x_{max} = 0 \\Rightarrow x_{max} = \\frac{n_{02}}{2} = \\frac{C_2 V_2}{2} = \\frac{5 \\times 0,02}{2} = 0,05 mol$ ومنه المتفاعل المحد هو $H_3O^+_{(aq)}$ و $x_{max} = 0,05 mol$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex1_q3",
+          "parentLocalId": "s1_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- إن متابعة التحول عن طريق قياس الناقلية النوعية للمزيج التفاعلي مكنت من رسم بيان الشكل (1) والممثل لتغيرات الناقلية النوعية بدلالة الزمن $\\sigma = f(t)$. - علّل دون حساب سبب تناقص الناقلية النوعية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- تتناقص الناقلية بسبب اختفاء شوارد: $S_2O_3^{2-}$ ، $H_3O^+$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": ["s1_ex1_fig1"]
+        },
+        {
+          "localId": "s1_ex1_q4",
+          "parentLocalId": "s1_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- تعطى الناقلية النوعية للمزيج التفاعلي عند لحظة $t$ بالعبارة: $\\sigma(t) = 20,6 - 170x$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex1_q4a",
+          "parentLocalId": "s1_ex1_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أ- عرّف السرعة الحجمية للتفاعل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- أ- تعريف السرعة الحجمية للتفاعل : هي مقدار تغير تقدم التفاعل بدلالة الزمن في وحدة الحجوم وتعطى بالعلاقة : $v_{vol} = \\frac{1}{V} \\times \\frac{dx}{dt}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex1_q4b",
+          "parentLocalId": "s1_ex1_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ب- بيّن أن السرعة الحجمية للتفاعل تكتب بالشكل: $v_{vol} = -\\frac{1}{170V} \\times \\frac{d\\sigma(t)}{dt}$ حيث $V$ حجم الوسط التفاعلي المعتبر ثابتا."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب- البرهان: $\\sigma(t) = 20,6 - 170x \\Rightarrow x = \\frac{20,6 - \\sigma(t)}{170} \\Rightarrow \\frac{dx}{dt} = -\\frac{1}{170} \\frac{d\\sigma(t)}{dt} \\Rightarrow v_{vol} = \\frac{1}{V} \\times (-\\frac{1}{170} \\frac{d\\sigma(t)}{dt}) = -\\frac{1}{170V} \\frac{d\\sigma(t)}{dt}$ أو من العبارة $\\sigma(t) = 20,6 - 170x$ نجد $\\frac{d\\sigma(t)}{dt} = -170 \\frac{dx}{dt}$ ومنه $v_{vol} = \\frac{1}{V} \\frac{dx}{dt} = -\\frac{1}{170V} \\frac{d\\sigma(t)}{dt}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex1_q4c",
+          "parentLocalId": "s1_ex1_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "جـ- احسب السرعة الحجمية للتفاعل عند اللحظة $t=0$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "جـ - قيمة السرعة الحجمية: $v_{vol} = -\\frac{1}{170 \\times 0,5 \\times 10^{-3}} \\times \\frac{0 - 5 \\times 4,12}{158,7 - 0} = 1,53 mol \\cdot m^{-3} \\cdot s^{-1} = 1,53 \\times 10^{-3} mol \\cdot L^{-1} \\cdot s^{-1}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex1_q4d",
+          "parentLocalId": "s1_ex1_q4",
+          "nodeType": "SUBQUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "د- عرّف زمن نصف التفاعل $t_{1/2}$ ثم حدد قيمته بيانيا."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "د- تعريف زمن نصف التفاعل: هو الزمن اللازم لبلوغ تقدم التفاعل نصف قيمته النهائية. قيمته: $\\sigma(t_{1/2}) = 20,6 - 170 \\times 0,025 = 16,35 (S/m)$ ومن البيان نجد: $t_{1/2} = 48,3 s$. ملاحظة: تقبل القيم القريبة من هذه القيمة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تمتص جميع النباتات الكربون $C$ الموجود في الجو $(^{14}C, ^{12}C)$ خلال عملية التنفس، حيث تبقى النسبة $\\frac{N(^{14}C)}{N(^{12}C)} = 1,2 \\times 10^{-12}$ في النباتات ثابتة خلال حياتها. عند موت النبات تتناقص هذه النسبة نتيجة تفكك الكربون $(^{14}C)$. تعطى: $t_{1/2}(^{14}C) = 5730 ans$ ، $M(^{14}C) = 14 g/mol$ ، $N_A = 6,02 \\times 10^{23} mol^{-1}$ ، $1 an = 31536 \\times 10^3 s$ ، $m(p) = 1,00728 u$ ، $m(n) = 1,00866 u$ ، $m(^{14}_6C) = 13,99995 u$ ، $1 u = 931,5 MeV/c^2$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex2_q1",
+          "parentLocalId": "s1_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- تتفكك نواة الكربون 14 مصدرة جسيمات $\\beta^-$ و نواة ابن $(^A_Z X)$. - اكتب معادلة تفكك نواة الكربون 14، وحدد النواة الابن من بين الأنوية التالية: $^{14}_5 B$ ، $^{14}_6 C$ ، $^{14}_9 F$ ، $^{14}_7 N$ ، $^{14}_8 O$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- معادلة التفكك: $^{14}_6 C \\rightarrow ^A_Z X + ^0_{-1} e$ حيث: $A = 14 - 0 = 14$ و $Z = 6 - (-1) = 7 \\Rightarrow ^{14}_7 N$. ومنه: $^{14}_6 C \\rightarrow ^{14}_7 N + ^0_{-1} e$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex2_q2",
+          "parentLocalId": "s1_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- احسب: أ- طاقة الربط $E_l$ لنواة الكربون 14. ب- طاقة الربط لكل نوية لنواة الكربون 14."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- أ- طاقة الربط: $E_l(^{14}_6C) = (6m_p + 8m_n - m(^{14}_6C)) \\cdot c^2 = (6 \\times 1,00728 + 8 \\times 1,00866 - 13,99995) \\times 931,5 = 105,268815 MeV$. ب- طاقة الربط لكل نوية لنواة الكربون 14: $\\frac{E_l(^{14}_6C)}{14} = \\frac{105,27}{14} = 7,52 MeV/nuc$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex2_q3",
+          "parentLocalId": "s1_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- لتحديد عمر قطعة خشب قديم، قيس النشاط الإشعاعي لعينة منها كتلتها $m=300mg$ عند لحظة $t$ فوجد $0,023$ تفككا في الثانية. أخذت عينة لها نفس الكتلة السابقة من شجرة حية فوجد أن كتلة الكربون 12 فيها هي $150mg$. أ- احسب عدد أنوية الكربون $^{12}C$ و استنتج عدد أنوية الكربون $^{14}C$ في العينة التي أخذت من الشجرة الحية. ب- احسب النشاط الإشعاعي الابتدائي $A_0$ ، ثم حدد عمر قطعة الخشب."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- أ- عدد أنوية الكربون 12 و الكربون 14. $N(^{12}C) = \\frac{0,15 \\times 6,02 \\times 10^{23}}{12} = 7,525 \\times 10^{21} noyaux$ . $N_0(^{14}C) = 7,525 \\times 10^{21} \\times 1,2 \\times 10^{-12} = 9,03 \\times 10^9 noyaux$. ب- النشاط الابتدائي $A_0$ : $A_0 = \\lambda N_0 = \\frac{\\ln(2) \\times N_0}{t_{1/2}} = \\frac{9,03 \\times 10^9 \\times \\ln 2}{5730 \\times 31536 \\times 10^3} = 0,0346 Bq$. عمر الخشبة: $t = \\frac{t_{1/2} \\times \\ln \\frac{A_0}{A(t)}}{\\ln 2} = \\frac{5730 \\times \\ln \\frac{0,0346}{0,023}}{\\ln 2} = 3375,76 ans$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25x2 ; 0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تترك كرية كتلتها $m$ تسقط في الهواء من ارتفاع $h$ عن سطح الأرض دون سرعة ابتدائية. تعطى: $g = 10 m/s^2$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex3_q1",
+          "parentLocalId": "s1_ex3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- نهمل دافعة أرخميدس ونعتبر شدة قوة مقاومة الهواء $f = k \\cdot v$. أ- مثّل القوى الخارجية المؤثرة على الكرية. ب- بتطبيق القانون الثاني لنيوتن في معلم $Oz$ موجه نحو الأسفل ومرتبط بمرجع سطحي أرضي نعتبره غاليليا، أوجد المعادلة التفاضلية لسرعة الكرية. جـ- استنتج عبارة السرعة الحدية $v_{lim}$ بدلالة: $v_{lim}$ ، $k$ ، $m$ ، $g$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- أ- تمثيل القوى الخارجية: ب- بتطبيق القانون الثاني لنيوتن: $\\sum \\vec{F}_{ext} = m\\vec{a} \\Rightarrow \\vec{P} + \\vec{f} = m\\vec{a}$ وبالإسقاط على $OZ$: $mg - Kv = ma = m \\frac{dv}{dt} \\Rightarrow \\frac{dv}{dt} + \\frac{k}{m} v = g$. جـ- عبارة السرعة الحدية $v_{lim}$: $\\frac{dv}{dt} = 0 \\Rightarrow \\frac{k}{m} v_{lim} = g \\Rightarrow v_{lim} = \\frac{mg}{k}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25x2 ; 0,25x2"
+            }
+          ],
+          "assetIds": ["s1_corr_ex3_forces"]
+        },
+        {
+          "localId": "s1_ex3_q2",
+          "parentLocalId": "s1_ex3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- إن دراسة تغيرات سرعة الكرية بدلالة الزمن مكنت من الحصول على بيان الشكل (2). أ- استنتج من البيان قيمة السرعة الحدية $v_{lim}$ . ب- حدّد وحدة الثابت $k$ باستعمال التحليل البعدي ، واحسب النسبة $\\frac{m}{k}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- أ- برسم المستقيم المقارب الأفقي للمنحنى نجد: $v_{lim} = 2,0 m/s$. ب- وحدة $k$: $k = \\frac{mg}{v_{lim}} \\Rightarrow [k] = \\frac{[M][g]}{[v_{lim}]} = \\frac{[M][L][T]^{-2}}{[L][T]^{-1}} = [M][T]^{-1}$ ومنه وحدة $k$ هي $Kg/s$. حساب قيمة $m/k$: من عبارة السرعة الحدية نجد $\\frac{m}{k} = \\frac{v_{lim}}{g} = \\frac{2}{10} = 0,2 s$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25x2 ; 0,25x2"
+            }
+          ],
+          "assetIds": ["s1_ex3_fig2"]
+        },
+        {
+          "localId": "s1_ex3_q3",
+          "parentLocalId": "s1_ex3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- كيف يتطور تسارع الكرية خلال الحركة ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- التسارع يتناقص بمرور الزمن خلال النظام الانتقالي وينعدم عند بلوغ النظام الدائم."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex3_q4",
+          "parentLocalId": "s1_ex3",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- مثّل كيفيا مخطط السرعة $v(t)$ لحركة السقوط الشاقولي لمركز عطالة الكرية في الفراغ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- منحنى السرعة للسقوط الشاقولي في الفراغ:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex4",
+          "nodeType": "EXERCISE",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بهدف معرفة ذاتية وشيعة $L$ ومقاومتها $r$ نحقق التركيب الموضح بالشكل ( 3 ) حيث $R = 15 \\Omega$ والمولد ثابت التوتر قوته المحركة الكهربائية $E$."
+            }
+          ],
+          "assetIds": ["s1_ex4_fig3"]
+        },
+        {
+          "localId": "s1_ex4_q1",
+          "parentLocalId": "s1_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1 - بتطبيق قانون جمع التوترات، بيّن أن المعادلة التفاضلية لشدة التيار تكتب بالشكل: $\\frac{di(t)}{dt} + \\alpha i(t) = \\beta$ ، حيث $\\alpha$ ، $\\beta$ ثابتان يطلب تحديد عبارتيهما مستعينا بالمقادير التالية: $E$ ، $r$ ، $R$ ، $L$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- إيجاد المعادلة التفاضلية: بتطبيق قانون جمع التوترات نجد: $u_R + u_b = E \\Rightarrow (R+r)i + L \\frac{di}{dt} = E \\Rightarrow \\frac{di}{dt} + \\frac{R+r}{L}i = \\frac{E}{L} \\cdots (1)$ وهي من الشكل: $\\frac{di}{dt} + \\alpha i = \\beta \\cdots (2)$ بالمطابقة نجد: $\\alpha = \\frac{R+r}{L}$ و $\\beta = \\frac{E}{L}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex4_q2",
+          "parentLocalId": "s1_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- تحقق أن العبارة: $i(t) = \\frac{\\beta}{\\alpha}(1 - e^{-\\alpha t})$ هي حلا للمعادلة التفاضلية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- التحقق من الحل: $i(t) = \\frac{\\beta}{\\alpha}(1 - e^{-\\alpha t}) \\Rightarrow \\frac{di}{dt} = \\beta e^{-\\alpha t}$ $\\beta e^{-\\alpha t} + \\alpha \\frac{\\beta}{\\alpha} - \\alpha \\frac{\\beta}{\\alpha} e^{-\\alpha t} = \\beta \\Rightarrow \\beta = \\beta$ ومنه العبارة السابقة حلا للمعادلة التفاضلية."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex4_q3",
+          "parentLocalId": "s1_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- بيّن أن عبارة التوتر بين طرفي الوشيعة تعطى بالعلاقة: $u_b(t) = \\frac{E}{R+r}(r + R e^{-\\frac{R+r}{L}t})$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- عبارة $u_b(t)$: $u_b(t) = L \\frac{di}{dt} + ri = L \\frac{E}{L} e^{-\\frac{R+r}{L}t} + r \\frac{E}{R+r} - r \\frac{E}{R+r} e^{-\\frac{R+r}{L}t} = E e^{-\\frac{R+r}{L}t}(1 - \\frac{r}{R+r}) + \\frac{rE}{R+r} = \\frac{R+r-r}{R+r} E e^{-\\frac{R+r}{L}t} + \\frac{rE}{R+r} = \\frac{E}{R+r}(r + R e^{-\\frac{R+r}{L}t})$ أو بالطريقة: $u_b(t) = E - u_R = E - R I (1 - e^{-\\frac{R+r}{L}t}) = (R+r)I - RI + RI e^{-\\frac{R+r}{L}t} = rI + RI e^{-\\frac{R+r}{L}t} = \\frac{E}{R+r}(r + R e^{-\\frac{R+r}{L}t})$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex4_q4",
+          "parentLocalId": "s1_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- باستعمال راسم اهتزازات ذي ذاكرة تحصلنا على بيان الشكل (4) الممثل لتغيرات التوتر بين طرفي الوشيعة بدلالة الزمن. أ- أعد رسم الدارة موضحا كيفية توصيل راسم الاهتزازات لمشاهدة بيان الشكل (4). ب- بالاعتماد على البيان استنتج: - القوة المحركة الكهربائية للمولد $E$. - مقاومة الوشيعة $r$. - ثابت الزمن $\\tau$ للدارة. - ذاتية الوشيعة $L$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- أ- الرسم: ب- من البيان نجد: - القوة المحركة الكهربائية للمولد: $E=6V$ - مقاومة الوشيعة: $u_b(\\infty) = \\frac{rE}{R+r} = 1,5V \\Rightarrow r = \\frac{1,5 \\times 15}{6 - 1,5} = 5 \\Omega$ - ثابت الزمن: $\\tau = 25ms$ - الذاتية: $L = \\tau(R+r) = 0,025 \\times 20 = 0,5H$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": ["s1_ex4_fig4", "s1_corr_ex4_circuit"]
+        },
+        {
+          "localId": "s1_ex4_q5",
+          "parentLocalId": "s1_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "5- أ- اكتب العبارة اللحظية للطاقة المخزنة في الوشيعة $E_{(L)}$. ب- أوجد قيمة هذه الطاقة في النظام الدائم."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "5- أ- عبارة الطاقة اللحظية: $E_{(L)} = \\frac{1}{2} L \\cdot i^2 = \\frac{1}{2} L (\\frac{E}{R+r})^2 (1 - e^{-\\frac{R+r}{L}t})^2$ تقبل الجواب $E_l = \\frac{1}{2} L i^2$. 6- قيمة الطاقة في النظام الدائم: $E_{(L)} = \\frac{1}{2} L \\cdot I_0^2 = \\frac{1}{2} L (\\frac{E}{R+r})^2 = \\frac{1}{2} \\times 0,5 (\\frac{6}{15+5})^2 = 2,25 \\times 10^{-2} J$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex5",
+          "nodeType": "EXERCISE",
+          "orderIndex": 5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "بمناسبة البطولة العالمية للتزلج على الجليد اختار المنظمون المسلك الموضح بالشكل (5) والمتكون من: $AB$ : مستوي مائل زاوية ميله $\\alpha = 30^\\circ$ وطوله $AB=50m$ . $BC$ : مستوي أفقي. $CO$ : هوة ارتفاعها $h$ عن سطح الأرض. نفرض أن كتلة المتزلج ولوازمه هي: $m=80kg$ ، $g=10m/s^2$ . ينطلق المتبارون فرادى من قمة المستوي المائل دون سرعة ابتدائية."
+            }
+          ],
+          "assetIds": ["s1_ex5_fig5", "s1_ex5_fig6"]
+        },
+        {
+          "localId": "s1_ex5_q1",
+          "parentLocalId": "s1_ex5",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- أ- بتطبيق مبدأ إنحفاظ الطاقة على الجملة (المتزلج) بين الموضعين $A$ و $B$ ، استنتج شدة قوة الاحتكاك $\\vec{f}$ التي نعتبرها ثابتة على طول المسار $ABC$ علما أنه يبلغ الموضع $B$ بالسرعة $V_B = 20m/s$. ب- بتطبيق القانون الثاني لنيوتن حدد طبيعة الحركة على المسار $AB$ واحسب تسارعها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- أ- نطبق م إ الطاقة على المتزلج بين A و B. $Epp_A + Ec_A - |W_{(AB)}(\\vec{f})| = Epp_B + Ec_B \\Rightarrow mg(h_A - h_B) - \\frac{1}{2} m v_B^2 = f \\times AB$ حيث: $h_A - h_B = AB \\times \\sin\\alpha$. ومنه: $f = \\frac{m(g \\times AB \\times \\sin\\alpha - 0,5 \\cdot v_B^2)}{AB} = \\frac{80(10 \\times 50 \\times 0,5 - 0,5 \\times 20^2)}{50} = 80N$. ب- تحديد طبيعة الحركة: بالإسقاط على $X'X$ $\\sum \\vec{F}_{ext} = m\\vec{a} \\Rightarrow \\vec{P} + \\vec{R} + \\vec{f} = m\\vec{a} \\Rightarrow mg \\sin\\alpha - f = ma \\Rightarrow a = g \\sin\\alpha - \\frac{f}{m} = C^{te}$ ومنه الحركة م م بانتظام معادلتها: $a = \\frac{v^2}{2x} = \\frac{400}{100} = 4m/s^2$ يمكن استعمال طرق أخرى."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex5_q2",
+          "parentLocalId": "s1_ex5",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- يغادر المتزلج المستوي الأفقي $BC$ عند الموضع $C$ في لحظة نعتبرها مبدأ الأزمنة ليسقط في الموضع $E$. نهمل مقاومة الهواء ودافعة أرخميدس. بتطبيق القانون الثاني لنيوتن على الجملة، جد المعادلتين الزمنيتين للحركة $x(t)$ و $y(t)$ في المعلم $(Ox, Oy)$ المرتبط بمرجع غاليلي، ثم استنتج معادلة المسار."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- معادلة المسار: بتطبيق القانون الثاني لنيوتن: $\\sum \\vec{F}_{ext} = \\vec{P} = m\\vec{a} \\Rightarrow \\vec{a} = \\vec{g}$. بالإسقاط على $xx'$ نجد: $a_x = 0 \\Rightarrow V_x = V_C \\Rightarrow x(t) = V_C \\cdot t$. بالإسقاط على $yy'$ نجد: $a_y = -g \\Rightarrow \\frac{dV_y}{dt} = -g \\Rightarrow V_y = -gt + c = -gt$ لأن $c=0 \\leftarrow t=0$. $y = -\\frac{1}{2} gt^2 + c'$ لأن $c'=h \\leftarrow t=0$. $y = -\\frac{1}{2} gt^2 + h$. $y = -\\frac{g}{2V_C^2} x^2 + h \\leftarrow t = \\frac{x}{V_C}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex5_q3",
+          "parentLocalId": "s1_ex5",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- بيان الشكل (6) يمثل تغيرات مربع سرعة المتزلج بدلالة مربع الزمن من لحظة مغادرة المستوي الأفقي حتى وصوله الموضع $E$. أ- اكتب عبارة السرعة $V$ بدلالة $V_x$ و $V_y$ ثم أوجد العلاقة النظرية بين $V^2$ و $t^2$. ب- استنتج بيانيا قيمة السرعة عند كل من الموضعين $C$ و $E$. جـ- احسب الارتفاع $h$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- أ- العبارة: $V^2 = V_x^2 + V_y^2 = V_C^2 + (-gt)^2$. العلاقة النظرية: $V^2 = g^2 t^2 + V_C^2$. ب- بيانيا: $V_C^2 = 100 m^2/s^2 \\Rightarrow V_C = 10 m/s$ و $V_E^2 = 225 m^2/s^2 \\Rightarrow V_E = 15 m/s$. جـ- الارتفاع $h$: بتطبيق م إ الطاقة بين $C$ و $E$ نجد: $h = \\frac{V_E^2 - V_C^2}{2 \\cdot g} = \\frac{225 - 100}{20} = 6,25m$. تقبل طريقة استعمال المعادلة الزمنية بعد حساب $t_E$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex_exp",
+          "nodeType": "EXERCISE",
+          "orderIndex": 6,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "التمرين التجريبي: (03,5 نقطة)\nتتعرض أغلب الأجهزة الكهرومنزلية مثل المسخن المائي وآلة تقطير القهوة إلى ترسبات كلسية يمكن إزالتها باستعمال منظفات (détartrants) تجارية، يفضل استعمال المنظفات التي تحتوي على حمض اللاكتيك $C_3H_6O_3$ نظرا لفعاليته وعدم تفاعله مع مكونات الأجهزة وتحلله بسهولة في الطبيعة، إضافة إلى كونه غير ملوث للبيئة. كُتب على لاصقة قارورة المنظف التجاري المعلومات التالية: - النسبة المئوية الكتلية لحمض اللاكتيك في المنظف $P = 45\\%$. - يستعمل المنظف التجاري المركز مع التسخين. - الكتلة المولية الجزيئية لحمض اللاكتيك $M(C_3H_6O_3) = 90 g/mol$. - الكتلة الحجمية للمنظف التجاري $\\rho = 1,13 kg/L$."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex_exp_q1",
+          "parentLocalId": "s1_ex_exp",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- نحضر حجما $V=500mL$ من محلول مائي لحمض اللاكتيك تركيزه $C = 1,0 \\times 10^{-1} mol/L$ ، أعطى قياس $pH$ هذا المحلول القيمة $pH = 2,4$ عند الدرجة $25^\\circ C$. أ- اكتب المعادلة الكيميائية المنمذجة لتفاعل حمض اللاكتيك مع الماء. ب- أنشئ جدولا لتقدم التفاعل. جـ- احسب تراكيز الأفراد الكيميائية المتواجدة في المحلول عند التوازن عدا الماء. د- احسب ثابت الحموضة $pKa$ للثنائية $(C_3H_6O_3 / C_3H_5O_3^-)$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- أ- معادلة التفاعل: $C_3H_6O_{3(aq)} + H_2O_{(l)} = C_3H_5O_{3(aq)}^- + H_3O^+_{(aq)}$. ب- جدول التقدم: [Table]. جـ- تراكيز الأفراد الكيميائية: $[H_3O^+]_{eq} = 10^{-2,4} = 3,98 \\times 10^{-3} mol/L$ ، $[C_3H_5O_3^-]_{eq} = [H_3O^+]_{eq} = \\frac{x_{eq}}{V} = 3,98 \\times 10^{-3} mol/L$ ، $[C_3H_6O_3]_{eq} = C - [H_3O^+]_{eq} = 0,1 - 3,98 \\times 10^{-3} = 9,6 \\times 10^{-2} mol/L$. د- ثابت الحموضة pka: $pka = pH - \\log \\frac{[C_3H_5O_3^-]_{eq}}{[C_3H_6O_3]_{eq}} = 2,4 - \\log 0,04145 = 3,78$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,50 ; 0,25x3 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_ex_exp_q2",
+          "parentLocalId": "s1_ex_exp",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- بهدف التحقق من النسبة المئوية الكتلية لحمض اللاكتيك في المنظف التجاري المركز، نمدده 100 مرة فنحصل على محلول $(S_a)$ لحمض اللاكتيك تركيزه المولي $C_a$. نعاير حجما $V_a = 10mL$ من المحلول $(S_a)$ بواسطة محلول مائي لهيدروكسيد الصوديوم $(Na^+_{(aq)} + HO^-_{(aq)})$ تركيزه $C_b = 2,0 \\times 10^{-2} mol/L$. نصل إلى نقطة التكافؤ عند إضافة الحجم $V_{bE} = 28,3mL$. أ- اكتب المعادلة الكيميائية المنمذجة لتفاعل المعايرة. ب- احسب قيمة $C_a$ ، واستنتج قيمة $C_0$ التركيز المولي للمنظف التجاري المركز. جـ- احسب النسبة المئوية الكتلية لحمض اللاكتيك في المنظف التجاري. ماذا تستنتج ؟ تعطى الكتلة الحجمية للماء $\\rho_0 = 1 kg/L$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- أ- معادلة المعايرة: $C_3H_6O_{3(aq)} + HO^-_{(aq)} = C_3H_5O_{3(aq)}^- + H_2O_{(l)}$. ب- التركيز $C_a$: عند التكافؤ: $C_a = \\frac{C_b \\cdot V_{bE}}{V_a} = \\frac{2 \\times 10^{-2} \\times 28,3}{10} = 0,0566 mol/L$ ومنه: $C_0 = 100 C_a = 5,66 mol/L$. جـ- النسبة المئوية: $p = \\frac{MC_0}{10d} = \\frac{MC_0}{10 \\times \\frac{\\rho}{\\rho'}} = \\frac{90 \\times 5,66}{10 \\times \\frac{1,13}{1}} = 45,08 \\simeq 45\\%$. أو حساب $p$ من العلاقة $p = \\frac{m'}{m} = \\frac{509,4}{1130} = 0,4508 \\simeq 45\\%$ وذلك بأخذ الحجم $1L$. نستنتج أن ما كتب على اللاصقة صحيح."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,50 ; 0,25x2 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_ex1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يُعتبر الطب أحد المجالات الرئيسية التي عرفت تطبيقات الأشعة النووية. حيث تستعمل بعض الأنوية المشعة لتشخيص الأمراض ومعالجتها. يستعمل الرينيوم $^{186}_{75}Re$ للتخفيف من ألام الروماتيزم عن طريق الحقن الموضعي بجرعات ذات حجم قدره $V_0 = 10 mL$."
+            }
+          ],
+          "assetIds": ["s2_ex1_fig1"]
+        },
+        {
+          "localId": "s2_ex1_q1",
+          "parentLocalId": "s2_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- ينتج عن تفكك نواة الرينيوم $^{186}_{75}Re$ نواة الأوسميوم $^{186}_{76}Os$ . أ- اكتب معادلة التحول النووي الحادث. ب- حدّد نمط التحول الحادث وعرّفه."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- أ- معادلة التفكك: $^{186}_{75}Re \\rightarrow ^{186}_{76}Os + ^A_Z X$ حيث: $A = 186 - 186 = 0$ ; $Z = 75 - 76 = -1$ ومنه $^A_Z X = ^0_{-1}e$ : $^{186}_{75}Re \\rightarrow ^{186}_{76}Os + ^0_{-1}e$. ب- نمط التحول: $\\beta^-$ . تعريف $\\beta^-$ : يحدث في الأنوية التي بها فائض في عدد النيترونات حيث يتحول نيترون إلى بروتون مع إصدار إلكترون وفق المعادلة: $^1_0n \\rightarrow ^1_1p + ^0_{-1}e$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q2",
+          "parentLocalId": "s2_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- البيان الموضح بالشكل (1) يمثل تغيرات النشاط الإشعاعي بدلالة الزمن $A = f(t)$ . أ- استنتج من البيان النشاط الإشعاعي الابتدائي $A_0$ . ب- عرّف زمن نصف العمر $t_{1/2}$ ، وحدد قيمته من البيان. جـ- احسب ثابت النشاط الإشعاعي $\\lambda$ للرينيوم $^{186}_{75}Re$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- أ- استنتاج قيمة $A_0$ : من البيان نجد: $A_0 = 4 \\times 10^9 Bq$. ب- تعريف $t_{1/2}$ : هو الزمن اللازم لتفكك نصف عدد أنويه العيّنة (أو تناقص نشاط العيّنة إلى النصف). بيانيا نجد: $t_{1/2} = 3,5 jours$ . جـ- قيمة $\\lambda$ : $\\lambda = \\frac{\\ln 2}{t_{1/2}} = \\frac{\\ln 2}{3,5} = 0,198 j^{-1} = 2,3 \\times 10^{-6} s^{-1}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q3",
+          "parentLocalId": "s2_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- باستعمال قانون تناقص النشاط الإشعاعي، احسب عدد أنوية الرينيوم $^{186}_{75}Re$ الموجودة في الجرعة عند اللحظة $t_1 = 10 jours$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- عدد أنوية $Re$ عند $t_1$ : $N(t_1) = \\frac{A_0 \\times e^{-\\lambda t_1}}{\\lambda} = \\frac{4 \\times 10^9 e^{-0,198 \\times 10}}{2,3 \\times 10^{-6}} = 2,4 \\times 10^{14} noyaux$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex1_q4",
+          "parentLocalId": "s2_ex1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- عند اللحظة $t_1$ نأخذ من الجرعة بواسطة حقنة حجما $V$ يحتوي على $1,2 \\times 10^{14}$ نواة من الرينيوم $^{186}_{75}Re$ ونحقن بها مريض في مفصل الركبة. أوجد الحجم $V$ المحقون."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- حساب $V$ : $2,4 \\times 10^{14} \\rightarrow 10mL$ و $1,2 \\times 10^{14} \\rightarrow V$ ومنه $V = \\frac{1,2 \\times 10^{14} \\times 10}{2,4 \\times 10^{14}} = 5,0 mL$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تُستعمل المكثفات في عدة تراكيب كهربائية ذات فائدة علمية في الحياة اليومية. بغرض حساب سعة مكثفة غير مشحونة مسبقا، نحقق التركيب الموضح بالشكل (2) حيث $R = 100 \\Omega$ والمولد ثابت التوتر قوته المحركة الكهربائية $E$ ."
+            }
+          ],
+          "assetIds": ["s2_ex2_fig2", "s2_ex2_fig3"]
+        },
+        {
+          "localId": "s2_ex2_q1",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- أعد رسم الدارة موضحا عليها التوترات بأسهم وجهة التيار الكهربائي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- رسم الدارة:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": ["s2_corr_ex2_circuit"]
+        },
+        {
+          "localId": "s2_ex2_q2",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- بتطبيق قانون جمع التوترات، جد المعادلة التفاضلية التي يحققها التوتر $u_c(t)$ بين طرفي المكثفة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- بتطبيق قانون جمع التوترات نجد: $u_R + u_c = E \\Rightarrow RC \\frac{du_c}{dt} + u_c = E$ ومنه: $\\frac{du_c}{dt} + \\frac{u_c}{RC} = \\frac{E}{RC}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_q3",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- بيّن أن العبارة $u_c(t) = A(1 - e^{-\\frac{t}{\\tau}})$ هي حلا للمعادلة التفاضلية، حيث $A$ و $\\tau$ ثابتان يطلب كتابة عبارتيهما."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- البرهان: $u_c(t) = A(1 - e^{-\\frac{t}{\\tau}}) \\Rightarrow \\frac{du_c}{dt} = \\frac{A}{\\tau} e^{-\\frac{t}{\\tau}}$. وبالتعويض في المعادلة التفاضلية: $A e^{-\\frac{t}{\\tau}} (\\frac{1}{\\tau} - \\frac{1}{RC}) + \\frac{A}{RC} - \\frac{E}{RC} = 0$. حيث: $(\\frac{1}{\\tau} - \\frac{1}{RC}) = 0 \\Rightarrow \\tau = RC$ ومع $A e^{-\\frac{t}{\\tau}} \\neq 0$ ومنه $\\frac{A}{RC} - \\frac{E}{RC} = 0 \\Rightarrow A = E$. ومنه $u_c(t) = E(1 - e^{-\\frac{t}{RC}})$ هي حل للمعادلة التفاضلية."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_q4",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- بيّن أن: $\\ln(E - u_c) = -\\frac{1}{\\tau}t + \\ln E$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- إثبات العلاقة: $u_c = E - E e^{-\\frac{t}{\\tau}} \\Rightarrow E - u_c = E e^{-\\frac{t}{\\tau}} \\Rightarrow \\ln(E - u_c) = -\\frac{t}{\\tau} + \\ln E$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_q5",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "5- بيان الشكل (3) يمثل تغيرات $\\ln(E - u_c)$ بدلالة الزمن، استنتج من البيان: أ- قيمة $E$ القوة المحركة الكهربائية للمولد. ب- قيمة ثابت الزمن $\\tau$ ، وقيمة سعة المكثفة $C$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "5- بيانيا: أ- قيمة $E$ : العبارة البيانية: $\\ln(E - u_c) = at + b$ حيث: $a = \\frac{0 - 1,5}{(1,5 - 0) \\times 10^{-3}} = -1000$ ; $b = 1,5$. $\\ln(E - u_c) = -1000t + 1,5$. وبالمطابقة نجد: $\\ln E = 1,5 \\Rightarrow E = 4,5 V$. ب- قيمة كل من $\\tau$ و $C$: $-\\frac{1}{\\tau} = -1000 \\Rightarrow \\tau = 0,001 s$ و $C = \\frac{\\tau}{R} = \\frac{0,001}{100} = 10,0 \\mu F$."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_q6",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "6- أ- اكتب العبارة اللحظية للطاقة المخزنة في المكثفة $E_c(t)$ . ب- نرمز بـ $E_c(\\tau)$ للطاقة المخزنة في المكثفة عند اللحظة $t=\\tau$ وبـ $E_c(\\infty)$ للطاقة العظمى. - احسب النسبة $\\frac{E_c(\\tau)}{E_c(\\infty)}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "6- أ- العبارة اللحظية للطاقة: $E_c(t) = \\frac{1}{2} C u_c^2 = \\frac{1}{2} C E^2 (1 - e^{-\\frac{t}{RC}})^2$. ب- حساب النسبة: $\\frac{E_c(\\tau)}{E_c(\\infty)} = \\frac{\\frac{1}{2} C E^2 (1 - e^{-1})^2}{\\frac{1}{2} C E^2} = (1 - e^{-1})^2 \\simeq 0,4$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex2_q7",
+          "parentLocalId": "s2_ex2",
+          "nodeType": "QUESTION",
+          "orderIndex": 7,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 7 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "7- كيف يتم ربط مكثفة سعتها $C'$ مع المكثفة السابقة لكي يأخذ ثابت الزمن القيمة: $\\tau' = \\frac{\\tau}{4}$ ؟ واحسب قيمة $C'$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "7- حساب قيمة $C'$ : $\\tau' = \\frac{\\tau}{4} \\Rightarrow \\frac{RC_{eq}}{RC} = \\frac{1}{4} \\Rightarrow C_{eq} = \\frac{C}{4}$. ومنه المكثفة تربط على التسلسل مع المكثفة السابقة. $\\frac{1}{C_{eq}} = \\frac{1}{C} + \\frac{1}{C'} \\Rightarrow \\frac{1}{C'} = \\frac{4}{C} - \\frac{1}{C} = \\frac{3}{C} \\Rightarrow C' = \\frac{C}{3} = \\frac{10}{3} = 3,33 \\mu F$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تُستعمل المنتوجات الصناعية الأزوتية في المجال الفلاحي لتوفرها على عنصر الأزوت الذي يعد من بين العناصر الضرورية لتخصيب التربة. يحتوي منتوج صناعي على نترات الأمونيوم $(NH_4NO_{3(s)})$ كثير الذوبان في الماء. تشير لاصقة كيس المنتوج الصناعي الأزوتي إلى النسبة المئوية الكتلية لعنصر الأزوت $(33\\%)$ . القياسات تمّت عند الدرجة $25^\\circ C$ . في اللحظة $t=0$ نمزج حجما $V_1 = 20 mL$ من محلول شوارد الأمونيوم $(NH^+_{4(aq)})$ تركيزه المولي $C_1 = 0,15 mol/L$ مع حجم $V_2 = 10 mL$ من محلول هيدروكسيد الصوديوم $(Na^+_{(aq)} + HO^-_{(aq)})$ تركيزه المولي $C_2 = 0,15 mol/L$ . قيس $pH$ المزيج التفاعلي فوجد $pH = 9,2$ . ننمذج التحول الحادث بالمعادلة الكيميائية التالية: $NH^+_{4(aq)} + HO^-_{(aq)} = NH_{3(aq)} + H_2O_{(l)}$"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_q1",
+          "parentLocalId": "s2_ex3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- أ- بيّن أن التفاعل السابق هو تفاعل حمض - أساس. ب- أنشئ جدولا لتقدم التفاعل. حدد المتفاعل المحد واستنتج قيمة التقدم الأعظمي $x_{max}$ . جـ- بيّن أنه عند التوازن: $x_{\\text{éq}} = 1,5 \\times 10^{-3} mol$ . د- احسب النسبة النهائية $\\tau_f$ لتقدم التفاعل. ماذا تستنتج ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- أ- $NH^+_{4(aq)} = NH_{3(aq)} + H^+_{(aq)}$ و $H^+_{(aq)} + HO^-_{(aq)} = H_2O_{(l)}$ ومنه التفاعل حمض-أساس. ب- جدول التقدم: [Table]. $x_{max} = C_1 V_1 = 0,15 \\times 20 \\times 10^{-3} = 3 \\times 10^{-3} mol$ و $x_{max} = C_2 V_2 = 0,15 \\times 10 \\times 10^{-3} = 1,5 \\times 10^{-3} mol$. ومنه المتفاعل المحد هو $HO^-$ وبالتالي: $x_{max} = 1,5 \\times 10^{-3} mol$. جـ- البرهان: $n_{eq(HO^-)} = n'_0 - x_{eq} \\Rightarrow x_{eq} = n'_0 - [HO^-_{(aq)}]_{eq} \\times V_T = n'_0 - 10^{-14+pH} \\times V_T$. $x_{eq} = 1,5 \\times 10^{-3} - 10^{-14+9,2} \\times 30 \\times 10^{-3} = 1,5 \\times 10^{-3} mol$. د- النسبة النهائية لتقدم التفاعل: $\\tau_f = \\frac{x_{eq}}{x_{max}} = 1 \\leftarrow$ التفاعل تام."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25x2 ; 0,25 ; 0,25x2 ; 0,25x2 ; 0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex3_q2",
+          "parentLocalId": "s2_ex3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 7 },
+            { "documentKind": "CORRECTION", "pageNumber": 8 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- بهدف التأكد من النسبة المئوية الكتلية لعنصر الأزوت في المنتوج الصناعي، نذيب عينة كتلتها $m = 6 g$ منه في حوجلة عيارية، فنحصل على محلول $(S_a)$ حجمه $250 mL$ . نأخذ حجما $V_a = 10 mL$ من المحلول $(S_a)$ ونعايره بواسطة محلول هيدروكسيد الصوديوم تركيزه المولي $C_b = 0,2 mol/L$ ، نصل إلى نقطة التكافؤ عند إضافة الحجم $V_{bE} = 14 mL$ . أ- احسب التركيز المولي $C_a$ للمحلول $(S_a)$ ، واستنتج كتلة الأزوت في العينة. ب- تعرّف النسبة المئوية الكتلية لعنصر الأزوت بأنها: النسبة بين كتلة الأزوت في العينة وكتلة العينة. - احسب النسبة المئوية الكتلية لعنصر الأزوت في العينة. ماذا تستنتج ؟ تعطى: $M(H) = 1 g/mol$ و $M(O) = 16 g/mol$ و $M(N) = 14 g/mol$ و $pKa(NH_4^+/NH_3) = 9,2$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- أ- التركيز $C_a$ : $C_a = \\frac{C_b \\cdot V_{bE}}{V_a} = \\frac{0,2 \\times 14}{10} = 0,28 mol/L$. حساب كتلة الأزوت في العينة: $1 mol \\rightarrow 28 g$ و $0,28 \\times 250 \\times 10^{-3} mol \\rightarrow m_N \\Rightarrow m_{(N)} = 1,96 g$. ب- حساب النسبة المئوية: $\\%N = \\frac{m_N}{m} = \\frac{1,96}{6} \\simeq 0,33 = 33\\%$. وهذا يطابق ما كتب على اللاصقة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex4",
+          "nodeType": "EXERCISE",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ملعب التنس عبارة عن مستطيل طوله $23,8 m$ وعرضه $8,23 m$ . وضعت في منتصفه شبكة ارتفاعها $0,92 m$ . عندما يرسل اللاعب الكرة يجب أن تسقط في منطقة محصورة بين الشبكة وخط يوجد على مسافة $6,4 m$ من الشبكة كما هو موضح بالشكل (4) . في دورة رولان قاروس الدولية يريد اللاعب ندال إسقاط الكرة في النقطة $B$ حيث $OB = L = 18,7 m$ . يرسل ندال الكرة نحو الأعلى ثم يضربها بمضربه من نقطة $D$ توجد على ارتفاع $h = 2,2 m$ من النقطة $O$ . تنطلق الكرة من النقطة $D$ بسرعة أفقية $v_0 = 126 km/h$ كما هو موضح بالشكل (5) . نهمل تأثير الهواء ونأخذ $g = 9,8 m/s^2$ . نعتبر أن الحركة تتم في معلم سطحي أرضي يعتبر غاليليا."
+            }
+          ],
+          "assetIds": ["s2_ex4_fig4", "s2_ex4_fig5"]
+        },
+        {
+          "localId": "s2_ex4_q1",
+          "parentLocalId": "s2_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- مثّل القوة المؤثرة على الكرة خلال حركتها بين $D$ و $B$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تمثيل القوة:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex4_q2",
+          "parentLocalId": "s2_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- بتطبيق القانون الثاني لنيوتن أوجد المعادلتين الزمنيتين $x(t)$ ، $y(t)$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- المعادلات الزمنية: بتطبيق القانون الثاني لنيوتن: $\\sum \\vec{F}_{ext} = \\vec{P} = m\\vec{a}$. - بالإسقاط على $(ox)$ : $a_x = 0 \\Rightarrow 0 = m a_x$ ومنه الحركة وفق $(ox)$ مستقيمة منتظمة معادلتها: $x(t) = v_0 t$. - بالإسقاط على $(oy)$ : $a_y = \\frac{dv_y}{dt} = -g \\Leftarrow -mg = ma_y \\Rightarrow v_y = -gt + c$. $v_{0y} = c = 0 \\leftarrow t=0$ و ومنه: $\\frac{dy}{dt} = -gt \\Rightarrow y = -\\frac{1}{2} gt^2 + c'$. $y = c' = h \\leftarrow t=0$ ومنه $y(t) = -\\frac{1}{2} gt^2 + h$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex4_q3",
+          "parentLocalId": "s2_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- استنتج معادلة مسار الحركة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- معادلة المسار: $y = -\\frac{g}{2 v_0^2} \\cdot x^2 + h = -4 \\cdot 10^{-3} \\cdot x^2 + 2,2 \\leftarrow t = \\frac{x}{v_0}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex4_q4",
+          "parentLocalId": "s2_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- هل تمر الكرة فوق الشبكة ؟ علما أن: $OF = 12,2 m$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- هل تمر الكرة فوق الشبكة: نعوض في معادلة المسار بـ: x=12,2m. $y_F = -4 \\cdot 10^{-3} \\times (12,2)^2 + 2,2 = 1,6 m > 0,92 m$ ومنه الكرة تمر فوق الشبكة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex4_q5",
+          "parentLocalId": "s2_ex4",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 9 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "5- هل نجح ندال في الإرسال ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "5- عند الموضع B فإن: $y_B = 0$ ومنه: $4 \\cdot 10^{-3} \\cdot x_B^2 + 2,2 = 0 \\Rightarrow x_B = \\sqrt{\\frac{2,2}{0,004}} = 23,45 m > 18,7 m$. ومنه الإرسال خاطئ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex5",
+          "nodeType": "EXERCISE",
+          "orderIndex": 5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 8 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تتكون الجملة الموضحة بالشكل (6) من: عربتين $(A)$ و $(B)$ نعتبرهما نقطيتين كتلتاهما $m_A = 300 g$ و $m_B = 150 g$ موصولتين بخيط مهمل الكتلة وعديم الامتطاط يمر على محز بكرة مهملة الكتلة، والاحتكاك مهمل على المستوي المائل. تحرر الجملة من السكون وتخضع العربة $(A)$ خلال حركتها لقوة احتكاك $\\vec{f}$ ثابتة. تعطى $g = 10 m/s^2$ ."
+            }
+          ],
+          "assetIds": ["s2_ex5_fig6", "s2_ex5_fig7"]
+        },
+        {
+          "localId": "s2_ex5_q1",
+          "parentLocalId": "s2_ex5",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 9 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- بتطبيق القانون الثاني لنيوتن على كل عربة أثبت أن المعادلة التفاضلية لحركة الجملة تعطى بالعلاقة: $\\frac{dv}{dt} + \\beta = 0$ حيث $\\beta$ ثابت يطلب كتابة عبارته بدلالة: $\\alpha$ ، $m_A$ ، $m_B$ ، $g$ ، $f$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- المعادلة التفاضلية: بتطبيق القانون الثاني لنيوتن: العربة (A) : $\\sum \\vec{F}_{ext} = \\vec{P}_A + \\vec{R}_A + \\vec{T}_A + \\vec{f} = m_A \\vec{a}$. بالإسقاط على $(X'X)$ : $T_A - f = m_A a \\cdots (1)$. العربة (B) : $\\sum \\vec{F}_{ext} = \\vec{P}_B + \\vec{R}_B + \\vec{T}_B = m_B \\vec{a}$. بالإسقاط على $(Y'Y)$ : $m_B g \\sin\\alpha - T_B = m_B a \\cdots (2)$. البكرة مهملة الكتلة: $T_A = T_B$ ومنه: $m_B g \\sin\\alpha - f = a(m_A + m_B)$. ومنه: $\\frac{dv}{dt} + \\frac{f - m_B g \\sin\\alpha}{m_A + m_B} = 0 \\cdots (I)$. فهي من الشكل: $\\frac{dv}{dt} + \\beta = 0$ حيث: $\\beta = \\frac{f - m_B g \\sin\\alpha}{m_A + m_B}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex5_q2",
+          "parentLocalId": "s2_ex5",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 9 },
+            { "documentKind": "CORRECTION", "pageNumber": 10 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- عند بلوغ العربة $(A)$ الموضع $D$ ينقطع الخيط فجأة، باستعمال تجهيز مناسب مكن من تسجيل سرعتي العربتين $(A)$ و $(B)$ ابتداءً من لحظة انقطاع الخيط. بياني الشكل (7) يمثلان تغيرات سرعتي العربتين بدلالة الزمن. أ- حدّد المنحنى الموافق لسرعة كل عربة مع التعليل. ب- اعتمادا على المنحنيين استنتج: - تسارع حركة كل عربة. - المسافة المقطوعة من طرف العربة $(A)$ خلال هذه المرحلة. جـ- استنتج شدة قوة الاحتكاك $\\vec{f}$ ، وقيمة الزاوية $\\alpha$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- أ- تحديد المنحنى الموافق لكل عربة: - البيان (1) يوافق العربة (B) لأنه بعد انقطاع الخيط تزداد سرعتها. - البيان (2) يوافق العربة (A) لأنه بعد انقطاع الخيط تتناقص سرعتها بسبب قوة الاحتكاك حتى تتوقف. ب- تسارع كل عربة بيانيا: $a'_A = \\frac{\\Delta v}{\\Delta t} = \\frac{0 - 2}{2 - 0} = -1,0 m/s^2$ و $a'_B = \\frac{\\Delta v}{\\Delta t} = \\frac{4,5 - 2}{0,5 - 0} = 5,0 m/s^2$. - المسافة المقطوعة من طرف العربة A: $d = \\frac{1}{2} \\times 2 \\times 2 = 2,0 m$. جـ- استنتاج شدة قوة الاحتكاك: العربة (A) : من المعادلة التفاضلية رقم (I) : $f = -m_A a'_A = -0,3 \\times (-1,0) = 0,3 N \\Leftarrow a'_A + \\frac{f}{m_A} = 0$. العربة (B) : $0 = a'_B - g \\sin\\alpha \\Rightarrow \\sin\\alpha = \\frac{a'_B}{g} = \\frac{5}{10} = 0,5 \\Rightarrow \\alpha = 30^\\circ$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25x2 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex_exp",
+          "nodeType": "EXERCISE",
+          "orderIndex": 6,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 9 },
+            { "documentKind": "CORRECTION", "pageNumber": 11 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "التمرين التجريبي: (03,5 نقطة)\nلمتابعة التطور الزمني للتحول الكيميائي الحادث بين محلول حمض كلور الماء $(H_3O^+_{(aq)} + Cl^-_{(aq)})$ ومعدن الزنك $Zn_{(s)}$ . نضيف عند اللحظة $t=0$ كتلة من الزنك $m(Zn) = 0,654 g$ إلى دورق به حجم $V=100 mL$ من محلول حمض كلور الماء تركيزه المولي $C = 1,0 \\times 10^{-2} mol/L$ ، نعتبر أن حجم الوسط التفاعلي ثابت خلال مدة التحول. نقيس حجم غاز ثنائي الهيدروجين المنطلق مع مرور الزمن في الشروط التجريبية التالية: درجة الحرارة $\\theta = 20^\\circ C$ والضغط $P = 1,013 \\times 10^5 Pa$ ."
+            }
+          ],
+          "assetIds": ["s2_ex_exp_fig8"]
+        },
+        {
+          "localId": "s2_ex_exp_q1",
+          "parentLocalId": "s2_ex_exp",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 9 },
+            { "documentKind": "CORRECTION", "pageNumber": 11 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1- اكتب معادلة التفاعل المنمذج للتحول الكيميائي الحادث، علما أن الثنائيتين المشاركتين في التفاعل هما: $H_3O^+_{(aq)} / H_{2(g)}$ ، $Zn^{2+}_{(aq)} / Zn_{(s)}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- معادلة التفاعل: $Zn = Zn^{2+} + 2é$ و $2H_3O^+ + 2é = H_2 + 2H_2O$. $Zn_{(s)} + 2H_3O^+_{(aq)} = H_{2(g)} + Zn^{2+}_{(aq)} + 2H_2O_{(l)}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex_exp_q2",
+          "parentLocalId": "s2_ex_exp",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 9 },
+            { "documentKind": "CORRECTION", "pageNumber": 11 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2- أنشئ جدولا لتقدم التفاعل، وحدد المتفاعل المحد."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- جدول التقدم: [Table]. تحديد المتفاعل المحد: $x_{max} = n_{01} = \\frac{m}{M} = \\frac{0,654}{65,4} = 10^{-2} mol$. $x_{max} = \\frac{n_{02}}{2} = \\frac{C \\cdot V}{2} = \\frac{10^{-2} \\times 0,1}{2} = 5 \\times 10^{-4} mol \\Leftarrow n_{02} - 2x_{max} = 0$. ومنه المتفاعل المحد هو $H_3O^+$ و: $x_{max} = 5 \\times 10^{-4} mol$."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25x2 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex_exp_q3",
+          "parentLocalId": "s2_ex_exp",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 9 },
+            { "documentKind": "CORRECTION", "pageNumber": 11 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3- الدراسة التجريبية لهذا التحول مكنت من الحصول على البيان الموضح بالشكل (8). أ- عرّف السرعة الحجمية للتفاعل. ب- بيّن أنه يمكن كتابة عبارة السرعة الحجمية للتفاعل بالشكل: $v_{vol} = \\frac{P}{VRT} \\times \\frac{dV_{H_2}}{dt}$ . حيث $V$ حجم المزيج التفاعلي. جـ- احسب قيمة السرعة الحجمية للتفاعل عند اللحظة $t=0$ . د- استنتج سرعة اختفاء شوارد $(H_3O^+_{(aq)})$ عند نفس اللحظة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- أ- تعريف السرعة الحجمية للتفاعل: هي مقدار تغير تقدم التفاعل بالنسبة للزمن في وحدة الحجوم، وتكتب بالعلاقة: $v_{vol} = \\frac{1}{V} \\times \\frac{dx}{dt}$. ب- إثبات أن: $v_{vol} = \\frac{P}{VRT} \\times \\frac{dV_{H_2}}{dt}$. من جدول التقدم لدينا: $n_{H_2} = x \\Rightarrow PV_{H_2} = xRT \\Rightarrow x = \\frac{P \\cdot V_{H_2}}{RT}$. $v_{vol} = \\frac{1}{V} \\times \\frac{dx}{dt} = \\frac{1}{V} \\times \\frac{d}{dt}(\\frac{P \\cdot V_{H_2}}{RT}) = \\frac{P}{VRT} \\times \\frac{dV_{H_2}}{dt}$. جـ- السرعة الحجمية للتفاعل عند $t=0$ : $v_{vol} = \\frac{1,013 \\times 10^5}{0,1 \\times 8,314 \\times 293} \\times \\frac{(12 - 0) \\times 10^{-6}}{(6 - 0)} = 8,32 \\times 10^{-4} mol \\times L^{-1} \\times min^{-1}$. د- حساب سرعة اختفاء شوارد $H_3O^+$ عند نفس اللحظة: لدينا: $v_{H_3O^+} = -\\frac{dn_{H_3O^+}}{dt} = -\\frac{d(n_{02} - 2x)}{dt} = 2 \\times \\frac{dx}{dt} = 2 \\times V \\times v_{vol}$. $v_{H_3O^+} = 2 \\times 0,1 \\times 8,32 \\times 10^{-4} = 16,64 \\times 10^{-5} mol / min$."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25x2 ; 0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_ex_exp_q4",
+          "parentLocalId": "s2_ex_exp",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 10 },
+            { "documentKind": "CORRECTION", "pageNumber": 11 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "4- عرّف زمن نصف التفاعل، وحدد قيمته بيانيا. تعطى عبارة قانون الغاز المثالي بالعلاقة: $PV = nRT$ حيث $(SI) R = 8,314$ ، $M(Zn) = 65,4 g/mol$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- تعريف زمن نصف التفاعل: هو الزمن اللازم لبلوغ تقدم التفاعل نصف قيمته النهائية. - قيمته بيانيا: $V_{H_2}(t_{1/2}) = \\frac{8,314 \\times 293 \\times 2,5 \\times 10^{-4}}{1,013 \\times 10^5} = 6 mL$ ومنه $t_{1/2} = 4,2 min$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0,25 ; 0,25 ; 0,25"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_ex1_fig1",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex1_q3",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 1
+    },
+    {
+      "id": "s1_ex3_fig2",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex3_q2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_corr_ex3_forces",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex3_q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 2
+    },
+    {
+      "id": "s1_ex4_fig3",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_ex4_fig4",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex4_q4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_corr_ex4_circuit",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex4_q4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_ex5_fig5",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 4
+    },
+    {
+      "id": "s1_ex5_fig6",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4
+    },
+    {
+      "id": "s2_ex1_fig1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 6
+    },
+    {
+      "id": "s2_ex2_fig2",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 7
+    },
+    {
+      "id": "s2_ex2_fig3",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 7
+    },
+    {
+      "id": "s2_corr_ex2_circuit",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex2_q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "image",
+      "pageNumber": 7
+    },
+    {
+      "id": "s2_ex4_fig4",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 8
+    },
+    {
+      "id": "s2_ex4_fig5",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 8
+    },
+    {
+      "id": "s2_ex5_fig6",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 8
+    },
+    {
+      "id": "s2_ex5_fig7",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex5",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 9
+    },
+    {
+      "id": "s2_ex_exp_fig8",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex_exp",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 10
+    }
+  ],
+  "nativeRenderCandidates": [
+    {
+      "id": "s1_ex1_table_corr",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex1_q1",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "sourceText": "جدول تقدم التفاعل"
+    },
+    {
+      "id": "s1_ex_exp_table_corr",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_ex_exp_q1",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "sourceText": "جدول تقدم التفاعل لحمض اللاكتيك"
+    },
+    {
+      "id": "s2_ex3_table_corr",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex3_q1",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 8,
+      "sourceText": "جدول تقدم التفاعل للأمونيوم"
+    },
+    {
+      "id": "s2_ex_exp_table_corr",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_ex_exp_q2",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 11,
+      "sourceText": "جدول تقدم التفاعل للزنك"
+    }
+  ],
+  "coverageLog": [
+    { "documentKind": "EXAM", "pageNumber": 1, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 2, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 3, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 4, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 5, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 6, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 7, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 8, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 9, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 10, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 1, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 2, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 3, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 4, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 5, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 6, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 7, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 8, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 9, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 10, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 11, "status": "covered" }
+  ],
+  "uncertainties": []
+}

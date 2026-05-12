@@ -9,7 +9,7 @@ describe('StudyWeakPointService', () => {
     studentCurriculumNodeRollup: {
       findMany: jest.Mock;
     };
-    studentSkillRollup: {
+    studentLearningTargetRollup: {
       findMany: jest.Mock;
     };
     studentReviewQueueItem: {
@@ -26,7 +26,7 @@ describe('StudyWeakPointService', () => {
       studentCurriculumNodeRollup: {
         findMany: jest.fn(),
       },
-      studentSkillRollup: {
+      studentLearningTargetRollup: {
         findMany: jest.fn(),
       },
       studentReviewQueueItem: {
@@ -48,7 +48,7 @@ describe('StudyWeakPointService', () => {
       data: [],
     });
     expect(prisma.studentCurriculumNodeRollup.findMany).not.toHaveBeenCalled();
-    expect(prisma.studentSkillRollup.findMany).not.toHaveBeenCalled();
+    expect(prisma.studentLearningTargetRollup.findMany).not.toHaveBeenCalled();
     expect(prisma.studentReviewQueueItem.findMany).not.toHaveBeenCalled();
   });
 
@@ -72,12 +72,12 @@ describe('StudyWeakPointService', () => {
             code: 'MATHEMATICS',
             name: 'الرياضيات',
           },
-          skillMappings: [
+          learningTargetMappings: [
             {
               weight: new Prisma.Decimal(1),
               isPrimary: true,
-              skill: {
-                id: 'skill-1',
+              learningTarget: {
+                id: 'learning-target-1',
                 code: 'FUNCTION_ANALYSIS',
                 name: 'تحليل الدوال',
                 subject: {
@@ -90,11 +90,11 @@ describe('StudyWeakPointService', () => {
         },
       },
     ]);
-    prisma.studentSkillRollup.findMany.mockResolvedValue([
+    prisma.studentLearningTargetRollup.findMany.mockResolvedValue([
       {
         weaknessScore: new Prisma.Decimal(7),
         lastSeenAt: new Date('2026-04-09T10:00:00.000Z'),
-        skill: {
+        learningTarget: {
           code: 'FUNCTION_ANALYSIS',
           name: 'تحليل الدوال',
           subject: {
@@ -127,7 +127,7 @@ describe('StudyWeakPointService', () => {
           weakSignalCount: 3,
           flaggedExerciseCount: 1,
           lastSeenAt: '2026-04-09T11:00:00.000Z',
-          topSkills: [
+          topLearningTargets: [
             {
               code: 'FUNCTION_ANALYSIS',
               name: 'تحليل الدوال',
@@ -148,7 +148,7 @@ describe('StudyWeakPointService', () => {
                 revealed: 1,
                 flagged: 1,
               },
-              topSkills: [
+              topLearningTargets: [
                 {
                   code: 'FUNCTION_ANALYSIS',
                   name: 'تحليل الدوال',
@@ -162,7 +162,7 @@ describe('StudyWeakPointService', () => {
     });
   });
 
-  it('prefers direct skill rollups over broader topic fallbacks when present', async () => {
+  it('prefers direct learning-target rollups over broader topic fallbacks when present', async () => {
     prisma.user.findUnique.mockResolvedValue({
       subscriptionStatus: SubscriptionStatus.ACTIVE,
     });
@@ -182,12 +182,12 @@ describe('StudyWeakPointService', () => {
             code: 'MATHEMATICS',
             name: 'الرياضيات',
           },
-          skillMappings: [
+          learningTargetMappings: [
             {
               weight: new Prisma.Decimal(1),
               isPrimary: true,
-              skill: {
-                id: 'skill-functions',
+              learningTarget: {
+                id: 'learning-target-functions',
                 code: 'FUNCTION_ANALYSIS',
                 name: 'تحليل الدوال',
                 subject: {
@@ -199,8 +199,8 @@ describe('StudyWeakPointService', () => {
             {
               weight: new Prisma.Decimal(1),
               isPrimary: false,
-              skill: {
-                id: 'skill-limits',
+              learningTarget: {
+                id: 'learning-target-limits',
                 code: 'LIMITS',
                 name: 'النهايات',
                 subject: {
@@ -213,11 +213,11 @@ describe('StudyWeakPointService', () => {
         },
       },
     ]);
-    prisma.studentSkillRollup.findMany.mockResolvedValue([
+    prisma.studentLearningTargetRollup.findMany.mockResolvedValue([
       {
         weaknessScore: new Prisma.Decimal(7.5),
         lastSeenAt: new Date('2026-04-09T12:00:00.000Z'),
-        skill: {
+        learningTarget: {
           code: 'LIMITS',
           name: 'النهايات',
           subject: {
@@ -232,12 +232,12 @@ describe('StudyWeakPointService', () => {
         reasonType: 'MISSED',
         lastPromotedAt: new Date('2026-04-09T12:00:00.000Z'),
         questionNode: {
-          skillMappings: [
+          learningTargetMappings: [
             {
               weight: new Prisma.Decimal(1.5),
               isPrimary: true,
-              skill: {
-                id: 'skill-limits',
+              learningTarget: {
+                id: 'learning-target-limits',
                 code: 'LIMITS',
                 name: 'النهايات',
                 subject: {
@@ -250,7 +250,7 @@ describe('StudyWeakPointService', () => {
           curriculumNodeMappings: [],
         },
         exerciseNode: {
-          skillMappings: [],
+          learningTargetMappings: [],
           curriculumNodeMappings: [
             {
               curriculumNode: {
@@ -262,12 +262,12 @@ describe('StudyWeakPointService', () => {
                   code: 'MATHEMATICS',
                   name: 'الرياضيات',
                 },
-                skillMappings: [
+                learningTargetMappings: [
                   {
                     weight: new Prisma.Decimal(1),
                     isPrimary: true,
-                    skill: {
-                      id: 'skill-functions',
+                    learningTarget: {
+                      id: 'learning-target-functions',
                       code: 'FUNCTION_ANALYSIS',
                       name: 'تحليل الدوال',
                       subject: {
@@ -279,8 +279,8 @@ describe('StudyWeakPointService', () => {
                   {
                     weight: new Prisma.Decimal(1),
                     isPrimary: false,
-                    skill: {
-                      id: 'skill-limits',
+                    learningTarget: {
+                      id: 'learning-target-limits',
                       code: 'LIMITS',
                       name: 'النهايات',
                       subject: {
@@ -314,7 +314,7 @@ describe('StudyWeakPointService', () => {
           weakSignalCount: 1,
           flaggedExerciseCount: 0,
           lastSeenAt: '2026-04-09T12:00:00.000Z',
-          topSkills: [
+          topLearningTargets: [
             {
               code: 'LIMITS',
               name: 'النهايات',
@@ -335,7 +335,7 @@ describe('StudyWeakPointService', () => {
                 revealed: 0,
                 flagged: 0,
               },
-              topSkills: [
+              topLearningTargets: [
                 {
                   code: 'LIMITS',
                   name: 'النهايات',
@@ -359,7 +359,7 @@ function makeReviewQueueItem(
     lastPromotedAt,
     questionNode: null,
     exerciseNode: {
-      skillMappings: [],
+      learningTargetMappings: [],
       curriculumNodeMappings: [
         {
           curriculumNode: {
@@ -371,12 +371,12 @@ function makeReviewQueueItem(
               code: 'MATHEMATICS',
               name: 'الرياضيات',
             },
-            skillMappings: [
+            learningTargetMappings: [
               {
                 weight: new Prisma.Decimal(1),
                 isPrimary: true,
-                skill: {
-                  id: 'skill-1',
+                learningTarget: {
+                  id: 'learning-target-1',
                   code: 'FUNCTION_ANALYSIS',
                   name: 'تحليل الدوال',
                   subject: {

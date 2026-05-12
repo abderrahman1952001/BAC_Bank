@@ -12,12 +12,12 @@ describe('study session weak-point helpers', () => {
           studentLabel: null,
           displayOrder: 1,
           parent: null,
-          skillMappings: [
+          learningTargetMappings: [
             {
               weight: 1,
               isPrimary: true,
-              skill: {
-                name: 'algebra-skill',
+              learningTarget: {
+                name: 'algebra-learning-target',
                 description: 'Use algebra carefully',
                 displayOrder: 2,
               },
@@ -35,11 +35,11 @@ describe('study session weak-point helpers', () => {
             name: 'Algebra',
             studentLabel: null,
           },
-          skillMappings: [
+          learningTargetMappings: [
             {
               weight: 3,
               isPrimary: true,
-              skill: {
+              learningTarget: {
                 name: 'identify-rule',
                 description: 'Identify the rule before solving',
                 displayOrder: 1,

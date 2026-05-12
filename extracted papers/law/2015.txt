@@ -1,0 +1,1086 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي",
+    "year": 2015,
+    "streamCode": "تسيير واقتصاد",
+    "subjectCode": "قانون",
+    "sessionType": "normal",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "v1_part1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 16,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الجزء الأول: (16 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q1",
+          "parentLocalId": "v1_part1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "السؤال الأول",
+          "maxPoints": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "السؤال الأول: (06 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q1_ctx",
+          "parentLocalId": "v1_p1_q1",
+          "nodeType": "CONTEXT",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يتطلب في الشخص طالب العمل توفر عدة شروط، كما يكتسب عدة حقوق."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q1_1",
+          "parentLocalId": "v1_p1_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. اذكر شروط التوظيف."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- شروط التوظيف : حددها قانون العمل كما يلي :\n- يجب أن لا يقل سن العامل عن 16 سنة\n- لا يجوز توظيف القاصر إلا بناء على رخصة من وليه الشرعي ولا يجوز استخدامه في أشغال خطيرة مضرة بصحته أو تمس بأخلاقه.\n- تمنع كل أشكال التمييز بين العمال على أساس السن أو الجنس.\n- يخضع العامل قبل التوظيف إلى فترة تربص لا تتجاوز 06 أشهر قبل تثبيته في منصبه، ويمكن ان ترتفع الى 12 شهرا في حالة مناصب العمل ذات التأهيل العالي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x4"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q1_2",
+          "parentLocalId": "v1_p1_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. اشرح الراحة القانونية والعطل والغيابات."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- الراحة القانونية والعطل والغيابات:\nأ- الراحة القانونية والعطل:\n- الراحة الأسبوعية: وهو يوم راحة كامل أسبوعيا وفقا للمادة 33 من قانون العمل.\n- الأعياد الرسمية : يستفيد العامل من راحة خلال الأعياد الدينية والوطنية والدولية. ( عيد الميلاد ، عيد العمال ،عيد الاستقلال، أول نوفمبر ، عيد الأضحى وعيد الفطر..)\n- العطلة السنوية : وهي عطلة مدفوعة الأجر ومدتها 30 يوما أو بمعدل يومين ونصف لكل شهر كامل من العمل الفعلي على أن لا تتجاوز 30 يوما.\n- عطلة بمناسبة حدث عائلي: مدتها 3 أيام وتخص الزواج، الوفاة، الولادة.\nب - الغيابات :\nحسب المادة 54 من قانون العمل : لا يجوز للعامل أن يتقاضى أجرا خلال الأيام التي لا يعمل فيها إلا في الحالات المنصوص عليها صراحة في قانون علاقات العمل، والحالات هي:\n- التمثيل النقابي\n- متابعة دورات التكوين المهني.\n- الحج"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الراحة الأسبوعية: 0.75\nالأعياد الرسمية: 0.75\nالعطلة السنوية: 0.75\nعطلة بمناسبة حدث عائلي: 0.75\nمقدمة الغيابات: 0.25\nحالات الغيابات: 0.25x3"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q2",
+          "parentLocalId": "v1_part1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 6,
+          "label": "السؤال الثاني",
+          "maxPoints": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "السؤال الثاني: (06 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q2_ctx",
+          "parentLocalId": "v1_p1_q2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نصت المادة 592 من القانون التجاري الجزائري على تعريف شركة المساهمة."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q2_1",
+          "parentLocalId": "v1_p1_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 8,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. عرّف شركة المساهمة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تعريف شركة المساهمة : تنص المادة 592 من القانون التجاري الجزائري على أن :\n\" شركة المساهمة هي الشركة التي ينقسم رأس مالها إلى أسهم، تتكون من شركاء لا يتحملون خسائر إلا بقدر حصتهم و لا يمكن أن يقل عدد الشركاء عن سبعة ..\""
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q2_2",
+          "parentLocalId": "v1_p1_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 9,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. اذكر خصائصها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- خصائص شركة المساهمة:\nأ- ينقسم رأس مالها إلى أسهم قابلة للتداول بالطرق التجارية.\nب- يطلق على شركة المساهمة \" تسمية الشركة \" و يجب أن يكون مسبوقا أو متبوعا بذكر شكل الشركة ومبلغ رأس مالها.\nج - تحدد مسؤولية الشريك بقدر ما يملكه من أسهم و لا يكتسب صفة التاجر.\nد- لا تتأثر شركة المساهمة بانسحاب الشريك أو إفلاسه أو وفاته."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x4"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q2_3",
+          "parentLocalId": "v1_p1_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 10,
+          "label": "3",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "3. اشرح إجراءات تأسيسها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- إجراءات تأسيس شركة المساهمة : يمكن تأسيس شركة المساهمة بطريقتين\nأ. التأسيس باللجوء العلني للادخار : حسب المادة 595 من القانون التجاري الجزائري يمر التأسيس هنا بمرحلتين هما:\nالمرحلة الأولى : تكون الشركة تحت التأسيس حيث يلتزم المؤسسون بالقيام بالإجراءات اللازمة للتأسيس بصفتهم مؤسسين لها وتكون هنا الشركة تتمتع بشخصية معنوية ناقصة .\nالمرحلة الثانية : يقوم المؤسسون بالتصريح بالاكتتاب وهو إعلان رغبة المكتتب بالانضمام للشركة بعدد معين من الأسهم ، ثم يتم استدعاء المكتتبين إلى الجمعية العامة التأسيسية التي تصادق على القانون الأساسي وتعين مجلس الإدارة ومندوب الحسابات وهنا تنشأ الشركة قانونا وتكتمل شخصيتها القانونية وتثبت بعقد رسمي.\nب. التأسيس دون اللجوء العلني للادخار:\nيقتصر الاكتتاب على المؤسسين للشركة دون اللجوء إلى الاكتتاب العام ويعين المؤسسون الأشخاص الذين سيتولون إدارة الشركة ومندوب الحسابات ويُثبتون ذلك في القانون الأساسي و لا تباشر الشركة أعمالها إلا بعد قيدها في السجل التجاري."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المرحلة الأولى: 0.75\nالمرحلة الثانية: 0.75\nالتأسيس دون اللجوء العلني للادخار: 01"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q3",
+          "parentLocalId": "v1_part1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 11,
+          "label": "السؤال الثالث",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "السؤال الثالث: (04 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q3_ctx",
+          "parentLocalId": "v1_p1_q3",
+          "nodeType": "CONTEXT",
+          "orderIndex": 12,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "النفقات العامة تغطي نشاطات الدولة في مختلف المجالات."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q3_1",
+          "parentLocalId": "v1_p1_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 13,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. عرّف النفقة العامة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1-تعريف النفقة العامة : هي مبلغ نقدي يخرج من الذمة المالية لشخص معنوي بقصد منفعة عامة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p1_q3_2",
+          "parentLocalId": "v1_p1_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 14,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. ما هي خصائص النفقة العامة؟ مع الشرح."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2-خصائص النفقة العامة:\nأ- النفقة العامة هي مبلغ نقدي تدفعه الدولة للحصول على المواد و السلع والخدمات من اجل مزاولة نشاطها.\nب- تصدر النفقة عن شخص معنوي ممثل في الدولة و الولاية والبلدية والهيئات العامة.\nج - تحقق النفقة العامة النفع العام أي إشباع الحاجات العامة.\nد - تتأثر النفقة العامة بالإمكانيات الإنتاجية والموارد حيث تقوم الدولة التي لها هذه الإمكانيات بزيادة الإنفاق.\nهـ - الاتجاه المستمر بالزيادة في النفقة العامة وذلك لأسباب اقتصادية واجتماعية وإدارية.\nو- النفقة العامة تؤثر على النشاط الاقتصادي: النفقة العامة تزيد من الإنتاج الوطني كما تؤثر على الاستهلاك الوطني بتدخل الدولة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 6"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_part2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 15,
+          "label": "الجزء الثاني",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الجزء الثاني: (04 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p2_ctx",
+          "parentLocalId": "v1_part2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 16,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تندرج الرسوم ضمن الإيرادات العامة للدولة."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p2_1",
+          "parentLocalId": "v1_part2",
+          "nodeType": "QUESTION",
+          "orderIndex": 17,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. عرّف الرسم."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تعريف الرسم :هو مقابل نقدي يدفعه الفرد مقابل خدمة تؤدّيها له هيئة عامة او نفع خاص يستفيد منه"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v1_p2_2",
+          "parentLocalId": "v1_part2",
+          "nodeType": "QUESTION",
+          "orderIndex": 18,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. ما هي خصائص الرسم؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- خصائص الرسم :\n- هو مبلغ يُحَدّد ويُفرض من جهة واحدة هي الدولة ويتم وضعه بواسطة القانون .\n- ارتباط الرسم بمقابل أو بخدمة خاصة تؤديها الدولة لدافع الرسم أو نفع خاص يستفيد منه، والخدمة هنا هي خدمة عامة ذات طابع إداري .\n- الرسم يتمتع بالطابع الإجباري لأنه صادر عن السلطة و يلزم بدفع الرسم حتى ولو امتنع عن استعمال الخدمة، أو لم يستفد من الخدمة التي دفع لها الرسم."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01x3"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "v2_part1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 16,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الجزء الأول: (16 نقطة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q1",
+          "parentLocalId": "v2_part1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "السؤال الأول",
+          "maxPoints": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "السؤال الأول: (06 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q1_ctx",
+          "parentLocalId": "v2_p1_q1",
+          "nodeType": "CONTEXT",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تنص المادة 416 من القانون المدني الجزائري على تعريف عقد الشركة."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q1_1",
+          "parentLocalId": "v2_p1_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. عرّف عقد الشركة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1-تعريف عقد الشركة : حسب المادة 416 من القانون المدني الجزائري فان :\n\" الشركة عقد بمقتضاه يلتزم شخصان طبيعيان أو اعتباريان أو أكثر على المساهمة في نشاط مشترك لتقديم حصة من عمل أو مال أو نقد بهدف اقتسام الربح أو تحقيق هدف اقتصادي أو منفعة مشتركة \""
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q1_2",
+          "parentLocalId": "v2_p1_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. اذكر الأسباب العامة والخاصة لانقضاء الشركة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2-الأسباب العامة والخاصة لانقضاء الشركة:\nأ- الأسباب العامة:\n- المدة : تتحدد مدة الشركة باتفاق الشركاء على بقائها لمدة معينة ،و هذا ما نصت عليه المادة 437 من القانون المدني بقولها : (تنتهي الشركة بانقضاء الميعاد الذي عين لها، أو بتحقيق الغاية التي أنشئت لأجلها) و نص المشرع الجزائري في القانون التجاري أن مدة الشركة لا يجب أن تتجاوز 99 سنة .\n- هلاك رأس المال : تنتهي الشركة بقوة القانون وفقا للمادة 438 من القانون المدني الجزائري التي نصت على:\" تنتهي الشركة بهلاك جميع مالها أو جزء كبير منه بحيث لا تبقى فائدة في استمرارها \".\n- اتفاق الشركاء على حل الشركة : قد يتفق الشركاء على حل الشركة قبل حلول أجلها ،وهذا الحل للشركة مقبول و قانوني إذا كانت هذه رغبة الشركاء بشرط أن يتم ذلك بإجماع الشركاء، و هذا ما نصت عليه المادة 440 من القانون المدني الجزائري.\n- اندماج الشركة.\n- حل الشركة بحكم قضائي.\n- إفلاس الشركة.\nب- الأسباب الخاصة\n- انسحاب أحد الشركاء : وقد نصت المادة 440 من القانون المدني الجزائري على ما يلي:\n\" تنتهي الشركة بانسحاب أحد الشركاء، إذا كانت مدتها غير معينة على شرط أن يعلن الشريك سلفا عن إرادته في الانسحاب قبل حصوله، إلى جميع الشركاء وأن لا يكون صادرا عن غش أو في وقت غير لائق\".\n- فقدان الأهلية : تنحل الشركة أيضا بالحجر على أحد الشركاء إذا فقد أهليته جرّاء الجنون أو العته أو السفه أو لسبب عقوبة جنائية.\n- إفلاس الشريك : تحل الشركة عند إعسار الشريك أو إفلاسه وفقا للمادة 439 من القانون المدني \" تنتهي الشركة بموت احد الشركاء أو الحجر عليه أو بإعساره أو بإفلاسه.....\""
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الأسباب العامة: 6x0.5\nالأسباب الخاصة: 3x0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q2",
+          "parentLocalId": "v2_part1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 6,
+          "label": "السؤال الثاني",
+          "maxPoints": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "السؤال الثاني: (06 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q2_ctx",
+          "parentLocalId": "v2_p1_q2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 7,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تضمّن قانون \" تسويات النزاعات الجماعية للعمل\" طرق تسويتها."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q2_1",
+          "parentLocalId": "v2_p1_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 8,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. عرّف النزاعات الجماعية للعمل."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تعريف النزاعات الجماعية للعمل حسب التشريع الجزائري.\nيعد نزاعا جماعيا للعمل كل خلاف يتعلق بالعلاقات الاجتماعية أو المهنية في علاقات العمل إذا لم توجد لها تسوية بالطرق المشروعة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q2_2",
+          "parentLocalId": "v2_p1_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 9,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. اشرح طرق تسويتها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2-طرق تسوية النزاعات الجماعية : أ - المصالحة : تتم المصالحة عن طريق\n-تبليغ مفتشية العمل المختصة إقليميا بالنزاع.\n-تستدعي المفتشية الطرفان في اجل أقصاه 04 أيام من الإخطار وذلك لمجلس مصالحة.\n-يحرر المفتش محضر مصالحة أو عدم مصالحة حسب الحالة في اجل أقصاه 08 أيام.\n-في حالة عدم المصالحة يلجا الطرفان إلى الوساطة أو التحكيم.\nب . الوساطة :\n- يقترح شخص ثالث يسمى الوسيط من اجل التسوية يشترك الطرفان في تعيينه..\n- يحرر الوسيط عرض في شكل توصيات ترسل نسخة منه إلى مفتش العمل ونسخة لكل طرف.\nج- التحكيم :\n- تلجا المؤسسة إلى التحكيم طبقا لقواعد الإجراءات المدنية نظرا لتمتعها بالاستقلالية.\n- يعرض النزاع على مُحَكَّمين يقوم الطرفان بتعيينهم بموجب محضر.\n- يصدر قرار التحكيم خلال 30 يوما الموالية لتاريخ تعيين المحكّمين.\n- يعتبر قرار التحكيم إلزامي على الطرفين وعليهم بالالتزام بمضمون قرار التحكيم."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المصالحة: 01.5\nالوساطة: 01.5\nالتحكيم: 01.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q3",
+          "parentLocalId": "v2_part1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 10,
+          "label": "السؤال الثالث",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "السؤال الثالث: (04 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q3_ctx",
+          "parentLocalId": "v2_p1_q3",
+          "nodeType": "CONTEXT",
+          "orderIndex": 11,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تعد شركة التضامن النموذج الأمثل لشركات الأشخاص، لتميزها بعدة خصائص."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q3_1",
+          "parentLocalId": "v2_p1_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 12,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. عرّف شركة التضامن."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تعريف شركة التضامن : هي شركة تتكون من شريكين أو أكثر يسأل فيها الشريك عن ديون الشركة مسؤولية شخصية تضامنية وتسمى الشركة بأسماء الشركاء و يكتسب الشريك صفة التاجر."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p1_q3_2",
+          "parentLocalId": "v2_p1_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 13,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. اشرح خصائصها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- خصائص شركة التضامن :\nأ- اكتساب الشريك صفة التاجر: بمجرد انضمام الشريك إلى شركة التضامن فإنه يكتسب صفة التاجر حتى وإن لم يكن قد احترف التجارة من قبل، لأن شركة التضامن شركة تجارية حسب الشكل.\nب- المسؤولية التضامنية المطلقة : نصت المادة 551 على أن \" لشركاء التضامن صفة التجار وهم مسؤولون من غير تحديد وبالتضامن عن ديون الشركة ..\"\nج- حصص الشريك غير قابلة للتداول أو التنازل : تنص المادة 560 من قانون التجاري الجزائري على أن \" لا يجوز أن تكون حصص الشركاء ممثلة في سندات قابلة للتداول و لا يمكن إحالتها إلا برضا جميع الشركاء.. \" فلا يجوز التصرف في حصص الشركاء بسبب الوفاة من قبل الورثة أو الشركاء"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01\n01\n01"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_part2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 14,
+          "label": "الجزء الثاني",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "الجزء الثاني: (04 نقاط)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p2_ctx",
+          "parentLocalId": "v2_part2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 15,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تتضمن الميزانية العامة للدولة النفقات العامة والإيرادات العامة."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p2_1",
+          "parentLocalId": "v2_part2",
+          "nodeType": "QUESTION",
+          "orderIndex": 16,
+          "label": "1",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "1. عرّف الميزانية العامة للدولة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تعريف الميزانية العامة :\nنصت المادة 6 من قانون المالية الجزائري لسنة 1984 :\n\" تتشكل الميزانية العامة للدولة من الإيرادات والنفقات النهائية للدولة المحددة سنويا بموجب قانون المالية والموزعة وفق الأحكام التشريعية والتنظيمية المعمول بها \"."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "v2_p2_2",
+          "parentLocalId": "v2_part2",
+          "nodeType": "QUESTION",
+          "orderIndex": 17,
+          "label": "2",
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "2. اذكر خصائصها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- خصائص الميزانية العامة :\n- الميزانية وثيقة تخضع لموافقة السلطة التشريعية.\n- تتضمن الميزانية بيانات مفصلة لما تريد الدولة إنفاقه والإيرادات اللازمة لتغطية هذا الإنفاق.\n- تعد الميزانية لفترة متصلة غالبا ما تكون السنة المقبلة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "3x01"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "nativeRenderCandidates": [],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": []
+}

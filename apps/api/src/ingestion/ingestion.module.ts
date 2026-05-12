@@ -3,6 +3,7 @@ import { AdminRoleGuard } from '../admin/admin.guard';
 import { CatalogModule } from '../catalog/catalog.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { IngestionController } from './ingestion.controller';
+import { IngestionCropReviewService } from './ingestion-crop-review.service';
 import { IngestionDraftIntakeService } from './ingestion-draft-intake.service';
 import { IngestionPublishedAssetsService } from './ingestion-published-assets.service';
 import { IngestionPaperSourceService } from './ingestion-paper-source.service';
@@ -25,6 +26,7 @@ import { IngestionWorkerService } from './ingestion-worker.service';
   controllers: [IngestionController],
   providers: [
     IngestionService,
+    IngestionCropReviewService,
     IngestionReadService,
     IngestionOpsService,
     IngestionDraftIntakeService,

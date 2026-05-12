@@ -27,13 +27,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const content = (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
-      {children}
-    </>
-  );
-
   return (
     <html
       lang="ar"
@@ -46,12 +39,13 @@ export default function RootLayout({
         className={`${cairo.variable} ${tajawal.variable}`}
         suppressHydrationWarning
       >
+        <script dangerouslySetInnerHTML={{ __html: getThemeInitScript() }} />
         <ClerkProvider
           afterSignOutUrl="/auth"
           signInUrl="/auth/sign-in"
           signUpUrl="/auth/sign-up"
         >
-          {content}
+          {children}
         </ClerkProvider>
       </body>
     </html>

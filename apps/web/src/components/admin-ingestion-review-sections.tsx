@@ -14,7 +14,10 @@ import type {
   AdminIngestionJobResponse,
   AdminIngestionValidationIssue,
 } from "@/lib/admin";
-import { formatIssueLocation } from "@/lib/admin-ingestion-review";
+import {
+  formatIssueLocation,
+  type FinalReviewChecklistItem,
+} from "@/lib/admin-ingestion-review";
 import {
   INGESTION_STREAM_OPTIONS,
   INGESTION_SUBJECT_OPTIONS,
@@ -77,6 +80,8 @@ export function AdminIngestionReviewOverviewSection({
   attachingCorrection,
   reviewNotes,
   notesReadOnly,
+  studentPreviewHref,
+  finalReviewChecklist,
   onIssueFocus,
   onReviewNotesChange,
   onCorrectionFileChange,
@@ -93,6 +98,8 @@ export function AdminIngestionReviewOverviewSection({
   attachingCorrection: boolean;
   reviewNotes: string;
   notesReadOnly: boolean;
+  studentPreviewHref: string;
+  finalReviewChecklist: FinalReviewChecklistItem[];
   onIssueFocus: (issue: AdminIngestionValidationIssue) => void;
   onReviewNotesChange: (value: string) => void;
   onCorrectionFileChange: (file: File | null) => void;
@@ -216,6 +223,50 @@ export function AdminIngestionReviewOverviewSection({
           )}
         </article>
       </div>
+
+      <section className="admin-context-card ingestion-final-preview-card">
+        <div className="admin-page-head ingestion-section-head">
+          <div className="admin-page-intro">
+            <h2>Final Student Preview</h2>
+            <p className="muted-text">
+              Use the student-side draft preview as the final human review
+              surface before approval. Published pages are only for smoke checks
+              and revision follow-up.
+            </p>
+          </div>
+          <Button asChild className="h-10 rounded-full px-5">
+            <Link href={studentPreviewHref} target="_blank" rel="noreferrer">
+              Open Final Preview
+            </Link>
+          </Button>
+        </div>
+
+        <ul className="ingestion-final-review-list">
+          {finalReviewChecklist.map((item) => (
+            <li key={item.id}>
+              <span
+                className={`status-chip ${
+                  item.state === "ready"
+                    ? "approved"
+                    : item.state === "needs-review"
+                      ? "failed"
+                      : "in_review"
+                }`}
+              >
+                {item.state === "ready"
+                  ? "Ready"
+                  : item.state === "needs-review"
+                    ? "Review"
+                    : "Manual"}
+              </span>
+              <div>
+                <strong>{item.label}</strong>
+                <p className="muted-text">{item.detail}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="admin-context-card">
         <div className="admin-page-head ingestion-section-head">

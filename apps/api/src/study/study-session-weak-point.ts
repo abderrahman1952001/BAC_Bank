@@ -20,10 +20,10 @@ export type WeakPointTopicRecord = {
     name: string;
     studentLabel: string | null;
   } | null;
-  skillMappings: Array<{
+  learningTargetMappings: Array<{
     weight: number | string | { toString(): string };
     isPrimary: boolean;
-    skill: {
+    learningTarget: {
       name: string;
       description: string | null;
       displayOrder: number;
@@ -179,7 +179,7 @@ function buildWeakPointKeyRules(
   const keyRules = Array.from(
     new Set(
       orderedTopics.flatMap((topic) =>
-        [...topic.skillMappings]
+        [...topic.learningTargetMappings]
           .sort((left, right) => {
             if (left.isPrimary !== right.isPrimary) {
               return left.isPrimary ? -1 : 1;
@@ -191,12 +191,12 @@ function buildWeakPointKeyRules(
               return weightDelta;
             }
 
-            return left.skill.displayOrder - right.skill.displayOrder;
+            return left.learningTarget.displayOrder - right.learningTarget.displayOrder;
           })
           .map((mapping) =>
             toPedagogyRule({
-              skillName: mapping.skill.name,
-              description: mapping.skill.description,
+              learningTargetName: mapping.learningTarget.name,
+              description: mapping.learningTarget.description,
             }),
           ),
       ),

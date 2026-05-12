@@ -36,6 +36,12 @@ export class IngestionController {
   }
 
   @UseGuards(AdminRoleGuard)
+  @Get('admin/ingestion/crops')
+  listCropQueue() {
+    return this.ingestionService.listCropQueue();
+  }
+
+  @UseGuards(AdminRoleGuard)
   @Get('admin/ingestion/jobs/:jobId')
   getJob(@Param('jobId', ParseUUIDPipe) jobId: string) {
     return this.ingestionService.getJob(jobId);
@@ -48,6 +54,16 @@ export class IngestionController {
     @Body() payload: UpdateIngestionJobDto,
   ) {
     return this.ingestionService.updateJob(jobId, payload);
+  }
+
+  @UseGuards(AdminRoleGuard)
+  @Patch('admin/ingestion/jobs/:jobId/assets/:assetId/crop')
+  updateAssetCrop(
+    @Param('jobId', ParseUUIDPipe) jobId: string,
+    @Param('assetId') assetId: string,
+    @Body() payload: unknown,
+  ) {
+    return this.ingestionService.updateAssetCrop(jobId, assetId, payload);
   }
 
   @UseGuards(AdminRoleGuard)

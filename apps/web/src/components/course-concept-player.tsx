@@ -1,13 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, RotateCcw, Sparkles } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
+  Sparkles,
+} from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { SaveFlashcardButton } from "@/components/save-flashcard-button";
 import { StudyBadge } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
 import { SelectionCard } from "@/components/ui/selection-card";
+import { buildCourseStepFlashcardDraft } from "@/lib/flashcards-surface";
 import type { CourseConceptPageModel } from "@/lib/courses-surface";
 import type { LabTool } from "@/lib/lab-surface";
 import { cn } from "@/lib/utils";
@@ -50,6 +58,13 @@ type CourseConceptVisualAssetView = {
 type CourseConceptStepView = CourseConceptPageModel["concept"]["steps"][number];
 
 type StepDirection = "next" | "previous";
+type SupportPanelId =
+  | "exam-lens"
+  | "visual"
+  | "interaction"
+  | "lab"
+  | "depth"
+  | "focus";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -239,6 +254,72 @@ function CourseRoadblockBack({
   );
 }
 
+function getSupportPanelForStep(
+  step: CourseConceptStepView,
+  relatedLabTools: Pick<
+    LabTool,
+    "id" | "title" | "shortTitle" | "href" | "bacUseCase"
+  >[],
+  depthPortals: CourseConceptPageModel["concept"]["depthPortals"],
+): SupportPanelId {
+  if (step.examLens) {
+    return "exam-lens";
+  }
+
+  if (step.visual) {
+    return "visual";
+  }
+
+  if (step.interaction) {
+    return "interaction";
+  }
+
+  if (relatedLabTools.length) {
+    return "lab";
+  }
+
+  if (depthPortals.length) {
+    return "depth";
+  }
+
+  return "focus";
+}
+
+function CourseSupportPanel({
+  id,
+  label,
+  title,
+  children,
+  expanded,
+  onToggle,
+}: {
+  id: SupportPanelId;
+  label: string;
+  title: string;
+  children: ReactNode;
+  expanded: boolean;
+  onToggle: (id: SupportPanelId) => void;
+}) {
+  return (
+    <section
+      className={`course-support-panel ${expanded ? "is-expanded" : ""}`}
+    >
+      <Button
+        type="button"
+        variant="ghost"
+        className="course-support-trigger"
+        onClick={() => onToggle(id)}
+        aria-expanded={expanded}
+      >
+        <span>{label}</span>
+        <strong>{title}</strong>
+        <ChevronDown data-icon />
+      </Button>
+      {expanded ? <div className="course-support-body">{children}</div> : null}
+    </section>
+  );
+}
+
 export function CourseConceptPlayer({
   concept,
   topicTitle,
@@ -264,6 +345,9 @@ export function CourseConceptPlayer({
   );
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [expandedPanel, setExpandedPanel] =
+    useState<SupportPanelId>("exam-lens");
+  const [quizOpen, setQuizOpen] = useState(false);
   const reduceMotion = useReducedMotion();
 
   const currentStep = concept.steps[stepIndex];
@@ -296,7 +380,10 @@ export function CourseConceptPlayer({
       };
 
   function goToStep(nextIndex: number, direction?: StepDirection) {
-    const clampedIndex = Math.max(0, Math.min(concept.steps.length - 1, nextIndex));
+    const clampedIndex = Math.max(
+      0,
+      Math.min(concept.steps.length - 1, nextIndex),
+    );
 
     if (clampedIndex === stepIndex) {
       return;
@@ -306,8 +393,17 @@ export function CourseConceptPlayer({
       return;
     }
 
-    setStepDirection(direction ?? (clampedIndex > stepIndex ? "next" : "previous"));
+    setStepDirection(
+      direction ?? (clampedIndex > stepIndex ? "next" : "previous"),
+    );
     setStepIndex(clampedIndex);
+    setExpandedPanel(
+      getSupportPanelForStep(
+        concept.steps[clampedIndex],
+        relatedLabTools,
+        concept.depthPortals,
+      ),
+    );
   }
 
   function revealCurrentStep() {
@@ -342,6 +438,11 @@ export function CourseConceptPlayer({
       return;
     }
 
+    if (isLastStep) {
+      setQuizOpen(true);
+      return;
+    }
+
     goToStep(stepIndex + 1, "next");
   }
 
@@ -349,10 +450,19 @@ export function CourseConceptPlayer({
     goToStep(stepIndex - 1, "previous");
   }
 
+  function toggleSupportPanel(panelId: SupportPanelId) {
+    setExpandedPanel((currentPanel) =>
+      currentPanel === panelId ? "focus" : panelId,
+    );
+  }
+
   return (
     <div className="course-concept-player course-player-premium">
       <section className="course-concept-stage course-player-theater">
-        <div className="course-player-storybar" aria-label="تقدم بطاقات المفهوم">
+        <div
+          className="course-player-storybar"
+          aria-label="تقدم بطاقات المفهوم"
+        >
           {concept.steps.map((step, index) => (
             <button
               key={`${step.type}:${step.title}`}
@@ -372,11 +482,10 @@ export function CourseConceptPlayer({
 
         <div className="course-concept-stage-head course-player-head">
           <div>
-            <p className="page-kicker">{subjectName}</p>
-            <h1>{concept.title}</h1>
-            <p>
-              {topicTitle} · {concept.summary}
+            <p className="page-kicker">
+              {subjectName} · {topicTitle}
             </p>
+            <h1>{concept.title}</h1>
           </div>
           <div className="course-concept-stage-meta">
             <StudyBadge tone="brand">
@@ -423,7 +532,10 @@ export function CourseConceptPlayer({
                   transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
                 >
                   <div className="course-card-face course-card-front">
-                    <CourseStepVisual step={currentStep} asset={currentVisualAsset} />
+                    <CourseStepVisual
+                      step={currentStep}
+                      asset={currentVisualAsset}
+                    />
                     <CourseStepCopy
                       step={currentStep}
                       requiresReveal={requiresReveal}
@@ -450,41 +562,55 @@ export function CourseConceptPlayer({
             className="course-concept-inspector course-player-inspector"
             aria-label="تفاصيل المفهوم"
           >
-            <section className="course-inspector-priority">
-              <span>Card</span>
-              <h3>
-                {requiresReveal
-                  ? revealed
-                    ? "تم كشف التفسير"
-                    : "بطاقة تحتاج تثبيت"
-                  : "مسار سريع"}
-              </h3>
+            <CourseSupportPanel
+              id="focus"
+              label="Card"
+              title={
+                requiresReveal ? (revealed ? "التفسير" : "تثبيت") : "المسار"
+              }
+              expanded={expandedPanel === "focus"}
+              onToggle={toggleSupportPanel}
+            >
               <p>
                 {requiresReveal
-                  ? "اقلب البطاقة أولاً حتى يظهر التفسير وتفتح المتابعة."
-                  : "اسحب يميناً للبطاقة التالية أو يساراً للرجوع."}
+                  ? revealed
+                    ? (currentStep.examLens?.prompt ?? currentStep.body)
+                    : (currentStep.interaction?.prompt ?? currentStep.title)
+                  : currentStep.eyebrow}
               </p>
-            </section>
+            </CourseSupportPanel>
 
             {relatedLabTools.length ? (
-              <section className="course-lab-links">
-                <span>المختبر</span>
-                <h3>جرّب هذا المفهوم</h3>
+              <CourseSupportPanel
+                id="lab"
+                label="Lab"
+                title="أداة المختبر"
+                expanded={expandedPanel === "lab"}
+                onToggle={toggleSupportPanel}
+              >
                 <div className="course-lab-link-list">
                   {relatedLabTools.map((tool) => (
-                    <Link key={tool.id} href={tool.href} className="course-lab-link">
+                    <Link
+                      key={tool.id}
+                      href={tool.href}
+                      className="course-lab-link"
+                    >
                       <strong>{tool.title}</strong>
                       <small>{tool.bacUseCase}</small>
                     </Link>
                   ))}
                 </div>
-              </section>
+              </CourseSupportPanel>
             ) : null}
 
             {currentStep.visual ? (
-              <section>
-                <span>Evidence</span>
-                <h3>ما الذي يجب أن تراه؟</h3>
+              <CourseSupportPanel
+                id="visual"
+                label="Visual"
+                title={currentStep.visual.title}
+                expanded={expandedPanel === "visual"}
+                onToggle={toggleSupportPanel}
+              >
                 <p>{currentStep.visual.altText}</p>
                 {currentVisualAsset ? (
                   <div className="course-visual-asset-meta">
@@ -495,13 +621,17 @@ export function CourseConceptPlayer({
                     <small>{currentVisualAsset.model}</small>
                   </div>
                 ) : null}
-              </section>
+              </CourseSupportPanel>
             ) : null}
 
             {currentStep.interaction ? (
-              <section>
-                <span>Interaction</span>
-                <h3>{currentStep.interaction.prompt}</h3>
+              <CourseSupportPanel
+                id="interaction"
+                label="Check"
+                title={currentStep.interaction.prompt}
+                expanded={expandedPanel === "interaction"}
+                onToggle={toggleSupportPanel}
+              >
                 {currentStep.interaction.items.length ? (
                   <div className="course-interaction-chips">
                     {currentStep.interaction.items.map((item) => (
@@ -509,27 +639,69 @@ export function CourseConceptPlayer({
                     ))}
                   </div>
                 ) : null}
-              </section>
+              </CourseSupportPanel>
             ) : null}
 
             {currentStep.examLens ? (
-              <section>
-                <span>BAC Lens</span>
-                <h3>{currentStep.examLens.bacSkill}</h3>
+              <CourseSupportPanel
+                id="exam-lens"
+                label="BAC Lens"
+                title={currentStep.examLens.bacSkill}
+                expanded={expandedPanel === "exam-lens"}
+                onToggle={toggleSupportPanel}
+              >
                 <p>{currentStep.examLens.prompt}</p>
                 <small>{currentStep.examLens.trap}</small>
-              </section>
+              </CourseSupportPanel>
             ) : null}
 
-            {!currentStep.visual &&
-            !currentStep.interaction &&
-            !currentStep.examLens ? (
-              <section>
-                <span>Focus</span>
-                <h3>ثبت الفكرة الأساسية</h3>
-                <p>اقرأ الخطوة، ثم انتقل مباشرة إلى التحقق السريع.</p>
-              </section>
+            {concept.depthPortals.length ? (
+              <CourseSupportPanel
+                id="depth"
+                label="Dive"
+                title="تعمق أكثر"
+                expanded={expandedPanel === "depth"}
+                onToggle={toggleSupportPanel}
+              >
+                <div className="course-depth-list">
+                  {concept.depthPortals.map((portal) => (
+                    <article key={portal.slug}>
+                      <div>
+                        <StudyBadge tone="accent">
+                          {portalKindLabels[portal.kind] ?? portal.kind}
+                        </StudyBadge>
+                        <StudyBadge tone="brand">
+                          {portal.estimatedMinutes} دقائق
+                        </StudyBadge>
+                      </div>
+                      <h3>{portal.title}</h3>
+                      <p>{portal.summary}</p>
+                    </article>
+                  ))}
+                </div>
+              </CourseSupportPanel>
             ) : null}
+
+            <Button
+              type="button"
+              variant="outline"
+              className="course-quiz-toggle h-11 rounded-full px-5"
+              onClick={() => setQuizOpen((isOpen) => !isOpen)}
+            >
+              {quizOpen ? "أخف الاختبار" : "اختبار قصير"}
+              <Sparkles data-icon />
+            </Button>
+
+            <SaveFlashcardButton
+              draft={buildCourseStepFlashcardDraft(currentStep, {
+                conceptTitle: concept.title,
+                topicTitle,
+                subjectName,
+              })}
+              label="احفظ هذه البطاقة"
+              successLabel="حُفظت للمراجعة"
+              className="course-save-flashcard h-11 px-5"
+            />
           </aside>
         </div>
 
@@ -548,106 +720,81 @@ export function CourseConceptPlayer({
             type="button"
             className="h-11 rounded-full px-5"
             onClick={goNext}
-            disabled={isLastStep}
           >
-            {canAdvance ? "التالي" : "اقلب أولاً"}
+            {isLastStep ? "الاختبار" : canAdvance ? "التالي" : "اقلب أولاً"}
             {canAdvance ? <ChevronLeft data-icon /> : <Sparkles data-icon />}
           </Button>
         </div>
-      </section>
 
-      <section className="roadmap-map-shell course-quiz-shell">
-        <div className="roadmap-map-head">
-          <div>
-            <p className="page-kicker">Micro Quiz</p>
-            <h2>{concept.quiz.question}</h2>
-            <p>اختبر الفكرة الأساسية قبل مغادرة هذا المفهوم.</p>
-          </div>
-        </div>
+        {quizOpen ? (
+          <div className="course-quiz-dock">
+            <div className="course-quiz-dock-head">
+              <div>
+                <p className="page-kicker">Micro Quiz</p>
+                <h2>{concept.quiz.question}</h2>
+              </div>
+            </div>
 
-        <div className="course-quiz-options">
-          {concept.quiz.options.map((option, index) => (
-            <SelectionCard
-              key={option}
-              type="button"
-              active={selectedAnswer === index}
-              className="min-h-16 grid-cols-[auto_1fr] items-center rounded-[1.75rem]"
-              onClick={() => {
-                setSelectedAnswer(index);
-                setSubmitted(false);
-              }}
-            >
-              <span className="inline-flex size-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                {index + 1}
-              </span>
-              <strong>{option}</strong>
-            </SelectionCard>
-          ))}
-        </div>
+            <div className="course-quiz-options">
+              {concept.quiz.options.map((option, index) => (
+                <SelectionCard
+                  key={`${option}:${index}`}
+                  type="button"
+                  active={selectedAnswer === index}
+                  className="min-h-14 grid-cols-[auto_1fr] items-center rounded-[1.35rem]"
+                  onClick={() => {
+                    setSelectedAnswer(index);
+                    setSubmitted(false);
+                  }}
+                >
+                  <span className="inline-flex size-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                    {index + 1}
+                  </span>
+                  <strong>{option}</strong>
+                </SelectionCard>
+              ))}
+            </div>
 
-        <div className="course-quiz-actions">
-          <Button
-            type="button"
-            className="h-11 rounded-full px-5"
-            onClick={() => setSubmitted(true)}
-            disabled={selectedAnswer === null}
-          >
-            تحقق من الإجابة
-          </Button>
-          <Button asChild variant="outline" className="h-11 rounded-full px-5">
-            <Link href={backHref}>العودة إلى الموضوع</Link>
-          </Button>
-          {nextHref ? (
-            <Button asChild variant="outline" className="h-11 rounded-full px-5">
-              <Link href={nextHref}>المفهوم التالي</Link>
-            </Button>
-          ) : null}
-        </div>
+            <div className="course-quiz-actions">
+              <Button
+                type="button"
+                className="h-11 rounded-full px-5"
+                onClick={() => setSubmitted(true)}
+                disabled={selectedAnswer === null}
+              >
+                تحقق
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="h-11 rounded-full px-5"
+              >
+                <Link href={backHref}>الموضوع</Link>
+              </Button>
+              {nextHref ? (
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-11 rounded-full px-5"
+                >
+                  <Link href={nextHref}>التالي</Link>
+                </Button>
+              ) : null}
+            </div>
 
-        {quizResult !== null ? (
-          <div
-            className={`course-quiz-feedback${
-              quizResult ? " tone-success" : " tone-warning"
-            }`}
-          >
-            <strong>{quizResult ? "إجابة موفقة" : "أعد تثبيت الفكرة"}</strong>
-            <p>{concept.quiz.explanation}</p>
+            {quizResult !== null ? (
+              <div
+                className={`course-quiz-feedback${
+                  quizResult ? " tone-success" : " tone-warning"
+                }`}
+              >
+                <strong>{quizResult ? "صحيح" : "راجع البطاقة"}</strong>
+                <p>{concept.quiz.explanation}</p>
+              </div>
+            ) : null}
           </div>
         ) : null}
       </section>
-
-      {concept.depthPortals.length ? (
-        <section className="roadmap-map-shell course-depth-shell">
-          <div className="roadmap-map-head">
-            <div>
-              <p className="page-kicker">Explore Deeper</p>
-              <h2>مسارات اختيارية لا توقف تقدمك</h2>
-              <p>
-                هذه التوسعات للفضول والفهم الأعمق. المسار الأساسي يبقى كاملاً
-                حتى لو تركتها لوقت لاحق.
-              </p>
-            </div>
-          </div>
-
-          <div className="course-depth-grid">
-            {concept.depthPortals.map((portal) => (
-              <article key={portal.slug} className="course-depth-portal">
-                <div>
-                  <StudyBadge tone="accent">
-                    {portalKindLabels[portal.kind] ?? portal.kind}
-                  </StudyBadge>
-                  <StudyBadge tone="brand">
-                    {portal.estimatedMinutes} دقائق
-                  </StudyBadge>
-                </div>
-                <h3>{portal.title}</h3>
-                <p>{portal.summary}</p>
-                <small>{portal.body}</small>
-              </article>
-            ))}
-          </div>
-        </section>
-      ) : null}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import {
   INGESTION_DRAFT_SCHEMA,
   normalizeIngestionDraft,
   type DraftAsset,
+  type DraftAssetCleanupMask,
   type DraftAssetClassification,
   type DraftAssetNativeSuggestionSource,
   type DraftAssetNativeSuggestionStatus,
@@ -22,6 +23,7 @@ import {
 export { INGESTION_DRAFT_SCHEMA, normalizeIngestionDraft };
 export type {
   DraftAsset,
+  DraftAssetCleanupMask,
   DraftAssetClassification,
   DraftAssetNativeSuggestionSource,
   DraftAssetNativeSuggestionStatus,

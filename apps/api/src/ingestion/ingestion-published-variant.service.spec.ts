@@ -11,7 +11,7 @@ describe('IngestionPublishedVariantService', () => {
     curriculumNode: {
       findMany: jest.Mock;
     };
-    examNodeSkill: {
+    examNodeLearningTarget: {
       createMany: jest.Mock;
     };
     examVariant: {
@@ -118,9 +118,9 @@ describe('IngestionPublishedVariantService', () => {
       curriculumNode: {
         findMany: jest.fn(),
       },
-      examNodeSkill: {
-        createMany: jest.fn().mockResolvedValue(undefined),
-      },
+    examNodeLearningTarget: {
+      createMany: jest.fn().mockResolvedValue(undefined),
+    },
       examVariant: {
         create: jest.fn().mockResolvedValue(undefined),
       },
@@ -175,9 +175,9 @@ describe('IngestionPublishedVariantService', () => {
     tx.curriculumNode.findMany.mockResolvedValueOnce([
       {
         id: 'topic-1',
-        skillMappings: [
+        learningTargetMappings: [
           {
-            skillId: 'skill-1',
+            learningTargetId: 'learning-target-1',
             weight: 1,
             isPrimary: true,
           },
@@ -185,9 +185,9 @@ describe('IngestionPublishedVariantService', () => {
       },
       {
         id: 'topic-2',
-        skillMappings: [
+        learningTargetMappings: [
           {
-            skillId: 'skill-2',
+            learningTargetId: 'learning-target-2',
             weight: 0.75,
             isPrimary: false,
           },
@@ -266,11 +266,11 @@ describe('IngestionPublishedVariantService', () => {
       ],
       skipDuplicates: true,
     });
-    expect(tx.examNodeSkill.createMany).toHaveBeenNthCalledWith(1, {
+    expect(tx.examNodeLearningTarget.createMany).toHaveBeenNthCalledWith(1, {
       data: [
         {
           nodeId: 'node-exercise-1',
-          skillId: 'skill-1',
+          learningTargetId: 'learning-target-1',
           weight: 1,
           isPrimary: true,
           source: 'TOPIC_DERIVED',
@@ -279,11 +279,11 @@ describe('IngestionPublishedVariantService', () => {
       ],
       skipDuplicates: true,
     });
-    expect(tx.examNodeSkill.createMany).toHaveBeenNthCalledWith(2, {
+    expect(tx.examNodeLearningTarget.createMany).toHaveBeenNthCalledWith(2, {
       data: [
         {
           nodeId: 'node-question-1',
-          skillId: 'skill-2',
+          learningTargetId: 'learning-target-2',
           weight: 0.75,
           isPrimary: false,
           source: 'TOPIC_DERIVED',

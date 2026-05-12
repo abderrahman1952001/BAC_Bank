@@ -51,4 +51,48 @@ describe('normalizeIngestionDraft', () => {
       }),
     ).toThrow('draft_json.exam.year must be an integer.');
   });
+
+  it('normalizes asset cleanup flags and masks', () => {
+    const draft = normalizeIngestionDraft({
+      ...buildRawDraft(),
+      assets: [
+        {
+          id: 'asset-1',
+          sourcePageId: 'page-1',
+          documentKind: 'EXAM',
+          pageNumber: 1,
+          role: 'PROMPT',
+          classification: 'image',
+          cropBox: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 80,
+          },
+          cleanupRequired: true,
+          cleanupMasks: [
+            {
+              x: 4,
+              y: 5,
+              width: 20,
+              height: 10,
+            },
+          ],
+          label: null,
+          notes: null,
+        },
+      ],
+    });
+
+    expect(draft.assets[0]?.cleanupRequired).toBe(true);
+    expect(draft.assets[0]?.cleanupMasks).toEqual([
+      {
+        x: 4,
+        y: 5,
+        width: 20,
+        height: 10,
+        fill: 'white',
+      },
+    ]);
+  });
 });

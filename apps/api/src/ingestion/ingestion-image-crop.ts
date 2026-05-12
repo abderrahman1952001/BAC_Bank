@@ -3,7 +3,8 @@ import sharp from 'sharp';
 import { DraftAsset } from './ingestion.contract';
 
 export async function cropAssetBuffer(pageBuffer: Buffer, asset: DraftAsset) {
-  return cropBufferWithBox(pageBuffer, asset.cropBox);
+  const cropped = await cropBufferWithBox(pageBuffer, asset.cropBox);
+  return applyAssetCleanupMasks(cropped, asset);
 }
 
 export async function cropBufferWithBox(
@@ -36,6 +37,61 @@ export async function cropBufferWithBox(
       width: cropWidth,
       height: cropHeight,
     })
+    .png()
+    .toBuffer();
+}
+
+async function applyAssetCleanupMasks(cropBuffer: Buffer, asset: DraftAsset) {
+  const masks = asset.cleanupMasks ?? [];
+
+  if (masks.length === 0) {
+    return cropBuffer;
+  }
+
+  const cropMetadata = await sharp(cropBuffer).metadata();
+  const width = cropMetadata.width ?? 0;
+  const height = cropMetadata.height ?? 0;
+
+  if (!width || !height) {
+    throw new BadRequestException('Cropped asset dimensions are missing.');
+  }
+
+  const rects = masks
+    .map((mask) => {
+      const x = Math.max(0, Math.floor(mask.x));
+      const y = Math.max(0, Math.floor(mask.y));
+      const rectWidth = Math.max(
+        0,
+        Math.min(width - x, Math.floor(mask.width)),
+      );
+      const rectHeight = Math.max(
+        0,
+        Math.min(height - y, Math.floor(mask.height)),
+      );
+
+      if (rectWidth <= 0 || rectHeight <= 0) {
+        return null;
+      }
+
+      return `<rect x="${x}" y="${y}" width="${rectWidth}" height="${rectHeight}" fill="#fff" />`;
+    })
+    .filter((rect): rect is string => Boolean(rect));
+
+  if (rects.length === 0) {
+    return cropBuffer;
+  }
+
+  const overlay = Buffer.from(
+    `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">${rects.join('')}</svg>`,
+  );
+
+  return sharp(cropBuffer)
+    .composite([
+      {
+        input: overlay,
+        blend: 'over',
+      },
+    ])
     .png()
     .toBuffer();
 }

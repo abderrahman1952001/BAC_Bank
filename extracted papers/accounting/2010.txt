@@ -1,0 +1,1408 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي",
+    "year": 2010,
+    "streamCode": "تسيير و اقتصاد",
+    "subjectCode": "التسيير المحاسبي والمالي",
+    "sessionType": "normal",
+    "durationMinutes": 270,
+    "totalPoints": 20,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_p1",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_ctx",
+          "parentLocalId": "s1_p1",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "label": "سياق",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أخذت الأرصدة التالية من ميزان المراجعة قبل الجرد لمؤسسة تجارية بتاريخ : 2008/12/31"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "وقد تم التوصل إلى المعلومات الجردية التالية:\n1- الحساب 190 يتعلق بنزاع مع أحد الموردين و قد تم الفصل فيه ودفعت المؤسسة للمورد مبلغ 9500 DA كمصاريف مختلفة (عملية الدفع سجلت من قبل المحاسب).\n2- المصاريف الإعدادية تطفأ خلال 05 سنوات.\n3- اقتنت معدات النقل في 2005/01/02 ومن بينها سيارة سياحية تكلفتها 700000 DA تم التنازل عنها في 2008/06/30 بمبلغ 400000 DA وتم تسجيل عملية التنازل فقط.\n4- حساب 380 يتعلق بـ:\n- عدم دخول بضاعة مشتراة إلى المخازن قيمتها 21000 DA.\n- استلام بضاعة دون وصول الفاتورة بمبلغ 50000 DA.\n5- نصف رصيد العملاء لا يمكن تحصيله بسبب الإفلاس أما النصف الآخر فيحتمل عدم تحصيل 25% منه.\n6- بلغت مصاريف مسك الحساب الموضحة بالكشف المرسل من طرف البنك 2500 DA. أما الفوائد لصالح المؤسسة فبلغت 17550 DA."
+            }
+          ],
+          "assetIds": [
+            "s1_p1_balances_table"
+          ]
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تحديد تاريخ إنشاء المؤسسة، ثم احسب معدل اهتلاك معدات النقل ($t$)"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تحديد تاريخ إنشاء المؤسسة وحساب معدل الاهتلاك معدات النقل.\n1-1 تحديد تاريخ إنشاء المؤسسة :\nمجموع الإهتلاكات = المبلغ الأصلي × المعدل × المدة الفعلية للنشاط\n$160000 = 200000 \\times 0.20 \\times n$\nومنه $n = 4$\nويكون تاريخ إنشاء المؤسسة هو 01 / 02 / 2004."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1-2 حساب معدل الاهتلاك ($t$):\n$A = \\frac{\\sum A}{m}$\n$A = \\frac{1650000}{3} = 550000$\n$t = \\frac{A}{v_0} = \\frac{550000}{2750000} = 20\\%$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "تحديد تاريخ الإنشاء: 1 نقطة\nحساب معدل الاهتلاك: 1 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 6,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تسجيل قيود التسوية اللازمة باليومية بتاريخ 2008/12/31."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- تسجيل قيود التسوية :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "12 قيد تسوية، كل قيد 0.5 نقطة. المجموع 6 نقاط."
+            }
+          ],
+          "assetIds": [
+            "s1_corr_p1_journal_entries"
+          ]
+        },
+        {
+          "localId": "s1_p2",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_ctx",
+          "parentLocalId": "s1_p2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "label": "سياق",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تقوم مؤسسة الصدى للصناعات الجلدية بصناعة حقائب صغيرة، حيث تنتج نوعين من الحقائب، النوع $P_1$ والنوع $P_2$.\nتستعمل الجلد الاصطناعي كمادة أولية أساسية في صناعة الحقائب بالإضافة إلى اللوازم المختلفة، حسب ما يلي:\n- كل حقيبة $P_1$ تحتاج لـ $0.20\\text{ m}^2$ من الجلد و 3 DA من اللوازم المختلفة.\n- كل حقيبة $P_2$ تحتاج لـ $0.15\\text{ m}^2$ من الجلد و 2 DA من اللوازم المختلفة.\nتمر عملية الإنتاج بورشنتين :\n- في الورشة 1: يتم تفصيل الجلد.\n- في الورشة 2: يتم خياطة القطع وإضافة اللوازم.\nبالنسبة لشهر سبتمبر 2008 تم التوصل إلى المعلومات التالية :\n1- مخزون بداية الشهر:\n- $1500\\text{ m}^2$ من الجلد الاصطناعي بـ : 229.70 DA للمتر المربع.\n- اللوازم المختلفة ما قيمته 35000 DA.\n- منتوج تام $P_1$: 350 وحدة قيمتها 109812.5 DA.\n- منتوج تام $P_2$: 200 وحدة قيمتها 60050 DA.\n2- مشتريات الشهر :\n- من الجلد الاصطناعي $3000\\text{ m}^2$ بـ 250 DA للمتر المربع.\n- من اللوازم المختلفة ما قيمته 40000 DA.\n3- إنتاج الشهر:\n- 10000 وحدة من $P_1$.\n- 9160 وحدة من $P_2$.\n4- الأعباء المباشرة:\n- للشراء: 0.15 DA عن كل $m^2$ من الجلد الاصطناعي و 300 DA لكل اللوازم المختلفة.\n- للإنتاج: كل حقيبة من كلا النوعين تتطلب 30 دقيقة عمل بـ : 500 DA للساعة.\n5- الأعباء غير المباشرة يوضحها الجدول التالي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "6- المبيعات: تم بيع :\n- 9500 وحدة من $P_1$ بـ : 650 DA للوحدة.\n- 9000 وحدة من $P_2$ بـ : 450 DA للوحدة.\nملاحظة: تقيم الإخراجات بالتكلفة الوسطية المرجحة باعتبار المخزون الأولي."
+            }
+          ],
+          "assetIds": [
+            "s1_p3_indirect_expenses_table"
+          ]
+        },
+        {
+          "localId": "s1_p2_q1",
+          "parentLocalId": "s1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أكمل جدول توزيع الأعباء غير المباشرة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- إتمام جدول توزيع الأعباء غير المباشرة :\n- نفرض $x$ مجموع أعباء قسم الإدارة .\n- نفرض $y$ مجموع أعباء قسم الصيانة .\n$x = 35300 + 0.20y \\dots (1)$\n$y = 44000 + 0.10x \\dots (2)$\nبحل المعادلتين نجد :\n$x = 45000$\n$y = 48500$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المعادلات: 0.5 + 0.5 = 1 نقطة\nالجدول: 4 × 0.5 = 2 نقاط"
+            }
+          ],
+          "assetIds": [
+            "s1_corr_p2_indirect_expenses_sol"
+          ]
+        },
+        {
+          "localId": "s1_p2_q2",
+          "parentLocalId": "s1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 4.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب مختلف التكاليف و سعر التكلفة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- حساب مختلف التكاليف وسعر التكلفة:\n2-1 حساب تكلفة الشراء :\n2-2- حساب تكلفة الإنتاج :\n3-2- حساب سعر التكلفة :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "تكلفة الشراء: 2 × 1 = 2 نقاط\nتكلفة الإنتاج: 2 × 1 = 2 نقاط\nسعر التكلفة: 2 × 0.25 = 0.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "s1_corr_p2_purchase_cost",
+            "s1_corr_p2_production_cost",
+            "s1_corr_p3_cost_price"
+          ]
+        },
+        {
+          "localId": "s1_p2_q3",
+          "parentLocalId": "s1_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "3",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب النتيجة التحليلية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- حساب النتيجة التحليلية :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "النتيجة التحليلية: 2 × 0.25 = 0.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "s1_corr_p3_analytical_result"
+          ]
+        },
+        {
+          "localId": "s1_p3",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "الجزء الثالث",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_ctx",
+          "parentLocalId": "s1_p3",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "label": "سياق",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تعتمد إحدى المؤسسات الإنتاجية في دراسة وضعيتها المالية على التحليل الوظيفي للميزانية.\nمن أجل ذلك تم إعداد الميزانية الوظيفية المختصرة التالية :\nالميزانية الوظيفية المختصرة"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "معلومات أخرى :\n- رقم الأعمال السنوي: 2400000 DA\n- المشتريات السنوية: 2250000 DA\n- العملاء: رصيد بداية المدة: 600000 DA\nرصيد نهاية المدة: 400000 DA\n- الموردون: رصيد بداية المدة: 300000 DA\nرصيد نهاية المدة: 600000 DA"
+            }
+          ],
+          "assetIds": [
+            "s1_p4_functional_balance_sheet"
+          ]
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_p3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب ما يلي:\n- رأس المال العامل الصافي الإجمالي.\n- احتياجات رأس المال العامل.\n- الخزينة الصافية.\n- معدل الدوران لكل من ديون العملاء والموردين."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1 - حساب ما يلي :\nأ - حساب رأس المال العامل الصافي الإجمالي :\nرأس المال العامل الصافي الإجمالي = الموارد الدائمة - الاستخدامات الثابتة\n$\\text{F.R.N.G} = \\text{R.S} - \\text{E.F}$\n$= 3.000.000 - 2.765.000 = 244.000\\text{ DA}$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ب - حساب احتياجات رأس المال العامل:\nاحتياجات رأس المال العامل = استخدامات الاستغلال و خارج الاستغلال - ديون الاستغلال و خارج الاستغلال\n$\\text{B.F.R} = \\text{B.F.R.E} + \\text{B.F.R.H.E}$\n* احتياجات رأس المال العامل للاستغلال = استخدامات الاستغلال - ديون الاستغلال\n$\\text{B.F.R.E} = 1.064.000 - 800.000 = 264.000\\text{ DA}$\n* احتياجات رأس المال العامل خارج الاستغلال = استخدامات خارج الاستغلال - ديون خارج الاستغلال\n$\\text{B.F.R.H.E} = 56.000 - 50.000 = 6.000\\text{ DA}$\n$\\text{B.F.R} = \\text{B.F.R.E} + \\text{B.F.R.H.E}$\n$= 264.000 + 6.000 = 270.000\\text{ DA}.$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ج - حساب الخزينة الصافية :\nالخزينة الصافية = رأس المال العامل الصافي الإجمالي - احتياجات رأس المال العامل\n$\\text{TN} = \\text{F.R.N.G} - \\text{B.F.R}$\n$= 244.000 - 270.000 = -26.000\\text{ DA}$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "د - نسب الدوران :\n* بالنسبة لديون العملاء :\nسرعة الدوران = المبيعات السنوية / متوسط ديون العملاء .\nمتوسط ديون العملاء = ( رصيد بداية المد + رصيد نهاية المدة ) / 2\n$(600.000 + 400.000) / 2 = 500.000\\text{ DA}$\nسرعة الدوران :\n$2.400.000 / 500.000 = 4.8$\nالمدة المتوسطة لديون العملاء =( متوسط ديون العملاء × 360 ) / المبيعات السنوية.\n$=(500.000 \\times 360) / 2.400.000 = 75$ (يوما)\n\n* بالنسبة لديون الموردين :\nسرعة الدوران = المشتريات السنوية / متوسط ديون الموردين .\nمتوسط ديون الموردين = ( رصيد بداية المدة + رصيد نهاية المدة ) / 2\n$(300.000 + 600.000) / 2 = 450.000\\text{ DA}$\nسرعة الدوران :\n$2.250.000 / 450.000 = 5$\nالمدة المتوسطة لديون الموردين :\n$=(450.000 \\times 360) / 2.250.000 = 72$ (يوما)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "رأس المال العامل: 0.75\nاحتياجات رأس المال العامل: 0.25 (B.F.R.E) + 0.25 (B.F.R.H.E) + 0.25 (B.F.R)\nالخزينة الصافية: 0.5\nدوران العملاء: 0.5\nدوران الموردين: 0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q2",
+          "parentLocalId": "s1_p3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "علق على النتائج المحصل عليها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "التعليق 1 : بما أن رأس المال العامل الصافي الإجمالي موجبا، فإن الوضعية المالية للمؤسسة المتعلقة بالعناصر طويلة المدى حسنة.\nالتعليق 2 : تدل هذه النتيجة على أن هناك جزءا من الاستخدامات غير ممولة بديون قصيرة الأجل لذا من الأفضل للمؤسسة أن تعمل على توفير ديون قصيرة الأجل لتمويل هذه الاستخدامات.\nالتعليق 3 : تدل هذه النتيجة على أن المؤسسة تواجه صعوبات مالية من حيث السيولة\nالتعليق 4:\nبما أن المهلة الوسطية لتحصيل ديون العملاء ( 75 يوما ) أكبر من المدة المتوسطة لديون الموردين ( 72 يوما ) فإن هذه الوضعية في غير صالح المؤسسة وعليها أن تعمل على تغيير هذه الوضعية بالتخفيض من مدة تحصيل ديون العملاء أو مفاوضة مورديها قصد تمديد آجال التسديد."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "كل تعليق: 0.25 نقطة. المجموع 1 نقطة."
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_p1",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أولا: اقتنت مؤسسة تجارية سيارة بمبلغ 800000 DA في 2005/07/01، عمرها الإنتاجي 05 سنوات. تنازلت عنها في 2007/09/30 بمبلغ 540000 DA بشيك رقم 2011.\nالمطلوب:\n1- احسب معدل الاهتلاك ($t$) ثم احسب تراكم الاهتلاك ($\\sum A$)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- حساب معدل الاهتلاك ($t$) وتراكم الاهتلاك : ($\\sum A$)\n1-1 حساب معدل الاهتلاك:\n$t = \\frac{100}{n} = \\frac{100}{5} = 20\\%$\n2-1 حساب تراكم الاهتلاك ($\\sum A$):\n$\\sum A = v_0 \\times t \\times m$\n$\\sum A = 800000 \\times 0.2 \\times \\frac{27}{12}$\n$\\sum A = 360000\\text{ DA}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "معدل الاهتلاك: 0.25\nتراكم الاهتلاك: 0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سجل التنازل عن السيارة مع التسوية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- تسجيل العمليات باليومية :\n* عملية التنازل مع التسوية:\n(الجدول يتضمن أيضا إجابة السؤال الثالث)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "قيد التنازل: 0.5 + 0.5"
+            }
+          ],
+          "assetIds": [
+            "s2_corr_p4_journal_entries_1"
+          ]
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 4
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سجل الاهتلاكات الخاصة بسنة 2005 و سنة 2007."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "* الاهتلاكات لسنتي : 2005 - 2007\nانظر الجدول في إجابة السؤال السابق."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "اهتلاك 2005: 0.5\nاهتلاك 2007: 0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ثانيا: ظهرت وضعيات عملاء إحدى المؤسسات التجارية قبل الجرد في 2007/12/31 كما يلي:\nالمطلوب:\n- سجل قيود التسوية الخاصة بوضعيات هؤلاء العملاء في 2007/12/31."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- تسجيل القيود الخاصة بتسوية وضعية الزبائن : 2008/12/31"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "تسوية فوزي: 0.75 + 0.75\nتسوية عمار: 0.75\nتسوية علاء: 0.75"
+            }
+          ],
+          "assetIds": [
+            "s2_p5_customers_table",
+            "s2_corr_p5_customers_adj"
+          ]
+        },
+        {
+          "localId": "s2_p1_q5",
+          "parentLocalId": "s2_p1",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 2.25,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ثالثا: في 2007/12/31 أثناء الجرد وجد محاسب شركة \"النجاح\" التجارية الوضعيات التالية بدفاتر المؤسسة:\n- عدم دخول بضاعة إلى المخازن اشتريت في 2007/12/22 بمبلغ 36500 DA.\n- مصاريف التأمين على السيارة المسجلة في 2007/10/01 إلى غاية 2008/09/30 بلغت 11400 DA.\n- قبض مبلغ 15000 DA بتاريخ 2007/10/02 مقابل كراء إحدى محلات المؤسسة لأحد التجار، عن الفترة من 2007/10/02 إلى 2008/04/01.\nالمطلوب:\n- تسجيل قيود للتسوية اللازمة بتاريخ 2007/12/31."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- تسجيل القيود المناسبة لتسوية الوضعيات :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "كل قيد: 0.75. المجموع 2.25"
+            }
+          ],
+          "assetIds": [
+            "s2_corr_p5_other_adj"
+          ]
+        },
+        {
+          "localId": "s2_p2",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 8,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_ctx",
+          "parentLocalId": "s2_p2",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "label": "سياق",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 5
+            },
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تصنع مؤسسة خير الدين الصناعية منتوجين مختلفين $P_1$ و$P_2$ باستعمال المادتين الأوليتين $M_1$ و$M_2$\nوتبين العملية الفنية للإنتاج ما يلي:\n- تحتاج الوحدة من المنتوج $P_1$ إلى $0.80\\text{ Kg}$ من $M_1$ و $1.20\\text{ Kg}$ من $M_2$.\n- تحتاج الوحدة من المنتوج $P_2$ إلى $0.50\\text{ Kg}$ من $M_1$ و $1.20\\text{ Kg}$ من $M_2$.\nتوفرت المعلومات التالية الخاصة بنشاط شهر جانفي 2008:\n1- مخزونات بداية الشهر:\n- من $M_1$ : $150\\text{ Kg}$ قيمتها الإجمالية 4800 DA.\n- من $M_2$ : $250\\text{ Kg}$ قيمتها الإجمالية 13000 DA.\n- من المنتوجين $P_1$ و $P_2$ لا شيء.\n2- مشتريات الشهر:\n- من $M_1$ : $450\\text{ Kg}$ بـ $24\\text{ DA/Kg}$.\n- من $M_2$ : $750\\text{ Kg}$ بـ $36\\text{ DA/Kg}$.\n3- الأعباء المباشرة: أعباء خاصة بالإنتاج: 760 ساعة عمل مباشرة بـ: 150 DA للساعة الواحدة توزع على المنتوجين حسب الكمية المنتجة.\n4- الأعباء غير المباشرة يوضحها الجدول التالي:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "5- إنتاج الفترة:\n350 وحدة من $P_1$.\n410 وحدة من $P_2$.\n6- المبيعات: تم بيع:\n- 200 وحدة من $P_1$ بـ 365 DA للوحدة.\n- 400 وحدة من $P_2$ بـ 360 DA للوحدة.\n7- مخزونات نهاية الشهر:\n- من $M_1$ $115\\text{ Kg}$.\n- من $M_2$ $88\\text{ Kg}$."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ملاحظة: تقيم إخراجات المواد الأولية بالتكلفة الوسطية المرجحة باعتبار المخزون الأولي."
+            }
+          ],
+          "assetIds": [
+            "s2_p6_indirect_expenses_table"
+          ]
+        },
+        {
+          "localId": "s2_p2_q1",
+          "parentLocalId": "s2_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 2.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 5
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "إتمام جدول توزيع الأعباء غير المباشرة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1- إتمام جدول توزيع الأعباء غير المباشرة :\n- نفرض $x$ مجموع أعباء قسم الإدارة .\n- نفرض $y$ مجموع أعباء قسم الصيانة .\n$x = 10430 + 0.15y \\dots (1)$\n$y = 6450 + 0.20x \\dots (2)$\nبحل المعادلتين نجد :\n$x = 11750$\n$y = 8800$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المعادلات: 0.5 + 0.5 = 1 نقطة\nالجدول: 3 × 0.5 = 1.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "s2_corr_p5_indirect_expenses_sol"
+          ]
+        },
+        {
+          "localId": "s2_p2_q2",
+          "parentLocalId": "s2_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حساب تكلفة شراء $M_1$ و $M_2$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- حساب تكلفة الشراء :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "تكلفة الشراء: 2 × 0.5 = 1 نقطة"
+            }
+          ],
+          "assetIds": [
+            "s2_corr_p6_purchase_cost"
+          ]
+        },
+        {
+          "localId": "s2_p2_q3",
+          "parentLocalId": "s2_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "3",
+          "maxPoints": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تحديد الكميات المستعملة من المادتين $M_1$ و $M_2$ في كل منتوج."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- تحديد الكميات المستعملة من المواد الأولية في كل منتوج\n- من المادة $M_1$ : في $P_1$ : $350 \\times 0.80 = 280\\text{kg}$\nفي $P_2$ : $410 \\times 0.50 = 205\\text{kg}$\n- من المادة $M_2$ : في $P_1$ : $350 \\times 1.20 = 420\\text{kg}$\nفي $P_2$ : $410 \\times 1.20 = 492\\text{kg}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "تحديد الكميات: 4 × 0.25 = 1 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_q4",
+          "parentLocalId": "s2_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "4",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حساب تكلفة الإنتاج للمنتوجين $P_1$ و $P_2$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4- حساب تكلفة الإنتاج :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "تكلفة الإنتاج: 2 × 1 = 2 نقاط"
+            }
+          ],
+          "assetIds": [
+            "s2_corr_p6_production_cost"
+          ]
+        },
+        {
+          "localId": "s2_p2_q5",
+          "parentLocalId": "s2_p2",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "5",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 6
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حساب سعر التكلفة و النتيجة التحليلية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "5- حساب سعر التكلفة والنتيجة التحليلية:\n1-5 حساب سعر التكلفة:\n2-5- حساب النتيجة التحليلية :"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "سعر التكلفة: 2 × 0.5 = 1 نقطة\nالنتيجة التحليلية: 2 × 0.25 = 0.5 نقطة"
+            }
+          ],
+          "assetIds": [
+            "s2_corr_p6_cost_price",
+            "s2_corr_p6_analytical_result"
+          ]
+        },
+        {
+          "localId": "s2_p3",
+          "parentLocalId": "",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "label": "الجزء الثالث",
+          "maxPoints": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_ctx",
+          "parentLocalId": "s2_p3",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "label": "سياق",
+          "maxPoints": 0,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "من أجل تحليل الاستغلال لمؤسسة \"الباهية\" التجارية، تحصلنا على المعلومات التالية في 2008/12/31:\nمشتريات البضائع للمدة: 1000000 DA، مصاريف الشراء تمثل 10 % من المشتريات.\nمخزون أول المدة: 250000 DA .\nمخزون آخر المدة: 200000 DA .\nمصاريف الإدارة و المالية الإجمالية تمثل 16 % من رقم الأعمال الصافي.\nالنواتج المختلفة بلغت 50000 DA منها نواتج مالية 20000 DA .\nمصاريف التوزيع تمثل 10 % من رقم الأعمال الصافي .\nمعدل الهامش على تكلفة شراء البضاعة المباعة = 30 % ."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_p3",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب البضاعة المستهلكة ثم مصاريف الشراء."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1 - حساب البضاعة المستهلكة ومصاريف الشراء.\n1-1 حساب البضاعة المستهلكة:\nالبضاعة المستهلكة = مخ1 + المشتريات - مخ2\nالبضاعة المستهلكة = $250000 + 1000000 - 200000 = 1050000\\text{DA}$\n1-2 حساب مصاريف الشراء:\nمصاريف الشراء = 10% المشتريات.\nمصاريف الشراء = $1000000 \\times 0.1 = 100000\\text{ DA}$."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "البضاعة المستهلكة: 0.50 نقطة\nمصاريف الشراء: 0.25 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q2",
+          "parentLocalId": "s2_p3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب تكلفة شراء البضاعة المباعة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "2- تكلفة شراء البضاعة المباعة:\nتكلفة شراء البضاعة المباعة = البضاعة المستهلكة + مصاريف الشراء - نواتج مختلفة أخرى\n$= 1050000 + 100000 - 30000$\n$= 1120000\\text{DA}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "تكلفة الشراء: 0.50 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q3",
+          "parentLocalId": "s2_p3",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "3",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب رقم الأعمال الصافي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "3- حساب رقم الأعمال الصافي:\nرقم الأعمال الصافي = تكلفة شراء البضاعة المباعة / % تكلفة شراء البضاعة المباعة\nرقم الأعمال الصافي = 1120000 / (1 - 0.3)\n$= 1600000\\text{ DA}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "رقم الأعمال الصافي: 0.75 نقطة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q4",
+          "parentLocalId": "s2_p3",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "4",
+          "maxPoints": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 7
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 7
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أنجز جدول الاستغلال الوظيفي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "4 - جدول تحليل الاستغلال الوظيفي في 2008/12/31:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "النسب المئوية: 01 نقطة\nالهامش على تكلفة التوزيع: 0.50 نقطة\nنتيجة الاستغلال: 0.50 نقطة"
+            },
+            {
+              "role": "META",
+              "type": "paragraph",
+              "text": "إجابة خاصة بالموضوع المكيف ( السؤال الرابع من الجزء الثالث)\n4/ حساب نتيجة الإستغلال :\nنتيجة الاستغلال = رقم الأعمال الصافي - تكلفة شراء البضاعة المباعة - مصاريف التوزيع - مصاريف الإدارة المالية الصافية\nنتيجة الاستغلال = 1600000 - 1120000 - 160000 - 236000\n$= 84000\\text{ DA}$\nسلم تنقيط الجزء الثالث من الموضوع II المكيف :\nس1) -> 0.75 نقطة\nس2) -> 0.5 نقطة\nس3) -> 0.75 نقطة\nس4) -> 01 نقطة\nس5) -> 01 نقطة"
+            }
+          ],
+          "assetIds": [
+            "s2_corr_p7_functional_statement"
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_p1_balances_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p1_ctx",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 1
+    },
+    {
+      "id": "s1_p3_indirect_expenses_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p2_ctx",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_p4_functional_balance_sheet",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p3_ctx",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 4
+    },
+    {
+      "id": "s1_corr_p1_journal_entries",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p1_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 1
+    },
+    {
+      "id": "s1_corr_p2_indirect_expenses_sol",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p2_q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2
+    },
+    {
+      "id": "s1_corr_p2_purchase_cost",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p2_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2
+    },
+    {
+      "id": "s1_corr_p2_production_cost",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p2_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2
+    },
+    {
+      "id": "s1_corr_p3_cost_price",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p2_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_corr_p3_analytical_result",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "s1_p2_q3",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3
+    },
+    {
+      "id": "s2_p5_customers_table",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p1_q4",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 5
+    },
+    {
+      "id": "s2_p6_indirect_expenses_table",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p2_ctx",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 6
+    },
+    {
+      "id": "s2_corr_p4_journal_entries_1",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p1_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 4
+    },
+    {
+      "id": "s2_corr_p5_customers_adj",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p1_q4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 5
+    },
+    {
+      "id": "s2_corr_p5_other_adj",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p1_q5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 5
+    },
+    {
+      "id": "s2_corr_p5_indirect_expenses_sol",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p2_q1",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 5
+    },
+    {
+      "id": "s2_corr_p6_purchase_cost",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p2_q2",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 6
+    },
+    {
+      "id": "s2_corr_p6_production_cost",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p2_q4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 6
+    },
+    {
+      "id": "s2_corr_p6_cost_price",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p2_q5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 6
+    },
+    {
+      "id": "s2_corr_p6_analytical_result",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p2_q5",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 6
+    },
+    {
+      "id": "s2_corr_p7_functional_statement",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "s2_p3_q4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 7
+    }
+  ],
+  "nativeRenderCandidates": [],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 7,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 4,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 5,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 6,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 7,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": []
+}

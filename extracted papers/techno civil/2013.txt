@@ -1,0 +1,1553 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "title": "امتحان بكالوريا التعليم الثانوي - اختبار في مادة: التكنولوجيا (هندسة مدنية)",
+    "year": 2013,
+    "streamCode": "TM",
+    "subjectCode": "GC",
+    "sessionType": "normal",
+    "durationMinutes": 240,
+    "totalPoints": 20.0,
+    "sourceLanguage": "ar",
+    "hasCorrection": true
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "S1_P1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I- الميكانيك التطبيقية:",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "I- الميكانيك التطبيقية:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E1",
+          "parentLocalId": "S1_P1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "المسألة الأولى:",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد دراسة رافدة معدنية من نوع IPE؛ ترتكز على مسندين، تتلقى حمولات كما في الرسم الميكانيكي شكل(1).\nالمسند A مضاعف.\nالمسند B بسيط."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب:"
+            }
+          ],
+          "assetIds": [
+            "s1_beam_img",
+            "s1_ipe240_table"
+          ]
+        },
+        {
+          "localId": "S1_P1_E1_Q1",
+          "parentLocalId": "S1_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب ردود الأفعال في المسندين A و B ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sum F/x &= 0 \\rightarrow H_A = 0 \\\\\n\\sum F/y &= 0 \\leftrightarrow V_A + V_B = 48 \\text{ KN} \\\\\n\\sum M/A &= 0 \\rightarrow V_B = 26 \\text{ KN} \\\\\n\\sum M/B &= 0 \\rightarrow V_A = 22 \\text{ KN}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x3"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E1_Q2",
+          "parentLocalId": "S1_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 2.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب معادلات الجهد القاطع T و عزم الانحناء $M_f$ على طول الرافدة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n& : 0 \\leq x \\leq 1.5 \\\\\nT(x) &= 22 - 8x \\rightarrow T(0) = 22 \\text{ KN}, T(1.5) = 10 \\text{ KN} \\\\\nM_f(x) &= 22x - 4x^2 \\rightarrow M_f(0) = 0, M_f(1.5) = 24 \\text{ KN.m} \\\\\n& : 0 \\leq x \\leq 3 \\\\\nT(x) &= -26 + 12x \\rightarrow T(0) = -26 \\text{ KN}, T(3) = 10 \\text{ KN} \\\\\nM_f(x) &= 26x - 6x^2 \\rightarrow M_f(0) = 0, M_f(3) = 24 \\text{ KN.m}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x2 للقسم الأول\n0.5x2 للقسم الثاني"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E1_Q3",
+          "parentLocalId": "S1_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب العزم الأقصى $M_{f\\max}$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "نبحث عن $x$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "T(x) = -26 + 12x = 0 \\rightarrow x = 2.17 \\text{ m}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ونعوض في :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "M_f(2.17) = M_{f(\\max)} = 28.17 \\text{ KN.m}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E1_Q4",
+          "parentLocalId": "S1_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ارسم منحنى T، و $M_f$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "رسم المنحنيات كما هو موضح في الشكل."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 لمنحنى T\n0.5 لمنحنى M_f"
+            }
+          ],
+          "assetIds": [
+            "s1_beam_diagram"
+          ]
+        },
+        {
+          "localId": "S1_P1_E1_Q5",
+          "parentLocalId": "S1_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 1 },
+            { "documentKind": "CORRECTION", "pageNumber": 1 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نفرض أن الرافدة هي من نوع IPE240 ؛ هل تستطيع أن تقاوم و بشكل آمن، علما أن: $M_{f\\max} = 28.17 \\text{ KN.m}$ و $\\bar{\\sigma} = 1600 \\text{ daN/cm}^2$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sigma_{\\max} &= M_{f(\\max)} / W_{xx'} \\leq \\bar{\\sigma} = 1600 \\text{ daN/cm}^2 \\\\\n869.44 \\text{ daN/cm}^2 &< \\bar{\\sigma} = 1600 \\text{ daN/cm}^2\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E2",
+          "parentLocalId": "S1_P1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "المسألة الثانية:",
+          "maxPoints": 6.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نعتبر النظام المثلثي المبين في الرسم الميكانيكي على الشكل (2):\nالمسند A بسيط.\nالمسند B مزدوج."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب:"
+            }
+          ],
+          "assetIds": [
+            "s1_truss_img"
+          ]
+        },
+        {
+          "localId": "S1_P1_E2_Q1",
+          "parentLocalId": "S1_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.375,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تأكد أن النظام محدد سكونيا ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\nb &= 2n - 3 \\\\\nb &= 7, n = 5 \\\\\n7 &= 2(5) - 3\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "النظام مستقر داخليا ومحدد سكونيا."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 للحساب\n0.125 للاستنتاج"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E2_Q2",
+          "parentLocalId": "S1_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب ردود الأفعال في المسندين A و B."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sum F/x &= 0 \\, , \\, \\sum F/y = 0 \\, , \\, \\sum M_f/ = 0 \\\\\n\\sum F/x &= 0 \\rightarrow H_B = 15 \\text{ KN} \\\\\n\\sum F/y &= 0 \\leftrightarrow V_B + V_A = 69 \\text{ KN} \\\\\n\\sum M_f/A &= 0 \\rightarrow V_B = 42 \\text{ KN} \\\\\n\\sum M_f/B &= 0 \\rightarrow V_A = 27 \\text{ KN}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25x3"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E2_Q3",
+          "parentLocalId": "S1_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 3.125,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 2 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب الجهود الداخلية في جميع القضبان محددا طبيعتها معتمدا على الطريقة التحليلية مع تدوين النتائج في جدول ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عزل العقدة (E):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sum F/y &= 0 \\rightarrow N_{EB} = -20 \\text{ KN } (\\text{انضغاط}) \\\\\n\\sum F/x &= 0 \\rightarrow N_{ED} = 0 \\text{ } (\\text{تركيبي})\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عزل العقدة (C):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sum F/y &= 0 \\rightarrow N_{CA} = -25 \\text{ KN } (\\text{انضغاط}) \\\\\n\\sum F/x &= 0 \\rightarrow N_{CD} = -15 \\text{ KN } (\\text{انضغاط})\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عزل العقدة (A):\nحساب قيمة $\\alpha$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\nTang(\\alpha) &= 4/3 = 1.33 \\rightarrow \\alpha = 53.13^{\\circ} \\\\\nCOS(53.13^{\\circ}) &= 0.6 \\, , \\, SIN(53.13^{\\circ}) = 0.8 \\\\\n\\sum F/x &= 0 \\leftrightarrow N_{AB} - N_{AD} \\cdot 0.6 = 0 \\\\\nN_{AB} &= 1.5 \\text{ KN } (\\text{شد}) \\\\\n\\sum F/y &= 0 \\leftrightarrow 27 - N_{AC} - N_{AD} \\cdot 0.8 = 0 \\\\\nN_{AD} &= -2.5 \\text{ KN } (\\text{انضغاط})\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "عزل العقدة (B):"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sum F/y &= 0 \\leftrightarrow 42 - N_{BE} - N_{BD} \\cdot 0.8 = 0 \\\\\nN_{BD} &= -27.5 \\text{ KN } (\\text{انضغاط})\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25x2 للعقدة E\n0.25x2 للعقدة C\n0.25x2 للزاوية\n0.25x2 للعقدة A\n0.25 للعقدة B\n0.125x7 للجدول"
+            }
+          ],
+          "assetIds": [
+            "s1_truss_table"
+          ]
+        },
+        {
+          "localId": "S1_P1_E2_Q4",
+          "parentLocalId": "S1_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "تحقق من مقاومة القضيب \"DB\" ؛ علما أنه متأثر بجهد داخلي $N_{DB} = 27.5 \\text{ KN}$، ومقطعه العرضي يتكون من مجنب ($L50 \\times 50 \\times 5$) مساحته $4.80 \\text{ cm}^2$، والإجهاد المسموح به : $\\bar{\\sigma} = 1000 \\text{ daN/cm}^2$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sigma &= N/S \\leq \\bar{\\sigma} \\\\\n572.92 \\text{ daN/cm}^2 &< 1000 \\text{ daN/cm}^2\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P1_E2_Q5",
+          "parentLocalId": "S1_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 2 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب قيمة التقلص $\\Delta L$ للقضيب \"DB\"؛ إذا كان طوله $L = 5.00 \\text{ m}$ و معامل المرونة الطولي: $E = 2.1 \\times 10^6 \\text{ daN/cm}^2$"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sigma &= \\varepsilon \\cdot E = (\\Delta L/L) \\cdot E \\\\\n\\sigma &= N/S \\\\\n\\Delta L &= (N \\cdot L) / (S \\cdot E) = 1.36 \\text{ mm}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II- البناء:",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "II- البناء:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2_E1",
+          "parentLocalId": "S1_P2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "المسألة الأولى:",
+          "maxPoints": 4.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد حساب مساحة القطعة (MCB). النقطة M تقع على استقامة واحدة مع النقطتين A و B (انظر شكل (3)).\nتعطى الإحداثيات القائمة للنقاط :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب:"
+            }
+          ],
+          "assetIds": [
+            "s1_topo_table",
+            "s1_topo_img"
+          ]
+        },
+        {
+          "localId": "S1_P2_E1_Q1",
+          "parentLocalId": "S1_P2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 3.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب السمت الإحداثي $G_{AB}$ ثم استنتج السمت الإحداثي $G_{AM}$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\Delta X_{AB} &= 80 \\text{ m} \\\\\n\\Delta Y_{AB} &= 20 \\text{ m} \\\\\n\\Rightarrow tg g &= 4 \\Rightarrow g = 84.40 \\text{ gr} \\\\\n\\Delta X_{AB} &> 0 \\\\\n\\Delta Y_{AB} &> 0 \\\\\n\\Rightarrow g &= G_{AB} = 84.40 \\text{ gr}\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "إستنتاج $G_{AM}$ :\nM موجودة على نفس استقامة AB إذن :\n$G_{AM} = G_{AB} = 84.40 \\text{ gr}$"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25x2 للفرق في الإحداثيات\n0.25x2 لظل الزاوية والزاوية المرجعية\n0.5x3 لتحديد الإشارات والسمت\n0.5 لاستنتاج G_{AM}"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2_E1_Q2",
+          "parentLocalId": "S1_P2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نفرض أن إحداثيتي النقطة M ( $X_M = 388.80 \\text{ m}$ ; $Y_M = 159.70 \\text{ m}$ ) احسب مساحة القطعة ( MCB ) بالإحداثيات القائمة ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\nS &= \\frac{1}{2} \\sum X_n (Y_{n-1} - Y_{n+1}) \\\\\nS &= \\frac{1}{2} \\left[ X_M (Y_B - Y_C) + X_C (Y_M - Y_B) + X_B (Y_C - Y_M) \\right] \\\\\nS &= \\frac{1}{2} \\left[ 388.8 (170 - 220) + 415 (159.7 - 170) + 430 (220 - 159.70) \\right] \\\\\nS &= 1107.25 \\text{ m}^2\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 للقانون العام\n0.5 للصيغة مفصلة\n0.5 للتعويض العددي\n0.25 للنتيجة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2_E2",
+          "parentLocalId": "S1_P2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "المسألة الثانية:",
+          "maxPoints": 3.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "الشكل (4) يمثل المظهر العرضي النموذجي لطريق."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب :"
+            }
+          ],
+          "assetIds": [
+            "s1_road_img"
+          ]
+        },
+        {
+          "localId": "S1_P2_E2_Q1",
+          "parentLocalId": "S1_P2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرّف المظهر العرضي النموذجي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "المظهر العرضي النموذجي: وثيقة خطية يتم إعدادها في مكتب الدراسات لمشاريع الطرق، يمثل مقطع عرضي لجسم القارعة يحتوي على جميع البيانات الخاصة بعناصر الطريق المستقبلي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2_E2_Q2",
+          "parentLocalId": "S1_P2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سمّ العناصر المرقمة من 1 إلى 6 ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "العناصر:\n1- منحدر الحفر 2- الخندق (الصارف) 3- مزلقة الأمان 4- منحدر الردم 5- الحفر 6- الردم"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25x6"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S1_P2_E2_Q3",
+          "parentLocalId": "S1_P2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 3 },
+            { "documentKind": "CORRECTION", "pageNumber": 3 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما هو دور العنصر 2 و 3 ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "دور 2 : صرف المياه\nدور 3 : منع خروج العربات من القارعة في حالة حوادث أو انزلاق."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75\n0.75"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "S2_P1",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I- الميكانيك التطبيقية:",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "I- الميكانيك التطبيقية:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E1",
+          "parentLocalId": "S2_P1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "المسألة الأولى:",
+          "maxPoints": 8.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد دراسة رافدة معدنية من نوع IPN؛ ترتكز على مسندين، تتلقى حمولات كما في الرسم الميكانيكي شكل (1)\nالمسند A مضاعف.\nالمسند B بسيط."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب:"
+            }
+          ],
+          "assetIds": [
+            "s2_beam_img"
+          ]
+        },
+        {
+          "localId": "S2_P1_E1_Q1",
+          "parentLocalId": "S2_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب ردود الأفعال في المسندين A و B ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sum F/x &= 0 \\rightarrow H_A = 0 \\\\\n\\sum F/y &= 0 \\rightarrow V_A + V_B = 50 \\text{ KN} \\\\\n\\sum M/A &= 0 \\rightarrow V_B = 34 \\text{ KN} \\\\\n\\sum M/B &= 0 \\rightarrow V_A = 16 \\text{ KN}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x3"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E1_Q2",
+          "parentLocalId": "S2_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "اكتب معادلات الجهد القاطع T و عزم الانحناء $M_f$ على طول الرافدة ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n& : 0 \\leq x \\leq 2 \\\\\nT(x) &= 16 - 5x \\rightarrow T(0) = 16 \\text{ KN} , T(2) = 6 \\text{ KN} \\\\\nM_f(x) &= 16x - 2.5x^2 \\rightarrow M_f(0) = 0 , M_f(2) = 22 \\text{ KN.m} \\\\\n& : 2 \\leq x \\leq 5 \\\\\nT(x) &= 6 - 10(x - 2) \\rightarrow T(2) = 6 \\text{ KN} , T(5) = -24 \\text{ KN} \\\\\nM_f(x) &= 16x - 10(x - 1) - 5(x - 2)^2 \\rightarrow M_f(2) = 22 \\text{ KN.m} , M_f(5) = -5 \\text{ KN.m} \\\\\n& : 0 \\leq x \\leq 1 \\\\\nT(x) &= 10x \\rightarrow T(0) = 0 , T(1) = 10 \\text{ KN} \\\\\nM_f(x) &= -5x^2 \\rightarrow M_f(0) = 0 , M_f(1) = -5 \\text{ KN.m}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x2 لكل مقطع (الإجمالي 3 مقاطع)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E1_Q3",
+          "parentLocalId": "S2_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب العزم الأقصى $M_{f\\max}$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حساب العزم الأقصى : نبحث عن $x$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\nT(x) &= 6 - 10(x - 2) = 0 \\rightarrow x = 2.6 \\text{ m} \\\\\nM_f(2.6) &= M_f(\\max) = 23.8 \\text{ KN.m}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E1_Q4",
+          "parentLocalId": "S2_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 2.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 4 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ارسم منحنيات الجهد القاطع T و عزم الانحناء $M_f$."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "رسم المنحنيات كما هو موضح في الشكل."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 لمنحنى T\n1 لمنحنى M_f"
+            }
+          ],
+          "assetIds": [
+            "s2_beam_diagram"
+          ]
+        },
+        {
+          "localId": "S2_P1_E1_Q5",
+          "parentLocalId": "S2_P1_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لنفرض أن الرافدة من نوع IPN180 ، حيث $W_{xx'} = 161 \\text{ cm}^3$ و $M_{f\\max} = 23.80 \\text{ KN.m}$ .\nاحسب الإجهاد الناظمي الأعظمي الناتج في مقطع الرافدة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\sigma_{\\max} = M_{f(\\max)} / W_{xx'} = 1478.26 \\text{ daN/cm}^2"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E2",
+          "parentLocalId": "S2_P1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "المسألة الثانية:",
+          "maxPoints": 4.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 4 },
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أجريت تجربة على نموذج فولاذي، طوله الابتدائي $L_0$، ومساحة مقطعه $S_0 = 150 \\text{ mm}^2$ شكل (2)؛ فأعطت المنحنى البياني الوارد في الشكل (3)."
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب :"
+            }
+          ],
+          "assetIds": [
+            "s2_sample_img",
+            "s2_graph_img"
+          ]
+        },
+        {
+          "localId": "S2_P1_E2_Q1",
+          "parentLocalId": "S2_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما أسم هذه التجربة؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "إسم التجربة: تجربة الشد البسيط"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E2_Q2",
+          "parentLocalId": "S2_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استخرج من المنحنى إجهاد حد المرونة $\\sigma_e$ و الاستطالة النسبية $\\varepsilon_e$ المرافقة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sigma_e &= 240 \\text{ N/mm}^2 \\\\\n\\varepsilon_e &= 1.2 \\times 10^{-3}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E2_Q3",
+          "parentLocalId": "S2_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب معامل المرونة الطولي E."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "E = \\sigma_e / \\varepsilon_e = 240 / 1.2 \\times 10^{-3} = 200000 \\text{ N/mm}^2"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E2_Q4",
+          "parentLocalId": "S2_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استخرج من المنحنى إجهاد الانكسار $\\sigma_r$ والاستطالة النسبية $\\varepsilon_r$ المرافقة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sigma_r &= 400 \\text{ N/mm}^2 \\\\\n\\varepsilon_r &= 200.10^{-3}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P1_E2_Q5",
+          "parentLocalId": "S2_P1_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "استنتج القوة القصوى $F_{\\max}$ المطبقة في هذه التجربة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\sigma_{\\max} &= F_{\\max} / S \\\\\nF_{\\max} &= \\sigma_{\\max} \\times S = 400 \\times 150 = 60000 \\text{ N} = 60 \\text{ KN}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5x2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II- البناء:",
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "II- البناء:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P2_E1",
+          "parentLocalId": "S2_P2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "label": "المسألة الأولى:",
+          "maxPoints": 4.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد تقسيم القطعة الأرضية ABCD ذات المساحة $S=4560.38 \\text{ m}^2$ إلى جزأين مساحتيهما $S_1$ و $S_2$، يفصل بينهما المستقيم MC (انظر شكل (4)) .\nجدول الإحداثيات القائمة :"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب :"
+            }
+          ],
+          "assetIds": [
+            "s2_topo_table",
+            "s2_topo_img"
+          ]
+        },
+        {
+          "localId": "S2_P2_E1_Q1",
+          "parentLocalId": "S2_P2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 3.25,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 5 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب السمت الإحداثي $G_{DC}$ و $G_{DA}$ ، ثم استنتج الزاوية الأفقية $\\alpha$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حساب $G_{DC}$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\Delta X_{DC} &= -20.50 \\text{ m} \\\\\n\\Delta Y_{DC} &= 129.70 \\text{ m} \\\\\n\\Rightarrow tg g &= 0.15805 \\Rightarrow g = 9.98 \\text{ gr} \\\\\n\\Delta X_{DC} &< 0 \\\\\n\\Delta Y_{DC} &> 0 \\\\\n\\Rightarrow G_{DC} &= 400 - g \\Rightarrow G_{DC} = 390.02 \\text{ gr}\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حساب $G_{DA}$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\Delta X_{DA} &= -69.70 \\text{ m} \\\\\n\\Delta Y_{DA} &= 90.50 \\text{ m} \\\\\n\\Rightarrow tg g &= 0.77016 \\Rightarrow g = 41.78 \\text{ gr} \\\\\n\\Delta X_{DA} &< 0 \\\\\n\\Delta Y_{DA} &> 0 \\\\\n\\Rightarrow G_{DA} &= 400 - g \\Rightarrow G_{DA} = 358.22 \\text{ gr}\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "إستنتاج $\\alpha$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\alpha = G_{DC} - G_{DA} = 31.80 \\text{ gr}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "12 × 0.25 لمراحل حساب السمتين\n0.25 لاستنتاج ألفا"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P2_E1_Q2",
+          "parentLocalId": "S2_P2_E1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 5 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "احسب المساحة $S_1$ ، ثم استنتج المساحة $S_2$ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\nS_1 &= \\frac{1}{2} D_{MD} \\times D_{DC} \\times \\sin(G_{DC} - G_{DM}) \\\\\nS_1 &= \\frac{1}{2} \\left[ 60 \\times 131.31 \\sin(31.8) \\right] \\\\\nS_1 &= 1886.92 \\text{ m}^2\n\\end{align*}"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "استنتاج المساحة $S_2$ :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\nS_2 &= S_{ABCD} - S_1 = 4560.38 - 1886.92 \\\\\nS_2 &= 2673.46 \\text{ m}^2\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 للصيغة والتعويض و 0.25 لنتيجة S_1\n0.25 لنتيجة S_2"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P2_E2",
+          "parentLocalId": "S2_P2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "المسألة الثانية:",
+          "maxPoints": 4.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "لاحظ الشكل (5):"
+            },
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "العمل المطلوب:"
+            }
+          ],
+          "assetIds": [
+            "s2_stairs_img"
+          ]
+        },
+        {
+          "localId": "S2_P2_E2_Q1",
+          "parentLocalId": "S2_P2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "سمّ العناصر المرقمة في الشكل (5)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "العناصر:\n1- القائمة 2- النائمة 3- الحصيرة 4- عمود 5- جدار 6- رافدة 7- الأرضية"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25x7"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P2_E2_Q2",
+          "parentLocalId": "S2_P2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما هو دور العنصر رقم 4 و 6 ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "دور 4 : تحمل الأثقال المؤثرة عليها وإيصالها إلى الأساسات\nدور 6 : إيصال القوى المسلطة عليها نحو الأعمدة والربط بين المساند"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 لدور 4\n0.5 لدور 6"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P2_E2_Q3",
+          "parentLocalId": "S2_P2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.5,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "ما نوع الأرضية الممثلة في الشكل (5) ؟"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "نوع الأرضية: أرضية ذات بلاطة مملوءة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "S2_P2_E2_Q4",
+          "parentLocalId": "S2_P2_E2",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.0,
+          "sourceRefs": [
+            { "documentKind": "EXAM", "pageNumber": 6 },
+            { "documentKind": "CORRECTION", "pageNumber": 6 }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "نريد انجاز مدرج مستقيم ذي قلبتين متوازيتين للانتقال من الطابق الأرضي إلى الطابق العلوي الذي ارتفاعه $H = 3.24 \\text{ m}$ ، وارتفاع القائمة $h = 18 \\text{ cm}$\nأ- احسب عدد الدرجات.\nب- احسب g عرض الدرجة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "المدرج :"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "latex",
+              "text": "\\begin{align*}\n\\text{أ- العدد : } n &= 324 / 18 = 18 \\\\\n\\text{ب- عرض الدرجة : } 2h + g &= 64 \\Rightarrow g = 64 - 2(18) \\Rightarrow g = 28 \\text{ cm}\n\\end{align*}"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 للعدد\n0.5 لعرض الدرجة"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_beam_img",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P1_E1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 1
+    },
+    {
+      "id": "s1_ipe240_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P1_E1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 1
+    },
+    {
+      "id": "s1_beam_diagram",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P1_E1_Q4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 1
+    },
+    {
+      "id": "s1_truss_img",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P1_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 2
+    },
+    {
+      "id": "s1_truss_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P1_E2_Q3",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2
+    },
+    {
+      "id": "s1_topo_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P2_E1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_topo_img",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P2_E1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s1_road_img",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P2_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 3
+    },
+    {
+      "id": "s2_beam_img",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P1_E1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 4
+    },
+    {
+      "id": "s2_beam_diagram",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P1_E1_Q4",
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 4
+    },
+    {
+      "id": "s2_sample_img",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P1_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 4
+    },
+    {
+      "id": "s2_graph_img",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P1_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 4
+    },
+    {
+      "id": "s2_topo_table",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P2_E1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "table",
+      "pageNumber": 5
+    },
+    {
+      "id": "s2_topo_img",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P2_E1",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 5
+    },
+    {
+      "id": "s2_stairs_img",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P2_E2",
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "image",
+      "pageNumber": 6
+    }
+  ],
+  "nativeRenderCandidates": [
+    {
+      "id": "s1_ipe240_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P1_E1",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "sourceText": "| IPE | h(mm) | b(mm) | e(mm) | S(cm²) | Wxx'(cm³) | Ixx'(cm⁴) |\n| 240 | 240 | 120 | 9,8 | 39,1 | 324 | 3892 |"
+    },
+    {
+      "id": "s1_truss_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P1_E2_Q3",
+      "kind": "simple_table",
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "sourceText": "| العقد | القضبان | الجهد (KN) | الطبيعة |\n| E | NED | 0 | / |\n| E | NEB | 20 | انضغاط |\n| C | NCD | 15 | انضغاط |\n| C | NCA | 25 | انضغاط |\n| A | NAB | 1.5 | شد |\n| A | NAD | 2.5 | انضغاط |\n| B | NBD | 27.5 | انضغاط |"
+    },
+    {
+      "id": "s1_topo_table",
+      "variantCode": "SUJET_1",
+      "nearestNodeLocalId": "S1_P2_E1",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 3,
+      "sourceText": "| النقاط | X(m) | Y(m) |\n| A | 350.00 | 150.00 |\n| B | 430.00 | 170.00 |\n| C | 415.00 | 220.00 |"
+    },
+    {
+      "id": "s2_topo_table",
+      "variantCode": "SUJET_2",
+      "nearestNodeLocalId": "S2_P2_E1",
+      "kind": "simple_table",
+      "documentKind": "EXAM",
+      "pageNumber": 5,
+      "sourceText": "| النقاط | X (m) | Y (m) |\n| A | 450.30 | 820.80 |\n| C | 499.50 | 860.00 |\n| D | 520.00 | 730.30 |"
+    }
+  ],
+  "coverageLog": [
+    { "documentKind": "EXAM", "pageNumber": 1, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 2, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 3, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 4, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 5, "status": "covered" },
+    { "documentKind": "EXAM", "pageNumber": 6, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 1, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 2, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 3, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 4, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 5, "status": "covered" },
+    { "documentKind": "CORRECTION", "pageNumber": 6, "status": "covered" }
+  ],
+  "uncertainties": [
+    "In Sujet 1, Part 2, Exercise 1, Question 1, the correction point split explicitly indicates '0.5x3' beside the conditions mapping to the azimuth, while the total question points exactly match 3.0 pts overall. It has been integrated directly into the rubric."
+  ]
+}
