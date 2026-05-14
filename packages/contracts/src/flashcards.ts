@@ -106,6 +106,12 @@ export type CreateFlashcardDeckResponse = {
   deck: FlashcardDeckSummary;
 };
 
+export type EnrollFlashcardDeckResponse = {
+  deck: FlashcardDeckSummary;
+  enrolledCardCount: number;
+  dueCardCount: number;
+};
+
 export type CreateFlashcardRequest = {
   deckId?: string | null;
   type?: FlashcardType;
@@ -269,6 +275,13 @@ export const createFlashcardDeckResponseSchema: z.ZodType<CreateFlashcardDeckRes
     deck: flashcardDeckSummarySchema,
   });
 
+export const enrollFlashcardDeckResponseSchema: z.ZodType<EnrollFlashcardDeckResponse> =
+  z.object({
+    deck: flashcardDeckSummarySchema,
+    enrolledCardCount: z.number().int().min(0),
+    dueCardCount: z.number().int().min(0),
+  });
+
 export const createFlashcardRequestSchema: z.ZodType<CreateFlashcardRequest> =
   z.object({
     deckId: z.string().uuid().nullable().optional(),
@@ -339,6 +352,14 @@ export function parseCreateFlashcardDeckResponse(value: unknown) {
     createFlashcardDeckResponseSchema,
     value,
     "CreateFlashcardDeckResponse",
+  );
+}
+
+export function parseEnrollFlashcardDeckResponse(value: unknown) {
+  return parseContract(
+    enrollFlashcardDeckResponseSchema,
+    value,
+    "EnrollFlashcardDeckResponse",
   );
 }
 

@@ -5,9 +5,9 @@ export type CurriculumWindowDefinition = {
 };
 
 export type ResolvedCurriculumDefinition = CurriculumWindowDefinition & {
-    code: string;
-    streamCodes: string[];
-  };
+  code: string;
+  streamCodes: string[];
+};
 
 export type SubjectCurriculumWindowDefinition = CurriculumWindowDefinition;
 export type ResolvedSubjectCurriculumDefinition = ResolvedCurriculumDefinition;
@@ -37,6 +37,7 @@ export const SUBJECT_CURRICULUM_WINDOWS: Record<
     { familyCode: 'se-m-tm-ge', validFromYear: 2008 },
     { familyCode: 'lp', validFromYear: 2008 },
     { familyCode: 'le', validFromYear: 2008 },
+    { familyCode: 'arts', validFromYear: 2008 },
   ],
   ARTS: [{ familyCode: 'arts', validFromYear: 2008 }],
   ECONOMICS_MANAGEMENT: [{ familyCode: 'ge', validFromYear: 2008 }],
@@ -44,11 +45,13 @@ export const SUBJECT_CURRICULUM_WINDOWS: Record<
     { familyCode: 'se-m-tm-ge', validFromYear: 2008 },
     { familyCode: 'lp', validFromYear: 2008 },
     { familyCode: 'le', validFromYear: 2008 },
+    { familyCode: 'arts', validFromYear: 2008 },
   ],
   FRENCH: [
     { familyCode: 'se-m-tm-ge', validFromYear: 2008 },
     { familyCode: 'lp', validFromYear: 2008 },
     { familyCode: 'le', validFromYear: 2008 },
+    { familyCode: 'arts', validFromYear: 2008 },
   ],
   GERMAN: [{ familyCode: 'le', validFromYear: 2008 }],
   HISTORY_GEOGRAPHY: [
@@ -56,6 +59,7 @@ export const SUBJECT_CURRICULUM_WINDOWS: Record<
     { familyCode: 'ge', validFromYear: 2008 },
     { familyCode: 'lp', validFromYear: 2008 },
     { familyCode: 'le', validFromYear: 2008 },
+    { familyCode: 'arts', validFromYear: 2008 },
   ],
   ISLAMIC_STUDIES: [{ familyCode: 'all', validFromYear: 2008 }],
   ITALIAN: [{ familyCode: 'le', validFromYear: 2015 }],
@@ -66,6 +70,7 @@ export const SUBJECT_CURRICULUM_WINDOWS: Record<
     { familyCode: 'tm', validFromYear: 2008 },
     { familyCode: 'ge', validFromYear: 2008 },
     { familyCode: 'lp-le', validFromYear: 2008 },
+    { familyCode: 'arts', validFromYear: 2008 },
   ],
   NATURAL_SCIENCES: [
     { familyCode: 'se', validFromYear: 2008 },
@@ -81,6 +86,7 @@ export const SUBJECT_CURRICULUM_WINDOWS: Record<
     { familyCode: 'tm-ge', validFromYear: 2012 },
     { familyCode: 'lp', validFromYear: 2008 },
     { familyCode: 'le', validFromYear: 2008 },
+    { familyCode: 'arts', validFromYear: 2008 },
   ],
   PHYSICS: [
     { familyCode: 'se', validFromYear: 2008 },

@@ -8,6 +8,7 @@ import type {
   CreateFlashcardDeckResponse,
   CreateFlashcardResponse,
   DueFlashcardsResponse,
+  EnrollFlashcardDeckResponse,
   FlashcardCard,
   FlashcardDeckCardsResponse,
   FlashcardDeckSummary,
@@ -30,6 +31,10 @@ const DEFAULT_DUE_LIMIT = 20;
 const DEFAULT_DECK_CARD_LIMIT = 100;
 const MIN_EASE_FACTOR = 1.3;
 const DEFAULT_EASE_FACTOR = 2.5;
+const DEFAULT_INBOX_DECK_TITLE = 'صندوق البطاقات';
+const DEFAULT_INBOX_DECK_DESCRIPTION =
+  'بطاقات محفوظة سريعاً من الدروس والتصحيحات.';
+const DEFAULT_INBOX_DECK_METADATA_KIND = 'DEFAULT_INBOX';
 
 const flashcardCardSelect = Prisma.validator<Prisma.FlashcardSelect>()({
   id: true,
@@ -218,6 +223,95 @@ export class FlashcardsService {
     };
   }
 
+  async enrollDeck(
+    userId: string,
+    deckId: string,
+  ): Promise<EnrollFlashcardDeckResponse> {
+    return this.prisma.$transaction(async (tx) => {
+      const now = new Date();
+      const deck = await tx.flashcardDeck.findFirst({
+        where: {
+          id: deckId,
+          ...this.accessibleDeckWhere(userId),
+        },
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          sourceType: true,
+          isPlatformSeed: true,
+          createdAt: true,
+          updatedAt: true,
+          cards: {
+            select: {
+              cardId: true,
+            },
+          },
+          _count: {
+            select: {
+              cards: true,
+            },
+          },
+        },
+      });
+
+      if (!deck) {
+        throw new NotFoundException(`Flashcard deck ${deckId} was not found.`);
+      }
+
+      const cardIds = deck.cards.map((deckCard) => deckCard.cardId);
+      const createResult = cardIds.length
+        ? await tx.studentFlashcardState.createMany({
+            data: cardIds.map((cardId) => ({
+              userId,
+              cardId,
+              dueAt: now,
+              intervalDays: 0,
+              easeFactor: DEFAULT_EASE_FACTOR,
+            })),
+            skipDuplicates: true,
+          })
+        : { count: 0 };
+      const dueCardCount = await tx.studentFlashcardState.count({
+        where: {
+          userId,
+          dueAt: {
+            lte: now,
+          },
+          card: {
+            deckCards: {
+              some: {
+                deckId,
+              },
+            },
+          },
+        },
+      });
+
+      await tx.studentLearningEvent.create({
+        data: {
+          userId,
+          eventType: 'FLASHCARD_DECK_ENROLLED',
+          sourceType: 'FLASHCARD_DECK',
+          sourceId: deck.id,
+          value: this.toJsonValue({
+            enrolledCardCount: createResult.count,
+            cardCount: deck._count.cards,
+          }),
+        },
+      });
+
+      return {
+        deck: this.toDeckSummary(deck, {
+          cardCount: deck._count.cards,
+          dueCardCount,
+        }),
+        enrolledCardCount: createResult.count,
+        dueCardCount,
+      };
+    });
+  }
+
   async listDeckCards(
     userId: string,
     deckId: string,
@@ -346,6 +440,8 @@ export class FlashcardsService {
 
     return this.prisma.$transaction(async (tx) => {
       const now = new Date();
+      const deckId =
+        payload.deckId ?? (await this.ensureDefaultInboxDeck(tx, userId)).id;
       const card = await tx.flashcard.create({
         data: {
           createdByUserId: userId,
@@ -363,14 +459,12 @@ export class FlashcardsService {
             payload.data === undefined || payload.data === null
               ? Prisma.JsonNull
               : this.toJsonValue(payload.data),
-          deckCards: payload.deckId
-            ? {
-                create: {
-                  deckId: payload.deckId,
-                  orderIndex: await this.nextDeckOrderIndex(tx, payload.deckId),
-                },
-              }
-            : undefined,
+          deckCards: {
+            create: {
+              deckId,
+              orderIndex: await this.nextDeckOrderIndex(tx, deckId),
+            },
+          },
         },
         select: flashcardCardSelect,
       });
@@ -396,7 +490,7 @@ export class FlashcardsService {
           examNodeId: payload.examNodeId ?? null,
           value: this.toJsonValue({
             cardSourceType: sourceType,
-            deckId: payload.deckId ?? null,
+            deckId,
           }),
         },
       });
@@ -552,6 +646,60 @@ export class FlashcardsService {
     });
 
     return (lastCard?.orderIndex ?? -1) + 1;
+  }
+
+  private async ensureDefaultInboxDeck(
+    tx: Prisma.TransactionClient,
+    userId: string,
+  ) {
+    const existingDeck = await tx.flashcardDeck.findFirst({
+      where: {
+        ownerUserId: userId,
+        sourceType: FlashcardSourceType.USER_CREATED,
+        isPlatformSeed: false,
+        metadata: {
+          path: ['kind'],
+          equals: DEFAULT_INBOX_DECK_METADATA_KIND,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (existingDeck) {
+      return existingDeck;
+    }
+
+    const createdDeck = await tx.flashcardDeck.create({
+      data: {
+        ownerUserId: userId,
+        title: DEFAULT_INBOX_DECK_TITLE,
+        description: DEFAULT_INBOX_DECK_DESCRIPTION,
+        sourceType: FlashcardSourceType.USER_CREATED,
+        isPlatformSeed: false,
+        metadata: this.toJsonValue({
+          kind: DEFAULT_INBOX_DECK_METADATA_KIND,
+        }),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    await tx.studentLearningEvent.create({
+      data: {
+        userId,
+        eventType: 'FLASHCARD_INBOX_CREATED',
+        sourceType: 'FLASHCARD_DECK',
+        sourceId: createdDeck.id,
+        value: this.toJsonValue({
+          title: DEFAULT_INBOX_DECK_TITLE,
+        }),
+      },
+    });
+
+    return createdDeck;
   }
 
   private scheduleNextReview(

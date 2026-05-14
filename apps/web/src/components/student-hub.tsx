@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
   Activity,
   AlertTriangle,
@@ -8,64 +8,78 @@ import {
   BookOpen,
   Brain,
   Flame,
+  FlaskConical,
+  Layers3,
   Map,
   PenTool,
   Target,
-} from 'lucide-react';
-import { motion } from 'motion/react';
-import { type CSSProperties, useMemo, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
-import { StudentNavbar } from '@/components/student-navbar';
-import { useAuthSession } from '@/components/auth-provider';
+} from "lucide-react";
+import { motion } from "motion/react";
+import { type CSSProperties, useMemo, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { StudentNavbar } from "@/components/student-navbar";
+import { useAuthSession } from "@/components/auth-provider";
 import {
   HubMistakesSection,
   HubRecentActivitySection,
-  HubRoadmapSection,
+  HubCurriculumJourneySection,
   HubSavedExercisesSection,
   HubWeakPointsSection,
-} from '@/components/student-hub-sections';
-import { EmptyState, StudyBadge, StudyShell } from '@/components/study-shell';
-import { Button } from '@/components/ui/button';
+} from "@/components/student-hub-sections";
+import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import {
   formatStudySessionKind,
   MyMistakesResponse,
   RecentExerciseStatesResponse,
-  StudyRoadmapsResponse,
+  CurriculumJourneysResponse,
   RecentExamActivitiesResponse,
   RecentStudySessionsResponse,
   WeakPointInsightsResponse,
-} from '@/lib/study-api';
+} from "@/lib/study-api";
+import type { DueFlashcardsResponse } from "@/lib/flashcards-api";
+import type { LabToolsResponse } from "@/lib/lab-api";
+import {
+  describeFlashcardSource,
+  getFlashcardContextLabel,
+} from "@/lib/flashcards-surface";
 import {
   buildHubActivityItems,
+  buildCurriculumJourneyItems,
   buildMyMistakeItems,
-  buildRoadmapItems,
   buildSavedExerciseItems,
   buildWeakPointItems,
   findActiveHubSession,
   studentHubStatusLabels,
   studentHubStatusTones,
-} from '@/lib/student-hub';
+} from "@/lib/student-hub";
 import {
   STUDENT_LIBRARY_ROUTE,
+  STUDENT_FLASHCARDS_ROUTE,
+  STUDENT_LAB_ROUTE,
   STUDENT_TRAINING_ROUTE,
   buildStudentTrainingSessionRoute,
-} from '@/lib/student-routes';
-import { formatRelativeStudyTimestamp } from '@/lib/study-time';
+} from "@/lib/student-routes";
+import { formatRelativeStudyTimestamp } from "@/lib/study-time";
 
 export function StudentHub({
   initialRecentStudySessions,
   initialRecentExamActivities,
   initialRecentExerciseStates,
   initialMyMistakes,
-  initialStudyRoadmaps,
+  initialCurriculumJourneys,
   initialWeakPointInsights,
+  initialDueFlashcards,
+  initialLabTools,
 }: {
   initialRecentStudySessions?: RecentStudySessionsResponse["data"];
   initialRecentExamActivities?: RecentExamActivitiesResponse["data"];
   initialRecentExerciseStates?: RecentExerciseStatesResponse["data"];
   initialMyMistakes?: MyMistakesResponse["data"];
-  initialStudyRoadmaps?: StudyRoadmapsResponse["data"];
+  initialCurriculumJourneys?: CurriculumJourneysResponse["data"];
   initialWeakPointInsights?: WeakPointInsightsResponse;
+  initialDueFlashcards?: DueFlashcardsResponse["data"];
+  initialLabTools?: LabToolsResponse["data"];
 }) {
   const router = useRouter();
   const [refreshingHub, startRefreshingHub] = useTransition();
@@ -79,7 +93,7 @@ export function StudentHub({
     initialRecentExamActivities === undefined ||
     initialRecentExerciseStates === undefined ||
     initialMyMistakes === undefined ||
-    initialStudyRoadmaps === undefined ||
+    initialCurriculumJourneys === undefined ||
     (weakPointInsightEnabled && initialWeakPointInsights === undefined);
   const sessions = useMemo<RecentStudySessionsResponse["data"]>(
     () => initialRecentStudySessions ?? [],
@@ -97,20 +111,29 @@ export function StudentHub({
     () => initialMyMistakes ?? [],
     [initialMyMistakes],
   );
-  const studyRoadmaps = useMemo<StudyRoadmapsResponse["data"]>(
-    () => initialStudyRoadmaps ?? [],
-    [initialStudyRoadmaps],
+  const curriculumJourneys = useMemo<CurriculumJourneysResponse["data"]>(
+    () => initialCurriculumJourneys ?? [],
+    [initialCurriculumJourneys],
   );
   const weakPointInsights = useMemo<WeakPointInsightsResponse["data"]>(
     () => initialWeakPointInsights?.data ?? [],
     [initialWeakPointInsights],
   );
+  const dueFlashcards = useMemo<DueFlashcardsResponse["data"]>(
+    () => initialDueFlashcards ?? [],
+    [initialDueFlashcards],
+  );
+  const labTools = useMemo<LabToolsResponse["data"]>(
+    () => initialLabTools ?? [],
+    [initialLabTools],
+  );
   const hubUnavailable =
     !sessions.length &&
     !examActivities.length &&
     !recentExerciseStates.length &&
-    !studyRoadmaps.length &&
+    !curriculumJourneys.length &&
     !weakPointInsights.length &&
+    !labTools.length &&
     !myMistakes.length &&
     missingHubData;
 
@@ -120,25 +143,25 @@ export function StudentHub({
   );
   const latestSession = sessions[0] ?? null;
   const spotlightSession = activeSession ?? latestSession;
-  const displayName = user?.username ?? 'مِراس';
+  const displayName = user?.username ?? "مِراس";
   const spotlightTitle =
     spotlightSession?.title ??
     (spotlightSession
       ? formatStudySessionKind(spotlightSession.kind)
-      : 'ابدأ جلسة مركزة اليوم');
+      : "ابدأ جلسة مركزة اليوم");
   const spotlightMeta = spotlightSession
     ? [
         formatRelativeStudyTimestamp(
           spotlightSession.lastInteractedAt ?? spotlightSession.updatedAt,
         ),
-        spotlightSession.family === 'SIMULATION' &&
+        spotlightSession.family === "SIMULATION" &&
         spotlightSession.durationMinutes
           ? `${spotlightSession.durationMinutes} دقيقة`
           : `${spotlightSession.exerciseCount} تمارين`,
-      ].join(' · ')
+      ].join(" · ")
     : user?.stream?.name
       ? `${user.stream.name} · اختر مساراً مبنياً على هدفك`
-      : 'اختر مساراً مبنياً على هدفك';
+      : "اختر مساراً مبنياً على هدفك";
   const activityItems = useMemo(
     () =>
       buildHubActivityItems({
@@ -159,61 +182,97 @@ export function StudentHub({
     () => buildWeakPointItems(weakPointInsights),
     [weakPointInsights],
   );
-  const roadmapItems = useMemo(
-    () => buildRoadmapItems(studyRoadmaps),
-    [studyRoadmaps],
+  const curriculumJourneyItems = useMemo(
+    () => buildCurriculumJourneyItems(curriculumJourneys),
+    [curriculumJourneys],
+  );
+  const labMissionCount = labTools.reduce(
+    (sum, tool) => sum + tool.missionCount,
+    0,
+  );
+  const completedLabMissionCount = labTools.reduce(
+    (sum, tool) => sum + tool.completedMissionCount,
+    0,
   );
   const hubMetrics = [
     {
-      label: 'جلسات',
+      label: "جلسات",
       value: sessions.length.toString(),
     },
     {
-      label: 'محفوظات',
+      label: "محفوظات",
       value: savedExerciseItems.length.toString(),
     },
     {
-      label: 'أخطاء',
+      label: "أخطاء",
       value: myMistakeItems.length.toString(),
+    },
+    {
+      label: "بطاقات",
+      value: dueFlashcards.length.toString(),
+    },
+    {
+      label: "مختبر",
+      value: labMissionCount
+        ? `${completedLabMissionCount}/${labMissionCount}`
+        : "0",
     },
   ];
   const primaryWeakPoint = weakPointItems[0] ?? null;
-  const primaryRoadmap = roadmapItems[0] ?? null;
+  const primaryCurriculumJourney = curriculumJourneyItems[0] ?? null;
   const primaryMistake = myMistakeItems[0] ?? null;
   const primarySavedExercise = savedExerciseItems[0] ?? null;
-  const reviewCount = myMistakeItems.length + savedExerciseItems.length;
+  const primaryDueFlashcard = dueFlashcards[0] ?? null;
+  const primaryLabTool =
+    labTools.find((tool) => tool.inProgressMissionCount > 0) ??
+    labTools.find((tool) => tool.completedMissionCount < tool.missionCount) ??
+    null;
+  const reviewCount =
+    dueFlashcards.length + myMistakeItems.length + savedExerciseItems.length;
   const spotlightHref = activeSession
     ? buildStudentTrainingSessionRoute(activeSession.id)
     : STUDENT_TRAINING_ROUTE;
-  const spotlightActionLabel = activeSession ? 'مواصلة الآن' : 'ابدأ جلسة';
-  const spotlightProgressPercent = spotlightSession?.progressSummary?.totalQuestionCount
+  const spotlightActionLabel = activeSession ? "مواصلة الآن" : "ابدأ جلسة";
+  const spotlightProgressPercent = spotlightSession?.progressSummary
+    ?.totalQuestionCount
     ? Math.round(
         (spotlightSession.progressSummary.completedQuestionCount /
           spotlightSession.progressSummary.totalQuestionCount) *
           100,
       )
-    : spotlightSession?.status === 'COMPLETED'
+    : spotlightSession?.status === "COMPLETED"
       ? 100
       : 0;
   const insightHref = primaryWeakPoint?.href ?? STUDENT_TRAINING_ROUTE;
   const insightTitle =
     primaryWeakPoint?.title ??
-    (weakPointInsightEnabled ? 'اجمع إشارات الضعف' : 'دريل مركز جاهز');
+    (weakPointInsightEnabled ? "اجمع إشارات الضعف" : "دريل مركز جاهز");
   const insightCopy =
     primaryWeakPoint?.subtitle ??
     (weakPointInsightEnabled
-      ? 'أكمل بعض الأسئلة حتى تظهر لك توصية علاجية دقيقة.'
-      : 'ابدأ تدريباً قصيراً لتحديد أول نقطة تحتاج تثبيتاً.');
-  const roadmapHref = primaryRoadmap?.detailsHref ?? STUDENT_TRAINING_ROUTE;
-  const roadmapProgress = primaryRoadmap?.progressPercent ?? 0;
-  const reviewHref =
-    primaryMistake?.href ?? primarySavedExercise?.href ?? STUDENT_LIBRARY_ROUTE;
-  const reviewTitle =
-    primaryMistake?.title ?? primarySavedExercise?.title ?? 'لا توجد مراجعة مستحقة';
-  const reviewCopy =
-    primaryMistake?.subtitle ??
-    primarySavedExercise?.subtitle ??
-    'عندما تحفظ تمريناً أو تفوّت سؤالاً سيظهر هنا مباشرة.';
+      ? "أكمل بعض الأسئلة حتى تظهر لك توصية علاجية دقيقة."
+      : "ابدأ تدريباً قصيراً لتحديد أول نقطة تحتاج تثبيتاً.");
+  const curriculumJourneyHref =
+    primaryCurriculumJourney?.detailsHref ?? STUDENT_TRAINING_ROUTE;
+  const curriculumJourneyProgress =
+    primaryCurriculumJourney?.progressPercent ?? 0;
+  const reviewHref = primaryDueFlashcard
+    ? STUDENT_FLASHCARDS_ROUTE
+    : (primaryMistake?.href ??
+      primarySavedExercise?.href ??
+      STUDENT_LIBRARY_ROUTE);
+  const reviewTitle = primaryDueFlashcard
+    ? `${dueFlashcards.length} بطاقة مستحقة`
+    : (primaryMistake?.title ??
+      primarySavedExercise?.title ??
+      "لا توجد مراجعة مستحقة");
+  const reviewCopy = primaryDueFlashcard
+    ? `${describeFlashcardSource(
+        primaryDueFlashcard.card.sourceType,
+      )} · ${getFlashcardContextLabel(primaryDueFlashcard.card)}`
+    : (primaryMistake?.subtitle ??
+      primarySavedExercise?.subtitle ??
+      "عندما تحفظ تمريناً أو تفوّت سؤالاً سيظهر هنا مباشرة.");
 
   if (hubUnavailable) {
     return (
@@ -234,7 +293,7 @@ export function StudentHub({
               }}
               disabled={refreshingHub}
             >
-              {refreshingHub ? 'جارٍ التحديث...' : 'إعادة المحاولة'}
+              {refreshingHub ? "جارٍ التحديث..." : "إعادة المحاولة"}
             </Button>
           }
         />
@@ -261,7 +320,7 @@ export function StudentHub({
               }}
               disabled={refreshingHub}
             >
-              {refreshingHub ? 'جارٍ التحديث...' : 'إعادة المحاولة'}
+              {refreshingHub ? "جارٍ التحديث..." : "إعادة المحاولة"}
             </Button>
           </div>
         ) : null}
@@ -289,7 +348,7 @@ export function StudentHub({
           <Link
             href={spotlightHref}
             className={`hub-bento-card hub-bento-continue${
-              activeSession ? ' is-active' : ''
+              activeSession ? " is-active" : ""
             }`}
           >
             <div className="hub-bento-topline">
@@ -297,7 +356,9 @@ export function StudentHub({
                 <Target size={19} strokeWidth={2.1} />
               </span>
               {spotlightSession ? (
-                <StudyBadge tone={studentHubStatusTones[spotlightSession.status]}>
+                <StudyBadge
+                  tone={studentHubStatusTones[spotlightSession.status]}
+                >
                   {studentHubStatusLabels[spotlightSession.status]}
                 </StudyBadge>
               ) : (
@@ -340,7 +401,9 @@ export function StudentHub({
               <span className="hub-bento-label">Momentum</span>
             </div>
             <strong>{sessions.length}</strong>
-            <p>{activeSession ? 'جلسة مفتوحة الآن' : 'جلسات حديثة في المساحة'}</p>
+            <p>
+              {activeSession ? "جلسة مفتوحة الآن" : "جلسات حديثة في المساحة"}
+            </p>
             <div className="hub-bento-mini-metrics">
               {hubMetrics.map((metric) => (
                 <span key={metric.label}>
@@ -351,29 +414,43 @@ export function StudentHub({
             </div>
           </div>
 
-          <Link href={roadmapHref} className="hub-bento-card hub-bento-roadmap">
+          <Link
+            href={curriculumJourneyHref}
+            className="hub-bento-card hub-bento-journey"
+          >
             <div className="hub-bento-topline">
               <span className="hub-bento-icon tone-neutral" aria-hidden="true">
                 <Map size={19} strokeWidth={2.1} />
               </span>
-              <span className="hub-bento-label">Roadmap</span>
+              <span className="hub-bento-label">Journey</span>
             </div>
             <div className="hub-bento-copy">
-              <h3>{primaryRoadmap?.title ?? 'خارطة التقدم'}</h3>
-              <p>{primaryRoadmap?.progressLabel ?? 'اختر مساراً لتظهر خطواتك.'}</p>
+              <h3>{primaryCurriculumJourney?.title ?? "مسار المنهج"}</h3>
+              <p>
+                {primaryCurriculumJourney?.progressLabel ??
+                  "اختر مساراً لتظهر خطواتك."}
+              </p>
             </div>
             <div
               className="hub-bento-ring"
-              style={{ '--hub-ring': `${roadmapProgress}%` } as CSSProperties}
+              style={
+                {
+                  "--hub-ring": `${curriculumJourneyProgress}%`,
+                } as CSSProperties
+              }
             >
-              <strong>{roadmapProgress}%</strong>
+              <strong>{curriculumJourneyProgress}%</strong>
             </div>
           </Link>
 
           <Link href={reviewHref} className="hub-bento-card hub-bento-review">
             <div className="hub-bento-topline">
               <span className="hub-bento-icon tone-danger" aria-hidden="true">
-                <AlertTriangle size={19} strokeWidth={2.1} />
+                {primaryDueFlashcard ? (
+                  <Layers3 size={19} strokeWidth={2.1} />
+                ) : (
+                  <AlertTriangle size={19} strokeWidth={2.1} />
+                )}
               </span>
               <span className="hub-bento-label">{reviewCount} مراجعة</span>
             </div>
@@ -399,12 +476,22 @@ export function StudentHub({
                 <BookOpen size={18} strokeWidth={2.1} aria-hidden="true" />
                 <span>مكتبة</span>
               </Link>
+              <Link href={STUDENT_LAB_ROUTE}>
+                <FlaskConical size={18} strokeWidth={2.1} aria-hidden="true" />
+                <span>
+                  {primaryLabTool?.inProgressMissionCount
+                    ? "مهمة مختبر"
+                    : "مختبر"}
+                </span>
+              </Link>
             </div>
           </div>
         </motion.section>
 
         <div className="hub-workstream-grid">
-          <HubRoadmapSection roadmapItems={roadmapItems} />
+          <HubCurriculumJourneySection
+            curriculumJourneyItems={curriculumJourneyItems}
+          />
           <HubWeakPointsSection
             enabled={weakPointInsightEnabled}
             weakPointItems={weakPointItems}

@@ -141,10 +141,10 @@ exam and correction scans. Every Codex pass that affects content, structure,
 crops, native render data, cleanup, or presentation must use the canonical PDFs
 or stored page PNGs as the primary evidence.
 
-OCR, extracted text, and model output are helper tools only. They may speed up
-search, comparison, or first transcription, but they do not authorize approval.
-Codex must visually verify OCR-assisted text and model-assisted structure
-against the source scans before treating them as reviewed.
+Model output is a candidate artifact only. It may speed up comparison or first
+drafting, but it does not authorize approval. Codex must visually verify
+model-assisted structure and transcription against the source scans before
+treating them as reviewed.
 
 In every pass, dense, low-quality, messy, unusual, or high-risk source regions
 require repeated visual inspection. Codex should revisit those regions as many
@@ -163,7 +163,7 @@ source region, it should actively try to solve it before handoff:
   item
 - reconcile exercise/question numbering, variant structure, point totals, and
   barème rows
-- use OCR, search, or model text only as helper evidence
+- use model candidate text only as a pointer back to the source scans
 - make the best-supported faithful correction when the visual/source evidence is
   strong enough
 
@@ -199,7 +199,7 @@ Each Codex review handoff should include a compact visual coverage note:
   pre-crop normalization, post-crop audit, and presentation review
 - which high-risk formulas, tables, diagrams, barèmes, and crops received
   repeated visual passes
-- whether OCR was used, and that it was only a helper
+- which model candidate artifacts were used as pointers, if any
 - which obvious official-source errors were corrected, if any
 - which issues were fixed during the pass
 - which unresolved items still need human judgment
@@ -399,7 +399,7 @@ The goal is not merely "JSON that validates." The goal is:
 - a draft whose correction content is faithful
 - a draft whose formatting is predictable
 - a draft whose crops and native assets are intentional
-- a draft whose student preview feels premium rather than like raw OCR
+- a draft whose student preview feels premium rather than like raw extraction
 - a draft whose final human pass is fast and unsurprising
 
 This pass must happen before approval.
@@ -447,8 +447,8 @@ debt and are not publish-ready.
 #### Source-faithfulness gate
 
 Codex compares the draft against the canonical PDFs or stored page PNGs. This is
-a visual pass first: OCR and extracted text may help locate content, but they
-must not replace visual inspection of the scans.
+a visual pass first: model candidate text may point to content, but it must not
+replace visual inspection of the scans.
 
 High-risk content must be checked visually:
 
@@ -545,7 +545,7 @@ Codex should improve:
 
 - block splitting so paragraphs, headings, lists, tables, formulas, rubrics, and
   solution steps are readable
-- punctuation and OCR spacing when the source meaning is unchanged
+- punctuation, spacing, and line joins when the source meaning is unchanged
 - inline notation with `$...$` where it materially improves readability
 - standalone formulas as `latex` blocks
 - table rows, cell sizing, and fallback text
@@ -672,7 +672,7 @@ not a separate database status today.
   correction PDF.
 - Treat the canonical PDFs as the source of truth.
 - Treat the stored page PNGs as the canonical visual review surface.
-- Treat OCR and raw model text as helpers, not as review authority.
+- Treat raw model text as a candidate artifact, not as review authority.
 - Treat the student-side draft preview as the final rendering review surface.
 - Do not use post-publish student-app review as the primary final review.
 - Do not publish raw model output without a reviewed draft graph and final

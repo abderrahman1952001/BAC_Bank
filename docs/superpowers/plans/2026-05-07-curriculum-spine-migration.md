@@ -2,7 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the old qbank-first topic/roadmap model with one curriculum spine that powers courses, qbank mappings, student progress, and stream-specific subject offerings.
+> **Status note:** This plan describes the old-to-new migration. Current docs and new code should treat curriculum journeys as canonical; `roadmap` names below are legacy compatibility or removal targets, not current product identity.
+
+**Goal:** Replace the old exam-practice-first topic/roadmap model with one curriculum spine that powers courses, exam-node mappings, student progress, and stream-specific subject offerings.
 
 **Architecture:** The canonical spine is `Stream -> SubjectOffering -> Curriculum -> CurriculumNode`. Course lessons, exam nodes, skills, and student progress attach to `CurriculumNode`. Legacy roadmap tables are removed after the study/course APIs are moved to curriculum-derived journeys.
 
@@ -16,7 +18,7 @@
   - Rename the curriculum taxonomy models and add lesson/progress models.
   - Remove `SubjectRoadmap`, `RoadmapSection`, `RoadmapNode`, and `SubjectCurriculumStream` after replacement services compile.
 - Create: `apps/api/prisma/migrations/<timestamp>_curriculum_spine_foundation/migration.sql`
-  - Rename topic/curriculum tables, add subject-offering curriculum references, add course lesson tables, and keep existing qbank/progress data.
+  - Rename topic/curriculum tables, add subject-offering curriculum references, add course lesson tables, and keep existing exam-practice and progress data.
 - Modify: `apps/api/prisma/seed.ts`
   - Seed `SubjectOffering` with `curriculumId` instead of maintaining separate `stream_subjects` plus `subject_curriculum_streams`.
   - Seed `CurriculumNode` hierarchy directly; do not seed roadmap shells.
@@ -487,7 +489,7 @@ Keep canonical files as authoring/import artifacts, not runtime content.
 
 ---
 
-## Task 7: Rename QBank Mapping From Topic To Curriculum Node
+## Task 7: Rename Exam Mapping From Topic To Curriculum Node
 
 **Files:**
 - Modify: `apps/api/src/study/study-session.service.ts`
@@ -654,6 +656,6 @@ Expected visibility:
 
 ## Self-Review
 
-- Spec coverage: The plan removes the redundant roadmap spine, replaces topic-as-tag with curriculum node as the shared spine, keeps stream/subject/curriculum sharing explicit, maps qbank questions to curriculum nodes, and moves course content to DB-backed lessons.
+- Spec coverage: The plan removes the redundant roadmap spine, replaces topic-as-tag with curriculum node as the shared spine, keeps stream/subject/curriculum sharing explicit, maps published exam questions to curriculum nodes, and moves course content to DB-backed lessons.
 - Placeholder scan: No task depends on an unspecified "do later" implementation. The only flexible items are relation names where Prisma may require generated naming adjustments.
 - Type consistency: The plan consistently uses `Curriculum`, `CurriculumNode`, `SubjectOffering`, `CourseLesson`, `StudentCurriculumNodeRollup`, and temporary compatibility aliases for roadmap/topic public fields.

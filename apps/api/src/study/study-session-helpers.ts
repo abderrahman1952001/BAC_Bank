@@ -320,9 +320,10 @@ export function buildSessionExerciseHierarchyPayload(
       exerciseNode,
       contextNodes,
     ),
-    questions: questions.map(
-      ({ metadata: _metadata, ...question }) => question,
-    ),
+    questions: questions.map(({ metadata, ...question }) => {
+      void metadata;
+      return question;
+    }),
   };
 }
 

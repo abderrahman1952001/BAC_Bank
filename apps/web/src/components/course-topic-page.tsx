@@ -75,7 +75,11 @@ export function CourseTopicPage({
           title="تعذر تحميل الموضوع"
           description="قد يكون الرابط غير صحيح أو أن محتوى الموضوع لم يعد متاحاً."
           action={
-            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+            <Button
+              asChild
+              variant="outline"
+              className="h-11 rounded-full px-5"
+            >
               <Link href={STUDENT_COURSES_ROUTE}>العودة إلى الدورات</Link>
             </Button>
           }
@@ -133,14 +137,18 @@ export function CourseTopicPage({
                 <ArrowLeft data-icon />
               </Link>
             </Button>
-            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+            <Button
+              asChild
+              variant="outline"
+              className="h-11 rounded-full px-5"
+            >
               <Link href={buildStudentCourseSubjectRoute(model.subject.code)}>
                 المادة
               </Link>
             </Button>
           </div>
 
-          <div className="course-concept-roadmap">
+          <div className="course-concept-path">
             {model.conceptGroups.map((group) => (
               <section
                 key={group.unitCode ?? "course-path"}
@@ -151,7 +159,9 @@ export function CourseTopicPage({
                     <span>خارطة الوحدة</span>
                     <h2>{group.title}</h2>
                   </div>
-                  <StudyBadge tone="accent">{group.concepts.length} محطات</StudyBadge>
+                  <StudyBadge tone="accent">
+                    {group.concepts.length} محطات
+                  </StudyBadge>
                 </div>
 
                 <div className="course-snake-map course-concept-snake-map">
@@ -184,19 +194,26 @@ export function CourseTopicPage({
                             </span>
                             <span className="course-snake-node-copy">
                               <span>
-                                <StudyBadge tone={getConceptTone(concept, index)}>
+                                <StudyBadge
+                                  tone={getConceptTone(concept, index)}
+                                >
                                   {concept.roleLabel}
                                 </StudyBadge>
                                 {concept.title.includes("فخ") ||
                                 concept.title.includes("تحقق") ? (
                                   <StudyBadge tone="warning">
-                                    <TriangleAlert size={12} aria-hidden="true" />
+                                    <TriangleAlert
+                                      size={12}
+                                      aria-hidden="true"
+                                    />
                                     تثبيت
                                   </StudyBadge>
                                 ) : null}
                               </span>
                               <strong>{concept.title}</strong>
-                              <em>{index + 1}/{group.concepts.length}</em>
+                              <em>
+                                {index + 1}/{group.concepts.length}
+                              </em>
                             </span>
                             <span className="course-snake-node-action">
                               افتح

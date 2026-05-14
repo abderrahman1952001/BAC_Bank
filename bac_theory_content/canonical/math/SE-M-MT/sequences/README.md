@@ -60,7 +60,7 @@ Internal source intelligence:
 
 Current evidence level:
 
-- Good enough for canonical roadmap and lesson skeletons:
+- Good enough for canonical curriculum journey and lesson skeletons:
   `SOURCE_EXTRACTED + STRUCTURE_VERIFIED`
 - Needs visual/line audit before production formulas or dense visual recreation:
   recurrence transformations, sum/product banks, graphical recurrence, and any
@@ -177,7 +177,7 @@ The unit is not a list of rules. It is a journey in five acts.
 
 ## Node Map
 
-| Code | Role | Roadmap Title | In-Node Title | Method |
+| Code | Role | Curriculum Journey Title | In-Node Title | Method |
 | --- | --- | --- | --- | --- |
 | `SEQ_FIELD_GATE` | `FIELD_INTRO` | مدخل المتتاليات | مدخل إلى المتتاليات | See a sequence as an indexed object. |
 | `SEQ_UNIT_MAP` | `UNIT_INTRO` | خريطة الرحلة | خريطة وحدة المتتاليات | See the unit path before formal rules arrive. |
@@ -235,7 +235,7 @@ This becomes the unit progress spine.
 
 ### `SEQ_FIELD_GATE`
 
-Roadmap title: `مدخل المتتاليات`
+Curriculum journey title: `مدخل المتتاليات`
 
 Title: `مدخل إلى المتتاليات`
 
@@ -272,7 +272,7 @@ Keep it short and clearly optional.
 
 ### `SEQ_UNIT_MAP`
 
-Roadmap title: `خريطة الرحلة`
+Curriculum journey title: `خريطة الرحلة`
 
 Title: `خريطة وحدة المتتاليات`
 
@@ -310,7 +310,7 @@ questions to guide the solver.
 
 ### `SEQ_INDEX_LANGUAGE`
 
-Roadmap title: `لغة الحدود`
+Curriculum journey title: `لغة الحدود`
 
 Title: `العنوان والرتبة والحد الأول`
 
@@ -350,7 +350,7 @@ Given a sequence starting at `n = 3`, what rank is `u_9`?
 
 ### `SEQ_BUILDERS`
 
-Roadmap title: `كيف تولد المتتالية؟`
+Curriculum journey title: `كيف تولد المتتالية؟`
 
 Title: `ثلاث طرق لبناء نفس العالم`
 
@@ -394,7 +394,7 @@ Why repeated algorithms in computing are often recurrence sequences.
 
 ### `SEQ_DIRECTION`
 
-Roadmap title: `اتجاه الحركة`
+Curriculum journey title: `اتجاه الحركة`
 
 Title: `طرق دراسة الرتابة`
 
@@ -439,7 +439,7 @@ not monotone everywhere.
 
 ### `SEQ_RAILS_LIMITS`
 
-Roadmap title: `القضبان والنهاية`
+Curriculum journey title: `القضبان والنهاية`
 
 Title: `عندما تقترب الحدود من مصيرها`
 
@@ -485,7 +485,7 @@ Why some bounded sequences still do not converge.
 
 ### `SEQ_INDUCTION_LOCK`
 
-Roadmap title: `البرهان بالتراجع`
+Curriculum journey title: `البرهان بالتراجع`
 
 Title: `سلسلة لا تنكسر`
 
@@ -529,7 +529,7 @@ needed by a later source/programme check.
 
 ### `SEQ_ADJACENT_WALLS`
 
-Roadmap title: `التجاور`
+Curriculum journey title: `التجاور`
 
 Title: `جداران يلتقيان في نفس النقطة`
 
@@ -571,7 +571,7 @@ Connection to nested intervals and numerical approximation.
 
 ### `SEQ_STAIRCASE`
 
-Roadmap title: `السلم البياني`
+Curriculum journey title: `السلم البياني`
 
 Title: `عندما ترسم المتتالية طريقها`
 
@@ -614,7 +614,7 @@ curiosity depth.
 
 ### `SEQ_FAMILIES`
 
-Roadmap title: `حسابية وهندسية`
+Curriculum journey title: `حسابية وهندسية`
 
 Title: `خطوتان مشهورتان`
 
@@ -661,7 +661,7 @@ Compound growth and decay as a geometric mental model.
 
 ### `SEQ_TRANSFORM_LENS`
 
-Roadmap title: `تحويل المتتاليات`
+Curriculum journey title: `تحويل المتتاليات`
 
 Title: `المتتاليات المساعدة`
 
@@ -707,7 +707,7 @@ strong students.
 
 ### `SEQ_SUM_PRODUCT_ENGINE`
 
-Roadmap title: `المجاميع والجداءات`
+Curriculum journey title: `المجاميع والجداءات`
 
 Title: `فك الشفرة المخفية`
 
@@ -755,7 +755,7 @@ for current BAC scope.
 
 ### `SEQ_BAC_SYNTHESIS`
 
-Roadmap title: `مسألة شاملة`
+Curriculum journey title: `مسألة شاملة`
 
 Title: `مسألة BAC شاملة`
 

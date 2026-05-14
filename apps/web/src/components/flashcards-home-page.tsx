@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   createFlashcard,
   createFlashcardDeck,
+  enrollFlashcardDeck,
   fetchDueFlashcards,
   fetchFlashcardDeckCards,
   fetchFlashcardDecks,
@@ -87,6 +88,7 @@ export function FlashcardsHomePage({
   const [cardBack, setCardBack] = useState("");
   const [cardDeckId, setCardDeckId] = useState("");
   const [creatingCard, setCreatingCard] = useState(false);
+  const [enrollingDeckId, setEnrollingDeckId] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -102,6 +104,9 @@ export function FlashcardsHomePage({
   const selectedDeckCards = selectedDeckId
     ? (deckCardsByDeck[selectedDeckId] ?? [])
     : [];
+  const selectedDeckUnenrolledCount = selectedDeckCards.filter(
+    (item) => !item.state,
+  ).length;
   const initialDataUnavailable =
     initialDecks === undefined || initialDueCards === undefined;
 
@@ -245,6 +250,9 @@ export function FlashcardsHomePage({
           ...current,
           [cardDeckId]: [...(current[cardDeckId] ?? []), nextItem],
         }));
+      } else {
+        const deckPayload = await fetchFlashcardDecks();
+        setDecks(deckPayload.data);
       }
 
       setCardFront("");
@@ -258,6 +266,57 @@ export function FlashcardsHomePage({
       );
     } finally {
       setCreatingCard(false);
+    }
+  }
+
+  async function handleEnrollDeck(deckId: string) {
+    if (enrollingDeckId) {
+      return;
+    }
+
+    setEnrollingDeckId(deckId);
+    setError(null);
+    setNotice(null);
+
+    try {
+      const response = await enrollFlashcardDeck(deckId);
+      const [deckCardsPayload, duePayload] = await Promise.all([
+        fetchFlashcardDeckCards(deckId, {
+          limit: 100,
+        }),
+        fetchDueFlashcards({
+          limit: 20,
+        }),
+      ]);
+      setDecks((current) =>
+        current.map((deck) =>
+          deck.id === deckId
+            ? {
+                ...response.deck,
+              }
+            : deck,
+        ),
+      );
+      setDeckCardsByDeck((current) => ({
+        ...current,
+        [deckId]: deckCardsPayload.data,
+      }));
+      setDueCards(duePayload.data);
+      setActiveDueIndex(0);
+      setAnswerVisible(false);
+      setNotice(
+        response.enrolledCardCount > 0
+          ? `أضيفت ${response.enrolledCardCount} بطاقة إلى مراجعاتك.`
+          : "هذه المجموعة موجودة بالفعل في مراجعاتك.",
+      );
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "تعذر إضافة المجموعة إلى مراجعاتك.",
+      );
+    } finally {
+      setEnrollingDeckId(null);
     }
   }
 
@@ -540,7 +599,9 @@ export function FlashcardsHomePage({
                   value={cardDeckId}
                   onChange={(event) => setCardDeckId(event.target.value)}
                 >
-                  <NativeSelectOption value="">بدون مجموعة</NativeSelectOption>
+                  <NativeSelectOption value="">
+                    صندوق البطاقات التلقائي
+                  </NativeSelectOption>
                   {decks
                     .filter((deck) => !deck.isPlatformSeed)
                     .map((deck) => (
@@ -670,24 +731,58 @@ export function FlashcardsHomePage({
               </div>
             ) : selectedDeck ? (
               selectedDeckCards.length ? (
-                <div className="flashcards-card-list">
-                  {selectedDeckCards.map((item) => (
-                    <article key={item.card.id} className="flashcards-card-row">
+                <>
+                  {selectedDeck.isPlatformSeed &&
+                  selectedDeckUnenrolledCount > 0 ? (
+                    <div className="flashcards-enroll-panel">
                       <div>
-                        <StudyBadge tone="neutral" size="sm">
-                          {describeFlashcardSource(item.card.sourceType)}
-                        </StudyBadge>
-                        {item.state ? (
-                          <StudyBadge tone="brand" size="sm">
-                            {formatFlashcardDueLabel(item.state.dueAt)}
-                          </StudyBadge>
-                        ) : null}
+                        <strong>أضف المجموعة إلى مراجعاتك</strong>
+                        <p>
+                          {selectedDeckUnenrolledCount} بطاقة ستصبح مستحقة الآن
+                          لتبدأ بها.
+                        </p>
                       </div>
-                      <h3>{item.card.front}</h3>
-                      <p>{item.card.back}</p>
-                    </article>
-                  ))}
-                </div>
+                      <Button
+                        type="button"
+                        className="h-10 rounded-full px-4"
+                        onClick={() => {
+                          void handleEnrollDeck(selectedDeck.id);
+                        }}
+                        disabled={enrollingDeckId === selectedDeck.id}
+                      >
+                        {enrollingDeckId === selectedDeck.id
+                          ? "جارٍ الإضافة..."
+                          : "إضافة للمراجعات"}
+                      </Button>
+                    </div>
+                  ) : null}
+
+                  <div className="flashcards-card-list">
+                    {selectedDeckCards.map((item) => (
+                      <article
+                        key={item.card.id}
+                        className="flashcards-card-row"
+                      >
+                        <div>
+                          <StudyBadge tone="neutral" size="sm">
+                            {describeFlashcardSource(item.card.sourceType)}
+                          </StudyBadge>
+                          {item.state ? (
+                            <StudyBadge tone="brand" size="sm">
+                              {formatFlashcardDueLabel(item.state.dueAt)}
+                            </StudyBadge>
+                          ) : (
+                            <StudyBadge tone="accent" size="sm">
+                              غير مضافة
+                            </StudyBadge>
+                          )}
+                        </div>
+                        <h3>{item.card.front}</h3>
+                        <p>{item.card.back}</p>
+                      </article>
+                    ))}
+                  </div>
+                </>
               ) : (
                 <EmptyState
                   title="المجموعة فارغة"

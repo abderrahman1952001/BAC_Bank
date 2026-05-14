@@ -4,12 +4,12 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { StudyBadge } from "@/components/study-shell";
 import {
-  getRoadmapNodePresentation,
-  getRoadmapSectionSummary,
-  type Roadmap,
-  type RoadmapNode,
-  type RoadmapTone,
-} from "@/lib/subject-roadmap-view";
+  getCurriculumJourneyNodePresentation,
+  getCurriculumJourneySectionSummary,
+  type CurriculumJourney,
+  type CurriculumJourneyNode,
+  type CurriculumJourneyTone,
+} from "@/lib/subject-curriculum-journey-view";
 import { buildStudentTrainingDrillRoute } from "@/lib/student-routes";
 import { formatRelativeStudyTimestamp } from "@/lib/study-time";
 
@@ -20,13 +20,16 @@ const nodeSpring = {
   mass: 0.85,
 };
 
-function buildRoadmapNodeAction(roadmap: Roadmap, node: RoadmapNode) {
+function buildCurriculumJourneyNodeAction(
+  curriculumJourney: CurriculumJourney,
+  node: CurriculumJourneyNode,
+) {
   if (node.status === "NEEDS_REVIEW") {
     return {
       label: "عالج المحور",
       href: buildStudentTrainingDrillRoute({
-        subjectCode: roadmap.subject.code,
-        topicCodes: [node.topicCode],
+        subjectCode: curriculumJourney.subject.code,
+        topicCodes: [node.curriculumNodeCode],
       }),
       tone: "warning" as const,
     };
@@ -36,8 +39,8 @@ function buildRoadmapNodeAction(roadmap: Roadmap, node: RoadmapNode) {
     return {
       label: "واصل المحور",
       href: buildStudentTrainingDrillRoute({
-        subjectCode: roadmap.subject.code,
-        topicCodes: [node.topicCode],
+        subjectCode: curriculumJourney.subject.code,
+        topicCodes: [node.curriculumNodeCode],
       }),
       tone: "brand" as const,
     };
@@ -47,8 +50,8 @@ function buildRoadmapNodeAction(roadmap: Roadmap, node: RoadmapNode) {
     return {
       label: "ابدأ المحور",
       href: buildStudentTrainingDrillRoute({
-        subjectCode: roadmap.subject.code,
-        topicCodes: [node.topicCode],
+        subjectCode: curriculumJourney.subject.code,
+        topicCodes: [node.curriculumNodeCode],
       }),
       tone: "accent" as const,
     };
@@ -57,14 +60,14 @@ function buildRoadmapNodeAction(roadmap: Roadmap, node: RoadmapNode) {
   return {
     label: "ثبّت المستوى",
     href: buildStudentTrainingDrillRoute({
-      subjectCode: roadmap.subject.code,
-      topicCodes: [node.topicCode],
+      subjectCode: curriculumJourney.subject.code,
+      topicCodes: [node.curriculumNodeCode],
     }),
     tone: "success" as const,
   };
 }
 
-function RoadmapRailPath({
+function CurriculumJourneyRailPath({
   pathLength,
   prefersReducedMotion,
 }: {
@@ -73,15 +76,18 @@ function RoadmapRailPath({
 }) {
   return (
     <svg
-      className="roadmap-node-rail-line"
+      className="curriculum-journey-node-rail-line"
       viewBox="0 0 14 100"
       preserveAspectRatio="none"
       aria-hidden="true"
       focusable="false"
     >
-      <path className="roadmap-node-rail-track" d="M7 0 C7 28 7 72 7 100" />
+      <path
+        className="curriculum-journey-node-rail-track"
+        d="M7 0 C7 28 7 72 7 100"
+      />
       <motion.path
-        className="roadmap-node-rail-progress"
+        className="curriculum-journey-node-rail-progress"
         d="M7 0 C7 28 7 72 7 100"
         initial={prefersReducedMotion ? false : { pathLength: 0 }}
         whileInView={{ pathLength }}
@@ -97,51 +103,54 @@ function RoadmapRailPath({
 }
 
 function getNodeClassName(input: {
-  tone: RoadmapTone;
+  tone: CurriculumJourneyTone;
   isRecommended: boolean;
   isRight: boolean;
   isPending: boolean;
 }) {
-  return `roadmap-node roadmap-node-motion tone-${input.tone}${
+  return `curriculum-journey-node curriculum-journey-node-motion tone-${input.tone}${
     input.isRecommended ? " is-recommended" : ""
   }${input.isRight ? " side-right" : ""}${input.isPending ? " is-pending" : ""}`;
 }
 
-export function SubjectRoadmapTrail({
-  roadmap,
-  recommendedTopicCode,
+export function SubjectCurriculumJourneyTrail({
+  curriculumJourney,
+  recommendedCurriculumNodeCode,
 }: {
-  roadmap: Roadmap;
-  recommendedTopicCode: string | null;
+  curriculumJourney: CurriculumJourney;
+  recommendedCurriculumNodeCode: string | null;
 }) {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div className="roadmap-map-canvas">
-      {roadmap.sections.map((section, sectionIndex) => {
-        const sectionSummary = getRoadmapSectionSummary(section);
-        const sectionStartIndex = roadmap.sections
+    <div className="curriculum-journey-map-canvas">
+      {curriculumJourney.sections.map((section, sectionIndex) => {
+        const sectionSummary = getCurriculumJourneySectionSummary(section);
+        const sectionStartIndex = curriculumJourney.sections
           .slice(0, sectionIndex)
-          .reduce((sum, currentSection) => sum + currentSection.nodes.length, 0);
+          .reduce(
+            (sum, currentSection) => sum + currentSection.nodes.length,
+            0,
+          );
 
         return (
           <motion.section
             key={section.id}
-            className="roadmap-stage"
+            className="curriculum-journey-stage"
             initial={prefersReducedMotion ? false : { opacity: 0.92, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={nodeSpring}
           >
-            <header className="roadmap-stage-head">
+            <header className="curriculum-journey-stage-head">
               <div>
-                <span className="roadmap-stage-step">
+                <span className="curriculum-journey-stage-step">
                   المرحلة {sectionIndex + 1}
                 </span>
                 <h3>{section.title}</h3>
                 {section.description ? <p>{section.description}</p> : null}
               </div>
 
-              <div className="roadmap-stage-metrics">
+              <div className="curriculum-journey-stage-metrics">
                 <StudyBadge tone="brand">
                   {sectionSummary.progressPercent}% متوسط التقدم
                 </StudyBadge>
@@ -156,17 +165,25 @@ export function SubjectRoadmapTrail({
               </div>
             </header>
 
-            <div className="roadmap-trail">
+            <div className="curriculum-journey-trail">
               {section.nodes.map((node, nodeIndex) => {
-                const nodeAction = buildRoadmapNodeAction(roadmap, node);
+                const nodeAction = buildCurriculumJourneyNodeAction(
+                  curriculumJourney,
+                  node,
+                );
                 const currentMapIndex = sectionStartIndex + nodeIndex;
                 const isRight = (sectionIndex + nodeIndex) % 2 === 1;
                 const isLast = nodeIndex === section.nodes.length - 1;
-                const presentation = getRoadmapNodePresentation(node, {
-                  index: currentMapIndex,
-                  isLast,
-                  isRecommended: recommendedTopicCode === node.topicCode,
-                });
+                const presentation = getCurriculumJourneyNodePresentation(
+                  node,
+                  {
+                    index: currentMapIndex,
+                    isLast,
+                    isRecommended:
+                      recommendedCurriculumNodeCode ===
+                      node.curriculumNodeCode,
+                  },
+                );
 
                 return (
                   <motion.article
@@ -194,15 +211,18 @@ export function SubjectRoadmapTrail({
                       delay: prefersReducedMotion ? 0 : currentMapIndex * 0.035,
                     }}
                   >
-                    <div className="roadmap-node-rail" aria-hidden="true">
+                    <div
+                      className="curriculum-journey-node-rail"
+                      aria-hidden="true"
+                    >
                       {!isLast ? (
-                        <RoadmapRailPath
+                        <CurriculumJourneyRailPath
                           pathLength={presentation.connectorPathLength}
                           prefersReducedMotion={prefersReducedMotion}
                         />
                       ) : null}
                       <motion.span
-                        className="roadmap-node-orb"
+                        className="curriculum-journey-node-orb"
                         initial={prefersReducedMotion ? false : { scale: 0.94 }}
                         animate={{ scale: 1 }}
                         transition={{
@@ -211,7 +231,7 @@ export function SubjectRoadmapTrail({
                           damping: 22,
                         }}
                       >
-                        <span className="roadmap-node-orb-shell">
+                        <span className="curriculum-journey-node-orb-shell">
                           <small>#{currentMapIndex + 1}</small>
                           <strong>{presentation.progressPercent}%</strong>
                         </span>
@@ -219,11 +239,11 @@ export function SubjectRoadmapTrail({
                     </div>
 
                     <motion.div
-                      className="roadmap-node-body"
+                      className="curriculum-journey-node-body"
                       transition={nodeSpring}
                     >
-                      <div className="roadmap-node-copy">
-                        <div className="roadmap-node-badges">
+                      <div className="curriculum-journey-node-copy">
+                        <div className="curriculum-journey-node-badges">
                           <StudyBadge tone={presentation.tone}>
                             {presentation.statusLabel}
                           </StudyBadge>
@@ -240,12 +260,12 @@ export function SubjectRoadmapTrail({
                         <h4>{node.title}</h4>
                         <p>
                           {node.description ??
-                            `راجع ${node.topicName} ثم انتقل إلى المحور التالي.`}
+                            `راجع ${node.curriculumNodeName} ثم انتقل إلى المحور التالي.`}
                         </p>
                       </div>
 
-                      <div className="roadmap-node-meta">
-                        <span>{node.topicName}</span>
+                      <div className="curriculum-journey-node-meta">
+                        <span>{node.curriculumNodeName}</span>
                         {node.estimatedSessions ? (
                           <span>{node.estimatedSessions} حصص تقريباً</span>
                         ) : null}
@@ -262,18 +282,20 @@ export function SubjectRoadmapTrail({
                             : "جاهز للبدء"}
                         </span>
                         {node.recommendedPreviousNodeTitle ? (
-                          <span>يفضّل بعد {node.recommendedPreviousNodeTitle}</span>
+                          <span>
+                            يفضّل بعد {node.recommendedPreviousNodeTitle}
+                          </span>
                         ) : null}
                       </div>
 
-                      <div className="roadmap-node-actions">
+                      <div className="curriculum-journey-node-actions">
                         <Link
                           href={nodeAction.href}
                           className={`hub-activity-action tone-${nodeAction.tone}`}
                         >
                           {nodeAction.label}
                         </Link>
-                        <div className="roadmap-node-progress">
+                        <div className="curriculum-journey-node-progress">
                           <div
                             className="hub-activity-progress-track"
                             aria-hidden="true"
@@ -281,12 +303,20 @@ export function SubjectRoadmapTrail({
                             <div
                               className={`hub-activity-progress-fill tone-${nodeAction.tone}`}
                               style={{
-                                width: presentation.style["--roadmap-progress"],
+                                width:
+                                  presentation.style[
+                                    "--curriculum-journey-progress"
+                                  ],
                               }}
                             />
                           </div>
                           <small>
-                            {presentation.style["--roadmap-progress"]} إتقان
+                            {
+                              presentation.style[
+                                "--curriculum-journey-progress"
+                              ]
+                            }{" "}
+                            إتقان
                           </small>
                         </div>
                       </div>

@@ -24,6 +24,46 @@ const REVIEW_CLEAR_STREAK_TARGET = 3;
 const REVIEW_VAULT_BATCH_LIMIT = 10;
 const REVIEW_SNOOZE_DAYS = 2;
 
+type ReviewQuestionSignal = {
+  id: string;
+  label: string | null;
+  reasons: Set<StudyReviewReasonType>;
+  updatedAt: Date;
+  priorityScore: number;
+};
+
+type ReviewExerciseItem = {
+  exerciseNodeId: string;
+  updatedAt: Date;
+  dueAt: Date | null;
+  successStreak: number;
+  lastReviewedAt: Date | null;
+  lastReviewOutcome: StudyReviewOutcome | null;
+  reasons: Set<StudyReviewReasonType>;
+  flagged: boolean;
+  exercise: {
+    id: string;
+    orderIndex: number;
+    title: string | null;
+  };
+  exam: {
+    id: string;
+    year: number;
+    sessionType: 'NORMAL' | 'MAKEUP';
+    stream: {
+      code: string;
+      name: string;
+    };
+    subject: {
+      code: string;
+      name: string;
+    };
+    sujetNumber: 1 | 2;
+    sujetLabel: string;
+  };
+  questionSignals: Map<string, ReviewQuestionSignal>;
+};
+
 @Injectable()
 export class StudyReviewService {
   constructor(
@@ -122,49 +162,7 @@ export class StudyReviewService {
         },
       },
     });
-    const itemsByExerciseNodeId = new Map<
-      string,
-      {
-        exerciseNodeId: string;
-        updatedAt: Date;
-        dueAt: Date | null;
-        successStreak: number;
-        lastReviewedAt: Date | null;
-        lastReviewOutcome: StudyReviewOutcome | null;
-        reasons: Set<StudyReviewReasonType>;
-        flagged: boolean;
-        exercise: {
-          id: string;
-          orderIndex: number;
-          title: string | null;
-        };
-        exam: {
-          id: string;
-          year: number;
-          sessionType: 'NORMAL' | 'MAKEUP';
-          stream: {
-            code: string;
-            name: string;
-          };
-          subject: {
-            code: string;
-            name: string;
-          };
-          sujetNumber: 1 | 2;
-          sujetLabel: string;
-        };
-        questionSignals: Map<
-          string,
-          {
-            id: string;
-            label: string | null;
-            reasons: Set<StudyReviewReasonType>;
-            updatedAt: Date;
-            priorityScore: number;
-          }
-        >;
-      }
-    >();
+    const itemsByExerciseNodeId = new Map<string, ReviewExerciseItem>();
 
     for (const queueItem of queueItems) {
       const sujetNumber = toSujetNumberFromVariantCode(
@@ -181,7 +179,7 @@ export class StudyReviewService {
 
       const key = queueItem.exerciseNode.id;
       const currentItem = itemsByExerciseNodeId.get(key);
-      const nextItem = currentItem ?? {
+      const nextItem: ReviewExerciseItem = currentItem ?? {
         exerciseNodeId: key,
         updatedAt: queueItem.lastPromotedAt,
         dueAt: queueItem.dueAt,
@@ -205,7 +203,7 @@ export class StudyReviewService {
           sujetNumber,
           sujetLabel: getSujetLabel(sujetNumber),
         },
-        questionSignals: new Map(),
+        questionSignals: new Map<string, ReviewQuestionSignal>(),
       };
 
       if (queueItem.lastPromotedAt.getTime() > nextItem.updatedAt.getTime()) {
@@ -240,7 +238,7 @@ export class StudyReviewService {
         continue;
       }
 
-      const questionEntry = nextItem.questionSignals.get(
+      const questionEntry: ReviewQuestionSignal = nextItem.questionSignals.get(
         queueItem.questionNodeId,
       ) ?? {
         id: queueItem.questionNodeId,

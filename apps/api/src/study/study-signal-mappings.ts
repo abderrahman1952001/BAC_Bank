@@ -103,7 +103,10 @@ export function selectSignalLearningTargetMappings(input: {
 function normalizeSignalLearningTargetMappings(
   mappings: SignalLearningTargetMapping[],
 ) {
-  const byLearningTargetId = new Map<string, EffectiveSignalLearningTargetMapping>();
+  const byLearningTargetId = new Map<
+    string,
+    EffectiveSignalLearningTargetMapping
+  >();
 
   for (const mapping of mappings) {
     const existing = byLearningTargetId.get(mapping.learningTarget.id);

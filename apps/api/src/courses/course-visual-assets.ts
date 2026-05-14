@@ -457,7 +457,7 @@ function resolveLabels(labels: string[], fallback: string[]) {
 function extractArabicLabels(text: string) {
   const matches =
     text.match(
-      /[\u0600-\u06ff][\u0600-\u06ff\s0-9_{}=+\-*\/^<>≤≥().،:]{1,36}/g,
+      /[\u0600-\u06ff][\u0600-\u06ff\s0-9_{}=+\-*/^<>≤≥().،:]{1,36}/g,
     ) ?? [];
 
   return matches

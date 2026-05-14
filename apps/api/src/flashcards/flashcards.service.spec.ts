@@ -31,6 +31,8 @@ describe('FlashcardsService', () => {
       findMany: jest.Mock;
       findUnique: jest.Mock;
       create: jest.Mock;
+      createMany: jest.Mock;
+      count: jest.Mock;
       upsert: jest.Mock;
     };
     flashcardReviewLog: {
@@ -64,6 +66,8 @@ describe('FlashcardsService', () => {
         findMany: jest.fn(),
         findUnique: jest.fn(),
         create: jest.fn(),
+        createMany: jest.fn(),
+        count: jest.fn(),
         upsert: jest.fn(),
       },
       flashcardReviewLog: {
@@ -237,6 +241,119 @@ describe('FlashcardsService', () => {
         sourceType: 'FLASHCARD',
         sourceId: 'card-1',
         learningTargetId: '11111111-1111-1111-1111-111111111111',
+      }),
+    });
+  });
+
+  it('creates a default inbox deck when saving a card without a deck', async () => {
+    prisma.flashcardDeck.findFirst.mockResolvedValue(null);
+    prisma.flashcardDeck.create.mockResolvedValue({
+      id: 'inbox-deck',
+    });
+    prisma.flashcardDeckCard.findFirst.mockResolvedValue(null);
+    prisma.flashcard.create.mockResolvedValue(
+      makeCardRecord({
+        id: 'card-1',
+        deckIds: ['inbox-deck'],
+      }),
+    );
+    prisma.studentFlashcardState.create.mockResolvedValue({
+      dueAt: new Date('2026-05-12T08:00:00.000Z'),
+      intervalDays: 0,
+      easeFactor: new Prisma.Decimal(2.5),
+      reviewCount: 0,
+      lapseCount: 0,
+      lastReviewedAt: null,
+    });
+    prisma.studentLearningEvent.create.mockResolvedValue({});
+
+    const result = await service.createCard('user-1', {
+      front: 'Front',
+      back: 'Back',
+      sourceType: FlashcardSourceType.COURSE_STEP,
+    });
+
+    expect(result.card.deckIds).toEqual(['inbox-deck']);
+    expect(prisma.flashcardDeck.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        ownerUserId: 'user-1',
+        title: 'صندوق البطاقات',
+        sourceType: FlashcardSourceType.USER_CREATED,
+        isPlatformSeed: false,
+      }),
+      select: {
+        id: true,
+      },
+    });
+    expect(prisma.flashcard.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          deckCards: {
+            create: {
+              deckId: 'inbox-deck',
+              orderIndex: 0,
+            },
+          },
+        }),
+      }),
+    );
+  });
+
+  it('enrolls due states for cards in an accessible deck', async () => {
+    prisma.flashcardDeck.findFirst.mockResolvedValue({
+      id: 'deck-1',
+      title: 'Platform deck',
+      description: null,
+      sourceType: FlashcardSourceType.PLATFORM,
+      isPlatformSeed: true,
+      createdAt: new Date('2026-05-10T08:00:00.000Z'),
+      updatedAt: new Date('2026-05-11T08:00:00.000Z'),
+      cards: [{ cardId: 'card-1' }, { cardId: 'card-2' }],
+      _count: {
+        cards: 2,
+      },
+    });
+    prisma.studentFlashcardState.createMany.mockResolvedValue({
+      count: 2,
+    });
+    prisma.studentFlashcardState.count.mockResolvedValue(2);
+    prisma.studentLearningEvent.create.mockResolvedValue({});
+
+    const result = await service.enrollDeck('user-1', 'deck-1');
+
+    expect(result).toMatchObject({
+      enrolledCardCount: 2,
+      dueCardCount: 2,
+      deck: {
+        id: 'deck-1',
+        cardCount: 2,
+        dueCardCount: 2,
+      },
+    });
+    expect(prisma.studentFlashcardState.createMany).toHaveBeenCalledWith({
+      data: [
+        {
+          userId: 'user-1',
+          cardId: 'card-1',
+          dueAt: new Date('2026-05-12T08:00:00.000Z'),
+          intervalDays: 0,
+          easeFactor: 2.5,
+        },
+        {
+          userId: 'user-1',
+          cardId: 'card-2',
+          dueAt: new Date('2026-05-12T08:00:00.000Z'),
+          intervalDays: 0,
+          easeFactor: 2.5,
+        },
+      ],
+      skipDuplicates: true,
+    });
+    expect(prisma.studentLearningEvent.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        eventType: 'FLASHCARD_DECK_ENROLLED',
+        sourceType: 'FLASHCARD_DECK',
+        sourceId: 'deck-1',
       }),
     });
   });

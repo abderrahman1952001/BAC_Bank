@@ -18,7 +18,7 @@ type CanonicalCourseConcept = {
   unitCode: string | null;
   role: CourseConceptResponse["concept"]["role"];
   slug: string;
-  roadmapTitle?: string;
+  curriculumJourneyTitle?: string;
   title: string;
   summary: string;
   estimatedMinutes: number;
@@ -301,7 +301,7 @@ export async function buildPlaywrightCanonicalCourseTopicResponse(
       slug: concept.slug,
       unitCode: concept.unitCode,
       role: concept.role,
-      title: concept.roadmapTitle ?? concept.title,
+      title: concept.curriculumJourneyTitle ?? concept.title,
       description: concept.summary,
     })),
   });

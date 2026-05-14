@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { StudyClearVaultButton } from "@/components/study-clear-vault-button";
 import { StudentNavbar } from "@/components/student-navbar";
-import { SubjectRoadmapTrail } from "@/components/subject-roadmap-trail";
+import { SubjectCurriculumJourneyTrail } from "@/components/subject-curriculum-journey-trail";
 import { StudyReviewQueueActions } from "@/components/study-review-queue-actions";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
@@ -15,10 +15,10 @@ import {
   STUDENT_TRAINING_ROUTE,
   STUDENT_TRAINING_SIMULATION_ROUTE,
   buildStudentLibraryExamRouteWithSearch,
-  buildStudentMySpaceRoadmapRoute,
+  buildStudentMySpaceCurriculumJourneyRoute,
   buildStudentTrainingDrillRoute,
 } from "@/lib/student-routes";
-import type { Roadmap } from "@/lib/subject-roadmap-view";
+import type { CurriculumJourney } from "@/lib/subject-curriculum-journey-view";
 import { formatRelativeStudyTimestamp } from "@/lib/study-time";
 
 function describeMistakeReviewCadence(
@@ -47,17 +47,22 @@ function describeMistakeReviewCadence(
   };
 }
 
-function buildRoadmapNextActionHref(roadmap: Roadmap) {
-  switch (roadmap.nextAction?.type) {
+function buildCurriculumJourneyNextActionHref(
+  curriculumJourney: CurriculumJourney,
+) {
+  switch (curriculumJourney.nextAction?.type) {
     case "TOPIC_DRILL":
       return buildStudentTrainingDrillRoute({
-        subjectCode: roadmap.subject.code,
-        topicCodes: roadmap.nextAction.topicCode
-          ? [roadmap.nextAction.topicCode]
+        subjectCode: curriculumJourney.subject.code,
+        topicCodes: curriculumJourney.nextAction.curriculumNodeCode
+          ? [curriculumJourney.nextAction.curriculumNodeCode]
           : [],
       });
     case "REVIEW_MISTAKES":
-      return buildStudentMySpaceRoadmapRoute(roadmap.subject.code, "mistakes");
+      return buildStudentMySpaceCurriculumJourneyRoute(
+        curriculumJourney.subject.code,
+        "mistakes",
+      );
     case "PAPER_SIMULATION":
       return STUDENT_TRAINING_SIMULATION_ROUTE;
     default:
@@ -77,26 +82,30 @@ function buildMistakeHref(item: MyMistakesResponse["data"][number]) {
   });
 }
 
-export function SubjectRoadmapPage({
-  roadmap,
+export function SubjectCurriculumJourneyPage({
+  curriculumJourney,
   initialMyMistakes,
 }: {
-  roadmap?: Roadmap;
+  curriculumJourney?: CurriculumJourney;
   initialMyMistakes?: MyMistakesResponse["data"];
 }) {
-  if (!roadmap) {
+  if (!curriculumJourney) {
     return (
       <StudyShell>
         <StudentNavbar />
         <EmptyState
-          title="تعذر تحميل خارطة المادة"
+          title="تعذر تحميل مسار المادة"
           description="أعد المحاولة من مساحتك أو ارجع إلى التدريب."
           action={
             <div className="study-action-row">
               <Button asChild className="h-11 rounded-full px-5">
                 <Link href={STUDENT_MY_SPACE_ROUTE}>العودة إلى مساحتي</Link>
               </Button>
-              <Button asChild variant="outline" className="h-11 rounded-full px-5">
+              <Button
+                asChild
+                variant="outline"
+                className="h-11 rounded-full px-5"
+              >
                 <Link href={STUDENT_TRAINING_ROUTE}>التدريب</Link>
               </Button>
             </div>
@@ -107,84 +116,98 @@ export function SubjectRoadmapPage({
   }
 
   const myMistakes = initialMyMistakes ?? [];
-  const nextActionHref = buildRoadmapNextActionHref(roadmap);
-  const recommendedTopicCode =
-    roadmap.nextAction?.type === "TOPIC_DRILL" ? roadmap.nextAction.topicCode : null;
+  const nextActionHref =
+    buildCurriculumJourneyNextActionHref(curriculumJourney);
+  const recommendedCurriculumNodeCode =
+    curriculumJourney.nextAction?.type === "TOPIC_DRILL"
+      ? curriculumJourney.nextAction.curriculumNodeCode
+      : null;
 
   return (
     <StudyShell>
       <StudentNavbar />
 
-      <div className="hub-page roadmap-page">
-        <section className="roadmap-hero">
-          <div className="roadmap-hero-copy">
-            <p className="page-kicker">خارطة التقدم</p>
-            <h1>{roadmap.subject.name}</h1>
+      <div className="hub-page curriculum-journey-page">
+        <section className="curriculum-journey-hero">
+          <div className="curriculum-journey-hero-copy">
+            <p className="page-kicker">مسار المنهج</p>
+            <h1>{curriculumJourney.subject.name}</h1>
             <p>
-              {roadmap.description ?? roadmap.curriculum.title}
-              {roadmap.updatedAt
-                ? ` · آخر نشاط ${formatRelativeStudyTimestamp(roadmap.updatedAt)}`
+              {curriculumJourney.description ??
+                curriculumJourney.curriculum.title}
+              {curriculumJourney.updatedAt
+                ? ` · آخر نشاط ${formatRelativeStudyTimestamp(
+                    curriculumJourney.updatedAt,
+                  )}`
                 : ""}
             </p>
 
-            <div className="roadmap-hero-meta">
-              <StudyBadge tone="brand">{roadmap.progressPercent}% إنجاز</StudyBadge>
-              <StudyBadge tone="success">
-                {roadmap.solidNodeCount} محاور ثابتة
+            <div className="curriculum-journey-hero-meta">
+              <StudyBadge tone="brand">
+                {curriculumJourney.progressPercent}% إنجاز
               </StudyBadge>
-              {roadmap.needsReviewNodeCount > 0 ? (
+              <StudyBadge tone="success">
+                {curriculumJourney.solidNodeCount} محاور ثابتة
+              </StudyBadge>
+              {curriculumJourney.needsReviewNodeCount > 0 ? (
                 <StudyBadge tone="warning">
-                  {roadmap.needsReviewNodeCount} تحتاج علاجاً
+                  {curriculumJourney.needsReviewNodeCount} تحتاج علاجاً
                 </StudyBadge>
               ) : null}
-              {roadmap.openReviewItemCount > 0 ? (
+              {curriculumJourney.openReviewItemCount > 0 ? (
                 <StudyBadge tone="accent">
-                  {roadmap.openReviewItemCount} عناصر مراجعة
+                  {curriculumJourney.openReviewItemCount} عناصر مراجعة
                 </StudyBadge>
               ) : null}
             </div>
           </div>
 
-          <div className="roadmap-hero-panel">
-            <div className="roadmap-hero-panel-grid">
+          <div className="curriculum-journey-hero-panel">
+            <div className="curriculum-journey-hero-panel-grid">
               <article>
-                <strong>{roadmap.sections.length}</strong>
+                <strong>{curriculumJourney.sections.length}</strong>
                 <span>مراحل المسار</span>
               </article>
               <article>
-                <strong>{roadmap.totalNodeCount}</strong>
+                <strong>{curriculumJourney.totalNodeCount}</strong>
                 <span>محاور ظاهرة</span>
               </article>
               <article>
-                <strong>{roadmap.notStartedNodeCount}</strong>
+                <strong>{curriculumJourney.notStartedNodeCount}</strong>
                 <span>محاور متاحة</span>
               </article>
             </div>
 
-            <div className="roadmap-hero-actions">
+            <div className="curriculum-journey-hero-actions">
               <Button asChild className="h-11 rounded-full px-5">
                 <Link href={nextActionHref}>
-                  {roadmap.nextAction?.label ?? "ابدأ الآن"}
+                  {curriculumJourney.nextAction?.label ?? "ابدأ الآن"}
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="h-11 rounded-full px-5">
-                <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>محاكاة كاملة</Link>
+              <Button
+                asChild
+                variant="outline"
+                className="h-11 rounded-full px-5"
+              >
+                <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>
+                  محاكاة كاملة
+                </Link>
               </Button>
             </div>
           </div>
         </section>
 
-        <section className="roadmap-map-shell">
-          <div className="roadmap-map-head">
+        <section className="curriculum-journey-map-shell">
+          <div className="curriculum-journey-map-head">
             <div>
               <h2>المسار المرئي للمادة</h2>
               <p>
-                يمكنك القفز لأي محور، لكن الخارطة ترشّح لك أين تضع جلستك القادمة
-                بناءً على ما بدأته وما يحتاج علاجاً.
+                يمكنك القفز لأي محور، لكن المسار يرشدك إلى جلستك القادمة بناءً
+                على ما بدأته وما يحتاج علاجاً.
               </p>
             </div>
 
-            <div className="roadmap-legend">
+            <div className="curriculum-journey-legend">
               <StudyBadge tone="accent">جاهز</StudyBadge>
               <StudyBadge tone="brand">قيد البناء</StudyBadge>
               <StudyBadge tone="warning">مراجعة الآن</StudyBadge>
@@ -192,9 +215,9 @@ export function SubjectRoadmapPage({
             </div>
           </div>
 
-          <SubjectRoadmapTrail
-            roadmap={roadmap}
-            recommendedTopicCode={recommendedTopicCode}
+          <SubjectCurriculumJourneyTrail
+            curriculumJourney={curriculumJourney}
+            recommendedCurriculumNodeCode={recommendedCurriculumNodeCode}
           />
         </section>
 
@@ -202,13 +225,15 @@ export function SubjectRoadmapPage({
           <div className="hub-activity-head">
             <div>
               <h2>مراجعة الأخطاء المفتوحة</h2>
-              <p className="roadmap-support-copy">
+              <p className="curriculum-journey-support-copy">
                 هذه الطبقة تصحح المسار بسرعة عندما تتكرر الأخطاء أو يحين موعد
                 التثبيت.
               </p>
             </div>
             {myMistakes.length > 0 ? (
-              <StudyClearVaultButton subjectCode={roadmap.subject.code} />
+              <StudyClearVaultButton
+                subjectCode={curriculumJourney.subject.code}
+              />
             ) : null}
           </div>
 
@@ -219,9 +244,15 @@ export function SubjectRoadmapPage({
               action={
                 <div className="study-action-row">
                   <Button asChild className="h-11 rounded-full px-5">
-                    <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>ابدأ محاكاة</Link>
+                    <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>
+                      ابدأ محاكاة
+                    </Link>
                   </Button>
-                  <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-11 rounded-full px-5"
+                  >
                     <Link href={STUDENT_LIBRARY_ROUTE}>المكتبة</Link>
                   </Button>
                 </div>
@@ -234,7 +265,7 @@ export function SubjectRoadmapPage({
 
                 return (
                   <article
-                    key={`roadmap-mistake:${item.exerciseNodeId}`}
+                    key={`curriculum-journey-mistake:${item.exerciseNodeId}`}
                     className={
                       item.flagged
                         ? "hub-activity-card kind-mistake is-flagged"
@@ -250,9 +281,13 @@ export function SubjectRoadmapPage({
                             .map((reason) => formatStudyReviewReason(reason))
                             .join(" · ")}
                         </span>
-                        <h3>{item.exercise.title ?? `التمرين ${item.exercise.orderIndex}`}</h3>
+                        <h3>
+                          {item.exercise.title ??
+                            `التمرين ${item.exercise.orderIndex}`}
+                        </h3>
                         <small>
-                          {item.exam.subject.name} · {item.exam.year} · {item.exam.sujetLabel}
+                          {item.exam.subject.name} · {item.exam.year} ·{" "}
+                          {item.exam.sujetLabel}
                         </small>
                       </div>
                       <span className="hub-activity-time">
@@ -272,7 +307,9 @@ export function SubjectRoadmapPage({
                           ? `${item.questionSignalCount} أسئلة تحتاج رجوعاً`
                           : "تمرين يحتاج رجوعاً"}
                       </StudyBadge>
-                      <StudyBadge tone={cadence.tone}>{cadence.label}</StudyBadge>
+                      <StudyBadge tone={cadence.tone}>
+                        {cadence.label}
+                      </StudyBadge>
                     </div>
 
                     <div className="hub-activity-foot">

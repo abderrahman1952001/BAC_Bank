@@ -2,14 +2,14 @@ export const STUDENT_MY_SPACE_ROUTE = "/student/my-space";
 export const STUDENT_COURSES_ROUTE = "/student/courses";
 export const STUDENT_LIBRARY_ROUTE = "/student/library";
 export const STUDENT_LAB_ROUTE = "/student/lab";
-export const STUDENT_INGESTION_PREVIEW_ROUTE =
-  `${STUDENT_LIBRARY_ROUTE}/ingestion-preview`;
+export const STUDENT_INGESTION_PREVIEW_ROUTE = `${STUDENT_LIBRARY_ROUTE}/ingestion-preview`;
 export const STUDENT_FLASHCARDS_ROUTE = "/student/flashcards";
 export const STUDENT_TRAINING_ROUTE = "/student/training";
 export const STUDENT_BILLING_ROUTE = "/student/billing";
 export const STUDENT_TRAINING_DRILL_ROUTE = "/student/training/drill";
 export const STUDENT_TRAINING_SIMULATION_ROUTE = "/student/training/simulation";
-export const STUDENT_TRAINING_WEAK_POINTS_ROUTE = "/student/training/weak-points";
+export const STUDENT_TRAINING_WEAK_POINTS_ROUTE =
+  "/student/training/weak-points";
 
 const studentSurfaceRoutes = {
   mySpace: STUDENT_MY_SPACE_ROUTE,
@@ -115,11 +115,11 @@ export function buildStudentTrainingSessionRoute(sessionId: string): string {
   return `${STUDENT_TRAINING_ROUTE}/${encodeURIComponent(sessionId)}`;
 }
 
-export function buildStudentMySpaceRoadmapRoute(
+export function buildStudentMySpaceCurriculumJourneyRoute(
   subjectCode: string,
   section?: "mistakes",
 ): string {
-  const pathname = `${STUDENT_MY_SPACE_ROUTE}/roadmaps/${encodeURIComponent(
+  const pathname = `${STUDENT_MY_SPACE_ROUTE}/curriculum/${encodeURIComponent(
     subjectCode,
   )}`;
 
@@ -171,6 +171,19 @@ export function buildStudentLabToolRoute(
   )}/${encodeURIComponent(toolSlug)}`;
 }
 
+export function buildStudentLabToolMissionRoute(input: {
+  subjectSlug: string;
+  toolSlug: string;
+  missionId: string;
+}): string {
+  return buildRouteWithSearchParams(
+    buildStudentLabToolRoute(input.subjectSlug, input.toolSlug),
+    {
+      mission: input.missionId,
+    },
+  );
+}
+
 export function buildStudentTrainingDrillRoute(input?: {
   subjectCode?: string | null;
   topicCodes?: string[] | null;
@@ -178,12 +191,12 @@ export function buildStudentTrainingDrillRoute(input?: {
   const params = new URLSearchParams();
 
   if (input?.subjectCode) {
-    params.set('subject', input.subjectCode);
+    params.set("subject", input.subjectCode);
   }
 
   for (const topicCode of input?.topicCodes ?? []) {
     if (topicCode) {
-      params.append('topic', topicCode);
+      params.append("topic", topicCode);
     }
   }
 
@@ -194,7 +207,9 @@ export function buildStudentTrainingDrillRoute(input?: {
     : STUDENT_TRAINING_DRILL_ROUTE;
 }
 
-export function buildStudentTrainingWeakPointsRoute(subjectCode?: string | null) {
+export function buildStudentTrainingWeakPointsRoute(
+  subjectCode?: string | null,
+) {
   return buildRouteWithSearchParams(STUDENT_TRAINING_WEAK_POINTS_ROUTE, {
     subject: subjectCode ?? undefined,
   });

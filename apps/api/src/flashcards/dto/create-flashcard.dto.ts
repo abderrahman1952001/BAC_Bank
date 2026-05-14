@@ -10,13 +10,16 @@ import {
 } from 'class-validator';
 import { FlashcardSourceType, FlashcardType } from '@prisma/client';
 
-function trimString({ value }: TransformFnParams): string | undefined {
+function trimString(params: TransformFnParams): string | undefined {
+  const value = params.value as unknown;
   return typeof value === 'string' ? value.trim() : undefined;
 }
 
-function normalizeOptionalUuid({
-  value,
-}: TransformFnParams): string | null | undefined {
+function normalizeOptionalUuid(
+  params: TransformFnParams,
+): string | null | undefined {
+  const value = params.value as unknown;
+
   if (value === null || value === undefined) {
     return value;
   }
@@ -29,7 +32,8 @@ function normalizeOptionalUuid({
   return trimmed.length ? trimmed : null;
 }
 
-function normalizeEnumString({ value }: TransformFnParams) {
+function normalizeEnumString(params: TransformFnParams): unknown {
+  const value = params.value as unknown;
   return typeof value === 'string' ? value.trim().toUpperCase() : value;
 }
 

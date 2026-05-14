@@ -6,7 +6,7 @@ import {
   type RecentExamActivitiesResponse,
   type RecentExerciseStatesResponse,
   type RecentStudySessionsResponse,
-  type StudyRoadmapsResponse,
+  type CurriculumJourneysResponse,
   type StudySessionProgressSummary,
   type WeakPointInsightsResponse,
 } from "@/lib/study-api";
@@ -15,7 +15,7 @@ import {
   STUDENT_TRAINING_SIMULATION_ROUTE,
   buildStudentLibraryExamRoute,
   buildStudentLibraryExamRouteWithSearch,
-  buildStudentMySpaceRoadmapRoute,
+  buildStudentMySpaceCurriculumJourneyRoute,
   buildStudentTrainingDrillRoute,
   buildStudentTrainingSessionRoute,
   buildStudentTrainingWeakPointsRoute,
@@ -24,7 +24,7 @@ import { formatRelativeStudyTimestamp } from "@/lib/study-time";
 
 type StudyBadgeTone = "neutral" | "brand" | "success" | "warning" | "accent";
 type HubActionTone = "neutral" | "brand" | "success";
-type HubRoadmapTone = "warning" | "brand" | "success";
+type HubCurriculumJourneyTone = "warning" | "brand" | "success";
 
 type RecentStudySession = RecentStudySessionsResponse["data"][number];
 type RecentExamActivity = RecentExamActivitiesResponse["data"][number];
@@ -108,7 +108,7 @@ export type WeakPointItem = {
   relativeTimestamp: string;
 };
 
-export type RoadmapActivityItem = {
+export type CurriculumJourneyActivityItem = {
   key: string;
   actionHref: string;
   detailsHref: string;
@@ -120,7 +120,7 @@ export type RoadmapActivityItem = {
   progressPercent: number;
   progressLabel: string;
   summaryLabel: string;
-  tone: HubRoadmapTone;
+  tone: HubCurriculumJourneyTone;
 };
 
 export function getSummaryProgressPercent(
@@ -280,7 +280,8 @@ export function buildHubActivityItems(input: {
   ]
     .sort(
       (left, right) =>
-        new Date(right.timestamp).getTime() - new Date(left.timestamp).getTime(),
+        new Date(right.timestamp).getTime() -
+        new Date(left.timestamp).getTime(),
     )
     .slice(0, 6);
 }
@@ -372,55 +373,60 @@ export function buildWeakPointItems(
   }));
 }
 
-export function buildRoadmapItems(
-  studyRoadmaps: StudyRoadmapsResponse["data"],
-): RoadmapActivityItem[] {
-  return studyRoadmaps.map((roadmap) => {
-    const needsReview = roadmap.needsReviewNodeCount;
-    const detailsHref = buildStudentMySpaceRoadmapRoute(roadmap.subject.code);
+export function buildCurriculumJourneyItems(
+  curriculumJourneys: CurriculumJourneysResponse["data"],
+): CurriculumJourneyActivityItem[] {
+  return curriculumJourneys.map((curriculumJourney) => {
+    const needsReview = curriculumJourney.needsReviewNodeCount;
+    const detailsHref = buildStudentMySpaceCurriculumJourneyRoute(
+      curriculumJourney.subject.code,
+    );
     const actionHref =
-      roadmap.nextAction?.type === "TOPIC_DRILL"
+      curriculumJourney.nextAction?.type === "TOPIC_DRILL"
         ? buildStudentTrainingDrillRoute({
-            subjectCode: roadmap.subject.code,
-            topicCodes: roadmap.nextAction.topicCode
-              ? [roadmap.nextAction.topicCode]
+            subjectCode: curriculumJourney.subject.code,
+            topicCodes: curriculumJourney.nextAction.topicCode
+              ? [curriculumJourney.nextAction.topicCode]
               : [],
           })
-        : roadmap.nextAction?.type === "REVIEW_MISTAKES"
-          ? buildStudentMySpaceRoadmapRoute(roadmap.subject.code, "mistakes")
-          : roadmap.nextAction?.type === "PAPER_SIMULATION"
+        : curriculumJourney.nextAction?.type === "REVIEW_MISTAKES"
+          ? buildStudentMySpaceCurriculumJourneyRoute(
+              curriculumJourney.subject.code,
+              "mistakes",
+            )
+          : curriculumJourney.nextAction?.type === "PAPER_SIMULATION"
             ? STUDENT_TRAINING_SIMULATION_ROUTE
             : detailsHref;
-    const tone: HubRoadmapTone =
-      needsReview > 0 || roadmap.openReviewItemCount > 0
+    const tone: HubCurriculumJourneyTone =
+      needsReview > 0 || curriculumJourney.openReviewItemCount > 0
         ? "warning"
-        : roadmap.notStartedNodeCount > 0
+        : curriculumJourney.notStartedNodeCount > 0
           ? "brand"
           : "success";
 
     return {
-      key: `roadmap:${roadmap.id}`,
+      key: `curriculum-journey:${curriculumJourney.id}`,
       actionHref,
       detailsHref,
-      title: roadmap.subject.name,
-      subtitle: roadmap.nodes
+      title: curriculumJourney.subject.name,
+      subtitle: curriculumJourney.nodes
         .slice(0, 3)
         .map((node) => node.title)
         .join(" · "),
-      updatedAt: roadmap.updatedAt,
-      relativeTimestamp: roadmap.updatedAt
-        ? formatRelativeStudyTimestamp(roadmap.updatedAt)
+      updatedAt: curriculumJourney.updatedAt,
+      relativeTimestamp: curriculumJourney.updatedAt
+        ? formatRelativeStudyTimestamp(curriculumJourney.updatedAt)
         : "جديد",
-      actionLabel: roadmap.nextAction?.label ?? "ابدأ المسار",
-      progressPercent: roadmap.progressPercent,
-      progressLabel: `${roadmap.solidNodeCount}/${roadmap.totalNodeCount} ثابت`,
+      actionLabel: curriculumJourney.nextAction?.label ?? "ابدأ المسار",
+      progressPercent: curriculumJourney.progressPercent,
+      progressLabel: `${curriculumJourney.solidNodeCount}/${curriculumJourney.totalNodeCount} ثابت`,
       summaryLabel:
         needsReview > 0
           ? `${needsReview} محاور تحتاج مراجعة`
-          : roadmap.openReviewItemCount > 0
-            ? `${roadmap.openReviewItemCount} عناصر مراجعة مفتوحة`
-            : roadmap.notStartedNodeCount > 0
-              ? `${roadmap.notStartedNodeCount} محاور متبقية`
+          : curriculumJourney.openReviewItemCount > 0
+            ? `${curriculumJourney.openReviewItemCount} عناصر مراجعة مفتوحة`
+            : curriculumJourney.notStartedNodeCount > 0
+              ? `${curriculumJourney.notStartedNodeCount} محاور متبقية`
               : "جاهز للمحاكاة",
       tone,
     };

@@ -13,6 +13,7 @@ import type {
   CreateFlashcardDeckResponse,
   CreateFlashcardResponse,
   DueFlashcardsResponse,
+  EnrollFlashcardDeckResponse,
   FlashcardDeckCardsResponse,
   FlashcardDecksResponse,
   ReviewFlashcardResponse,
@@ -44,6 +45,14 @@ export class FlashcardsController {
     @Body() payload: CreateFlashcardDeckDto,
   ): Promise<CreateFlashcardDeckResponse> {
     return this.flashcardsService.createDeck(request.user!.id, payload);
+  }
+
+  @Post('decks/:deckId/enroll')
+  enrollDeck(
+    @Req() request: AuthenticatedRequest,
+    @Param('deckId', ParseUUIDPipe) deckId: string,
+  ): Promise<EnrollFlashcardDeckResponse> {
+    return this.flashcardsService.enrollDeck(request.user!.id, deckId);
   }
 
   @Get('decks/:deckId/cards')

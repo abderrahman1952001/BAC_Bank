@@ -12,6 +12,15 @@ export const INGESTION_API_PROXY_TIMEOUT_MS = 120_000;
 export const SAFE_API_PROXY_RETRY_COUNT = 2;
 const SAFE_API_PROXY_RETRY_DELAYS_MS = [200, 500];
 
+async function readApiProxyAuthToken() {
+  if (process.env.PLAYWRIGHT_TEST_AUTH === "true") {
+    return null;
+  }
+
+  const { getToken } = await auth();
+  return getToken();
+}
+
 async function proxyRequest(request: NextRequest) {
   const upstreamBaseUrl = resolveApiUpstreamBaseUrl({
     requestUrl: request.url,
@@ -30,8 +39,7 @@ async function proxyRequest(request: NextRequest) {
   });
   const requestHeaders = new Headers(request.headers);
   const requestUrl = new URL(request.url);
-  const { getToken } = await auth();
-  const token = await getToken();
+  const token = await readApiProxyAuthToken();
 
   requestHeaders.delete("host");
   requestHeaders.delete("content-length");

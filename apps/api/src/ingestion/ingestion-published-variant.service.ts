@@ -94,9 +94,9 @@ export class IngestionPublishedVariantService {
     const createId = input.createId ?? randomUUID;
     const learningTargetMappingsByTopicId =
       await this.listLearningTargetMappingsByTopicId(
-      input.tx,
-      Array.from(input.topicIdsByCode.values()),
-    );
+        input.tx,
+        Array.from(input.topicIdsByCode.values()),
+      );
 
     for (const variant of input.draft.variants) {
       const variantId = createId();
@@ -179,7 +179,7 @@ export class IngestionPublishedVariantService {
         node.topicCodes,
         input.topicIdsByCode,
       );
-      await this.createNodeSkills(
+      await this.createNodeLearningTargets(
         input.tx,
         nodeId,
         topicIds,
@@ -224,7 +224,7 @@ export class IngestionPublishedVariantService {
     return topicIds;
   }
 
-  private async createNodeSkills(
+  private async createNodeLearningTargets(
     tx: Prisma.TransactionClient,
     nodeId: string,
     topicIds: string[],
@@ -251,8 +251,11 @@ export class IngestionPublishedVariantService {
     >();
 
     for (const topicId of topicIds) {
-      for (const mapping of learningTargetMappingsByTopicId.get(topicId) ?? []) {
-        const existing = aggregatedLearningTargets.get(mapping.learningTargetId);
+      for (const mapping of learningTargetMappingsByTopicId.get(topicId) ??
+        []) {
+        const existing = aggregatedLearningTargets.get(
+          mapping.learningTargetId,
+        );
 
         if (existing) {
           existing.weight += Number(mapping.weight);
@@ -290,14 +293,14 @@ export class IngestionPublishedVariantService {
     topicIds: string[],
   ) {
     if (!topicIds.length) {
-    return new Map<
-      string,
-      Array<{
-        learningTargetId: string;
-        weight: Prisma.Decimal;
-        isPrimary: boolean;
-      }>
-    >();
+      return new Map<
+        string,
+        Array<{
+          learningTargetId: string;
+          weight: Prisma.Decimal;
+          isPrimary: boolean;
+        }>
+      >();
     }
 
     const topics = await tx.curriculumNode.findMany({

@@ -14,8 +14,12 @@ import {
 } from "@/lib/playwright-test-fixtures";
 import { fetchServerApiJson } from "@/lib/server-api";
 
+function isPlaywrightTestAuthEnabled() {
+  return process.env.PLAYWRIGHT_TEST_AUTH === "true";
+}
+
 async function readPlaywrightTestSessionUser(): Promise<AuthUser | null> {
-  if (process.env.PLAYWRIGHT_TEST_AUTH !== "true") {
+  if (!isPlaywrightTestAuthEnabled()) {
     return null;
   }
 
@@ -36,7 +40,7 @@ async function readPlaywrightTestSessionUser(): Promise<AuthUser | null> {
 export async function readServerSessionUser(): Promise<AuthUser | null> {
   const playwrightUser = await readPlaywrightTestSessionUser();
 
-  if (playwrightUser) {
+  if (isPlaywrightTestAuthEnabled() || playwrightUser) {
     return playwrightUser;
   }
 

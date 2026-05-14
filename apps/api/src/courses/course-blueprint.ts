@@ -38,7 +38,7 @@ export type CourseBlueprintConcept = {
   role: CourseBlueprintConceptRole;
   quality: CourseBlueprintConceptQuality;
   slug: string;
-  roadmapTitle: string;
+  curriculumJourneyTitle: string;
   title: string;
   summary: string;
   learningObjective: string;
@@ -70,7 +70,7 @@ export type CourseBlueprintAuthoredConceptContent = {
   role?: CourseBlueprintConceptRole;
   quality?: CourseBlueprintConceptQuality;
   slug: string;
-  roadmapTitle?: string;
+  curriculumJourneyTitle?: string;
   title: string;
   summary: string;
   estimatedMinutes: number;
@@ -98,7 +98,7 @@ const courseBlueprintConceptSchema: z.ZodType<CourseBlueprintConcept> =
     role: z.enum(['FIELD_INTRO', 'UNIT_INTRO', 'LESSON', 'FIELD_SYNTHESIS']),
     quality: z.enum(['SKELETON', 'POLISHED']),
     slug: z.string().min(1),
-    roadmapTitle: z.string().min(1),
+    curriculumJourneyTitle: z.string().min(1),
     title: z.string().min(1),
     summary: z.string().min(1),
     learningObjective: z.string().min(1),
@@ -351,7 +351,7 @@ export function toAuthoredCourseTopicContent(
       role: concept.role,
       quality: concept.quality,
       slug: concept.slug,
-      roadmapTitle: concept.roadmapTitle,
+      curriculumJourneyTitle: concept.curriculumJourneyTitle,
       title: concept.title,
       summary: concept.summary,
       estimatedMinutes: concept.estimatedMinutes,

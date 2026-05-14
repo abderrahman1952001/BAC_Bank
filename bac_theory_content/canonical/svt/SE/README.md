@@ -37,7 +37,7 @@ Every concept must belong to one of the declared `requiredUnitCodes`, and every 
 
 Every concept also carries:
 
-- `roadmapTitle`: a short familiar title for the outer roadmap.
+- `curriculumJourneyTitle`: a short familiar title for the outer curriculum journey.
 - `title`: the richer in-node title.
 - `role`: `FIELD_INTRO`, `UNIT_INTRO`, `LESSON`, or `FIELD_SYNTHESIS`.
 

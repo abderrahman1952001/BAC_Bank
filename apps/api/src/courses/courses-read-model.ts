@@ -7,14 +7,14 @@ import type {
 } from '@bac-bank/contracts/courses';
 import type {
   FiltersResponse,
-  StudyRoadmapsResponse,
+  CurriculumJourneysResponse,
 } from '@bac-bank/contracts/study';
 import type { AuthoredCourseTopicContent } from './course-authored-content';
 
 type FilterTopic = FiltersResponse['topics'][number];
-type StudyRoadmap = StudyRoadmapsResponse['data'][number];
-type StudyRoadmapSection = StudyRoadmap['sections'][number];
-type StudyRoadmapNode = StudyRoadmapSection['nodes'][number];
+type CurriculumJourney = CurriculumJourneysResponse['data'][number];
+type CurriculumJourneySection = CurriculumJourney['sections'][number];
+type CurriculumJourneyNode = CurriculumJourneySection['nodes'][number];
 type TopicTreeNode = FilterTopic & {
   children: TopicTreeNode[];
 };
@@ -54,7 +54,7 @@ const authoredTopicPresentation: Record<
 };
 
 function mapNodeStatus(
-  status: StudyRoadmapNode['status'] | undefined,
+  status: CurriculumJourneyNode['status'] | undefined,
 ): CourseTopicStatus {
   switch (status) {
     case 'SOLID':
@@ -276,35 +276,41 @@ function buildSlugLookup(
   return lookup;
 }
 
-function findRoadmap(
-  roadmaps: StudyRoadmapsResponse['data'],
+function findCurriculumJourney(
+  curriculumJourneys: CurriculumJourneysResponse['data'],
   subjectCode: string,
 ) {
   return (
-    roadmaps.find((roadmap) => roadmap.subject.code === subjectCode) ?? null
-  );
-}
-
-function findSectionForTopic(
-  sections: StudyRoadmapSection[],
-  topicCode: string,
-) {
-  return (
-    sections.find((section) =>
-      section.nodes.some((node) => node.topicCode === topicCode),
+    curriculumJourneys.find(
+      (curriculumJourney) => curriculumJourney.subject.code === subjectCode,
     ) ?? null
   );
 }
 
-function resolveContinueTopicCode(roadmap: StudyRoadmap) {
-  const topicCode = roadmap.nextAction?.topicCode;
+function findSectionForTopic(
+  sections: CurriculumJourneySection[],
+  topicCode: string,
+) {
+  return (
+    sections.find((section) =>
+      section.nodes.some((node) => node.curriculumNodeCode === topicCode),
+    ) ?? null
+  );
+}
+
+function resolveContinueTopicCode(curriculumJourney: CurriculumJourney) {
+  const topicCode = curriculumJourney.nextAction?.curriculumNodeCode;
 
   if (!topicCode) {
     return null;
   }
 
-  const roadmapNodes = roadmap.sections.flatMap((section) => section.nodes);
-  return roadmapNodes.some((node) => node.topicCode === topicCode)
+  const curriculumJourneyNodes = curriculumJourney.sections.flatMap(
+    (section) => section.nodes,
+  );
+  return curriculumJourneyNodes.some(
+    (node) => node.curriculumNodeCode === topicCode,
+  )
     ? topicCode
     : null;
 }
@@ -323,15 +329,17 @@ function buildFallbackTopicSummary(node: TopicTreeNode) {
 }
 
 export function buildCourseSubjectCardsResponse(
-  roadmaps: StudyRoadmapsResponse['data'],
+  curriculumJourneys: CurriculumJourneysResponse['data'],
   authoredTopics: AuthoredCourseTopicContent[] = [],
 ): CourseSubjectCardsResponse {
-  const roadmapSubjectCodes = new Set(
-    roadmaps.map((roadmap) => roadmap.subject.code),
+  const curriculumJourneySubjectCodes = new Set(
+    curriculumJourneys.map(
+      (curriculumJourney) => curriculumJourney.subject.code,
+    ),
   );
   const authoredTopicBySubject = groupAuthoredTopicsBySubject(authoredTopics);
   const authoredCards = [...authoredTopicBySubject.entries()]
-    .filter(([subjectCode]) => !roadmapSubjectCodes.has(subjectCode))
+    .filter(([subjectCode]) => !curriculumJourneySubjectCodes.has(subjectCode))
     .map(([subjectCode, topics]) => ({
       subject: {
         code: subjectCode,
@@ -348,15 +356,15 @@ export function buildCourseSubjectCardsResponse(
 
   return {
     data: [
-      ...roadmaps.map((roadmap) => ({
-        subject: roadmap.subject,
-        title: roadmap.subject.name,
-        description: roadmap.description,
-        progressPercent: roadmap.progressPercent,
-        unitCount: roadmap.sections.length,
-        topicCount: roadmap.totalNodeCount,
-        completedTopicCount: roadmap.solidNodeCount,
-        continueTopicCode: resolveContinueTopicCode(roadmap),
+      ...curriculumJourneys.map((curriculumJourney) => ({
+        subject: curriculumJourney.subject,
+        title: curriculumJourney.subject.name,
+        description: curriculumJourney.description,
+        progressPercent: curriculumJourney.progressPercent,
+        unitCount: curriculumJourney.sections.length,
+        topicCount: curriculumJourney.totalNodeCount,
+        completedTopicCount: curriculumJourney.solidNodeCount,
+        continueTopicCode: resolveContinueTopicCode(curriculumJourney),
       })),
       ...authoredCards,
     ],
@@ -365,22 +373,25 @@ export function buildCourseSubjectCardsResponse(
 
 export function buildCourseSubjectResponse(input: {
   subjectCode: string;
-  roadmaps: StudyRoadmapsResponse['data'];
+  curriculumJourneys: CurriculumJourneysResponse['data'];
   filters: FiltersResponse;
   authoredTopics?: AuthoredCourseTopicContent[];
 }): CourseSubjectResponse | null {
-  const roadmap = findRoadmap(input.roadmaps, input.subjectCode);
+  const curriculumJourney = findCurriculumJourney(
+    input.curriculumJourneys,
+    input.subjectCode,
+  );
   const authoredTopics = input.authoredTopics ?? [];
 
-  if (!roadmap && authoredTopics.length === 0) {
+  if (!curriculumJourney && authoredTopics.length === 0) {
     return null;
   }
 
   const topicTree = buildSubjectTopicTree(input.filters, input.subjectCode);
   const topicByCode = buildTopicLookup(topicTree);
-  const units = roadmap
-    ? roadmap.sections.length > 0
-      ? roadmap.sections.map((section) => ({
+  const units = curriculumJourney
+    ? curriculumJourney.sections.length > 0
+      ? curriculumJourney.sections.map((section) => ({
           id: section.id,
           code: section.code,
           title: section.title,
@@ -395,13 +406,13 @@ export function buildCourseSubjectResponse(input: {
                 )
               : 0,
           topics: section.nodes.map((node) => {
-            const topic = topicByCode.get(node.topicCode);
+            const topic = topicByCode.get(node.curriculumNodeCode);
 
             return {
-              topicCode: node.topicCode,
-              slug: topic?.slug ?? node.topicCode.toLowerCase(),
+              topicCode: node.curriculumNodeCode,
+              slug: topic?.slug ?? node.curriculumNodeCode.toLowerCase(),
               title: node.title,
-              shortTitle: node.topicName,
+              shortTitle: node.curriculumNodeName,
               description: node.description,
               status: mapNodeStatus(node.status),
               progressPercent: node.progressPercent,
@@ -411,11 +422,11 @@ export function buildCourseSubjectResponse(input: {
         }))
       : [
           {
-            id: `fallback:${roadmap.id}`,
+            id: `fallback:${curriculumJourney.id}`,
             code: 'COURSE_PATH',
-            title: roadmap.title,
-            description: roadmap.description,
-            progressPercent: roadmap.progressPercent,
+            title: curriculumJourney.title,
+            description: curriculumJourney.description,
+            progressPercent: curriculumJourney.progressPercent,
             topics: topicTree.map((node) => buildFallbackTopicSummary(node)),
           },
         ]
@@ -427,18 +438,21 @@ export function buildCourseSubjectResponse(input: {
     .filter((topic) => !existingTopicSlugs.has(topic.topicSlug))
     .map((topic) => buildAuthoredCourseUnit(topic));
   const subject =
-    roadmap?.subject ??
+    curriculumJourney?.subject ??
     resolveSubjectIdentity(input.filters, input.subjectCode);
 
   return {
     subject,
-    title: roadmap?.title ?? subject.name,
+    title: curriculumJourney?.title ?? subject.name,
     description:
-      roadmap?.description ?? buildAuthoredSubjectDescription(authoredTopics),
-    progressPercent: roadmap?.progressPercent ?? 0,
-    topicCount: (roadmap?.totalNodeCount ?? 0) + authoredUnits.length,
-    completedTopicCount: roadmap?.solidNodeCount ?? 0,
-    continueTopicCode: roadmap ? resolveContinueTopicCode(roadmap) : null,
+      curriculumJourney?.description ??
+      buildAuthoredSubjectDescription(authoredTopics),
+    progressPercent: curriculumJourney?.progressPercent ?? 0,
+    topicCount: (curriculumJourney?.totalNodeCount ?? 0) + authoredUnits.length,
+    completedTopicCount: curriculumJourney?.solidNodeCount ?? 0,
+    continueTopicCode: curriculumJourney
+      ? resolveContinueTopicCode(curriculumJourney)
+      : null,
     units: [...units, ...authoredUnits],
   };
 }
@@ -446,13 +460,16 @@ export function buildCourseSubjectResponse(input: {
 export function buildCourseTopicResponse(input: {
   subjectCode: string;
   topicSlug: string;
-  roadmaps: StudyRoadmapsResponse['data'];
+  curriculumJourneys: CurriculumJourneysResponse['data'];
   filters: FiltersResponse;
   authoredTopic?: AuthoredCourseTopicContent | null;
 }): CourseTopicResponse | null {
-  const roadmap = findRoadmap(input.roadmaps, input.subjectCode);
+  const curriculumJourney = findCurriculumJourney(
+    input.curriculumJourneys,
+    input.subjectCode,
+  );
 
-  if (!roadmap && !input.authoredTopic) {
+  if (!curriculumJourney && !input.authoredTopic) {
     return null;
   }
 
@@ -468,11 +485,11 @@ export function buildCourseTopicResponse(input: {
     ? resolveAuthoredTopicPresentation(input.authoredTopic)
     : null;
   const topicCode = topic?.code ?? authoredPresentation?.topicCode ?? '';
-  const roadmapNode = roadmap?.sections
+  const curriculumJourneyNode = curriculumJourney?.sections
     .flatMap((section) => section.nodes)
-    .find((node) => node.topicCode === topicCode);
-  const section = roadmap
-    ? findSectionForTopic(roadmap.sections, topicCode)
+    .find((node) => node.curriculumNodeCode === topicCode);
+  const section = curriculumJourney
+    ? findSectionForTopic(curriculumJourney.sections, topicCode)
     : null;
   const fallbackConcepts = topic
     ? (topic.children.length > 0 ? topic.children : [topic]).map((child) => ({
@@ -493,12 +510,12 @@ export function buildCourseTopicResponse(input: {
         slug: concept.slug,
         unitCode: concept.unitCode ?? null,
         role: concept.role ?? 'LESSON',
-        title: concept.roadmapTitle ?? concept.title,
+        title: concept.curriculumJourneyTitle ?? concept.title,
         description: concept.summary,
       }))
     : fallbackConcepts;
   const subject =
-    roadmap?.subject ??
+    curriculumJourney?.subject ??
     resolveSubjectIdentity(input.filters, input.subjectCode);
 
   return {
@@ -513,9 +530,11 @@ export function buildCourseTopicResponse(input: {
     parentUnitTitle:
       section?.title ?? authoredPresentation?.parentUnitTitle ?? null,
     description:
-      roadmapNode?.description ?? authoredPresentation?.description ?? null,
-    progressPercent: roadmapNode?.progressPercent ?? 0,
-    status: mapNodeStatus(roadmapNode?.status),
+      curriculumJourneyNode?.description ??
+      authoredPresentation?.description ??
+      null,
+    progressPercent: curriculumJourneyNode?.progressPercent ?? 0,
+    status: mapNodeStatus(curriculumJourneyNode?.status),
     concepts,
   };
 }
@@ -524,7 +543,7 @@ export function buildCourseConceptResponse(input: {
   subjectCode: string;
   topicSlug: string;
   conceptSlug: string;
-  roadmaps: StudyRoadmapsResponse['data'];
+  curriculumJourneys: CurriculumJourneysResponse['data'];
   filters: FiltersResponse;
   authoredTopic: AuthoredCourseTopicContent | null;
 }): CourseConceptResponse | null {
@@ -535,7 +554,7 @@ export function buildCourseConceptResponse(input: {
   const topicResponse = buildCourseTopicResponse({
     subjectCode: input.subjectCode,
     topicSlug: input.topicSlug,
-    roadmaps: input.roadmaps,
+    curriculumJourneys: input.curriculumJourneys,
     filters: input.filters,
     authoredTopic: input.authoredTopic,
   });

@@ -90,7 +90,7 @@ describe('StudyReadModelService', () => {
           curriculumNodeMappings: [],
         },
         sessionExercise: {
-            exerciseNodeId: 'exercise-1',
+          exerciseNodeId: 'exercise-1',
           exerciseNode: {
             learningTargetMappings: [],
             curriculumNodeMappings: [

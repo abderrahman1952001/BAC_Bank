@@ -1,19 +1,22 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { motion } from 'motion/react';
-import { StudyClearVaultButton } from '@/components/study-clear-vault-button';
-import { StudyReviewQueueActions } from '@/components/study-review-queue-actions';
-import { EmptyState, StudyBadge } from '@/components/study-shell';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { motion } from "motion/react";
+import { StudyClearVaultButton } from "@/components/study-clear-vault-button";
+import { StudyReviewQueueActions } from "@/components/study-review-queue-actions";
+import { EmptyState, StudyBadge } from "@/components/study-shell";
+import { Button } from "@/components/ui/button";
 import type {
   HubActivityItem,
+  CurriculumJourneyActivityItem,
   MyMistakeItem,
-  RoadmapActivityItem,
   SavedExerciseItem,
   WeakPointItem,
-} from '@/lib/student-hub';
-import { STUDENT_LIBRARY_ROUTE, STUDENT_TRAINING_ROUTE } from '@/lib/student-routes';
+} from "@/lib/student-hub";
+import {
+  STUDENT_LIBRARY_ROUTE,
+  STUDENT_TRAINING_ROUTE,
+} from "@/lib/student-routes";
 
 function HubDualActions({
   primaryHref,
@@ -38,21 +41,21 @@ function HubDualActions({
   );
 }
 
-export function HubRoadmapSection({
-  roadmapItems,
+export function HubCurriculumJourneySection({
+  curriculumJourneyItems,
 }: {
-  roadmapItems: RoadmapActivityItem[];
+  curriculumJourneyItems: CurriculumJourneyActivityItem[];
 }) {
   return (
     <section className="hub-activity-section">
       <div className="hub-activity-head">
-        <h2>خارطة التقدم</h2>
+        <h2>مسارات المنهج</h2>
       </div>
 
-      {roadmapItems.length === 0 ? (
+      {curriculumJourneyItems.length === 0 ? (
         <EmptyState
-          title="لم تُجهّز خارطة بعد"
-          description="ستظهر لك مسارات المواد هنا عندما تتوفر خارطة المنهج لهذه المادة."
+          title="لم يُجهّز مسار بعد"
+          description="ستظهر لك مسارات المواد هنا عندما تتوفر رحلة المنهج لهذه المادة."
           action={
             <HubDualActions
               primaryHref={STUDENT_TRAINING_ROUTE}
@@ -64,7 +67,7 @@ export function HubRoadmapSection({
         />
       ) : (
         <div className="hub-activity-list">
-          {roadmapItems.map((item, index) => (
+          {curriculumJourneyItems.map((item, index) => (
             <motion.article
               key={item.key}
               className="hub-activity-card kind-session"
@@ -78,13 +81,15 @@ export function HubRoadmapSection({
             >
               <div className="hub-activity-top">
                 <div className="hub-activity-copy">
-                  <span className="hub-activity-kicker">خارطة المنهج</span>
+                  <span className="hub-activity-kicker">مسار المنهج</span>
                   <h3>
                     <Link href={item.detailsHref}>{item.title}</Link>
                   </h3>
                   <small>{item.subtitle}</small>
                 </div>
-                <span className="hub-activity-time">{item.relativeTimestamp}</span>
+                <span className="hub-activity-time">
+                  {item.relativeTimestamp}
+                </span>
               </div>
 
               <div className="hub-activity-foot hub-activity-progress-row">
@@ -107,16 +112,19 @@ export function HubRoadmapSection({
               </div>
 
               <div className="hub-activity-foot">
-                <Link href={item.detailsHref} className="hub-activity-action tone-neutral">
-                  افتح الخارطة
+                <Link
+                  href={item.detailsHref}
+                  className="hub-activity-action tone-neutral"
+                >
+                  افتح المسار
                 </Link>
                 <StudyBadge
                   tone={
-                    item.tone === 'success'
-                      ? 'success'
-                      : item.tone === 'brand'
-                        ? 'brand'
-                        : 'warning'
+                    item.tone === "success"
+                      ? "success"
+                      : item.tone === "brand"
+                        ? "brand"
+                        : "warning"
                   }
                 >
                   {item.summaryLabel}
@@ -176,15 +184,22 @@ export function HubWeakPointsSection({
             >
               <div className="hub-activity-top">
                 <div className="hub-activity-copy">
-                  <span className="hub-activity-kicker">{item.topicsLabel}</span>
+                  <span className="hub-activity-kicker">
+                    {item.topicsLabel}
+                  </span>
                   <h3>{item.title}</h3>
                   <small>{item.subtitle}</small>
                 </div>
-                <span className="hub-activity-time">{item.relativeTimestamp}</span>
+                <span className="hub-activity-time">
+                  {item.relativeTimestamp}
+                </span>
               </div>
 
               <div className="hub-activity-foot">
-                <Link href={item.href} className="hub-activity-action tone-brand">
+                <Link
+                  href={item.href}
+                  className="hub-activity-action tone-brand"
+                >
                   أصلحها الآن
                 </Link>
                 <StudyBadge tone="warning">
@@ -233,8 +248,8 @@ export function HubMistakesSection({
               key={item.key}
               className={
                 item.flagged
-                  ? 'hub-activity-card kind-mistake is-flagged'
-                  : 'hub-activity-card kind-mistake'
+                  ? "hub-activity-card kind-mistake is-flagged"
+                  : "hub-activity-card kind-mistake"
               }
               initial={false}
               animate={{ opacity: 1, y: 0 }}
@@ -246,33 +261,42 @@ export function HubMistakesSection({
             >
               <div className="hub-activity-top">
                 <div className="hub-activity-copy">
-                  <span className="hub-activity-kicker">{item.reasonsLabel}</span>
+                  <span className="hub-activity-kicker">
+                    {item.reasonsLabel}
+                  </span>
                   <h3>{item.title}</h3>
                   <small>{item.subtitle}</small>
                 </div>
-                <span className="hub-activity-time">{item.relativeTimestamp}</span>
+                <span className="hub-activity-time">
+                  {item.relativeTimestamp}
+                </span>
               </div>
 
               <div className="hub-activity-foot">
-                <Link href={item.href} className="hub-activity-action tone-brand">
+                <Link
+                  href={item.href}
+                  className="hub-activity-action tone-brand"
+                >
                   راجع الآن
                 </Link>
-                <StudyBadge tone={item.flagged ? 'brand' : 'warning'}>
+                <StudyBadge tone={item.flagged ? "brand" : "warning"}>
                   {item.questionSignalCount > 0
                     ? `${item.questionSignalCount} أسئلة تحتاج رجوعاً`
-                    : 'تمرين يحتاج رجوعاً'}
+                    : "تمرين يحتاج رجوعاً"}
                 </StudyBadge>
-                <StudyBadge tone={item.cadenceTone}>{item.cadenceLabel}</StudyBadge>
+                <StudyBadge tone={item.cadenceTone}>
+                  {item.cadenceLabel}
+                </StudyBadge>
               </div>
 
               <div className="hub-activity-foot">
                 <StudyReviewQueueActions
                   exerciseNodeId={item.exerciseNodeId}
-                  statuses={['DONE', 'SNOOZED', 'REMOVED']}
+                  statuses={["DONE", "SNOOZED", "REMOVED"]}
                   labels={{
-                    DONE: 'تمت',
-                    SNOOZED: 'لاحقاً',
-                    REMOVED: 'إخفاء',
+                    DONE: "تمت",
+                    SNOOZED: "لاحقاً",
+                    REMOVED: "إخفاء",
                   }}
                 />
               </div>
@@ -315,8 +339,8 @@ export function HubSavedExercisesSection({
               key={item.key}
               className={
                 item.flagged
-                  ? 'hub-activity-card kind-saved is-flagged'
-                  : 'hub-activity-card kind-saved'
+                  ? "hub-activity-card kind-saved is-flagged"
+                  : "hub-activity-card kind-saved"
               }
               initial={false}
               animate={{ opacity: 1, y: 0 }}
@@ -332,7 +356,9 @@ export function HubSavedExercisesSection({
                   <h3>{item.title}</h3>
                   <small>{item.subtitle}</small>
                 </div>
-                <span className="hub-activity-time">{item.relativeTimestamp}</span>
+                <span className="hub-activity-time">
+                  {item.relativeTimestamp}
+                </span>
               </div>
 
               <div className="hub-activity-foot">
@@ -342,8 +368,8 @@ export function HubSavedExercisesSection({
                 >
                   افتح في المكتبة
                 </Link>
-                <StudyBadge tone={item.flagged ? 'brand' : 'accent'}>
-                  {item.flagged ? 'راجع هذا التمرين' : 'تمرين محفوظ'}
+                <StudyBadge tone={item.flagged ? "brand" : "accent"}>
+                  {item.flagged ? "راجع هذا التمرين" : "تمرين محفوظ"}
                 </StudyBadge>
               </div>
             </motion.article>
@@ -398,7 +424,9 @@ export function HubRecentActivitySection({
                   <h3>{item.title}</h3>
                   <small>{item.subtitle}</small>
                 </div>
-                <span className="hub-activity-time">{item.relativeTimestamp}</span>
+                <span className="hub-activity-time">
+                  {item.relativeTimestamp}
+                </span>
               </div>
 
               <div className="hub-activity-foot hub-activity-progress-row">

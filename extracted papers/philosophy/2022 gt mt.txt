@@ -1,0 +1,680 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "ar",
+    "streamCode": "tm_ge",
+    "subjectCode": "philosophy",
+    "title": "اختبار في مادة الفلسفة",
+    "totalPoints": 20,
+    "year": 2022
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الوحيد",
+      "nodes": [
+        {
+          "localId": "ex1",
+          "nodeType": "EXERCISE",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "هل نتائج الرياضيات صحيحة بصورة مطلقة أم نسبية؟\n\nالمطلوب: اكتب مقالا فلسفيا تبرز فيه ما يلي:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "ملاحظة:\n1- الحرص على تثمين الإجابات المتميزة وتصحيحها تصحيحا جماعيا.\n2- تنقص ربع نقطة على كل خطأ لغوي، ولا يحاسب المترشح على أكثر من ثمانية أخطاء.\n3- يمكن للمترشح أن يقدم أطروحة الرياضيات المعاصرة على أطروحة الرياضيات الكلاسيكية."
+            }
+          ],
+          "assetIds": [],
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "parentLocalId": ""
+        },
+        {
+          "localId": "ex1_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "طرح المشكلة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**المدخل:** الرياضيات علم الكم، تقوم على الاستدلال الذي ينتقل من مقدمات إلى نتائج، (أو أي مدخل وظيفي).\n**المسار:** الاختلاف حول مدى صدق النتائج الرياضية، هناك من يعتبره مطلقا وهناك من يعتبره نسبيا.\n**السؤال:** هل تنتج عن الاستدلال الرياضي نتائج مطلقة اليقين؟"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المدخل: 0.5\nالمسار: 01\nالسؤال: 01\nالمجموع: 02.5"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 2.5,
+          "parentLocalId": "ex1"
+        },
+        {
+          "localId": "ex1_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرض الأطروحة وحججها ومناقشتها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**1 - الأطروحة:** نتائج الرياضيات صحيحة بصورة مطلقة (أنصار الرياضيات الكلاسيكية: اقليدس، ديكارت، كانط ...)\n\n**الحجج:**\n- نتائج الاستدلال في الرياضيات الكلاسيكية تُستمد من مبادئ أولية صادقة وضرورية.\n- ثبات المبادئ والنتائج الرياضية عبر التاريخ الطويل جعلها نموذجا لليقين المطلق.\n- الأمثلة والأقوال.\n\n**النقد:**\n- تطور الرياضيات هدم فكرة البداهة، فالبديهية القائلة إن «الكل أكبر من الجزء» صحيحة فقط في المجموعات المتناهية.\n- تعدد الأنساق الرياضية فند فكرة مطلقية الحقيقة الرياضية.\n- الأمثلة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الأطروحة: 01.5\nالحجج: 02\nالأمثلة والأقوال: 0.5\nالنقد: 01.5\nالأمثلة: 0.5\nالمجموع: 06"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 6,
+          "parentLocalId": "ex1"
+        },
+        {
+          "localId": "ex1_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرض نقيض الأطروحة وحججها ومناقشتها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**2 - نقيض الأطروحة:** نتائج الرياضيات صحيحة بصورة نسبية (أنصار الرياضيات المعاصرة: لوابتشفسكي، ريمان، برتراند راسل ...)\n\n**الحجج:**\n- تقوم الرياضيات على مبادئ بمثابة فرضيات أو مواضعات يتخذها الرياضي كمنطلقات للبرهنة.\n- تعدد الأنساق الرياضية من خلال تأسيس الهندسات اللاإقليدية وبذلك أصبحت الرياضيات إنشاء عقليا فرضيا ومنطقيا (نسق فرضي استنتاجي).\n- الأمثلة والأقوال.\n\n**النقد:**\n- تعدد الأنساق الرياضية لا يلغي فكرة اليقين المطلق داخل كل نسق.\n- الأمثلة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "نقيض الأطروحة: 01.5\nالحجج: 02\nالأمثلة والأقوال: 0.5\nالنقد: 01.5\nالأمثلة: 0.5\nالمجموع: 06"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 6,
+          "parentLocalId": "ex1"
+        },
+        {
+          "localId": "ex1_q4",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "التركيب."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**3 - التركيب:** كان اليقين في الرياضيات الكلاسيكية مطلقا وأصبح نسبيا في الرياضيات المعاصرة، وباعتبار أن كل نسق منسجم في بنائه ما يجعل اليقين مطلقا في داخله.\n\n**التبرير:** تطور الرياضيات أدى إلى تغير فكرة اليقين في الرياضيات.\n**ملاحظة:** يمكن للمترشح أن يغلب أو يتجاوز مع التبرير."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "التركيب: 01.5\nالتبرير: 01.5\nالمجموع: 03"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 3,
+          "parentLocalId": "ex1"
+        },
+        {
+          "localId": "ex1_q5",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 1
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حل المشكلة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "- الوصول الى اتخاذ موقف مبرر من المشكلة المطروحة.\n- تناسق الحل مع منطوق المشكلة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الوصول إلى اتخاذ موقف مبرر: 01.5\nتناسق الحل: 01\nالمجموع: 02.5"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 2.5,
+          "parentLocalId": "ex1"
+        },
+        {
+          "localId": "ex2",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "يقول كارل ياسبرز: «إن الفلسفة لا تنفصل عن العلم».\n\nالمطلوب: اكتب مقالا فلسفيا تدافع فيه عن الأطروحة مبرزا ما يلي:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "ملاحظة:\n1- الحرص على تثمين الإجابات المتميزة وتصحيحها تصحيحا جماعيا.\n2- تنقص ربع نقطة على كل خطأ لغوي، ولا يحاسب المترشح على أكثر من ثمانية أخطاء.\n3- يمكن للمترشح أن يقدم مرحلة الدفاع عن الاطروحة بحجج شخصية على مرحلة عرض منطق الخصوم ونقده."
+            }
+          ],
+          "assetIds": [],
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "parentLocalId": ""
+        },
+        {
+          "localId": "ex2_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "طرح المشكلة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**المدخل (الفكرة الشائعة):** الفلسفة منفصلة عن العلم.\n**المسار (النقيض):** الفلسفة لا تنفصل عن العلم.\n**السؤال:** وإذا سلمنا بصحة هذه الأطروحة الأخيرة القائلة \" إن الفلسفة لا تنفصل عن العلم \" فكيف ندافع عنها؟"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المدخل: 01\nالمسار: 0.5\nالسؤال: 01\nالمجموع: 02.5"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 2.5,
+          "parentLocalId": "ex2"
+        },
+        {
+          "localId": "ex2_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرض منطق الأطروحة وحججها."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**عرض منطق الأطروحة:**\nلا انفصال بين الفلسفة والعلم فكلاهما بحاجة إلى الآخر في تكامل وظيفي بينهما.\n\n**الحجج:**\n- الفلسفة تتناول مسائل علمية (الأبستمولوجيا ...).\n- المشكلات العلمية تحولت إلى إشكاليات فلسفية (الزمان والمكان، البيويتيقا...).\n- العلم يقوم على عمليات عقلية فلسفية (التساؤل، الفرضيات، النقد).\n- الكثير من النظريات العلمية انبثقت من أفكار فلسفية (في الفيزياء، الفلك والبيولوجيا...).\n- الأمثلة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "منطق الأطروحة: 01.5\nالحجج: 01.5 ، 01.5\nالأمثلة: 0.5\nالمجموع: 05"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 5,
+          "parentLocalId": "ex2"
+        },
+        {
+          "localId": "ex2_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "عرض منطق الخصوم ونقده."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**أ- عرض منطقهم:** الفصل بين الفلسفة والعلم على أساس التمايز في خصائص كل منهما.\n\n**ب- نقد منطقهم:**\n- التمايز لا يبرر الفصل بينهما.\n- الفصل بينهما مجرد فصل نظري منهجي أما في الممارسة فهما متداخلان."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "عرض منطقهم: 02.5\nنقد منطقهم: 02.5\nالمجموع: 05"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 5,
+          "parentLocalId": "ex2"
+        },
+        {
+          "localId": "ex2_q4",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "الدفاع عن الأطروحة بحجج شخصية."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "- التقدم العلمي والتكنولوجي قدم موضوعات وتحديات جديدة أفرزت تساؤلات فلسفية.\n- تطور الفلسفة مرتبط بتطور العلم.\n- لا وجود لعلم دون فلسفة: النظريات العلمية اعتمدت على مبادئ عقلية فلسفية (السببية، الحتمية)\n- (يمكن للمترشح تقديم حجج غيرها)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "الحجج: 02 ، 01.5 ، 01.5\nالمجموع: 05"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 5,
+          "parentLocalId": "ex2"
+        },
+        {
+          "localId": "ex2_q5",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 1
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 2
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حل المشكلة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**مشروعية الدفاع عن الأطروحة:**\n- التأكيد على مشروعية الدفاع عن الأطروحة والأخذ بها.\n- تناسق الحل مع منطق التحليل."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "التأكيد على المشروعية: 01.5\nتناسق الحل: 01\nالمجموع: 02.5"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 2.5,
+          "parentLocalId": "ex2"
+        },
+        {
+          "localId": "ex3",
+          "nodeType": "EXERCISE",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "«\"الملاحظ\" هو كل من طَبّق أساليب البحث البسيطة أو المركبة على دراسة ظواهر لا يُحْدِثُ فيها تنويعا، بل يجمعها كما هي عليه في حالتها الطبيعية، و\"المجرّب\" كل من استخدم أساليب البحث، بسيطة كانت أو مركبة، لتنويع الظّواهر الطّبيعية أو تعديلها لغرض ما، ثمّ إظهارها بعد ذلك في ظروف أو أحوال لم تكن مصاحبة في حالتها الطّبيعية لهذه الظّواهر. \"فالملاحظة\" في هذا المعنى هي إذن بحث ظاهرة طبيعية، و\"التّجربة\" بحث ظاهرة عدّلها الباحث...\nإنّ لفظتي \"الملاحظة\" و\"التّجربة\" إذا أُستعملتا بمعناهما المجرّد، وفي موضوع الاستدلال التّجريبي، دلّت الأولى على مجرّد تسجيل واقعة ما تسجيلا بسيطا، ودلّت الثّانية على استخدام واقعة لإثبات فكرة»."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "كلود برنار: مدخل إلى دراسة الطب التجريبي/ ص 14 و15\nترجمة: يوسف مراد وحمد الله سلطان\nالمشروع القومي للترجمة، القاهرة، الطبعة الأولى 2005."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "المطلوب: اكتب مقالا فلسفيا مبرزا فيه ما يلي:"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "ملاحظة:\n1- الحرص على تثمين الإجابات المتميزة وتصحيحها تصحيحا جماعيا.\n2- تنقص ربع نقطة على كل خطأ لغوي، ولا يحاسب المترشح على أكثر من ثمانية أخطاء."
+            }
+          ],
+          "assetIds": [],
+          "label": "الموضوع الثالث: (النص)",
+          "maxPoints": 20,
+          "parentLocalId": ""
+        },
+        {
+          "localId": "ex3_q1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "المشكلة التي يعالجها النص."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**المدخل:** يندرج النص ضمن مبحث فلسفة العلوم ويعالج مشكلة العلاقة بين الملاحظة والتجربة.\n**المسار:** الالتباس الذي يمكن أن يقع بين الملاحظة والتجربة، بسبب كونهما ينصبان على ظواهر الواقع، استدعى البحث في حقيقة العلاقة بينهما.\n**السؤال:** فما هي حقيقة العلاقة بين الملاحظة والتجربة (التجريب)؟"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "المدخل: 0.5\nالمسار: 01\nالسؤال: 01\nالمجموع: 02.5"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 2.5,
+          "parentLocalId": "ex3"
+        },
+        {
+          "localId": "ex3_q2",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "أطروحة صاحب النص (موقفه)."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**موقف صاحب النص:**\n**مضمونا:** الملاحظة مختلفة عن التجريب، فهما خطوتان متمايزتان.\n**شكلا:** \"إن لفظتي الملاحظة والتجربة، إذا استعملتا بمعناهما المجرد، وفي موضوع الاستدلال التجريبي، دلت الأولى على... ودلت الثانية على... \"."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "مضمونا: 02.5\nشكلا: 02.5\nالمجموع: 05"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 5,
+          "parentLocalId": "ex3"
+        },
+        {
+          "localId": "ex3_q3",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "الحجج المعتمدة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**الحجج:**\n**مضمونا:** المقارنة بينهما تكشف أن الملاحظة تنصب على الظواهر كما هي في الطبيعة وتكتفي بتسجيل معلومات عنها. بينما التجريب ينصب على ظواهر قد عدلها الباحث، فأضاف إليها عناصر أو أنقص منها أخرى بتوجيه من فكرة متصوّرة (الفرضية).\n**شكلا:** \"الملاحظ هو كل من طبق أساليب البحث البسيطة أو المركبة على دراسة ظواهر لا يحدث فيها تنويعا\"، \"والمجرب كل من استخدم أساليب البحث بسيطة أو مركبة لتنويع الظواهر الطبيعية أو تعديلها لغرض ما\"، \"الملاحظة في هذا المعنى هي إذا بحث ظاهرة طبيعية والتجربة بحث ظاهرة عدلها الباحث\"."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "مضمونا: 02.5\nشكلا: 02.5\nالمجموع: 05"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 5,
+          "parentLocalId": "ex3"
+        },
+        {
+          "localId": "ex3_q4",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "مناقشة النص مع إبراز الرأي الشخصي."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "**النقد والتقييم:**\n- لا وجود للتجريب دون ملاحظة كما أن التجريب نفسه قد يدفع نحو ملاحظة جديدة.\n- الفصل بين الملاحظة والتجريب مقبول نظريا فقط، فعلى مستوى الممارسة العلمية الإجرائية تتداخل الخطوتان وتتفاعلان.\n**الموقف الشخصي:** يترك الاختيار للمترشح مع تبريره."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "النقد والتقييم: 02.5\nالموقف الشخصي: 02.5\nالمجموع: 05"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 5,
+          "parentLocalId": "ex3"
+        },
+        {
+          "localId": "ex3_q5",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "sourceRefs": [
+            {
+              "documentKind": "EXAM",
+              "pageNumber": 2
+            },
+            {
+              "documentKind": "CORRECTION",
+              "pageNumber": 3
+            }
+          ],
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "حل المشكلة."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "- استنتاج موقف مبرر من المشكلة المطروحة.\n- مدى انسجام الخاتمة مع التحليل.\n- مدى وضوح حل المشكلة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "استنتاج موقف مبرر: 01\nمدى انسجام الخاتمة مع التحليل: 01\nمدى وضوح الحل: 0.5\nالمجموع: 02.5"
+            }
+          ],
+          "assetIds": [],
+          "maxPoints": 2.5,
+          "parentLocalId": "ex3"
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "nativeRenderCandidates": [],
+  "coverageLog": [
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "EXAM",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 1,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 2,
+      "status": "covered"
+    },
+    {
+      "documentKind": "CORRECTION",
+      "pageNumber": 3,
+      "status": "covered"
+    }
+  ],
+  "uncertainties": []
+}

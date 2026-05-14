@@ -1,7 +1,7 @@
 import { Transform, TransformFnParams, Type } from 'class-transformer';
 import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
-export class GetStudyRoadmapsQueryDto {
+export class GetStudyCurriculumJourneysQueryDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()

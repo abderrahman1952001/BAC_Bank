@@ -118,17 +118,17 @@ must be the stable basis for:
 ### 4. Produce The Premium Reviewed Extract
 
 Use the same extraction contract for every paper. The model may normalize
-structure, labels, block types, punctuation, and obvious OCR noise, but it must
-not summarize, paraphrase, omit, or replace source content with its own wording.
+structure, labels, block types, punctuation, and obvious transcription noise,
+but it must not summarize, paraphrase, omit, or replace source content with its
+own wording.
 The exam PDF is the source of truth for prompts. The correction PDF is the
 source of truth for solutions, rubrics, and barèmes.
 
-All Codex review passes are visual-first. Use OCR or extracted text only as a
-helper for search, comparison, and initial transcription; visually verify the
-canonical PDF or stored page PNG before trusting the result. When Codex finds a
-fixable fidelity, crop, cleanup, duplicate, stale native data, or presentation
-issue, it should repair it through the normal draft/crop/native path instead of
-only reporting it.
+All Codex review passes are visual-first. Treat model output as a candidate
+artifact only; visually verify the canonical PDF or stored page PNG before
+trusting the result. When Codex finds a fixable fidelity, crop, cleanup,
+duplicate, stale native data, or presentation issue, it should repair it through
+the normal draft/crop/native path instead of only reporting it.
 
 The pre-crop normalization pass, post-crop audit, and presentation pass each
 redo visual source-faithfulness checks. Post-crop is not crop-only; presentation
@@ -145,8 +145,9 @@ marks, and awkward layouts.
 Use a safely aggressive resolution stance for contradictions and ambiguities.
 Before handing off a hard case, zoom and re-check visually, compare nearby
 source context, compare exam and correction references, reconcile numbering and
-barème totals, and use OCR/search/model text only as helper evidence. If the
-evidence strongly supports a faithful reading or scan repair, make the fix.
+barème totals, and use model candidate text only as a pointer back to the source
+scans. If the evidence strongly supports a faithful reading or scan repair, make
+the fix.
 Official-source contradictions and typos should also be corrected when the
 correction is obvious and source-supported. Record a concrete audit note for the
 correction. Leave only non-obvious official-source contradictions or unresolved
@@ -349,11 +350,11 @@ Before handing off, verify all of the following.
 
 ### Readability
 
-- OCR spacing and punctuation are cleaned when obvious
+- spacing, punctuation, and line joins are cleaned when obvious
 - notation is consistent
 - block ordering follows the visible source order
 - the draft reads like a trustworthy structured version of the paper, not like
-  raw OCR
+  raw extraction
 
 ## Handoff Standard
 

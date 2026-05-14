@@ -50,151 +50,154 @@ export type ResolvedSubjectCurriculumJourneyDefinition = {
   sections: ResolvedCurriculumJourneySectionDefinition[];
 };
 
-const CURATED_CURRICULUM_JOURNEY_OVERRIDES: Record<string, SubjectCurriculumJourneyDefinition> = {
+const CURATED_CURRICULUM_JOURNEY_OVERRIDES: Record<
+  string,
+  SubjectCurriculumJourneyDefinition
+> = {
   MATHEMATICS: {
-    title: "خارطة الرياضيات",
+    title: 'خارطة الرياضيات',
     description:
-      "مسار مراجعة متدرج يثبت التحليل أولاً ثم ينتقل إلى النمذجة والهندسة قبل المحاكاة.",
+      'مسار مراجعة متدرج يثبت التحليل أولاً ثم ينتقل إلى النمذجة والهندسة قبل المحاكاة.',
     sections: [
       {
-        code: "ANALYSIS_CORE",
-        title: "التحليل والأساس",
+        code: 'ANALYSIS_CORE',
+        title: 'التحليل والأساس',
         description:
-          "هذه المرحلة تبني المحاور التي تظهر كثيراً وتؤثر على ثقة الطالب في المادة كلها.",
+          'هذه المرحلة تبني المحاور التي تظهر كثيراً وتؤثر على ثقة الطالب في المادة كلها.',
         nodes: [
           {
-            topicCode: "FUNCTIONS",
+            topicCode: 'FUNCTIONS',
             description:
-              "راجع دراسة الدوال والأسية واللوغاريتم حتى تصبح القراءة السريعة للمنحنى طبيعية.",
+              'راجع دراسة الدوال والأسية واللوغاريتم حتى تصبح القراءة السريعة للمنحنى طبيعية.',
           },
           {
-            topicCode: "SEQUENCES",
+            topicCode: 'SEQUENCES',
             description:
-              "ثبّت البرهنة في المتتاليات، الحصر، والاستدلال على النهايات قبل الانتقال للتكامل.",
+              'ثبّت البرهنة في المتتاليات، الحصر، والاستدلال على النهايات قبل الانتقال للتكامل.',
           },
           {
-            topicCode: "INTEGRALS",
+            topicCode: 'INTEGRALS',
             description:
-              "درّب اختيار طريقة التكامل المناسبة وربط النتيجة بالمساحة والتفسير الهندسي.",
+              'درّب اختيار طريقة التكامل المناسبة وربط النتيجة بالمساحة والتفسير الهندسي.',
           },
         ],
       },
       {
-        code: "MODELING_AND_SPACE",
-        title: "النمذجة والفضاء",
+        code: 'MODELING_AND_SPACE',
+        title: 'النمذجة والفضاء',
         description:
-          "بعد تثبيت الأساس، ركّز على النمذجة الاحتمالية والأدوات الجبرية والهندسة في الفضاء.",
+          'بعد تثبيت الأساس، ركّز على النمذجة الاحتمالية والأدوات الجبرية والهندسة في الفضاء.',
         nodes: [
           {
-            topicCode: "PROBABILITY",
+            topicCode: 'PROBABILITY',
             description:
-              "ابنِ النماذج الاحتمالية خطوة بخطوة مع الانتباه لقراءة المعطيات والشجرة أو الجداول.",
+              'ابنِ النماذج الاحتمالية خطوة بخطوة مع الانتباه لقراءة المعطيات والشجرة أو الجداول.',
           },
           {
-            topicCode: "COMPLEX_NUMBERS",
+            topicCode: 'COMPLEX_NUMBERS',
             description:
-              "ثبّت الانتقال بين الكتابات المختلفة للأعداد المركبة واستعمالها في التمثيل الهندسي.",
+              'ثبّت الانتقال بين الكتابات المختلفة للأعداد المركبة واستعمالها في التمثيل الهندسي.',
           },
           {
-            topicCode: "SPACE_GEOMETRY",
+            topicCode: 'SPACE_GEOMETRY',
             description:
-              "اختم بالاستدلال في الفضاء، المتجهات، والمستقيمات والمستويات تحت ضغط BAC الحقيقي.",
+              'اختم بالاستدلال في الفضاء، المتجهات، والمستقيمات والمستويات تحت ضغط BAC الحقيقي.',
           },
         ],
       },
     ],
   },
   PHYSICS: {
-    title: "خارطة الفيزياء",
+    title: 'خارطة الفيزياء',
     description:
-      "مسار يبدأ بالكيمياء المنظمة ثم ينتقل إلى الكهرباء والميكانيك قبل الإغلاق بالتحولات النووية.",
+      'مسار يبدأ بالكيمياء المنظمة ثم ينتقل إلى الكهرباء والميكانيك قبل الإغلاق بالتحولات النووية.',
     sections: [
       {
-        code: "CHEMISTRY",
-        title: "الكيمياء المنظمة",
+        code: 'CHEMISTRY',
+        title: 'الكيمياء المنظمة',
         description:
-          "ابدأ بالمحاور التي تعتمد على خطوات واضحة ومنهجية ثابتة لرفع الثقة سريعاً.",
+          'ابدأ بالمحاور التي تعتمد على خطوات واضحة ومنهجية ثابتة لرفع الثقة سريعاً.',
         nodes: [
           {
-            topicCode: "CHEMICAL_TRANSFORMATIONS",
+            topicCode: 'CHEMICAL_TRANSFORMATIONS',
             description:
-              "راجع تقدم التحول، الجداول، واستنتاج الحالة النهائية بدون ارتباك في الترميز.",
+              'راجع تقدم التحول، الجداول، واستنتاج الحالة النهائية بدون ارتباك في الترميز.',
           },
           {
-            topicCode: "CHEMICAL_EQUILIBRIUM",
+            topicCode: 'CHEMICAL_EQUILIBRIUM',
             description:
-              "ثبّت شروط التوازن والكميات المميزة وكيفية تبرير الاتجاه التطوري للنظام.",
+              'ثبّت شروط التوازن والكميات المميزة وكيفية تبرير الاتجاه التطوري للنظام.',
           },
           {
-            topicCode: "DIFFUSION",
+            topicCode: 'DIFFUSION',
             description:
-              "استعمل الانتشار كمحور قصير لتثبيت القراءة الفيزيائية للعلاقة بين الظاهرة والنموذج.",
+              'استعمل الانتشار كمحور قصير لتثبيت القراءة الفيزيائية للعلاقة بين الظاهرة والنموذج.',
           },
         ],
       },
       {
-        code: "FIELDS_AND_MOTION",
-        title: "الكهرباء والحركة",
+        code: 'FIELDS_AND_MOTION',
+        title: 'الكهرباء والحركة',
         description:
-          "هذه المرحلة تجمع المحاور الأكثر ثقلاً في الامتحان وتحتاج انتظاماً أكثر من الحفظ.",
+          'هذه المرحلة تجمع المحاور الأكثر ثقلاً في الامتحان وتحتاج انتظاماً أكثر من الحفظ.',
         nodes: [
           {
-            topicCode: "ELECTRICITY",
+            topicCode: 'ELECTRICITY',
             description:
-              "راجع الدارات، الاستجابة الزمنية، والقراءة المنهجية للمنحنيات والتوصيلات.",
+              'راجع الدارات، الاستجابة الزمنية، والقراءة المنهجية للمنحنيات والتوصيلات.',
           },
           {
-            topicCode: "MECHANICS",
+            topicCode: 'MECHANICS',
             description:
-              "ثبّت الرسم، الجرد الطاقوي، والتعامل مع النواقل قبل الدخول في التفاصيل الحسابية.",
+              'ثبّت الرسم، الجرد الطاقوي، والتعامل مع النواقل قبل الدخول في التفاصيل الحسابية.',
           },
           {
-            topicCode: "OSCILLATIONS",
+            topicCode: 'OSCILLATIONS',
             description:
-              "أعد بناء حدسك حول الاهتزازات الدورية، الطور، والطاقة داخل التمرين الطويل.",
+              'أعد بناء حدسك حول الاهتزازات الدورية، الطور، والطاقة داخل التمرين الطويل.',
           },
           {
-            topicCode: "NUCLEAR_TRANSFORMATIONS",
+            topicCode: 'NUCLEAR_TRANSFORMATIONS',
             description:
-              "اختم بالتحولات النووية وربط العلاقات بالحفظ والوحدات قبل المحاكاة الكاملة.",
+              'اختم بالتحولات النووية وربط العلاقات بالحفظ والوحدات قبل المحاكاة الكاملة.',
           },
         ],
       },
     ],
   },
   NATURAL_SCIENCES: {
-    title: "خارطة علوم الطبيعة",
+    title: 'خارطة علوم الطبيعة',
     description:
-      "مسار هادئ يركز على فهم المنطق البيولوجي قبل تكثيف تطبيقات الوثائق والتحليل.",
+      'مسار هادئ يركز على فهم المنطق البيولوجي قبل تكثيف تطبيقات الوثائق والتحليل.',
     sections: [
       {
-        code: "LIVING_SYSTEMS",
-        title: "الأنظمة الحية",
+        code: 'LIVING_SYSTEMS',
+        title: 'الأنظمة الحية',
         description:
-          "ابدأ بالمحاور التي تبني اللغة العلمية والمنهجية الأساسية في تحليل الوثائق.",
+          'ابدأ بالمحاور التي تبني اللغة العلمية والمنهجية الأساسية في تحليل الوثائق.',
         nodes: [
           {
-            topicCode: "PROTEINS",
+            topicCode: 'PROTEINS',
             description:
-              "راجع العلاقة بين البنية والوظيفة، التركيب، والآليات المنظمة حتى تصبح الوثائق أوضح.",
+              'راجع العلاقة بين البنية والوظيفة، التركيب، والآليات المنظمة حتى تصبح الوثائق أوضح.',
           },
           {
-            topicCode: "ENERGY_TRANSFORMATIONS",
+            topicCode: 'ENERGY_TRANSFORMATIONS',
             description:
-              "ثبّت تحويل الطاقة من خلال الربط بين التركيب الضوئي والتنفس والتخمر.",
+              'ثبّت تحويل الطاقة من خلال الربط بين التركيب الضوئي والتنفس والتخمر.',
           },
         ],
       },
       {
-        code: "EARTH_DYNAMIC",
-        title: "ديناميكية الأرض",
+        code: 'EARTH_DYNAMIC',
+        title: 'ديناميكية الأرض',
         description:
-          "اختم بالمحور الجيولوجي مع تدريب على القراءة الدقيقة للوثائق والتفسير المرحلي.",
+          'اختم بالمحور الجيولوجي مع تدريب على القراءة الدقيقة للوثائق والتفسير المرحلي.',
         nodes: [
           {
-            topicCode: "PLATE_TECTONICS",
+            topicCode: 'PLATE_TECTONICS',
             description:
-              "درّب تفسير الظواهر التكتونية وبناء الاستنتاج من الخرائط والرسوم والوثائق.",
+              'درّب تفسير الظواهر التكتونية وبناء الاستنتاج من الخرائط والرسوم والوثائق.',
           },
         ],
       },
@@ -244,44 +247,44 @@ function buildFallbackSections(
     topics.length <= 3
       ? [
           {
-            code: "CORE",
-            title: "المسار الأساسي",
+            code: 'CORE',
+            title: 'المسار الأساسي',
             description: `ابدأ بأهم محاور ${subjectName} في ترتيب واضح وقابل للمراجعة اليومية.`,
           },
         ]
       : topics.length <= 6
         ? [
             {
-              code: "FOUNDATION",
-              title: "الانطلاقة",
+              code: 'FOUNDATION',
+              title: 'الانطلاقة',
               description:
-                "ابدأ بالمحاور التي تمنحك أكبر استقرار منهجي قبل التوسع في بقية المادة.",
+                'ابدأ بالمحاور التي تمنحك أكبر استقرار منهجي قبل التوسع في بقية المادة.',
             },
             {
-              code: "CONSOLIDATION",
-              title: "التثبيت",
+              code: 'CONSOLIDATION',
+              title: 'التثبيت',
               description:
-                "بعد بناء الأساس، ثبّت المحاور المتبقية وراجع نقاط الضعف قبل المحاكاة.",
+                'بعد بناء الأساس، ثبّت المحاور المتبقية وراجع نقاط الضعف قبل المحاكاة.',
             },
           ]
         : [
             {
-              code: "FOUNDATION",
-              title: "الانطلاقة",
+              code: 'FOUNDATION',
+              title: 'الانطلاقة',
               description:
-                "ابدأ بالمحاور الأولى لبناء الثقة والروتين اليومي داخل المادة.",
+                'ابدأ بالمحاور الأولى لبناء الثقة والروتين اليومي داخل المادة.',
             },
             {
-              code: "BUILD",
-              title: "التوسع",
+              code: 'BUILD',
+              title: 'التوسع',
               description:
-                "وسّع المراجعة على بقية المحاور مع الحفاظ على جلسات قصيرة ومنتظمة.",
+                'وسّع المراجعة على بقية المحاور مع الحفاظ على جلسات قصيرة ومنتظمة.',
             },
             {
-              code: "POLISH",
-              title: "التثبيت قبل المحاكاة",
+              code: 'POLISH',
+              title: 'التثبيت قبل المحاكاة',
               description:
-                "اختم هذه المرحلة بتثبيت المحاور الأخيرة وتحويلها إلى سرعة وثبات في الأداء.",
+                'اختم هذه المرحلة بتثبيت المحاور الأخيرة وتحويلها إلى سرعة وثبات في الأداء.',
             },
           ];
   const chunks = chunkTopics(topics, sectionShells.length);
@@ -305,7 +308,8 @@ export function resolveSubjectCurriculumJourneyDefinition(input: {
   const topicByCode = new Map(sortedTopics.map((topic) => [topic.code, topic]));
   const override = CURATED_CURRICULUM_JOURNEY_OVERRIDES[input.subjectCode];
   const sourceSections =
-    override?.sections ?? buildFallbackSections(input.subjectName, sortedTopics);
+    override?.sections ??
+    buildFallbackSections(input.subjectName, sortedTopics);
   const seenTopicCodes = new Set<string>();
   let previousTopicCode: string | null = null;
 
@@ -343,16 +347,17 @@ export function resolveSubjectCurriculumJourneyDefinition(input: {
     }),
   }));
 
-  const missingTopics = sortedTopics.filter((topic) => !seenTopicCodes.has(topic.code));
+  const missingTopics = sortedTopics.filter(
+    (topic) => !seenTopicCodes.has(topic.code),
+  );
 
   if (missingTopics.length) {
-    const fallbackSection =
-      sections[sections.length - 1] ?? {
-        code: "CORE",
-        title: "المسار الأساسي",
-        description: null,
-        nodes: [],
-      };
+    const fallbackSection = sections[sections.length - 1] ?? {
+      code: 'CORE',
+      title: 'المسار الأساسي',
+      description: null,
+      nodes: [],
+    };
 
     fallbackSection.nodes.push(
       ...missingTopics.map((topic) => {

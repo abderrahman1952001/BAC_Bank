@@ -4,11 +4,11 @@ import type {
 } from "@bac-bank/contracts/study";
 import {
   parseCreateSessionResponse,
+  parseCurriculumJourneysResponse,
   parseExamResponse,
   parseMyMistakesResponse,
   parseRecordReviewQueueOutcomeResponse,
   parseStudyQuestionAiExplanationResponse,
-  parseStudyRoadmapsResponse,
   parseStudentExerciseStatesLookupResponse,
   parseUpdateSessionProgressResponse,
   parseUpdateReviewQueueItemStatusResponse,
@@ -52,9 +52,9 @@ export type {
   StudyQuestionReflection,
   StudyQuestionResponseMode,
   StudyQuestionResultStatus,
-  StudyRoadmapActionType,
-  StudyRoadmapNodeStatus,
-  StudyRoadmapsResponse,
+  CurriculumJourneyActionType,
+  CurriculumJourneyNodeStatus,
+  CurriculumJourneysResponse,
   StudyReviewReasonType,
   StudySessionPedagogy,
   WeakPointInsightsResponse,
@@ -88,7 +88,7 @@ export {
   parseRecordReviewQueueOutcomeResponse,
   parseRecentExerciseStatesResponse,
   parseStudyQuestionAiExplanationResponse,
-  parseStudyRoadmapsResponse,
+  parseCurriculumJourneysResponse,
   parseStudySessionResponse,
   parseWeakPointInsightsResponse,
   parseRecentExamActivitiesResponse,
@@ -201,7 +201,9 @@ export async function submitStudyQuestionEvaluation(
   questionId: string,
   input: import("@bac-bank/contracts/study").SubmitStudyQuestionEvaluationRequest,
 ) {
-  return fetchJson<import("@bac-bank/contracts/study").UpdateSessionProgressResponse>(
+  return fetchJson<
+    import("@bac-bank/contracts/study").UpdateSessionProgressResponse
+  >(
     `${API_BASE_URL}/study/sessions/${encodeURIComponent(
       sessionId,
     )}/questions/${encodeURIComponent(questionId)}/evaluation`,
@@ -221,7 +223,9 @@ export async function submitStudyQuestionAnswer(
   questionId: string,
   input: import("@bac-bank/contracts/study").SubmitStudyQuestionAnswerRequest,
 ) {
-  return fetchJson<import("@bac-bank/contracts/study").UpdateSessionProgressResponse>(
+  return fetchJson<
+    import("@bac-bank/contracts/study").UpdateSessionProgressResponse
+  >(
     `${API_BASE_URL}/study/sessions/${encodeURIComponent(
       sessionId,
     )}/questions/${encodeURIComponent(questionId)}/answer`,
@@ -353,7 +357,9 @@ export async function upsertStudentExerciseState(
   exerciseNodeId: string,
   input: import("@bac-bank/contracts/study").UpsertExerciseStateRequest,
 ) {
-  return fetchJson<import("@bac-bank/contracts/study").UpsertExerciseStateResponse>(
+  return fetchJson<
+    import("@bac-bank/contracts/study").UpsertExerciseStateResponse
+  >(
     `${API_BASE_URL}/study/exercises/${encodeURIComponent(exerciseNodeId)}/state`,
     {
       method: "POST",
@@ -450,12 +456,10 @@ export async function clearStudyReviewVault(input?: {
   );
 }
 
-export async function fetchWeakPointInsights(
-  input?: {
-    limit?: number;
-    subjectCode?: string | null;
-  },
-) {
+export async function fetchWeakPointInsights(input?: {
+  limit?: number;
+  subjectCode?: string | null;
+}) {
   const params = new URLSearchParams();
 
   if (typeof input?.limit === "number") {
@@ -468,19 +472,19 @@ export async function fetchWeakPointInsights(
 
   const query = params.toString();
 
-  return fetchJson<import("@bac-bank/contracts/study").WeakPointInsightsResponse>(
+  return fetchJson<
+    import("@bac-bank/contracts/study").WeakPointInsightsResponse
+  >(
     `${API_BASE_URL}/study/weak-points${query ? `?${query}` : ""}`,
     undefined,
     parseWeakPointInsightsResponse,
   );
 }
 
-export async function fetchStudyRoadmaps(
-  input?: {
-    limit?: number;
-    subjectCode?: string | null;
-  },
-) {
+export async function fetchStudyCurriculumJourneys(input?: {
+  limit?: number;
+  subjectCode?: string | null;
+}) {
   const params = new URLSearchParams();
 
   if (typeof input?.limit === "number") {
@@ -493,9 +497,11 @@ export async function fetchStudyRoadmaps(
 
   const query = params.toString();
 
-  return fetchJson<import("@bac-bank/contracts/study").StudyRoadmapsResponse>(
-    `${API_BASE_URL}/study/roadmaps${query ? `?${query}` : ""}`,
+  return fetchJson<
+    import("@bac-bank/contracts/study").CurriculumJourneysResponse
+  >(
+    `${API_BASE_URL}/study/curriculum-journeys${query ? `?${query}` : ""}`,
     undefined,
-    parseStudyRoadmapsResponse,
+    parseCurriculumJourneysResponse,
   );
 }

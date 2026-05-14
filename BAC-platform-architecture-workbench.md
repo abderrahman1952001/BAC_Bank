@@ -174,13 +174,13 @@ Positioning rule:
 - Weak-point derivation should read from question signals mapped to skills first, then roll up into topics for student-facing explanation.
 - Do not collect both manual question reflection and manual exercise reflection in `v1`.
 
-### Curriculum and roadmap rules
+### Curriculum and study-map rules
 
-- Curriculum structure, student roadmap, and weak-point analytics are different layers and should not be forced into one table.
+- Curriculum structure, student study maps, and weak-point analytics are different layers and should not be forced into one table.
 - `topics` represent curriculum grouping and browsing.
 - `skills` represent the abilities being tested and remediated across or within topics.
-- The student roadmap is a curated product surface built on top of curriculum and read models, not the raw taxonomy itself.
-- The first roadmap should be a calm ordered unit map per subject rather than a highly branching graph.
+- The student study map is a curated product surface built on top of curriculum and read models, not the raw taxonomy itself.
+- The first study map should be a calm ordered unit map per subject rather than a highly branching graph.
 - Student-facing curriculum should resolve through the student's selected leaf stream; stream-family overlap is an internal authoring convenience, not a repeated student filter.
 - Canonical course authoring rules live in `bac_theory_content/canonical/README.md`: respected sources are internal curriculum intelligence, while published lessons must be original, stream-scoped BAC Bank content.
 
@@ -311,7 +311,7 @@ Initial contents:
 - Saved / review list with flagged items visually highlighted
 - My Mistakes / Mistake Vault
 - Weak-point insight block for premium users
-- subject roadmap / study map once the underlying signals are trustworthy enough
+- subject curriculum journey / study map once the underlying signals are trustworthy enough
 
 
 Optional additions:
@@ -353,16 +353,16 @@ Saved / review semantics:
 - It may be paired with a gentle pacing indicator or weekly target reminder.
 - It should be small, seasonal, and easy to ignore if the student does not want to focus on it constantly.
 
-### Subject roadmap / study map
+### Subject Curriculum Journey / Study Map
 
-- The roadmap may use topic or unit nodes with visual progress, weak-signal cues, and direct `Continue`, `Drill`, or `Review mistakes` actions.
+- The study map may use curriculum nodes with visual progress, weak-signal cues, and direct `Continue`, `Drill`, or `Review mistakes` actions.
 - The first version should be ordered and mobile-friendly rather than a fully free-form tree.
-- It should exist both as a My Space summary block and as a dedicated subject page rather than staying trapped inside one dashboard card.
-- The roadmap should be authored as ordered sections / units containing nodes, not auto-read as a raw topic dump.
-- A roadmap node should stay a student-recognizable revision chunk, usually mapped to one main topic in `v1`.
+- It should exist both as a My Space summary block and as a dedicated subject curriculum page rather than staying trapped inside one dashboard card.
+- The study map should be derived from the canonical `CurriculumNode` spine plus curated section definitions, not auto-read as a raw topic dump.
+- A study-map node should stay a student-recognizable revision chunk, usually mapped to one main curriculum node in `v1`.
 - Nodes may carry a soft recommended previous node for guidance, but the student should still be able to jump manually.
 - Topic circles, progress rings, and connectors are UI choices; they must read from derived progress state rather than become the data model.
-- Roadmap progression should be derived from question signals rolled up into topic and skill read models.
+- Study-map progression should be derived from question signals rolled up into curriculum-node and learning-target read models.
 
 ---
 
@@ -566,12 +566,14 @@ Source and publication structure:
 - `exam_variants` (`ExamVariant`): `id`, `paper_id`, `code`, `title`, `status`, `metadata`, `created_at`, `updated_at`
 - `exam_nodes` (`ExamNode`): `id`, `variant_id`, `parent_id`, `node_type`, `order_index`, `label`, `max_points`, `status`, `metadata`, `created_at`, `updated_at`
 - `exam_node_blocks` (`ExamNodeBlock`): `id`, `node_id`, `role`, `order_index`, `block_type`, `text_value`, `media_id`, `data`, `created_at`, `updated_at`
-- `subject_curricula` (`SubjectCurriculum`): `id`, `subject_id`, `stream_id`, `code`, `title`, `valid_from_year`, `valid_to_year`, `is_active`, `created_at`, `updated_at`
-- `topics` (`Topic`): `id`, `subject_id`, `curriculum_id`, `code`, `name`, `slug`, `parent_id`, `kind`, `depth`, `path`, `display_order`, `is_selectable`, `student_label`, `created_at`, `updated_at`
-- `skills` (`Skill`): `id`, `subject_id`, `curriculum_id`, `code`, `name`, `slug`, `description`, `display_order`, `is_assessable`, `created_at`, `updated_at`
-- `topic_skills` (`TopicSkill`): `topic_id`, `skill_id`, `weight`, `is_primary`
-- `exam_node_skills` (`ExamNodeSkill`): `node_id`, `skill_id`, `weight`, `is_primary`, `source`, `confidence`, `reviewed_at`, `created_at`, `updated_at`
-- `exam_node_topics` (`ExamNodeTopic`): `node_id`, `topic_id`
+- `curricula` (`Curriculum`): `id`, `subject_id`, `code`, `family_code`, `title`, `valid_from_year`, `valid_to_year`, `is_active`, `created_at`, `updated_at`
+- `subject_offerings` (`SubjectOffering`): `id`, `stream_id`, `subject_id`, `curriculum_id`, `coefficient`, `is_optional`, `valid_from_year`, `valid_to_year`, `created_at`
+- `curriculum_nodes` (`CurriculumNode`): `id`, `subject_id`, `curriculum_id`, `code`, `name`, `slug`, `parent_id`, `kind`, `depth`, `path`, `display_order`, `is_selectable`, `student_label`, `metadata`, `created_at`, `updated_at`
+- `learning_targets` (`LearningTarget`): `id`, `subject_id`, `curriculum_id`, `code`, `name`, `slug`, `description`, `display_order`, `kind`, `is_assessable`, `is_reviewable`, `created_at`, `updated_at`
+- `curriculum_node_learning_targets` (`CurriculumNodeLearningTarget`): `curriculum_node_id`, `learning_target_id`, `weight`, `is_primary`
+- `exam_node_learning_targets` (`ExamNodeLearningTarget`): `node_id`, `learning_target_id`, `weight`, `is_primary`, `source`, `confidence`, `reviewed_at`, `created_at`, `updated_at`
+- `exam_node_curriculum_nodes` (`ExamNodeCurriculumNode`): `node_id`, `curriculum_node_id`
+- `course_lessons`, `course_steps`, `course_visual_assets`, `course_depth_portals`, `course_quizzes`, and `course_quiz_options`: DB-backed course teaching content attached to curriculum nodes
 - `media` (`Media`): `id`, `url`, `type`, `uploaded_by`, `metadata`, `created_at`, `updated_at`
 
 Admin and ingestion workflow:
@@ -584,19 +586,16 @@ Admin and ingestion workflow:
 Users and student data:
 
 - `users` (`User`): `id`, `clerk_user_id`, `email`, `full_name`, `role`, `subscription_status`, `stream_id`, `created_at`, `updated_at`
-- `user_topic_stats` (`UserTopicStats`): `user_id`, `topic_id`, `accuracy_percentage`, `total_attempts`, `updated_at`
+- `user_curriculum_node_stats` (`UserCurriculumNodeStats`): `user_id`, `curriculum_node_id`, `accuracy_percentage`, `total_attempts`, `updated_at`
 - `exam_activities` (`ExamActivity`): `id`, `user_id`, `exam_id`, `sujet_number`, `total_question_count`, `completed_question_count`, `opened_question_count`, `solution_viewed_count`, `created_at`, `last_opened_at`, `updated_at`
 - `study_sessions` (`StudySession`): `id`, `user_id`, `title`, `family`, `kind`, `source_exam_id`, `requested_exercise_count`, `duration_minutes`, `filters_json`, `resume_mode`, `status`, `started_at`, `deadline_at`, `submitted_at`, `completed_at`, `last_interacted_at`, `active_exercise_node_id`, `active_question_node_id`, `created_at`, `updated_at`
 - `study_sessions` should also carry whether optional drill timing was enabled for that run
 - `study_session_exercises` (`StudySessionExercise`): `id`, `session_id`, `exercise_node_id`, `exam_id`, `order_index`, `first_opened_at`, `last_interacted_at`, `completed_at`, `created_at`, `updated_at`
 - `study_session_questions` (`StudySessionQuestion`): `id`, `session_exercise_id`, `question_node_id`, `sequence_index`, `answer_state`, `result_status`, `evaluation_mode`, `first_opened_at`, `last_interacted_at`, `completed_at`, `skipped_at`, `solution_viewed_at`, `time_spent_seconds`, `reveal_count`, `reflection`, `diagnosis`, `answer_payload_json`, `finalized_at`, `created_at`, `updated_at`
 - `student_exercise_states` (`StudentExerciseState`): `user_id`, `exercise_node_id`, `bookmarked_at`, `flagged_at`, `created_at`, `updated_at`
-- `student_topic_rollups` (`StudentTopicRollup`): `user_id`, `topic_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `created_at`, `updated_at`
-- `student_skill_rollups` (`StudentSkillRollup`): `user_id`, `skill_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `created_at`, `updated_at`
+- `student_curriculum_node_rollups` (`StudentCurriculumNodeRollup`): `user_id`, `curriculum_node_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `created_at`, `updated_at`
+- `student_learning_target_rollups` (`StudentLearningTargetRollup`): `user_id`, `learning_target_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `created_at`, `updated_at`
 - `student_review_queue_items` (`StudentReviewQueueItem`): `id`, `user_id`, `identity_key`, `question_node_id`, `exercise_node_id`, `reason_type`, `status`, `priority_score`, `created_at`, `last_promoted_at`, `status_updated_at`, `updated_at`
-- `subject_roadmaps` (`SubjectRoadmap`): `id`, `curriculum_id`, `code`, `title`, `description`, `version`, `is_active`, `created_at`, `updated_at`
-- `roadmap_sections` (`RoadmapSection`): `id`, `roadmap_id`, `code`, `title`, `description`, `order_index`, `created_at`, `updated_at`
-- `roadmap_nodes` (`RoadmapNode`): `id`, `roadmap_id`, `section_id`, `topic_id`, `title`, `description`, `order_index`, `parent_roadmap_node_id`, `recommended_previous_roadmap_node_id`, `estimated_sessions`, `is_optional`, `created_at`, `updated_at`
 
 ### Current schema limitations that matter
 
@@ -604,26 +603,26 @@ Users and student data:
 - `study_session_questions` now also persist a lightweight post-review diagnosis so the system can distinguish concept, method, and execution/detail failures without inventing a second reflection model; `time pressure` should remain deferred from the active drill flow until drill timing is explicit
 - bookmark and flag state is now normalized in `student_exercise_states`, and `My Mistakes` is now backed by the persisted `student_review_queue_items` read model
 - AI explanation caching does not yet have its own table
-- `subject_curricula` now own topic and skill trees, and the active study/admin filters read through that scope, but the seed still creates one active general curriculum per subject rather than multiple stream- or year-specific variants
-- the first `skills` layer now exists and powers weak-point drill derivation, but it is still starter coverage rather than a complete subject-by-subject diagnostic map
-- `exam_node_skills` now exists and is backfilled/published from `topic_skills`, but it is still a derived first pass rather than a manually reviewed or independently authored node-skill layer
-- `student_topic_rollups` and `student_skill_rollups` now exist and are refreshed from session-progress writes, and weak-point insight now reads from rollups plus the persisted review queue rather than raw session-history scans
+- `curricula` and `curriculum_nodes` now own the learning spine, and active study/admin filters read through that scope; stream-specific visibility is expressed through `subject_offerings`
+- the first `learning_targets` layer now exists and powers weak-point drill derivation, but it is still starter coverage rather than a complete subject-by-subject diagnostic map
+- `exam_node_learning_targets` now exists and can be derived from curriculum-node mappings, but it is still a first pass rather than a fully manually reviewed node-target layer
+- `student_curriculum_node_rollups` and `student_learning_target_rollups` now exist and are refreshed from session-progress writes, and weak-point insight now reads from rollups plus the persisted review queue rather than raw session-history scans
 - question interaction and evaluation format are not first-class schema fields yet
 - `student_review_queue_items` is still a derived read model, but it now preserves explicit student-managed workflow state through `DONE`, `SNOOZED`, and `REMOVED`
-- `subject_roadmaps`, `roadmap_sections`, and `roadmap_nodes` now exist and power both the My Space roadmap summary and the dedicated subject roadmap page
-- roadmap authoring is now seed-managed through curated section/node definitions with a safe fallback, but it is still not exposed through a dedicated admin authoring flow
-- roadmap progression is now derived from `student_topic_rollups`, not stored in a separate student roadmap table
-- `user_topic_stats` exists, but it should not remain the long-term source of truth for premium insight
+- curriculum journeys now power both the My Space summary and the dedicated subject curriculum page through `CurriculumNode` plus curated section definitions
+- study-map presentation is still not exposed through a dedicated admin authoring flow
+- study-map progression is derived from `student_curriculum_node_rollups`, not stored in a separate student journey table
+- `user_curriculum_node_stats` exists, but it should not remain the long-term source of truth for premium insight
 
 ### Target model decisions
 
-- Keep `topics` as the curriculum tree and browsing structure.
-- Add curriculum scoping and versioning so the tree can vary by stream and by valid years.
+- Keep `curriculum_nodes` as the curriculum tree and browsing structure.
+- Keep curriculum scoping and versioning so the tree can vary by stream and by valid years.
 - Store the user's selected stream as the leaf stream only; derive the family through the stream relation rather than storing both.
-- Add `skills` as a separate subject-aware layer linked to topics.
-- Keep topic drill and roadmap grouping shaped by topics or units, not by skills alone.
-- Derive weak-point insight from question signals mapped to skills and then rolled up into topics.
-- Treat roadmaps as curated student-facing structures built on top of curriculum and rollups.
+- Keep `learning_targets` as a separate subject-aware diagnostic layer linked to curriculum nodes.
+- Keep topic drill and study-map grouping shaped by curriculum nodes or units, not by learning targets alone.
+- Derive weak-point insight from question signals mapped to learning targets and then rolled up into curriculum nodes.
+- Treat study maps as curated student-facing projections built on top of curriculum and rollups.
 
 ### Planned target additions and schema evolution
 
@@ -644,39 +643,41 @@ Target enum additions and changes:
 
 Planned evolution of existing tables:
 
-- `exam_node_topics` may remain the `v1` join table, but if topic tagging needs weights or provenance it should be evolved in place rather than replaced by a parallel mapping path
+- `exam_node_curriculum_nodes` should remain the curriculum-node join table; if tagging needs weights or provenance, evolve it in place rather than creating a parallel mapping path
 - `exam_nodes` should gain nullable content-delivery fields such as `interaction_format`, `response_mode`, `evaluation_mode`, and `difficulty_band` for question nodes
 - `study_sessions` still needs `active_session_exercise_id` if we want the resume pointer to move from exercise-node identity to session-row identity
 - `study_sessions` should persist whether optional drill timing was enabled for that session
 - `study_session_questions` should eventually gain richer answer/result writes from the active student UI, not just normalized persistence columns
-- `user_topic_stats` should become a derived read model or cache rather than a write-owned truth table
+- `user_curriculum_node_stats` should become a derived read model or cache rather than a write-owned truth table
 - `exam_activities` may remain for browse continuity, but it should not own training-state truth
 
 Planned new tables:
 
-- `subject_curricula` (`SubjectCurriculum`): `id`, `subject_id`, `stream_id`, `code`, `title`, `valid_from_year`, `valid_to_year`, `is_active`, `created_at`, `updated_at`
-- `skills` (`Skill`): `id`, `subject_id`, `curriculum_id`, `code`, `name`, `slug`, `description`, `display_order`, `is_assessable`, `created_at`, `updated_at`
-- `topic_skills` (`TopicSkill`): `topic_id`, `skill_id`, `weight`, `is_primary`
-- `exam_node_skills` (`ExamNodeSkill`): `node_id`, `skill_id`, `weight`, `is_primary`, `source`, `confidence`, `reviewed_at`, `created_at`, `updated_at`
+- `curricula` (`Curriculum`): canonical subject curriculum, version, and family identity
+- `subject_offerings` (`SubjectOffering`): stream-specific visibility and coefficients for curricula
+- `curriculum_nodes` (`CurriculumNode`): the curriculum tree used for browsing, courses, exam mappings, and progress rollups
+- `learning_targets` (`LearningTarget`): the diagnostic and remediation layer
+- `curriculum_node_learning_targets` (`CurriculumNodeLearningTarget`): node-to-target weighting
+- `exam_node_learning_targets` (`ExamNodeLearningTarget`): question/exercise-to-target diagnostics with provenance
 - `study_session_questions` (`StudySessionQuestion`): `id`, `session_exercise_id`, `question_node_id`, `sequence_index`, `answer_state`, `result_status`, `evaluation_mode`, `first_opened_at`, `last_interacted_at`, `completed_at`, `skipped_at`, `solution_viewed_at`, `time_spent_seconds`, `reveal_count`, `reflection`, `answer_payload_json`, `finalized_at`, `created_at`, `updated_at`
 - `student_exercise_states` (`StudentExerciseState`): `user_id`, `exercise_node_id`, `bookmarked_at`, `flagged_at`, `created_at`, `updated_at`
 - `question_ai_explanation_cache` (`QuestionAiExplanationCache`): `id`, `question_node_id`, `locale`, `explanation_key`, `content_version`, `prompt_version`, `explanation_json`, `generated_at`, `updated_at`
-- `student_topic_rollups` (`StudentTopicRollup`): `user_id`, `topic_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `updated_at`
-- `student_skill_rollups` (`StudentSkillRollup`): `user_id`, `skill_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `updated_at`
+- `student_curriculum_node_rollups` (`StudentCurriculumNodeRollup`): `user_id`, `curriculum_node_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `updated_at`
+- `student_learning_target_rollups` (`StudentLearningTargetRollup`): `user_id`, `learning_target_id`, `attempted_questions`, `correct_count`, `incorrect_count`, `revealed_count`, `skipped_count`, `hard_count`, `missed_count`, `last_seen_at`, `weakness_score`, `mastery_bucket`, `updated_at`
 - `student_review_queue_items` (`StudentReviewQueueItem`): `id`, `user_id`, `identity_key`, `question_node_id`, `exercise_node_id`, `reason_type`, `status`, `priority_score`, `created_at`, `last_promoted_at`, `status_updated_at`, `updated_at`
-- `student_roadmap_progress` (`StudentRoadmapProgress`): `user_id`, `roadmap_node_id`, `status`, `completion_percent`, `last_activity_at`, `updated_at`
 
 Still deferred:
 
-- `student_roadmap_progress` (`StudentRoadmapProgress`): `user_id`, `roadmap_node_id`, `status`, `completion_percent`, `last_activity_at`, `updated_at`
+- a separate student-owned journey-progress table; keep progress derived from rollups until a real workflow justifies manual state
 
 ### Planned target study-state model
 
 Target ownership:
 
-- `SubjectCurriculum` owns the active learning structure for one subject, stream, and validity window
-- `Topic` is the curriculum tree
-- `Skill` is the diagnostic and remediation layer
+- `Curriculum` owns the active learning structure for one subject and validity window
+- `SubjectOffering` decides which streams see that curriculum
+- `CurriculumNode` is the curriculum tree
+- `LearningTarget` is the diagnostic and remediation layer
 - `StudySession` is the orchestration unit
 - `StudySessionExercise` is one assigned exercise inside one session
 - `StudySessionQuestion` is the question-level interaction truth
@@ -686,22 +687,22 @@ Target ownership:
 Planned state rules:
 
 - question-level state is the canonical manual learning signal
-- topics explain where content sits in the curriculum
-- skills explain what ability the student is struggling with
+- curriculum nodes explain where content sits in the curriculum
+- learning targets explain what ability the student is struggling with
 - reflection is question-level
 - bookmark and flag stay exercise-level persistent state
-- weak-point insight should derive from question signals mapped to skills and then rolled up to topics plus exercise-level saved/review state
+- weak-point insight should derive from question signals mapped to learning targets and then rolled up to curriculum nodes plus exercise-level saved/review state
 - resume pointers on `StudySession` are eventually synced convenience state, not per-click hard truth
-- roadmap progress should read from derived rollups, not manual per-node toggles, and the current implementation now follows that rule
+- curriculum journey progress should read from derived rollups, not manual per-node toggles, and the current implementation follows that rule
 
 Analytics/read-model direction:
 
-- weak-topic insight should derive from `StudySessionQuestion`, `StudentExerciseState`, and the topic/skill mapping layer, but read through persisted rollups and review-queue items rather than raw scans where possible
+- weak-point insight should derive from `StudySessionQuestion`, `StudentExerciseState`, and the curriculum-node/learning-target mapping layer, but read through persisted rollups and review-queue items rather than raw scans where possible
 - the product should prefer transparent counts and recency over one opaque score
-- the first cached aggregate layer is now in place through `student_topic_rollups`, `student_skill_rollups`, and `student_review_queue_items`
-- derived topic rollups, skill rollups, and review queue items should be treated as read models rather than write-owned truth
+- the first cached aggregate layer is now in place through `student_curriculum_node_rollups`, `student_learning_target_rollups`, and `student_review_queue_items`
+- derived curriculum-node rollups, learning-target rollups, and review queue items should be treated as read models rather than write-owned truth
 - review-queue workflow state should sit on top of those derived items rather than creating a second corrective persistence model, and the current implementation now follows that rule
-- the first roadmap can read from topic rollups; more advanced recommendation logic can come later, and that first derived roadmap layer is now active
+- the first curriculum journey reads from curriculum-node rollups; more advanced recommendation logic can come later
 
 ### Migration direction
 
@@ -710,6 +711,6 @@ Analytics/read-model direction:
 3. Add `StudySessionQuestion` with richer question-state fields
 4. Add `StudentExerciseState`
 5. Add `QuestionAiExplanationCache`
-6. Add derived read models for topic rollups, skill rollups, and review queue reads
-7. Add roadmap tables only after the student signals and rollups are trustworthy
-8. Keep roadmap progress derived until there is a real user-owned workflow that justifies `student_roadmap_progress`
+6. Add derived read models for curriculum-node rollups, learning-target rollups, and review queue reads
+7. Keep curriculum journeys as projections over the curriculum spine and rollups
+8. Add separate journey-progress persistence only if a real user-owned workflow requires manual state

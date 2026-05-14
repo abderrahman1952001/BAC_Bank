@@ -17,6 +17,7 @@ import {
 } from '@/lib/study-api';
 
 const INLINE_MATH_REGEX = /\$\$([\s\S]+?)\$\$|\$([^\n$]+?)\$|`([^`\n]+?)`/g;
+const INLINE_BOLD_REGEX = /\*\*([^*\n]+?)\*\*/g;
 
 function passthroughLoader({ src }: ImageLoaderProps): string {
   return src;
@@ -104,6 +105,45 @@ function normalizeMathDelimiters(text: string): string {
     .replace(/\\\(((?:.|\n)*?)\\\)/g, (_, value: string) => `$${value}$`);
 }
 
+function renderInlineText(text: string, keyPrefix: string): ReactNode {
+  const parts: ReactNode[] = [];
+  let cursor = 0;
+  let matchIndex = 0;
+
+  for (const match of text.matchAll(INLINE_BOLD_REGEX)) {
+    const start = match.index ?? -1;
+
+    if (start < 0) {
+      continue;
+    }
+
+    if (start > cursor) {
+      parts.push(
+        <span key={`${keyPrefix}-text-${matchIndex}`}>
+          {text.slice(cursor, start)}
+        </span>,
+      );
+    }
+
+    parts.push(
+      <strong key={`${keyPrefix}-bold-${matchIndex}`}>
+        {match[1] ?? ''}
+      </strong>,
+    );
+
+    cursor = start + match[0].length;
+    matchIndex += 1;
+  }
+
+  if (cursor < text.length) {
+    parts.push(
+      <span key={`${keyPrefix}-tail`}>{text.slice(cursor)}</span>,
+    );
+  }
+
+  return parts.length ? parts : text;
+}
+
 function renderInlineMathText(text: string, keyPrefix: string): ReactNode {
   const normalized = normalizeMathDelimiters(text);
   const parts: ReactNode[] = [];
@@ -121,7 +161,10 @@ function renderInlineMathText(text: string, keyPrefix: string): ReactNode {
     if (start > cursor) {
       parts.push(
         <span key={`${keyPrefix}-text-${matchIndex}`}>
-          {normalized.slice(cursor, start)}
+          {renderInlineText(
+            normalized.slice(cursor, start),
+            `${keyPrefix}-text-${matchIndex}`,
+          )}
         </span>,
       );
     }
@@ -160,7 +203,9 @@ function renderInlineMathText(text: string, keyPrefix: string): ReactNode {
 
   if (cursor < normalized.length) {
     parts.push(
-      <span key={`${keyPrefix}-tail`}>{normalized.slice(cursor)}</span>,
+      <span key={`${keyPrefix}-tail`}>
+        {renderInlineText(normalized.slice(cursor), `${keyPrefix}-tail`)}
+      </span>,
     );
   }
 

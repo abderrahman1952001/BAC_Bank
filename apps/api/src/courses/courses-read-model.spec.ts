@@ -1,6 +1,6 @@
 import type {
   FiltersResponse,
-  StudyRoadmapsResponse,
+  CurriculumJourneysResponse,
 } from '@bac-bank/contracts/study';
 import {
   buildCourseConceptResponse,
@@ -72,9 +72,9 @@ const filtersFixture: FiltersResponse = {
   ],
 };
 
-const roadmapsFixture: StudyRoadmapsResponse['data'] = [
+const curriculumJourneysFixture: CurriculumJourneysResponse['data'] = [
   {
-    id: 'roadmap-math',
+    id: 'curriculum-journey-math',
     title: 'خارطة الرياضيات',
     description: 'مسار الرياضيات.',
     subject: { code: 'MATHEMATICS', name: 'الرياضيات' },
@@ -90,6 +90,8 @@ const roadmapsFixture: StudyRoadmapsResponse['data'] = [
     nextAction: {
       type: 'TOPIC_DRILL',
       label: 'واصل الدوال',
+      curriculumNodeCode: 'FUNCTIONS',
+      curriculumNodeName: 'الدوال',
       topicCode: 'FUNCTIONS',
       topicName: 'الدوال',
     },
@@ -105,6 +107,8 @@ const roadmapsFixture: StudyRoadmapsResponse['data'] = [
             id: 'node-functions',
             title: 'الدوال',
             description: 'فهم السلوك العام للدوال.',
+            curriculumNodeCode: 'FUNCTIONS',
+            curriculumNodeName: 'الدوال',
             topicCode: 'FUNCTIONS',
             topicName: 'الدوال',
             orderIndex: 0,
@@ -134,6 +138,8 @@ const roadmapsFixture: StudyRoadmapsResponse['data'] = [
             id: 'node-sequences',
             title: 'المتتاليات',
             description: 'الأنماط والتقارب.',
+            curriculumNodeCode: 'SEQUENCES',
+            curriculumNodeName: 'المتتاليات',
             topicCode: 'SEQUENCES',
             topicName: 'المتتاليات',
             orderIndex: 1,
@@ -172,7 +178,7 @@ const authoredSvtTopicFixture: AuthoredCourseTopicContent = {
       slug: 'protein-world',
       unitCode: 'PROTEIN_SYNTHESIS',
       role: 'FIELD_INTRO',
-      roadmapTitle: 'مدخل المجال',
+      curriculumJourneyTitle: 'مدخل المجال',
       title: 'لماذا تبدأ الحياة بالبروتينات؟',
       summary: 'البروتينات آلات خلوية تجعل المعلومة الوراثية فعلا حيا.',
       estimatedMinutes: 9,
@@ -202,7 +208,7 @@ const authoredMathSequencesTopicFixture: AuthoredCourseTopicContent = {
       slug: 'sequence-field-gate',
       unitCode: 'SEQUENCES',
       role: 'FIELD_INTRO',
-      roadmapTitle: 'مدخل المتتاليات',
+      curriculumJourneyTitle: 'مدخل المتتاليات',
       title: 'مدخل إلى المتتاليات',
       summary: 'المتتالية دالة معرفة على رتب طبيعية وتنتج حدا لكل رتبة مسموحة.',
       estimatedMinutes: 8,
@@ -219,7 +225,7 @@ const authoredMathSequencesTopicFixture: AuthoredCourseTopicContent = {
 
 describe('courses read-model builders', () => {
   it('builds course subject cards without web routes', () => {
-    expect(buildCourseSubjectCardsResponse(roadmapsFixture)).toEqual({
+    expect(buildCourseSubjectCardsResponse(curriculumJourneysFixture)).toEqual({
       data: [
         {
           subject: {
@@ -239,9 +245,10 @@ describe('courses read-model builders', () => {
   });
 
   it('adds authored-only subjects to course subject cards', () => {
-    const response = buildCourseSubjectCardsResponse(roadmapsFixture, [
-      authoredSvtTopicFixture,
-    ]);
+    const response = buildCourseSubjectCardsResponse(
+      curriculumJourneysFixture,
+      [authoredSvtTopicFixture],
+    );
 
     expect(response.data).toHaveLength(2);
     expect(response.data[1]).toMatchObject({
@@ -258,10 +265,10 @@ describe('courses read-model builders', () => {
     });
   });
 
-  it('builds a course subject response from roadmap sections and curriculum topics', () => {
+  it('builds a course subject response from curriculum journey sections and curriculum topics', () => {
     const response = buildCourseSubjectResponse({
       subjectCode: 'MATHEMATICS',
-      roadmaps: roadmapsFixture,
+      curriculumJourneys: curriculumJourneysFixture,
       filters: filtersFixture,
     });
 
@@ -293,10 +300,10 @@ describe('courses read-model builders', () => {
     });
   });
 
-  it('builds an authored-only course subject response without a roadmap', () => {
+  it('builds an authored-only course subject response without a curriculum journey', () => {
     const response = buildCourseSubjectResponse({
       subjectCode: 'NATURAL_SCIENCES',
-      roadmaps: [],
+      curriculumJourneys: [],
       filters: filtersFixture,
       authoredTopics: [authoredSvtTopicFixture],
     });
@@ -331,7 +338,7 @@ describe('courses read-model builders', () => {
       buildCourseTopicResponse({
         subjectCode: 'MATHEMATICS',
         topicSlug: 'functions',
-        roadmaps: roadmapsFixture,
+        curriculumJourneys: curriculumJourneysFixture,
         filters: filtersFixture,
       }),
     ).toEqual({
@@ -374,7 +381,7 @@ describe('courses read-model builders', () => {
     const response = buildCourseTopicResponse({
       subjectCode: 'NATURAL_SCIENCES',
       topicSlug: 'proteins',
-      roadmaps: [],
+      curriculumJourneys: [],
       filters: filtersFixture,
       authoredTopic: authoredSvtTopicFixture,
     });
@@ -407,7 +414,7 @@ describe('courses read-model builders', () => {
     const response = buildCourseTopicResponse({
       subjectCode: 'MATHEMATICS',
       topicSlug: 'functions',
-      roadmaps: roadmapsFixture,
+      curriculumJourneys: curriculumJourneysFixture,
       filters: filtersFixture,
       authoredTopic: {
         subjectCode: 'MATHEMATICS',
@@ -418,7 +425,7 @@ describe('courses read-model builders', () => {
             slug: 'numeric-function',
             unitCode: 'ANALYSIS',
             role: 'LESSON',
-            roadmapTitle: 'الدالة العددية',
+            curriculumJourneyTitle: 'الدالة العددية',
             title: 'ما معنى الدالة العددية؟',
             summary: 'كل قيمة من المجال تقود إلى صورة وحيدة.',
             estimatedMinutes: 4,
@@ -450,7 +457,7 @@ describe('courses read-model builders', () => {
     const response = buildCourseTopicResponse({
       subjectCode: 'MATHEMATICS',
       topicSlug: 'sequences',
-      roadmaps: roadmapsFixture,
+      curriculumJourneys: curriculumJourneysFixture,
       filters: filtersFixture,
       authoredTopic: authoredMathSequencesTopicFixture,
     });
@@ -489,7 +496,7 @@ describe('courses read-model builders', () => {
       subjectCode: 'MATHEMATICS',
       topicSlug: 'functions',
       conceptSlug: 'numeric-function',
-      roadmaps: roadmapsFixture,
+      curriculumJourneys: curriculumJourneysFixture,
       filters: filtersFixture,
       authoredTopic: {
         subjectCode: 'MATHEMATICS',
@@ -500,7 +507,7 @@ describe('courses read-model builders', () => {
             slug: 'numeric-function',
             unitCode: 'ANALYSIS',
             role: 'LESSON',
-            roadmapTitle: 'الدالة العددية',
+            curriculumJourneyTitle: 'الدالة العددية',
             title: 'ما معنى الدالة العددية؟',
             summary: 'كل قيمة من المجال تقود إلى صورة وحيدة.',
             estimatedMinutes: 4,
@@ -555,7 +562,7 @@ describe('courses read-model builders', () => {
             slug: 'domain-of-definition',
             unitCode: 'ANALYSIS',
             role: 'LESSON',
-            roadmapTitle: 'مجموعة التعريف',
+            curriculumJourneyTitle: 'مجموعة التعريف',
             title: 'مجموعة التعريف',
             summary: 'تحديد الأعداد المسموح بها.',
             estimatedMinutes: 4,
@@ -600,12 +607,12 @@ describe('courses read-model builders', () => {
     expect(response?.steps).toHaveLength(1);
   });
 
-  it('builds an authored-only concept response without a roadmap', () => {
+  it('builds an authored-only concept response without a curriculum journey', () => {
     const response = buildCourseConceptResponse({
       subjectCode: 'NATURAL_SCIENCES',
       topicSlug: 'proteins',
       conceptSlug: 'protein-world',
-      roadmaps: [],
+      curriculumJourneys: [],
       filters: filtersFixture,
       authoredTopic: authoredSvtTopicFixture,
     });

@@ -274,7 +274,7 @@ describe('IngestionPublishedAssetsService', () => {
 
     const [uploaded] = storageClient.putObject.mock.calls[0] ?? [];
     expect(uploaded).toBeDefined();
-    const raw = await sharp(uploaded!.body).raw().toBuffer({
+    const raw = await sharp(uploaded.body).raw().toBuffer({
       resolveWithObject: true,
     });
     const channels = raw.info.channels;

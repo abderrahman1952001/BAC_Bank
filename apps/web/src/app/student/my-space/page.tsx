@@ -4,9 +4,11 @@ import {
   fetchServerRecentExamActivities,
   fetchServerRecentExerciseStates,
   fetchServerRecentStudySessions,
-  fetchServerStudyRoadmaps,
+  fetchServerStudyCurriculumJourneys,
   fetchServerWeakPointInsights,
 } from "@/lib/server-study-api";
+import { fetchServerDueFlashcards } from "@/lib/server-flashcards-api";
+import { fetchServerLabTools } from "@/lib/server-lab-api";
 
 export default async function StudentMySpacePage() {
   const [
@@ -14,33 +16,42 @@ export default async function StudentMySpacePage() {
     initialRecentExamActivities,
     initialRecentExerciseStates,
     initialMyMistakes,
-    initialStudyRoadmaps,
+    initialCurriculumJourneys,
     initialWeakPointInsights,
-  ] =
-    await Promise.all([
-      fetchServerRecentStudySessions(6)
-        .then((payload) => payload.data)
-        .catch(() => undefined),
-      fetchServerRecentExamActivities(6)
-        .then((payload) => payload.data)
-        .catch(() => undefined),
-      fetchServerRecentExerciseStates(6)
-        .then((payload) => payload.data)
-        .catch(() => undefined),
-      fetchServerMyMistakes({
-        limit: 6,
-      })
-        .then((payload) => payload.data)
-        .catch(() => undefined),
-      fetchServerStudyRoadmaps({
-        limit: 4,
-      })
-        .then((payload) => payload.data)
-        .catch(() => undefined),
-      fetchServerWeakPointInsights({
-        limit: 4,
-      }).catch(() => undefined),
-    ]);
+    initialDueFlashcards,
+    initialLabTools,
+  ] = await Promise.all([
+    fetchServerRecentStudySessions(6)
+      .then((payload) => payload.data)
+      .catch(() => undefined),
+    fetchServerRecentExamActivities(6)
+      .then((payload) => payload.data)
+      .catch(() => undefined),
+    fetchServerRecentExerciseStates(6)
+      .then((payload) => payload.data)
+      .catch(() => undefined),
+    fetchServerMyMistakes({
+      limit: 6,
+    })
+      .then((payload) => payload.data)
+      .catch(() => undefined),
+    fetchServerStudyCurriculumJourneys({
+      limit: 4,
+    })
+      .then((payload) => payload.data)
+      .catch(() => undefined),
+    fetchServerWeakPointInsights({
+      limit: 4,
+    }).catch(() => undefined),
+    fetchServerDueFlashcards({
+      limit: 6,
+    })
+      .then((payload) => payload.data)
+      .catch(() => undefined),
+    fetchServerLabTools()
+      .then((payload) => payload.data)
+      .catch(() => undefined),
+  ]);
 
   return (
     <StudentHub
@@ -48,8 +59,10 @@ export default async function StudentMySpacePage() {
       initialRecentExamActivities={initialRecentExamActivities}
       initialRecentExerciseStates={initialRecentExerciseStates}
       initialMyMistakes={initialMyMistakes}
-      initialStudyRoadmaps={initialStudyRoadmaps}
+      initialCurriculumJourneys={initialCurriculumJourneys}
       initialWeakPointInsights={initialWeakPointInsights}
+      initialDueFlashcards={initialDueFlashcards}
+      initialLabTools={initialLabTools}
     />
   );
 }

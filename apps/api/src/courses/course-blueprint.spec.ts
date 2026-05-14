@@ -46,7 +46,7 @@ const validBlueprint = {
       role: 'FIELD_INTRO',
       quality: 'SKELETON',
       slug: 'protein-field-opening',
-      roadmapTitle: 'مدخل المجال',
+      curriculumJourneyTitle: 'مدخل المجال',
       title: 'لماذا تبدأ الحياة بالبروتينات؟',
       summary: 'مدخل للمجال.',
       learningObjective: 'يربط الطالب البروتينات بوظائف حية قابلة للتحليل.',
@@ -102,7 +102,7 @@ const validBlueprint = {
       role: 'UNIT_INTRO',
       quality: 'SKELETON',
       slug: 'protein-synthesis-intro',
-      roadmapTitle: 'تركيب البروتين',
+      curriculumJourneyTitle: 'تركيب البروتين',
       title: 'قبل أن نركب بروتينا: ما الرحلة التي سنمشيها؟',
       summary: 'مدخل وحدة تركيب البروتين.',
       learningObjective: 'يعرف الطالب خريطة وحدة تركيب البروتين قبل تفاصيلها.',
@@ -158,7 +158,7 @@ describe('course blueprint authoring boundary', () => {
     expect(authoredTopic.concepts[0]).toMatchObject({
       conceptCode: 'PROTEIN_FIELD_OPENING',
       slug: 'protein-field-opening',
-      roadmapTitle: 'مدخل المجال',
+      curriculumJourneyTitle: 'مدخل المجال',
       role: 'FIELD_INTRO',
       depthPortals: [
         {
@@ -340,7 +340,7 @@ describe('course blueprint authoring boundary', () => {
     expect(proteinsBlueprint?.concepts[0]).toMatchObject({
       role: 'FIELD_INTRO',
       quality: 'POLISHED',
-      roadmapTitle: 'مدخل المجال',
+      curriculumJourneyTitle: 'مدخل المجال',
     });
     expect(
       proteinsBlueprint?.concepts

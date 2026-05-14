@@ -53,7 +53,7 @@ not as a copied table of contents. The canonical layer should use four levels:
 
 Every node should eventually carry:
 
-- `roadmapTitle`: short label for the map.
+- `curriculumJourneyTitle`: short label for the map.
 - `title`: fuller in-node title.
 - `streamScope`: `ALL_SCIENTIFIC`, `SE_ONLY`, `M_MT_ONLY`, `ALL_LITERARY`, or `SHARED_WITH_VARIANTS`.
 - `internalEvidence`: source paths, page ranges, and audit notes for private QA.
@@ -83,7 +83,7 @@ still preventing weak evidence from entering production.
 
 | Gate | Meaning | Required For |
 | --- | --- | --- |
-| `SOURCE_EXTRACTED` | The source is captured enough to understand scope and order. | Roadmap design, concept inventory, lesson skeletons. |
+| `SOURCE_EXTRACTED` | The source is captured enough to understand scope and order. | Curriculum journey design, concept inventory, lesson skeletons. |
 | `STRUCTURE_VERIFIED` | Page markers, assets, and page order are valid. | Internal source references in canonical planning. |
 | `COVERAGE_VERIFIED` | A page or range has been visually checked for missing major items. | Polished node scope and BAC trap extraction. |
 | `LINE_VERIFIED` | The relevant formula, table, statement, or solution step was compared line by line against the scan. | High-risk formulas, dense tables, ambiguous visual structures, and rare exact internal claims. |
@@ -104,7 +104,7 @@ stream-specific.
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `FUNC_TOOLBOX` | أدوات الحساب | Algebra, signs, absolute value, factoring, and expression control before limits. | `ALL_SCIENTIFIC` |
 | `FUNC_LANGUAGE` | لغة الدالة | Domain, image/preimage, graph, table, equation, inequality. | `ALL_SCIENTIFIC` |
@@ -135,7 +135,7 @@ Stream scope: shared scientific core.
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `SEQ_LANGUAGE` | لغة المتتالية | Index, rank, first term, general term, recurrence. | `ALL_SCIENTIFIC` |
 | `SEQ_MONOTONE_BOUNDED` | الرتابة والمحدودية | Difference, function method, ratio method, upper/lower bounds. | `ALL_SCIENTIFIC` |
@@ -171,7 +171,7 @@ emphasis per programme notes.
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `PROB_LANGUAGE` | لغة الاحتمال | Universe, events, complement, union, intersection. | `ALL_SCIENTIFIC` |
 | `PROB_LAWS` | قوانين الحساب | Addition/product rules and event properties. | `ALL_SCIENTIFIC` |
@@ -199,7 +199,7 @@ Stream scope: shared scientific core.
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `COMPLEX_ALGEBRA` | الكتابة الجبرية | Real/imaginary parts, conjugate, algebraic simplification. | `ALL_SCIENTIFIC` |
 | `MOD_ARG` | الطويلة والعمدة | Modulus, argument, trig values, locus meaning. | `ALL_SCIENTIFIC` |
@@ -227,7 +227,7 @@ Stream scope: `M_MT_ONLY`.
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `DIVISIBILITY_Z` | القسمة في Z | Divisibility, Euclidean division, remainders. | `M_MT_ONLY` |
 | `CONGRUENCES` | الموافقات | Modular equivalence, operations, powers, systems. | `M_MT_ONLY` |
@@ -269,7 +269,7 @@ Unit code: `FUNCTIONS`
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `L_FUNC_SIGNS` | الإشارات والمعادلات | Sign of first/second-degree expressions as the gateway to functions. | `ALL_LITERARY` |
 | `L_FUNC_LANGUAGE` | لغة الدالة | Domain, equality, operations, reference limits. | `ALL_LITERARY` |
@@ -288,7 +288,7 @@ Unit code: `SEQUENCES`
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `L_SEQ_LANGUAGE` | تعريف وترميز | Sequence definition, index/rank, recurrence and general term. | `ALL_LITERARY` |
 | `L_SEQ_MONOTONICITY` | اتجاه التغير | Difference, function method, ratio method. | `ALL_LITERARY` |
@@ -306,7 +306,7 @@ Unit code: `EUCLIDEAN_DIVISION_IN_Z`
 
 Canonical nodes:
 
-| Node Code | Roadmap Title | Core Idea | Stream Scope |
+| Node Code | Curriculum Journey Title | Core Idea | Stream Scope |
 | --- | --- | --- | --- |
 | `L_DIVISIBILITY_Z` | قابلية القسمة | Divisibility and Euclidean division in integers. | `ALL_LITERARY` |
 | `L_CONGRUENCE_BASICS` | الموافقات | Modular equivalence and basic properties. | `ALL_LITERARY` |
@@ -357,12 +357,12 @@ Canonical Math should teach not only topics but reusable BAC actions:
 
 ## Modeling Decisions
 
-- Student-facing Math should resolve to one roadmap per leaf stream: `SE`, `M`,
+- Student-facing Math should resolve to one curriculum journey per leaf stream: `SE`, `M`,
   `MT`, `LP`, or `LE`.
 - Authoring may use stream-family files such as `SE-M-MT` and `LP-LE` to avoid
   duplicating shared modules.
 - Shared concept IDs are allowed when the pedagogy truly overlaps, but each
-  stream roadmap should project only the nodes, depth, and portals valid for
+  stream curriculum journey should project only the nodes, depth, and portals valid for
   that stream.
 - Old `SPACE_GEOMETRY` should remain deferred until we decide whether it needs
   an archive journey.

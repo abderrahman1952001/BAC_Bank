@@ -1,13 +1,16 @@
 import { Transform, TransformFnParams } from 'class-transformer';
 import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
-function trimString({ value }: TransformFnParams): string | undefined {
+function trimString(params: TransformFnParams): string | undefined {
+  const value = params.value as unknown;
   return typeof value === 'string' ? value.trim() : undefined;
 }
 
-function trimOptionalString({
-  value,
-}: TransformFnParams): string | null | undefined {
+function trimOptionalString(
+  params: TransformFnParams,
+): string | null | undefined {
+  const value = params.value as unknown;
+
   if (value === null || value === undefined) {
     return value;
   }

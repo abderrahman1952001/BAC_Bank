@@ -27,7 +27,7 @@ The normalized model is:
 6. `CourseLesson`: the teaching layer attached to a `CurriculumNode`.
 
 So yes: the product should resolve to a curriculum journey per stream. The
-student-facing roadmap is a visual projection of `CurriculumNode`, not a second
+student-facing curriculum journey is a visual projection of `CurriculumNode`, not a second
 curriculum. Internally, we can author shared modules for overlapping material,
 then project them into each stream with the correct scope, order, depth,
 examples, lessons, exam mappings, and optional portals.

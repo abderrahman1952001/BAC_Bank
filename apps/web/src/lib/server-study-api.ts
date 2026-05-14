@@ -1,23 +1,23 @@
 import {
   parseCatalogResponse,
+  parseCurriculumJourneysResponse,
   parseExamResponse,
   parseFiltersResponse,
   parseMyMistakesResponse,
   parseRecentExerciseStatesResponse,
   parseRecentExamActivitiesResponse,
   parseRecentStudySessionsResponse,
-  parseStudyRoadmapsResponse,
   parseStudySessionResponse,
   parseStudentExerciseStatesLookupResponse,
   parseWeakPointInsightsResponse,
   type CatalogResponse,
+  type CurriculumJourneysResponse,
   type ExamResponse,
   type FiltersResponse,
   type MyMistakesResponse,
   type RecentExerciseStatesResponse,
   type RecentExamActivitiesResponse,
   type RecentStudySessionsResponse,
-  type StudyRoadmapsResponse,
   type StudySessionResponse,
   type StudentExerciseStatesLookupResponse,
   type WeakPointInsightsResponse,
@@ -29,7 +29,7 @@ import {
   playwrightTestFilters,
   playwrightTestMyMistakes,
   playwrightTestRecentExerciseStates,
-  playwrightTestStudyRoadmaps,
+  playwrightTestCurriculumJourneys,
   playwrightTestStudySession,
   playwrightTestWeakPointInsights,
 } from "@/lib/playwright-test-fixtures";
@@ -146,13 +146,11 @@ export async function fetchServerRecentExerciseStates(
   );
 }
 
-export async function fetchServerMyMistakes(
-  input?: {
-    limit?: number;
-    subjectCode?: string | null;
-    status?: import("@/lib/study-api").StudyReviewQueueStatus | null;
-  },
-): Promise<MyMistakesResponse> {
+export async function fetchServerMyMistakes(input?: {
+  limit?: number;
+  subjectCode?: string | null;
+  status?: import("@/lib/study-api").StudyReviewQueueStatus | null;
+}): Promise<MyMistakesResponse> {
   if (shouldUsePlaywrightFixtures()) {
     return clonePlaywrightFixture(playwrightTestMyMistakes);
   }
@@ -209,12 +207,12 @@ export async function fetchServerWeakPointInsights(input?: {
   );
 }
 
-export async function fetchServerStudyRoadmaps(input?: {
+export async function fetchServerStudyCurriculumJourneys(input?: {
   limit?: number;
   subjectCode?: string | null;
-}): Promise<StudyRoadmapsResponse> {
+}): Promise<CurriculumJourneysResponse> {
   if (shouldUsePlaywrightFixtures()) {
-    return clonePlaywrightFixture(playwrightTestStudyRoadmaps);
+    return clonePlaywrightFixture(playwrightTestCurriculumJourneys);
   }
 
   const params = new URLSearchParams();
@@ -229,11 +227,11 @@ export async function fetchServerStudyRoadmaps(input?: {
 
   const query = params.toString();
 
-  return fetchServerApiJson<StudyRoadmapsResponse>(
-    `/study/roadmaps${query ? `?${query}` : ""}`,
+  return fetchServerApiJson<CurriculumJourneysResponse>(
+    `/study/curriculum-journeys${query ? `?${query}` : ""}`,
     undefined,
     "Study request failed.",
-    parseStudyRoadmapsResponse,
+    parseCurriculumJourneysResponse,
   );
 }
 

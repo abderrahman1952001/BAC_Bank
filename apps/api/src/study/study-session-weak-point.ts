@@ -191,7 +191,10 @@ function buildWeakPointKeyRules(
               return weightDelta;
             }
 
-            return left.learningTarget.displayOrder - right.learningTarget.displayOrder;
+            return (
+              left.learningTarget.displayOrder -
+              right.learningTarget.displayOrder
+            );
           })
           .map((mapping) =>
             toPedagogyRule({

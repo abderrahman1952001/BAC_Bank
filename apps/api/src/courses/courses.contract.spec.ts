@@ -7,7 +7,7 @@ import {
 import { parseCurriculumJourneysResponse } from '@bac-bank/contracts/study';
 
 describe('courses contracts', () => {
-  it('parses curriculum journey responses through the roadmap-compatible shape', () => {
+  it('parses curriculum journey responses through the curriculum-node shape', () => {
     expect(
       parseCurriculumJourneysResponse({
         data: [
@@ -34,6 +34,8 @@ describe('courses contracts', () => {
             nextAction: {
               type: 'TOPIC_DRILL',
               label: 'ابدأ بالدوال',
+              curriculumNodeCode: 'FUNCTIONS',
+              curriculumNodeName: 'الدوال',
               topicCode: 'FUNCTIONS',
               topicName: 'الدوال',
             },
@@ -49,6 +51,8 @@ describe('courses contracts', () => {
                     id: 'node-functions',
                     title: 'الدوال',
                     description: null,
+                    curriculumNodeCode: 'FUNCTIONS',
+                    curriculumNodeName: 'الدوال',
                     topicCode: 'FUNCTIONS',
                     topicName: 'الدوال',
                     orderIndex: 1,
@@ -73,6 +77,8 @@ describe('courses contracts', () => {
                 id: 'node-functions',
                 title: 'الدوال',
                 description: null,
+                curriculumNodeCode: 'FUNCTIONS',
+                curriculumNodeName: 'الدوال',
                 topicCode: 'FUNCTIONS',
                 topicName: 'الدوال',
                 orderIndex: 1,

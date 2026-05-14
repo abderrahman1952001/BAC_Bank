@@ -8,7 +8,7 @@ import {
   playwrightTestFilters,
   playwrightTestStudySession,
   playwrightTestPreview,
-  playwrightTestStudyRoadmaps,
+  playwrightTestCurriculumJourneys,
   playwrightTestStudentUser,
   playwrightTestWeakPointInsights,
 } from "../src/lib/playwright-test-fixtures";
@@ -113,8 +113,12 @@ async function installMockApi(
       return jsonResponse(route, playwrightTestFilters);
     }
 
-    if (path === "/api/v1/study/roadmaps" && method === "GET") {
-      return jsonResponse(route, playwrightTestStudyRoadmaps);
+    if (
+      (path === "/api/v1/study/curriculum-journeys" ||
+        path === "/api/v1/study/roadmaps") &&
+      method === "GET"
+    ) {
+      return jsonResponse(route, playwrightTestCurriculumJourneys);
     }
 
     if (path === "/api/v1/study/sessions/preview" && method === "POST") {

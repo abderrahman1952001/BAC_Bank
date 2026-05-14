@@ -1,9 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import {
-  IngestionJobStatus,
-  SessionType,
-  SourceDocumentKind,
-} from '@prisma/client';
+import { IngestionJobStatus, SourceDocumentKind } from '@prisma/client';
 import { createEmptyDraft } from './ingestion.contract';
 import { IngestionProcessingEngineService } from './ingestion-processing-engine.service';
 

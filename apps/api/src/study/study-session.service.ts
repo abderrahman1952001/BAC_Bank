@@ -1276,21 +1276,23 @@ export class StudySessionService {
       return null;
     }
 
-    const topicRollups = await this.prisma.studentCurriculumNodeRollup.findMany({
-      where: {
-        userId: input.userId,
-        curriculumNodeId: {
-          in: topics.map((topic) => topic.id),
+    const topicRollups = await this.prisma.studentCurriculumNodeRollup.findMany(
+      {
+        where: {
+          userId: input.userId,
+          curriculumNodeId: {
+            in: topics.map((topic) => topic.id),
+          },
+        },
+        select: {
+          curriculumNodeId: true,
+          missedCount: true,
+          hardCount: true,
+          skippedCount: true,
+          revealedCount: true,
         },
       },
-      select: {
-        curriculumNodeId: true,
-        missedCount: true,
-        hardCount: true,
-        skippedCount: true,
-        revealedCount: true,
-      },
-    });
+    );
     return buildWeakPointIntroPayload({
       requestedTopicCodes,
       topics,

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Dna, Shuffle } from "lucide-react";
+import { ActiveLabMissionPanel } from "@/components/lab-active-mission-panel";
 import { StudentNavbar } from "@/components/student-navbar";
 import { StudyBadge, StudyHeader, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ import {
   type MutationKind,
   type SequenceCodon,
 } from "@/lib/lab-dna-to-protein";
+import type { LabMissionItem } from "@/lib/lab-api";
 import { STUDENT_LAB_ROUTE } from "@/lib/student-routes";
 
 const mutationKindLabels: Record<MutationKind, string> = {
@@ -31,6 +33,22 @@ const mutationKindLabels: Record<MutationKind, string> = {
 };
 
 const baseOptions: DnaBase[] = ["A", "C", "G", "T"];
+const mutationKinds: MutationKind[] = ["substitution", "insertion", "deletion"];
+
+function toMissionMutationEffect(
+  kind: ReturnType<typeof compareDnaAnalyses>["kind"],
+) {
+  switch (kind) {
+    case "NO_VISIBLE_CHANGE":
+      return "silent";
+    case "AMINO_ACID_CHANGE":
+      return "amino-acid-change";
+    case "PREMATURE_STOP":
+      return "stop";
+    case "FRAMESHIFT":
+      return "frameshift";
+  }
+}
 
 function CodonRow({
   title,
@@ -115,13 +133,69 @@ function DnaPipeline({
   );
 }
 
-export function DnaToProteinLab() {
+function readMissionString(
+  data: Record<string, unknown> | null | undefined,
+  key: string,
+) {
+  const value = data?.[key];
+
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function readMissionMutation(data: Record<string, unknown> | null | undefined) {
+  const value = data?.mutation;
+
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function getMissionSequence(missionItem?: LabMissionItem | null) {
+  return (
+    readMissionString(missionItem?.mission.preset, "dna") ??
+    dnaToProteinPresets[0].sequence
+  );
+}
+
+function getMissionMutationKind(missionItem?: LabMissionItem | null) {
+  const mutation = readMissionMutation(missionItem?.mission.preset);
+  const kind = typeof mutation?.kind === "string" ? mutation.kind : null;
+
+  return mutationKinds.includes(kind as MutationKind)
+    ? (kind as MutationKind)
+    : "substitution";
+}
+
+function getMissionMutationIndex(missionItem?: LabMissionItem | null) {
+  const mutation = readMissionMutation(missionItem?.mission.preset);
+  const index = mutation?.index;
+
+  return typeof index === "number" && Number.isFinite(index) ? index : 4;
+}
+
+function getMissionMutationBase(missionItem?: LabMissionItem | null) {
+  const mutation = readMissionMutation(missionItem?.mission.preset);
+  const base = typeof mutation?.base === "string" ? mutation.base : null;
+
+  return baseOptions.includes(base as DnaBase) ? (base as DnaBase) : "C";
+}
+
+export function DnaToProteinLab({
+  missionItem = null,
+}: {
+  missionItem?: LabMissionItem | null;
+}) {
   const [presetId, setPresetId] = useState(dnaToProteinPresets[0].id);
-  const [sequence, setSequence] = useState(dnaToProteinPresets[0].sequence);
-  const [mutationKind, setMutationKind] =
-    useState<MutationKind>("substitution");
-  const [mutationIndex, setMutationIndex] = useState(4);
-  const [mutationBase, setMutationBase] = useState<DnaBase>("C");
+  const [sequence, setSequence] = useState(getMissionSequence(missionItem));
+  const [mutationKind, setMutationKind] = useState<MutationKind>(
+    getMissionMutationKind(missionItem),
+  );
+  const [mutationIndex, setMutationIndex] = useState(
+    getMissionMutationIndex(missionItem),
+  );
+  const [mutationBase, setMutationBase] = useState<DnaBase>(
+    getMissionMutationBase(missionItem),
+  );
 
   const selectedPreset =
     dnaToProteinPresets.find((preset) => preset.id === presetId) ??
@@ -143,7 +217,12 @@ export function DnaToProteinLab() {
         index: boundedMutationIndex,
         base: mutationBase,
       }),
-    [boundedMutationIndex, mutationBase, mutationKind, original.normalizedSequence],
+    [
+      boundedMutationIndex,
+      mutationBase,
+      mutationKind,
+      original.normalizedSequence,
+    ],
   );
   const mutated = useMemo(
     () => analyzeDnaSequence(mutation.sequence),
@@ -152,6 +231,38 @@ export function DnaToProteinLab() {
   const comparison = useMemo(
     () => compareDnaAnalyses(original, mutated, mutationKind),
     [mutationKind, mutated, original],
+  );
+  const mrnaCodons = useMemo(
+    () => original.mrnaCodons.map((codon) => codon.value),
+    [original],
+  );
+  const missionResultJson = useMemo(
+    () => ({
+      tool: "dna-to-protein",
+      missionId: missionItem?.mission.id ?? null,
+      sequence: original.normalizedSequence,
+      mrnaSequence: original.mrnaSequence,
+      mrnaCodons,
+      mutation: {
+        kind: mutationKind,
+        index: boundedMutationIndex,
+        base: mutationBase,
+      },
+      mutatedSequence: mutated.normalizedSequence,
+      comparisonKind: comparison.kind,
+      mutationEffect: toMissionMutationEffect(comparison.kind),
+    }),
+    [
+      boundedMutationIndex,
+      comparison.kind,
+      missionItem?.mission.id,
+      mrnaCodons,
+      mutated.normalizedSequence,
+      mutationBase,
+      mutationKind,
+      original.mrnaSequence,
+      original.normalizedSequence,
+    ],
   );
 
   return (
@@ -164,7 +275,11 @@ export function DnaToProteinLab() {
           title="من DNA إلى بروتين"
           subtitle="تابع السلسلة من DNA إلى mRNA ثم إلى الأحماض الأمينية، وجرّب كيف تغير الطفرة النتيجة."
           actions={
-            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+            <Button
+              asChild
+              variant="outline"
+              className="h-11 rounded-full px-5"
+            >
               <Link href={STUDENT_LAB_ROUTE}>
                 <ArrowRight size={17} strokeWidth={2.1} />
                 المختبر
@@ -174,7 +289,15 @@ export function DnaToProteinLab() {
           meta={[
             { label: "الخطوات", value: "DNA → mRNA → Protein" },
             { label: "الطفرات", value: "3 أنواع" },
+            ...(missionItem
+              ? [{ label: "المهمة", value: missionItem.mission.title }]
+              : []),
           ]}
+        />
+
+        <ActiveLabMissionPanel
+          missionItem={missionItem}
+          resultJson={missionResultJson}
         />
 
         <div className="lab-workspace dna-workspace">
@@ -317,8 +440,8 @@ export function DnaToProteinLab() {
             <section className="lab-note dna-bac-note">
               <span>استعمال BAC</span>
               <p>
-                في الوثائق، لا تقف عند تغيير القاعدة فقط. اربط: تغير الثلاثية
-                ثم الحمض الأميني ثم البنية والوظيفة المحتملة للبروتين.
+                في الوثائق، لا تقف عند تغيير القاعدة فقط. اربط: تغير الثلاثية ثم
+                الحمض الأميني ثم البنية والوظيفة المحتملة للبروتين.
               </p>
             </section>
           </div>

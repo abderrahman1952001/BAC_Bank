@@ -19,7 +19,6 @@ import type {
 } from '@bac-bank/contracts/study';
 import {
   ExamNodeType,
-  Prisma,
   PublicationStatus,
   SessionType,
   StudySessionStatus,
@@ -37,21 +36,11 @@ import { StudySessionService } from './study-session.service';
 import { StudyQuestionAiExplanationService } from './study-question-ai-explanation.service';
 import {
   buildHierarchyExerciseSummaries,
-  buildStudySessionSearchCorpus,
-  buildSessionExerciseHierarchyPayload,
-  collectHierarchyQuestionItemsForSession,
   type ExamVariantWithNodes,
   getSessionTypeRank,
   getSujetLabel,
-  type HierarchyNodePayload,
   mapVariantHierarchy,
-  pickRepresentativeExamOffering,
-  pushStudySessionExamOffering,
-  sortStudySessionExamOfferings,
-  toStudySessionExamOffering,
   toSujetNumberFromVariantCode,
-  type StudySessionExamOffering,
-  type StudySessionExerciseCandidate,
   type SujetNumber,
 } from './study-session-helpers';
 import { SESSION_YEAR_MAX, SESSION_YEAR_MIN } from './session-year-range';

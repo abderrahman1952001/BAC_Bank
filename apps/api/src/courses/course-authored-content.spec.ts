@@ -28,7 +28,7 @@ describe('course authored content registry', () => {
     expect(topic?.concepts.length).toBeGreaterThanOrEqual(30);
     expect(topic?.concepts[0]).toMatchObject({
       role: 'FIELD_INTRO',
-      roadmapTitle: 'مدخل المجال',
+      curriculumJourneyTitle: 'مدخل المجال',
       title: 'لماذا تبدأ الحياة بالبروتينات؟',
     });
     expect(

@@ -5,7 +5,7 @@ import { StudyReadModelService } from './study-read-model.service';
 import { StudyExamActivityService } from './study-exam-activity.service';
 import { StudyExerciseStateService } from './study-exercise-state.service';
 import { StudyQuestionAiExplanationService } from './study-question-ai-explanation.service';
-import { StudyRoadmapService } from './study-roadmap.service';
+import { StudyCurriculumJourneyService } from './study-curriculum-journey.service';
 import { StudyReviewService } from './study-review.service';
 import { StudySessionService } from './study-session.service';
 import { StudyService } from './study.service';
@@ -20,11 +20,11 @@ import { StudyWeakPointService } from './study-weak-point.service';
     StudyExamActivityService,
     StudyExerciseStateService,
     StudyQuestionAiExplanationService,
-    StudyRoadmapService,
+    StudyCurriculumJourneyService,
     StudyReadModelService,
     StudyReviewService,
     StudyWeakPointService,
   ],
-  exports: [StudyRoadmapService, StudyService],
+  exports: [StudyCurriculumJourneyService, StudyService],
 })
 export class StudyModule {}

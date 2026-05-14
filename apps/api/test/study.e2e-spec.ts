@@ -9,8 +9,8 @@ import {
 import { AuthService } from './../src/auth/auth.service';
 import { ClerkAuthGuard } from './../src/auth/clerk-auth.guard';
 import { StudyController } from './../src/study/study.controller';
+import { StudyCurriculumJourneyService } from './../src/study/study-curriculum-journey.service';
 import { StudyExerciseStateService } from './../src/study/study-exercise-state.service';
-import { StudyRoadmapService } from './../src/study/study-roadmap.service';
 import { StudyReviewService } from './../src/study/study-review.service';
 import { StudyService } from './../src/study/study.service';
 import { StudyWeakPointService } from './../src/study/study-weak-point.service';
@@ -76,8 +76,8 @@ describe('Study routes (e2e)', () => {
       updatedAt: new Date().toISOString(),
     }),
   };
-  const studyRoadmapService = {
-    listStudyRoadmaps: jest.fn().mockResolvedValue({
+  const studyCurriculumJourneyService = {
+    listCurriculumJourneys: jest.fn().mockResolvedValue({
       data: [],
     }),
   };
@@ -112,8 +112,8 @@ describe('Study routes (e2e)', () => {
           useValue: studyReviewService,
         },
         {
-          provide: StudyRoadmapService,
-          useValue: studyRoadmapService,
+          provide: StudyCurriculumJourneyService,
+          useValue: studyCurriculumJourneyService,
         },
         {
           provide: StudyWeakPointService,
@@ -251,7 +251,26 @@ describe('Study routes (e2e)', () => {
     );
   });
 
-  it(`/${API_GLOBAL_PREFIX}/study/roadmaps lists derived study roadmaps`, async () => {
+  it(`/${API_GLOBAL_PREFIX}/study/curriculum-journeys lists derived curriculum journeys`, async () => {
+    await request(app.getHttpServer())
+      .get(
+        `/${API_GLOBAL_PREFIX}/study/curriculum-journeys?limit=2&subjectCode=mathematics`,
+      )
+      .set('Cookie', 'bb_session=test-token')
+      .expect(200);
+
+    expect(
+      studyCurriculumJourneyService.listCurriculumJourneys,
+    ).toHaveBeenCalledWith(
+      'user-1',
+      expect.objectContaining({
+        limit: 2,
+        subjectCode: 'MATHEMATICS',
+      }),
+    );
+  });
+
+  it(`/${API_GLOBAL_PREFIX}/study/roadmaps remains a compatibility alias`, async () => {
     await request(app.getHttpServer())
       .get(
         `/${API_GLOBAL_PREFIX}/study/roadmaps?limit=2&subjectCode=mathematics`,
@@ -259,7 +278,9 @@ describe('Study routes (e2e)', () => {
       .set('Cookie', 'bb_session=test-token')
       .expect(200);
 
-    expect(studyRoadmapService.listStudyRoadmaps).toHaveBeenCalledWith(
+    expect(
+      studyCurriculumJourneyService.listCurriculumJourneys,
+    ).toHaveBeenCalledWith(
       'user-1',
       expect.objectContaining({
         limit: 2,

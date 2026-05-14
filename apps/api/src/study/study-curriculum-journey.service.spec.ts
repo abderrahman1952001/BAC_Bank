@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { StudyRoadmapService } from './study-roadmap.service';
+import { StudyCurriculumJourneyService } from './study-curriculum-journey.service';
 
-describe('StudyRoadmapService', () => {
+describe('StudyCurriculumJourneyService', () => {
   let prisma: {
     user: {
       findUnique: jest.Mock;
@@ -16,7 +16,7 @@ describe('StudyRoadmapService', () => {
       findMany: jest.Mock;
     };
   };
-  let service: StudyRoadmapService;
+  let service: StudyCurriculumJourneyService;
 
   beforeEach(() => {
     prisma = {
@@ -33,7 +33,7 @@ describe('StudyRoadmapService', () => {
         findMany: jest.fn().mockResolvedValue([]),
       },
     };
-    service = new StudyRoadmapService(prisma as never);
+    service = new StudyCurriculumJourneyService(prisma as never);
   });
 
   function mockMathCurriculum() {
@@ -85,7 +85,7 @@ describe('StudyRoadmapService', () => {
     ]);
   }
 
-  it('builds roadmap summaries and next actions from curriculum-node rollups', async () => {
+  it('builds curriculum journey summaries and next actions from curriculum-node rollups', async () => {
     prisma.user.findUnique.mockResolvedValue({
       streamId: 'stream-se',
     });
@@ -125,7 +125,7 @@ describe('StudyRoadmapService', () => {
       },
     ]);
 
-    const result = await service.listStudyRoadmaps('user-1', {
+    const result = await service.listCurriculumJourneys('user-1', {
       limit: 4,
     });
 
@@ -151,6 +151,8 @@ describe('StudyRoadmapService', () => {
         nextAction: {
           type: 'TOPIC_DRILL',
           label: 'راجع الهندسة',
+          curriculumNodeCode: 'GEOMETRY',
+          curriculumNodeName: 'الهندسة',
           topicCode: 'GEOMETRY',
           topicName: 'الهندسة',
         },
@@ -166,6 +168,7 @@ describe('StudyRoadmapService', () => {
     expect(result.data[0]?.nodes).toEqual([
       expect.objectContaining({
         id: 'topic-algebra',
+        curriculumNodeCode: 'ALGEBRA',
         topicCode: 'ALGEBRA',
         recommendedPreviousNodeId: null,
         status: 'SOLID',
@@ -173,6 +176,7 @@ describe('StudyRoadmapService', () => {
       }),
       expect.objectContaining({
         id: 'topic-geometry',
+        curriculumNodeCode: 'GEOMETRY',
         topicCode: 'GEOMETRY',
         recommendedPreviousNodeId: 'topic-algebra',
         recommendedPreviousNodeTitle: 'الجبر',
@@ -181,6 +185,7 @@ describe('StudyRoadmapService', () => {
       }),
       expect.objectContaining({
         id: 'topic-analysis',
+        curriculumNodeCode: 'FUNCTIONS',
         topicCode: 'FUNCTIONS',
         recommendedPreviousNodeId: 'topic-geometry',
         status: 'NOT_STARTED',
@@ -237,13 +242,15 @@ describe('StudyRoadmapService', () => {
       },
     ]);
 
-    const result = await service.listStudyRoadmaps('user-1', {
+    const result = await service.listCurriculumJourneys('user-1', {
       limit: 4,
     });
 
     expect(result.data[0]?.nextAction).toEqual({
       type: 'REVIEW_MISTAKES',
       label: 'راجع أخطاءك المفتوحة',
+      curriculumNodeCode: null,
+      curriculumNodeName: null,
       topicCode: null,
       topicName: null,
     });

@@ -1,13 +1,26 @@
 import Link from "next/link";
 import { ArrowUpLeft, FlaskConical } from "lucide-react";
+import { LabMissionPanel } from "@/components/lab-mission-panel";
 import { StudentNavbar } from "@/components/student-navbar";
 import { StudyBadge, StudyHeader, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
+import type { LabToolMissionsResponse, LabToolSummary } from "@/lib/lab-api";
 import { listLabSubjectGroups } from "@/lib/lab-surface";
 
-export function LabHomePage() {
+export function LabHomePage({
+  initialTools,
+  initialToolMissions,
+}: {
+  initialTools?: LabToolSummary[];
+  initialToolMissions?: Record<string, LabToolMissionsResponse>;
+}) {
   const groups = listLabSubjectGroups();
   const toolCount = groups.reduce((sum, group) => sum + group.tools.length, 0);
+  const missionCount =
+    initialTools?.reduce((sum, tool) => sum + tool.missionCount, 0) ?? 0;
+  const completedMissionCount =
+    initialTools?.reduce((sum, tool) => sum + tool.completedMissionCount, 0) ??
+    0;
 
   return (
     <StudyShell>
@@ -21,6 +34,14 @@ export function LabHomePage() {
           meta={[
             { label: "الأدوات", value: `${toolCount}` },
             { label: "المواد", value: `${groups.length}` },
+            ...(initialTools
+              ? [
+                  {
+                    label: "المهمات",
+                    value: `${completedMissionCount}/${missionCount}`,
+                  },
+                ]
+              : []),
           ]}
         />
 
@@ -32,8 +53,8 @@ export function LabHomePage() {
             <StudyBadge tone="brand">BAC-ready</StudyBadge>
             <h2>المختبر ليس آلة جواب، بل مساحة فهم.</h2>
             <p>
-              كل أداة هنا مصممة لتشرح علاقة تظهر في الدروس والوثائق: منحنى
-              دالة، أثر طفرة، أو آلية تحتاج أن تراها بدل أن تحفظها فقط.
+              كل أداة هنا مصممة لتشرح علاقة تظهر في الدروس والوثائق: منحنى دالة،
+              أثر طفرة، أو آلية تحتاج أن تراها بدل أن تحفظها فقط.
             </p>
           </div>
         </section>
@@ -44,7 +65,9 @@ export function LabHomePage() {
               <div className="lab-section-head">
                 <div>
                   <p className="page-kicker">{group.title}</p>
-                  <h2>{group.subjectSlug === "math" ? "Math Lab" : "SVT Lab"}</h2>
+                  <h2>
+                    {group.subjectSlug === "math" ? "Math Lab" : "SVT Lab"}
+                  </h2>
                   <p>{group.description}</p>
                 </div>
                 <StudyBadge tone="accent">{group.tools.length} أداة</StudyBadge>
@@ -53,24 +76,31 @@ export function LabHomePage() {
               <div className="lab-tool-grid">
                 {group.tools.map((tool) => (
                   <article key={tool.id} className="lab-tool-card">
-                    <div className="lab-tool-card-head">
-                      <div>
-                        <p className="page-kicker">{tool.shortTitle}</p>
-                        <h3>{tool.title}</h3>
+                    <div className="lab-tool-card-main">
+                      <div className="lab-tool-card-head">
+                        <div>
+                          <p className="page-kicker">{tool.shortTitle}</p>
+                          <h3>{tool.title}</h3>
+                        </div>
+                        <StudyBadge tone="success">جاهز</StudyBadge>
                       </div>
-                      <StudyBadge tone="success">جاهز</StudyBadge>
+                      <p>{tool.description}</p>
+                      <div className="lab-tool-use-case">
+                        <span>استعمال BAC</span>
+                        <strong>{tool.bacUseCase}</strong>
+                      </div>
+                      <Button asChild className="h-11 rounded-full px-5">
+                        <Link href={tool.href}>
+                          افتح الأداة
+                          <ArrowUpLeft size={17} strokeWidth={2.1} />
+                        </Link>
+                      </Button>
                     </div>
-                    <p>{tool.description}</p>
-                    <div className="lab-tool-use-case">
-                      <span>استعمال BAC</span>
-                      <strong>{tool.bacUseCase}</strong>
-                    </div>
-                    <Button asChild className="h-11 rounded-full px-5">
-                      <Link href={tool.href}>
-                        افتح الأداة
-                        <ArrowUpLeft size={17} strokeWidth={2.1} />
-                      </Link>
-                    </Button>
+
+                    <LabMissionPanel
+                      missions={initialToolMissions?.[tool.id]?.missions ?? []}
+                      toolHref={tool.href}
+                    />
                   </article>
                 ))}
               </div>

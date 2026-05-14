@@ -5,7 +5,7 @@ import type {
   CourseSubjectResponse,
   CourseTopicResponse,
 } from '@bac-bank/contracts/courses';
-import { StudyRoadmapService } from '../study/study-roadmap.service';
+import { StudyCurriculumJourneyService } from '../study/study-curriculum-journey.service';
 import { StudyService } from '../study/study.service';
 import {
   getAuthoredCourseTopicContent,
@@ -21,16 +21,17 @@ import {
 @Injectable()
 export class CoursesService {
   constructor(
-    private readonly studyRoadmapService: StudyRoadmapService,
+    private readonly studyCurriculumJourneyService: StudyCurriculumJourneyService,
     private readonly studyService: StudyService,
   ) {}
 
   async listCourseSubjects(
     userId: string,
   ): Promise<CourseSubjectCardsResponse> {
-    const roadmaps = await this.studyRoadmapService.listStudyRoadmaps(userId);
+    const curriculumJourneys =
+      await this.studyCurriculumJourneyService.listCurriculumJourneys(userId);
     return buildCourseSubjectCardsResponse(
-      roadmaps.data,
+      curriculumJourneys.data,
       listAuthoredCourseTopicContent(),
     );
   }
@@ -40,8 +41,8 @@ export class CoursesService {
     subjectCode: string,
   ): Promise<CourseSubjectResponse> {
     const normalizedSubjectCode = subjectCode.trim().toUpperCase();
-    const [roadmaps, filters] = await Promise.all([
-      this.studyRoadmapService.listStudyRoadmaps(userId, {
+    const [curriculumJourneys, filters] = await Promise.all([
+      this.studyCurriculumJourneyService.listCurriculumJourneys(userId, {
         subjectCode: normalizedSubjectCode,
         limit: 1,
       }),
@@ -49,7 +50,7 @@ export class CoursesService {
     ]);
     const response = buildCourseSubjectResponse({
       subjectCode: normalizedSubjectCode,
-      roadmaps: roadmaps.data,
+      curriculumJourneys: curriculumJourneys.data,
       filters,
       authoredTopics: listAuthoredCourseTopicContent(normalizedSubjectCode),
     });
@@ -68,8 +69,8 @@ export class CoursesService {
   ): Promise<CourseTopicResponse> {
     const normalizedSubjectCode = subjectCode.trim().toUpperCase();
     const normalizedTopicSlug = topicSlug.trim().toLowerCase();
-    const [roadmaps, filters] = await Promise.all([
-      this.studyRoadmapService.listStudyRoadmaps(userId, {
+    const [curriculumJourneys, filters] = await Promise.all([
+      this.studyCurriculumJourneyService.listCurriculumJourneys(userId, {
         subjectCode: normalizedSubjectCode,
         limit: 1,
       }),
@@ -82,7 +83,7 @@ export class CoursesService {
     const response = buildCourseTopicResponse({
       subjectCode: normalizedSubjectCode,
       topicSlug: normalizedTopicSlug,
-      roadmaps: roadmaps.data,
+      curriculumJourneys: curriculumJourneys.data,
       filters,
       authoredTopic,
     });
@@ -103,8 +104,8 @@ export class CoursesService {
     const normalizedSubjectCode = subjectCode.trim().toUpperCase();
     const normalizedTopicSlug = topicSlug.trim().toLowerCase();
     const normalizedConceptSlug = conceptSlug.trim().toLowerCase();
-    const [roadmaps, filters] = await Promise.all([
-      this.studyRoadmapService.listStudyRoadmaps(userId, {
+    const [curriculumJourneys, filters] = await Promise.all([
+      this.studyCurriculumJourneyService.listCurriculumJourneys(userId, {
         subjectCode: normalizedSubjectCode,
         limit: 1,
       }),
@@ -118,7 +119,7 @@ export class CoursesService {
       subjectCode: normalizedSubjectCode,
       topicSlug: normalizedTopicSlug,
       conceptSlug: normalizedConceptSlug,
-      roadmaps: roadmaps.data,
+      curriculumJourneys: curriculumJourneys.data,
       filters,
       authoredTopic,
     });

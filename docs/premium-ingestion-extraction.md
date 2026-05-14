@@ -43,10 +43,9 @@ This contract applies no matter which model produced the reviewed extract.
 
 The standard is visual-first faithfulness to the official scans. Canonical PDFs
 and stored page PNGs are the authority for every content, structure, crop,
-native rendering, cleanup, and presentation decision. OCR, parsed text, and
-model output are useful helpers for search, comparison, and initial
-transcription, but they are not source truth and must be visually checked before
-approval.
+native rendering, cleanup, and presentation decision. Model output is a
+candidate artifact only: useful for comparison and first drafting, but not
+source truth, and it must be visually checked before approval.
 
 Codex should repair every fixable issue it finds during normalization,
 post-crop audit, cleanup, and presentation review. Only unresolved source
@@ -69,9 +68,10 @@ uncertainty is explicit and concrete.
 Codex should resolve hard cases aggressively but safely. Do not stop at the
 first ambiguous symbol, contradiction, or messy crop. Re-inspect the source at
 useful zoom levels, compare surrounding notation and labels, compare exam and
-correction references, reconcile numbering and barème totals, and use OCR or
-model text only as helper evidence. When the source evidence strongly supports
-one reading or repair, apply that faithful correction in the draft.
+correction references, reconcile numbering and barème totals, and use model
+candidate text only as a pointer back to the source scans. When the source
+evidence strongly supports one reading or repair, apply that faithful correction
+in the draft.
 
 Scan damage, provider artifacts, crop noise, and obvious extraction defects are
 fixable when the intended source reading is visually supported. Official-source
@@ -113,7 +113,7 @@ Allowed cleanup:
 - remove duplicate blocks, duplicate assets, stale native suggestions, stale
   placeholder artifacts, and non-semantic scan/provider noise when source
   meaning is preserved
-- fix obvious OCR spacing, punctuation, and line-join artifacts when the source
+- fix obvious spacing, punctuation, and line-join artifacts when the source
   meaning is unchanged
 - convert standalone formulas into `latex` blocks without changing notation
 
@@ -325,9 +325,10 @@ For each paper family:
    draft path.
 5. If draft quality is low, re-extract from the PDFs using the premium draft
    graph shape.
-6. Visually compare the draft against the canonical PDFs or page PNGs; use OCR
-   only as a helper and fix every safe source-faithfulness issue found. Repeat
-   visual passes over dense, low-quality, messy, unusual, or high-risk regions.
+6. Visually compare the draft against the canonical PDFs or page PNGs; treat
+   model output as a candidate artifact only and fix every safe
+   source-faithfulness issue found. Repeat visual passes over dense,
+   low-quality, messy, unusual, or high-risk regions.
 7. Preserve or add crop geometry, or explicitly defer it as crop review debt.
 8. Add native suggestions where they are faithful and review-saving, then
    verify them against the source page or crop during the post-crop audit.

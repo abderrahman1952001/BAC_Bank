@@ -2,9 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Status note:** This is a historical implementation plan. The current platform identity is the DB-backed curriculum spine: `SubjectOffering -> Curriculum -> CurriculumNode`, with student curriculum journeys derived from that spine. Do not reintroduce roadmap tables from this plan.
+
 **Goal:** Build the first production-ready `Courses` slice for BAC Bank, including schema, contracts, API read models, navigation, subject/topic pages, and a premium concept player with micro-quiz completion.
 
-**Architecture:** Add a new authored-content domain that references the existing curriculum taxonomy without overloading the current study roadmap tables. The backend owns authored course data and student concept progress; the web app renders server-first routes for course discovery and topic progression, with a small client island for the concept player and micro-quiz interactions.
+**Architecture:** Add a new authored-content domain that references the existing curriculum taxonomy without overloading practice sessions or curriculum journey projections. The backend owns authored course data and student concept progress; the web app renders server-first routes for course discovery and topic progression, with a small client island for the concept player and micro-quiz interactions.
 
 **Tech Stack:** Prisma, NestJS, Next.js App Router, TypeScript, Zod runtime contracts, Vitest, Jest e2e, existing BAC Bank student shell.
 

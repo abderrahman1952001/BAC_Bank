@@ -1267,11 +1267,11 @@ textarea {
   background: linear-gradient(90deg, var(--accent), #00b97a);
 }
 
-.roadmap-page {
+.curriculum-journey-page {
   gap: 1.4rem;
 }
 
-.roadmap-hero {
+.curriculum-journey-hero {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -1292,8 +1292,8 @@ textarea {
   box-shadow: 0 28px 70px rgba(8, 43, 19, 0.18);
 }
 
-.roadmap-hero::before,
-.roadmap-hero::after {
+.curriculum-journey-hero::before,
+.curriculum-journey-hero::after {
   content: "";
   position: absolute;
   border-radius: 999px;
@@ -1301,7 +1301,7 @@ textarea {
   opacity: 0.75;
 }
 
-.roadmap-hero::before {
+.curriculum-journey-hero::before {
   inset: auto auto -40px -30px;
   width: 180px;
   height: 180px;
@@ -1309,7 +1309,7 @@ textarea {
   filter: blur(16px);
 }
 
-.roadmap-hero::after {
+.curriculum-journey-hero::after {
   inset: -30px -10px auto auto;
   width: 220px;
   height: 220px;
@@ -1317,37 +1317,37 @@ textarea {
   filter: blur(22px);
 }
 
-.roadmap-hero-copy,
-.roadmap-hero-panel {
+.curriculum-journey-hero-copy,
+.curriculum-journey-hero-panel {
   position: relative;
   z-index: 1;
 }
 
-.roadmap-hero-copy {
+.curriculum-journey-hero-copy {
   display: grid;
   gap: 0.75rem;
   align-content: start;
 }
 
-.roadmap-hero-copy h1 {
+.curriculum-journey-hero-copy h1 {
   font-size: clamp(2.45rem, 6vw, 4.5rem);
   line-height: 0.98;
   max-width: 12ch;
 }
 
-.roadmap-hero-copy p:last-child {
+.curriculum-journey-hero-copy p:last-child {
   color: rgba(246, 255, 248, 0.8);
   max-width: 38rem;
   font-size: 1rem;
 }
 
-.roadmap-hero-meta {
+.curriculum-journey-hero-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
 }
 
-.roadmap-hero-panel {
+.curriculum-journey-hero-panel {
   align-self: stretch;
   display: grid;
   gap: 1rem;
@@ -1363,13 +1363,13 @@ textarea {
   backdrop-filter: blur(12px);
 }
 
-.roadmap-hero-panel-grid {
+.curriculum-journey-hero-panel-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
-.roadmap-hero-panel-grid article {
+.curriculum-journey-hero-panel-grid article {
   min-width: 0;
   border-radius: 22px;
   padding: 0.85rem 0.9rem;
@@ -1379,7 +1379,7 @@ textarea {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
-.roadmap-hero-panel-grid strong {
+.curriculum-journey-hero-panel-grid strong {
   min-width: 0;
   overflow-wrap: anywhere;
   font-size: clamp(1.05rem, 2vw, 1.65rem);
@@ -1387,18 +1387,18 @@ textarea {
   text-wrap: balance;
 }
 
-.roadmap-hero-panel-grid span {
+.curriculum-journey-hero-panel-grid span {
   color: rgba(246, 255, 248, 0.72);
   font-size: 0.84rem;
 }
 
-.roadmap-hero-actions {
+.curriculum-journey-hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
 }
 
-.roadmap-map-shell {
+.curriculum-journey-map-shell {
   border: 1px solid var(--line);
   border-radius: 36px;
   padding: clamp(1.1rem, 3vw, 1.6rem);
@@ -1413,7 +1413,7 @@ textarea {
     var(--surface);
 }
 
-.roadmap-map-head {
+.curriculum-journey-map-head {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -1421,31 +1421,31 @@ textarea {
   flex-wrap: wrap;
 }
 
-.roadmap-map-head h2 {
+.curriculum-journey-map-head h2 {
   font-size: clamp(1.55rem, 3.4vw, 2.2rem);
   margin-bottom: 0.18rem;
 }
 
-.roadmap-map-head p,
-.roadmap-stage-head p,
-.roadmap-support-copy {
+.curriculum-journey-map-head p,
+.curriculum-journey-stage-head p,
+.curriculum-journey-support-copy {
   color: var(--ink-soft);
 }
 
-.roadmap-legend,
-.roadmap-stage-metrics,
-.roadmap-node-badges {
+.curriculum-journey-legend,
+.curriculum-journey-stage-metrics,
+.curriculum-journey-node-badges {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.roadmap-map-canvas {
+.curriculum-journey-map-canvas {
   display: grid;
   gap: 1.15rem;
 }
 
-.roadmap-stage {
+.curriculum-journey-stage {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -1462,7 +1462,7 @@ textarea {
     var(--surface-strong);
 }
 
-.roadmap-stage::before {
+.curriculum-journey-stage::before {
   content: "";
   position: absolute;
   inset: 18px auto 18px 40px;
@@ -1476,7 +1476,7 @@ textarea {
   );
 }
 
-.roadmap-stage-head {
+.curriculum-journey-stage-head {
   display: flex;
   justify-content: space-between;
   gap: 0.9rem;
@@ -1484,7 +1484,7 @@ textarea {
   flex-wrap: wrap;
 }
 
-.roadmap-stage-step {
+.curriculum-journey-stage-step {
   display: inline-flex;
   margin-bottom: 0.32rem;
   color: var(--ink-soft);
@@ -1494,17 +1494,17 @@ textarea {
   text-transform: uppercase;
 }
 
-.roadmap-stage-head h3 {
+.curriculum-journey-stage-head h3 {
   font-size: 1.45rem;
   margin-bottom: 0.2rem;
 }
 
-.roadmap-trail {
+.curriculum-journey-trail {
   display: grid;
   gap: 0.9rem;
 }
 
-.roadmap-node {
+.curriculum-journey-node {
   --node-glow: rgba(0, 229, 153, 0.18);
   position: relative;
   display: grid;
@@ -1513,36 +1513,37 @@ textarea {
   align-items: start;
   opacity: 0;
   transform: translateY(14px) scale(0.98);
-  animation: roadmapNodeIn 520ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: var(--roadmap-delay);
+  animation: curriculumJourneyNodeIn 520ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    forwards;
+  animation-delay: var(--curriculum-journey-delay);
 }
 
-.roadmap-node-motion {
+.curriculum-journey-node-motion {
   opacity: 1;
   transform: none;
   animation: none;
 }
 
-.roadmap-node.side-right .roadmap-node-body {
+.curriculum-journey-node.side-right .curriculum-journey-node-body {
   transform: translateX(10px);
 }
 
-.roadmap-node.tone-warning {
+.curriculum-journey-node.tone-warning {
   --node-glow: rgba(169, 66, 70, 0.18);
 }
 
-.roadmap-node.tone-accent {
+.curriculum-journey-node.tone-accent {
   --node-glow: rgba(180, 135, 81, 0.16);
 }
 
-.roadmap-node-rail {
+.curriculum-journey-node-rail {
   position: relative;
   display: grid;
   justify-items: center;
   min-height: 100%;
 }
 
-.roadmap-node-rail-line {
+.curriculum-journey-node-rail-line {
   position: absolute;
   inset: 70px auto -18px auto;
   left: 50%;
@@ -1552,42 +1553,42 @@ textarea {
   transform: translateX(-50%);
 }
 
-.roadmap-node:last-child .roadmap-node-rail-line {
+.curriculum-journey-node:last-child .curriculum-journey-node-rail-line {
   display: none;
 }
 
-.roadmap-node-rail-track,
-.roadmap-node-rail-progress {
+.curriculum-journey-node-rail-track,
+.curriculum-journey-node-rail-progress {
   fill: none;
   stroke-linecap: round;
   stroke-width: 2;
   vector-effect: non-scaling-stroke;
 }
 
-.roadmap-node-rail-track {
+.curriculum-journey-node-rail-track {
   stroke: rgba(148, 163, 184, 0.18);
 }
 
-.roadmap-node-rail-progress {
+.curriculum-journey-node-rail-progress {
   stroke: var(--app-accent, #00e599);
   filter: drop-shadow(0 0 8px rgba(0, 229, 153, 0.22));
 }
 
-.roadmap-node.tone-warning .roadmap-node-rail-progress {
+.curriculum-journey-node.tone-warning .curriculum-journey-node-rail-progress {
   stroke: var(--danger);
   filter: drop-shadow(0 0 8px rgba(169, 66, 70, 0.2));
 }
 
-.roadmap-node.tone-accent .roadmap-node-rail-progress {
+.curriculum-journey-node.tone-accent .curriculum-journey-node-rail-progress {
   stroke: var(--accent);
   filter: drop-shadow(0 0 8px rgba(180, 135, 81, 0.16));
 }
 
-.roadmap-node.is-pending .roadmap-node-rail-track {
+.curriculum-journey-node.is-pending .curriculum-journey-node-rail-track {
   stroke: rgba(148, 163, 184, 0.12);
 }
 
-.roadmap-node-orb {
+.curriculum-journey-node-orb {
   width: 76px;
   height: 76px;
   padding: 4px;
@@ -1597,31 +1598,31 @@ textarea {
   justify-content: center;
   background: conic-gradient(
     from -90deg,
-    var(--app-accent, #00e599) 0 var(--roadmap-progress),
-    rgba(148, 163, 184, 0.18) var(--roadmap-progress) 100%
+    var(--app-accent, #00e599) 0 var(--curriculum-journey-progress),
+    rgba(148, 163, 184, 0.18) var(--curriculum-journey-progress) 100%
   );
   box-shadow:
     0 12px 28px var(--node-glow),
     0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-.roadmap-node.tone-warning .roadmap-node-orb {
+.curriculum-journey-node.tone-warning .curriculum-journey-node-orb {
   background: conic-gradient(
     from -90deg,
-    var(--danger) 0 var(--roadmap-progress),
-    rgba(148, 163, 184, 0.18) var(--roadmap-progress) 100%
+    var(--danger) 0 var(--curriculum-journey-progress),
+    rgba(148, 163, 184, 0.18) var(--curriculum-journey-progress) 100%
   );
 }
 
-.roadmap-node.tone-accent .roadmap-node-orb {
+.curriculum-journey-node.tone-accent .curriculum-journey-node-orb {
   background: conic-gradient(
     from -90deg,
-    var(--accent) 0 var(--roadmap-progress),
-    rgba(148, 163, 184, 0.18) var(--roadmap-progress) 100%
+    var(--accent) 0 var(--curriculum-journey-progress),
+    rgba(148, 163, 184, 0.18) var(--curriculum-journey-progress) 100%
   );
 }
 
-.roadmap-node-orb-shell {
+.curriculum-journey-node-orb-shell {
   width: 100%;
   height: 100%;
   border-radius: 24px;
@@ -1635,29 +1636,29 @@ textarea {
   text-align: center;
 }
 
-.roadmap-node-orb-shell small {
+.curriculum-journey-node-orb-shell small {
   color: rgba(245, 255, 248, 0.68);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
 }
 
-.roadmap-node-orb-shell strong {
+.curriculum-journey-node-orb-shell strong {
   font-size: 1.1rem;
   line-height: 1;
 }
 
-.roadmap-node.is-recommended .roadmap-node-orb {
-  animation: roadmapPulse 2.6s ease-in-out infinite;
+.curriculum-journey-node.is-recommended .curriculum-journey-node-orb {
+  animation: curriculumJourneyPulse 2.6s ease-in-out infinite;
 }
 
-.roadmap-node.is-recommended .roadmap-node-body {
+.curriculum-journey-node.is-recommended .curriculum-journey-node-body {
   border-color: rgba(0, 229, 153, 0.34);
   box-shadow:
     0 0 0 1px rgba(0, 229, 153, 0.12) inset,
     0 18px 46px rgba(0, 229, 153, 0.1);
 }
 
-.roadmap-node-body {
+.curriculum-journey-node-body {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -1671,7 +1672,7 @@ textarea {
   box-shadow: var(--shadow-sm);
 }
 
-.roadmap-node-body::after {
+.curriculum-journey-node-body::after {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
@@ -1683,7 +1684,7 @@ textarea {
   );
 }
 
-.roadmap-node.tone-warning .roadmap-node-body::after {
+.curriculum-journey-node.tone-warning .curriculum-journey-node-body::after {
   background: linear-gradient(
     180deg,
     rgba(169, 66, 70, 0.16),
@@ -2048,6 +2049,27 @@ textarea {
   white-space: pre-wrap;
 }
 
+.flashcards-enroll-panel {
+  border: 1px solid var(--accent-line);
+  border-radius: 22px;
+  padding: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+  background: var(--accent-ghost);
+}
+
+.flashcards-enroll-panel strong {
+  display: block;
+  margin-bottom: 0.18rem;
+}
+
+.flashcards-enroll-panel p {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
 .flashcards-loading-state {
   min-height: 220px;
   border: 1px dashed var(--line);
@@ -2112,6 +2134,15 @@ textarea {
 
   .flashcard-review-actions {
     display: grid;
+  }
+
+  .flashcards-enroll-panel {
+    align-items: stretch;
+    display: grid;
+  }
+
+  .flashcards-enroll-panel > [data-slot="button"] {
+    width: 100%;
   }
 
   .flashcard-rating-grid {
@@ -2442,7 +2473,7 @@ textarea {
     var(--surface);
 }
 
-.roadmap-node.tone-accent .roadmap-node-body::after {
+.curriculum-journey-node.tone-accent .curriculum-journey-node-body::after {
   background: linear-gradient(
     180deg,
     rgba(180, 135, 81, 0.16),
@@ -2450,26 +2481,26 @@ textarea {
   );
 }
 
-.roadmap-node-copy {
+.curriculum-journey-node-copy {
   display: grid;
   gap: 0.45rem;
 }
 
-.roadmap-node-copy h4 {
+.curriculum-journey-node-copy h4 {
   font-size: 1.2rem;
 }
 
-.roadmap-node-copy p {
+.curriculum-journey-node-copy p {
   color: var(--ink-soft);
 }
 
-.roadmap-node-meta {
+.curriculum-journey-node-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
 }
 
-.roadmap-node-meta span {
+.curriculum-journey-node-meta span {
   border-radius: 999px;
   padding: 0.36rem 0.65rem;
   background: var(--surface-soft);
@@ -2477,27 +2508,27 @@ textarea {
   font-size: 0.8rem;
 }
 
-.roadmap-node-actions {
+.curriculum-journey-node-actions {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.85rem;
   align-items: center;
 }
 
-.roadmap-node-progress {
+.curriculum-journey-node-progress {
   display: grid;
   gap: 0.35rem;
 }
 
-.roadmap-node-progress small {
+.curriculum-journey-node-progress small {
   color: var(--ink-soft);
 }
 
-.roadmap-support-copy {
+.curriculum-journey-support-copy {
   max-width: 40rem;
 }
 
-@keyframes roadmapNodeIn {
+@keyframes curriculumJourneyNodeIn {
   0% {
     opacity: 0;
     transform: translateY(14px) scale(0.98);
@@ -2508,7 +2539,7 @@ textarea {
   }
 }
 
-@keyframes roadmapPulse {
+@keyframes curriculumJourneyPulse {
   0%,
   100% {
     transform: translateY(0);
@@ -6220,8 +6251,8 @@ textarea {
   .library-exercise-card,
   .builder-preview-sujet,
   .builder-preview-exercise,
-  .roadmap-map-head,
-  .roadmap-stage-head {
+  .curriculum-journey-map-head,
+  .curriculum-journey-stage-head {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -6236,33 +6267,33 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .roadmap-hero,
-  .roadmap-node,
-  .roadmap-node-actions {
+  .curriculum-journey-hero,
+  .curriculum-journey-node,
+  .curriculum-journey-node-actions {
     grid-template-columns: 1fr;
   }
 
-  .roadmap-hero-panel-grid {
+  .curriculum-journey-hero-panel-grid {
     grid-template-columns: 1fr;
   }
 
-  .roadmap-stage::before {
+  .curriculum-journey-stage::before {
     left: 28px;
   }
 
-  .roadmap-node-rail {
+  .curriculum-journey-node-rail {
     justify-items: flex-start;
     min-height: auto;
   }
 
-  .roadmap-node-rail-line {
+  .curriculum-journey-node-rail-line {
     left: 37px;
     right: auto;
     top: 70px;
     bottom: -18px;
   }
 
-  .roadmap-node.side-right .roadmap-node-body {
+  .curriculum-journey-node.side-right .curriculum-journey-node-body {
     transform: none;
   }
 
@@ -6272,7 +6303,7 @@ textarea {
 
   .hub-activity-action,
   .hub-spotlight-actions > [data-slot="button"],
-  .roadmap-hero-actions > [data-slot="button"],
+  .curriculum-journey-hero-actions > [data-slot="button"],
   .builder-stage-actions > [data-slot="button"] {
     width: 100%;
   }
@@ -7423,11 +7454,14 @@ textarea {
 
 .lab-hero-strip,
 .lab-subject-section,
+.lab-mode-strip,
 .lab-control-panel,
 .lab-result-panel,
 .lab-graph-panel,
 .lab-table-panel,
 .lab-insight-card,
+.function-mission-board,
+.function-bac-note,
 .dna-comparison-banner,
 .dna-pipeline-card,
 .lab-note {
@@ -7510,6 +7544,7 @@ textarea {
 .lab-section-head,
 .lab-tool-card-head,
 .lab-panel-head-row,
+.function-fact-head,
 .dna-pipeline-head {
   display: flex;
   align-items: flex-start;
@@ -7528,6 +7563,14 @@ textarea {
   border-radius: 24px;
   background: var(--surface-soft);
   padding: 1rem;
+}
+
+.lab-tool-card-main,
+.lab-mission-panel,
+.lab-mission-list,
+.lab-mission-card {
+  display: grid;
+  gap: 0.75rem;
 }
 
 .lab-tool-use-case {
@@ -7552,6 +7595,108 @@ textarea {
   line-height: 1.65;
 }
 
+.lab-mission-panel {
+  border-block-start: 1px solid var(--line);
+  padding-block-start: 0.9rem;
+}
+
+.lab-active-mission {
+  display: grid;
+  gap: 0.8rem;
+  border: 1px solid var(--app-accent-line);
+  border-radius: 26px;
+  background: var(--app-accent-ghost);
+  padding: 1rem;
+}
+
+.lab-mission-panel-head,
+.lab-mission-card-head,
+.lab-mission-actions,
+.lab-active-mission-head,
+.lab-active-mission-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.lab-mission-panel-head h4,
+.lab-mission-card h5,
+.lab-active-mission h2 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.lab-mission-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface-muted);
+  padding: 0.85rem;
+}
+
+.lab-mission-card h5 {
+  font-size: 0.98rem;
+}
+
+.lab-mission-card-head span,
+.lab-mission-card p,
+.lab-active-mission p,
+.lab-mission-notice,
+.lab-mission-error {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.lab-mission-card-head span {
+  display: block;
+  margin-block-start: 0.2rem;
+  font-size: 0.78rem;
+}
+
+.lab-mission-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.lab-active-mission-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.lab-active-mission-meta span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: var(--weight-label);
+}
+
+.lab-active-mission-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.lab-mission-notice,
+.lab-mission-error {
+  border-radius: 14px;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.lab-mission-notice {
+  border: 1px solid var(--app-accent-line);
+  background: var(--app-accent-ghost);
+}
+
+.lab-mission-error {
+  border: 1px solid rgba(248, 113, 113, 0.34);
+  background: rgba(248, 113, 113, 0.1);
+}
+
 .lab-workspace {
   display: grid;
   grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
@@ -7564,6 +7709,8 @@ textarea {
 .lab-graph-panel,
 .lab-table-panel,
 .lab-insight-card,
+.function-mission-board,
+.function-bac-note,
 .dna-comparison-banner,
 .dna-pipeline-card,
 .lab-note {
@@ -7645,6 +7792,8 @@ textarea {
 .lab-graph-panel,
 .lab-table-panel,
 .lab-insight-card,
+.function-mission-board,
+.function-bac-note,
 .dna-comparison-banner,
 .dna-pipeline-card,
 .lab-note {
@@ -7660,6 +7809,190 @@ textarea {
   border-radius: 22px;
   color: var(--ink-soft);
   text-align: center;
+}
+
+.lab-mode-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 26px;
+  padding: 0.9rem 1rem;
+}
+
+.lab-mode-strip h2 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.lab-mode-toggle {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.function-fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.function-fact-card {
+  align-content: start;
+}
+
+.function-fact-card small {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.function-sign-table,
+.function-variation-table,
+.function-math-stack,
+.function-mission-checks {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.function-sign-table,
+.function-variation-table {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.function-sign-table > div,
+.function-variation-table > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  border-block-start: 1px solid var(--line);
+  padding: 0.65rem 0.75rem;
+}
+
+.function-sign-table > div:first-child,
+.function-variation-table > div:first-child {
+  border-block-start: 0;
+}
+
+.function-sign-table span,
+.function-variation-table span,
+.function-math-stack span {
+  min-width: 0;
+  color: var(--ink-soft);
+  font-family: var(--font-display), var(--font-display-fallback);
+  font-size: 0.86rem;
+}
+
+.function-sign-table strong,
+.function-variation-table strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.function-math-stack {
+  direction: ltr;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface-muted);
+  padding: 0.75rem;
+}
+
+.function-mission-board {
+  border-color: var(--app-accent-line);
+  background: var(--app-accent-ghost);
+}
+
+.function-mission-board p,
+.function-bac-note p,
+.function-mission-checks span {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+.function-mission-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.function-mission-checks {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.function-mission-answer {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.function-mission-feedback {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 76px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  padding: 0.75rem;
+}
+
+.function-mission-feedback.status-correct {
+  border-color: var(--app-accent-line);
+  background: var(--app-accent-ghost);
+}
+
+.function-mission-feedback.status-incorrect {
+  border-color: rgba(248, 113, 113, 0.34);
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.function-mission-feedback.status-unsupported {
+  border-color: rgba(245, 158, 11, 0.42);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.function-mission-feedback small {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
+.function-mission-checks article {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  padding: 0.75rem;
+}
+
+.function-mission-checks svg,
+.function-bac-note svg {
+  color: var(--app-accent);
+  min-width: 18px;
+}
+
+.function-mission-checks strong {
+  display: block;
+  color: var(--ink);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.function-bac-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  border-color: var(--app-accent-line);
+  background: var(--app-accent-ghost);
 }
 
 .lab-insight-grid,
@@ -7764,6 +8097,9 @@ textarea {
 @media (max-width: 1100px) {
   .lab-workspace,
   .lab-tool-grid,
+  .function-fact-grid,
+  .function-mission-checks,
+  .function-mission-answer,
   .lab-insight-grid,
   .dna-pipeline-grid {
     grid-template-columns: 1fr;
@@ -7776,18 +8112,28 @@ textarea {
 
 @media (max-width: 720px) {
   .lab-hero-strip,
+  .lab-mode-strip,
   .lab-section-head,
   .lab-tool-card-head,
+  .lab-mission-panel-head,
+  .lab-mission-card-head,
+  .lab-active-mission-head,
   .lab-panel-head-row,
+  .function-fact-head,
   .dna-pipeline-head {
     grid-template-columns: 1fr;
     align-items: stretch;
   }
 
   .lab-hero-strip,
+  .lab-mode-strip,
   .lab-section-head,
   .lab-tool-card-head,
+  .lab-mission-panel-head,
+  .lab-mission-card-head,
+  .lab-active-mission-head,
   .lab-panel-head-row,
+  .function-fact-head,
   .dna-pipeline-head {
     flex-direction: column;
   }
@@ -8725,7 +9071,7 @@ textarea {
     var(--surface);
 }
 
-.roadmap-hero {
+.curriculum-journey-hero {
   border-color: rgba(255, 255, 255, 0.1);
   background:
     radial-gradient(
@@ -8737,16 +9083,16 @@ textarea {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.22);
 }
 
-.roadmap-hero::before,
-.roadmap-hero::after {
+.curriculum-journey-hero::before,
+.curriculum-journey-hero::after {
   display: none;
 }
 
-.roadmap-hero-copy h1 {
+.curriculum-journey-hero-copy h1 {
   max-width: 13ch;
 }
 
-.roadmap-hero-panel {
+.curriculum-journey-hero-panel {
   background:
     linear-gradient(
       180deg,
@@ -8756,7 +9102,7 @@ textarea {
     rgba(255, 255, 255, 0.04);
 }
 
-.roadmap-map-shell {
+.curriculum-journey-map-shell {
   border-color: transparent;
   background:
     linear-gradient(
@@ -8768,14 +9114,14 @@ textarea {
   box-shadow: 0 20px 54px rgba(17, 19, 23, 0.08);
 }
 
-[data-theme="dark"] .roadmap-map-shell {
+[data-theme="dark"] .curriculum-journey-map-shell {
   background:
     linear-gradient(180deg, rgba(19, 26, 34, 0.82), rgba(11, 15, 20, 0.34)),
     var(--surface);
   box-shadow: 0 24px 68px rgba(0, 0, 0, 0.24);
 }
 
-[data-theme="dark"] .roadmap-stage {
+[data-theme="dark"] .curriculum-journey-stage {
   background:
     linear-gradient(
       180deg,
@@ -8785,24 +9131,26 @@ textarea {
     var(--surface-soft);
 }
 
-[data-theme="dark"] .roadmap-node-body {
+[data-theme="dark"] .curriculum-journey-node-body {
   background:
     radial-gradient(circle at top right, var(--node-glow), transparent 24%),
     rgba(255, 255, 255, 0.03);
   box-shadow: none;
 }
 
-[data-theme="dark"] .roadmap-node.is-recommended .roadmap-node-body {
+[data-theme="dark"]
+  .curriculum-journey-node.is-recommended
+  .curriculum-journey-node-body {
   box-shadow:
     0 0 0 1px rgba(0, 229, 153, 0.12) inset,
     0 18px 46px rgba(0, 229, 153, 0.1);
 }
 
-.roadmap-node.side-right .roadmap-node-body {
+.curriculum-journey-node.side-right .curriculum-journey-node-body {
   transform: none;
 }
 
-.roadmap-node-body:hover {
+.curriculum-journey-node-body:hover {
   border-color: var(--line-strong);
 }
 
@@ -9158,7 +9506,11 @@ textarea {
   border-radius: 22px;
   padding: clamp(1rem, 2.6vw, 1.75rem);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.045),
+      rgba(255, 255, 255, 0.018)
+    ),
     #15171b;
   color: var(--ink);
   display: grid;
@@ -9478,6 +9830,10 @@ textarea {
 
 .student-main-frame-paper.is-focus-mode .sujet-paper-shell {
   width: min(1120px, 100%);
+}
+
+.student-shell:has(.student-main-frame-paper.is-focus-mode) .student-navbar {
+  opacity: 0.34;
 }
 
 @keyframes sujet-browser-enter {
@@ -10474,8 +10830,8 @@ textarea {
 .course-command-head,
 .course-continue-strip,
 .course-road-list,
-.course-unit-roadmap,
-.course-concept-roadmap {
+.course-unit-path,
+.course-concept-path {
   position: relative;
   z-index: 1;
 }
@@ -10620,8 +10976,8 @@ textarea {
 }
 
 .course-road-list,
-.course-unit-roadmap,
-.course-concept-roadmap {
+.course-unit-path,
+.course-concept-path {
   display: grid;
   gap: 0.72rem;
 }
@@ -10976,7 +11332,7 @@ textarea {
   box-shadow: none;
 }
 
-[data-theme="light"] .roadmap-hero {
+[data-theme="light"] .curriculum-journey-hero {
   border-color: var(--line);
   color: var(--ink);
   background:
@@ -10994,11 +11350,11 @@ textarea {
   box-shadow: var(--shadow-md);
 }
 
-[data-theme="light"] .roadmap-hero-copy p:last-child {
+[data-theme="light"] .curriculum-journey-hero-copy p:last-child {
   color: var(--ink-soft);
 }
 
-[data-theme="light"] .roadmap-hero-panel {
+[data-theme="light"] .curriculum-journey-hero-panel {
   background:
     linear-gradient(
       180deg,
@@ -11010,12 +11366,12 @@ textarea {
   backdrop-filter: none;
 }
 
-[data-theme="light"] .roadmap-hero-panel-grid article {
+[data-theme="light"] .curriculum-journey-hero-panel-grid article {
   background: rgba(15, 23, 42, 0.035);
   box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.065);
 }
 
-[data-theme="light"] .roadmap-hero-panel-grid span {
+[data-theme="light"] .curriculum-journey-hero-panel-grid span {
   color: var(--ink-soft);
 }
 
@@ -11159,7 +11515,7 @@ textarea {
 }
 
 .course-space,
-.student-shell:has(.course-concept-player) .roadmap-page {
+.student-shell:has(.course-concept-player) .curriculum-journey-page {
   width: min(1150px, 100%);
 }
 
@@ -11380,8 +11736,8 @@ textarea {
 }
 
 .course-road-list,
-.course-unit-roadmap,
-.course-concept-roadmap {
+.course-unit-path,
+.course-concept-path {
   gap: 0.5rem;
 }
 
@@ -12608,7 +12964,7 @@ textarea {
 
   .hub-bento-continue,
   .hub-bento-insight,
-  .hub-bento-roadmap,
+  .hub-bento-journey,
   .hub-bento-review,
   .hub-bento-actions,
   .hub-bento-momentum {
@@ -12712,9 +13068,9 @@ textarea {
   .sujet-browser-hero,
   .sujet-browser-nav,
   .sujet-paper-shell,
-  .roadmap-node,
-  .roadmap-node-orb,
-  .roadmap-node-rail-progress,
+  .curriculum-journey-node,
+  .curriculum-journey-node-orb,
+  .curriculum-journey-node-rail-progress,
   .course-story-segment span,
   .course-player-card,
   .course-card-flip {

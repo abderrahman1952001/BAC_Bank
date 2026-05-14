@@ -17,12 +17,16 @@ import type {
   AdminIngestionJobSummary,
 } from "@bac-bank/contracts/ingestion";
 import type {
+  LabToolMissionsResponse,
+  LabToolsResponse,
+} from "@bac-bank/contracts/lab";
+import type {
   CatalogResponse,
   ExamResponse,
   FiltersResponse,
   MyMistakesResponse,
   RecentExerciseStatesResponse,
-  StudyRoadmapsResponse,
+  CurriculumJourneysResponse,
   StudySessionResponse,
   SessionPreviewResponse,
   WeakPointInsightsResponse,
@@ -101,6 +105,168 @@ export const playwrightTestAuthOptions = {
     },
   ],
 } satisfies AuthOptionsResponse;
+
+export const playwrightTestLabTools = {
+  data: [
+    {
+      id: "11111111-1111-1111-1111-111111111111",
+      slug: "function-explorer",
+      title: "مستكشف الدوال",
+      description: "مهمات قصيرة تربط المنحنى بالجذور وجدول القيم.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "math",
+      },
+      subject: {
+        code: "MATHEMATICS",
+        name: "الرياضيات",
+      },
+      missionCount: 3,
+      completedMissionCount: 1,
+      inProgressMissionCount: 1,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "22222222-2222-2222-2222-222222222222",
+      slug: "dna-to-protein",
+      title: "من DNA إلى بروتين",
+      description: "مهمات قصيرة لتحويل DNA إلى mRNA وفهم أثر الطفرات.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "svt",
+      },
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+  ],
+} satisfies LabToolsResponse;
+
+export const playwrightTestLabToolMissionsBySlug: Record<
+  string,
+  LabToolMissionsResponse
+> = {
+  "function-explorer": {
+    tool: playwrightTestLabTools.data[0],
+    missions: [
+      {
+        mission: {
+          id: "33333333-3333-3333-3333-333333333333",
+          toolId: "11111111-1111-1111-1111-111111111111",
+          title: "اقرأ جذور المنحنى",
+          goal: "استعمل الدالة المقترحة لتحديد حلول f(x)=0 تقريبياً ثم قارِنها بجدول القيم.",
+          preset: {
+            expression: "x^2 - 4*x + 3",
+          },
+          exitCheck: {
+            kind: "ROOTS_NEAR",
+            expectedRoots: [1, 3],
+            tolerance: 0.25,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "44444444-4444-4444-4444-444444444444",
+            code: "FUNCTIONS",
+            name: "الدوال",
+            slug: "functions",
+          },
+          learningTarget: {
+            id: "55555555-5555-5555-5555-555555555555",
+            code: "FUNCTION_ANALYSIS",
+            name: "تحليل الدوال",
+            slug: "function-analysis",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: {
+          id: "66666666-6666-6666-6666-666666666666",
+          missionId: "33333333-3333-3333-3333-333333333333",
+          status: "IN_PROGRESS",
+          resultJson: null,
+          startedAt: "2026-05-13T08:00:00.000Z",
+          completedAt: null,
+        },
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "77777777-7777-7777-7777-777777777777",
+          toolId: "11111111-1111-1111-1111-111111111111",
+          title: "استنتج مجالات الإشارة",
+          goal: "لاحظ أين تكون الدالة موجبة أو سالبة قبل كتابة جدول الإشارة.",
+          preset: null,
+          exitCheck: null,
+          orderIndex: 2,
+          curriculumNode: {
+            id: "44444444-4444-4444-4444-444444444444",
+            code: "FUNCTIONS",
+            name: "الدوال",
+            slug: "functions",
+          },
+          learningTarget: {
+            id: "55555555-5555-5555-5555-555555555555",
+            code: "FUNCTION_ANALYSIS",
+            name: "تحليل الدوال",
+            slug: "function-analysis",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 1,
+      },
+    ],
+  },
+  "dna-to-protein": {
+    tool: playwrightTestLabTools.data[1],
+    missions: [
+      {
+        mission: {
+          id: "88888888-8888-8888-8888-888888888888",
+          toolId: "22222222-2222-2222-2222-222222222222",
+          title: "حوّل DNA إلى mRNA",
+          goal: "اتبع قواعد التكامل لتحويل السلسلة إلى mRNA ثم قسّمها إلى رامزات.",
+          preset: {
+            dna: "ATGCTTGAA",
+          },
+          exitCheck: {
+            kind: "MRNA_AND_CODONS",
+            expectedMrna: "AUGCUUGAA",
+            expectedCodons: ["AUG", "CUU", "GAA"],
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "99999999-9999-9999-9999-999999999999",
+            code: "PROTEIN_SYNTHESIS",
+            name: "تركيب البروتين",
+            slug: "protein-synthesis",
+          },
+          learningTarget: {
+            id: "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa",
+            code: "PROTEIN_FUNCTION_REASONING",
+            name: "الاستدلال في البروتينات",
+            slug: "protein-function-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+};
 
 export const playwrightTestFilters = {
   streams: [
@@ -583,12 +749,12 @@ export const playwrightTestWeakPointInsights = {
   data: [],
 } satisfies WeakPointInsightsResponse;
 
-export const playwrightTestStudyRoadmaps = {
+export const playwrightTestCurriculumJourneys = {
   data: [
     {
-      id: "roadmap-math",
-      title: "Math roadmap",
-      description: "A guided revision route for mathematics.",
+      id: "curriculum-journey-math",
+      title: "Math curriculum journey",
+      description: "A guided curriculum journey for mathematics.",
       subject: {
         code: "MATH",
         name: "Mathematics",
@@ -608,27 +774,31 @@ export const playwrightTestStudyRoadmaps = {
       nextAction: {
         type: "TOPIC_DRILL",
         label: "Review Algebra",
+        curriculumNodeCode: "ALG",
+        curriculumNodeName: "Algebra",
         topicCode: "ALG",
         topicName: "Algebra",
       },
       sections: [
         {
-          id: "roadmap-section-1",
+          id: "curriculum-journey-section-1",
           code: "FOUNDATION",
           title: "Foundations",
           description: "Stabilize the highest-return chapters first.",
           orderIndex: 1,
           nodes: [
             {
-              id: "roadmap-node-1",
+              id: "curriculum-journey-node-1",
               title: "Algebra",
               description: "Start with the chapter that most needs attention.",
+              curriculumNodeCode: "ALG",
+              curriculumNodeName: "Algebra",
               topicCode: "ALG",
               topicName: "Algebra",
               orderIndex: 1,
               estimatedSessions: 3,
               isOptional: false,
-              sectionId: "roadmap-section-1",
+              sectionId: "curriculum-journey-section-1",
               recommendedPreviousNodeId: null,
               recommendedPreviousNodeTitle: null,
               status: "NEEDS_REVIEW",
@@ -640,16 +810,18 @@ export const playwrightTestStudyRoadmaps = {
               lastSeenAt: "2026-04-09T10:00:00.000Z",
             },
             {
-              id: "roadmap-node-2",
+              id: "curriculum-journey-node-2",
               title: "Geometry",
               description: "Lock in your proofs and visual reasoning.",
+              curriculumNodeCode: "GEO",
+              curriculumNodeName: "Geometry",
               topicCode: "GEO",
               topicName: "Geometry",
               orderIndex: 2,
               estimatedSessions: 2,
               isOptional: false,
-              sectionId: "roadmap-section-1",
-              recommendedPreviousNodeId: "roadmap-node-1",
+              sectionId: "curriculum-journey-section-1",
+              recommendedPreviousNodeId: "curriculum-journey-node-1",
               recommendedPreviousNodeTitle: "Algebra",
               status: "SOLID",
               progressPercent: 100,
@@ -662,23 +834,25 @@ export const playwrightTestStudyRoadmaps = {
           ],
         },
         {
-          id: "roadmap-section-2",
+          id: "curriculum-journey-section-2",
           code: "CONSOLIDATION",
           title: "Consolidation",
           description: "Finish with the chapters you have not opened yet.",
           orderIndex: 2,
           nodes: [
             {
-              id: "roadmap-node-3",
+              id: "curriculum-journey-node-3",
               title: "Analysis",
               description: "Build enough momentum here before a full mock.",
+              curriculumNodeCode: "ANL",
+              curriculumNodeName: "Analysis",
               topicCode: "ANL",
               topicName: "Analysis",
               orderIndex: 3,
               estimatedSessions: 2,
               isOptional: false,
-              sectionId: "roadmap-section-2",
-              recommendedPreviousNodeId: "roadmap-node-2",
+              sectionId: "curriculum-journey-section-2",
+              recommendedPreviousNodeId: "curriculum-journey-node-2",
               recommendedPreviousNodeTitle: "Geometry",
               status: "NOT_STARTED",
               progressPercent: 0,
@@ -693,15 +867,17 @@ export const playwrightTestStudyRoadmaps = {
       ],
       nodes: [
         {
-          id: "roadmap-node-1",
+          id: "curriculum-journey-node-1",
           title: "Algebra",
           description: "Start with the chapter that most needs attention.",
+          curriculumNodeCode: "ALG",
+          curriculumNodeName: "Algebra",
           topicCode: "ALG",
           topicName: "Algebra",
           orderIndex: 1,
           estimatedSessions: 3,
           isOptional: false,
-          sectionId: "roadmap-section-1",
+          sectionId: "curriculum-journey-section-1",
           recommendedPreviousNodeId: null,
           recommendedPreviousNodeTitle: null,
           status: "NEEDS_REVIEW",
@@ -713,16 +889,18 @@ export const playwrightTestStudyRoadmaps = {
           lastSeenAt: "2026-04-09T10:00:00.000Z",
         },
         {
-          id: "roadmap-node-2",
+          id: "curriculum-journey-node-2",
           title: "Geometry",
           description: "Lock in your proofs and visual reasoning.",
+          curriculumNodeCode: "GEO",
+          curriculumNodeName: "Geometry",
           topicCode: "GEO",
           topicName: "Geometry",
           orderIndex: 2,
           estimatedSessions: 2,
           isOptional: false,
-          sectionId: "roadmap-section-1",
-          recommendedPreviousNodeId: "roadmap-node-1",
+          sectionId: "curriculum-journey-section-1",
+          recommendedPreviousNodeId: "curriculum-journey-node-1",
           recommendedPreviousNodeTitle: "Algebra",
           status: "SOLID",
           progressPercent: 100,
@@ -733,16 +911,18 @@ export const playwrightTestStudyRoadmaps = {
           lastSeenAt: "2026-04-01T10:00:00.000Z",
         },
         {
-          id: "roadmap-node-3",
+          id: "curriculum-journey-node-3",
           title: "Analysis",
           description: "Build enough momentum here before a full mock.",
+          curriculumNodeCode: "ANL",
+          curriculumNodeName: "Analysis",
           topicCode: "ANL",
           topicName: "Analysis",
           orderIndex: 3,
           estimatedSessions: 2,
           isOptional: false,
-          sectionId: "roadmap-section-2",
-          recommendedPreviousNodeId: "roadmap-node-2",
+          sectionId: "curriculum-journey-section-2",
+          recommendedPreviousNodeId: "curriculum-journey-node-2",
           recommendedPreviousNodeTitle: "Geometry",
           status: "NOT_STARTED",
           progressPercent: 0,
@@ -755,7 +935,7 @@ export const playwrightTestStudyRoadmaps = {
       ],
     },
   ],
-} satisfies StudyRoadmapsResponse;
+} satisfies CurriculumJourneysResponse;
 
 export const playwrightTestCourseSubjectCards = {
   data: [
@@ -765,7 +945,7 @@ export const playwrightTestCourseSubjectCards = {
         name: "Mathematics",
       },
       title: "Mathematics",
-      description: "A guided revision route for mathematics.",
+      description: "A guided curriculum journey for mathematics.",
       progressPercent: 42,
       unitCount: 2,
       topicCount: 3,
@@ -780,15 +960,15 @@ export const playwrightTestCourseSubject = {
     code: "MATH",
     name: "Mathematics",
   },
-  title: "Math roadmap",
-  description: "A guided revision route for mathematics.",
+  title: "Math curriculum journey",
+  description: "A guided curriculum journey for mathematics.",
   progressPercent: 42,
   topicCount: 3,
   completedTopicCount: 1,
   continueTopicCode: "ALG",
   units: [
     {
-      id: "roadmap-section-1",
+      id: "curriculum-journey-section-1",
       code: "FOUNDATION",
       title: "Foundations",
       description: "Stabilize the highest-return chapters first.",
@@ -817,7 +997,7 @@ export const playwrightTestCourseSubject = {
       ],
     },
     {
-      id: "roadmap-section-2",
+      id: "curriculum-journey-section-2",
       code: "CONSOLIDATION",
       title: "Consolidation",
       description: "Finish with the chapters you have not opened yet.",

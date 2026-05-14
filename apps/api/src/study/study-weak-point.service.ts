@@ -407,7 +407,8 @@ export class StudyWeakPointService {
     for (const queueItem of reviewQueueItems) {
       const reason = queueItem.reasonType as StudyReviewReasonType;
       const topics = selectSignalTopics({
-        questionLearningTargets: queueItem.questionNode?.learningTargetMappings ?? [],
+        questionLearningTargets:
+          queueItem.questionNode?.learningTargetMappings ?? [],
         exerciseLearningTargets: queueItem.exerciseNode.learningTargetMappings,
         questionTopics:
           queueItem.questionNode?.curriculumNodeMappings.map(
@@ -424,7 +425,8 @@ export class StudyWeakPointService {
       }
 
       const learningTargetMappings = selectSignalLearningTargetMappings({
-        questionLearningTargets: queueItem.questionNode?.learningTargetMappings ?? [],
+        questionLearningTargets:
+          queueItem.questionNode?.learningTargetMappings ?? [],
         exerciseLearningTargets: queueItem.exerciseNode.learningTargetMappings,
         topics,
         requestedSubjectCode,
@@ -454,8 +456,7 @@ export class StudyWeakPointService {
         }
 
         return (
-          this.toTimestamp(right.lastSeenAt) -
-          this.toTimestamp(left.lastSeenAt)
+          this.toTimestamp(right.lastSeenAt) - this.toTimestamp(left.lastSeenAt)
         );
       })
       .slice(0, cappedLimit)
@@ -477,8 +478,9 @@ export class StudyWeakPointService {
           })
           .slice(0, 4)
           .map((topic) => {
-            const preferredMappings = topic.learningTargetMappings.filter((mapping) =>
-              subject.learningTargets.has(mapping.learningTarget.code),
+            const preferredMappings = topic.learningTargetMappings.filter(
+              (mapping) =>
+                subject.learningTargets.has(mapping.learningTarget.code),
             );
             const topicLearningTargetMappings = preferredMappings.length
               ? preferredMappings
@@ -497,8 +499,8 @@ export class StudyWeakPointService {
                     mapping.learningTarget.code,
                   );
                   const weaknessScore =
-                    (subjectLearningTarget?.weaknessScore ?? topic.weaknessScore) *
-                    mapping.weight;
+                    (subjectLearningTarget?.weaknessScore ??
+                      topic.weaknessScore) * mapping.weight;
 
                   return {
                     code: mapping.learningTarget.code,
@@ -528,7 +530,9 @@ export class StudyWeakPointService {
             .map((learningTarget) => ({
               code: learningTarget.code,
               name: learningTarget.name,
-              weaknessScore: this.roundWeaknessScore(learningTarget.weaknessScore),
+              weaknessScore: this.roundWeaknessScore(
+                learningTarget.weaknessScore,
+              ),
             })),
           topTopics,
         };
@@ -587,10 +591,11 @@ export class StudyWeakPointService {
 
       const distributedWeight =
         getReviewReasonWeaknessWeight('FLAGGED') / input.topics.length;
-      const topicLearningTargetMappings = this.selectTopicLearningTargetMappings(
-        topicAggregate,
-        input.learningTargetMappings,
-      );
+      const topicLearningTargetMappings =
+        this.selectTopicLearningTargetMappings(
+          topicAggregate,
+          input.learningTargetMappings,
+        );
 
       for (const mapping of topicLearningTargetMappings) {
         topicAggregate.weaknessScore += distributedWeight * mapping.weight;
@@ -629,13 +634,17 @@ export class StudyWeakPointService {
     }
 
     const preferredByLearningTargetCode = new Map(
-      preferredMappings.map((mapping) => [mapping.learningTarget.code, mapping]),
+      preferredMappings.map((mapping) => [
+        mapping.learningTarget.code,
+        mapping,
+      ]),
     );
     const overlappingMappings = topic.learningTargetMappings
-      .map((mapping) => preferredByLearningTargetCode.get(mapping.learningTarget.code))
-      .filter(
-        (mapping): mapping is EffectiveSignalLearningTargetMapping =>
-          Boolean(mapping),
+      .map((mapping) =>
+        preferredByLearningTargetCode.get(mapping.learningTarget.code),
+      )
+      .filter((mapping): mapping is EffectiveSignalLearningTargetMapping =>
+        Boolean(mapping),
       );
 
     if (overlappingMappings.length) {

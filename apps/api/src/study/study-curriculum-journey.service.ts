@@ -1,14 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type {
   CurriculumJourneysResponse,
-  StudyRoadmapsResponse,
-  StudyRoadmapNodeStatus,
+  CurriculumJourneyNodeStatus,
 } from '@bac-bank/contracts/study';
 import { StudyReviewQueueStatus } from '@prisma/client';
 import { resolveSubjectCurriculumJourneyDefinition } from '../catalog/curriculum-journey-definitions';
 import { PrismaService } from '../prisma/prisma.service';
 
-const NODE_STATUS_PROGRESS: Record<StudyRoadmapNodeStatus, number> = {
+const NODE_STATUS_PROGRESS: Record<CurriculumJourneyNodeStatus, number> = {
   NOT_STARTED: 0,
   IN_PROGRESS: 65,
   NEEDS_REVIEW: 35,
@@ -16,18 +15,8 @@ const NODE_STATUS_PROGRESS: Record<StudyRoadmapNodeStatus, number> = {
 };
 
 @Injectable()
-export class StudyRoadmapService {
+export class StudyCurriculumJourneyService {
   constructor(private readonly prisma: PrismaService) {}
-
-  async listStudyRoadmaps(
-    userId: string,
-    input?: {
-      subjectCode?: string;
-      limit?: number;
-    },
-  ): Promise<StudyRoadmapsResponse> {
-    return this.listCurriculumJourneys(userId, input);
-  }
 
   async listCurriculumJourneys(
     userId: string,
@@ -255,16 +244,21 @@ export class StudyRoadmapService {
                 id: curriculumNode.id,
                 title: definitionNode.title,
                 description: definitionNode.description,
+                curriculumNodeCode: curriculumNode.code,
+                curriculumNodeName:
+                  curriculumNode.studentLabel ?? curriculumNode.name,
                 topicCode: curriculumNode.code,
                 topicName: curriculumNode.studentLabel ?? curriculumNode.name,
                 orderIndex: nodeIndex + 1,
                 estimatedSessions: definitionNode.estimatedSessions,
                 isOptional: definitionNode.isOptional,
                 sectionId: `${curriculum.id}:${section.code}`,
-                recommendedPreviousNodeId: definitionNode.recommendedPreviousTopicCode
-                  ? (nodeByCode.get(definitionNode.recommendedPreviousTopicCode)
-                      ?.id ?? null)
-                  : null,
+                recommendedPreviousNodeId:
+                  definitionNode.recommendedPreviousTopicCode
+                    ? (nodeByCode.get(
+                        definitionNode.recommendedPreviousTopicCode,
+                      )?.id ?? null)
+                    : null,
                 status,
                 progressPercent,
                 weaknessScore: rollup ? Number(rollup.weaknessScore) : 0,
@@ -415,10 +409,8 @@ export class StudyRoadmapService {
               return leftStreamRank - rightStreamRank;
             }
 
-            const leftRecency =
-              left.validToYear ?? Number.MAX_SAFE_INTEGER;
-            const rightRecency =
-              right.validToYear ?? Number.MAX_SAFE_INTEGER;
+            const leftRecency = left.validToYear ?? Number.MAX_SAFE_INTEGER;
+            const rightRecency = right.validToYear ?? Number.MAX_SAFE_INTEGER;
 
             if (leftRecency !== rightRecency) {
               return rightRecency - leftRecency;
@@ -435,7 +427,7 @@ export class StudyRoadmapService {
   private deriveNodeStatus(rollup?: {
     attemptedQuestions: number;
     masteryBucket: 'NEW' | 'WATCH' | 'WEAK' | 'RECOVERING' | 'SOLID';
-  }): StudyRoadmapNodeStatus {
+  }): CurriculumJourneyNodeStatus {
     if (!rollup || rollup.attemptedQuestions <= 0) {
       return 'NOT_STARTED';
     }
@@ -452,7 +444,7 @@ export class StudyRoadmapService {
   }
 
   private deriveNodeProgressPercent(
-    status: StudyRoadmapNodeStatus,
+    status: CurriculumJourneyNodeStatus,
     weaknessScore: number,
   ) {
     if (status === 'NEEDS_REVIEW' && weaknessScore >= 6) {
@@ -465,9 +457,11 @@ export class StudyRoadmapService {
   private buildNextAction(
     nodes: Array<{
       title: string;
+      curriculumNodeCode: string;
+      curriculumNodeName: string;
       topicCode: string;
       topicName: string;
-      status: StudyRoadmapNodeStatus;
+      status: CurriculumJourneyNodeStatus;
       weaknessScore: number;
       orderIndex: number;
     }>,
@@ -487,6 +481,8 @@ export class StudyRoadmapService {
       return {
         type: 'TOPIC_DRILL' as const,
         label: `راجع ${weakestNode.title}`,
+        curriculumNodeCode: weakestNode.curriculumNodeCode,
+        curriculumNodeName: weakestNode.curriculumNodeName,
         topicCode: weakestNode.topicCode,
         topicName: weakestNode.topicName,
       };
@@ -496,6 +492,8 @@ export class StudyRoadmapService {
       return {
         type: 'REVIEW_MISTAKES' as const,
         label: 'راجع أخطاءك المفتوحة',
+        curriculumNodeCode: null,
+        curriculumNodeName: null,
         topicCode: null,
         topicName: null,
       };
@@ -507,6 +505,8 @@ export class StudyRoadmapService {
       return {
         type: 'TOPIC_DRILL' as const,
         label: `واصل ${activeNode.title}`,
+        curriculumNodeCode: activeNode.curriculumNodeCode,
+        curriculumNodeName: activeNode.curriculumNodeName,
         topicCode: activeNode.topicCode,
         topicName: activeNode.topicName,
       };
@@ -518,6 +518,8 @@ export class StudyRoadmapService {
       return {
         type: 'TOPIC_DRILL' as const,
         label: `ابدأ ${nextNode.title}`,
+        curriculumNodeCode: nextNode.curriculumNodeCode,
+        curriculumNodeName: nextNode.curriculumNodeName,
         topicCode: nextNode.topicCode,
         topicName: nextNode.topicName,
       };
@@ -530,6 +532,8 @@ export class StudyRoadmapService {
     return {
       type: 'PAPER_SIMULATION' as const,
       label: 'اختبر نفسك بمحاكاة كاملة',
+      curriculumNodeCode: null,
+      curriculumNodeName: null,
       topicCode: null,
       topicName: null,
     };

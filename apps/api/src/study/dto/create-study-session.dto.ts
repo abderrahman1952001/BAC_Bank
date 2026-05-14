@@ -19,7 +19,9 @@ import {
 } from 'class-validator';
 import { SESSION_YEAR_MAX, SESSION_YEAR_MIN } from '../session-year-range';
 
-function normalizeCodeList({ value }: TransformFnParams): string[] | undefined {
+function normalizeCodeList(params: TransformFnParams): string[] | undefined {
+  const value = params.value as unknown;
+
   if (value === undefined || value === null || value === '') {
     return undefined;
   }
@@ -34,9 +36,11 @@ function normalizeCodeList({ value }: TransformFnParams): string[] | undefined {
   return normalized.length ? Array.from(new Set(normalized)) : undefined;
 }
 
-function normalizeSessionTypeList({
-  value,
-}: TransformFnParams): SessionType[] | undefined {
+function normalizeSessionTypeList(
+  params: TransformFnParams,
+): SessionType[] | undefined {
+  const value = params.value as unknown;
+
   if (value === undefined || value === null || value === '') {
     return undefined;
   }
@@ -53,7 +57,9 @@ function normalizeSessionTypeList({
   return normalized.length ? Array.from(new Set(normalized)) : undefined;
 }
 
-function normalizeYearList({ value }: TransformFnParams): number[] | undefined {
+function normalizeYearList(params: TransformFnParams): number[] | undefined {
+  const value = params.value as unknown;
+
   if (value === undefined || value === null || value === '') {
     return undefined;
   }
@@ -67,7 +73,9 @@ function normalizeYearList({ value }: TransformFnParams): number[] | undefined {
   return normalized.length ? Array.from(new Set(normalized)) : undefined;
 }
 
-function normalizeText({ value }: TransformFnParams): string | undefined {
+function normalizeText(params: TransformFnParams): string | undefined {
+  const value = params.value as unknown;
+
   if (typeof value !== 'string') {
     return undefined;
   }
@@ -76,9 +84,9 @@ function normalizeText({ value }: TransformFnParams): string | undefined {
   return trimmed.length ? trimmed : undefined;
 }
 
-function normalizeStringList({
-  value,
-}: TransformFnParams): string[] | undefined {
+function normalizeStringList(params: TransformFnParams): string[] | undefined {
+  const value = params.value as unknown;
+
   if (value === undefined || value === null || value === '') {
     return undefined;
   }
@@ -93,6 +101,37 @@ function normalizeStringList({
   return normalized.length ? Array.from(new Set(normalized)) : undefined;
 }
 
+function normalizeUpperString(params: TransformFnParams): string | undefined {
+  const value = params.value as unknown;
+  return typeof value === 'string' ? value.trim().toUpperCase() : undefined;
+}
+
+function normalizeBoolean(params: TransformFnParams): boolean | undefined {
+  const value = params.value as unknown;
+
+  if (value === undefined || value === null || value === '') {
+    return undefined;
+  }
+
+  if (typeof value === 'boolean') {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    const normalized = value.trim().toLowerCase();
+
+    if (normalized === 'true') {
+      return true;
+    }
+
+    if (normalized === 'false') {
+      return false;
+    }
+  }
+
+  return undefined;
+}
+
 export class CreateStudySessionDto {
   @IsOptional()
   @Transform(normalizeText)
@@ -100,16 +139,12 @@ export class CreateStudySessionDto {
   title?: string;
 
   @IsOptional()
-  @Transform(({ value }: TransformFnParams) =>
-    typeof value === 'string' ? value.trim().toUpperCase() : undefined,
-  )
+  @Transform(normalizeUpperString)
   @IsEnum(StudySessionFamily)
   family?: StudySessionFamily;
 
   @IsOptional()
-  @Transform(({ value }: TransformFnParams) =>
-    typeof value === 'string' ? value.trim().toUpperCase() : undefined,
-  )
+  @Transform(normalizeUpperString)
   @IsEnum(StudySessionKind)
   kind?: StudySessionKind;
 
@@ -122,17 +157,13 @@ export class CreateStudySessionDto {
   @Max(SESSION_YEAR_MAX, { each: true })
   years?: number[];
 
-  @Transform(({ value }: TransformFnParams) =>
-    typeof value === 'string' ? value.trim().toUpperCase() : undefined,
-  )
+  @Transform(normalizeUpperString)
   @IsString()
   @IsNotEmpty()
   subjectCode!: string;
 
   @IsOptional()
-  @Transform(({ value }: TransformFnParams) =>
-    typeof value === 'string' ? value.trim().toUpperCase() : undefined,
-  )
+  @Transform(normalizeUpperString)
   @IsString()
   streamCode?: string;
 
@@ -182,29 +213,7 @@ export class CreateStudySessionDto {
   exerciseCount?: number;
 
   @IsOptional()
-  @Transform(({ value }: TransformFnParams) => {
-    if (value === undefined || value === null || value === '') {
-      return undefined;
-    }
-
-    if (typeof value === 'boolean') {
-      return value;
-    }
-
-    if (typeof value === 'string') {
-      const normalized = value.trim().toLowerCase();
-
-      if (normalized === 'true') {
-        return true;
-      }
-
-      if (normalized === 'false') {
-        return false;
-      }
-    }
-
-    return value;
-  })
+  @Transform(normalizeBoolean)
   @IsBoolean()
   timingEnabled?: boolean;
 

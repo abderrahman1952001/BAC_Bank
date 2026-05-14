@@ -118,9 +118,9 @@ describe('IngestionPublishedVariantService', () => {
       curriculumNode: {
         findMany: jest.fn(),
       },
-    examNodeLearningTarget: {
-      createMany: jest.fn().mockResolvedValue(undefined),
-    },
+      examNodeLearningTarget: {
+        createMany: jest.fn().mockResolvedValue(undefined),
+      },
       examVariant: {
         create: jest.fn().mockResolvedValue(undefined),
       },

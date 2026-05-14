@@ -264,8 +264,10 @@ export class StudyReadModelService {
       ]);
 
     const topicRollups = new Map<string, TopicRollupAggregate>();
-    const learningTargetRollups =
-      new Map<string, LearningTargetRollupAggregate>();
+    const learningTargetRollups = new Map<
+      string,
+      LearningTargetRollupAggregate
+    >();
     const reviewQueueItems = new Map<string, ReviewQueueAggregate>();
 
     for (const signal of questionSignals) {
@@ -276,9 +278,10 @@ export class StudyReadModelService {
         questionTopics: signal.questionNode.curriculumNodeMappings.map(
           (mapping) => mapping.curriculumNode,
         ),
-        exerciseTopics: signal.sessionExercise.exerciseNode.curriculumNodeMappings.map(
-          (mapping) => mapping.curriculumNode,
-        ),
+        exerciseTopics:
+          signal.sessionExercise.exerciseNode.curriculumNodeMappings.map(
+            (mapping) => mapping.curriculumNode,
+          ),
         requestedSubjectCode: null,
       });
       const learningTargetMappings = selectSignalLearningTargetMappings({
@@ -345,9 +348,10 @@ export class StudyReadModelService {
       }
 
       for (const mapping of learningTargetMappings) {
-        const current =
-          learningTargetRollups.get(mapping.learningTarget.id) ?? {
-            learningTargetId: mapping.learningTarget.id,
+        const current = learningTargetRollups.get(
+          mapping.learningTarget.id,
+        ) ?? {
+          learningTargetId: mapping.learningTarget.id,
           attemptedQuestions: 0,
           correctCount: 0,
           incorrectCount: 0,

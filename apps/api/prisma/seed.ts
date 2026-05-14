@@ -1,4 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import {
+  FlashcardSourceType,
+  FlashcardType,
+  Prisma,
+  PrismaClient,
+} from '@prisma/client';
 import {
   buildCurriculumTitle,
   resolveCurriculumDefinitions,
@@ -50,6 +55,43 @@ type LearningTargetDefinition = {
   }>;
 };
 
+type PlatformFlashcardDefinition = {
+  code: string;
+  front: string;
+  back: string;
+  learningTargetCode?: string;
+  curriculumNodeCode?: string;
+  orderIndex?: number;
+};
+
+type PlatformFlashcardDeckDefinition = {
+  code: string;
+  subjectCode: string;
+  title: string;
+  description: string;
+  cards: PlatformFlashcardDefinition[];
+};
+
+type PlatformLabMissionDefinition = {
+  code: string;
+  title: string;
+  goal: string;
+  curriculumNodeCode?: string;
+  learningTargetCode?: string;
+  preset?: Record<string, unknown>;
+  exitCheck?: Record<string, unknown>;
+  orderIndex?: number;
+};
+
+type PlatformLabToolDefinition = {
+  slug: string;
+  subjectCode: string;
+  title: string;
+  description: string;
+  metadata?: Record<string, unknown>;
+  missions: PlatformLabMissionDefinition[];
+};
+
 type CurriculumRuleDefinition = {
   streamCode: string;
   subjects: Array<{
@@ -60,6 +102,10 @@ type CurriculumRuleDefinition = {
 
 function slugFromCode(code: string): string {
   return code.toLowerCase().replace(/_/g, '-');
+}
+
+function toJsonValue(value: unknown): Prisma.InputJsonValue {
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
 const STREAM_CATALOG: StreamFamilyDefinition[] = [
@@ -1624,6 +1670,169 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
   ],
 };
 
+const PLATFORM_FLASHCARD_DECKS: PlatformFlashcardDeckDefinition[] = [
+  {
+    code: 'MATHEMATICS_FUNCTIONS_PRE_EXAM',
+    subjectCode: 'MATHEMATICS',
+    title: 'الدوال قبل الامتحان',
+    description:
+      'بطاقات منصة لتثبيت قراءة الدوال والنهايات والمشتقات قبل التدريب.',
+    cards: [
+      {
+        code: 'FUNCTION_ROOT_FROM_GRAPH',
+        curriculumNodeCode: 'FUNCTIONS',
+        learningTargetCode: 'FUNCTION_ANALYSIS',
+        front: 'كيف تقرأ جذر الدالة من البيان؟',
+        back: 'الجذر هو فاصلة نقطة تقاطع المنحنى مع محور الفواصل، أي حيث f(x)=0.',
+      },
+      {
+        code: 'DERIVATIVE_SIGN_VARIATION',
+        curriculumNodeCode: 'DERIVATIVES',
+        learningTargetCode: 'DERIVATIVE_APPLICATIONS',
+        front: "ماذا تعني إشارة f'(x) في جدول التغيرات؟",
+        back: "إذا كانت f'(x) موجبة فالدالة متزايدة، وإذا كانت سالبة فالدالة متناقصة. تغيّر الإشارة حول قيمة حرجة قد يدل على قيمة قصوى.",
+      },
+      {
+        code: 'LIMIT_HORIZONTAL_ASYMPTOTE',
+        curriculumNodeCode: 'LIMITS_CONTINUITY',
+        learningTargetCode: 'LIMIT_REASONING',
+        front: 'متى نستنتج وجود مقارب أفقي؟',
+        back: 'إذا كانت نهاية f(x) عندما يكبر x أو يصغر بلا حد تساوي عدداً حقيقياً L، فالمستقيم y=L مقارب أفقي.',
+      },
+      {
+        code: 'EXPONENTIAL_ALWAYS_POSITIVE',
+        curriculumNodeCode: 'EXPONENTIAL',
+        learningTargetCode: 'EXPONENTIAL_REASONING',
+        front: 'ما الخاصية التي لا تنساها عن e^x؟',
+        back: 'e^x موجب دائماً لكل عدد حقيقي x، لذلك لا يغيّر إشارة عبارة مضروبة فيه.',
+      },
+    ],
+  },
+];
+
+const PLATFORM_LAB_TOOLS: PlatformLabToolDefinition[] = [
+  {
+    slug: 'function-explorer',
+    subjectCode: 'MATHEMATICS',
+    title: 'مستكشف الدوال',
+    description:
+      'مهمات قصيرة تربط المنحنى بالجذور، جدول القيم، ولغة أسئلة BAC.',
+    metadata: {
+      subjectSlug: 'math',
+      route: '/student/lab/math/function-explorer',
+      registryToolId: 'function-explorer',
+    },
+    missions: [
+      {
+        code: 'FUNCTION_ROOTS_FROM_GRAPH',
+        title: 'اقرأ جذور المنحنى',
+        goal: 'استعمل الدالة المقترحة لتحديد حلول f(x)=0 تقريبياً ثم قارِنها بجدول القيم.',
+        curriculumNodeCode: 'FUNCTIONS',
+        learningTargetCode: 'FUNCTION_ANALYSIS',
+        preset: {
+          toolPresetId: 'quadratic',
+          expression: 'x^2 - 4*x + 3',
+          expectedRoots: [1, 3],
+        },
+        exitCheck: {
+          kind: 'ROOTS_NEAR',
+          expectedRoots: [1, 3],
+          tolerance: 0.25,
+        },
+        orderIndex: 1,
+      },
+      {
+        code: 'FUNCTION_SIGN_INTERVALS',
+        title: 'استنتج مجالات الإشارة',
+        goal: 'غيّر مجال النظر حول الجذرين ولاحظ أين تكون الدالة موجبة أو سالبة قبل كتابة جدول الإشارة.',
+        curriculumNodeCode: 'FUNCTIONS',
+        learningTargetCode: 'FUNCTION_ANALYSIS',
+        preset: {
+          toolPresetId: 'quadratic',
+          expression: '(x + 2)*(x - 1)',
+          expectedRoots: [-2, 1],
+          expectedPositiveIntervals: ['x < -2', 'x > 1'],
+          expectedNegativeIntervals: ['-2 < x < 1'],
+        },
+        exitCheck: {
+          kind: 'SIGN_INTERVALS',
+          expectedRoots: [-2, 1],
+        },
+        orderIndex: 2,
+      },
+      {
+        code: 'FUNCTION_MINIMUM_READING',
+        title: 'اربط القمة بجدول التغيرات',
+        goal: 'استعمل شكل القطع المكافئ لتحديد القيمة الصغرى بصرياً ثم اربطها بفكرة التغيرات.',
+        curriculumNodeCode: 'DERIVATIVES',
+        learningTargetCode: 'DERIVATIVE_APPLICATIONS',
+        preset: {
+          toolPresetId: 'quadratic',
+          expression: 'x^2 - 2*x - 3',
+          expectedVertex: { x: 1, y: -4 },
+        },
+        exitCheck: {
+          kind: 'VERTEX_NEAR',
+          expectedVertex: { x: 1, y: -4 },
+          tolerance: 0.5,
+        },
+        orderIndex: 3,
+      },
+    ],
+  },
+  {
+    slug: 'dna-to-protein',
+    subjectCode: 'NATURAL_SCIENCES',
+    title: 'من DNA إلى بروتين',
+    description: 'مهمات قصيرة لتحويل DNA إلى mRNA ثم بروتين، وفهم أثر الطفرات.',
+    metadata: {
+      subjectSlug: 'svt',
+      route: '/student/lab/svt/dna-to-protein',
+      registryToolId: 'dna-to-protein',
+    },
+    missions: [
+      {
+        code: 'DNA_TRANSCRIPTION_CHAIN',
+        title: 'حوّل DNA إلى mRNA',
+        goal: 'اتبع قواعد التكامل لتحويل السلسلة إلى mRNA ثم قسّمها إلى رامزات.',
+        curriculumNodeCode: 'PROTEIN_SYNTHESIS',
+        learningTargetCode: 'PROTEIN_FUNCTION_REASONING',
+        preset: {
+          dna: 'ATGCTTGAA',
+          expectedMrna: 'AUGCUUGAA',
+          expectedCodons: ['AUG', 'CUU', 'GAA'],
+        },
+        exitCheck: {
+          kind: 'MRNA_AND_CODONS',
+          expectedMrna: 'AUGCUUGAA',
+          expectedCodons: ['AUG', 'CUU', 'GAA'],
+        },
+        orderIndex: 1,
+      },
+      {
+        code: 'DNA_MUTATION_EFFECT',
+        title: 'صنّف أثر الطفرة',
+        goal: 'غيّر قاعدة واحدة ولاحظ هل يتغير الحمض الأميني أم تظهر إشارة توقف.',
+        curriculumNodeCode: 'PROTEIN_SYNTHESIS',
+        learningTargetCode: 'PROTEIN_FUNCTION_REASONING',
+        preset: {
+          dna: 'ATGCTTGAA',
+          mutation: {
+            index: 3,
+            base: 'A',
+          },
+          expectedEffect: 'amino-acid-change',
+        },
+        exitCheck: {
+          kind: 'MUTATION_EFFECT',
+          acceptedEffects: ['silent', 'amino-acid-change', 'stop'],
+        },
+        orderIndex: 2,
+      },
+    ],
+  },
+];
+
 async function seedStreams(): Promise<Map<string, string>> {
   const pathwayIds = new Map<string, string>();
 
@@ -2025,7 +2234,9 @@ async function syncSubjectLearningTargets(
   const topicIdsByCode = new Map(
     topicRows.map((topic) => [topic.code, topic.id]),
   );
-  const validLearningTargetCodes = learningTargets.map((learningTarget) => learningTarget.code);
+  const validLearningTargetCodes = learningTargets.map(
+    (learningTarget) => learningTarget.code,
+  );
 
   const savedLearningTargets = await Promise.all(
     learningTargets.map((learningTarget, index) =>
@@ -2121,7 +2332,9 @@ async function syncSubjectLearningTargets(
 
   const mappingsToDelete = currentMappings.filter(
     (mapping) =>
-      !expectedMappings.has(`${mapping.curriculumNodeId}:${mapping.learningTargetId}`),
+      !expectedMappings.has(
+        `${mapping.curriculumNodeId}:${mapping.learningTargetId}`,
+      ),
   );
 
   if (mappingsToDelete.length) {
@@ -2143,6 +2356,419 @@ async function syncSubjectLearningTargets(
       },
     },
   });
+}
+
+function resolveCurrentCurriculum(
+  subjectCode: string,
+  curriculaBySubject: Map<string, SeededCurriculumRecord[]>,
+): SeededCurriculumRecord {
+  const curricula = curriculaBySubject.get(subjectCode) ?? [];
+  const currentCurriculum = [...curricula].sort((left, right) => {
+    const leftIsOpen = left.validToYear === null ? 1 : 0;
+    const rightIsOpen = right.validToYear === null ? 1 : 0;
+
+    if (leftIsOpen !== rightIsOpen) {
+      return rightIsOpen - leftIsOpen;
+    }
+
+    return right.validFromYear - left.validFromYear;
+  })[0];
+
+  if (!currentCurriculum) {
+    throw new Error(
+      `Could not resolve a current curriculum for ${subjectCode} while syncing platform flashcards.`,
+    );
+  }
+
+  return currentCurriculum;
+}
+
+async function syncPlatformFlashcardDecks(
+  subjectIds: Map<string, string>,
+  curriculaBySubject: Map<string, SeededCurriculumRecord[]>,
+): Promise<void> {
+  for (const deckDefinition of PLATFORM_FLASHCARD_DECKS) {
+    const subjectId = subjectIds.get(deckDefinition.subjectCode);
+
+    if (!subjectId) {
+      throw new Error(
+        `Missing subject ${deckDefinition.subjectCode} while syncing platform flashcards.`,
+      );
+    }
+
+    const curriculum = resolveCurrentCurriculum(
+      deckDefinition.subjectCode,
+      curriculaBySubject,
+    );
+    const metadata = {
+      seedCode: deckDefinition.code,
+      subjectCode: deckDefinition.subjectCode,
+      curriculumCode: curriculum.code,
+    };
+    const existingDeck = await prisma.flashcardDeck.findFirst({
+      where: {
+        subjectId,
+        sourceType: FlashcardSourceType.PLATFORM,
+        isPlatformSeed: true,
+        metadata: {
+          path: ['seedCode'],
+          equals: deckDefinition.code,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    const deck = existingDeck
+      ? await prisma.flashcardDeck.update({
+          where: {
+            id: existingDeck.id,
+          },
+          data: {
+            subjectId,
+            curriculumId: curriculum.id,
+            title: deckDefinition.title,
+            description: deckDefinition.description,
+            sourceType: FlashcardSourceType.PLATFORM,
+            isPlatformSeed: true,
+            metadata,
+          },
+          select: {
+            id: true,
+          },
+        })
+      : await prisma.flashcardDeck.create({
+          data: {
+            subjectId,
+            curriculumId: curriculum.id,
+            title: deckDefinition.title,
+            description: deckDefinition.description,
+            sourceType: FlashcardSourceType.PLATFORM,
+            isPlatformSeed: true,
+            metadata,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+    const [curriculumNodes, learningTargets] = await Promise.all([
+      prisma.curriculumNode.findMany({
+        where: {
+          curriculumId: curriculum.id,
+          code: {
+            in: deckDefinition.cards.flatMap((card) =>
+              card.curriculumNodeCode ? [card.curriculumNodeCode] : [],
+            ),
+          },
+        },
+        select: {
+          id: true,
+          code: true,
+        },
+      }),
+      prisma.learningTarget.findMany({
+        where: {
+          curriculumId: curriculum.id,
+          code: {
+            in: deckDefinition.cards.flatMap((card) =>
+              card.learningTargetCode ? [card.learningTargetCode] : [],
+            ),
+          },
+        },
+        select: {
+          id: true,
+          code: true,
+        },
+      }),
+    ]);
+    const curriculumNodeIdsByCode = new Map(
+      curriculumNodes.map((node) => [node.code, node.id]),
+    );
+    const learningTargetIdsByCode = new Map(
+      learningTargets.map((learningTarget) => [
+        learningTarget.code,
+        learningTarget.id,
+      ]),
+    );
+    const validCardIds: string[] = [];
+
+    for (const [index, cardDefinition] of deckDefinition.cards.entries()) {
+      const curriculumNodeId = cardDefinition.curriculumNodeCode
+        ? curriculumNodeIdsByCode.get(cardDefinition.curriculumNodeCode)
+        : null;
+      const learningTargetId = cardDefinition.learningTargetCode
+        ? learningTargetIdsByCode.get(cardDefinition.learningTargetCode)
+        : null;
+
+      if (cardDefinition.curriculumNodeCode && !curriculumNodeId) {
+        throw new Error(
+          `Missing curriculum node ${cardDefinition.curriculumNodeCode} while syncing flashcard ${cardDefinition.code}.`,
+        );
+      }
+
+      if (cardDefinition.learningTargetCode && !learningTargetId) {
+        throw new Error(
+          `Missing learning target ${cardDefinition.learningTargetCode} while syncing flashcard ${cardDefinition.code}.`,
+        );
+      }
+
+      const cardMetadata = {
+        seedCode: cardDefinition.code,
+        deckCode: deckDefinition.code,
+        subjectCode: deckDefinition.subjectCode,
+        curriculumCode: curriculum.code,
+      };
+      const existingCard = await prisma.flashcard.findFirst({
+        where: {
+          subjectId,
+          sourceType: FlashcardSourceType.PLATFORM,
+          data: {
+            path: ['seedCode'],
+            equals: cardDefinition.code,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      const card = existingCard
+        ? await prisma.flashcard.update({
+            where: {
+              id: existingCard.id,
+            },
+            data: {
+              subjectId,
+              curriculumNodeId: curriculumNodeId ?? null,
+              learningTargetId: learningTargetId ?? null,
+              type: FlashcardType.FRONT_BACK,
+              sourceType: FlashcardSourceType.PLATFORM,
+              front: cardDefinition.front,
+              back: cardDefinition.back,
+              data: cardMetadata,
+            },
+            select: {
+              id: true,
+            },
+          })
+        : await prisma.flashcard.create({
+            data: {
+              subjectId,
+              curriculumNodeId: curriculumNodeId ?? null,
+              learningTargetId: learningTargetId ?? null,
+              type: FlashcardType.FRONT_BACK,
+              sourceType: FlashcardSourceType.PLATFORM,
+              front: cardDefinition.front,
+              back: cardDefinition.back,
+              data: cardMetadata,
+            },
+            select: {
+              id: true,
+            },
+          });
+
+      validCardIds.push(card.id);
+
+      await prisma.flashcardDeckCard.upsert({
+        where: {
+          deckId_cardId: {
+            deckId: deck.id,
+            cardId: card.id,
+          },
+        },
+        update: {
+          orderIndex: cardDefinition.orderIndex ?? index + 1,
+        },
+        create: {
+          deckId: deck.id,
+          cardId: card.id,
+          orderIndex: cardDefinition.orderIndex ?? index + 1,
+        },
+      });
+    }
+
+    await prisma.flashcardDeckCard.deleteMany({
+      where: {
+        deckId: deck.id,
+        cardId: {
+          notIn: validCardIds,
+        },
+      },
+    });
+  }
+}
+
+async function syncPlatformLabTools(
+  subjectIds: Map<string, string>,
+  curriculaBySubject: Map<string, SeededCurriculumRecord[]>,
+): Promise<void> {
+  for (const toolDefinition of PLATFORM_LAB_TOOLS) {
+    const subjectId = subjectIds.get(toolDefinition.subjectCode);
+
+    if (!subjectId) {
+      throw new Error(
+        `Missing subject ${toolDefinition.subjectCode} while syncing Lab tools.`,
+      );
+    }
+
+    const curriculum = resolveCurrentCurriculum(
+      toolDefinition.subjectCode,
+      curriculaBySubject,
+    );
+    const tool = await prisma.labTool.upsert({
+      where: {
+        slug: toolDefinition.slug,
+      },
+      update: {
+        subjectId,
+        title: toolDefinition.title,
+        description: toolDefinition.description,
+        status: 'READY',
+        metadata: toJsonValue({
+          seedSlug: toolDefinition.slug,
+          subjectCode: toolDefinition.subjectCode,
+          curriculumCode: curriculum.code,
+          ...(toolDefinition.metadata ?? {}),
+        }),
+      },
+      create: {
+        subjectId,
+        slug: toolDefinition.slug,
+        title: toolDefinition.title,
+        description: toolDefinition.description,
+        status: 'READY',
+        metadata: toJsonValue({
+          seedSlug: toolDefinition.slug,
+          subjectCode: toolDefinition.subjectCode,
+          curriculumCode: curriculum.code,
+          ...(toolDefinition.metadata ?? {}),
+        }),
+      },
+      select: {
+        id: true,
+      },
+    });
+    const [curriculumNodes, learningTargets] = await Promise.all([
+      prisma.curriculumNode.findMany({
+        where: {
+          curriculumId: curriculum.id,
+          code: {
+            in: toolDefinition.missions.flatMap((mission) =>
+              mission.curriculumNodeCode ? [mission.curriculumNodeCode] : [],
+            ),
+          },
+        },
+        select: {
+          id: true,
+          code: true,
+        },
+      }),
+      prisma.learningTarget.findMany({
+        where: {
+          curriculumId: curriculum.id,
+          code: {
+            in: toolDefinition.missions.flatMap((mission) =>
+              mission.learningTargetCode ? [mission.learningTargetCode] : [],
+            ),
+          },
+        },
+        select: {
+          id: true,
+          code: true,
+        },
+      }),
+    ]);
+    const curriculumNodeIdsByCode = new Map(
+      curriculumNodes.map((node) => [node.code, node.id]),
+    );
+    const learningTargetIdsByCode = new Map(
+      learningTargets.map((learningTarget) => [
+        learningTarget.code,
+        learningTarget.id,
+      ]),
+    );
+
+    for (const [
+      index,
+      missionDefinition,
+    ] of toolDefinition.missions.entries()) {
+      const curriculumNodeId = missionDefinition.curriculumNodeCode
+        ? curriculumNodeIdsByCode.get(missionDefinition.curriculumNodeCode)
+        : null;
+      const learningTargetId = missionDefinition.learningTargetCode
+        ? learningTargetIdsByCode.get(missionDefinition.learningTargetCode)
+        : null;
+
+      if (missionDefinition.curriculumNodeCode && !curriculumNodeId) {
+        throw new Error(
+          `Missing curriculum node ${missionDefinition.curriculumNodeCode} while syncing Lab mission ${missionDefinition.code}.`,
+        );
+      }
+
+      if (missionDefinition.learningTargetCode && !learningTargetId) {
+        throw new Error(
+          `Missing learning target ${missionDefinition.learningTargetCode} while syncing Lab mission ${missionDefinition.code}.`,
+        );
+      }
+
+      const preset = toJsonValue({
+        seedCode: missionDefinition.code,
+        toolSlug: toolDefinition.slug,
+        ...(missionDefinition.preset ?? {}),
+      });
+      const exitCheck =
+        missionDefinition.exitCheck === undefined
+          ? Prisma.JsonNull
+          : toJsonValue({
+              seedCode: missionDefinition.code,
+              toolSlug: toolDefinition.slug,
+              ...missionDefinition.exitCheck,
+            });
+      const existingMission = await prisma.labMission.findFirst({
+        where: {
+          toolId: tool.id,
+          preset: {
+            path: ['seedCode'],
+            equals: missionDefinition.code,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (existingMission) {
+        await prisma.labMission.update({
+          where: {
+            id: existingMission.id,
+          },
+          data: {
+            curriculumNodeId: curriculumNodeId ?? null,
+            learningTargetId: learningTargetId ?? null,
+            courseLessonId: null,
+            title: missionDefinition.title,
+            goal: missionDefinition.goal,
+            preset,
+            exitCheck,
+            orderIndex: missionDefinition.orderIndex ?? index + 1,
+          },
+        });
+      } else {
+        await prisma.labMission.create({
+          data: {
+            toolId: tool.id,
+            curriculumNodeId: curriculumNodeId ?? null,
+            learningTargetId: learningTargetId ?? null,
+            title: missionDefinition.title,
+            goal: missionDefinition.goal,
+            preset,
+            exitCheck,
+            orderIndex: missionDefinition.orderIndex ?? index + 1,
+          },
+        });
+      }
+    }
+  }
 }
 
 export async function runCatalogSeed() {
@@ -2191,8 +2817,11 @@ export async function runCatalogSeed() {
     }
   }
 
+  await syncPlatformFlashcardDecks(subjectIds, subjectCurriculumIds);
+  await syncPlatformLabTools(subjectIds, subjectCurriculumIds);
+
   console.log(
-    'Seed complete: BAC catalog families, pathways, subject offerings, active curricula, starter curriculum nodes, and learning target mappings synced.',
+    'Seed complete: BAC catalog families, pathways, subject offerings, active curricula, starter curriculum nodes, learning target mappings, platform flashcards, and Lab missions synced.',
   );
 }
 

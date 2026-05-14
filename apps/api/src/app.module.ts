@@ -8,6 +8,7 @@ import { CoursesModule } from './courses/courses.module';
 import { FlashcardsModule } from './flashcards/flashcards.module';
 import { HealthModule } from './health/health.module';
 import { IngestionModule } from './ingestion/ingestion.module';
+import { LabModule } from './lab/lab.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { RedisModule } from './redis/redis.module';
 import { SourceWorkbenchModule } from './source-workbench/source-workbench.module';
@@ -26,6 +27,7 @@ import { StudyModule } from './study/study.module';
     BillingModule,
     CoursesModule,
     FlashcardsModule,
+    LabModule,
     HealthModule,
     StudyModule,
     AdminModule,

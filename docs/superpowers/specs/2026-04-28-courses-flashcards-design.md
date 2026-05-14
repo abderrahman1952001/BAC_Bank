@@ -53,14 +53,14 @@ Out of scope for this first architecture pass:
 
 ### 1. Courses is a separate authored domain
 
-Existing `subject_curricula`, `topics`, and training `roadmaps` remain the backbone for curriculum identity and practice flows.
+Existing `curricula`, `subject_offerings`, `curriculum_nodes`, and derived curriculum journeys remain the backbone for curriculum identity and practice flows.
 
-`Courses` should be a new authored layer that references curriculum entities, but does not overload the training roadmap tables with lesson-player responsibilities.
+`Courses` should be a new authored layer that references curriculum entities, but does not overload practice sessions or derived journey projections with lesson-player responsibilities.
 
 ### 2. Topic progression and concept progression are separate
 
 A topic is not a single article.
-A topic is a roadmap made of several concepts.
+A topic is a student-recognizable curriculum chunk made of several concepts.
 
 Recommended hierarchy:
 
@@ -150,7 +150,7 @@ Each unit should read like a stage in a learning journey:
 - unit title
 - short narrative summary
 - progress state
-- topic roadmap
+- topic journey
 
 Topic nodes should show:
 
@@ -167,7 +167,7 @@ This map can be visually inspired by Duolingo, but it should look premium, calm,
 A topic page should have two layers:
 
 - a topic overview shell
-- a concept roadmap
+- a concept path
 
 The overview shell should show:
 
@@ -178,7 +178,7 @@ The overview shell should show:
 - continue CTA
 - access to the related deck when available
 
-The concept roadmap is the main action surface.
+The concept path is the main action surface.
 Each concept is a node in order, with clear completion states and a visible next step.
 
 ## Concept Experience
@@ -464,14 +464,15 @@ This keeps quality high and keeps lesson markup manageable.
 Keep and reuse:
 
 - `subjects`
-- `subject_curricula`
-- `topics`
+- `curricula`
+- `subject_offerings`
+- `curriculum_nodes`
 - current student routing shell
-- current topic and roadmap identity rules
+- current curriculum identity rules
 
 Do not overload:
 
-- training `roadmaps`
+- derived curriculum journeys
 - `skills`
 - practice session models
 

@@ -10,10 +10,10 @@ The mainline is universal for all students. Optional depth portals are allowed, 
 
 Each concept has two title layers:
 
-- `roadmapTitle`: short, familiar, and suitable for the outer roadmap.
+- `curriculumJourneyTitle`: short, familiar, and suitable for the outer curriculum journey.
 - `title`: more engaging and expressive inside the lesson page.
 
-This keeps the roadmap authoritative and easy to scan while preserving the more memorable tone inside each node.
+This keeps the curriculum journey authoritative and easy to scan while preserving the more memorable tone inside each node.
 
 The first six concepts are the current quality bar:
 

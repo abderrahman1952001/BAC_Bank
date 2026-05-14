@@ -1,20 +1,26 @@
 import { describe, expect, it } from "vitest";
-import type { StudyRoadmapsResponse } from "@/lib/study-api";
+import type { CurriculumJourneysResponse } from "@/lib/study-api";
 import {
-  clampRoadmapProgress,
-  getRoadmapConnectorPathLength,
-  getRoadmapNodePresentation,
-  getRoadmapSectionSummary,
-} from "./subject-roadmap-view";
+  clampCurriculumJourneyProgress,
+  getCurriculumJourneyConnectorPathLength,
+  getCurriculumJourneyNodePresentation,
+  getCurriculumJourneySectionSummary,
+} from "./subject-curriculum-journey-view";
 
-type RoadmapNode = StudyRoadmapsResponse["data"][number]["nodes"][number];
-type RoadmapSection = StudyRoadmapsResponse["data"][number]["sections"][number];
+type CurriculumJourneyNode =
+  CurriculumJourneysResponse["data"][number]["nodes"][number];
+type CurriculumJourneySection =
+  CurriculumJourneysResponse["data"][number]["sections"][number];
 
-function makeNode(overrides: Partial<RoadmapNode> = {}): RoadmapNode {
+function makeNode(
+  overrides: Partial<CurriculumJourneyNode> = {},
+): CurriculumJourneyNode {
   return {
     id: "node-1",
     title: "الدوال",
     description: null,
+    curriculumNodeCode: "functions",
+    curriculumNodeName: "الدوال",
     topicCode: "functions",
     topicName: "الدوال",
     orderIndex: 1,
@@ -34,16 +40,16 @@ function makeNode(overrides: Partial<RoadmapNode> = {}): RoadmapNode {
   };
 }
 
-describe("subject roadmap view helpers", () => {
+describe("subject curriculum journey view helpers", () => {
   it("clamps progress values before they are used by visual controls", () => {
-    expect(clampRoadmapProgress(-12)).toBe(0);
-    expect(clampRoadmapProgress(47)).toBe(47);
-    expect(clampRoadmapProgress(130)).toBe(100);
+    expect(clampCurriculumJourneyProgress(-12)).toBe(0);
+    expect(clampCurriculumJourneyProgress(47)).toBe(47);
+    expect(clampCurriculumJourneyProgress(130)).toBe(100);
   });
 
   it("maps node status into the visual tone and Arabic label", () => {
     expect(
-      getRoadmapNodePresentation(makeNode({ status: "SOLID" }), {
+      getCurriculumJourneyNodePresentation(makeNode({ status: "SOLID" }), {
         index: 0,
         isLast: false,
         isRecommended: false,
@@ -55,7 +61,7 @@ describe("subject roadmap view helpers", () => {
     });
 
     expect(
-      getRoadmapNodePresentation(
+      getCurriculumJourneyNodePresentation(
         makeNode({
           status: "IN_PROGRESS",
           progressPercent: 42,
@@ -77,19 +83,19 @@ describe("subject roadmap view helpers", () => {
 
   it("keeps unfinished connectors partial and hides the final connector", () => {
     expect(
-      getRoadmapConnectorPathLength(
+      getCurriculumJourneyConnectorPathLength(
         makeNode({ status: "NEEDS_REVIEW", progressPercent: 8 }),
         false,
       ),
     ).toBe(0.25);
     expect(
-      getRoadmapConnectorPathLength(
+      getCurriculumJourneyConnectorPathLength(
         makeNode({ status: "NOT_STARTED", progressPercent: 100 }),
         false,
       ),
     ).toBe(0);
     expect(
-      getRoadmapConnectorPathLength(
+      getCurriculumJourneyConnectorPathLength(
         makeNode({ status: "SOLID", progressPercent: 100 }),
         true,
       ),
@@ -97,7 +103,7 @@ describe("subject roadmap view helpers", () => {
   });
 
   it("summarizes section progress from the node mix", () => {
-    const section: RoadmapSection = {
+    const section: CurriculumJourneySection = {
       id: "section-1",
       code: "analysis",
       title: "التحليل",
@@ -110,7 +116,7 @@ describe("subject roadmap view helpers", () => {
       ],
     };
 
-    expect(getRoadmapSectionSummary(section)).toEqual({
+    expect(getCurriculumJourneySectionSummary(section)).toEqual({
       solidCount: 1,
       needsReviewCount: 1,
       progressPercent: 60,

@@ -24,7 +24,6 @@ import type {
   RecentStudySessionsResponse,
   SessionPreviewResponse,
   StudyQuestionAiExplanationResponse,
-  StudyRoadmapsResponse,
   UpdateReviewQueueItemStatusResponse,
   StudySessionResponse,
   StudentExerciseStatesLookupResponse,
@@ -36,7 +35,7 @@ import type {
 import { CreateStudySessionDto } from './dto/create-study-session.dto';
 import { GetExamQueryDto } from './dto/get-exam-query.dto';
 import { GetStudyExerciseStateLookupQueryDto } from './dto/get-study-exercise-state-lookup-query.dto';
-import { GetStudyRoadmapsQueryDto } from './dto/get-study-roadmaps-query.dto';
+import { GetStudyCurriculumJourneysQueryDto } from './dto/get-study-curriculum-journeys-query.dto';
 import { GetStudyReviewQueueQueryDto } from './dto/get-study-review-queue-query.dto';
 import { GetStudySessionsQueryDto } from './dto/get-study-sessions-query.dto';
 import { GetStudyWeakPointsQueryDto } from './dto/get-study-weak-points-query.dto';
@@ -49,7 +48,7 @@ import { UpsertStudyExerciseStateDto } from './dto/upsert-study-exercise-state.d
 import { UpsertExamActivityDto } from './dto/upsert-exam-activity.dto';
 import { UpdateStudySessionProgressDto } from './dto/update-study-session-progress.dto';
 import { StudyExerciseStateService } from './study-exercise-state.service';
-import { StudyRoadmapService } from './study-roadmap.service';
+import { StudyCurriculumJourneyService } from './study-curriculum-journey.service';
 import { StudyReviewService } from './study-review.service';
 import { StudyService } from './study.service';
 import { StudyWeakPointService } from './study-weak-point.service';
@@ -59,7 +58,7 @@ export class StudyController {
   constructor(
     private readonly studyService: StudyService,
     private readonly studyExerciseStateService: StudyExerciseStateService,
-    private readonly studyRoadmapService: StudyRoadmapService,
+    private readonly studyCurriculumJourneyService: StudyCurriculumJourneyService,
     private readonly studyReviewService: StudyReviewService,
     private readonly studyWeakPointService: StudyWeakPointService,
   ) {}
@@ -132,26 +131,32 @@ export class StudyController {
 
   @UseGuards(ClerkAuthGuard)
   @Get('roadmaps')
-  listStudyRoadmaps(
+  listLegacyCurriculumJourneys(
     @Req() request: AuthenticatedRequest,
-    @Query() query: GetStudyRoadmapsQueryDto,
-  ): Promise<StudyRoadmapsResponse> {
-    return this.studyRoadmapService.listStudyRoadmaps(request.user!.id, {
-      limit: query.limit,
-      subjectCode: query.subjectCode,
-    });
+    @Query() query: GetStudyCurriculumJourneysQueryDto,
+  ): Promise<CurriculumJourneysResponse> {
+    return this.studyCurriculumJourneyService.listCurriculumJourneys(
+      request.user!.id,
+      {
+        limit: query.limit,
+        subjectCode: query.subjectCode,
+      },
+    );
   }
 
   @UseGuards(ClerkAuthGuard)
   @Get('curriculum-journeys')
   listCurriculumJourneys(
     @Req() request: AuthenticatedRequest,
-    @Query() query: GetStudyRoadmapsQueryDto,
+    @Query() query: GetStudyCurriculumJourneysQueryDto,
   ): Promise<CurriculumJourneysResponse> {
-    return this.studyRoadmapService.listCurriculumJourneys(request.user!.id, {
-      limit: query.limit,
-      subjectCode: query.subjectCode,
-    });
+    return this.studyCurriculumJourneyService.listCurriculumJourneys(
+      request.user!.id,
+      {
+        limit: query.limit,
+        subjectCode: query.subjectCode,
+      },
+    );
   }
 
   @UseGuards(ClerkAuthGuard)

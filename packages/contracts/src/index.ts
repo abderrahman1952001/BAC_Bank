@@ -22,6 +22,7 @@ export {
 } from "./courses.js";
 export * from "./flashcards.js";
 export * from "./ingestion.js";
+export * from "./lab.js";
 export {
   parseCatalogResponse,
   parseCreateSessionResponse,

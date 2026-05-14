@@ -4,6 +4,7 @@ import type {
   CreateFlashcardRequest,
   CreateFlashcardResponse,
   DueFlashcardsResponse,
+  EnrollFlashcardDeckResponse,
   FlashcardDeckCardsResponse,
   FlashcardDecksResponse,
   ReviewFlashcardRequest,
@@ -13,6 +14,7 @@ import {
   parseCreateFlashcardDeckResponse,
   parseCreateFlashcardResponse,
   parseDueFlashcardsResponse,
+  parseEnrollFlashcardDeckResponse,
   parseFlashcardDeckCardsResponse,
   parseFlashcardDecksResponse,
   parseReviewFlashcardResponse,
@@ -26,6 +28,7 @@ export type {
   CreateFlashcardRequest,
   CreateFlashcardResponse,
   DueFlashcardsResponse,
+  EnrollFlashcardDeckResponse,
   FlashcardCard,
   FlashcardDeckCardsResponse,
   FlashcardDecksResponse,
@@ -109,6 +112,17 @@ export async function createFlashcardDeck(input: CreateFlashcardDeckRequest) {
     }),
     "تعذر إنشاء المجموعة.",
     parseCreateFlashcardDeckResponse,
+  );
+}
+
+export async function enrollFlashcardDeck(deckId: string) {
+  return fetchApiJson<EnrollFlashcardDeckResponse>(
+    `${API_BASE_URL}/flashcards/decks/${encodeURIComponent(deckId)}/enroll`,
+    withJsonRequest({
+      method: "POST",
+    }),
+    "تعذر إضافة المجموعة إلى مراجعاتك.",
+    parseEnrollFlashcardDeckResponse,
   );
 }
 

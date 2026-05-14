@@ -20,7 +20,11 @@ export function CourseConceptPage({
           title="تعذر تحميل المفهوم"
           description="لا يمكن الوصول إلى هذا المفهوم حالياً."
           action={
-            <Button asChild variant="outline" className="h-11 rounded-full px-5">
+            <Button
+              asChild
+              variant="outline"
+              className="h-11 rounded-full px-5"
+            >
               <Link href={STUDENT_COURSES_ROUTE}>العودة إلى الدورات</Link>
             </Button>
           }
@@ -39,7 +43,7 @@ export function CourseConceptPage({
     <StudyShell>
       <StudentNavbar />
 
-      <div className="hub-page roadmap-page">
+      <div className="hub-page curriculum-journey-page">
         <CourseConceptPlayer
           concept={model.concept}
           topicTitle={model.topic.shortTitle}

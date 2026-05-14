@@ -62,15 +62,19 @@ export type StudyReviewQueueStatus =
   | "SNOOZED"
   | "REMOVED";
 export type StudyReviewOutcome = "CORRECT" | "INCORRECT";
-export type StudyRoadmapNodeStatus =
+export type CurriculumJourneyNodeStatus =
   | "NOT_STARTED"
   | "IN_PROGRESS"
   | "NEEDS_REVIEW"
   | "SOLID";
-export type StudyRoadmapActionType =
+export type CurriculumJourneyActionType =
   | "TOPIC_DRILL"
   | "REVIEW_MISTAKES"
   | "PAPER_SIMULATION";
+/** @deprecated Use CurriculumJourneyNodeStatus. */
+export type StudyRoadmapNodeStatus = CurriculumJourneyNodeStatus;
+/** @deprecated Use CurriculumJourneyActionType. */
+export type StudyRoadmapActionType = CurriculumJourneyActionType;
 export type PublicationStatus = "DRAFT" | "PUBLISHED";
 export type ExamVariantCode = "SUJET_1" | "SUJET_2";
 export type ExamNodeType =
@@ -741,7 +745,7 @@ export type WeakPointInsightsResponse = {
   }>;
 };
 
-export type StudyRoadmapsResponse = {
+export type CurriculumJourneysResponse = {
   data: Array<{
     id: string;
     title: string;
@@ -763,9 +767,13 @@ export type StudyRoadmapsResponse = {
     progressPercent: number;
     updatedAt: string | null;
     nextAction: {
-      type: StudyRoadmapActionType;
+      type: CurriculumJourneyActionType;
       label: string;
+      curriculumNodeCode: string | null;
+      curriculumNodeName: string | null;
+      /** @deprecated Use curriculumNodeCode. */
       topicCode: string | null;
+      /** @deprecated Use curriculumNodeName. */
       topicName: string | null;
     } | null;
     sections: Array<{
@@ -778,7 +786,11 @@ export type StudyRoadmapsResponse = {
         id: string;
         title: string;
         description: string | null;
+        curriculumNodeCode: string;
+        curriculumNodeName: string;
+        /** @deprecated Use curriculumNodeCode. */
         topicCode: string;
+        /** @deprecated Use curriculumNodeName. */
         topicName: string;
         orderIndex: number;
         estimatedSessions: number | null;
@@ -786,7 +798,7 @@ export type StudyRoadmapsResponse = {
         sectionId: string | null;
         recommendedPreviousNodeId: string | null;
         recommendedPreviousNodeTitle: string | null;
-        status: StudyRoadmapNodeStatus;
+        status: CurriculumJourneyNodeStatus;
         progressPercent: number;
         weaknessScore: number;
         attemptedQuestions: number;
@@ -799,7 +811,11 @@ export type StudyRoadmapsResponse = {
       id: string;
       title: string;
       description: string | null;
+      curriculumNodeCode: string;
+      curriculumNodeName: string;
+      /** @deprecated Use curriculumNodeCode. */
       topicCode: string;
+      /** @deprecated Use curriculumNodeName. */
       topicName: string;
       orderIndex: number;
       estimatedSessions: number | null;
@@ -807,7 +823,7 @@ export type StudyRoadmapsResponse = {
       sectionId: string | null;
       recommendedPreviousNodeId: string | null;
       recommendedPreviousNodeTitle: string | null;
-      status: StudyRoadmapNodeStatus;
+      status: CurriculumJourneyNodeStatus;
       progressPercent: number;
       weaknessScore: number;
       attemptedQuestions: number;
@@ -817,10 +833,8 @@ export type StudyRoadmapsResponse = {
     }>;
   }>;
 };
-
-export type CurriculumJourneyNodeStatus = StudyRoadmapNodeStatus;
-export type CurriculumJourneyActionType = StudyRoadmapActionType;
-export type CurriculumJourneysResponse = StudyRoadmapsResponse;
+/** @deprecated Use CurriculumJourneysResponse. */
+export type StudyRoadmapsResponse = CurriculumJourneysResponse;
 
 const familySchema = z.object({
   code: z.string(),
@@ -928,11 +942,19 @@ export const studyReviewOutcomeSchema: z.ZodType<StudyReviewOutcome> = z.enum([
   "INCORRECT",
 ]);
 
-export const studyRoadmapNodeStatusSchema: z.ZodType<StudyRoadmapNodeStatus> =
+export const curriculumJourneyNodeStatusSchema: z.ZodType<CurriculumJourneyNodeStatus> =
   z.enum(["NOT_STARTED", "IN_PROGRESS", "NEEDS_REVIEW", "SOLID"]);
 
-export const studyRoadmapActionTypeSchema: z.ZodType<StudyRoadmapActionType> =
+export const curriculumJourneyActionTypeSchema: z.ZodType<CurriculumJourneyActionType> =
   z.enum(["TOPIC_DRILL", "REVIEW_MISTAKES", "PAPER_SIMULATION"]);
+
+/** @deprecated Use curriculumJourneyNodeStatusSchema. */
+export const studyRoadmapNodeStatusSchema: z.ZodType<StudyRoadmapNodeStatus> =
+  curriculumJourneyNodeStatusSchema;
+
+/** @deprecated Use curriculumJourneyActionTypeSchema. */
+export const studyRoadmapActionTypeSchema: z.ZodType<StudyRoadmapActionType> =
+  curriculumJourneyActionTypeSchema;
 
 export const studySessionStatusSchema: z.ZodType<StudySessionStatus> =
   z.enum(["CREATED", "IN_PROGRESS", "COMPLETED", "EXPIRED"]);
@@ -1613,12 +1635,14 @@ export const weakPointInsightsResponseSchema: z.ZodType<WeakPointInsightsRespons
     ),
   });
 
-export const studyRoadmapsResponseSchema: z.ZodType<StudyRoadmapsResponse> =
+export const curriculumJourneysResponseSchema: z.ZodType<CurriculumJourneysResponse> =
   (() => {
-    const roadmapNodeSchema = z.object({
+    const curriculumJourneyNodeSchema = z.object({
       id: z.string(),
       title: z.string(),
       description: z.string().nullable(),
+      curriculumNodeCode: z.string(),
+      curriculumNodeName: z.string(),
       topicCode: z.string(),
       topicName: z.string(),
       orderIndex: z.number(),
@@ -1627,7 +1651,7 @@ export const studyRoadmapsResponseSchema: z.ZodType<StudyRoadmapsResponse> =
       sectionId: z.string().nullable(),
       recommendedPreviousNodeId: z.string().nullable(),
       recommendedPreviousNodeTitle: z.string().nullable(),
-      status: studyRoadmapNodeStatusSchema,
+      status: curriculumJourneyNodeStatusSchema,
       progressPercent: z.number(),
       weaknessScore: z.number(),
       attemptedQuestions: z.number(),
@@ -1657,8 +1681,10 @@ export const studyRoadmapsResponseSchema: z.ZodType<StudyRoadmapsResponse> =
           updatedAt: z.string().nullable(),
           nextAction: z
             .object({
-              type: studyRoadmapActionTypeSchema,
+              type: curriculumJourneyActionTypeSchema,
               label: z.string(),
+              curriculumNodeCode: z.string().nullable(),
+              curriculumNodeName: z.string().nullable(),
               topicCode: z.string().nullable(),
               topicName: z.string().nullable(),
             })
@@ -1670,17 +1696,18 @@ export const studyRoadmapsResponseSchema: z.ZodType<StudyRoadmapsResponse> =
               title: z.string(),
               description: z.string().nullable(),
               orderIndex: z.number(),
-              nodes: z.array(roadmapNodeSchema),
+              nodes: z.array(curriculumJourneyNodeSchema),
             }),
           ),
-          nodes: z.array(roadmapNodeSchema),
+          nodes: z.array(curriculumJourneyNodeSchema),
         }),
       ),
     });
   })();
 
-export const curriculumJourneysResponseSchema: z.ZodType<CurriculumJourneysResponse> =
-  studyRoadmapsResponseSchema;
+/** @deprecated Use curriculumJourneysResponseSchema. */
+export const studyRoadmapsResponseSchema: z.ZodType<StudyRoadmapsResponse> =
+  curriculumJourneysResponseSchema;
 
 export function parseFiltersResponse(value: unknown) {
   return parseContract(filtersResponseSchema, value, "FiltersResponse");
@@ -1870,6 +1897,7 @@ export function parseWeakPointInsightsResponse(value: unknown) {
   );
 }
 
+/** @deprecated Use parseCurriculumJourneysResponse. */
 export function parseStudyRoadmapsResponse(value: unknown) {
   return parseContract(
     studyRoadmapsResponseSchema,

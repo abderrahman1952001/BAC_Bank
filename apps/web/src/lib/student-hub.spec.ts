@@ -4,13 +4,13 @@ import type {
   RecentExamActivitiesResponse,
   RecentExerciseStatesResponse,
   RecentStudySessionsResponse,
-  StudyRoadmapsResponse,
+  CurriculumJourneysResponse,
   WeakPointInsightsResponse,
 } from "@/lib/study-api";
 import {
   buildHubActivityItems,
+  buildCurriculumJourneyItems,
   buildMyMistakeItems,
-  buildRoadmapItems,
   buildSavedExerciseItems,
   buildWeakPointItems,
   describeMistakeReviewCadence,
@@ -206,9 +206,9 @@ const weakPointInsights = {
   ],
 } satisfies WeakPointInsightsResponse;
 
-const studyRoadmaps = [
+const curriculumJourneys = [
   {
-    id: "roadmap-1",
+    id: "curriculum-journey-1",
     title: "رياضيات",
     description: null,
     subject: {
@@ -278,7 +278,7 @@ const studyRoadmaps = [
     ],
   },
   {
-    id: "roadmap-2",
+    id: "curriculum-journey-2",
     title: "فيزياء",
     description: null,
     subject: {
@@ -327,7 +327,7 @@ const studyRoadmaps = [
       },
     ],
   },
-] satisfies StudyRoadmapsResponse["data"];
+] satisfies CurriculumJourneysResponse["data"];
 
 describe("student hub helpers", () => {
   beforeEach(() => {
@@ -390,7 +390,7 @@ describe("student hub helpers", () => {
     ]);
   });
 
-  it("builds weak-point and roadmap actions from the current guidance", () => {
+  it("builds weak-point and curriculum journey actions from the current guidance", () => {
     expect(buildWeakPointItems(weakPointInsights.data)).toEqual([
       expect.objectContaining({
         href: "/student/training/weak-points?subject=MATH",
@@ -400,16 +400,16 @@ describe("student hub helpers", () => {
       }),
     ]);
 
-    expect(buildRoadmapItems(studyRoadmaps)).toEqual([
+    expect(buildCurriculumJourneyItems(curriculumJourneys)).toEqual([
       expect.objectContaining({
         actionHref: "/student/training/drill?subject=MATH&topic=FUNC",
-        detailsHref: "/student/my-space/roadmaps/MATH",
+        detailsHref: "/student/my-space/curriculum/MATH",
         summaryLabel: "2 محاور تحتاج مراجعة",
         tone: "warning",
       }),
       expect.objectContaining({
         actionHref: "/student/training/simulation",
-        detailsHref: "/student/my-space/roadmaps/PHYS",
+        detailsHref: "/student/my-space/curriculum/PHYS",
         summaryLabel: "جاهز للمحاكاة",
         tone: "success",
         relativeTimestamp: "جديد",

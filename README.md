@@ -1,6 +1,6 @@
 # BAC Bank
 
-BAC Bank is a study platform for Algerian BAC students. The product direction is no longer a narrow question bank: the platform is organized around a student library, guided training flows, a personal study space, and an admin ingestion pipeline for canonical BAC content.
+BAC Bank is a study platform for Algerian BAC students. The platform is organized around a trusted student library, guided training flows, a personal study space, authored curriculum journeys, review tools, and an admin ingestion pipeline for canonical BAC content.
 
 ## Documentation Map
 
@@ -22,7 +22,7 @@ Use the workbench for the latest product spec, pedagogy rules, UX expectations, 
 ## Current App Surfaces
 
 - `/student/my-space`: recent activity, continued training, and personal context
-- `/student/my-space/roadmaps/:subjectCode`: deeper subject roadmap with node actions and open review work
+- `/student/my-space/curriculum/:subjectCode`: deeper subject curriculum journey with node actions and open review work
 - `/student/library`: official BAC sujets organized by stream, subject, and year
 - `/student/training`: guided training-session builder and training player
 - `/admin/intake`: manual source intake and draft workflow entry
@@ -140,7 +140,7 @@ DATABASE_URL=postgresql://bac_user:bac_password@localhost:5433/bac_bank?schema=p
   - Uses `pdftoppm` to rasterize PDF pages into PNGs before uploading them to R2.
   - Paper content enters drafts through the premium reviewed-extract import path.
   - Manual PDF intake is available in the admin UI at `/admin/intake`.
-- `npm run prisma:seed -w @bac-bank/api` syncs base taxonomy, active curricula, starter topic trees, first skill mappings, and default roadmap shells.
+- `npm run prisma:seed -w @bac-bank/api` syncs base taxonomy, active curricula, starter curriculum nodes, first skill mappings, and journey definitions.
 - In this environment, Docker daemon access may be restricted; migrations can still be generated from schema, then applied on a DB-enabled machine/CI.
 - The repo root `.env` is no longer part of the app setup. Keep web env in
   `apps/web/.env.local` and API env in `apps/api/.env` or `apps/api/.env.local`.

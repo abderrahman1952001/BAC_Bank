@@ -15,11 +15,12 @@ import {
   buildStudentCourseTopicRoute,
   buildStudentFlashcardsRoute,
   buildStudentLabRoute,
+  buildStudentLabToolMissionRoute,
   buildStudentLabToolRoute,
   buildRouteWithSearchParams,
   buildStudentLibraryExamRoute,
   buildStudentLibraryExamRouteWithSearch,
-  buildStudentMySpaceRoadmapRoute,
+  buildStudentMySpaceCurriculumJourneyRoute,
   buildStudentTrainingDrillRoute,
   buildStudentTrainingSessionRoute,
   buildStudentTrainingWeakPointsRoute,
@@ -28,7 +29,9 @@ import {
 
 describe("student route helpers", () => {
   it("matches only canonical student surface paths", () => {
-    expect(isStudentSurfaceActive(STUDENT_MY_SPACE_ROUTE, "mySpace")).toBe(true);
+    expect(isStudentSurfaceActive(STUDENT_MY_SPACE_ROUTE, "mySpace")).toBe(
+      true,
+    );
     expect(isStudentSurfaceActive("/student/overview", "mySpace")).toBe(false);
     expect(isStudentSurfaceActive(STUDENT_COURSES_ROUTE, "courses")).toBe(true);
     expect(isStudentSurfaceActive("/student/academies", "courses")).toBe(false);
@@ -39,7 +42,10 @@ describe("student route helpers", () => {
       ),
     ).toBe(true);
     expect(
-      isStudentSurfaceActive("/student/archive/SE/MATH/2024/exam-1/1", "library"),
+      isStudentSurfaceActive(
+        "/student/archive/SE/MATH/2024/exam-1/1",
+        "library",
+      ),
     ).toBe(false);
     expect(isStudentSurfaceActive(STUDENT_TRAINING_ROUTE, "training")).toBe(
       true,
@@ -50,9 +56,9 @@ describe("student route helpers", () => {
     expect(isStudentSurfaceActive(STUDENT_FLASHCARDS_ROUTE, "flashcards")).toBe(
       true,
     );
-    expect(
-      isStudentSurfaceActive("/student/cards-library", "flashcards"),
-    ).toBe(false);
+    expect(isStudentSurfaceActive("/student/cards-library", "flashcards")).toBe(
+      false,
+    );
     expect(isStudentSurfaceActive(STUDENT_BILLING_ROUTE, "billing")).toBe(true);
     expect(isStudentSurfaceActive("/student/payments", "billing")).toBe(false);
     expect(isStudentSurfaceActive(STUDENT_LAB_ROUTE, "lab")).toBe(true);
@@ -78,9 +84,9 @@ describe("student route helpers", () => {
     expect(buildStudentCourseSubjectRoute("MATHEMATICS")).toBe(
       "/student/courses/MATHEMATICS",
     );
-    expect(
-      buildStudentCourseTopicRoute("MATHEMATICS", "functions"),
-    ).toBe("/student/courses/MATHEMATICS/topics/functions");
+    expect(buildStudentCourseTopicRoute("MATHEMATICS", "functions")).toBe(
+      "/student/courses/MATHEMATICS/topics/functions",
+    );
     expect(
       buildStudentCourseConceptRoute(
         "MATHEMATICS",
@@ -97,6 +103,13 @@ describe("student route helpers", () => {
     expect(buildStudentLabToolRoute("math", "function-explorer")).toBe(
       "/student/lab/math/function-explorer",
     );
+    expect(
+      buildStudentLabToolMissionRoute({
+        subjectSlug: "math",
+        toolSlug: "function-explorer",
+        missionId: "mission-1",
+      }),
+    ).toBe("/student/lab/math/function-explorer?mission=mission-1");
 
     expect(
       buildStudentLibraryExamRoute({
@@ -129,18 +142,20 @@ describe("student route helpers", () => {
     expect(STUDENT_TRAINING_WEAK_POINTS_ROUTE).toBe(
       "/student/training/weak-points",
     );
-    expect(buildStudentMySpaceRoadmapRoute("MATH")).toBe(
-      "/student/my-space/roadmaps/MATH",
+    expect(buildStudentMySpaceCurriculumJourneyRoute("MATH")).toBe(
+      "/student/my-space/curriculum/MATH",
     );
-    expect(buildStudentMySpaceRoadmapRoute("MATH", "mistakes")).toBe(
-      "/student/my-space/roadmaps/MATH#mistakes",
+    expect(buildStudentMySpaceCurriculumJourneyRoute("MATH", "mistakes")).toBe(
+      "/student/my-space/curriculum/MATH#mistakes",
     );
     expect(
       buildStudentTrainingDrillRoute({
         subjectCode: "MATH",
         topicCodes: ["ALGEBRA", "FUNCTIONS"],
       }),
-    ).toBe("/student/training/drill?subject=MATH&topic=ALGEBRA&topic=FUNCTIONS");
+    ).toBe(
+      "/student/training/drill?subject=MATH&topic=ALGEBRA&topic=FUNCTIONS",
+    );
     expect(buildStudentTrainingWeakPointsRoute("MATH")).toBe(
       "/student/training/weak-points?subject=MATH",
     );

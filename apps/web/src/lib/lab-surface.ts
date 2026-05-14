@@ -35,12 +35,12 @@ export const labTools: LabTool[] = [
     id: "function-explorer",
     subjectSlug: "math",
     subjectTitle: "Math Lab",
-    title: "مستكشف الدوال",
-    shortTitle: "Function Explorer",
+    title: "مختبر الدوال",
+    shortTitle: "Functions Lab",
     description:
-      "ارسم الدالة، اقرأ الجذور والقيم، واربط شكل المنحنى بلغة تمارين BAC.",
+      "ارسم الدالة، اقرأ الجذور والإشارة والمشتقة والتغيرات، وميّز بين النتائج الدقيقة والتقريبية.",
     bacUseCase:
-      "مفيد عند دراسة التمثيل البياني، حلول f(x)=0، وجدول القيم قبل الانتقال إلى التدريب.",
+      "مفيد عند دراسة التمثيل البياني، حلول f(x)=0، جدول الإشارة، وجدول التغيرات قبل الانتقال إلى التدريب.",
     href: buildStudentLabToolRoute("math", "function-explorer"),
     status: "READY",
     relatedCourseRefs: [
@@ -96,6 +96,10 @@ export function getLabToolById(toolId: LabTool["id"]): LabTool | null {
   return labTools.find((tool) => tool.id === toolId) ?? null;
 }
 
+export function getLabToolBySlug(toolSlug: string): LabTool | null {
+  return labTools.find((tool) => tool.id === toolSlug) ?? null;
+}
+
 export function listLabSubjectGroups(): LabSubjectGroup[] {
   const groups = new Map<LabSubjectSlug, LabSubjectGroup>();
 
@@ -136,7 +140,10 @@ export function getLabToolsForCourseConcept(input: {
         return false;
       }
 
-      return !reference.conceptSlug || reference.conceptSlug === normalizedConceptSlug;
+      return (
+        !reference.conceptSlug ||
+        reference.conceptSlug === normalizedConceptSlug
+      );
     }),
   );
 }
