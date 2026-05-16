@@ -1,6 +1,7 @@
 "use client";
 
-import { startTransition, useEffect, useMemo, useState } from "react";
+import { BookOpenCheck } from "lucide-react";
+import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyShell } from "@/components/study-shell";
@@ -11,9 +12,11 @@ import {
   SujetViewerNavigator,
   type SujetVariantLink,
 } from "@/components/sujet-viewer-sections";
+import { Button } from "@/components/ui/button";
 import type { ExamResponse } from "@/lib/study-api";
 import {
   buildStudyExercisesFromExam,
+  canRevealStudyQuestionSolution,
   type StudyExerciseModel,
 } from "@/lib/study-surface";
 import { buildStudentIngestionPreviewRouteWithSearch } from "@/lib/student-routes";
@@ -61,9 +64,11 @@ export function AdminIngestionStudentPreviewPage({
   initialExercise?: string;
 }) {
   const router = useRouter();
+  const previewFrameRef = useRef<HTMLElement | null>(null);
   const [revealedSolutions, setRevealedSolutions] = useState<
     Record<string, boolean>
   >({});
+  const [openReviewFieldsRequest, setOpenReviewFieldsRequest] = useState(0);
   const exercises = useMemo(() => buildStudyExercisesFromExam(exam), [exam]);
   const requestedExerciseId = useMemo(
     () => resolveRequestedExerciseId(exercises, initialExercise),
@@ -80,6 +85,18 @@ export function AdminIngestionStudentPreviewPage({
   useEffect(() => {
     setRevealedSolutions({});
   }, [exam?.id, exam?.selectedSujetNumber]);
+
+  useEffect(() => {
+    if (openReviewFieldsRequest === 0) {
+      return;
+    }
+
+    previewFrameRef.current
+      ?.querySelectorAll<HTMLDetailsElement>("details.study-disclosure")
+      .forEach((disclosure) => {
+        disclosure.open = true;
+      });
+  }, [openReviewFieldsRequest]);
 
   const activeExercise = useMemo(
     () =>
@@ -156,12 +173,38 @@ export function AdminIngestionStudentPreviewPage({
     });
   }
 
+  function openExerciseReviewFields() {
+    if (!activeExercise) {
+      return;
+    }
+
+    setRevealedSolutions((current) => {
+      const next = { ...current };
+
+      activeExercise.questions
+        .filter((question) => canRevealStudyQuestionSolution(question))
+        .forEach((question) => {
+          next[question.id] = true;
+        });
+
+      return next;
+    });
+    setOpenReviewFieldsRequest((current) => current + 1);
+  }
+
   if (exam && activeExercise) {
+    const canOpenReviewFields = activeExercise.questions.some(
+      canRevealStudyQuestionSolution,
+    );
+
     return (
       <StudyShell>
         <StudentNavbar />
 
-        <section className="student-main-frame student-main-frame-sujet student-main-frame-paper">
+        <section
+          ref={previewFrameRef}
+          className="student-main-frame student-main-frame-sujet student-main-frame-paper"
+        >
           <SujetViewerHero
             exam={exam}
             backToLibraryHref={editorHref}
@@ -183,6 +226,19 @@ export function AdminIngestionStudentPreviewPage({
             exercise={activeExercise}
             revealedSolutions={revealedSolutions}
             onToggleQuestionSolution={toggleQuestionSolution}
+            exerciseAction={
+              canOpenReviewFields ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="sujet-secondary-action h-9 rounded-full px-4"
+                  onClick={openExerciseReviewFields}
+                >
+                  <BookOpenCheck size={16} data-icon aria-hidden="true" />
+                  فتح التصحيحات والتنقيط
+                </Button>
+              ) : null
+            }
           />
         </section>
       </StudyShell>

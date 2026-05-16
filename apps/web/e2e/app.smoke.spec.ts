@@ -353,6 +353,21 @@ test("renders an ingestion draft through the student preview surface", async ({
   await expect(
     page.getByText("المعلومة الأساسية واردة بوضوح في النص."),
   ).toBeVisible();
+  await expect(
+    page.getByText("تمنح نقطتان عند استخراج المعلومة وتبريرها."),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "إخفاء الحل" }).click();
+  await expect(
+    page.getByText("المعلومة الأساسية واردة بوضوح في النص."),
+  ).toBeHidden();
+  await page.getByRole("button", { name: "فتح التصحيحات والتنقيط" }).click();
+  await expect(
+    page.getByText("المعلومة الأساسية واردة بوضوح في النص."),
+  ).toBeVisible();
+  await expect(
+    page.getByText("تمنح نقطتان عند استخراج المعلومة وتبريرها."),
+  ).toBeVisible();
 });
 
 test("creates and queues an admin ingestion job from the browser", async ({

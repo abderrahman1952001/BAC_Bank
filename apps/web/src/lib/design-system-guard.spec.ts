@@ -150,4 +150,50 @@ describe("design system guardrails", () => {
 
     expect(violations).toEqual([]);
   });
+
+  it("keeps high-level student surfaces terse and operational", async () => {
+    const checkedFiles = [
+      path.join(srcRoot, "components", "courses-home-page.tsx"),
+      path.join(srcRoot, "components", "lab-home-page.tsx"),
+    ];
+    const bannedPhrases = [
+      "متابعة سريعة",
+      "جرّب المفهوم قبل أن تحله",
+      "أدوات صغيرة مرتبطة بالمنهاج",
+      "المختبر ليس آلة جواب",
+      "مساحة فهم",
+      "بدل أن تحفظها",
+      "بثقة أكبر",
+    ];
+    const violations: string[] = [];
+
+    for (const filePath of checkedFiles) {
+      const source = await readFile(filePath, "utf8");
+      const relativePath = path.relative(srcRoot, filePath);
+
+      for (const phrase of bannedPhrases) {
+        if (source.includes(phrase)) {
+          violations.push(`${relativePath}: ${phrase}`);
+        }
+      }
+    }
+
+    expect(violations).toEqual([]);
+  });
+
+  it("defines the premium instrument card primitives", async () => {
+    const source = await readFile(path.join(srcRoot, "app", "globals.css"), "utf8");
+    const requiredSelectors = [
+      ".instrument-card",
+      ".instrument-card::before",
+      ".instrument-card::after",
+      ".instrument-visual",
+      ".instrument-vector",
+      ".instrument-mini-ui",
+    ];
+
+    for (const selector of requiredSelectors) {
+      expect(source).toContain(selector);
+    }
+  });
 });

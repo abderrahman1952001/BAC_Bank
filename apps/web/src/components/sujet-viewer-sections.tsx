@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, EyeOff } from "lucide-react";
-import type { ReactNode } from "react";
+import { ChevronLeft, ChevronRight, Eye, EyeOff } from "lucide-react";
+import type { CSSProperties, ReactNode } from "react";
 import { SaveFlashcardButton } from "@/components/save-flashcard-button";
 import { StudyHierarchyBlocks } from "@/components/study-content";
-import {
-  StudyQuestionPromptContent,
-  StudyQuestionSolutionStack,
-} from "@/components/study-stage";
+import { StudyQuestionPromptContent } from "@/components/study-stage";
 import { Button } from "@/components/ui/button";
 import {
   type ExamHierarchyBlock,
@@ -35,6 +32,20 @@ export type SujetExerciseTab = {
   isActive: boolean;
   onSelect: () => void;
 };
+
+type SujetQuestionReviewContext = {
+  exerciseLabel?: string | null;
+  subjectName?: string | null;
+  sourceLabel?: string | null;
+};
+
+function getSujetNodeDepthStyle(depth: number): CSSProperties | undefined {
+  if (depth <= 0) {
+    return undefined;
+  }
+
+  return { "--sujet-node-depth": depth } as CSSProperties;
+}
 
 export function formatSujetLabel(
   sujetNumber: 1 | 2,
@@ -85,6 +96,11 @@ export function SujetViewerHero({
             <span className="sujet-browser-title-detail">
               عرض رقمي منظّم للتصفح والتدريب
             </span>
+            {exam.officialSourceReference ? (
+              <span className="sujet-browser-source">
+                المصدر: {exam.officialSourceReference}
+              </span>
+            ) : null}
           </div>
         </div>
 
@@ -131,61 +147,109 @@ export function SujetViewerNavigator({
     exerciseTabs.length > 0
       ? ((activeExerciseIndex + 1) / exerciseTabs.length) * 100
       : 0;
+  const previousExercise =
+    activeExerciseIndex > 0 ? exerciseTabs[activeExerciseIndex - 1] : null;
+  const nextExercise =
+    activeExerciseIndex >= 0 && activeExerciseIndex < exerciseTabs.length - 1
+      ? exerciseTabs[activeExerciseIndex + 1]
+      : null;
+  const hasVariantLinks = variantLinks.length > 1;
+  const hasStepControls = exerciseTabs.length > 1;
 
   return (
     <section className="sujet-browser-nav" aria-label="التنقل داخل الموضوع">
-      <div className="sujet-browser-progress">
-        <span>
-          التمرين {Math.min(activeExerciseIndex + 1, exerciseTabs.length)} من{" "}
-          {exerciseTabs.length}
-        </span>
-        <div className="sujet-browser-progress-track" aria-hidden="true">
-          <span style={{ width: `${progress}%` }} />
+      <div
+        className="sujet-browser-nav-card"
+        data-variants={hasVariantLinks ? "true" : "false"}
+        data-controls={hasStepControls ? "true" : "false"}
+      >
+        <div className="sujet-browser-progress">
+          <span>
+            التمرين {Math.min(activeExerciseIndex + 1, exerciseTabs.length)} من{" "}
+            {exerciseTabs.length}
+          </span>
+          <div className="sujet-browser-progress-track" aria-hidden="true">
+            <span style={{ width: `${progress}%` }} />
+          </div>
         </div>
-      </div>
 
-      {variantLinks.length > 1 ? (
-        <div className="sujet-browser-nav-group">
-          <span className="sujet-browser-nav-label">الموضوع</span>
-          <div className="sujet-browser-pill-row sujet-browser-sujet-row">
-            {variantLinks.map((variant) => (
+        {hasVariantLinks ? (
+          <div className="sujet-browser-nav-group">
+            <span className="sujet-browser-nav-label">الموضوع</span>
+            <div className="sujet-browser-pill-row sujet-browser-sujet-row">
+              {variantLinks.map((variant) => (
+                <Button
+                  key={variant.href}
+                  asChild
+                  variant={variant.isActive ? "secondary" : "ghost"}
+                  size="sm"
+                  className="sujet-variant-switch"
+                  data-active={variant.isActive ? "true" : "false"}
+                >
+                  <Link
+                    href={variant.href}
+                    aria-current={variant.isActive ? "page" : undefined}
+                  >
+                    {variant.label}
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        <div className="sujet-browser-nav-group sujet-browser-exercise-nav-group">
+          <span className="sujet-browser-nav-label">التمارين</span>
+          <div className="sujet-browser-pill-row">
+            {exerciseTabs.map((exercise, index) => (
               <Button
-                key={variant.href}
-                asChild
-                variant={variant.isActive ? "secondary" : "ghost"}
+                key={exercise.id}
+                type="button"
+                variant={exercise.isActive ? "secondary" : "ghost"}
                 size="sm"
-                className="sujet-variant-switch"
-                data-active={variant.isActive ? "true" : "false"}
+                className="sujet-exercise-step"
+                data-active={exercise.isActive ? "true" : "false"}
+                aria-current={exercise.isActive ? "step" : undefined}
+                onClick={exercise.onSelect}
               >
-                <Link href={variant.href}>
-                  {variant.label}
-                </Link>
+                <span className="sujet-exercise-step-index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span>{exercise.label}</span>
               </Button>
             ))}
           </div>
         </div>
-      ) : null}
 
-      <div className="sujet-browser-nav-group">
-        <span className="sujet-browser-nav-label">التمارين</span>
-        <div className="sujet-browser-pill-row">
-          {exerciseTabs.map((exercise, index) => (
+        {hasStepControls ? (
+          <div
+            className="sujet-browser-step-controls"
+            aria-label="التنقل بين التمارين"
+          >
             <Button
-              key={exercise.id}
               type="button"
-              variant={exercise.isActive ? "secondary" : "ghost"}
+              variant="ghost"
               size="sm"
-              className="sujet-exercise-step"
-              data-active={exercise.isActive ? "true" : "false"}
-              onClick={exercise.onSelect}
+              className="sujet-step-control"
+              onClick={previousExercise?.onSelect}
+              disabled={!previousExercise}
             >
-              <span className="sujet-exercise-step-index">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span>{exercise.label}</span>
+              <ChevronRight size={16} data-icon aria-hidden="true" />
+              السابق
             </Button>
-          ))}
-        </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="sujet-step-control"
+              onClick={nextExercise?.onSelect}
+              disabled={!nextExercise}
+            >
+              التالي
+              <ChevronLeft size={16} data-icon aria-hidden="true" />
+            </Button>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -240,7 +304,9 @@ function QuestionSolutionToggle({
     <Button
       type="button"
       variant="ghost"
-      className="sujet-question-action h-auto gap-1 rounded-full px-0 py-0 text-sm"
+      className="sujet-question-action h-auto gap-1 rounded-full px-3 py-1.5 text-sm"
+      aria-expanded={isSolutionOpen}
+      data-open={isSolutionOpen ? "true" : "false"}
       onClick={() => onToggleQuestionSolution(question.id)}
     >
       {isSolutionOpen ? (
@@ -255,6 +321,70 @@ function QuestionSolutionToggle({
         </>
       )}
     </Button>
+  );
+}
+
+function SujetQuestionReviewDrawer({
+  question,
+  flashcardContext,
+}: {
+  question: StudyQuestionModel;
+  flashcardContext?: SujetQuestionReviewContext;
+}) {
+  const reviewSections = [
+    {
+      key: "solution",
+      label: "الحل",
+      blocks: question.solutionBlocks,
+      tone: "solution",
+    },
+    {
+      key: "rubric",
+      label: "التنقيط",
+      blocks: question.rubricBlocks,
+      tone: "rubric",
+    },
+    {
+      key: "hint",
+      label: "تلميحات",
+      blocks: question.hintBlocks,
+      tone: "hint",
+    },
+  ].filter((section) => section.blocks.length > 0);
+
+  if (!reviewSections.length) {
+    return null;
+  }
+
+  return (
+    <div className="sujet-paper-solution">
+      <div className="sujet-paper-solution-toolbar">
+        <span>التصحيح الرسمي</span>
+        <SaveFlashcardButton
+          draft={buildStudyQuestionFlashcardDraft(question, flashcardContext)}
+          label="احفظ كبطاقة"
+          successLabel="حُفظت"
+          compact
+        />
+      </div>
+      <div
+        className={
+          reviewSections.length === 1
+            ? "sujet-paper-review-grid is-single"
+            : "sujet-paper-review-grid"
+        }
+      >
+        {reviewSections.map((section) => (
+          <section
+            key={section.key}
+            className={`sujet-paper-review-panel tone-${section.tone}`}
+          >
+            <h4>{section.label}</h4>
+            <StudyHierarchyBlocks blocks={section.blocks} />
+          </section>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -284,9 +414,7 @@ function SujetViewerStructuredQuestionNode({
       className={`sujet-paper-question-row${
         node.nodeType === "SUBQUESTION" ? " is-subquestion" : ""
       }`}
-      style={
-        depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined
-      }
+      style={getSujetNodeDepthStyle(depth)}
     >
       <div className="sujet-paper-question-head">
         <div className="sujet-paper-question-meta">
@@ -324,17 +452,12 @@ function SujetViewerStructuredQuestionNode({
       ) : null}
 
       {question && isSolutionOpen ? (
-        <div className="sujet-paper-solution">
-          <SaveFlashcardButton
-            draft={buildStudyQuestionFlashcardDraft(question, {
-              exerciseLabel: formatNodeLabel(node, question),
-            })}
-            label="احفظ التصحيح كبطاقة"
-            successLabel="حُفظ التصحيح"
-            compact
-          />
-          <StudyQuestionSolutionStack question={question} />
-        </div>
+        <SujetQuestionReviewDrawer
+          question={question}
+          flashcardContext={{
+            exerciseLabel: formatNodeLabel(node, question),
+          }}
+        />
       ) : null}
     </div>
   );
@@ -355,9 +478,7 @@ function SujetViewerStructuredBranchNode({
   return (
     <section
       className="sujet-paper-branch"
-      style={
-        depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined
-      }
+      style={getSujetNodeDepthStyle(depth)}
     >
       <div className="sujet-paper-branch-head">
         <h3 className="sujet-paper-branch-label">{label}</h3>
@@ -399,9 +520,7 @@ function SujetViewerStructuredContextNode({
   return (
     <section
       className="sujet-paper-context sujet-paper-context-inline"
-      style={
-        depth > 0 ? { marginInlineStart: `${depth * 1.15}rem` } : undefined
-      }
+      style={getSujetNodeDepthStyle(depth)}
     >
       {node.label?.trim() ? (
         <p className="sujet-paper-context-label">{node.label.trim()}</p>
@@ -536,23 +655,18 @@ function SujetViewerFlatExerciseBody({
               </div>
 
               {isSolutionOpen ? (
-                <div className="sujet-paper-solution">
-                  <SaveFlashcardButton
-                    draft={buildStudyQuestionFlashcardDraft(question, {
-                      exerciseLabel: `التمرين ${exercise.displayOrder}`,
-                      subjectName: exercise.sourceExam?.subject.name ?? null,
-                      sourceLabel: exercise.sourceExam
-                        ? `${exercise.sourceExam.year} · ${formatSessionType(
-                            exercise.sourceExam.sessionType,
-                          )}`
-                        : null,
-                    })}
-                    label="احفظ التصحيح كبطاقة"
-                    successLabel="حُفظ التصحيح"
-                    compact
-                  />
-                  <StudyQuestionSolutionStack question={question} />
-                </div>
+                <SujetQuestionReviewDrawer
+                  question={question}
+                  flashcardContext={{
+                    exerciseLabel: `التمرين ${exercise.displayOrder}`,
+                    subjectName: exercise.sourceExam?.subject.name ?? null,
+                    sourceLabel: exercise.sourceExam
+                      ? `${exercise.sourceExam.year} · ${formatSessionType(
+                          exercise.sourceExam.sessionType,
+                        )}`
+                      : null,
+                  }}
+                />
               ) : null}
             </div>
           );

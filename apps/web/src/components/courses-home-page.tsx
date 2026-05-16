@@ -1,16 +1,95 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import {
-  ArrowLeft,
-  BookOpenCheck,
-  Command,
-  Search,
-} from "lucide-react";
+import { ArrowLeft, Command, Search } from "lucide-react";
 import { StudentNavbar } from "@/components/student-navbar";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
 import type { CourseSubjectCard } from "@/lib/courses-surface";
 import { STUDENT_MY_SPACE_ROUTE } from "@/lib/student-routes";
+
+function getCourseInstrumentVariant(subjectCode: string) {
+  const normalizedCode = subjectCode.toUpperCase();
+
+  if (
+    normalizedCode.includes("NATURAL") ||
+    normalizedCode.includes("SVT") ||
+    normalizedCode.includes("SCIENCE")
+  ) {
+    return "biology";
+  }
+
+  if (normalizedCode.includes("PHYS")) {
+    return "physics";
+  }
+
+  return "math";
+}
+
+function CourseInstrumentVisual({
+  progressPercent,
+  subjectCode,
+}: {
+  progressPercent: number;
+  subjectCode: string;
+}) {
+  const variant = getCourseInstrumentVariant(subjectCode);
+
+  return (
+    <span
+      className={`instrument-visual course-subject-visual is-${variant}`}
+      aria-hidden="true"
+    >
+      {variant === "biology" ? (
+        <svg
+          className="instrument-vector course-subject-vector"
+          viewBox="0 0 220 130"
+          fill="none"
+        >
+          <path d="M72 18c54 0 76 94 76 94" />
+          <path d="M148 18c-54 0-76 94-76 94" />
+          <path d="M82 35h56" />
+          <path d="M74 58h72" />
+          <path d="M76 81h68" />
+          <path d="M84 104h52" />
+        </svg>
+      ) : variant === "physics" ? (
+        <svg
+          className="instrument-vector course-subject-vector"
+          viewBox="0 0 220 130"
+          fill="none"
+        >
+          <path d="M34 94c34-50 67-74 103-74 22 0 38 11 49 33" />
+          <path d="M34 94h152" />
+          <path d="M64 94V54" />
+          <path d="M112 94V30" />
+          <path d="M160 94V54" />
+          <circle cx="112" cy="30" r="8" />
+        </svg>
+      ) : (
+        <svg
+          className="instrument-vector course-subject-vector"
+          viewBox="0 0 220 130"
+          fill="none"
+        >
+          <path d="M24 92c34-72 58-72 86 0s52 72 86 0" />
+          <path d="M24 94h172" />
+          <path d="M110 18v94" />
+          <path d="M48 70h124" />
+        </svg>
+      )}
+
+      <span className="instrument-mini-ui course-subject-mini">
+        <strong>{progressPercent}%</strong>
+        <span>
+          <i />
+          <i />
+          <i />
+          <em />
+        </span>
+      </span>
+    </span>
+  );
+}
 
 export function CoursesHomePage({
   cards,
@@ -56,12 +135,12 @@ export function CoursesHomePage({
           <div className="course-board-toolbar">
             <div className="course-board-search" aria-hidden="true">
               <Search />
-              <span>ابحث عن مادة أو مفهوم...</span>
+              <span>بحث</span>
               <kbd>
                 <Command aria-hidden="true" /> K
               </kbd>
             </div>
-            <StudyBadge tone="brand">متابعة سريعة</StudyBadge>
+            <StudyBadge tone="brand">Courses</StudyBadge>
           </div>
 
           <div className="course-command-head">
@@ -90,16 +169,17 @@ export function CoursesHomePage({
               <Link
                 key={card.subjectCode}
                 href={card.href}
-                className="course-subject-chip"
+                className="instrument-card course-subject-chip"
                 style={
                   {
                     "--course-progress": `${card.progressPercent}%`,
                   } as CSSProperties
                 }
               >
-                <span className="course-subject-orb" aria-hidden="true">
-                  <BookOpenCheck />
-                </span>
+                <CourseInstrumentVisual
+                  progressPercent={card.progressPercent}
+                  subjectCode={card.subjectCode}
+                />
                 <span className="course-subject-chip-copy">
                   <span className="course-subject-chip-head">
                     <h2>{card.subjectName}</h2>

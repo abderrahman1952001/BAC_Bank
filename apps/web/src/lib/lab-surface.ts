@@ -37,10 +37,8 @@ export const labTools: LabTool[] = [
     subjectTitle: "Math Lab",
     title: "مختبر الدوال",
     shortTitle: "Functions Lab",
-    description:
-      "ارسم الدالة، اقرأ الجذور والإشارة والمشتقة والتغيرات، وميّز بين النتائج الدقيقة والتقريبية.",
-    bacUseCase:
-      "مفيد عند دراسة التمثيل البياني، حلول f(x)=0، جدول الإشارة، وجدول التغيرات قبل الانتقال إلى التدريب.",
+    description: "جذور، إشارة، تغيرات، ومماس.",
+    bacUseCase: "دوال، جذور، إشارة، تغيرات.",
     href: buildStudentLabToolRoute("math", "function-explorer"),
     status: "READY",
     relatedCourseRefs: [
@@ -56,10 +54,8 @@ export const labTools: LabTool[] = [
     subjectTitle: "SVT Lab",
     title: "من DNA إلى بروتين",
     shortTitle: "DNA to Protein",
-    description:
-      "حوّل سلسلة DNA إلى mRNA ثم إلى أحماض أمينية، وقارن أثر الطفرات خطوة بخطوة.",
-    bacUseCase:
-      "مفيد لفهم كيف تتحول طفرة في المورثة إلى تغير في السلسلة البروتينية والوظيفة.",
+    description: "نسخ، ترجمة، طفرة.",
+    bacUseCase: "تركيب البروتين وأثر الطفرة.",
     href: buildStudentLabToolRoute("svt", "dna-to-protein"),
     status: "READY",
     relatedCourseRefs: [
@@ -88,8 +84,8 @@ export const labTools: LabTool[] = [
 ];
 
 const labSubjectDescriptions: Record<LabSubjectSlug, string> = {
-  math: "أدوات بصرية لفهم الدوال والتمثيلات قبل حل التمارين.",
-  svt: "محاكاة قصيرة للآليات الحيوية التي تظهر كثيراً في الوثائق.",
+  math: "دوال وتمثيلات.",
+  svt: "آليات ووثائق.",
 };
 
 export function getLabToolById(toolId: LabTool["id"]): LabTool | null {

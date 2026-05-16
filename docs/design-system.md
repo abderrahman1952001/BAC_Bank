@@ -37,6 +37,14 @@ auth, billing, training, library, and lab pages.
 - Avoid one-note palettes, decorative gradient blobs, and heavy card mosaics.
 - Prefer full-width work surfaces, sidebars, rails, inspectors, and simple
   section bands over nested card stacks.
+- Use premium instrument cards only for high-signal learning/workbench surfaces:
+  course cards, Lab tool previews, mission previews, and training diagnostics.
+  These cards should use backlit radial glow, neon SVG linework, glass mini-UI,
+  and hairline inner strokes. Keep routine navigation, tables, forms, and admin
+  workflows calmer.
+- Keep student-facing product copy terse. Labels, counts, status, and direct
+  actions should carry the interface; avoid explanatory phrases that narrate
+  what the user can already see.
 
 ## Component Policy
 
