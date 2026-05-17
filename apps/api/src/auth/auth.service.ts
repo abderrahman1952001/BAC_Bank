@@ -25,6 +25,12 @@ type AuthenticateRequestInput = {
   cookieHeader?: string | string[] | null;
 };
 
+type PlaywrightTestAuthProfile = {
+  email: string;
+  fullName: string;
+  role: UserRole;
+};
+
 type UserProfileRecord = Prisma.UserGetPayload<{
   select: {
     id: true;
@@ -86,6 +92,12 @@ export class AuthService {
   async authenticateRequest(
     input: AuthenticateRequestInput,
   ): Promise<AuthenticatedUser> {
+    const playwrightUser = await this.authenticatePlaywrightTestRequest(input);
+
+    if (playwrightUser) {
+      return playwrightUser;
+    }
+
     const token = this.readRequestToken(input);
 
     if (!token) {
@@ -382,6 +394,99 @@ export class AuthService {
     return createClerkClient({
       secretKey: this.getClerkSecretKey(),
     });
+  }
+
+  private async authenticatePlaywrightTestRequest(
+    input: AuthenticateRequestInput,
+  ): Promise<AuthenticatedUser | null> {
+    if (this.configService.get<string>('PLAYWRIGHT_TEST_AUTH') !== 'true') {
+      return null;
+    }
+
+    const profile = this.readPlaywrightTestAuthProfile(input);
+
+    if (!profile) {
+      return null;
+    }
+
+    const stream =
+      profile.role === UserRole.USER
+        ? await this.prisma.stream.findUnique({
+            where: { code: 'SE' },
+            select: { id: true },
+          })
+        : null;
+    const streamData = stream
+      ? {
+          stream: {
+            connect: {
+              id: stream.id,
+            },
+          },
+        }
+      : {};
+    const subscriptionEndsAt = new Date('2099-12-31T23:59:59.000Z');
+    const user = await this.prisma.user.upsert({
+      where: { email: profile.email },
+      update: {
+        fullName: profile.fullName,
+        role: profile.role,
+        subscriptionStatus: SubscriptionStatus.ACTIVE,
+        subscriptionEndsAt,
+        ...streamData,
+      },
+      create: {
+        email: profile.email,
+        fullName: profile.fullName,
+        role: profile.role,
+        subscriptionStatus: SubscriptionStatus.ACTIVE,
+        subscriptionEndsAt,
+        ...streamData,
+      },
+      select: this.userProfileSelect,
+    });
+
+    return {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+  }
+
+  private readPlaywrightTestAuthProfile(
+    input: AuthenticateRequestInput,
+  ): PlaywrightTestAuthProfile | null {
+    const authorizationHeader = this.readHeaderValue(input.authorizationHeader);
+    const bearerToken = authorizationHeader?.toLowerCase().startsWith('bearer ')
+      ? authorizationHeader.slice('bearer '.length).trim()
+      : null;
+    const cookieHeader = this.readHeaderValue(input.cookieHeader);
+    const cookieValue = cookieHeader
+      ?.split(';')
+      .map((chunk) => chunk.trim())
+      .find((chunk) => chunk.startsWith('bb_test_auth='))
+      ?.slice('bb_test_auth='.length);
+    const authMode = decodeURIComponent(
+      cookieValue || bearerToken || '',
+    ).trim();
+
+    if (authMode === 'admin' || authMode === 'playwright-admin') {
+      return {
+        email: 'playwright.admin@bac-bank.local',
+        fullName: 'Playwright Admin',
+        role: UserRole.ADMIN,
+      };
+    }
+
+    if (authMode === 'student' || authMode === 'playwright-student') {
+      return {
+        email: 'playwright.student@bac-bank.local',
+        fullName: 'Playwright Student',
+        role: UserRole.USER,
+      };
+    }
+
+    return null;
   }
 
   private async ensureFreshSubscription(user: UserProfileRecord) {

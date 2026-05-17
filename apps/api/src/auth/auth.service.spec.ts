@@ -43,6 +43,7 @@ const freeStudyEntitlements = {
 };
 
 describe('AuthService', () => {
+  let configValues: Record<string, string>;
   let configService: Pick<ConfigService, 'get'>;
   let prisma: {
     streamFamily: {
@@ -55,6 +56,7 @@ describe('AuthService', () => {
       create: jest.Mock;
       findUnique: jest.Mock;
       update: jest.Mock;
+      upsert: jest.Mock;
     };
     studySession: {
       count: jest.Mock;
@@ -65,14 +67,14 @@ describe('AuthService', () => {
   beforeEach(() => {
     jest.useFakeTimers({ now: fixedNow });
 
-    const values: Record<string, string> = {
+    configValues = {
       AUTH_BOOTSTRAP_ADMIN_EMAIL: 'admin@example.com',
       CLERK_SECRET_KEY: 'sk_test_example',
       CORS_ORIGIN: 'http://localhost:3000',
     };
 
     configService = {
-      get: jest.fn((name: string) => values[name]),
+      get: jest.fn((name: string) => configValues[name]),
     };
     prisma = {
       streamFamily: {
@@ -85,6 +87,7 @@ describe('AuthService', () => {
         create: jest.fn(),
         findUnique: jest.fn(),
         update: jest.fn(),
+        upsert: jest.fn(),
       },
       studySession: {
         count: jest.fn().mockResolvedValue(0),
@@ -263,6 +266,54 @@ describe('AuthService', () => {
         studyEntitlements: freeStudyEntitlements,
       },
     });
+  });
+
+  it('uses local Playwright test auth without calling Clerk when explicitly enabled', async () => {
+    configValues.PLAYWRIGHT_TEST_AUTH = 'true';
+    prisma.stream.findUnique.mockResolvedValueOnce({
+      id: 'stream-1',
+    });
+    prisma.user.upsert.mockResolvedValueOnce({
+      id: 'user-playwright',
+      clerkUserId: null,
+      email: 'playwright.student@bac-bank.local',
+      fullName: 'Playwright Student',
+      role: UserRole.USER,
+      subscriptionStatus: SubscriptionStatus.ACTIVE,
+      subscriptionEndsAt: new Date('2099-12-31T23:59:59.000Z'),
+      stream: {
+        code: 'SE',
+        name: 'علوم تجريبية',
+      },
+    });
+
+    await expect(
+      service.authenticateRequest({
+        cookieHeader: 'bb_test_auth=student',
+      }),
+    ).resolves.toMatchObject({
+      id: 'user-playwright',
+      email: 'playwright.student@bac-bank.local',
+      role: UserRole.USER,
+    });
+
+    expect(mockedVerifyToken).not.toHaveBeenCalled();
+    expect(prisma.user.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          email: 'playwright.student@bac-bank.local',
+        },
+        create: expect.objectContaining({
+          role: UserRole.USER,
+          subscriptionStatus: SubscriptionStatus.ACTIVE,
+          stream: {
+            connect: {
+              id: 'stream-1',
+            },
+          },
+        }),
+      }),
+    );
   });
 
   it('rejects requests that do not contain a Clerk token', async () => {

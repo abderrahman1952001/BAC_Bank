@@ -243,6 +243,10 @@ function buildFallbackSections(
   subjectName: string,
   topics: CurriculumJourneyNodeSummary[],
 ): CurriculumJourneySectionDefinition[] {
+  if (!topics.length) {
+    return [];
+  }
+
   const sectionShells =
     topics.length <= 3
       ? [
@@ -291,7 +295,7 @@ function buildFallbackSections(
 
   return sectionShells.map((section, index) => ({
     ...section,
-    nodes: chunks[index].map((topic) => ({
+    nodes: (chunks[index] ?? []).map((topic) => ({
       topicCode: topic.code,
     })),
   }));

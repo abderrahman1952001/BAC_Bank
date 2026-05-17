@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  parseStudyCommandProposalResponse,
+  type StudyCommandCreateSessionRequest,
+  type StudyCommandProposal,
+} from "@bac-bank/contracts/study-command";
 import Link from "next/link";
 import {
   Activity,
@@ -7,15 +12,26 @@ import {
   ArrowUpLeft,
   BookOpen,
   Brain,
+  CircleStop,
   Flame,
   FlaskConical,
   Layers3,
   Map,
+  Mic,
   PenTool,
+  Send,
+  Sparkles,
   Target,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { type CSSProperties, useMemo, useTransition } from "react";
+import {
+  type CSSProperties,
+  type FormEvent,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import { useRouter } from "next/navigation";
 import { StudentNavbar } from "@/components/student-navbar";
 import { useAuthSession } from "@/components/auth-provider";
@@ -28,14 +44,23 @@ import {
 } from "@/components/student-hub-sections";
 import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
+  API_BASE_URL,
+  fetchJson,
   formatStudySessionKind,
-  MyMistakesResponse,
-  RecentExerciseStatesResponse,
-  CurriculumJourneysResponse,
-  RecentExamActivitiesResponse,
-  RecentStudySessionsResponse,
-  WeakPointInsightsResponse,
+  parseCreateSessionResponse,
+  parseSessionPreviewResponse,
+  type CatalogResponse,
+  type CreateSessionResponse,
+  type FiltersResponse,
+  type MyMistakesResponse,
+  type RecentExerciseStatesResponse,
+  type CurriculumJourneysResponse,
+  type RecentExamActivitiesResponse,
+  type RecentStudySessionsResponse,
+  type SessionPreviewResponse,
+  type WeakPointInsightsResponse,
 } from "@/lib/study-api";
 import type { DueFlashcardsResponse } from "@/lib/flashcards-api";
 import type { LabToolsResponse } from "@/lib/lab-api";
@@ -54,6 +79,10 @@ import {
   studentHubStatusTones,
 } from "@/lib/student-hub";
 import {
+  buildStudyCommandStarters,
+  buildStudyCommandMixedDrillFallbackRequest,
+} from "@/lib/study-command";
+import {
   STUDENT_LIBRARY_ROUTE,
   STUDENT_FLASHCARDS_ROUTE,
   STUDENT_LAB_ROUTE,
@@ -71,6 +100,8 @@ export function StudentHub({
   initialWeakPointInsights,
   initialDueFlashcards,
   initialLabTools,
+  initialFilters,
+  initialCatalog,
 }: {
   initialRecentStudySessions?: RecentStudySessionsResponse["data"];
   initialRecentExamActivities?: RecentExamActivitiesResponse["data"];
@@ -80,9 +111,22 @@ export function StudentHub({
   initialWeakPointInsights?: WeakPointInsightsResponse;
   initialDueFlashcards?: DueFlashcardsResponse["data"];
   initialLabTools?: LabToolsResponse["data"];
+  initialFilters?: FiltersResponse;
+  initialCatalog?: CatalogResponse;
 }) {
   const router = useRouter();
   const [refreshingHub, startRefreshingHub] = useTransition();
+  const [commandDraft, setCommandDraft] = useState("");
+  const [commandProposal, setCommandProposal] =
+    useState<StudyCommandProposal | null>(null);
+  const [commandError, setCommandError] = useState<string | null>(null);
+  const [creatingCommandSession, setCreatingCommandSession] = useState(false);
+  const [voiceState, setVoiceState] = useState<
+    "idle" | "recording" | "transcribing"
+  >("idle");
+  const [voiceError, setVoiceError] = useState<string | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<BlobPart[]>([]);
   const { user } = useAuthSession();
   const weakPointInsightEnabled =
     user?.studyEntitlements.capabilities.weakPointInsight ??
@@ -227,6 +271,36 @@ export function StudentHub({
     labTools.find((tool) => tool.inProgressMissionCount > 0) ??
     labTools.find((tool) => tool.completedMissionCount < tool.missionCount) ??
     null;
+  const studyCommandContext = useMemo(
+    () => ({
+      sessions,
+      recentExamActivities: examActivities,
+      myMistakes,
+      curriculumJourneys,
+      weakPointInsights,
+      dueFlashcards,
+      labTools,
+      filters: initialFilters ?? null,
+      catalog: initialCatalog ?? null,
+      userStreamCode: user?.stream?.code ?? null,
+    }),
+    [
+      curriculumJourneys,
+      dueFlashcards,
+      examActivities,
+      initialCatalog,
+      initialFilters,
+      labTools,
+      myMistakes,
+      sessions,
+      user?.stream?.code,
+      weakPointInsights,
+    ],
+  );
+  const studyCommandStarters = useMemo(
+    () => buildStudyCommandStarters(studyCommandContext),
+    [studyCommandContext],
+  );
   const reviewCount =
     dueFlashcards.length + myMistakeItems.length + savedExerciseItems.length;
   const spotlightHref = activeSession
@@ -273,6 +347,234 @@ export function StudentHub({
     : (primaryMistake?.subtitle ??
       primarySavedExercise?.subtitle ??
       "عندما تحفظ تمريناً أو تفوّت سؤالاً سيظهر هنا مباشرة.");
+
+  async function createProposal(nextCommand: string) {
+    setCommandError(null);
+
+    try {
+      const response = await fetch("/api/study-command/propose", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          command: nextCommand,
+        }),
+      });
+      const payload = (await response.json().catch(() => null)) as unknown;
+
+      if (!response.ok) {
+        throw new Error("تعذر تحضير الجلسة الآن.");
+      }
+
+      setCommandProposal(parseStudyCommandProposalResponse(payload).proposal);
+    } catch (error: unknown) {
+      setCommandError(
+        error instanceof Error ? error.message : "تعذر تحضير الجلسة الآن.",
+      );
+    }
+  }
+
+  function handleCommandSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    void createProposal(commandDraft);
+  }
+
+  function handleStarterClick(prompt: string) {
+    setCommandDraft(prompt);
+    void createProposal(prompt);
+  }
+
+  function handleFineTune(option: string) {
+    const nextCommand = commandDraft
+      ? `${commandDraft}، ${option}`
+      : option;
+    setCommandDraft(nextCommand);
+    void createProposal(nextCommand);
+  }
+
+  async function previewCommandSession(
+    request: StudyCommandCreateSessionRequest,
+  ) {
+    return fetchJson<SessionPreviewResponse>(
+      `${API_BASE_URL}/study/sessions/preview`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+      },
+      parseSessionPreviewResponse,
+    );
+  }
+
+  async function resolveCreateSessionRequest(
+    request: StudyCommandCreateSessionRequest,
+  ) {
+    const preview = await previewCommandSession(request);
+
+    if (preview.matchingExerciseCount > 0) {
+      return request;
+    }
+
+    const fallbackRequest = buildStudyCommandMixedDrillFallbackRequest(request);
+
+    if (!fallbackRequest) {
+      return null;
+    }
+
+    const fallbackPreview = await previewCommandSession(fallbackRequest);
+
+    return fallbackPreview.matchingExerciseCount > 0 ? fallbackRequest : null;
+  }
+
+  async function handleStartCommandProposal(proposal: StudyCommandProposal) {
+    if (proposal.primaryAction.kind === "OPEN_ROUTE") {
+      router.push(proposal.primaryAction.href);
+      return;
+    }
+
+    if (creatingCommandSession) {
+      return;
+    }
+
+    setCreatingCommandSession(true);
+    setCommandError(null);
+
+    try {
+      const createSessionRequest = await resolveCreateSessionRequest(
+        proposal.primaryAction.request,
+      );
+
+      if (!createSessionRequest) {
+        setCommandError(
+          "لم نجد تمارين مطابقة لهذا الاختيار حالياً. افتح إعداد الجلسة ووسّع المادة أو السنوات.",
+        );
+        return;
+      }
+
+      const payload = await fetchJson<CreateSessionResponse>(
+        `${API_BASE_URL}/study/sessions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(createSessionRequest),
+        },
+        parseCreateSessionResponse,
+      );
+
+      router.push(buildStudentTrainingSessionRoute(payload.id));
+    } catch (error: unknown) {
+      setCommandError(
+        error instanceof Error ? error.message : "تعذر إنشاء الجلسة.",
+      );
+    } finally {
+      setCreatingCommandSession(false);
+    }
+  }
+
+  async function transcribeAudio(blob: Blob) {
+    const formData = new FormData();
+    formData.set(
+      "audio",
+      new File([blob], "study-command.webm", {
+        type: blob.type || "audio/webm",
+      }),
+    );
+
+    const response = await fetch("/api/study-command/transcribe", {
+      method: "POST",
+      body: formData,
+    });
+
+    const payload = (await response.json().catch(() => null)) as {
+      text?: unknown;
+      message?: unknown;
+    } | null;
+
+    if (!response.ok) {
+      throw new Error(
+        typeof payload?.message === "string"
+          ? payload.message
+          : "تعذر تحويل الصوت إلى نص.",
+      );
+    }
+
+    if (typeof payload?.text !== "string" || !payload.text.trim()) {
+      throw new Error("لم يرجع التسجيل نصاً واضحاً.");
+    }
+
+    return payload.text.trim();
+  }
+
+  async function handleVoiceCommand() {
+    setVoiceError(null);
+
+    if (voiceState === "recording") {
+      mediaRecorderRef.current?.stop();
+      return;
+    }
+
+    if (voiceState === "transcribing") {
+      return;
+    }
+
+    if (!navigator.mediaDevices?.getUserMedia || !("MediaRecorder" in window)) {
+      setVoiceError("المتصفح لا يدعم التسجيل الصوتي هنا.");
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      const recorder = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+      mediaRecorderRef.current = recorder;
+
+      recorder.addEventListener("dataavailable", (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      });
+
+      recorder.addEventListener("stop", () => {
+        const mimeType = recorder.mimeType || "audio/webm";
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: mimeType,
+        });
+        stream.getTracks().forEach((track) => track.stop());
+        setVoiceState("transcribing");
+
+        void transcribeAudio(audioBlob)
+          .then((text) => {
+            setCommandDraft(text);
+            void createProposal(text);
+          })
+          .catch((error: unknown) => {
+            setVoiceError(
+              error instanceof Error
+                ? error.message
+                : "تعذر تحويل الصوت إلى نص.",
+            );
+          })
+          .finally(() => {
+            setVoiceState("idle");
+            mediaRecorderRef.current = null;
+            audioChunksRef.current = [];
+          });
+      });
+
+      recorder.start();
+      setVoiceState("recording");
+    } catch {
+      setVoiceError("لم نستطع فتح الميكروفون. تأكد من صلاحيات المتصفح.");
+      setVoiceState("idle");
+    }
+  }
 
   if (hubUnavailable) {
     return (
@@ -335,7 +637,159 @@ export function StudentHub({
             <p className="page-kicker">Study Command</p>
             <h1>مرحباً بك، {displayName}</h1>
           </div>
-          <p>سطح واحد لما يجب أن تدرسه الآن، وما يجب أن تعود إليه لاحقاً.</p>
+          <p>اكتب أو قل ما تريد دراسته الآن، ونحوّله إلى جلسة واضحة.</p>
+        </motion.section>
+
+        <motion.section
+          className="hub-command-entry"
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.36, delay: 0.04, ease: [0.2, 0.8, 0.2, 1] }}
+          aria-label="مدخل أوامر الدراسة"
+        >
+          <div className="hub-command-entry-head">
+            <span className="hub-command-entry-icon" aria-hidden="true">
+              <Sparkles size={20} strokeWidth={2.1} />
+            </span>
+            <div>
+              <h2>ما الذي تريد دراسته في هذه الجلسة؟</h2>
+              <p>
+                اكتب بحرية: فرض قريب، حصة دعم، تمارين BAC، حفظ، فهم درس، أو
+                خطأ تريد إصلاحه.
+              </p>
+            </div>
+          </div>
+
+          <form
+            className="hub-command-form"
+            onSubmit={handleCommandSubmit}
+          >
+            <Textarea
+              value={commandDraft}
+              onChange={(event) => {
+                setCommandDraft(event.target.value);
+              }}
+              placeholder="مثال: عندي فرض في الفيزياء غدوة على الكهرباء، أريد مراجعة وتمارين..."
+              className="hub-command-input"
+              rows={3}
+            />
+            <div className="hub-command-form-actions">
+              <Button
+                type="button"
+                variant={voiceState === "recording" ? "secondary" : "outline"}
+                className="hub-command-voice-button"
+                onClick={() => void handleVoiceCommand()}
+                disabled={voiceState === "transcribing"}
+              >
+                {voiceState === "recording" ? (
+                  <CircleStop data-icon aria-hidden="true" />
+                ) : (
+                  <Mic data-icon aria-hidden="true" />
+                )}
+                {voiceState === "recording"
+                  ? "إيقاف التسجيل"
+                  : voiceState === "transcribing"
+                    ? "جارٍ التحويل..."
+                    : "تحدث"}
+              </Button>
+              <Button type="submit" className="hub-command-submit">
+                <Send data-icon aria-hidden="true" />
+                حضّر الجلسة
+              </Button>
+            </div>
+          </form>
+
+          {voiceError ? (
+            <p className="hub-command-error" role="status">
+              {voiceError}
+            </p>
+          ) : null}
+
+          {commandError ? (
+            <p className="hub-command-error" role="status">
+              {commandError}
+            </p>
+          ) : null}
+
+          <div className="hub-smart-starters" aria-label="اقتراحات ذكية">
+            {studyCommandStarters.map((starter) => (
+              <Button
+                key={starter.id}
+                type="button"
+                variant="outline"
+                className={`hub-smart-starter tone-${starter.tone}`}
+                onClick={() => handleStarterClick(starter.prompt)}
+              >
+                <span>{starter.title}</span>
+                <small>{starter.reason}</small>
+              </Button>
+            ))}
+          </div>
+
+          {commandProposal ? (
+            <article className="hub-command-proposal" aria-live="polite">
+              <div className="hub-command-proposal-head">
+                <div>
+                  <span>مسودة جلسة</span>
+                  <h3>{commandProposal.title}</h3>
+                  <p>{commandProposal.subtitle}</p>
+                </div>
+                <StudyBadge tone="brand">
+                  {commandProposal.estimatedMinutes} دقيقة
+                </StudyBadge>
+              </div>
+
+              <div className="hub-command-proposal-steps">
+                {commandProposal.steps.map((step, index) => (
+                  <div key={`${step.title}:${index}`}>
+                    <b>{index + 1}</b>
+                    <span>
+                      <strong>{step.title}</strong>
+                      <small>{step.detail}</small>
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="hub-command-proposal-rationale">
+                {commandProposal.rationale}
+              </p>
+
+              <div className="hub-command-proposal-actions">
+                {commandProposal.primaryAction.kind === "OPEN_ROUTE" ? (
+                  <Button asChild className="h-11 rounded-full px-5">
+                    <Link href={commandProposal.primaryAction.href}>
+                      {commandProposal.primaryLabel}
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    className="h-11 rounded-full px-5"
+                    onClick={() => void handleStartCommandProposal(commandProposal)}
+                    disabled={creatingCommandSession}
+                  >
+                    {creatingCommandSession
+                      ? "جارٍ إنشاء الجلسة..."
+                      : commandProposal.primaryLabel}
+                  </Button>
+                )}
+                <div>
+                  {commandProposal.fineTuneOptions.map((option) => (
+                    <Button
+                      key={option}
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleFineTune(option)}
+                    >
+                      {option}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ) : null}
         </motion.section>
 
         <motion.section

@@ -28,14 +28,17 @@ manage official BAC exam and theory content.
 
 ### Positioning
 
-This is not a generic study dashboard, PDF library, or gamified flashcard app.
-It is a premium BAC preparation platform that connects official source material,
-guided learning, manipulation/visualization, practice, memory, and review.
+This is not a generic study dashboard, PDF library, planner, or gamified
+flashcard app. It is a premium BAC study desk that lets a student type or speak
+what they need to study now, then turns that messy intent into structured
+sessions using official source material, guided learning,
+manipulation/visualization, practice, memory, and review.
 
 The product promise:
 
-> Learn the concept, see it move, remember the rule, apply it to official BAC
-> questions, understand what broke, then return to the exact next action.
+> Say what you need to study now, enter the right BAC workflow, understand the
+> concept, see it move, remember the rule, practice on trusted questions,
+> understand what broke, and recover control quickly.
 
 ### Desired Feeling
 
@@ -45,7 +48,7 @@ The redesigned platform should feel:
 - calm under pressure
 - academically trustworthy
 - fast to scan
-- centered on the student's next useful action
+- centered on the student's current study situation
 - coherent across pages
 - built for repeated daily study, not one-time exploration
 
@@ -84,8 +87,9 @@ For admins:
 
 ### The Missing UX Idea
 
-The pillars should not feel like separate products. They should communicate
-through a shared learning spine:
+The pillars should not feel like separate products. They should be reachable
+through a study desk command layer and still communicate through a shared
+learning spine:
 
 ```text
 Courses -> Lab -> Flashcards -> Training -> Mistakes/Weakness -> My Space
@@ -167,10 +171,11 @@ This platform is already more than a static content site.
 ### Not Yet Sealed
 
 The product is sealed at navigation and mostly sealed at the data model. It is
-not yet sealed at recommendation UX.
+not yet sealed at the command/session UX.
 
-The redesign should anticipate a future central `NextActionRouter` that returns
-one ranked queue of actions:
+The redesign should anticipate a command layer that accepts free text or
+push-to-talk, routes intent into typed study-session modes, and proposes one
+structured session at a time. Contextual suggestions can include:
 
 - continue a course concept
 - open a related Lab mission
@@ -181,7 +186,9 @@ one ranked queue of actions:
 - revisit a prerequisite concept
 - inspect the official source in Library
 
-The design should make room for this without requiring AI to be the glue.
+The design should make room for this without turning AI into an unchecked
+planner. AI can interpret intent and tune language, but typed workflows should
+own execution.
 
 ## 4. Design System Direction
 
@@ -209,7 +216,8 @@ can evolve visual language, but should not become a marketing SaaS template.
 
 Make the product answer one question better than anything else:
 
-> What should I do next, and why?
+> What are you trying to study now, and what structured session should that
+> become?
 
 ### Secondary Goals
 
@@ -217,7 +225,8 @@ Make the product answer one question better than anything else:
 - Make the official source material feel trustworthy and close at hand.
 - Reduce page awkwardness caused by too many cards with similar weight.
 - Make navigation feel stable and obvious on desktop and mobile.
-- Use progressive disclosure: show the next action first, details second.
+- Use progressive disclosure: show the command entrance and session proposal
+  first, details second.
 - Make Courses, Lab, Flashcards, Training, and Library feel like parts of one
   platform.
 - Design for Arabic text, math notation, long subject names, and mixed
@@ -428,7 +437,7 @@ clear, and optimized for repeated review/correction, not student-like.
 
 ### My Space
 
-Purpose: Continue, decide, and recover.
+Purpose: Command, continue, and recover.
 
 Current features:
 
@@ -445,9 +454,11 @@ Current features:
 Redesign direction:
 
 - Make My Space a command center, not a dashboard mosaic.
-- Lead with the best next action and a reason.
-- Show secondary actions as a compact queue.
-- Explain how each recommendation maps to the learning loop.
+- Lead with a natural-language study command entrance.
+- Show smart starters generated from real context, not generic category chips.
+- Turn the student's current situation into a structured session proposal.
+- Keep contextual recommendations available without pretending to know the
+  student's whole day.
 - Keep recent activity and history accessible but not dominant.
 
 ### Courses
@@ -1062,41 +1073,42 @@ Recommended UX:
 
 ### My Space: `/student/my-space`
 
-Primary job: decide and continue.
+Primary job: command and continue.
 
 My Space is the heart of the student experience. It should not feel like a
-dashboard made from all available widgets. It should feel like the platform has
-looked at the student's work and is calmly saying: "Here is the next best move,
-and here is why."
+dashboard made from all available widgets. It should feel like a calm study
+desk where the student can type or speak what is happening now, then receive a
+structured session proposal built from trusted platform workflows.
 
 Recommended page hierarchy:
 
-1. Primary next action.
-2. Secondary action queue.
-3. Learning loop status.
+1. Study command entrance.
+2. Smart starters from real context.
+3. Session proposal or one clarification.
 4. Recent activity/history.
 5. Mistakes, saved items, and source shortcuts.
 
-Primary next action UX:
+Command entrance UX:
 
 - Large enough to be unmistakable, but not a decorative hero.
-- Shows one action label, such as "Review 8 due cards" or "Fix functions".
-- Includes a short reason: due today, weak after recent training, unfinished
-  session, open mistake, incomplete Lab mission.
-- Shows estimated effort when available.
-- Shows the destination pillar with an icon/badge.
-- Includes one primary button and one secondary context link.
+- Asks what the student is studying now in natural language.
+- Supports text first and push-to-talk as the V1 voice mode.
+- Shows smart starters such as unfinished sessions, due cards, open mistakes,
+  weak topics, recent work, or relevant curriculum moments.
+- Starters should feel context-aware and should not be static generic chips.
 
-Secondary queue UX:
+Session proposal UX:
 
-- Compact ordered list of actions across pillars.
+- Renders a typed proposal after the command is understood.
 - Each item should include:
-  - action title
-  - reason
-  - subject/concept/source context
-  - effort or count
-  - destination
-- Queue items should not all look like equal cards. The order matters.
+  - session title
+  - reason/source context
+  - estimated effort
+  - planned steps
+  - destination workflow
+  - lightweight fine-tuning actions
+- If required details are missing, ask one natural clarification instead of
+  showing a long form.
 
 Learning loop status UX:
 

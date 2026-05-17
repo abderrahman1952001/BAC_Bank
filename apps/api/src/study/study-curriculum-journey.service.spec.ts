@@ -256,4 +256,43 @@ describe('StudyCurriculumJourneyService', () => {
     });
     expect(result.data[0]?.openReviewItemCount).toBe(1);
   });
+
+  it('keeps curriculum journeys renderable while a curriculum has no top-level topics', async () => {
+    prisma.user.findUnique.mockResolvedValue({
+      streamId: 'stream-se',
+    });
+    prisma.curriculum.findMany.mockResolvedValue([
+      {
+        id: 'curriculum-empty',
+        code: 'GENERAL',
+        title: 'العلوم التجريبية',
+        validFromYear: 2008,
+        validToYear: null,
+        subject: {
+          code: 'SCIENCE',
+          name: 'العلوم التجريبية',
+        },
+        subjectOfferings: [{ streamId: 'stream-se' }],
+        curriculumNodes: [],
+      },
+    ]);
+    prisma.studentCurriculumNodeRollup.findMany.mockResolvedValue([]);
+    prisma.studentReviewQueueItem.findMany.mockResolvedValue([]);
+
+    const result = await service.listCurriculumJourneys('user-1', {
+      limit: 4,
+    });
+
+    expect(result.data[0]).toEqual(
+      expect.objectContaining({
+        id: 'curriculum-empty',
+        title: 'خارطة العلوم التجريبية',
+        totalNodeCount: 0,
+        progressPercent: 0,
+        nextAction: null,
+        sections: [],
+        nodes: [],
+      }),
+    );
+  });
 });

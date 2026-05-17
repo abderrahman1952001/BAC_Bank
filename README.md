@@ -1,12 +1,16 @@
 # BAC Bank
 
-BAC Bank is a study platform for Algerian BAC students. The platform is organized around a trusted student library, guided training flows, a personal study space, authored curriculum journeys, review tools, and an admin ingestion pipeline for canonical BAC content.
+BAC Bank is an AI-native study desk for Algerian BAC students. Students can type
+or speak what they need to study now, and the platform turns that messy intent
+into structured sessions using trusted BAC content, guided training, authored
+curriculum journeys, flashcards, review tools, and official-source workflows.
 
 ## Documentation Map
 
 - Product and UX source of truth: [BAC-platform-architecture-workbench.md](./BAC-platform-architecture-workbench.md)
 - Production and operational runbook: [docs/production-runbook.md](./docs/production-runbook.md)
 - Ingestion workflow: [docs/admin-ingestion-workflow.md](./docs/admin-ingestion-workflow.md)
+- Study desk command workflow: [docs/study-desk-command-workflow.md](./docs/study-desk-command-workflow.md)
 - Agent ingestion playbook: [docs/agent-ingestion-playbook.md](./docs/agent-ingestion-playbook.md)
 - Two-device content workflow: [docs/two-device-content-workflow.md](./docs/two-device-content-workflow.md)
 
@@ -22,7 +26,7 @@ Use the workbench for the latest product spec, pedagogy rules, UX expectations, 
 
 ## Current App Surfaces
 
-- `/student/my-space`: recent activity, continued training, and personal context
+- `/student/my-space`: command entrance, smart starters, continued training, and personal context
 - `/student/my-space/curriculum/:subjectCode`: deeper subject curriculum journey with node actions and open review work
 - `/student/library`: official BAC sujets organized by stream, subject, and year
 - `/student/training`: guided training-session builder and training player

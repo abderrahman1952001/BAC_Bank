@@ -1,5 +1,7 @@
 import { StudentHub } from "@/components/student-hub";
 import {
+  fetchServerCatalog,
+  fetchServerFilters,
   fetchServerMyMistakes,
   fetchServerRecentExamActivities,
   fetchServerRecentExerciseStates,
@@ -20,6 +22,8 @@ export default async function StudentMySpacePage() {
     initialWeakPointInsights,
     initialDueFlashcards,
     initialLabTools,
+    initialFilters,
+    initialCatalog,
   ] = await Promise.all([
     fetchServerRecentStudySessions(6)
       .then((payload) => payload.data)
@@ -51,6 +55,8 @@ export default async function StudentMySpacePage() {
     fetchServerLabTools()
       .then((payload) => payload.data)
       .catch(() => undefined),
+    fetchServerFilters().catch(() => undefined),
+    fetchServerCatalog().catch(() => undefined),
   ]);
 
   return (
@@ -63,6 +69,8 @@ export default async function StudentMySpacePage() {
       initialWeakPointInsights={initialWeakPointInsights}
       initialDueFlashcards={initialDueFlashcards}
       initialLabTools={initialLabTools}
+      initialFilters={initialFilters}
+      initialCatalog={initialCatalog}
     />
   );
 }

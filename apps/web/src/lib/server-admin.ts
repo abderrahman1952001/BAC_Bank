@@ -23,7 +23,10 @@ import {
 import { fetchServerApiJson } from "@/lib/server-api";
 
 function shouldUsePlaywrightFixtures() {
-  return process.env.PLAYWRIGHT_TEST_AUTH === "true";
+  return (
+    process.env.PLAYWRIGHT_TEST_AUTH === "true" &&
+    process.env.PLAYWRIGHT_FIXTURE_DATA !== "false"
+  );
 }
 
 export async function fetchServerAdminJson<T>(

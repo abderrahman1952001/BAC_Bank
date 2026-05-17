@@ -23,6 +23,7 @@ export {
 export * from "./flashcards.js";
 export * from "./ingestion.js";
 export * from "./lab.js";
+export * from "./study-command.js";
 export {
   parseCatalogResponse,
   parseCreateSessionResponse,

@@ -17,15 +17,15 @@ Nothing here should be treated as untouchable doctrine if a better product decis
 
 - Build a student-first premium platform for Algerian BAC students, intended to be the go-to platform for preparing for that exam.
 - The platform should become a serious daily study environment, not a PDF dump, not a tutor marketplace, and not an AI wrapper.
-- The platform should reduce study fragmentation and become the place where the student browses trusted content, trains, reviews, resumes work, and gradually receives better guidance.
-- The platform should not stop at measuring performance; it should help the student understand weaknesses and move into the next corrective action with minimal friction.
+- The platform should reduce study fragmentation and become the place where the student says what they need to study now, then enters a structured session using trusted content, training, review, flashcards, simulations, labs, or official sources.
+- The platform should not stop at measuring performance; it should help the student recover control in a messy study day, understand weaknesses, and move into a useful corrective session with minimal friction.
 
 ### Product qualities
 
 - Premium feel over feature clutter.
 - Strong continuity across study sessions.
 - Trusted BAC content first.
-- AI as an assistive layer, not the source of truth.
+- AI as an aggressive command and assistance layer, not the source of truth for official content or correction fidelity.
 - Calm, structured, anxiety-reducing UX that feels dependable during a high-pressure exam season.
 - A closed remediation loop: detect weakness, explain it clearly, and guide the student toward fixing it.
 - Architecture that can absorb many future features without rewrite.
@@ -95,8 +95,11 @@ Premium launch additions inside the core experience:
 
 Positioning rule:
 
-- Trusted content, structured training, and continuity are the center of the product.
-- AI, analytics, weak-point insight, and personalization are support layers inside that core loop.
+- The center of the product is a premium study desk: natural-language command
+  entrance, structured study sessions, trusted content, and continuity.
+- AI, analytics, weak-point insight, and personalization strengthen that study
+  desk by interpreting intent, tuning sessions, explaining verified content, and
+  reducing friction.
 
 ---
 
@@ -114,7 +117,7 @@ Positioning rule:
 
 - Library: browse trusted BAC material digitally
 - Training: actively create and run study sessions
-- My Space: continuity, saved/review state, recent work, and later progress
+- My Space: command entrance, smart starters, continuity, saved/review state, recent work, and later progress
 - Courses: move through a premium guided theory journey by subject, unit, topic, and concept
 - Flashcards: review important facts through flexible decks that may start from the platform and evolve privately for each student
 
@@ -151,13 +154,20 @@ Positioning rule:
 
 ### Product center
 
-- The center of the product is trusted content + structured training + continuity.
-- Premium capabilities strengthen that loop rather than replace it.
+- The center of the product is the study-session command layer: the student
+  arrives with a real situation, types or speaks it naturally, and the platform
+  turns it into a structured session.
+- Trusted content, structured training, continuity, and review remain the
+  backbone underneath that command layer.
+- Premium capabilities strengthen the desk rather than replacing it with a
+  generic chatbot or a rigid planner.
 
 ### Remediation rule
 
 - Diagnosis without a corrective next step is incomplete product behavior.
-- When the app detects visible weakness, it should naturally offer a `Fix it now` style next action into the best available corrective path.
+- When the app detects visible weakness, it should naturally offer a `Fix it now`
+  style session path while still letting the student bring their own immediate
+  school, tutor, revision, or memorization context.
 - In `v1`, that corrective path may be a topic drill, a weak-point drill, or a focused review flow depending on the student's tier and context (this is open to upgrade with the available features in the app)
 
 ### Granularity rules
@@ -496,19 +506,30 @@ Recommended builder flows:
 
 - Official correction is the source of truth
 - AI is assistive, not authoritative
-- The first AI insertion point is optional explanation layered on top of official correction
+- Content-teaching AI should be layered on top of trusted objects: official
+  corrections, lessons, flashcards, mistakes, or labs.
 - AI is premium-only
-- AI explanation ships
-- AI appears only after official correction is opened
+- AI explanation ships in the correction flow
 - AI must not replace trusted correction content
 - AI must not become the system's curriculum or truth layer
-- AI must not drive deep personalization before the underlying student-state model is ready
+- AI must not drive deep personalization before the underlying student-state
+  model is ready
 
 ### V1 AI scope
 
-- AI explanation should stay inside the correction flow.
-- AI should focus on explaining the official correction more clearly, breaking it into steps, and highlighting the key idea or common trap.
-- AI interaction should prefer fixed guided prompt chips over an open-ended blank chat input.
+- The My Space command entrance may accept natural language or push-to-talk, but
+  it should route into typed workflows rather than behaving as a standalone
+  open chatbot.
+- Study command proposal request/response shapes should live in runtime
+  contracts. The proposal should be composed on the server from compact student
+  context, then rendered by the client as known UI components/actions.
+- Drill creation should preview the API filters before creation. While topic
+  mappings are incomplete, a zero-result topic drill may fall back to a mixed
+  drill in the same subject/stream/year window rather than dead-ending.
+- Inside exercises, AI should focus on explaining the official correction more
+  clearly, breaking it into steps, and highlighting the key idea or common trap.
+- In object-specific surfaces, guided prompt chips remain useful because they
+  keep AI grounded in the current correction, lesson, flashcard, mistake, or lab.
 - Good prompt chips include:
   - `Explain simply`
   - `How could i mess this up?` (for common pitfalls)
@@ -702,7 +723,9 @@ Analytics/read-model direction:
 - the first cached aggregate layer is now in place through `student_curriculum_node_rollups`, `student_learning_target_rollups`, and `student_review_queue_items`
 - derived curriculum-node rollups, learning-target rollups, and review queue items should be treated as read models rather than write-owned truth
 - review-queue workflow state should sit on top of those derived items rather than creating a second corrective persistence model, and the current implementation now follows that rule
-- the first curriculum journey reads from curriculum-node rollups; more advanced recommendation logic can come later
+- the first curriculum journey reads from curriculum-node rollups; broader
+  command-layer routing should compose typed study sessions from compact context
+  rather than becoming an opaque planner
 
 ### Migration direction
 
