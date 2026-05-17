@@ -60,6 +60,7 @@ type TopicHint = {
   preferredCodes: string[];
   name: string;
   aliases: string[];
+  fallbackSearchTerms: string[];
 };
 
 type InferredTopic = {
@@ -95,6 +96,8 @@ const SUBJECT_HINTS: SubjectHint[] = [
       "physique",
       "فيزياء",
       "الفيزياء",
+      "علوم فيزيائية",
+      "العلوم الفيزيائية",
       "كهرباء",
       "electricity",
       "mecanique",
@@ -124,6 +127,9 @@ const SUBJECT_HINTS: SubjectHint[] = [
       "science",
       "علوم",
       "علوم الطبيعة",
+      "علوم طبيعية",
+      "العلوم الطبيعية",
+      "علوم الحياة",
       "بروتين",
       "بروتينات",
       "adn",
@@ -174,56 +180,103 @@ const TOPIC_HINTS: TopicHint[] = [
     preferredCodes: ["FUNCTIONS", "FUNC"],
     name: "الدوال",
     aliases: ["الدوال", "دوال", "fonctions", "function", "functions"],
+    fallbackSearchTerms: ["دالة", "الدالة", "fonction"],
   },
   {
     preferredCodes: ["SEQUENCES", "SUITES"],
     name: "المتتاليات",
     aliases: ["المتتاليات", "متتاليات", "suites", "sequences"],
+    fallbackSearchTerms: ["متتالية", "suite"],
   },
   {
     preferredCodes: ["PROBABILITY", "PROBABILITIES"],
     name: "الاحتمالات",
     aliases: ["الاحتمالات", "احتمالات", "probabilité", "probability"],
+    fallbackSearchTerms: ["احتمال", "probabilité"],
   },
   {
     preferredCodes: ["ELECTRICITY"],
     name: "الكهرباء",
     aliases: ["الكهرباء", "كهرباء", "électricité", "electricity"],
+    fallbackSearchTerms: ["كهرباء", "توتر", "تيار"],
   },
   {
     preferredCodes: ["MECHANICS"],
     name: "الميكانيك",
     aliases: ["الميكانيك", "ميكانيك", "mecanique", "mechanics"],
+    fallbackSearchTerms: ["ميكانيك", "حركة", "قوة"],
+  },
+  {
+    preferredCodes: ["PROTEIN_SYNTHESIS"],
+    name: "تركيب البروتين",
+    aliases: ["تركيب البروتين", "اصطناع البروتين", "adn", "dna", "arn", "protein synthesis"],
+    fallbackSearchTerms: ["تركيب البروتين", "ترجمة", "ARN"],
   },
   {
     preferredCodes: ["PROTEINS"],
     name: "البروتينات",
     aliases: ["البروتينات", "بروتينات", "بروتين", "proteins"],
+    fallbackSearchTerms: ["بروتين"],
   },
   {
-    preferredCodes: ["PROTEIN_SYNTHESIS"],
-    name: "تركيب البروتين",
-    aliases: ["تركيب البروتين", "adn", "dna", "arn", "protein synthesis"],
+    preferredCodes: ["STRUCTURE_FUNCTION"],
+    name: "العلاقة بين البنية والوظيفة",
+    aliases: ["البنية والوظيفة", "بنية ووظيفة", "structure function"],
+    fallbackSearchTerms: ["البنية", "الوظيفة"],
+  },
+  {
+    preferredCodes: ["PHOTOSYNTHESIS"],
+    name: "التركيب الضوئي",
+    aliases: ["التركيب الضوئي", "بناء ضوئي", "photosynthesis"],
+    fallbackSearchTerms: ["التركيب الضوئي", "المرحلة الكيموضوئية"],
+  },
+  {
+    preferredCodes: ["RESPIRATION_FERMENTATION"],
+    name: "التنفس والتخمر",
+    aliases: ["التنفس", "التخمر", "respiration", "fermentation"],
+    fallbackSearchTerms: ["التنفس", "التخمر"],
+  },
+  {
+    preferredCodes: ["ENZYMES"],
+    name: "الإنزيمات",
+    aliases: ["الإنزيمات", "انزيمات", "أنزيمات", "enzyme", "enzymes"],
+    fallbackSearchTerms: ["أنزيم", "إنزيم"],
   },
   {
     preferredCodes: ["GENETICS"],
     name: "الوراثة",
     aliases: ["الوراثة", "وراثة", "genetics"],
+    fallbackSearchTerms: ["مورثة", "وراثية", "ADN"],
+  },
+  {
+    preferredCodes: ["IMMUNITY"],
+    name: "المناعة",
+    aliases: ["المناعة", "مناعة", "immunité", "immunity"],
+    fallbackSearchTerms: ["مناعي", "مناعية", "لمفاوية"],
+  },
+  {
+    preferredCodes: ["NERVOUS_COMMUNICATION"],
+    name: "الاتصال العصبي",
+    aliases: ["الاتصال العصبي", "عصبي", "مشابك", "neurone", "nervous"],
+    fallbackSearchTerms: ["عصبي", "مشبك", "العصبونات"],
   },
   {
     preferredCodes: ["MAPS"],
     name: "الخرائط",
     aliases: ["الخرائط", "خرائط", "maps"],
+    fallbackSearchTerms: ["خريطة"],
   },
   {
     preferredCodes: ["HISTORICAL_DATES"],
     name: "التواريخ",
     aliases: ["التواريخ", "تواريخ", "dates"],
+    fallbackSearchTerms: ["تاريخ"],
   },
   {
     preferredCodes: ["ORGANIC_CHEMISTRY"],
     name: "الكيمياء العضوية",
     aliases: ["الكيمياء العضوية", "عضوية", "organic"],
+    fallbackSearchTerms: ["عضوية"],
   },
 ];
 
@@ -233,6 +286,23 @@ function normalizeCommandText(value: string) {
 
 function includesAny(text: string, needles: string[]) {
   return needles.some((needle) => text.includes(needle.toLocaleLowerCase()));
+}
+
+function findBestAliasHint<T extends { aliases: string[] }>(
+  text: string,
+  hints: T[],
+) {
+  const normalized = normalizeCommandText(text);
+
+  return hints
+    .flatMap((hint) =>
+      hint.aliases.map((alias) => ({
+        hint,
+        alias,
+      })),
+    )
+    .filter(({ alias }) => normalized.includes(alias.toLocaleLowerCase()))
+    .sort((left, right) => right.alias.length - left.alias.length)[0]?.hint ?? null;
 }
 
 function matchLooseText(value: string | null | undefined, query: string) {
@@ -302,15 +372,49 @@ function subjectFromFilters(
     : null;
 }
 
+function subjectFromTopicMention(
+  command: string,
+  context?: StudyCommandContext,
+): InferredSubject | null {
+  const topicHint = findBestAliasHint(command, TOPIC_HINTS);
+
+  if (!topicHint) {
+    return null;
+  }
+
+  const matchingTopic = context?.filters?.topics.find((topic) => {
+    const fields = [topic.code, topic.name, topic.slug];
+    const preferredCodeMatches = topicHint.preferredCodes.includes(topic.code);
+    const aliasMatches = topicHint.aliases.some((alias) =>
+      fields.some((field) => matchLooseText(field, alias)),
+    );
+
+    return preferredCodeMatches || aliasMatches;
+  });
+  const topicSubjectCode = matchingTopic?.subject.code ?? null;
+
+  if (!topicSubjectCode) {
+    return null;
+  }
+
+  const subject = context?.filters?.subjects.find(
+    (item) => item.code === topicSubjectCode,
+  );
+
+  return subject
+    ? {
+        code: subject.code,
+        name: subject.name,
+        canCreateSession: true,
+      }
+    : null;
+}
+
 function inferSubject(
   command: string,
   context?: StudyCommandContext,
 ): InferredSubject | null {
-  const normalized = normalizeCommandText(command);
-
-  const exactSubject = SUBJECT_HINTS.find((subject) =>
-    includesAny(normalized, subject.aliases),
-  );
+  const exactSubject = findBestAliasHint(command, SUBJECT_HINTS);
 
   if (exactSubject) {
     const filteredSubject = subjectFromFilters(exactSubject, context);
@@ -326,6 +430,13 @@ function inferSubject(
     };
   }
 
+  const topicSubject = subjectFromTopicMention(command, context);
+
+  if (topicSubject) {
+    return topicSubject;
+  }
+
+  const normalized = normalizeCommandText(command);
   const contextSubjects = [
     context?.weakPointInsights[0]?.subject,
     context?.curriculumJourneys[0]?.subject,
@@ -430,10 +541,7 @@ function inferTopic(
   subject: InferredSubject | null,
   context?: StudyCommandContext,
 ): InferredTopic | null {
-  const normalized = normalizeCommandText(command);
-  const directTopic = TOPIC_HINTS.find((topic) =>
-    includesAny(normalized, topic.aliases),
-  );
+  const directTopic = findBestAliasHint(command, TOPIC_HINTS);
 
   if (directTopic) {
     const filteredTopic = topicFromFilters(directTopic, subject, context);
@@ -967,6 +1075,43 @@ function buildFineTuneOptions(mode: StudyCommandStarterMode) {
   return [];
 }
 
+function findCatalogTrainingSubject(context: StudyCommandContext) {
+  const streams = context.userStreamCode
+    ? context.catalog?.streams.filter(
+        (stream) =>
+          stream.code === context.userStreamCode ||
+          stream.family?.code === context.userStreamCode,
+      )
+    : context.catalog?.streams;
+  const candidates =
+    streams?.flatMap((stream) =>
+      stream.subjects.map((subject) => ({
+        stream,
+        subject,
+        exerciseCount: subject.years.reduce(
+          (sum, year) =>
+            sum +
+            year.sujets.reduce(
+              (yearSum, sujet) => yearSum + sujet.exerciseCount,
+              0,
+            ),
+          0,
+        ),
+        latestYear: Math.max(...subject.years.map((year) => year.year)),
+      })),
+    ) ?? [];
+
+  return candidates
+    .filter((candidate) => candidate.exerciseCount > 0)
+    .sort((left, right) => {
+      if (right.latestYear !== left.latestYear) {
+        return right.latestYear - left.latestYear;
+      }
+
+      return right.exerciseCount - left.exerciseCount;
+    })[0] ?? null;
+}
+
 function buildProposalAction(input: {
   mode: StudyCommandStarterMode;
   command: string;
@@ -1020,9 +1165,19 @@ export function buildStudyCommandMixedDrillFallbackRequest(
     return null;
   }
 
+  const fallbackSearch = request.topicCodes
+    .flatMap((topicCode) => {
+      const topicHint = TOPIC_HINTS.find((hint) =>
+        hint.preferredCodes.includes(topicCode),
+      );
+
+      return topicHint?.fallbackSearchTerms ?? [];
+    })
+    .find((term) => term.trim().length > 0);
   const fallbackRequest: StudyCommandCreateSessionRequest = {
     ...request,
     kind: "MIXED_DRILL",
+    search: request.search ?? fallbackSearch,
   };
   delete fallbackRequest.topicCodes;
 
@@ -1272,6 +1427,29 @@ export function buildStudyCommandStarters(
       tone: "cool",
       mode: "LAB_EXPLORATION",
       href: STUDENT_LAB_ROUTE,
+    });
+  }
+
+  const catalogTrainingSubject = findCatalogTrainingSubject(context);
+
+  if (
+    catalogTrainingSubject &&
+    !starters.some(
+      (starter) =>
+        starter.mode === "BAC_TRAINING" &&
+        starter.prompt.includes(catalogTrainingSubject.subject.name),
+    )
+  ) {
+    starters.push({
+      id: `catalog-training:${catalogTrainingSubject.stream.code}:${catalogTrainingSubject.subject.code}`,
+      title: `BAC ${catalogTrainingSubject.subject.name}`,
+      prompt: `أريد تدريب BAC في ${catalogTrainingSubject.subject.name} آخر 3 سنوات فقط`,
+      reason: `متوفر لشعبة ${catalogTrainingSubject.stream.name}`,
+      tone: "neutral",
+      mode: "BAC_TRAINING",
+      href: buildStudentTrainingDrillRoute({
+        subjectCode: catalogTrainingSubject.subject.code,
+      }),
     });
   }
 

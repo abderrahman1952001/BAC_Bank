@@ -214,6 +214,32 @@ const filters = {
       },
       streamCodes: ["SE"],
     },
+    {
+      code: "PROTEINS",
+      name: "البروتينات",
+      slug: "proteins",
+      parentCode: null,
+      displayOrder: 1,
+      isSelectable: true,
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      streamCodes: ["SE"],
+    },
+    {
+      code: "PROTEIN_SYNTHESIS",
+      name: "تركيب البروتين",
+      slug: "protein-synthesis",
+      parentCode: "PROTEINS",
+      displayOrder: 2,
+      isSelectable: true,
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      streamCodes: ["SE"],
+    },
   ],
   sessionTypes: ["NORMAL", "MAKEUP"],
 } satisfies FiltersResponse;
@@ -237,6 +263,16 @@ const catalog = {
         {
           code: "PHYSICS",
           name: "العلوم الفيزيائية",
+          years: [
+            {
+              year: 2025,
+              sujets: [],
+            },
+          ],
+        },
+        {
+          code: "NATURAL_SCIENCES",
+          name: "علوم الطبيعة والحياة",
           years: [
             {
               year: 2025,
@@ -384,10 +420,36 @@ describe("study command", () => {
     ).toMatchObject({
       subjectCode: "PHYSICS",
       kind: "MIXED_DRILL",
+      search: "كهرباء",
     });
     expect(
       buildStudyCommandMixedDrillFallbackRequest(proposal.primaryAction.request),
     ).not.toHaveProperty("topicCodes");
+  });
+
+  it("infers the subject from a topic-only command", () => {
+    const proposal = buildStudyCommandProposal(
+      "عندي فرض غدوة على البروتينات",
+      context,
+    );
+
+    expect(proposal?.primaryAction).toMatchObject({
+      kind: "CREATE_STUDY_SESSION",
+      request: {
+        subjectCode: "NATURAL_SCIENCES",
+        kind: "TOPIC_DRILL",
+        topicCodes: ["PROTEINS"],
+      },
+    });
+  });
+
+  it("prefers specific topic aliases over generic protein mentions", () => {
+    const proposal = buildStudyCommandProposal(
+      "مافهمتش تركيب البروتين",
+      context,
+    );
+
+    expect(proposal?.title).toContain("تركيب البروتين");
   });
 
   it("creates a proposal for BAC-native memorization", () => {

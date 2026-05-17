@@ -274,7 +274,7 @@ export const playwrightTestFilters = {
       code: "SE",
       name: "Sciences experimentales",
       isDefault: true,
-      subjectCodes: ["MATH"],
+      subjectCodes: ["MATH", "NATURAL_SCIENCES"],
     },
   ],
   subjects: [
@@ -282,6 +282,18 @@ export const playwrightTestFilters = {
       code: "MATH",
       name: "Mathematics",
       isDefault: true,
+      streams: [
+        {
+          code: "SE",
+          name: "Sciences experimentales",
+        },
+      ],
+      streamCodes: ["SE"],
+    },
+    {
+      code: "NATURAL_SCIENCES",
+      name: "علوم الطبيعة والحياة",
+      isDefault: false,
       streams: [
         {
           code: "SE",
@@ -303,6 +315,19 @@ export const playwrightTestFilters = {
       subject: {
         code: "MATH",
         name: "Mathematics",
+      },
+      streamCodes: ["SE"],
+    },
+    {
+      code: "PROTEINS",
+      name: "البروتينات",
+      slug: "proteins",
+      parentCode: null,
+      displayOrder: 2,
+      isSelectable: true,
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
       },
       streamCodes: ["SE"],
     },
@@ -341,6 +366,36 @@ export const playwrightTestCatalog = {
                   label: "Sujet 2",
                   sessionType: "MAKEUP",
                   exerciseCount: 3,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          code: "NATURAL_SCIENCES",
+          name: "علوم الطبيعة والحياة",
+          years: [
+            {
+              year: 2025,
+              sujets: [
+                {
+                  examId: "svt-exam-1",
+                  sujetNumber: 1,
+                  label: "Sujet 1",
+                  sessionType: "NORMAL",
+                  exerciseCount: 6,
+                },
+              ],
+            },
+            {
+              year: 2024,
+              sujets: [
+                {
+                  examId: "svt-exam-2",
+                  sujetNumber: 1,
+                  label: "Sujet 1",
+                  sessionType: "NORMAL",
+                  exerciseCount: 6,
                 },
               ],
             },

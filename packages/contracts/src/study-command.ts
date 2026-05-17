@@ -46,6 +46,7 @@ export type StudyCommandCreateSessionRequest = {
   streamCodes?: string[];
   years?: number[];
   sessionTypes?: SessionType[];
+  search?: string;
   exerciseCount?: number;
   timingEnabled?: boolean;
 };
@@ -107,6 +108,7 @@ const studyCommandCreateSessionRequestSchema: z.ZodType<StudyCommandCreateSessio
     streamCodes: z.array(z.string()).optional(),
     years: z.array(z.number().int()).optional(),
     sessionTypes: z.array(sessionTypeSchema).optional(),
+    search: z.string().optional(),
     exerciseCount: z.number().int().min(1).max(20).optional(),
     timingEnabled: z.boolean().optional(),
   });

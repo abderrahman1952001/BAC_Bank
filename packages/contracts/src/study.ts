@@ -363,6 +363,7 @@ export type StudySessionResponse = {
     subjectCode?: string | null;
     topicCodes?: string[];
     sessionTypes?: string[];
+    search?: string | null;
   } | null;
   progress: StudySessionProgress | null;
   pedagogy: StudySessionPedagogy;
@@ -1349,6 +1350,7 @@ export const studySessionResponseSchema: z.ZodType<StudySessionResponse> =
         subjectCode: z.string().nullable().optional(),
         topicCodes: z.array(z.string()).optional(),
         sessionTypes: z.array(sessionTypeSchema).optional(),
+        search: z.string().nullable().optional(),
       })
       .nullable(),
     progress: studySessionProgressSchema.nullable(),

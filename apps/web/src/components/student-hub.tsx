@@ -680,6 +680,12 @@ export function StudentHub({
                 className="hub-command-voice-button"
                 onClick={() => void handleVoiceCommand()}
                 disabled={voiceState === "transcribing"}
+                aria-pressed={voiceState === "recording"}
+                title={
+                  voiceState === "recording"
+                    ? "إيقاف التسجيل الصوتي"
+                    : "إملاء أمر الدراسة صوتياً"
+                }
               >
                 {voiceState === "recording" ? (
                   <CircleStop data-icon aria-hidden="true" />

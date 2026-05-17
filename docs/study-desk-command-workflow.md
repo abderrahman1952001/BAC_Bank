@@ -98,9 +98,13 @@ The first implementation should be intentionally narrow:
   `SCHOOL_TEST_PREP`, `TUTOR_REPLAY`, and `BAC_TRAINING`
 - preview-before-create for drill sessions, with a topic-filter to mixed-drill
   fallback when the current content has subject exercises but no reliable topic
-  mappings yet
+  mappings yet; that fallback should keep a topic search term when possible so
+  it widens the technical filter without becoming a random mixed drill
 - real links into existing platform surfaces for lesson, flashcard, simulation,
   lab, library, mistake-repair, and continuation flows
+- a full-stack Playwright smoke can be run with `PLAYWRIGHT_FULL_STACK=true`
+  to verify command proposal, API preview, real session creation, and training
+  navigation against the local API and database
 
 Deeper AI routing, richer proposal composition, and persisted proposal history
 should be added after the first workflow proves useful.

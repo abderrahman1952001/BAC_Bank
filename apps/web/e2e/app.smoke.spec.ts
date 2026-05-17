@@ -122,6 +122,42 @@ async function installMockApi(
     }
 
     if (path === "/api/v1/study/sessions/preview" && method === "POST") {
+      const requestBody = request.postDataJSON() as {
+        subjectCode?: string;
+        topicCodes?: string[];
+        search?: string;
+      } | null;
+
+      if (requestBody?.subjectCode === "NATURAL_SCIENCES") {
+        if (requestBody.topicCodes?.length) {
+          return jsonResponse(route, {
+            ...playwrightTestPreview,
+            sessionKind: "TOPIC_DRILL",
+            subjectCode: "NATURAL_SCIENCES",
+            topicCodes: requestBody.topicCodes,
+            matchingExerciseCount: 0,
+            matchingSujetCount: 0,
+            matchingSujets: [],
+            sampleExercises: [],
+            yearsDistribution: [],
+            streamsDistribution: [],
+            maxSelectableExercises: 0,
+          });
+        }
+
+        return jsonResponse(route, {
+          ...playwrightTestPreview,
+          sessionKind: "MIXED_DRILL",
+          subjectCode: "NATURAL_SCIENCES",
+          topicCodes: [],
+          matchingExerciseCount: requestBody?.search?.includes("بروتين") ? 3 : 0,
+          matchingSujetCount: requestBody?.search?.includes("بروتين") ? 1 : 0,
+          maxSelectableExercises: requestBody?.search?.includes("بروتين")
+            ? 3
+            : 0,
+        });
+      }
+
       return jsonResponse(route, playwrightTestPreview);
     }
 
@@ -305,6 +341,51 @@ test("creates a session from training and persists browser progress", async ({
   await expect
     .poll(() => mockApi.getProgressWrites())
     .toBeGreaterThan(writesBeforeAction);
+});
+
+test("turns a My Space study command into a structured session", async ({
+  page,
+}) => {
+  await installPlaywrightSession(page, "student");
+  await installMockApi(page, {
+    sessionUser: playwrightTestStudentUser,
+  });
+  const sessionRequests: unknown[] = [];
+
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+
+    if (
+      url.pathname === "/api/v1/study/sessions" &&
+      request.method() === "POST"
+    ) {
+      sessionRequests.push(request.postDataJSON());
+    }
+  });
+
+  await page.goto("/student/my-space");
+  await page
+    .getByPlaceholder(/عندي فرض/)
+    .fill("أريد تدريب BAC في علوم الطبيعة على البروتينات آخر 3 سنوات فقط");
+  await page.getByRole("button", { name: /حضّر الجلسة/ }).click();
+
+  await expect(page.getByText("مسودة جلسة")).toBeVisible();
+  await expect(
+    page
+      .locator(".hub-command-proposal")
+      .getByRole("heading", {
+        name: /تدريب BAC علوم الطبيعة والحياة · البروتينات/,
+      }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "بدء الجلسة" }).click();
+
+  await expect(page).toHaveURL(/\/student\/training\/session-123(?:\?.*)?$/);
+  expect(sessionRequests.at(-1)).toMatchObject({
+    subjectCode: "NATURAL_SCIENCES",
+    kind: "MIXED_DRILL",
+    search: "بروتين",
+  });
 });
 
 test("opens the new courses surface and enters a subject", async ({ page }) => {
