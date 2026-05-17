@@ -82,6 +82,9 @@ export function sanitizeDatabaseUrl(databaseUrl: string): string {
   try {
     const parsed = new URL(databaseUrl);
     parsed.searchParams.delete('schema');
+    parsed.searchParams.delete('connection_limit');
+    parsed.searchParams.delete('pool_timeout');
+    parsed.searchParams.delete('pgbouncer');
     return parsed.toString();
   } catch {
     return databaseUrl;

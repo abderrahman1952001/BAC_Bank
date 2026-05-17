@@ -210,7 +210,11 @@ async function runPgRestore(input: {
   );
   const psql = spawn(
     'psql',
-    [`--dbname=${input.targetDatabaseUrl}`, '--set=ON_ERROR_STOP=1'],
+    [
+      `--dbname=${input.targetDatabaseUrl}`,
+      '--quiet',
+      '--set=ON_ERROR_STOP=1',
+    ],
     {
       stdio: ['pipe', 'inherit', 'inherit'],
       env: {

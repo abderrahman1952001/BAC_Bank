@@ -90,6 +90,9 @@ large images, scans, generated course visuals, and durable source assets.
 For seamless ingestion across two devices, use one shared development Postgres
 database instead of two local databases.
 
+For the hosted setup and migration runbook, see
+`docs/hosted-dev-database.md`.
+
 On both devices, set `apps/api/.env` to the same shared values:
 
 ```env

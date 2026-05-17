@@ -50,7 +50,7 @@ type NormalizedJobCoverage = {
 
 async function main() {
   const options = parseCliOptions(process.argv.slice(2));
-  const [subjectCodes, streamCodes, streamSubjects, jobs, canonicalCounts] =
+  const [subjectCodes, streamCodes, streamSubjects, jobRecords, canonicalCounts] =
     await Promise.all([
       prisma.subject.findMany({
         select: {
@@ -81,33 +81,77 @@ async function main() {
       }),
       prisma.ingestionJob.findMany({
         where: {
-          year: {
-            gte: options.minYear,
-            lte: options.maxYear,
+          paperSource: {
+            year: {
+              gte: options.minYear,
+              lte: options.maxYear,
+            },
           },
         },
         select: {
           id: true,
-          year: true,
           label: true,
           status: true,
-          streamCode: true,
-          subjectCode: true,
-          sessionType: true,
           metadata: true,
-          sourceDocuments: {
+          createdAt: true,
+          paperSource: {
             select: {
-              kind: true,
+              year: true,
+              sessionType: true,
+              subject: {
+                select: {
+                  code: true,
+                },
+              },
+              streamMappings: {
+                select: {
+                  stream: {
+                    select: {
+                      code: true,
+                    },
+                  },
+                },
+              },
+              sourceDocuments: {
+                select: {
+                  kind: true,
+                },
+              },
             },
           },
         },
-        orderBy: [{ year: 'asc' }, { createdAt: 'asc' }],
+        orderBy: [{ createdAt: 'asc' }],
       }),
       loadCanonicalCounts(),
     ]);
 
   const subjectCodeSet = new Set(subjectCodes.map((subject) => subject.code));
   const streamCodeSet = new Set(streamCodes.map((stream) => stream.code));
+  const jobs = jobRecords
+    .map((job) => {
+      const streamCodes = job.paperSource.streamMappings.map(
+        (mapping) => mapping.stream.code,
+      );
+
+      return {
+        id: job.id,
+        year: job.paperSource.year,
+        label: job.label,
+        status: job.status,
+        streamCode: streamCodes.length === 1 ? streamCodes[0] : null,
+        subjectCode: job.paperSource.subject.code,
+        sessionType: job.paperSource.sessionType,
+        metadata: job.metadata,
+        sourceDocuments: job.paperSource.sourceDocuments,
+      };
+    })
+    .sort((left, right) => {
+      if (left.year !== right.year) {
+        return left.year - right.year;
+      }
+
+      return left.label.localeCompare(right.label);
+    });
   const normalizedJobs = jobs.map((job) =>
     normalizeJobCoverage(job, subjectCodeSet, streamCodeSet),
   );
