@@ -8,6 +8,7 @@ BAC Bank is a study platform for Algerian BAC students. The platform is organize
 - Production and operational runbook: [docs/production-runbook.md](./docs/production-runbook.md)
 - Ingestion workflow: [docs/admin-ingestion-workflow.md](./docs/admin-ingestion-workflow.md)
 - Agent ingestion playbook: [docs/agent-ingestion-playbook.md](./docs/agent-ingestion-playbook.md)
+- Two-device content workflow: [docs/two-device-content-workflow.md](./docs/two-device-content-workflow.md)
 
 Use the README for repo orientation and local setup.
 Use the workbench for the latest product spec, pedagogy rules, UX expectations, and target model direction.

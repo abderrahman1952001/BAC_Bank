@@ -2,6 +2,15 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { CourseBlueprint } from './course-blueprint';
 import { parseCourseBlueprint } from './course-blueprint';
+import {
+  createTheoryContentStorage,
+  type TheoryContentStorage,
+} from './theory-content-storage';
+
+export type CanonicalCourseBlueprintEntry = {
+  key: string;
+  blueprint: CourseBlueprint;
+};
 
 export function resolveCanonicalCourseRoot(cwd = process.cwd()) {
   const candidates = [
@@ -50,6 +59,39 @@ export function loadCanonicalCourseBlueprints(
   const blueprints = findCourseBlueprintFiles(rootDir).map((filePath) =>
     parseCourseBlueprint(JSON.parse(readFileSync(filePath, 'utf8'))),
   );
+  assertUniqueCourseBlueprints(blueprints);
+
+  return blueprints;
+}
+
+export async function loadCanonicalCourseBlueprintsFromStorage(
+  storage: TheoryContentStorage = createTheoryContentStorage(),
+): Promise<CourseBlueprint[]> {
+  return (await loadCanonicalCourseBlueprintEntriesFromStorage(storage)).map(
+    (entry) => entry.blueprint,
+  );
+}
+
+export async function loadCanonicalCourseBlueprintEntriesFromStorage(
+  storage: TheoryContentStorage = createTheoryContentStorage(),
+): Promise<CanonicalCourseBlueprintEntry[]> {
+  const blueprintKeys = (await storage.listKeys('canonical/')).filter((key) =>
+    key.endsWith('/course.json'),
+  );
+  const entries = await Promise.all(
+    blueprintKeys.map(async (key) => ({
+      key,
+      blueprint: parseCourseBlueprint(JSON.parse(await storage.getText(key))),
+    })),
+  );
+  const blueprints = entries.map((entry) => entry.blueprint);
+
+  assertUniqueCourseBlueprints(blueprints);
+
+  return entries;
+}
+
+function assertUniqueCourseBlueprints(blueprints: CourseBlueprint[]) {
   const blueprintByTopic = new Map<string, CourseBlueprint>();
 
   for (const blueprint of blueprints) {
@@ -68,6 +110,4 @@ export function loadCanonicalCourseBlueprints(
 
     blueprintByTopic.set(key, blueprint);
   }
-
-  return blueprints;
 }

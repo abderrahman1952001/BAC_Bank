@@ -1,4 +1,15 @@
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Param,
+  Query,
+  Req,
+  Res,
+  StreamableFile,
+  UseGuards,
+} from '@nestjs/common';
+import type { FastifyReply } from 'fastify';
 import type {
   CourseConceptResponse,
   CourseSubjectCardsResponse,
@@ -55,5 +66,23 @@ export class CoursesController {
       topicSlug,
       conceptSlug,
     );
+  }
+
+  @Get('assets')
+  async getCourseAsset(
+    @Query('path') assetPath: string,
+    @Res({ passthrough: true }) response: FastifyReply,
+  ) {
+    if (!assetPath) {
+      throw new BadRequestException('path is required.');
+    }
+
+    const asset = await this.coursesService.getCourseAsset(assetPath);
+    const fileName = asset.fileName.replace(/["\r\n]/g, '');
+    response.header('Content-Type', asset.mimeType);
+    response.header('Content-Disposition', `inline; filename="${fileName}"`);
+    response.header('Cache-Control', 'public, max-age=300');
+
+    return new StreamableFile(asset.data);
   }
 }

@@ -43,6 +43,8 @@ Render will prompt for the blueprint values marked `sync: false`, including:
 - `R2_ACCOUNT_ID`
 - `R2_BUCKET_NAME`
 - `R2_ENDPOINT`
+- `BAC_THEORY_CONTENT_SOURCE=r2`
+- `BAC_THEORY_CONTENT_R2_PREFIX=theory-content`
 
 ## Required Services
 
@@ -70,6 +72,8 @@ they do not replace the worker for admin processing.
 - `PUBLIC_API_BASE_URL`
 - `TRUST_PROXY`
 - `HEALTH_WORKER_STALE_MS`
+- `BAC_THEORY_CONTENT_SOURCE=r2`
+- `BAC_THEORY_CONTENT_R2_PREFIX=theory-content`
 - `AUTH_BOOTSTRAP_ADMIN_EMAIL` if you want one email auto-promoted to admin
 
 ### Web

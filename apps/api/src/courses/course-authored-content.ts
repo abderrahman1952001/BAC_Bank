@@ -1,10 +1,13 @@
 import type { CourseConceptStep } from '@bac-bank/contracts/courses';
+import { Injectable } from '@nestjs/common';
+import { dirname, join } from 'node:path/posix';
 import type {
   CourseBlueprintAuthoredConceptContent,
   CourseBlueprintAuthoredTopicContent,
 } from './course-blueprint';
 import { toAuthoredCourseTopicContent } from './course-blueprint';
-import { loadCanonicalCourseBlueprints } from './course-blueprint-files';
+import { loadCanonicalCourseBlueprintEntriesFromStorage } from './course-blueprint-files';
+import { TheoryContentStorageService } from './theory-content-storage';
 
 export type AuthoredCourseConceptContent =
   CourseBlueprintAuthoredConceptContent;
@@ -176,37 +179,124 @@ const staticAuthoredCourseTopics: AuthoredCourseTopicContent[] = [
   },
 ];
 
-const canonicalCourseTopics = loadCanonicalCourseBlueprints().map(
-  toAuthoredCourseTopicContent,
-);
-const authoredCourseTopics: AuthoredCourseTopicContent[] = [
-  ...canonicalCourseTopics,
-  ...staticAuthoredCourseTopics,
-];
+const DEFAULT_THEORY_CONTENT_CACHE_TTL_MS = 30_000;
 
-export function getAuthoredCourseTopicContent(
-  subjectCode: string,
-  topicSlug: string,
-): AuthoredCourseTopicContent | null {
-  const normalizedSubjectCode = subjectCode.trim().toUpperCase();
-  const normalizedTopicSlug = topicSlug.trim().toLowerCase();
+@Injectable()
+export class CourseAuthoredContentService {
+  private cachedTopics: {
+    expiresAt: number;
+    promise: Promise<AuthoredCourseTopicContent[]>;
+  } | null = null;
 
-  return (
-    authoredCourseTopics.find(
+  constructor(
+    private readonly theoryContentStorage: TheoryContentStorageService,
+  ) {}
+
+  async getAuthoredCourseTopicContent(
+    subjectCode: string,
+    topicSlug: string,
+  ): Promise<AuthoredCourseTopicContent | null> {
+    const normalizedSubjectCode = subjectCode.trim().toUpperCase();
+    const normalizedTopicSlug = topicSlug.trim().toLowerCase();
+    const topics = await this.listAuthoredCourseTopicContent(
+      normalizedSubjectCode,
+    );
+
+    return (
+      topics.find(
+        (topic) =>
+          topic.subjectCode === normalizedSubjectCode &&
+          topic.topicSlug === normalizedTopicSlug,
+      ) ?? null
+    );
+  }
+
+  async listAuthoredCourseTopicContent(
+    subjectCode?: string,
+  ): Promise<AuthoredCourseTopicContent[]> {
+    const normalizedSubjectCode = subjectCode?.trim().toUpperCase();
+    const topics = await this.loadAuthoredCourseTopics();
+
+    return topics.filter(
       (topic) =>
-        topic.subjectCode === normalizedSubjectCode &&
-        topic.topicSlug === normalizedTopicSlug,
-    ) ?? null
-  );
+        !normalizedSubjectCode || topic.subjectCode === normalizedSubjectCode,
+    );
+  }
+
+  clearCache() {
+    this.cachedTopics = null;
+  }
+
+  private loadAuthoredCourseTopics() {
+    const now = Date.now();
+
+    if (this.cachedTopics && this.cachedTopics.expiresAt > now) {
+      return this.cachedTopics.promise;
+    }
+
+    const promise = this.loadAuthoredCourseTopicsFresh().catch((error) => {
+      this.cachedTopics = null;
+      throw error;
+    });
+
+    this.cachedTopics = {
+      expiresAt: now + readTheoryContentCacheTtlMs(),
+      promise,
+    };
+
+    return promise;
+  }
+
+  private async loadAuthoredCourseTopicsFresh() {
+    const canonicalCourseTopics = (
+      await loadCanonicalCourseBlueprintEntriesFromStorage(
+        this.theoryContentStorage,
+      )
+    ).map((entry) =>
+      rewriteTheoryContentAssetUrls(
+        toAuthoredCourseTopicContent(entry.blueprint),
+        entry.key,
+      ),
+    );
+
+    return [...canonicalCourseTopics, ...staticAuthoredCourseTopics];
+  }
 }
 
-export function listAuthoredCourseTopicContent(
-  subjectCode?: string,
-): AuthoredCourseTopicContent[] {
-  const normalizedSubjectCode = subjectCode?.trim().toUpperCase();
+function rewriteTheoryContentAssetUrls(
+  topic: AuthoredCourseTopicContent,
+  blueprintKey: string,
+) {
+  const blueprintDirectory = dirname(blueprintKey);
 
-  return authoredCourseTopics.filter(
-    (topic) =>
-      !normalizedSubjectCode || topic.subjectCode === normalizedSubjectCode,
-  );
+  for (const concept of topic.concepts) {
+    for (const step of concept.steps) {
+      const asset = step.visual?.asset;
+
+      if (!asset?.path) {
+        continue;
+      }
+
+      const assetKey = join(blueprintDirectory, asset.path);
+      asset.url = `/api/v1/courses/assets?path=${encodeURIComponent(assetKey)}`;
+    }
+  }
+
+  return topic;
+}
+
+function readTheoryContentCacheTtlMs() {
+  const rawValue = process.env.BAC_THEORY_CONTENT_CACHE_TTL_MS;
+
+  if (!rawValue?.trim()) {
+    return DEFAULT_THEORY_CONTENT_CACHE_TTL_MS;
+  }
+
+  const value = Number.parseInt(rawValue, 10);
+
+  if (!Number.isFinite(value) || value < 0) {
+    return DEFAULT_THEORY_CONTENT_CACHE_TTL_MS;
+  }
+
+  return value;
 }

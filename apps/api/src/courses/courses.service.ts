@@ -7,10 +7,8 @@ import type {
 } from '@bac-bank/contracts/courses';
 import { StudyCurriculumJourneyService } from '../study/study-curriculum-journey.service';
 import { StudyService } from '../study/study.service';
-import {
-  getAuthoredCourseTopicContent,
-  listAuthoredCourseTopicContent,
-} from './course-authored-content';
+import { CourseAuthoredContentService } from './course-authored-content';
+import { TheoryContentStorageService } from './theory-content-storage';
 import {
   buildCourseConceptResponse,
   buildCourseSubjectCardsResponse,
@@ -23,6 +21,8 @@ export class CoursesService {
   constructor(
     private readonly studyCurriculumJourneyService: StudyCurriculumJourneyService,
     private readonly studyService: StudyService,
+    private readonly courseAuthoredContentService: CourseAuthoredContentService,
+    private readonly theoryContentStorage: TheoryContentStorageService,
   ) {}
 
   async listCourseSubjects(
@@ -32,7 +32,7 @@ export class CoursesService {
       await this.studyCurriculumJourneyService.listCurriculumJourneys(userId);
     return buildCourseSubjectCardsResponse(
       curriculumJourneys.data,
-      listAuthoredCourseTopicContent(),
+      await this.courseAuthoredContentService.listAuthoredCourseTopicContent(),
     );
   }
 
@@ -52,7 +52,10 @@ export class CoursesService {
       subjectCode: normalizedSubjectCode,
       curriculumJourneys: curriculumJourneys.data,
       filters,
-      authoredTopics: listAuthoredCourseTopicContent(normalizedSubjectCode),
+      authoredTopics:
+        await this.courseAuthoredContentService.listAuthoredCourseTopicContent(
+          normalizedSubjectCode,
+        ),
     });
 
     if (!response) {
@@ -76,10 +79,11 @@ export class CoursesService {
       }),
       this.studyService.getFilters(),
     ]);
-    const authoredTopic = getAuthoredCourseTopicContent(
-      normalizedSubjectCode,
-      normalizedTopicSlug,
-    );
+    const authoredTopic =
+      await this.courseAuthoredContentService.getAuthoredCourseTopicContent(
+        normalizedSubjectCode,
+        normalizedTopicSlug,
+      );
     const response = buildCourseTopicResponse({
       subjectCode: normalizedSubjectCode,
       topicSlug: normalizedTopicSlug,
@@ -111,10 +115,11 @@ export class CoursesService {
       }),
       this.studyService.getFilters(),
     ]);
-    const authoredTopic = getAuthoredCourseTopicContent(
-      normalizedSubjectCode,
-      normalizedTopicSlug,
-    );
+    const authoredTopic =
+      await this.courseAuthoredContentService.getAuthoredCourseTopicContent(
+        normalizedSubjectCode,
+        normalizedTopicSlug,
+      );
     const response = buildCourseConceptResponse({
       subjectCode: normalizedSubjectCode,
       topicSlug: normalizedTopicSlug,
@@ -129,5 +134,9 @@ export class CoursesService {
     }
 
     return response;
+  }
+
+  async getCourseAsset(assetPath: string) {
+    return this.theoryContentStorage.getAsset(assetPath);
   }
 }

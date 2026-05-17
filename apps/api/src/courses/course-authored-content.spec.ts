@@ -1,8 +1,16 @@
-import { getAuthoredCourseTopicContent } from './course-authored-content';
+import { CourseAuthoredContentService } from './course-authored-content';
+import { TheoryContentStorageService } from './theory-content-storage';
 
 describe('course authored content registry', () => {
-  it('serves SVT proteins from the canonical course blueprint', () => {
-    const topic = getAuthoredCourseTopicContent('NATURAL_SCIENCES', 'proteins');
+  const service = new CourseAuthoredContentService(
+    new TheoryContentStorageService(),
+  );
+
+  it('serves SVT proteins from the canonical course blueprint', async () => {
+    const topic = await service.getAuthoredCourseTopicContent(
+      'NATURAL_SCIENCES',
+      'proteins',
+    );
 
     expect(topic).toMatchObject({
       subjectCode: 'NATURAL_SCIENCES',
@@ -47,10 +55,16 @@ describe('course authored content registry', () => {
     expect(topic?.concepts[0].depthPortals?.[0]?.slug).toBe(
       'why-proteins-are-machines',
     );
+    expect(topic?.concepts[0].steps[0]?.visual?.asset?.url).toContain(
+      '/api/v1/courses/assets?path=canonical%2Fsvt%2FSE%2Fproteins%2Fassets%2Fgenerated%2F',
+    );
   });
 
-  it('keeps existing static math content available', () => {
-    const topic = getAuthoredCourseTopicContent('MATHEMATICS', 'functions');
+  it('keeps existing static math content available', async () => {
+    const topic = await service.getAuthoredCourseTopicContent(
+      'MATHEMATICS',
+      'functions',
+    );
 
     expect(topic?.concepts[0]).toMatchObject({
       conceptCode: 'NUMERIC_FUNCTION',
@@ -58,8 +72,11 @@ describe('course authored content registry', () => {
     });
   });
 
-  it('does not serve the removed scientific math sequences draft', () => {
-    const topic = getAuthoredCourseTopicContent('MATHEMATICS', 'sequences');
+  it('does not serve the removed scientific math sequences draft', async () => {
+    const topic = await service.getAuthoredCourseTopicContent(
+      'MATHEMATICS',
+      'sequences',
+    );
 
     expect(topic).toBeNull();
   });
