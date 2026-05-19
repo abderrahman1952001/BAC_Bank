@@ -142,6 +142,26 @@ const weakPointInsights = [
   },
 ] satisfies WeakPointInsightsResponse['data'];
 
+const labTools = [
+  {
+    id: '11111111-1111-4111-8111-111111111111',
+    slug: 'function-explorer',
+    title: 'مختبر الدوال',
+    description: 'استكشف الدوال بيانياً.',
+    status: 'READY',
+    metadata: null,
+    subject: {
+      code: 'MATHEMATICS',
+      name: 'الرياضيات',
+    },
+    missionCount: 2,
+    completedMissionCount: 0,
+    inProgressMissionCount: 0,
+    createdAt: '2026-05-01T08:00:00.000Z',
+    updatedAt: '2026-05-01T08:00:00.000Z',
+  },
+] satisfies LabToolsResponse['data'];
+
 const filters = {
   streams: [
     {
@@ -496,6 +516,58 @@ describe('study command', () => {
     });
     expect(proposal?.title).toContain('رياضيات');
     expect(proposal?.title).toContain('الدوال');
+  });
+
+  it('opens lesson understanding directly at the inferred course topic', () => {
+    const proposal = buildStudyCommandProposal(
+      'مافهمتش الدوال اشرحلي الدرس',
+      context,
+    );
+
+    expect(proposal).toMatchObject({
+      mode: 'LESSON_UNDERSTANDING',
+      primaryHref: '/student/courses/MATHEMATICS/topics/functions',
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/courses/MATHEMATICS/topics/functions',
+      },
+    });
+  });
+
+  it('opens lab exploration at a matching ready lab tool when available', () => {
+    const proposal = buildStudyCommandProposal('نحب مختبر يرسملي الدوال', {
+      ...context,
+      labTools,
+    });
+
+    expect(proposal).toMatchObject({
+      mode: 'LAB_EXPLORATION',
+      primaryHref: '/student/lab/math/function-explorer',
+      availability: {
+        status: 'READY',
+        matchingExerciseCount: 1,
+      },
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/lab/math/function-explorer',
+      },
+    });
+  });
+
+  it('preserves stream and subject when opening the library surface', () => {
+    const proposal = buildStudyCommandProposal(
+      'افتحلي أرشيف مواضيع باك علوم الطبيعة',
+      context,
+    );
+
+    expect(proposal).toMatchObject({
+      mode: 'LIBRARY_SEARCH',
+      primaryHref: '/student/library?stream=SE&subject=NATURAL_SCIENCES',
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/library?stream=SE&subject=NATURAL_SCIENCES',
+      },
+    });
   });
 
   it('applies supported fine-tuning to the create-session payload', () => {

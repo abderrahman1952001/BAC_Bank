@@ -65,6 +65,41 @@ function buildStudentCourseSubjectRoute(subjectCode: string) {
   return `${STUDENT_COURSES_ROUTE}/${encodeURIComponent(subjectCode)}`;
 }
 
+function buildStudentCourseTopicRoute(subjectCode: string, topicSlug: string) {
+  return `${buildStudentCourseSubjectRoute(subjectCode)}/topics/${encodeURIComponent(
+    topicSlug,
+  )}`;
+}
+
+function buildStudentLibraryRoute(input?: {
+  streamCode?: string | null;
+  subjectCode?: string | null;
+}) {
+  return buildRouteWithSearchParams(STUDENT_LIBRARY_ROUTE, {
+    stream: input?.streamCode ?? undefined,
+    subject: input?.subjectCode ?? undefined,
+  });
+}
+
+function subjectCodeToLabSlug(subjectCode: string | null | undefined) {
+  switch (subjectCode) {
+    case 'MATHEMATICS':
+    case 'MATH':
+      return 'math';
+    case 'NATURAL_SCIENCES':
+    case 'SVT':
+      return 'svt';
+    default:
+      return null;
+  }
+}
+
+function buildStudentLabToolRoute(subjectSlug: string, toolSlug: string) {
+  return `${STUDENT_LAB_ROUTE}/${encodeURIComponent(
+    subjectSlug,
+  )}/${encodeURIComponent(toolSlug)}`;
+}
+
 function buildStudentTrainingDrillRoute(input?: {
   subjectCode?: string | null;
   topicCodes?: string[] | null;
@@ -128,6 +163,7 @@ type TopicHint = {
 type InferredTopic = {
   code: string | null;
   name: string;
+  slug?: string | null;
   canUseCode: boolean;
 };
 
@@ -676,6 +712,7 @@ function topicFromFilters(
       return {
         code: topic.code,
         name: topic.name,
+        slug: topic.slug,
         canUseCode: true,
       };
     }
@@ -693,6 +730,7 @@ function topicFromFilters(
     ? {
         code: topic.code,
         name: topic.name,
+        slug: topic.slug,
         canUseCode: true,
       }
     : null;
@@ -728,6 +766,7 @@ function inferTopic(
     return {
       code: weakTopic.code,
       name: weakTopic.name,
+      slug: null,
       canUseCode: true,
     };
   }
@@ -745,6 +784,7 @@ function inferTopic(
     return {
       code: journeyTopicCode,
       name: journeyTopicName ?? journeyTopicCode ?? 'هذا الجزء',
+      slug: null,
       canUseCode: Boolean(journeyTopicCode),
     };
   }
@@ -1408,6 +1448,62 @@ function buildSurfaceAvailability(input: {
   }
 }
 
+function buildLessonHref(input: {
+  subjectCode: string | null;
+  topic: InferredTopic | null;
+}) {
+  if (!input.subjectCode) {
+    return STUDENT_COURSES_ROUTE;
+  }
+
+  if (input.topic?.slug) {
+    return buildStudentCourseTopicRoute(input.subjectCode, input.topic.slug);
+  }
+
+  return buildStudentCourseSubjectRoute(input.subjectCode);
+}
+
+function buildLabHref(input: {
+  subject: InferredSubject | null;
+  context?: StudyCommandContext;
+}) {
+  const subjectCode = input.subject?.canCreateSession
+    ? input.subject.code
+    : null;
+  const matchingTool = input.context?.labTools.find((tool) => {
+    if (tool.status !== 'READY') {
+      return false;
+    }
+
+    if (!subjectCode) {
+      return true;
+    }
+
+    return tool.subject
+      ? subjectReferenceMatches(tool.subject, input.subject)
+      : false;
+  });
+  const subjectSlug = subjectCodeToLabSlug(
+    matchingTool?.subject?.code ?? subjectCode,
+  );
+
+  if (!matchingTool || !subjectSlug) {
+    return STUDENT_LAB_ROUTE;
+  }
+
+  return buildStudentLabToolRoute(subjectSlug, matchingTool.slug);
+}
+
+function buildLibraryHref(input: {
+  subjectCode: string | null;
+  context?: StudyCommandContext;
+}) {
+  return buildStudentLibraryRoute({
+    streamCode: input.context?.userStreamCode ?? null,
+    subjectCode: input.subjectCode,
+  });
+}
+
 function findCatalogTrainingSubject(context: StudyCommandContext) {
   const streams = context.userStreamCode
     ? context.catalog?.streams.filter(
@@ -1566,14 +1662,21 @@ export function buildStudyCommandProposal(
       subjectCode,
       topicCodes,
     }),
-    LESSON_UNDERSTANDING: subjectCode
-      ? buildStudentCourseSubjectRoute(subjectCode)
-      : STUDENT_COURSES_ROUTE,
+    LESSON_UNDERSTANDING: buildLessonHref({
+      subjectCode,
+      topic,
+    }),
     MEMORIZATION_REVIEW: STUDENT_FLASHCARDS_ROUTE,
     SIMULATION: STUDENT_TRAINING_SIMULATION_ROUTE,
     MISTAKE_REPAIR: buildStudentTrainingWeakPointsRoute(subjectCode),
-    LAB_EXPLORATION: STUDENT_LAB_ROUTE,
-    LIBRARY_SEARCH: STUDENT_LIBRARY_ROUTE,
+    LAB_EXPLORATION: buildLabHref({
+      subject,
+      context,
+    }),
+    LIBRARY_SEARCH: buildLibraryHref({
+      subjectCode,
+      context,
+    }),
     CONTINUE_SESSION: STUDENT_TRAINING_ROUTE,
   }[mode];
 
