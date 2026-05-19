@@ -93,6 +93,28 @@ export type StudyCommandProposalResponse = {
   proposal: StudyCommandProposal | null;
 };
 
+export type StudyCommandAcceptRequest = {
+  command: string;
+};
+
+export type StudyCommandAcceptResponse =
+  | {
+      kind: "CREATED_STUDY_SESSION";
+      sessionId: string;
+      href: string;
+      proposal: StudyCommandProposal;
+    }
+  | {
+      kind: "OPEN_ROUTE";
+      href: string;
+      proposal: StudyCommandProposal;
+      message?: string;
+    }
+  | {
+      kind: "NO_PROPOSAL";
+      message: string;
+    };
+
 export type StudyCommandStartersResponse = {
   data: StudyCommandStarter[];
 };
@@ -197,6 +219,31 @@ export const studyCommandProposalResponseSchema: z.ZodType<StudyCommandProposalR
     proposal: studyCommandProposalSchema.nullable(),
   });
 
+export const studyCommandAcceptRequestSchema: z.ZodType<StudyCommandAcceptRequest> =
+  z.object({
+    command: z.string(),
+  });
+
+export const studyCommandAcceptResponseSchema: z.ZodType<StudyCommandAcceptResponse> =
+  z.discriminatedUnion("kind", [
+    z.object({
+      kind: z.literal("CREATED_STUDY_SESSION"),
+      sessionId: z.string(),
+      href: z.string(),
+      proposal: studyCommandProposalSchema,
+    }),
+    z.object({
+      kind: z.literal("OPEN_ROUTE"),
+      href: z.string(),
+      proposal: studyCommandProposalSchema,
+      message: z.string().optional(),
+    }),
+    z.object({
+      kind: z.literal("NO_PROPOSAL"),
+      message: z.string(),
+    }),
+  ]);
+
 export const studyCommandStartersResponseSchema: z.ZodType<StudyCommandStartersResponse> =
   z.object({
     data: z.array(studyCommandStarterSchema),
@@ -215,6 +262,22 @@ export function parseStudyCommandProposalResponse(value: unknown) {
     studyCommandProposalResponseSchema,
     value,
     "StudyCommandProposalResponse",
+  );
+}
+
+export function parseStudyCommandAcceptRequest(value: unknown) {
+  return parseContract(
+    studyCommandAcceptRequestSchema,
+    value,
+    "StudyCommandAcceptRequest",
+  );
+}
+
+export function parseStudyCommandAcceptResponse(value: unknown) {
+  return parseContract(
+    studyCommandAcceptResponseSchema,
+    value,
+    "StudyCommandAcceptResponse",
   );
 }
 

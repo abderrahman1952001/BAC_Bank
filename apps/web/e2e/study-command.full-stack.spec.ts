@@ -32,7 +32,7 @@ test("creates a real study session from the My Space command entrance", async ({
 
     if (
       url.includes("/api/study-command/propose") ||
-      url.includes("/api/v1/study/sessions")
+      url.includes("/api/study-command/accept")
     ) {
       studyResponses.push({
         url,
@@ -63,9 +63,9 @@ test("creates a real study session from the My Space command entrance", async ({
     studyResponses.some(
       (response) =>
         response.method === "POST" &&
-        response.url.includes("/api/v1/study/sessions") &&
-        response.status === 201 &&
-        response.body.includes('"kind":"TOPIC_DRILL"') &&
+        response.url.includes("/api/study-command/accept") &&
+        response.status === 200 &&
+        response.body.includes('"kind":"CREATED_STUDY_SESSION"') &&
         response.body.includes('"topicCodes":["PROTEIN_SYNTHESIS"]'),
     ),
   ).toBe(true);

@@ -169,6 +169,10 @@ The first implementation should be intentionally narrow:
   authenticated proxy. The frontend renders typed contracts from
   `packages/contracts/src/study-command.ts` and must not own a second command
   brain.
+- accepted command proposals go back through the API-owned accept path. The
+  server re-runs proposal composition and availability before creating a drill
+  session or returning the platform route to open; the client must not create
+  sessions directly from a stale embedded proposal payload.
 - explicit proposal actions, optional one-question clarifications, and runtime
   contracts
 - real content mappings before relying on topic drills. For the current SVT SE

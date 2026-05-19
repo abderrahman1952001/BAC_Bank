@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  parseStudyCommandAcceptResponse,
   parseStudyCommandProposalResponse,
   type StudyCommandProposal,
   type StudyCommandStarter,
@@ -46,11 +47,7 @@ import { EmptyState, StudyBadge, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  API_BASE_URL,
-  fetchJson,
   formatStudySessionKind,
-  parseCreateSessionResponse,
-  type CreateSessionResponse,
   type MyMistakesResponse,
   type RecentExerciseStatesResponse,
   type CurriculumJourneysResponse,
@@ -360,11 +357,6 @@ export function StudentHub({
   }
 
   async function handleStartCommandProposal(proposal: StudyCommandProposal) {
-    if (proposal.primaryAction.kind === "OPEN_ROUTE") {
-      router.push(proposal.primaryAction.href);
-      return;
-    }
-
     const startState = resolveStudyCommandProposalStartState(proposal);
 
     if (!startState.canStart) {
@@ -380,19 +372,37 @@ export function StudentHub({
     setCommandError(null);
 
     try {
-      const payload = await fetchJson<CreateSessionResponse>(
-        `${API_BASE_URL}/study/sessions`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(proposal.primaryAction.request),
+      const response = await fetch("/api/study-command/accept", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        parseCreateSessionResponse,
-      );
+        body: JSON.stringify({
+          command: commandDraft || proposal.subtitle,
+        }),
+      });
+      const payload = (await response.json().catch(() => null)) as unknown;
 
-      router.push(buildStudentTrainingSessionRoute(payload.id));
+      if (!response.ok) {
+        const message =
+          payload &&
+          typeof payload === "object" &&
+          "message" in payload &&
+          typeof payload.message === "string"
+            ? payload.message
+            : "تعذر إنشاء الجلسة.";
+
+        throw new Error(message);
+      }
+
+      const result = parseStudyCommandAcceptResponse(payload);
+
+      if (result.kind === "NO_PROPOSAL") {
+        setCommandError(result.message);
+        return;
+      }
+
+      router.push(result.href);
     } catch (error: unknown) {
       setCommandError(
         error instanceof Error ? error.message : "تعذر إنشاء الجلسة.",
@@ -700,29 +710,21 @@ export function StudentHub({
               ) : null}
 
               <div className="hub-command-proposal-actions">
-                {commandProposal.primaryAction.kind === "OPEN_ROUTE" ? (
-                  <Button asChild className="h-11 rounded-full px-5">
-                    <Link href={commandProposal.primaryAction.href}>
-                      {commandProposal.primaryLabel}
-                    </Link>
-                  </Button>
-                ) : (
-                  <Button
-                    type="button"
-                    className="h-11 rounded-full px-5"
-                    onClick={() =>
-                      void handleStartCommandProposal(commandProposal)
-                    }
-                    disabled={
-                      creatingCommandSession ||
-                      commandProposalStartState?.canStart === false
-                    }
-                  >
-                    {creatingCommandSession
-                      ? "جارٍ إنشاء الجلسة..."
-                      : commandProposal.primaryLabel}
-                  </Button>
-                )}
+                <Button
+                  type="button"
+                  className="h-11 rounded-full px-5"
+                  onClick={() =>
+                    void handleStartCommandProposal(commandProposal)
+                  }
+                  disabled={
+                    creatingCommandSession ||
+                    commandProposalStartState?.canStart === false
+                  }
+                >
+                  {creatingCommandSession
+                    ? "جارٍ الفتح..."
+                    : commandProposal.primaryLabel}
+                </Button>
                 <div>
                   {commandProposal.fineTuneOptions.map((option) => (
                     <Button

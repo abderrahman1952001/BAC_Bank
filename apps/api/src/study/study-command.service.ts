@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type {
+  StudyCommandAcceptResponse,
   StudyCommandProposal,
   StudyCommandProposalResponse,
   StudyCommandStartersResponse,
@@ -22,6 +23,12 @@ import { StudyWeakPointService } from './study-weak-point.service';
 
 const UNAVAILABLE_PREVIEW_MESSAGE =
   'لم نستطع تأكيد توفر تمارين مطابقة بهذا الربط الآن. افتح إعداد الجلسة واختر المادة أو المحور يدوياً.';
+const NO_PROPOSAL_MESSAGE =
+  'اكتب ما تريد دراسته الآن حتى نحوله إلى جلسة واضحة.';
+
+function buildStudentTrainingSessionRoute(sessionId: string) {
+  return `/student/training/${encodeURIComponent(sessionId)}`;
+}
 
 @Injectable()
 export class StudyCommandService {
@@ -54,6 +61,43 @@ export class StudyCommandService {
       proposal: proposal
         ? await this.resolveProposalAvailability(userId, proposal)
         : null,
+    };
+  }
+
+  async accept(
+    userId: string,
+    command: string,
+  ): Promise<StudyCommandAcceptResponse> {
+    const response = await this.propose(userId, command);
+    const proposal = response.proposal;
+
+    if (!proposal) {
+      return {
+        kind: 'NO_PROPOSAL',
+        message: NO_PROPOSAL_MESSAGE,
+      };
+    }
+
+    if (proposal.primaryAction.kind === 'OPEN_ROUTE') {
+      return {
+        kind: 'OPEN_ROUTE',
+        href: proposal.primaryAction.href,
+        proposal,
+        message: proposal.availability?.message,
+      };
+    }
+
+    const created = await this.studyService.createStudySession(
+      userId,
+      proposal.primaryAction.request,
+    );
+    const href = buildStudentTrainingSessionRoute(created.id);
+
+    return {
+      kind: 'CREATED_STUDY_SESSION',
+      sessionId: created.id,
+      href,
+      proposal,
     };
   }
 

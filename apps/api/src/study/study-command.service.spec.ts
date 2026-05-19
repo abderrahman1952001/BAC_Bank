@@ -86,6 +86,9 @@ function createService(input?: {
       : jest.fn().mockResolvedValue({
           matchingExerciseCount,
         }),
+    createStudySession: jest.fn().mockResolvedValue({
+      id: '11111111-1111-4111-8111-111111111111',
+    }),
   };
   const prisma = {
     user: {
@@ -184,5 +187,96 @@ describe('StudyCommandService', () => {
 
     expect(response.proposal?.availability?.status).toBe('UNAVAILABLE');
     expect(response.proposal?.primaryAction.kind).toBe('OPEN_ROUTE');
+  });
+
+  it('accepts a ready command by creating the server-owned study session', async () => {
+    const { service, studyService } = createService({
+      matchingExerciseCount: 2,
+    });
+
+    const response = await service.accept(
+      'user-1',
+      'أريد تدريب BAC في علوم الطبيعة على التركيب الضوئي آخر 3 سنوات',
+    );
+
+    expect(studyService.previewStudySession).toHaveBeenCalledWith(
+      'user-1',
+      expect.objectContaining({
+        subjectCode: 'NATURAL_SCIENCES',
+        topicCodes: ['PHOTOSYNTHESIS'],
+      }),
+    );
+    expect(studyService.createStudySession).toHaveBeenCalledWith(
+      'user-1',
+      expect.objectContaining({
+        subjectCode: 'NATURAL_SCIENCES',
+        topicCodes: ['PHOTOSYNTHESIS'],
+      }),
+    );
+    expect(response).toMatchObject({
+      kind: 'CREATED_STUDY_SESSION',
+      sessionId: '11111111-1111-4111-8111-111111111111',
+      href: '/student/training/11111111-1111-4111-8111-111111111111',
+      proposal: {
+        availability: {
+          status: 'READY',
+          matchingExerciseCount: 2,
+        },
+      },
+    });
+  });
+
+  it('accepts missing-content commands by opening the builder instead of creating', async () => {
+    const { service, studyService } = createService({
+      matchingExerciseCount: 0,
+    });
+
+    const response = await service.accept(
+      'user-1',
+      'أريد تدريب BAC في علوم الطبيعة على التركيب الضوئي',
+    );
+
+    expect(studyService.createStudySession).not.toHaveBeenCalled();
+    expect(response).toMatchObject({
+      kind: 'OPEN_ROUTE',
+      href: '/student/training/drill?subject=NATURAL_SCIENCES&topic=PHOTOSYNTHESIS',
+      proposal: {
+        availability: {
+          status: 'NEEDS_CONTENT',
+          matchingExerciseCount: 0,
+        },
+      },
+    });
+  });
+
+  it('accepts secondary surface commands by opening their typed route', async () => {
+    const { service, studyService } = createService();
+
+    const response = await service.accept(
+      'user-1',
+      'راجعلي تعريفات علوم الطبيعة',
+    );
+
+    expect(studyService.createStudySession).not.toHaveBeenCalled();
+    expect(response).toMatchObject({
+      kind: 'OPEN_ROUTE',
+      href: '/student/flashcards',
+      proposal: {
+        mode: 'MEMORIZATION_REVIEW',
+      },
+    });
+  });
+
+  it('returns a no-proposal result for empty accepted commands', async () => {
+    const { service, studyService } = createService();
+
+    const response = await service.accept('user-1', '   ');
+
+    expect(studyService.previewStudySession).not.toHaveBeenCalled();
+    expect(studyService.createStudySession).not.toHaveBeenCalled();
+    expect(response).toEqual({
+      kind: 'NO_PROPOSAL',
+      message: 'اكتب ما تريد دراسته الآن حتى نحوله إلى جلسة واضحة.',
+    });
   });
 });

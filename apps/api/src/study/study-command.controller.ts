@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import {
+  parseStudyCommandAcceptRequest,
   parseStudyCommandProposalRequest,
+  type StudyCommandAcceptResponse,
   type StudyCommandProposalResponse,
   type StudyCommandStartersResponse,
 } from '@bac-bank/contracts/study-command';
@@ -28,5 +30,15 @@ export class StudyCommandController {
     const parsed = parseStudyCommandProposalRequest(payload);
 
     return this.studyCommandService.propose(request.user!.id, parsed.command);
+  }
+
+  @Post('accept')
+  accept(
+    @Req() request: AuthenticatedRequest,
+    @Body() payload: unknown,
+  ): Promise<StudyCommandAcceptResponse> {
+    const parsed = parseStudyCommandAcceptRequest(payload);
+
+    return this.studyCommandService.accept(request.user!.id, parsed.command);
   }
 }
