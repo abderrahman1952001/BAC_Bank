@@ -554,6 +554,61 @@ describe('study command', () => {
     });
   });
 
+  it('does not mark an unrelated lab as ready for the requested subject', () => {
+    const proposal = buildStudyCommandProposal('نحب مختبر في الفيزياء', {
+      ...context,
+      labTools,
+    });
+
+    expect(proposal).toMatchObject({
+      mode: 'LAB_EXPLORATION',
+      primaryHref: '/student/lab',
+      availability: {
+        status: 'NEEDS_CONTENT',
+        matchingExerciseCount: 0,
+      },
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/lab',
+      },
+    });
+  });
+
+  it('asks for one clarification before opening a generic lab request', () => {
+    const proposal = buildStudyCommandProposal('نحب مختبر يشرحلي بصرياً', {
+      ...context,
+      labTools,
+    });
+
+    expect(proposal).toMatchObject({
+      mode: 'LAB_EXPLORATION',
+      clarification: {
+        question: 'أي مادة تقصد؟',
+      },
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/lab',
+      },
+    });
+    expect(proposal?.availability).toBeUndefined();
+  });
+
+  it('opens simulation with the inferred subject preselected', () => {
+    const proposal = buildStudyCommandProposal(
+      'نحب محاكاة امتحان كامل في الرياضيات',
+      context,
+    );
+
+    expect(proposal).toMatchObject({
+      mode: 'SIMULATION',
+      primaryHref: '/student/training/simulation?subject=MATHEMATICS',
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/training/simulation?subject=MATHEMATICS',
+      },
+    });
+  });
+
   it('preserves stream and subject when opening the library surface', () => {
     const proposal = buildStudyCommandProposal(
       'افتحلي أرشيف مواضيع باك علوم الطبيعة',
@@ -698,6 +753,14 @@ describe('study command', () => {
 
       if (fixture.expectsClarification) {
         expect(proposal?.clarification?.question).toBe('أي مادة تقصد؟');
+      }
+
+      if (fixture.expectedActionKind) {
+        expect(proposal?.primaryAction.kind).toBe(fixture.expectedActionKind);
+      }
+
+      if (fixture.expectedPrimaryHref) {
+        expect(proposal?.primaryHref).toBe(fixture.expectedPrimaryHref);
       }
 
       if (

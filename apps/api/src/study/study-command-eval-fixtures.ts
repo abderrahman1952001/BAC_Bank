@@ -7,6 +7,8 @@ export type StudyCommandEvalFixture = {
   expectedSubjectCode?: string;
   expectedTopicCodes?: string[];
   expectsClarification?: boolean;
+  expectedActionKind?: 'CREATE_STUDY_SESSION' | 'OPEN_ROUTE';
+  expectedPrimaryHref?: string;
   context?: 'default' | 'empty';
 };
 
@@ -77,6 +79,23 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     command: 'نحب محاكاة موضوع كامل في الرياضيات',
     expectedMode: 'SIMULATION',
     expectedSubjectCode: 'MATHEMATICS',
+    expectedActionKind: 'OPEN_ROUTE',
+    expectedPrimaryHref: '/student/training/simulation?subject=MATHEMATICS',
+  },
+  {
+    id: 'simulation-mock-exam',
+    command: 'mock exam complet f maths',
+    expectedMode: 'SIMULATION',
+    expectedSubjectCode: 'MATHEMATICS',
+    expectedActionKind: 'OPEN_ROUTE',
+    expectedPrimaryHref: '/student/training/simulation?subject=MATHEMATICS',
+  },
+  {
+    id: 'continue-active-session',
+    command: 'واصل الجلسة لي حبست فيها',
+    expectedMode: 'CONTINUE_SESSION',
+    expectedActionKind: 'OPEN_ROUTE',
+    expectedPrimaryHref: '/student/training/session-1',
   },
   {
     id: 'mistake-repair',

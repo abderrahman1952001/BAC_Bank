@@ -129,6 +129,12 @@ function buildStudentTrainingWeakPointsRoute(subjectCode?: string | null) {
   });
 }
 
+function buildStudentTrainingSimulationRoute(subjectCode?: string | null) {
+  return buildRouteWithSearchParams(STUDENT_TRAINING_SIMULATION_ROUTE, {
+    subject: subjectCode ?? undefined,
+  });
+}
+
 function formatStudySessionKind(kind: StudySessionKind) {
   switch (kind) {
     case 'TOPIC_DRILL':
@@ -852,6 +858,21 @@ function wantsRecentThreeYears(command: string) {
   ]);
 }
 
+function hasSimulationIntent(command: string) {
+  return includesAny(normalizeCommandText(command), [
+    'محاكاة',
+    'simulation',
+    'bac blanc',
+    'mock',
+    'اختبار كامل',
+    'امتحان كامل',
+    'موضوع كامل',
+    'full exam',
+    'full paper',
+    'exam complet',
+  ]);
+}
+
 function shouldUsePassiveContextSubject(input: {
   mode: StudyCommandStarterMode;
   command: string;
@@ -892,6 +913,10 @@ export function inferStudyCommandMode(
     includesAny(normalized, ['واصل', 'كمل', 'continue', 'resume'])
   ) {
     return 'CONTINUE_SESSION';
+  }
+
+  if (hasSimulationIntent(normalized)) {
+    return 'SIMULATION';
   }
 
   if (
@@ -946,6 +971,10 @@ export function inferStudyCommandMode(
     return 'MEMORIZATION_REVIEW';
   }
 
+  if (includesAny(normalized, ['مختبر', 'lab', 'تجربة', 'visualiser', 'رسم'])) {
+    return 'LAB_EXPLORATION';
+  }
+
   if (
     includesAny(normalized, [
       'مافهمتش',
@@ -958,19 +987,6 @@ export function inferStudyCommandMode(
     ])
   ) {
     return 'LESSON_UNDERSTANDING';
-  }
-
-  if (
-    includesAny(normalized, [
-      'محاكاة',
-      'simulation',
-      'bac blanc',
-      'mock',
-      'اختبار كامل',
-      'موضوع كامل',
-    ])
-  ) {
-    return 'SIMULATION';
   }
 
   if (
@@ -988,10 +1004,6 @@ export function inferStudyCommandMode(
     ])
   ) {
     return 'MISTAKE_REPAIR';
-  }
-
-  if (includesAny(normalized, ['مختبر', 'lab', 'تجربة', 'visualiser', 'رسم'])) {
-    return 'LAB_EXPLORATION';
   }
 
   if (
@@ -1390,6 +1402,7 @@ function buildProposalClarification(input: {
 
 function buildSurfaceAvailability(input: {
   mode: StudyCommandStarterMode;
+  subject: InferredSubject | null;
   context?: StudyCommandContext;
 }) {
   switch (input.mode) {
@@ -1421,10 +1434,14 @@ function buildSurfaceAvailability(input: {
               'لا توجد أخطاء أو إشارات ضعف كافية بعد. ابدأ تدريباً قصيراً حتى نبني حلقة إصلاح حقيقية.',
           };
     case 'LAB_EXPLORATION':
-      return input.context?.labTools.length
+      if (!input.subject?.canCreateSession) {
+        return undefined;
+      }
+
+      return findMatchingReadyLabTool(input.subject, input.context)
         ? {
             status: 'READY' as const,
-            matchingExerciseCount: input.context.labTools.length,
+            matchingExerciseCount: 1,
           }
         : {
             status: 'NEEDS_CONTENT' as const,
@@ -1463,6 +1480,27 @@ function buildLessonHref(input: {
   return buildStudentCourseSubjectRoute(input.subjectCode);
 }
 
+function findMatchingReadyLabTool(
+  subject: InferredSubject | null,
+  context?: StudyCommandContext,
+) {
+  if (!subject?.canCreateSession) {
+    return null;
+  }
+
+  return (
+    context?.labTools.find((tool) => {
+      if (tool.status !== 'READY') {
+        return false;
+      }
+
+      return tool.subject
+        ? subjectReferenceMatches(tool.subject, subject)
+        : false;
+    }) ?? null
+  );
+}
+
 function buildLabHref(input: {
   subject: InferredSubject | null;
   context?: StudyCommandContext;
@@ -1470,19 +1508,7 @@ function buildLabHref(input: {
   const subjectCode = input.subject?.canCreateSession
     ? input.subject.code
     : null;
-  const matchingTool = input.context?.labTools.find((tool) => {
-    if (tool.status !== 'READY') {
-      return false;
-    }
-
-    if (!subjectCode) {
-      return true;
-    }
-
-    return tool.subject
-      ? subjectReferenceMatches(tool.subject, input.subject)
-      : false;
-  });
+  const matchingTool = findMatchingReadyLabTool(input.subject, input.context);
   const subjectSlug = subjectCodeToLabSlug(
     matchingTool?.subject?.code ?? subjectCode,
   );
@@ -1667,7 +1693,7 @@ export function buildStudyCommandProposal(
       topic,
     }),
     MEMORIZATION_REVIEW: STUDENT_FLASHCARDS_ROUTE,
-    SIMULATION: STUDENT_TRAINING_SIMULATION_ROUTE,
+    SIMULATION: buildStudentTrainingSimulationRoute(subjectCode),
     MISTAKE_REPAIR: buildStudentTrainingWeakPointsRoute(subjectCode),
     LAB_EXPLORATION: buildLabHref({
       subject,
@@ -1689,6 +1715,7 @@ export function buildStudyCommandProposal(
   });
   const availability = buildSurfaceAvailability({
     mode,
+    subject,
     context,
   });
   const primaryAction = buildProposalAction({

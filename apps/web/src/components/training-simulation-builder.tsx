@@ -33,14 +33,18 @@ import {
 
 export function TrainingSimulationBuilder({
   initialCatalog,
+  initialSubjectCode,
 }: {
   initialCatalog?: CatalogResponse;
+  initialSubjectCode?: string;
 }) {
   const router = useRouter();
   const [refreshingCatalog, startRefreshingCatalog] = useTransition();
   const { user } = useAuthSession();
   const [selectedStreamCode, setSelectedStreamCode] = useState("");
-  const [selectedSubjectCode, setSelectedSubjectCode] = useState("");
+  const [selectedSubjectCode, setSelectedSubjectCode] = useState(
+    initialSubjectCode ?? "",
+  );
   const [selectedPaperKey, setSelectedPaperKey] = useState("");
   const [previewLoading, setPreviewLoading] = useState(false);
   const [previewError, setPreviewError] = useState<string | null>(null);

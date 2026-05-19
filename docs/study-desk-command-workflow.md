@@ -77,6 +77,25 @@ product architecture, not necessarily visible labels.
 
 `CONTINUE_SESSION` is a system action and smart starter, not a core study mode.
 
+## Mode Acceptance Matrix
+
+This matrix is the shipping contract for the command layer. If a new prompt,
+starter, or AI router changes a mode, it should preserve the mode's workflow
+owner and fallback behavior.
+
+| Mode | Student situation | Required fields | Primary workflow | Availability rule | Honest fallback |
+| --- | --- | --- | --- | --- | --- |
+| `SCHOOL_TEST_PREP` | "I have a school test / devoir / فرض soon." | Subject, topic when mentioned | Create a short drill session with previewed exercises | `READY` only after preview finds matches | Open the drill builder with subject/topic prefilled |
+| `TUTOR_REPLAY` | "I just came from tutor/private lesson and need recap or similar exercises." | Subject, topic when mentioned | Create a short drill session from the tutor topic | `READY` only after preview finds matches | Open the drill builder with subject/topic prefilled |
+| `BAC_TRAINING` | "I want BAC practice, official-style exercises, or recent years." | Subject, topic when mentioned | Create a drill session from mapped BAC content | `READY` only after preview finds matches | Ask one subject clarification, or open the builder if mapped content is missing |
+| `LESSON_UNDERSTANDING` | "I did not understand this lesson/concept." | Subject, topic when mentioned | Open the course subject/topic surface | Route must use known subject/topic slugs when available | Open the closest course surface; let that surface show its own empty state |
+| `MEMORIZATION_REVIEW` | Definitions, laws, maps, dates, formulas, methods, theory prompts | None required; subject/topic improve targeting | Open flashcards | `READY` when due cards exist in context | Open flashcards with a needs-content message when no due cards exist |
+| `MISTAKE_REPAIR` | Open mistakes, weak topics, repeated errors, "fix my weak point" | None required; passive weak/mistake context may fill subject | Open weak-points / mistake repair | `READY` when mistakes or weak signals exist | Open weak-points with a needs-content message |
+| `SIMULATION` | Timed mock, full exam, bac blanc, full paper | Subject when the student names it | Open simulation builder with subject preselected | Builder owns official-paper availability | Ask one subject clarification if missing; builder shows empty states |
+| `LAB_EXPLORATION` | Visual/interactive understanding request | Subject | Open matching ready lab tool | `READY` only for a ready lab matching the requested subject | Ask one subject clarification, or open Lab with needs-content state |
+| `LIBRARY_SEARCH` | Archive, annales, official paper lookup, source finding | None required; subject/stream improve targeting | Open Library with stream/subject query when known | `READY` when catalog has published entries | Open Library with a needs-content message when catalog is empty |
+| `CONTINUE_SESSION` | Continue/resume an unfinished study session | Active session | Open the active session directly | Active session must exist | Fall back to normal command routing if no active session exists |
+
 ## Guardrails
 
 - Do not add a standalone open chatbot as the student product center.
