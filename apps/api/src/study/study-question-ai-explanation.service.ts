@@ -112,17 +112,31 @@ export class StudyQuestionAiExplanationService {
     const startedAt = Date.now();
     let rawText: string | null = null;
 
-    const response = await ai.models.generateContent({
-      model: config.model,
-      contents: [createPartFromText(prompt)],
-      config: {
-        systemInstruction: AI_EXPLANATION_SYSTEM_INSTRUCTION,
-        responseMimeType: 'application/json',
-        responseJsonSchema: AI_EXPLANATION_RESPONSE_SCHEMA,
-        temperature: 0.2,
-        maxOutputTokens: config.maxOutputTokens,
-      },
-    });
+    let response: Awaited<ReturnType<typeof ai.models.generateContent>>;
+
+    try {
+      response = await ai.models.generateContent({
+        model: config.model,
+        contents: [createPartFromText(prompt)],
+        config: {
+          systemInstruction: AI_EXPLANATION_SYSTEM_INSTRUCTION,
+          responseMimeType: 'application/json',
+          responseJsonSchema: AI_EXPLANATION_RESPONSE_SCHEMA,
+          temperature: 0.2,
+          maxOutputTokens: config.maxOutputTokens,
+        },
+      });
+    } catch {
+      this.logUsage({
+        config,
+        prompt,
+        rawText,
+        startedAt,
+        status: 'FAILED',
+        errorCode: 'PROVIDER_ERROR',
+      });
+      throw new ServiceUnavailableException('AI explanation provider failed.');
+    }
 
     rawText = response.text?.trim() ?? null;
 
