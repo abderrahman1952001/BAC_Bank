@@ -29,9 +29,17 @@ export async function fetchServerApi(
   const requestHeaders = await headers();
   const forwardedHeaders = new Headers(init?.headers ?? {});
   const cookieHeader = requestHeaders.get("cookie");
+  const originHeader = requestHeaders.get("origin");
+  const refererHeader = requestHeaders.get("referer");
 
   if (cookieHeader && !forwardedHeaders.has("cookie")) {
     forwardedHeaders.set("cookie", cookieHeader);
+  }
+  if (originHeader && !forwardedHeaders.has("origin")) {
+    forwardedHeaders.set("origin", originHeader);
+  }
+  if (refererHeader && !forwardedHeaders.has("referer")) {
+    forwardedHeaders.set("referer", refererHeader);
   }
 
   const apiUrl = new URL(

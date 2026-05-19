@@ -23,6 +23,8 @@ import {
   fetchStudyQuestionAiExplanation,
   type StudyQuestionAiExplanationResponse,
 } from "@/lib/study-api";
+import type { SessionRecoveryContext } from "@/lib/session-player";
+import { buildSessionRecoveryActions } from "@/lib/session-player";
 import { resolveSessionSupportStyle } from "@/lib/study-pedagogy";
 import { STUDENT_MY_SPACE_ROUTE } from "@/lib/student-routes";
 import { useStudentExerciseStates } from "@/lib/use-student-exercise-states";
@@ -32,10 +34,12 @@ export function SessionPlayer({
   sessionId,
   initialSession,
   initialExerciseStates,
+  recoveryContext,
 }: {
   sessionId: string;
   initialSession?: StudySessionResponse;
   initialExerciseStates?: StudentExerciseStateResponse[];
+  recoveryContext?: SessionRecoveryContext;
 }) {
   const sessionSeedKey = `${sessionId}:${initialSession?.id ?? "missing"}:${initialSession?.updatedAt ?? "initial"}`;
 
@@ -45,6 +49,7 @@ export function SessionPlayer({
       sessionId={sessionId}
       initialSession={initialSession}
       initialExerciseStates={initialExerciseStates}
+      recoveryContext={recoveryContext}
     />
   );
 }
@@ -53,10 +58,12 @@ function SessionPlayerScreen({
   sessionId,
   initialSession,
   initialExerciseStates,
+  recoveryContext,
 }: {
   sessionId: string;
   initialSession?: StudySessionResponse;
   initialExerciseStates?: StudentExerciseStateResponse[];
+  recoveryContext?: SessionRecoveryContext;
 }) {
   const [weakPointIntroDismissed, setWeakPointIntroDismissed] = useState(false);
   const router = useRouter();
@@ -65,7 +72,9 @@ function SessionPlayerScreen({
   const [aiExplanation, setAiExplanation] =
     useState<StudyQuestionAiExplanationResponse | null>(null);
   const [aiExplanationLoading, setAiExplanationLoading] = useState(false);
-  const [aiExplanationError, setAiExplanationError] = useState<string | null>(null);
+  const [aiExplanationError, setAiExplanationError] = useState<string | null>(
+    null,
+  );
   const {
     session,
     error,
@@ -134,7 +143,8 @@ function SessionPlayerScreen({
     toggleFlag,
   } = useStudentExerciseStates({
     exerciseNodeIds:
-      session?.exercises.map((exercise) => exercise.hierarchy.exerciseNodeId) ?? [],
+      session?.exercises.map((exercise) => exercise.hierarchy.exerciseNodeId) ??
+      [],
     initialStates: initialExerciseStates,
   });
 
@@ -175,7 +185,11 @@ function SessionPlayerScreen({
                 >
                   {refreshingSession ? "جارٍ التحديث..." : "إعادة المحاولة"}
                 </Button>
-                <Button asChild variant="outline" className="h-11 rounded-full px-5">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-11 rounded-full px-5"
+                >
                   <Link href={STUDENT_MY_SPACE_ROUTE}>العودة إلى مساحتي</Link>
                 </Button>
               </div>
@@ -191,9 +205,9 @@ function SessionPlayerScreen({
     solutionVisible &&
     Boolean(
       activeQuestionState?.reflection === "MISSED" ||
-        activeQuestionState?.reflection === "HARD" ||
-        activeQuestionState?.skipped ||
-        activeQuestionState?.solutionViewed,
+      activeQuestionState?.reflection === "HARD" ||
+      activeQuestionState?.skipped ||
+      activeQuestionState?.solutionViewed,
     );
   const supportStyle = resolveSessionSupportStyle(session);
   const shouldShowWeakPointIntro =
@@ -206,9 +220,9 @@ function SessionPlayerScreen({
     currentQuestionPosition <= 1;
   const canRequestAiExplanation = Boolean(
     user?.studyEntitlements.capabilities.aiExplanation &&
-      solutionVisible &&
-      !isActiveSimulation &&
-      activeQuestion.solutionBlocks.length,
+    solutionVisible &&
+    !isActiveSimulation &&
+    activeQuestion.solutionBlocks.length,
   );
   const activeExerciseActions = (
     <StudyExerciseStateActions
@@ -222,9 +236,20 @@ function SessionPlayerScreen({
       }}
     />
   );
+  const recoveryActions = buildSessionRecoveryActions({
+    session,
+    progress,
+    progressCounts,
+    recoveryContext,
+  });
 
   async function handleOpenAiExplanation() {
-    if (!session || !activeQuestion || !canRequestAiExplanation || aiExplanationLoading) {
+    if (
+      !session ||
+      !activeQuestion ||
+      !canRequestAiExplanation ||
+      aiExplanationLoading
+    ) {
       return;
     }
 
@@ -356,10 +381,13 @@ function SessionPlayerScreen({
               </>
             ) : undefined
           }
+          recoveryActions={recoveryActions}
         />
       </div>
 
-      {exerciseStateError ? <p className="error-text">{exerciseStateError}</p> : null}
+      {exerciseStateError ? (
+        <p className="error-text">{exerciseStateError}</p>
+      ) : null}
 
       {showNavigator ? (
         <SessionPlayerNavigatorModal

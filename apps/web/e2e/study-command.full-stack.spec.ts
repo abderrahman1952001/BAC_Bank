@@ -46,16 +46,14 @@ test("creates a real study session from the My Space command entrance", async ({
   await page.goto("/student/my-space", { waitUntil: "networkidle" });
   await page
     .getByPlaceholder(/عندي فرض/)
-    .fill("أريد تدريب BAC في علوم الطبيعة على البروتينات آخر 3 سنوات فقط");
+    .fill("أريد تدريب BAC في علوم الطبيعة على التركيب الضوئي آخر 3 سنوات فقط");
   await page.getByRole("button", { name: /حضّر الجلسة/ }).click();
 
   await expect(page.getByText("مسودة جلسة")).toBeVisible();
   await expect(
-    page
-      .locator(".hub-command-proposal")
-      .getByRole("heading", {
-        name: /تدريب BAC علوم الطبيعة والحياة · البروتينات/,
-      }),
+    page.locator(".hub-command-proposal").getByRole("heading", {
+      name: /تدريب BAC علوم الطبيعة والحياة · التركيب الضوئي/,
+    }),
   ).toBeVisible();
 
   await page.getByRole("button", { name: "بدء الجلسة" }).click();
@@ -67,8 +65,8 @@ test("creates a real study session from the My Space command entrance", async ({
         response.method === "POST" &&
         response.url.includes("/api/v1/study/sessions") &&
         response.status === 201 &&
-        response.body.includes('"kind":"MIXED_DRILL"') &&
-        response.body.includes('"search":"بروتين"'),
+        response.body.includes('"kind":"TOPIC_DRILL"') &&
+        response.body.includes('"topicCodes":["PHOTOSYNTHESIS"]'),
     ),
   ).toBe(true);
 });

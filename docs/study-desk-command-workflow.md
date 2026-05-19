@@ -49,7 +49,10 @@ mistake repair, labs, and the student's recent work.
 7. On acceptance, create or open real platform workflows: training sessions,
    flashcard review, lesson surfaces, simulations, mistake repair, library
    source work, or labs.
-8. During the session, keep AI object-aware: lesson-aware, correction-aware,
+8. At session completion, offer recovery actions from real state: unfinished
+   questions, open mistakes, due flashcards, weak-point repair, another drill,
+   or a return to My Space. Do not invent follow-up content.
+9. During the session, keep AI object-aware: lesson-aware, correction-aware,
    exercise-aware, flashcard-aware, or mistake-aware.
 
 ## V1 Hidden Study Modes
@@ -89,22 +92,52 @@ product architecture, not necessarily visible labels.
 
 The first implementation should be intentionally narrow:
 
-- deterministic smart starters from existing context
+- deterministic smart starters from existing context. If there is no useful
+  context, show no starters rather than generic static chips.
 - text command entrance
 - push-to-talk transcription feeding the same text entrance
-- server-side session proposal scaffolding with explicit proposal actions and
-  runtime contracts
+- API-owned command proposal and smart-starter composition under
+  `apps/api/src/study/study-command-*`, with the web route acting as a thin
+  authenticated proxy. The frontend renders typed contracts from
+  `packages/contracts/src/study-command.ts` and must not own a second command
+  brain.
+- explicit proposal actions, optional one-question clarifications, and runtime
+  contracts
+- real content mappings before relying on topic drills. For the current SVT SE
+  first pass, published paper exercise roots are mapped to the canonical
+  `SE__2008__OPEN` curriculum through
+  `npm run map:svt-se-paper-nodes -- --apply --replace` in `apps/api`. The mapper uses
+  deterministic rules over already-published prompt text and inserts only
+  `exam_node_curriculum_nodes` bridge rows, so it does not create a second
+  ingestion path.
 - real session creation for safe drill-like modes:
   `SCHOOL_TEST_PREP`, `TUTOR_REPLAY`, and `BAC_TRAINING`
-- preview-before-create for drill sessions, with a topic-filter to mixed-drill
-  fallback when the current content has subject exercises but no reliable topic
-  mappings yet; that fallback should keep a topic search term when possible so
-  it widens the technical filter without becoming a random mixed drill
+- preview-before-create for drill sessions. A topic command should create a
+  topic drill only when mapped content exists. If the mapping is missing or no
+  exercise matches, the product should show a clear unavailable-content state or
+  send the student to the builder; it should not silently widen to a mixed drill.
+- proposal availability is explicit: `READY` means the workflow can open or
+  create now, `NEEDS_CONTENT` means the surface exists but does not yet have
+  enough mapped/reviewable user content, and `UNAVAILABLE` means the platform
+  could not safely verify the workflow.
 - real links into existing platform surfaces for lesson, flashcard, simulation,
   lab, library, mistake-repair, and continuation flows
+- completed training sessions render typed recovery actions from session
+  progress plus lightweight mistake/flashcard counts. The recovery layer opens
+  existing surfaces; it does not create canonical content or hidden drills.
+- prompt fixtures for messy Algerian BAC commands live in
+  `apps/api/src/study/study-command-eval-fixtures.ts` and should grow whenever
+  a real student wording fails routing.
 - a full-stack Playwright smoke can be run with `PLAYWRIGHT_FULL_STACK=true`
   to verify command proposal, API preview, real session creation, and training
   navigation against the local API and database
 
-Deeper AI routing, richer proposal composition, and persisted proposal history
-should be added after the first workflow proves useful.
+Deeper AI routing should only be added behind typed schemas, model-routing
+budgets, usage logging, and deterministic fallbacks. The current V1 command
+router remains rules-first; future AI routing should improve interpretation,
+not bypass preview checks, availability states, or platform-owned workflows. AI
+runtime boundaries currently live in `apps/api/src/ai/ai-runtime.ts` and provide
+credential detection, model/output-token guardrails, coarse token estimates, and
+content-free usage-event metadata for explanation features.
+Persisted proposal history should be added only when we need auditability or
+cross-device resume beyond the created session itself.

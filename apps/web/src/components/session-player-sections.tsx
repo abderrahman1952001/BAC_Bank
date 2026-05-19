@@ -1,7 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, FileText, Lightbulb, X } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  BrainCircuit,
+  FileText,
+  Layers3,
+  Lightbulb,
+  RotateCcw,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   StudyHierarchyBlocks,
@@ -47,7 +57,10 @@ import {
   shouldCollectDiagnosis,
 } from "@/lib/study-pedagogy";
 import { buildStudyQuestionFlashcardDraft } from "@/lib/flashcards-surface";
-import { type ExerciseCheckpointSummary } from "@/lib/session-player";
+import {
+  type ExerciseCheckpointSummary,
+  type SessionRecoveryAction,
+} from "@/lib/session-player";
 import {
   buildSessionPlayerMobileTools,
   type SessionPlayerMobileTools,
@@ -160,6 +173,7 @@ type SessionPlayerQuestionPaneProps = {
   weakPointIntro: StudySessionPedagogy["weakPointIntro"];
   onDismissWeakPointIntro: () => void;
   reviewQueueActions?: ReactNode;
+  recoveryActions: SessionRecoveryAction[];
 };
 
 type SessionPlayerNavigatorModalProps = {
@@ -181,6 +195,14 @@ type SessionPlayerNavigatorModalProps = {
 };
 
 type MobileSheetType = "context" | "support" | "solution";
+
+const recoveryActionIcons: Record<SessionRecoveryAction["id"], LucideIcon> = {
+  "mistake-repair": BrainCircuit,
+  flashcards: Layers3,
+  "similar-drill": RotateCcw,
+  simulation: FileText,
+  "my-space": ArrowLeft,
+};
 
 type SessionPlayerMobileToolDockProps = {
   tools: SessionPlayerMobileTools;
@@ -460,6 +482,7 @@ export function SessionPlayerQuestionPane({
   weakPointIntro,
   onDismissWeakPointIntro,
   reviewQueueActions,
+  recoveryActions,
 }: SessionPlayerQuestionPaneProps) {
   const isActiveSimulation =
     sessionFamily === "SIMULATION" &&
@@ -1172,6 +1195,38 @@ export function SessionPlayerQuestionPane({
                 </article>
               ))}
             </div>
+
+            {recoveryActions.length ? (
+              <div className="completion-next-actions">
+                {recoveryActions.map((action) => {
+                  const Icon = recoveryActionIcons[action.id];
+
+                  return (
+                    <article
+                      key={action.id}
+                      className={`completion-next-action tone-${action.tone}`}
+                    >
+                      <div className="completion-next-action-icon">
+                        <Icon data-icon="solo" strokeWidth={2} />
+                      </div>
+                      <div>
+                        <strong>{action.title}</strong>
+                        <span>{action.description}</span>
+                      </div>
+                      <Button
+                        asChild
+                        variant={
+                          action.tone === "neutral" ? "outline" : "default"
+                        }
+                        className="h-10 rounded-full px-5"
+                      >
+                        <Link href={action.href}>افتح</Link>
+                      </Button>
+                    </article>
+                  );
+                })}
+              </div>
+            ) : null}
 
             <div className="theater-summary-actions">
               <Button

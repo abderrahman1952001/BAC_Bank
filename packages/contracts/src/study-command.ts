@@ -38,6 +38,11 @@ export type StudyCommandProposalStep = {
   detail: string;
 };
 
+export type StudyCommandClarification = {
+  question: string;
+  options: string[];
+};
+
 export type StudyCommandCreateSessionRequest = {
   title?: string;
   subjectCode: string;
@@ -67,6 +72,12 @@ export type StudyCommandProposal = {
   subtitle: string;
   estimatedMinutes: number;
   rationale: string;
+  availability?: {
+    status: "READY" | "NEEDS_CONTENT" | "UNAVAILABLE";
+    matchingExerciseCount?: number;
+    message?: string;
+  };
+  clarification?: StudyCommandClarification;
   primaryHref: string;
   primaryLabel: string;
   primaryAction: StudyCommandProposalAction;
@@ -80,6 +91,10 @@ export type StudyCommandProposalRequest = {
 
 export type StudyCommandProposalResponse = {
   proposal: StudyCommandProposal | null;
+};
+
+export type StudyCommandStartersResponse = {
+  data: StudyCommandStarter[];
 };
 
 const studyCommandModeSchema: z.ZodType<StudyCommandMode> = z.enum([
@@ -98,6 +113,19 @@ const studyCommandStarterModeSchema: z.ZodType<StudyCommandStarterMode> =
   z.union([studyCommandModeSchema, z.literal("CONTINUE_SESSION")]);
 
 const sessionTypeSchema: z.ZodType<SessionType> = z.enum(["NORMAL", "MAKEUP"]);
+
+const studyCommandStarterToneSchema: z.ZodType<StudyCommandStarterTone> =
+  z.enum(["primary", "cool", "warning", "danger", "neutral"]);
+
+const studyCommandStarterSchema: z.ZodType<StudyCommandStarter> = z.object({
+  id: z.string(),
+  title: z.string(),
+  prompt: z.string(),
+  reason: z.string(),
+  tone: studyCommandStarterToneSchema,
+  mode: studyCommandStarterModeSchema,
+  href: z.string().optional(),
+});
 
 const studyCommandCreateSessionRequestSchema: z.ZodType<StudyCommandCreateSessionRequest> =
   z.object({
@@ -131,6 +159,12 @@ const studyCommandProposalStepSchema: z.ZodType<StudyCommandProposalStep> =
     detail: z.string(),
   });
 
+const studyCommandClarificationSchema: z.ZodType<StudyCommandClarification> =
+  z.object({
+    question: z.string(),
+    options: z.array(z.string()),
+  });
+
 export const studyCommandProposalSchema: z.ZodType<StudyCommandProposal> =
   z.object({
     mode: studyCommandStarterModeSchema,
@@ -138,6 +172,14 @@ export const studyCommandProposalSchema: z.ZodType<StudyCommandProposal> =
     subtitle: z.string(),
     estimatedMinutes: z.number().int().min(1),
     rationale: z.string(),
+    availability: z
+      .object({
+        status: z.enum(["READY", "NEEDS_CONTENT", "UNAVAILABLE"]),
+        matchingExerciseCount: z.number().int().nonnegative().optional(),
+        message: z.string().optional(),
+      })
+      .optional(),
+    clarification: studyCommandClarificationSchema.optional(),
     primaryHref: z.string(),
     primaryLabel: z.string(),
     primaryAction: studyCommandProposalActionSchema,
@@ -155,6 +197,11 @@ export const studyCommandProposalResponseSchema: z.ZodType<StudyCommandProposalR
     proposal: studyCommandProposalSchema.nullable(),
   });
 
+export const studyCommandStartersResponseSchema: z.ZodType<StudyCommandStartersResponse> =
+  z.object({
+    data: z.array(studyCommandStarterSchema),
+  });
+
 export function parseStudyCommandProposalRequest(value: unknown) {
   return parseContract(
     studyCommandProposalRequestSchema,
@@ -168,5 +215,13 @@ export function parseStudyCommandProposalResponse(value: unknown) {
     studyCommandProposalResponseSchema,
     value,
     "StudyCommandProposalResponse",
+  );
+}
+
+export function parseStudyCommandStartersResponse(value: unknown) {
+  return parseContract(
+    studyCommandStartersResponseSchema,
+    value,
+    "StudyCommandStartersResponse",
   );
 }

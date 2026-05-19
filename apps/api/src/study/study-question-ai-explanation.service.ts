@@ -1,12 +1,18 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { GoogleGenAI, createPartFromText } from '@google/genai';
 import type {
   StudyQuestionAiExplanationResponse,
   StudySupportStyle,
 } from '@bac-bank/contracts/study';
 import type { ExamHierarchyBlock } from '@bac-bank/contracts/study';
-
-const DEFAULT_GEMINI_MODEL = 'gemini-3-flash-preview';
+import {
+  buildAiUsageEvent,
+  resolveStudyQuestionAiExplanationConfig,
+} from '../ai/ai-runtime';
 
 const AI_EXPLANATION_SYSTEM_INSTRUCTION = `
 You are a BAC study coach.
@@ -68,8 +74,17 @@ function formatTopics(
     : 'غير محدد';
 }
 
+type AiExplanationPayload = {
+  summary?: string;
+  steps?: string[];
+  pitfalls?: string[];
+  nextMove?: string | null;
+};
+
 @Injectable()
 export class StudyQuestionAiExplanationService {
+  private readonly logger = new Logger(StudyQuestionAiExplanationService.name);
+
   async generate(input: {
     questionId: string;
     subjectName: string;
@@ -84,47 +99,66 @@ export class StudyQuestionAiExplanationService {
     solutionBlocks: ExamHierarchyBlock[];
     rubricBlocks: ExamHierarchyBlock[];
   }): Promise<StudyQuestionAiExplanationResponse> {
-    const apiKey =
-      normalizeOptionalString(process.env.GEMINI_API_KEY) ??
-      normalizeOptionalString(process.env.GOOGLE_API_KEY);
+    const config = resolveStudyQuestionAiExplanationConfig();
 
-    if (!apiKey) {
+    if (!config.configured || !config.apiKey) {
       throw new ServiceUnavailableException(
         'AI explanation is not configured on the server.',
       );
     }
 
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: config.apiKey });
+    const prompt = this.buildPrompt(input);
+    const startedAt = Date.now();
+    let rawText: string | null = null;
+
     const response = await ai.models.generateContent({
-      model:
-        normalizeOptionalString(process.env.GEMINI_MODEL) ??
-        DEFAULT_GEMINI_MODEL,
-      contents: [createPartFromText(this.buildPrompt(input))],
+      model: config.model,
+      contents: [createPartFromText(prompt)],
       config: {
         systemInstruction: AI_EXPLANATION_SYSTEM_INSTRUCTION,
         responseMimeType: 'application/json',
         responseJsonSchema: AI_EXPLANATION_RESPONSE_SCHEMA,
         temperature: 0.2,
-        maxOutputTokens: 1600,
+        maxOutputTokens: config.maxOutputTokens,
       },
     });
 
-    const rawText = response.text?.trim();
+    rawText = response.text?.trim() ?? null;
 
     if (!rawText) {
+      this.logUsage({
+        config,
+        prompt,
+        rawText,
+        startedAt,
+        status: 'FAILED',
+        errorCode: 'EMPTY_RESPONSE',
+      });
       throw new ServiceUnavailableException(
         'AI explanation returned an empty response.',
       );
     }
 
-    const parsed = JSON.parse(rawText) as {
-      summary?: string;
-      steps?: string[];
-      pitfalls?: string[];
-      nextMove?: string | null;
-    };
+    let parsed: AiExplanationPayload;
 
-    return {
+    try {
+      parsed = JSON.parse(rawText) as AiExplanationPayload;
+    } catch {
+      this.logUsage({
+        config,
+        prompt,
+        rawText,
+        startedAt,
+        status: 'FAILED',
+        errorCode: 'INVALID_JSON',
+      });
+      throw new ServiceUnavailableException(
+        'AI explanation returned an invalid response.',
+      );
+    }
+
+    const result = {
       questionId: input.questionId,
       generatedAt: new Date().toISOString(),
       summary:
@@ -143,6 +177,16 @@ export class StudyQuestionAiExplanationService {
         : [],
       nextMove: normalizeOptionalString(parsed.nextMove),
     };
+
+    this.logUsage({
+      config,
+      prompt,
+      rawText,
+      startedAt,
+      status: 'SUCCESS',
+    });
+
+    return result;
   }
 
   private buildPrompt(input: {
@@ -184,5 +228,29 @@ export class StudyQuestionAiExplanationService {
       '',
       'التزم بالعربية الواضحة وتجنب الحشو.',
     ].join('\n');
+  }
+
+  private logUsage(input: {
+    config: ReturnType<typeof resolveStudyQuestionAiExplanationConfig>;
+    prompt: string;
+    rawText: string | null;
+    startedAt: number;
+    status: 'SUCCESS' | 'FAILED';
+    errorCode?: string;
+  }) {
+    this.logger.log(
+      JSON.stringify(
+        buildAiUsageEvent({
+          feature: input.config.feature,
+          provider: input.config.provider,
+          model: input.config.model,
+          status: input.status,
+          inputText: input.prompt,
+          outputText: input.rawText,
+          latencyMs: Date.now() - input.startedAt,
+          errorCode: input.errorCode,
+        }),
+      ),
+    );
   }
 }

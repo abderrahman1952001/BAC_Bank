@@ -207,6 +207,10 @@ export function buildStudentTrainingDrillRoute(input?: {
     : STUDENT_TRAINING_DRILL_ROUTE;
 }
 
+export function buildStudentTrainingSimulationRoute() {
+  return STUDENT_TRAINING_SIMULATION_ROUTE;
+}
+
 export function buildStudentTrainingWeakPointsRoute(
   subjectCode?: string | null,
 ) {

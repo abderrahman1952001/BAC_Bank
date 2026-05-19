@@ -1,4 +1,9 @@
 import {
+  parseStudyCommandStartersResponse,
+  type StudyCommandCreateSessionRequest,
+  type StudyCommandStartersResponse,
+} from "@bac-bank/contracts/study-command";
+import {
   parseCatalogResponse,
   parseCurriculumJourneysResponse,
   parseExamResponse,
@@ -7,6 +12,7 @@ import {
   parseRecentExerciseStatesResponse,
   parseRecentExamActivitiesResponse,
   parseRecentStudySessionsResponse,
+  parseSessionPreviewResponse,
   parseStudySessionResponse,
   parseStudentExerciseStatesLookupResponse,
   parseWeakPointInsightsResponse,
@@ -18,6 +24,7 @@ import {
   type RecentExerciseStatesResponse,
   type RecentExamActivitiesResponse,
   type RecentStudySessionsResponse,
+  type SessionPreviewResponse,
   type StudySessionResponse,
   type StudentExerciseStatesLookupResponse,
   type WeakPointInsightsResponse,
@@ -109,6 +116,67 @@ export async function fetchServerStudySession(
     undefined,
     "Study request failed.",
     parseStudySessionResponse,
+  );
+}
+
+export async function fetchServerStudySessionPreview(
+  request: StudyCommandCreateSessionRequest,
+): Promise<SessionPreviewResponse> {
+  return fetchServerApiJson<SessionPreviewResponse>(
+    "/study/sessions/preview",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(request),
+    },
+    "Study session preview failed.",
+    parseSessionPreviewResponse,
+  );
+}
+
+export async function fetchServerStudyCommandStarters(): Promise<StudyCommandStartersResponse> {
+  if (shouldUsePlaywrightFixtures()) {
+    return {
+      data: [
+        {
+          id: "fixture-active-session",
+          title: "واصل Focused training",
+          prompt: "أريد مواصلة جلسة Focused training الآن",
+          reason: "جلسة مفتوحة من آخر دراسة",
+          tone: "primary",
+          mode: "CONTINUE_SESSION",
+          href: "/student/training/session-123",
+        },
+        {
+          id: "fixture-due-flashcards",
+          title: "1 بطاقة مستحقة",
+          prompt: "أريد مراجعة بطاقات علوم الطبيعة والحياة المستحقة بسرعة",
+          reason: "مراجعة حفظ في علوم الطبيعة والحياة",
+          tone: "cool",
+          mode: "MEMORIZATION_REVIEW",
+          href: "/student/flashcards",
+        },
+        {
+          id: "fixture-bac-training",
+          title: "BAC علوم الطبيعة والحياة",
+          prompt:
+            "أريد تدريب BAC في علوم الطبيعة والحياة على البروتينات آخر 3 سنوات فقط",
+          reason: "متوفر لشعبة Sciences experimentales",
+          tone: "neutral",
+          mode: "BAC_TRAINING",
+          href: "/student/training/drill?subject=NATURAL_SCIENCES&topic=PROTEINS",
+        },
+      ],
+    };
+  }
+
+  return fetchServerApiJson<StudyCommandStartersResponse>(
+    "/study/command/starters",
+    undefined,
+    "Study command starters failed.",
+    parseStudyCommandStartersResponse,
   );
 }
 

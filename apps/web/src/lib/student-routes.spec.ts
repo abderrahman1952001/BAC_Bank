@@ -22,6 +22,7 @@ import {
   buildStudentLibraryExamRouteWithSearch,
   buildStudentMySpaceCurriculumJourneyRoute,
   buildStudentTrainingDrillRoute,
+  buildStudentTrainingSimulationRoute,
   buildStudentTrainingSessionRoute,
   buildStudentTrainingWeakPointsRoute,
   isStudentSurfaceActive,
@@ -137,6 +138,9 @@ describe("student route helpers", () => {
     );
     expect(STUDENT_TRAINING_DRILL_ROUTE).toBe("/student/training/drill");
     expect(STUDENT_TRAINING_SIMULATION_ROUTE).toBe(
+      "/student/training/simulation",
+    );
+    expect(buildStudentTrainingSimulationRoute()).toBe(
       "/student/training/simulation",
     );
     expect(STUDENT_TRAINING_WEAK_POINTS_ROUTE).toBe(

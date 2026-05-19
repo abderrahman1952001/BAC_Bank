@@ -135,13 +135,9 @@ async function installMockApi(
             sessionKind: "TOPIC_DRILL",
             subjectCode: "NATURAL_SCIENCES",
             topicCodes: requestBody.topicCodes,
-            matchingExerciseCount: 0,
-            matchingSujetCount: 0,
-            matchingSujets: [],
-            sampleExercises: [],
-            yearsDistribution: [],
-            streamsDistribution: [],
-            maxSelectableExercises: 0,
+            matchingExerciseCount: 3,
+            matchingSujetCount: 1,
+            maxSelectableExercises: 3,
           });
         }
 
@@ -150,7 +146,9 @@ async function installMockApi(
           sessionKind: "MIXED_DRILL",
           subjectCode: "NATURAL_SCIENCES",
           topicCodes: [],
-          matchingExerciseCount: requestBody?.search?.includes("بروتين") ? 3 : 0,
+          matchingExerciseCount: requestBody?.search?.includes("بروتين")
+            ? 3
+            : 0,
           matchingSujetCount: requestBody?.search?.includes("بروتين") ? 1 : 0,
           maxSelectableExercises: requestBody?.search?.includes("بروتين")
             ? 3
@@ -371,11 +369,9 @@ test("turns a My Space study command into a structured session", async ({
 
   await expect(page.getByText("مسودة جلسة")).toBeVisible();
   await expect(
-    page
-      .locator(".hub-command-proposal")
-      .getByRole("heading", {
-        name: /تدريب BAC علوم الطبيعة والحياة · البروتينات/,
-      }),
+    page.locator(".hub-command-proposal").getByRole("heading", {
+      name: /تدريب BAC علوم الطبيعة والحياة · البروتينات/,
+    }),
   ).toBeVisible();
 
   await page.getByRole("button", { name: "بدء الجلسة" }).click();
@@ -383,8 +379,8 @@ test("turns a My Space study command into a structured session", async ({
   await expect(page).toHaveURL(/\/student\/training\/session-123(?:\?.*)?$/);
   expect(sessionRequests.at(-1)).toMatchObject({
     subjectCode: "NATURAL_SCIENCES",
-    kind: "MIXED_DRILL",
-    search: "بروتين",
+    kind: "TOPIC_DRILL",
+    topicCodes: ["PROTEINS"],
   });
 });
 

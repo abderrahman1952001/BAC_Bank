@@ -11,6 +11,7 @@ import {
   buildSessionNavigatorExercises,
   buildSessionProgressUpdateRequest,
   buildSessionQuestionRefs,
+  buildSessionRecoveryActions,
   findFirstSkippedQuestionRef,
   findFirstUnansweredQuestionRef,
   getAdjacentQuestionRef,
@@ -324,6 +325,101 @@ describe("session player helpers", () => {
     expect(buildSessionGoalSummary(session)).toBe(
       "2 محاور محددة · 2 شعب محددة · بين 2024 و 2025 · استدراكية",
     );
+  });
+
+  it("builds recovery actions from mistakes, due cards, and session filters", () => {
+    const actions = buildSessionRecoveryActions({
+      session,
+      progress: {
+        activeExerciseId: "exercise-1",
+        activeQuestionId: "q2",
+        mode: "SOLVE",
+        questionStates: {
+          q1: {
+            completed: true,
+            solutionViewed: true,
+            reflection: "HARD",
+            timeSpentSeconds: 0,
+          },
+          q2: {
+            opened: true,
+            skipped: true,
+            diagnosis: "METHOD",
+            timeSpentSeconds: 0,
+          },
+        },
+        updatedAt: "2026-03-28T01:00:00.000Z",
+      },
+      progressCounts: {
+        totalCount: 3,
+        completedCount: 1,
+        skippedCount: 1,
+        solutionViewedCount: 1,
+        openedCount: 1,
+        trackedTimeSeconds: 0,
+        unansweredCount: 1,
+      },
+      recoveryContext: {
+        subjectCode: "MATH",
+        openMistakeCount: 2,
+        dueMistakeCount: 1,
+        dueFlashcardCount: 3,
+      },
+    });
+
+    expect(actions.map((action) => action.id)).toEqual([
+      "mistake-repair",
+      "flashcards",
+      "similar-drill",
+    ]);
+    expect(actions[0].href).toBe("/student/training/weak-points?subject=MATH");
+    expect(actions[1].href).toBe("/student/flashcards");
+    expect(actions[2].href).toBe(
+      "/student/training/drill?subject=MATH&topic=ALG&topic=FUNC",
+    );
+  });
+
+  it("does not invent unavailable recovery actions for an empty completed session", () => {
+    const actions = buildSessionRecoveryActions({
+      session: {
+        ...session,
+        family: "DRILL",
+        filters: null,
+      },
+      progress: {
+        activeExerciseId: "exercise-1",
+        activeQuestionId: "q2",
+        mode: "SOLVE",
+        questionStates: {
+          q1: { completed: true, timeSpentSeconds: 0 },
+          q2: { completed: true, timeSpentSeconds: 0 },
+          q3: { completed: true, timeSpentSeconds: 0 },
+        },
+        updatedAt: "2026-03-28T01:00:00.000Z",
+      },
+      progressCounts: {
+        totalCount: 3,
+        completedCount: 3,
+        skippedCount: 0,
+        solutionViewedCount: 0,
+        openedCount: 0,
+        trackedTimeSeconds: 0,
+        unansweredCount: 0,
+      },
+      recoveryContext: {
+        subjectCode: null,
+        openMistakeCount: 0,
+        dueMistakeCount: 0,
+        dueFlashcardCount: 0,
+      },
+    });
+
+    expect(actions).toEqual([
+      expect.objectContaining({
+        id: "similar-drill",
+        href: "/student/training/drill?subject=MATH",
+      }),
+    ]);
   });
 
   it("builds active exercise topics and navigator rows", () => {

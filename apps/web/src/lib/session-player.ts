@@ -4,6 +4,13 @@ import {
   type StudySessionResponse,
 } from "@/lib/study-api";
 import {
+  buildStudentFlashcardsRoute,
+  buildStudentTrainingDrillRoute,
+  buildStudentTrainingSimulationRoute,
+  buildStudentTrainingWeakPointsRoute,
+  STUDENT_MY_SPACE_ROUTE,
+} from "@/lib/student-routes";
+import {
   buildEmptyStudyProgress,
   chooseFreshestStudyProgress,
   countStudyProgress,
@@ -79,6 +86,26 @@ export type ExerciseCheckpointSummary = {
   insights: string[];
 };
 
+export type SessionRecoveryContext = {
+  subjectCode: string | null;
+  openMistakeCount: number;
+  dueMistakeCount: number;
+  dueFlashcardCount: number;
+};
+
+export type SessionRecoveryAction = {
+  id:
+    | "mistake-repair"
+    | "flashcards"
+    | "similar-drill"
+    | "simulation"
+    | "my-space";
+  title: string;
+  description: string;
+  href: string;
+  tone: "brand" | "warning" | "success" | "neutral";
+};
+
 export function buildSessionQuestionRefs(
   exercises: StudyExerciseModel[],
 ): SessionQuestionRef[] {
@@ -130,7 +157,10 @@ export function resolveSessionPlayerProgress(input: {
   );
   const firstUnansweredQuestionId =
     mergedProgress.mode === "SOLVE"
-      ? getFirstUnansweredQuestionId(allQuestionIds, mergedProgress.questionStates)
+      ? getFirstUnansweredQuestionId(
+          allQuestionIds,
+          mergedProgress.questionStates,
+        )
       : null;
   const requestedActiveQuestionState = requestedActiveQuestionId
     ? mergedProgress.questionStates[requestedActiveQuestionId]
@@ -301,6 +331,109 @@ export function buildSessionGoalSummary(
   return parts.join(" · ");
 }
 
+export function buildSessionRecoveryActions(input: {
+  session: StudySessionResponse;
+  progress: StudyProgressSnapshot;
+  progressCounts: ReturnType<typeof countStudyProgress>;
+  recoveryContext?: SessionRecoveryContext;
+}): SessionRecoveryAction[] {
+  const actions: SessionRecoveryAction[] = [];
+  const subjectCode =
+    input.recoveryContext?.subjectCode ??
+    input.session.filters?.subjectCode ??
+    input.session.exercises[0]?.exam.subject.code ??
+    null;
+  const subjectName =
+    input.session.exercises[0]?.exam.subject.name ??
+    (subjectCode ? subjectCode : "هذه المادة");
+  const questionStates = Object.values(input.progress.questionStates);
+  const localRepairSignalCount = questionStates.filter(
+    (state) =>
+      state.skipped ||
+      state.solutionViewed ||
+      state.reflection === "MISSED" ||
+      state.reflection === "HARD" ||
+      state.diagnosis === "CONCEPT" ||
+      state.diagnosis === "METHOD" ||
+      state.diagnosis === "CALCULATION",
+  ).length;
+  const dueMistakeCount = input.recoveryContext?.dueMistakeCount ?? 0;
+  const openMistakeCount = input.recoveryContext?.openMistakeCount ?? 0;
+  const dueFlashcardCount = input.recoveryContext?.dueFlashcardCount ?? 0;
+
+  if (
+    dueMistakeCount > 0 ||
+    openMistakeCount > 0 ||
+    localRepairSignalCount > 0
+  ) {
+    const countLabel =
+      dueMistakeCount > 0
+        ? `حتى ${dueMistakeCount} أخطاء مستحقة ظاهرة`
+        : openMistakeCount > 0
+          ? `حتى ${openMistakeCount} أخطاء مفتوحة ظاهرة`
+          : `${localRepairSignalCount} إشارات من هذه الجلسة`;
+
+    actions.push({
+      id: "mistake-repair",
+      title: "أصلح التعثرات الآن",
+      description: `${countLabel} في ${subjectName}. افتح علاج الأخطاء قبل أن تبرد الجلسة.`,
+      href: buildStudentTrainingWeakPointsRoute(subjectCode),
+      tone: dueMistakeCount > 0 ? "warning" : "brand",
+    });
+  }
+
+  if (dueFlashcardCount > 0) {
+    actions.push({
+      id: "flashcards",
+      title: "راجع البطاقات المستحقة",
+      description: `أول ${dueFlashcardCount} بطاقة جاهزة الآن لتثبيت التعاريف والقوانين بعد التدريب.`,
+      href: buildStudentFlashcardsRoute(),
+      tone: "success",
+    });
+  }
+
+  if (input.session.family === "DRILL") {
+    actions.push({
+      id: "similar-drill",
+      title: "درّب بنفس الهدف",
+      description: input.session.filters?.topicCodes?.length
+        ? "افتح تدريباً جديداً بنفس المادة والمحاور، مع فحص التوفر قبل الإنشاء."
+        : "افتح تدريباً جديداً بنفس المادة، مع فحص التوفر قبل الإنشاء.",
+      href: buildStudentTrainingDrillRoute({
+        subjectCode,
+        topicCodes: input.session.filters?.topicCodes ?? [],
+      }),
+      tone: "neutral",
+    });
+  } else if (input.session.family === "SIMULATION") {
+    actions.push({
+      id: "simulation",
+      title: "حضّر محاكاة أخرى",
+      description:
+        "ارجع إلى المحاكاة لتختار فرضاً زمنياً جديداً عندما تكون جاهزاً.",
+      href: buildStudentTrainingSimulationRoute(),
+      tone: "neutral",
+    });
+  }
+
+  if (
+    actions.length === 0 &&
+    input.progressCounts.completedCount >= input.progressCounts.totalCount &&
+    input.progressCounts.totalCount > 0
+  ) {
+    actions.push({
+      id: "my-space",
+      title: "ارجع إلى مساحتي",
+      description:
+        "لا توجد بطاقات أو أخطاء ظاهرة الآن. ارجع إلى Study Command لتبدأ الوضع التالي.",
+      href: STUDENT_MY_SPACE_ROUTE,
+      tone: "neutral",
+    });
+  }
+
+  return actions.slice(0, 3);
+}
+
 export function buildActiveExerciseTopics(exercise: StudyExerciseModel | null) {
   if (!exercise) {
     return [];
@@ -355,27 +488,30 @@ export function buildExerciseCheckpointSummary(input: {
   exercise: StudyExerciseModel;
   questionStates: Record<string, StudyQuestionState>;
   timingEnabled: boolean;
-}) : ExerciseCheckpointSummary {
+}): ExerciseCheckpointSummary {
   const questionIds = input.exercise.questions.map((question) => question.id);
   const counts = countStudyProgress(questionIds, input.questionStates);
   const totalTimeSeconds = questionIds.reduce(
-    (total, questionId) => total + (input.questionStates[questionId]?.timeSpentSeconds ?? 0),
+    (total, questionId) =>
+      total + (input.questionStates[questionId]?.timeSpentSeconds ?? 0),
     0,
   );
-  const longestQuestion = input.exercise.questions.reduce<StudyQuestionModel | null>(
-    (current, question) => {
-      if (!current) {
-        return question;
-      }
+  const longestQuestion =
+    input.exercise.questions.reduce<StudyQuestionModel | null>(
+      (current, question) => {
+        if (!current) {
+          return question;
+        }
 
-      const currentDuration =
-        input.questionStates[current.id]?.timeSpentSeconds ?? 0;
-      const nextDuration = input.questionStates[question.id]?.timeSpentSeconds ?? 0;
+        const currentDuration =
+          input.questionStates[current.id]?.timeSpentSeconds ?? 0;
+        const nextDuration =
+          input.questionStates[question.id]?.timeSpentSeconds ?? 0;
 
-      return nextDuration > currentDuration ? question : current;
-    },
-    null,
-  );
+        return nextDuration > currentDuration ? question : current;
+      },
+      null,
+    );
   const missedCount = questionIds.filter(
     (questionId) => input.questionStates[questionId]?.reflection === "MISSED",
   ).length;
@@ -385,7 +521,9 @@ export function buildExerciseCheckpointSummary(input: {
   const insights: string[] = [];
 
   if (missedCount > 0) {
-    insights.push(`ما زال ${missedCount} سؤال يحتاج علاجاً مباشراً داخل هذا التمرين.`);
+    insights.push(
+      `ما زال ${missedCount} سؤال يحتاج علاجاً مباشراً داخل هذا التمرين.`,
+    );
   } else if (hardCount > 0) {
     insights.push(`أنهيت التمرين لكن ${hardCount} سؤال بقي في خانة الصعب.`);
   } else if (counts.solutionViewedCount > 0) {
@@ -450,8 +588,9 @@ export function buildSessionPlayerViewModel(input: {
     input.progress.questionStates,
   );
   const currentQuestionPosition = activeQuestion
-    ? allQuestionIds.findIndex((questionId) => questionId === activeQuestion.id) +
-      1
+    ? allQuestionIds.findIndex(
+        (questionId) => questionId === activeQuestion.id,
+      ) + 1
     : 0;
   const activeQuestionState = activeQuestion
     ? input.progress.questionStates[activeQuestion.id]
@@ -466,7 +605,8 @@ export function buildSessionPlayerViewModel(input: {
     input.progress.mode === "REVIEW";
   const canRevealSolution =
     !isActiveSimulation && canRevealStudyQuestionSolution(activeQuestion);
-  const autoAnswerResponseMode = activeQuestion?.interaction.responseMode ?? "NONE";
+  const autoAnswerResponseMode =
+    activeQuestion?.interaction.responseMode ?? "NONE";
   const hasObjectiveResult =
     activeQuestionState?.resultStatus != null &&
     activeQuestionState.resultStatus !== "UNKNOWN";

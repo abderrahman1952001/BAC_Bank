@@ -1,5 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CatalogModule } from '../catalog/catalog.module';
+import { FlashcardsModule } from '../flashcards/flashcards.module';
+import { LabModule } from '../lab/lab.module';
+import { StudyCommandController } from './study-command.controller';
+import { StudyCommandService } from './study-command.service';
 import { StudyController } from './study.controller';
 import { StudyReadModelService } from './study-read-model.service';
 import { StudyExamActivityService } from './study-exam-activity.service';
@@ -12,10 +16,11 @@ import { StudyService } from './study.service';
 import { StudyWeakPointService } from './study-weak-point.service';
 
 @Module({
-  imports: [CatalogModule],
-  controllers: [StudyController],
+  imports: [CatalogModule, FlashcardsModule, LabModule],
+  controllers: [StudyController, StudyCommandController],
   providers: [
     StudyService,
+    StudyCommandService,
     StudySessionService,
     StudyExamActivityService,
     StudyExerciseStateService,

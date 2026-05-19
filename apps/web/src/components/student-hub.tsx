@@ -4,6 +4,7 @@ import {
   parseStudyCommandProposalResponse,
   type StudyCommandCreateSessionRequest,
   type StudyCommandProposal,
+  type StudyCommandStarter,
 } from "@bac-bank/contracts/study-command";
 import Link from "next/link";
 import {
@@ -51,9 +52,7 @@ import {
   formatStudySessionKind,
   parseCreateSessionResponse,
   parseSessionPreviewResponse,
-  type CatalogResponse,
   type CreateSessionResponse,
-  type FiltersResponse,
   type MyMistakesResponse,
   type RecentExerciseStatesResponse,
   type CurriculumJourneysResponse,
@@ -79,10 +78,6 @@ import {
   studentHubStatusTones,
 } from "@/lib/student-hub";
 import {
-  buildStudyCommandStarters,
-  buildStudyCommandMixedDrillFallbackRequest,
-} from "@/lib/study-command";
-import {
   STUDENT_LIBRARY_ROUTE,
   STUDENT_FLASHCARDS_ROUTE,
   STUDENT_LAB_ROUTE,
@@ -100,8 +95,7 @@ export function StudentHub({
   initialWeakPointInsights,
   initialDueFlashcards,
   initialLabTools,
-  initialFilters,
-  initialCatalog,
+  initialStudyCommandStarters,
 }: {
   initialRecentStudySessions?: RecentStudySessionsResponse["data"];
   initialRecentExamActivities?: RecentExamActivitiesResponse["data"];
@@ -111,8 +105,7 @@ export function StudentHub({
   initialWeakPointInsights?: WeakPointInsightsResponse;
   initialDueFlashcards?: DueFlashcardsResponse["data"];
   initialLabTools?: LabToolsResponse["data"];
-  initialFilters?: FiltersResponse;
-  initialCatalog?: CatalogResponse;
+  initialStudyCommandStarters?: StudyCommandStarter[];
 }) {
   const router = useRouter();
   const [refreshingHub, startRefreshingHub] = useTransition();
@@ -271,35 +264,9 @@ export function StudentHub({
     labTools.find((tool) => tool.inProgressMissionCount > 0) ??
     labTools.find((tool) => tool.completedMissionCount < tool.missionCount) ??
     null;
-  const studyCommandContext = useMemo(
-    () => ({
-      sessions,
-      recentExamActivities: examActivities,
-      myMistakes,
-      curriculumJourneys,
-      weakPointInsights,
-      dueFlashcards,
-      labTools,
-      filters: initialFilters ?? null,
-      catalog: initialCatalog ?? null,
-      userStreamCode: user?.stream?.code ?? null,
-    }),
-    [
-      curriculumJourneys,
-      dueFlashcards,
-      examActivities,
-      initialCatalog,
-      initialFilters,
-      labTools,
-      myMistakes,
-      sessions,
-      user?.stream?.code,
-      weakPointInsights,
-    ],
-  );
   const studyCommandStarters = useMemo(
-    () => buildStudyCommandStarters(studyCommandContext),
-    [studyCommandContext],
+    () => initialStudyCommandStarters ?? [],
+    [initialStudyCommandStarters],
   );
   const reviewCount =
     dueFlashcards.length + myMistakeItems.length + savedExerciseItems.length;
@@ -386,9 +353,7 @@ export function StudentHub({
   }
 
   function handleFineTune(option: string) {
-    const nextCommand = commandDraft
-      ? `${commandDraft}، ${option}`
-      : option;
+    const nextCommand = commandDraft ? `${commandDraft}، ${option}` : option;
     setCommandDraft(nextCommand);
     void createProposal(nextCommand);
   }
@@ -418,15 +383,7 @@ export function StudentHub({
       return request;
     }
 
-    const fallbackRequest = buildStudyCommandMixedDrillFallbackRequest(request);
-
-    if (!fallbackRequest) {
-      return null;
-    }
-
-    const fallbackPreview = await previewCommandSession(fallbackRequest);
-
-    return fallbackPreview.matchingExerciseCount > 0 ? fallbackRequest : null;
+    return null;
   }
 
   async function handleStartCommandProposal(proposal: StudyCommandProposal) {
@@ -654,16 +611,13 @@ export function StudentHub({
             <div>
               <h2>ما الذي تريد دراسته في هذه الجلسة؟</h2>
               <p>
-                اكتب بحرية: فرض قريب، حصة دعم، تمارين BAC، حفظ، فهم درس، أو
-                خطأ تريد إصلاحه.
+                اكتب بحرية: فرض قريب، حصة دعم، تمارين BAC، حفظ، فهم درس، أو خطأ
+                تريد إصلاحه.
               </p>
             </div>
           </div>
 
-          <form
-            className="hub-command-form"
-            onSubmit={handleCommandSubmit}
-          >
+          <form className="hub-command-form" onSubmit={handleCommandSubmit}>
             <Textarea
               value={commandDraft}
               onChange={(event) => {
@@ -717,20 +671,22 @@ export function StudentHub({
             </p>
           ) : null}
 
-          <div className="hub-smart-starters" aria-label="اقتراحات ذكية">
-            {studyCommandStarters.map((starter) => (
-              <Button
-                key={starter.id}
-                type="button"
-                variant="outline"
-                className={`hub-smart-starter tone-${starter.tone}`}
-                onClick={() => handleStarterClick(starter.prompt)}
-              >
-                <span>{starter.title}</span>
-                <small>{starter.reason}</small>
-              </Button>
-            ))}
-          </div>
+          {studyCommandStarters.length ? (
+            <div className="hub-smart-starters" aria-label="اقتراحات ذكية">
+              {studyCommandStarters.map((starter) => (
+                <Button
+                  key={starter.id}
+                  type="button"
+                  variant="outline"
+                  className={`hub-smart-starter tone-${starter.tone}`}
+                  onClick={() => handleStarterClick(starter.prompt)}
+                >
+                  <span>{starter.title}</span>
+                  <small>{starter.reason}</small>
+                </Button>
+              ))}
+            </div>
+          ) : null}
 
           {commandProposal ? (
             <article className="hub-command-proposal" aria-live="polite">
@@ -761,6 +717,19 @@ export function StudentHub({
                 {commandProposal.rationale}
               </p>
 
+              {commandProposal.availability &&
+              commandProposal.availability.status !== "READY" ? (
+                <p className="hub-command-proposal-availability">
+                  {commandProposal.availability.message}
+                </p>
+              ) : null}
+
+              {commandProposal.clarification ? (
+                <p className="hub-command-proposal-clarification">
+                  {commandProposal.clarification.question}
+                </p>
+              ) : null}
+
               <div className="hub-command-proposal-actions">
                 {commandProposal.primaryAction.kind === "OPEN_ROUTE" ? (
                   <Button asChild className="h-11 rounded-full px-5">
@@ -772,7 +741,9 @@ export function StudentHub({
                   <Button
                     type="button"
                     className="h-11 rounded-full px-5"
-                    onClick={() => void handleStartCommandProposal(commandProposal)}
+                    onClick={() =>
+                      void handleStartCommandProposal(commandProposal)
+                    }
                     disabled={creatingCommandSession}
                   >
                     {creatingCommandSession

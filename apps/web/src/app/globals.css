@@ -5528,6 +5528,60 @@ textarea {
   font-size: 0.82rem;
 }
 
+.completion-next-actions {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.completion-next-action {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.78rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: 0.78rem;
+}
+
+.completion-next-action-icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.completion-next-action strong,
+.completion-next-action span {
+  display: block;
+}
+
+.completion-next-action strong {
+  font-size: 0.95rem;
+}
+
+.completion-next-action span {
+  margin-top: 0.16rem;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.completion-next-action.tone-warning {
+  border-color: color-mix(in srgb, var(--warning) 38%, var(--line));
+}
+
+.completion-next-action.tone-brand {
+  border-color: color-mix(in srgb, var(--brand) 34%, var(--line));
+}
+
+.completion-next-action.tone-success {
+  border-color: color-mix(in srgb, var(--success) 34%, var(--line));
+}
+
 /* Library Workspace */
 
 .library-workspace {
@@ -6251,10 +6305,15 @@ textarea {
   .library-exercise-card,
   .builder-preview-sujet,
   .builder-preview-exercise,
+  .completion-next-action,
   .curriculum-journey-map-head,
   .curriculum-journey-stage-head {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .completion-next-action {
+    grid-template-columns: 1fr;
   }
 
   .hub-spotlight-actions,
@@ -8661,6 +8720,29 @@ textarea {
   line-height: 1.65;
 }
 
+.hub-command-proposal-availability {
+  border: 1px solid var(--brand-alt-line);
+  border-radius: 8px;
+  background: var(--brand-alt-ghost);
+  color: var(--ink);
+  font-size: 0.88rem;
+  line-height: 1.65;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+}
+
+.hub-command-proposal-clarification {
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface-subtle);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: var(--weight-label);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+}
+
 .hub-command-proposal-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -10092,15 +10174,43 @@ textarea {
   --archive-max-width: 1120px;
   --archive-paper-width: 1080px;
   --archive-chrome: color-mix(in srgb, var(--surface) 62%, transparent);
-  --archive-chrome-strong: color-mix(in srgb, var(--surface-strong) 78%, transparent);
+  --archive-chrome-strong: color-mix(
+    in srgb,
+    var(--surface-strong) 78%,
+    transparent
+  );
   --archive-control: color-mix(in srgb, var(--surface-soft) 70%, transparent);
-  --archive-control-strong: color-mix(in srgb, var(--surface-strong) 82%, transparent);
-  --archive-paper: color-mix(in srgb, var(--surface-strong) 94%, var(--brand-alt) 6%);
-  --archive-paper-soft: color-mix(in srgb, var(--surface-soft) 90%, var(--brand-alt) 10%);
-  --archive-paper-line: color-mix(in srgb, var(--line) 76%, var(--brand-alt) 24%);
-  --archive-context: color-mix(in srgb, var(--brand-alt-ghost) 78%, transparent);
+  --archive-control-strong: color-mix(
+    in srgb,
+    var(--surface-strong) 82%,
+    transparent
+  );
+  --archive-paper: color-mix(
+    in srgb,
+    var(--surface-strong) 94%,
+    var(--brand-alt) 6%
+  );
+  --archive-paper-soft: color-mix(
+    in srgb,
+    var(--surface-soft) 90%,
+    var(--brand-alt) 10%
+  );
+  --archive-paper-line: color-mix(
+    in srgb,
+    var(--line) 76%,
+    var(--brand-alt) 24%
+  );
+  --archive-context: color-mix(
+    in srgb,
+    var(--brand-alt-ghost) 78%,
+    transparent
+  );
   --archive-figure: color-mix(in srgb, var(--surface-muted) 84%, transparent);
-  --archive-review: color-mix(in srgb, var(--accent-ghost) 42%, var(--surface) 58%);
+  --archive-review: color-mix(
+    in srgb,
+    var(--accent-ghost) 42%,
+    var(--surface) 58%
+  );
   gap: clamp(0.64rem, 1.2vw, 0.82rem);
 }
 
@@ -10111,7 +10221,11 @@ textarea {
   --archive-control-strong: rgba(248, 250, 252, 0.07);
   --archive-paper: #17191d;
   --archive-paper-soft: rgba(246, 239, 226, 0.055);
-  --archive-paper-line: color-mix(in srgb, var(--line) 66%, var(--brand-alt) 34%);
+  --archive-paper-line: color-mix(
+    in srgb,
+    var(--line) 66%,
+    var(--brand-alt) 34%
+  );
   --archive-context: rgba(198, 173, 115, 0.085);
   --archive-figure: rgba(11, 15, 20, 0.36);
   --archive-review: rgba(9, 13, 18, 0.4);
@@ -10133,7 +10247,11 @@ textarea {
   border: 1px solid var(--line);
   border-radius: 18px;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--archive-chrome-strong) 72%, transparent), transparent),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--archive-chrome-strong) 72%, transparent),
+      transparent
+    ),
     var(--archive-chrome);
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ink) 5%, transparent);
 }
@@ -10198,7 +10316,11 @@ textarea {
   border: 1px solid var(--line);
   border-radius: 18px;
   background:
-    linear-gradient(180deg, var(--archive-chrome-strong), var(--archive-chrome)),
+    linear-gradient(
+      180deg,
+      var(--archive-chrome-strong),
+      var(--archive-chrome)
+    ),
     var(--surface-soft);
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(18px);
@@ -10313,7 +10435,11 @@ textarea {
   padding: clamp(1.12rem, 2.55vw, 1.9rem);
   background:
     linear-gradient(180deg, var(--archive-paper-soft), transparent 34%),
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--brand-alt) 10%, transparent), transparent 36%),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--brand-alt) 10%, transparent),
+      transparent 36%
+    ),
     var(--archive-paper);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--ink) 4%, transparent),
@@ -10398,7 +10524,11 @@ textarea {
 .student-main-frame-paper .sujet-paper-context .study-media-block,
 .student-main-frame-paper .sujet-paper-context .study-hierarchy-blocks figure,
 .student-main-frame-paper .sujet-paper-context .study-table-wrap {
-  background: color-mix(in srgb, var(--archive-figure) 84%, var(--archive-paper) 16%);
+  background: color-mix(
+    in srgb,
+    var(--archive-figure) 84%,
+    var(--archive-paper) 16%
+  );
 }
 
 .student-main-frame-paper .sujet-paper-sheet .study-asset-grid img,
@@ -10497,7 +10627,11 @@ textarea {
   border-radius: 16px;
   padding: 0.76rem;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--accent-ghost) 68%, transparent), transparent),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent-ghost) 68%, transparent),
+      transparent
+    ),
     var(--archive-review);
 }
 
@@ -10551,7 +10685,11 @@ textarea {
 
 .sujet-paper-review-panel.tone-rubric {
   border-color: var(--brand-alt-line);
-  background: color-mix(in srgb, var(--brand-alt-ghost) 58%, var(--archive-control) 42%);
+  background: color-mix(
+    in srgb,
+    var(--brand-alt-ghost) 58%,
+    var(--archive-control) 42%
+  );
 }
 
 .sujet-paper-review-panel.tone-hint {
@@ -12295,11 +12433,7 @@ textarea {
   inset: -35%;
   pointer-events: none;
   background:
-    radial-gradient(
-      circle at 72% 8%,
-      var(--instrument-glow),
-      transparent 30%
-    ),
+    radial-gradient(circle at 72% 8%, var(--instrument-glow), transparent 30%),
     radial-gradient(
       circle at 18% 92%,
       rgba(58, 111, 150, 0.12),
@@ -12343,7 +12477,11 @@ textarea {
   place-items: center;
   color: var(--instrument-accent);
   background:
-    radial-gradient(circle at 50% 42%, rgba(0, 229, 153, 0.16), transparent 36%),
+    radial-gradient(
+      circle at 50% 42%,
+      rgba(0, 229, 153, 0.16),
+      transparent 36%
+    ),
     linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent);
 }
 
@@ -12409,11 +12547,7 @@ textarea {
       rgba(16, 185, 129, 0.14),
       transparent 30%
     ),
-    radial-gradient(
-      circle at 18% 92%,
-      rgba(14, 165, 233, 0.1),
-      transparent 26%
-    );
+    radial-gradient(circle at 18% 92%, rgba(14, 165, 233, 0.1), transparent 26%);
   filter: blur(16px);
 }
 
@@ -12441,7 +12575,11 @@ textarea {
 .course-subject-chip.instrument-card::before {
   background:
     radial-gradient(circle at 74% 8%, rgba(0, 229, 153, 0.2), transparent 30%),
-    radial-gradient(circle at 16% 96%, rgba(58, 111, 150, 0.16), transparent 28%);
+    radial-gradient(
+      circle at 16% 96%,
+      rgba(58, 111, 150, 0.16),
+      transparent 28%
+    );
 }
 
 .course-subject-visual {
