@@ -131,6 +131,21 @@ type InferredTopic = {
   canUseCode: boolean;
 };
 
+type SubjectContextSource =
+  | 'weak-points'
+  | 'curriculum'
+  | 'recent-exam'
+  | 'mistake'
+  | 'flashcard';
+
+type ContextSubjectCandidate = {
+  source: SubjectContextSource;
+  subject: {
+    code: string;
+    name: string;
+  };
+};
+
 const SUBJECT_HINTS: SubjectHint[] = [
   {
     preferredCodes: ['MATHEMATICS', 'MATH'],
@@ -138,6 +153,8 @@ const SUBJECT_HINTS: SubjectHint[] = [
     aliases: [
       'math',
       'maths',
+      'mathematique',
+      'mathématique',
       'رياضيات',
       'الرياضيات',
       'دوال',
@@ -156,6 +173,7 @@ const SUBJECT_HINTS: SubjectHint[] = [
     aliases: [
       'physics',
       'physique',
+      'phys',
       'فيزياء',
       'الفيزياء',
       'علوم فيزيائية',
@@ -187,6 +205,7 @@ const SUBJECT_HINTS: SubjectHint[] = [
     aliases: [
       'svt',
       'science',
+      'natural science',
       'علوم',
       'علوم الطبيعة',
       'علوم طبيعية',
@@ -207,6 +226,8 @@ const SUBJECT_HINTS: SubjectHint[] = [
       'history',
       'geo',
       'geography',
+      'histoire',
+      'géographie',
       'تاريخ',
       'جغرافيا',
       'خرائط',
@@ -269,6 +290,9 @@ const TOPIC_HINTS: TopicHint[] = [
     aliases: [
       'تركيب البروتين',
       'اصطناع البروتين',
+      'تركيب بروتين',
+      'synthese proteique',
+      'synthèse protéique',
       'adn',
       'dna',
       'arn',
@@ -288,7 +312,13 @@ const TOPIC_HINTS: TopicHint[] = [
   {
     preferredCodes: ['PHOTOSYNTHESIS'],
     name: 'التركيب الضوئي',
-    aliases: ['التركيب الضوئي', 'بناء ضوئي', 'photosynthesis'],
+    aliases: [
+      'التركيب الضوئي',
+      'بناء ضوئي',
+      'photosynthesis',
+      'photosynthese',
+      'photosynthèse',
+    ],
   },
   {
     preferredCodes: ['RESPIRATION_FERMENTATION'],
@@ -360,7 +390,7 @@ const TOPIC_HINTS: TopicHint[] = [
   {
     preferredCodes: ['ORGANIC_CHEMISTRY'],
     name: 'الكيمياء العضوية',
-    aliases: ['الكيمياء العضوية', 'عضوية', 'organic'],
+    aliases: ['الكيمياء العضوية', 'عضوية', 'organic', 'organique'],
   },
 ];
 
@@ -500,6 +530,7 @@ function subjectFromTopicMention(
 function inferSubject(
   command: string,
   context?: StudyCommandContext,
+  mode?: StudyCommandStarterMode,
 ): InferredSubject | null {
   const exactSubject = findBestAliasHint(command, SUBJECT_HINTS);
 
@@ -524,17 +555,57 @@ function inferSubject(
   }
 
   const normalized = normalizeCommandText(command);
-  const contextSubjects = [
-    context?.weakPointInsights[0]?.subject,
-    context?.curriculumJourneys[0]?.subject,
-    context?.recentExamActivities[0]?.subject,
-    context?.myMistakes[0]?.exam.subject,
-    context?.dueFlashcards[0]?.card.subject ?? null,
-  ].filter((subject): subject is { code: string; name: string } =>
-    Boolean(subject),
-  );
+  const contextSubjects: ContextSubjectCandidate[] = [
+    ...((context?.weakPointInsights[0]?.subject
+      ? [
+          {
+            source: 'weak-points' as const,
+            subject: context.weakPointInsights[0].subject,
+          },
+        ]
+      : []) satisfies ContextSubjectCandidate[]),
+    ...((context?.curriculumJourneys[0]?.subject
+      ? [
+          {
+            source: 'curriculum' as const,
+            subject: context.curriculumJourneys[0].subject,
+          },
+        ]
+      : []) satisfies ContextSubjectCandidate[]),
+    ...((context?.recentExamActivities[0]?.subject
+      ? [
+          {
+            source: 'recent-exam' as const,
+            subject: context.recentExamActivities[0].subject,
+          },
+        ]
+      : []) satisfies ContextSubjectCandidate[]),
+    ...((context?.myMistakes[0]?.exam.subject
+      ? [
+          {
+            source: 'mistake' as const,
+            subject: context.myMistakes[0].exam.subject,
+          },
+        ]
+      : []) satisfies ContextSubjectCandidate[]),
+    ...((context?.dueFlashcards[0]?.card.subject
+      ? [
+          {
+            source: 'flashcard' as const,
+            subject: context.dueFlashcards[0].card.subject,
+          },
+        ]
+      : []) satisfies ContextSubjectCandidate[]),
+  ];
 
-  const contextSubject = contextSubjects[0] ?? null;
+  const contextSubject =
+    contextSubjects.find((candidate) =>
+      shouldUsePassiveContextSubject({
+        mode: mode ?? 'BAC_TRAINING',
+        command,
+        candidate,
+      }),
+    )?.subject ?? null;
 
   if (contextSubject) {
     return {
@@ -741,6 +812,35 @@ function wantsRecentThreeYears(command: string) {
   ]);
 }
 
+function shouldUsePassiveContextSubject(input: {
+  mode: StudyCommandStarterMode;
+  command: string;
+  candidate: ContextSubjectCandidate;
+}) {
+  const normalized = normalizeCommandText(input.command);
+
+  if (input.mode === 'MISTAKE_REPAIR') {
+    return (
+      input.candidate.source === 'weak-points' ||
+      input.candidate.source === 'mistake'
+    );
+  }
+
+  if (input.mode === 'MEMORIZATION_REVIEW') {
+    return input.candidate.source === 'flashcard';
+  }
+
+  if (input.mode === 'CONTINUE_SESSION') {
+    return input.candidate.source === 'recent-exam';
+  }
+
+  return (
+    input.mode === 'LESSON_UNDERSTANDING' &&
+    input.candidate.source === 'curriculum' &&
+    includesAny(normalized, ['مساري', 'رحلتي', 'الدرس التالي', 'next lesson'])
+  );
+}
+
 export function inferStudyCommandMode(
   command: string,
   context?: StudyCommandContext,
@@ -757,6 +857,7 @@ export function inferStudyCommandMode(
   if (
     includesAny(normalized, [
       'فرض',
+      'fard',
       'اختبار',
       'امتحان',
       'test',
@@ -764,6 +865,8 @@ export function inferStudyCommandMode(
       'devoir',
       'controle',
       'contrôle',
+      'kontrol',
+      'exam school',
     ])
   ) {
     return 'SCHOOL_TEST_PREP';
@@ -776,8 +879,11 @@ export function inferStudyCommandMode(
       'أستاذ',
       'استاذ',
       'prof',
+      'professeur',
       'دعم',
       'خصوصي',
+      'soutien',
+      'cour',
     ])
   ) {
     return 'TUTOR_REPLAY';
@@ -819,6 +925,7 @@ export function inferStudyCommandMode(
       'محاكاة',
       'simulation',
       'bac blanc',
+      'mock',
       'اختبار كامل',
       'موضوع كامل',
     ])
@@ -832,9 +939,12 @@ export function inferStudyCommandMode(
       'اخطائي',
       'غلط',
       'غلطت',
+      'غلطة',
       'mistake',
       'weak',
+      'weakness',
       'ضعف',
+      'نقطة ضعفي',
     ])
   ) {
     return 'MISTAKE_REPAIR';
@@ -852,6 +962,7 @@ export function inferStudyCommandMode(
       'ارشيف',
       'archive',
       'library',
+      'annales',
     ])
   ) {
     return 'LIBRARY_SEARCH';
@@ -1396,7 +1507,7 @@ export function buildStudyCommandProposal(
 
   const activeSession = findActiveSession(context?.sessions ?? []);
   const mode = inferStudyCommandMode(trimmedCommand, context);
-  const subject = inferSubject(trimmedCommand, context);
+  const subject = inferSubject(trimmedCommand, context, mode);
   const topic = inferTopic(trimmedCommand, subject, context);
   const deadline = inferDeadline(trimmedCommand);
   const subjectName = subject?.name ?? null;

@@ -7,6 +7,7 @@ export type StudyCommandEvalFixture = {
   expectedSubjectCode?: string;
   expectedTopicCodes?: string[];
   expectsClarification?: boolean;
+  context?: 'default' | 'empty';
 };
 
 export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
@@ -16,6 +17,20 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     expectedMode: 'SCHOOL_TEST_PREP',
     expectedSubjectCode: 'PHYSICS',
     expectedTopicCodes: ['ELECTRICITY'],
+  },
+  {
+    id: 'school-test-darja-latin-math-functions',
+    command: '3andi fard ghodwa f maths les fonctions',
+    expectedMode: 'SCHOOL_TEST_PREP',
+    expectedSubjectCode: 'MATHEMATICS',
+    expectedTopicCodes: ['FUNCTIONS'],
+  },
+  {
+    id: 'school-test-french-chemistry-organic',
+    command: 'devoir demain chimie organique, exercices courts',
+    expectedMode: 'SCHOOL_TEST_PREP',
+    expectedSubjectCode: 'PHYSICS',
+    expectedTopicCodes: ['ORGANIC_CHEMISTRY'],
   },
   {
     id: 'tutor-replay-functions',
@@ -32,6 +47,13 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     expectedTopicCodes: ['PHOTOSYNTHESIS'],
   },
   {
+    id: 'bac-training-svt-immunity',
+    command: 'بغيت مواضيع باك في المناعة',
+    expectedMode: 'BAC_TRAINING',
+    expectedSubjectCode: 'NATURAL_SCIENCES',
+    expectedTopicCodes: ['IMMUNITY'],
+  },
+  {
     id: 'lesson-understanding-protein-synthesis',
     command: 'مافهمتش تركيب البروتين، اشرحلي الدرس',
     expectedMode: 'LESSON_UNDERSTANDING',
@@ -45,6 +67,12 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     expectedTopicCodes: ['HISTORICAL_DATES'],
   },
   {
+    id: 'memorization-due-cards-context',
+    command: 'راجعلي البطاقات المستحقة',
+    expectedMode: 'MEMORIZATION_REVIEW',
+    expectedSubjectCode: 'NATURAL_SCIENCES',
+  },
+  {
     id: 'simulation-full-paper',
     command: 'نحب محاكاة موضوع كامل في الرياضيات',
     expectedMode: 'SIMULATION',
@@ -55,6 +83,13 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     command: 'أريد إصلاح أخطائي في الفيزياء',
     expectedMode: 'MISTAKE_REPAIR',
     expectedSubjectCode: 'PHYSICS',
+  },
+  {
+    id: 'mistake-repair-weak-context',
+    command: 'أريد جلسة قصيرة لإصلاح نقطة ضعفي',
+    expectedMode: 'MISTAKE_REPAIR',
+    expectedSubjectCode: 'MATH',
+    expectedTopicCodes: ['FUNCTIONS'],
   },
   {
     id: 'lab-visual-functions',
@@ -70,7 +105,20 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     expectedSubjectCode: 'NATURAL_SCIENCES',
   },
   {
+    id: 'library-annales-svt',
+    command: 'annales bac 2024 svt',
+    expectedMode: 'LIBRARY_SEARCH',
+    expectedSubjectCode: 'NATURAL_SCIENCES',
+  },
+  {
     id: 'missing-subject-clarification',
+    command: 'أريد تدريب BAC آخر 3 سنوات',
+    expectedMode: 'BAC_TRAINING',
+    expectsClarification: true,
+    context: 'empty',
+  },
+  {
+    id: 'missing-subject-with-context-still-clarifies',
     command: 'أريد تدريب BAC آخر 3 سنوات',
     expectedMode: 'BAC_TRAINING',
     expectsClarification: true,

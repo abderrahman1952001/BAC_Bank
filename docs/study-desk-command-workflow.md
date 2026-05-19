@@ -87,6 +87,11 @@ product architecture, not necessarily visible labels.
 - Do not make a long-term planner the main daily UX.
 - Do not hide the normal navigation; students should still be able to open
   Library, Training, Courses, Flashcards, Lab, and My Space directly.
+- Do not silently borrow a subject from passive context for generic commands.
+  A command like "أريد تدريب BAC آخر 3 سنوات" should ask which subject even if
+  the student has recent math weak points. Passive context may fill the subject
+  only when the wording clearly asks for that context, such as "أصلح نقطة ضعفي"
+  or "راجع البطاقات المستحقة".
 
 ## Implementation Stance
 
@@ -128,6 +133,10 @@ The first implementation should be intentionally narrow:
 - prompt fixtures for messy Algerian BAC commands live in
   `apps/api/src/study/study-command-eval-fixtures.ts` and should grow whenever
   a real student wording fails routing.
+- the command router is a measurable brain, not a bag of UI labels. Every new
+  important wording should become an eval fixture with expected mode, subject,
+  topic, and clarification behavior. The system should pass those fixtures
+  before adding broader autonomy.
 - a full-stack Playwright smoke can be run with `PLAYWRIGHT_FULL_STACK=true`
   to verify command proposal, API preview, real session creation, and training
   navigation against the local API and database

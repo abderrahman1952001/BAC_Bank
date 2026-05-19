@@ -254,6 +254,32 @@ const filters = {
       },
       streamCodes: ['SE'],
     },
+    {
+      code: 'IMMUNITY',
+      name: 'المناعة',
+      slug: 'immunity',
+      parentCode: null,
+      displayOrder: 4,
+      isSelectable: true,
+      subject: {
+        code: 'NATURAL_SCIENCES',
+        name: 'علوم الطبيعة والحياة',
+      },
+      streamCodes: ['SE'],
+    },
+    {
+      code: 'ORGANIC_CHEMISTRY',
+      name: 'الكيمياء العضوية',
+      slug: 'organic-chemistry',
+      parentCode: null,
+      displayOrder: 5,
+      isSelectable: true,
+      subject: {
+        code: 'PHYSICS',
+        name: 'العلوم الفيزيائية',
+      },
+      streamCodes: ['SE'],
+    },
   ],
   sessionTypes: ['NORMAL', 'MAKEUP'],
 } satisfies FiltersResponse;
@@ -441,6 +467,37 @@ describe('study command', () => {
     expect(proposal?.fineTuneOptions).toContain('الرياضيات');
   });
 
+  it('does not borrow a passive context subject for generic BAC training', () => {
+    const proposal = buildStudyCommandProposal(
+      'أريد تدريب BAC آخر 3 سنوات',
+      context,
+    );
+
+    expect(proposal).toMatchObject({
+      mode: 'BAC_TRAINING',
+      clarification: {
+        question: 'أي مادة تقصد؟',
+      },
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+      },
+    });
+  });
+
+  it('uses weak-point context only when the command asks for repair', () => {
+    const proposal = buildStudyCommandProposal(
+      'أريد جلسة قصيرة لإصلاح نقطة ضعفي',
+      context,
+    );
+
+    expect(proposal).toMatchObject({
+      mode: 'MISTAKE_REPAIR',
+      primaryHref: '/student/training/weak-points?subject=MATH',
+    });
+    expect(proposal?.title).toContain('رياضيات');
+    expect(proposal?.title).toContain('الدوال');
+  });
+
   it('applies supported fine-tuning to the create-session payload', () => {
     const proposal = buildStudyCommandProposal(
       'أريد تدريب BAC في الرياضيات، آخر 3 سنوات فقط، زد تمريناً واحداً',
@@ -562,7 +619,7 @@ describe('study command', () => {
     (fixture) => {
       const proposal = buildStudyCommandProposal(
         fixture.command,
-        fixture.expectsClarification ? emptyContext : context,
+        fixture.context === 'empty' ? emptyContext : context,
       );
 
       expect(proposal?.mode).toBe(fixture.expectedMode);
