@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { SubscriptionStatus, UserRole } from '@prisma/client';
+import { Prisma, SubscriptionStatus, UserRole } from '@prisma/client';
 import { createClerkClient, verifyToken } from '@clerk/backend';
 import { AuthService } from './auth.service';
 
@@ -273,7 +273,8 @@ describe('AuthService', () => {
     prisma.stream.findUnique.mockResolvedValueOnce({
       id: 'stream-1',
     });
-    prisma.user.upsert.mockResolvedValueOnce({
+    prisma.user.findUnique.mockResolvedValueOnce(null);
+    prisma.user.create.mockResolvedValueOnce({
       id: 'user-playwright',
       clerkUserId: null,
       email: 'playwright.student@bac-bank.local',
@@ -298,12 +299,10 @@ describe('AuthService', () => {
     });
 
     expect(mockedVerifyToken).not.toHaveBeenCalled();
-    expect(prisma.user.upsert).toHaveBeenCalledWith(
+    expect(prisma.user.create).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: {
+        data: expect.objectContaining({
           email: 'playwright.student@bac-bank.local',
-        },
-        create: expect.objectContaining({
           role: UserRole.USER,
           subscriptionStatus: SubscriptionStatus.ACTIVE,
           stream: {
@@ -312,6 +311,57 @@ describe('AuthService', () => {
             },
           },
         }),
+      }),
+    );
+  });
+
+  it('recovers Playwright test auth when concurrent requests create the same email', async () => {
+    configValues.PLAYWRIGHT_TEST_AUTH = 'true';
+    prisma.stream.findUnique.mockResolvedValueOnce({
+      id: 'stream-1',
+    });
+    prisma.user.findUnique.mockResolvedValueOnce(null);
+    prisma.user.create.mockRejectedValueOnce(
+      new Prisma.PrismaClientKnownRequestError(
+        'Unique constraint failed on the fields: (`email`)',
+        {
+          code: 'P2002',
+          clientVersion: 'test',
+          meta: {
+            target: ['email'],
+          },
+        },
+      ),
+    );
+    prisma.user.update.mockResolvedValueOnce({
+      id: 'user-playwright',
+      clerkUserId: null,
+      email: 'playwright.student@bac-bank.local',
+      fullName: 'Playwright Student',
+      role: UserRole.USER,
+      subscriptionStatus: SubscriptionStatus.ACTIVE,
+      subscriptionEndsAt: new Date('2099-12-31T23:59:59.000Z'),
+      stream: {
+        code: 'SE',
+        name: 'علوم تجريبية',
+      },
+    });
+
+    await expect(
+      service.authenticateRequest({
+        cookieHeader: 'bb_test_auth=student',
+      }),
+    ).resolves.toMatchObject({
+      id: 'user-playwright',
+      email: 'playwright.student@bac-bank.local',
+      role: UserRole.USER,
+    });
+
+    expect(prisma.user.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          email: 'playwright.student@bac-bank.local',
+        },
       }),
     );
   });

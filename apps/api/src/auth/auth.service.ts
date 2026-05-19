@@ -31,6 +31,18 @@ type PlaywrightTestAuthProfile = {
   role: UserRole;
 };
 
+type PlaywrightTestUserMutationData = {
+  fullName: string;
+  role: UserRole;
+  subscriptionStatus: SubscriptionStatus;
+  subscriptionEndsAt: Date;
+  stream?: {
+    connect: {
+      id: string;
+    };
+  };
+};
+
 type UserProfileRecord = Prisma.UserGetPayload<{
   select: {
     id: true;
@@ -416,41 +428,78 @@ export class AuthService {
             select: { id: true },
           })
         : null;
-    const streamData = stream
-      ? {
-          stream: {
-            connect: {
-              id: stream.id,
-            },
-          },
-        }
-      : {};
     const subscriptionEndsAt = new Date('2099-12-31T23:59:59.000Z');
-    const user = await this.prisma.user.upsert({
+    const userData: PlaywrightTestUserMutationData = {
+      fullName: profile.fullName,
+      role: profile.role,
+      subscriptionStatus: SubscriptionStatus.ACTIVE,
+      subscriptionEndsAt,
+      ...(stream
+        ? {
+            stream: {
+              connect: {
+                id: stream.id,
+              },
+            },
+          }
+        : {}),
+    };
+    const existingUser = await this.prisma.user.findUnique({
       where: { email: profile.email },
-      update: {
-        fullName: profile.fullName,
-        role: profile.role,
-        subscriptionStatus: SubscriptionStatus.ACTIVE,
-        subscriptionEndsAt,
-        ...streamData,
-      },
-      create: {
-        email: profile.email,
-        fullName: profile.fullName,
-        role: profile.role,
-        subscriptionStatus: SubscriptionStatus.ACTIVE,
-        subscriptionEndsAt,
-        ...streamData,
-      },
       select: this.userProfileSelect,
     });
+    const user = existingUser
+      ? await this.prisma.user.update({
+          where: { id: existingUser.id },
+          data: userData,
+          select: this.userProfileSelect,
+        })
+      : await this.createPlaywrightTestUser(profile.email, userData);
 
     return {
       id: user.id,
       email: user.email,
       role: user.role,
     };
+  }
+
+  private async createPlaywrightTestUser(
+    email: string,
+    data: PlaywrightTestUserMutationData,
+  ) {
+    try {
+      return await this.prisma.user.create({
+        data: {
+          ...data,
+          email,
+        },
+        select: this.userProfileSelect,
+      });
+    } catch (error) {
+      if (this.isPrismaUniqueConstraintError(error, 'email')) {
+        return this.prisma.user.update({
+          where: { email },
+          data,
+          select: this.userProfileSelect,
+        });
+      }
+
+      throw error;
+    }
+  }
+
+  private isPrismaUniqueConstraintError(error: unknown, fieldName: string) {
+    const target =
+      error instanceof Prisma.PrismaClientKnownRequestError
+        ? error.meta?.target
+        : null;
+
+    return (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002' &&
+      Array.isArray(target) &&
+      target.includes(fieldName)
+    );
   }
 
   private readPlaywrightTestAuthProfile(

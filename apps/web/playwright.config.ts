@@ -1,6 +1,12 @@
 import { defineConfig } from '@playwright/test';
 
 const fullStack = process.env.PLAYWRIGHT_FULL_STACK === 'true';
+const fullStackDatabaseUrl =
+  process.env.PLAYWRIGHT_DATABASE_URL ??
+  'postgresql://bac_user:bac_password@127.0.0.1:5433/bac_bank?schema=public';
+const shellEnv = (name: string, value: string) =>
+  `${name}=${JSON.stringify(value)}`;
+const fullStackDatabaseEnv = shellEnv('DATABASE_URL', fullStackDatabaseUrl);
 
 export default defineConfig({
   testDir: './e2e',
@@ -19,7 +25,7 @@ export default defineConfig({
     ? [
         {
           command:
-            'docker compose up -d postgres redis && PLAYWRIGHT_TEST_AUTH=true npm run dev -w @bac-bank/api',
+            `docker compose up -d postgres redis && ${fullStackDatabaseEnv} npm exec -w @bac-bank/api -- prisma migrate deploy --schema prisma/schema.prisma && ${fullStackDatabaseEnv} PLAYWRIGHT_TEST_AUTH=true npm run dev -w @bac-bank/api`,
           url: 'http://127.0.0.1:3001/api/v1/health/live',
           reuseExistingServer: !process.env.CI,
           timeout: 300_000,
