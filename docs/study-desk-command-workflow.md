@@ -197,6 +197,9 @@ The first implementation should be intentionally narrow:
   could not safely verify the workflow.
 - real links into existing platform surfaces for lesson, flashcard, simulation,
   lab, library, mistake-repair, and continuation flows
+- course surfaces must not synthesize lesson checkpoints from taxonomy alone.
+  If an authored topic exists, show its concepts; if it does not, show an honest
+  course-content-not-ready state and offer real training/library alternatives.
 - completed training sessions render typed recovery actions from session
   progress plus lightweight mistake/flashcard counts. The recovery layer opens
   existing surfaces; it does not create canonical content or hidden drills.

@@ -18,6 +18,7 @@ import type {
 import {
   STUDENT_COURSES_ROUTE,
   buildStudentCourseSubjectRoute,
+  buildStudentTrainingDrillRoute,
 } from "@/lib/student-routes";
 
 function getConceptIcon(concept: CourseConceptCard) {
@@ -88,6 +89,12 @@ export function CourseTopicPage({
     );
   }
 
+  const hasConcepts = model.concepts.length > 0;
+  const trainingHref = buildStudentTrainingDrillRoute({
+    subjectCode: model.subject.code,
+    topicCodes: [model.topic.code],
+  });
+
   return (
     <StudyShell>
       <StudentNavbar />
@@ -132,8 +139,8 @@ export function CourseTopicPage({
               <span />
             </div>
             <Button asChild className="h-11 rounded-full px-5">
-              <Link href={model.continueHref}>
-                ابدأ
+              <Link href={hasConcepts ? model.continueHref : trainingHref}>
+                {hasConcepts ? "ابدأ" : "تدريب"}
                 <ArrowLeft data-icon />
               </Link>
             </Button>
@@ -149,84 +156,100 @@ export function CourseTopicPage({
           </div>
 
           <div className="course-concept-path">
-            {model.conceptGroups.map((group) => (
-              <section
-                key={group.unitCode ?? "course-path"}
-                className="course-snake-panel course-concept-snake-panel"
-              >
-                <div className="course-snake-head">
-                  <div>
-                    <span>خارطة الوحدة</span>
-                    <h2>{group.title}</h2>
-                  </div>
-                  <StudyBadge tone="accent">
-                    {group.concepts.length} محطات
-                  </StudyBadge>
-                </div>
-
-                <div className="course-snake-map course-concept-snake-map">
-                  {chunkItems(group.concepts, 4).map((lane, laneIndex) => (
-                    <div
-                      key={`${group.unitCode ?? "path"}-${laneIndex}`}
-                      className={`course-snake-lane ${
-                        laneIndex % 2 === 1 ? "is-reverse" : ""
-                      }`}
-                    >
-                      {lane.map((concept, conceptOffset) => {
-                        const index = laneIndex * 4 + conceptOffset;
-
-                        return (
-                          <Link
-                            key={concept.slug}
-                            href={concept.href}
-                            className={`course-snake-node course-concept-node ${
-                              index === 0 ? "is-recommended" : ""
-                            }`}
-                          >
-                            <span
-                              className="course-snake-node-orb"
-                              aria-hidden="true"
-                            >
-                              {(() => {
-                                const Icon = getConceptIcon(concept);
-                                return <Icon />;
-                              })()}
-                            </span>
-                            <span className="course-snake-node-copy">
-                              <span>
-                                <StudyBadge
-                                  tone={getConceptTone(concept, index)}
-                                >
-                                  {concept.roleLabel}
-                                </StudyBadge>
-                                {concept.title.includes("فخ") ||
-                                concept.title.includes("تحقق") ? (
-                                  <StudyBadge tone="warning">
-                                    <TriangleAlert
-                                      size={12}
-                                      aria-hidden="true"
-                                    />
-                                    تثبيت
-                                  </StudyBadge>
-                                ) : null}
-                              </span>
-                              <strong>{concept.title}</strong>
-                              <em>
-                                {index + 1}/{group.concepts.length}
-                              </em>
-                            </span>
-                            <span className="course-snake-node-action">
-                              افتح
-                              <ArrowLeft aria-hidden="true" />
-                            </span>
-                          </Link>
-                        );
-                      })}
+            {hasConcepts ? (
+              model.conceptGroups.map((group) => (
+                <section
+                  key={group.unitCode ?? "course-path"}
+                  className="course-snake-panel course-concept-snake-panel"
+                >
+                  <div className="course-snake-head">
+                    <div>
+                      <span>خارطة الوحدة</span>
+                      <h2>{group.title}</h2>
                     </div>
-                  ))}
-                </div>
-              </section>
-            ))}
+                    <StudyBadge tone="accent">
+                      {group.concepts.length} محطات
+                    </StudyBadge>
+                  </div>
+
+                  <div className="course-snake-map course-concept-snake-map">
+                    {chunkItems(group.concepts, 4).map((lane, laneIndex) => (
+                      <div
+                        key={`${group.unitCode ?? "path"}-${laneIndex}`}
+                        className={`course-snake-lane ${
+                          laneIndex % 2 === 1 ? "is-reverse" : ""
+                        }`}
+                      >
+                        {lane.map((concept, conceptOffset) => {
+                          const index = laneIndex * 4 + conceptOffset;
+
+                          return (
+                            <Link
+                              key={concept.slug}
+                              href={concept.href}
+                              className={`course-snake-node course-concept-node ${
+                                index === 0 ? "is-recommended" : ""
+                              }`}
+                            >
+                              <span
+                                className="course-snake-node-orb"
+                                aria-hidden="true"
+                              >
+                                {(() => {
+                                  const Icon = getConceptIcon(concept);
+                                  return <Icon />;
+                                })()}
+                              </span>
+                              <span className="course-snake-node-copy">
+                                <span>
+                                  <StudyBadge
+                                    tone={getConceptTone(concept, index)}
+                                  >
+                                    {concept.roleLabel}
+                                  </StudyBadge>
+                                  {concept.title.includes("فخ") ||
+                                  concept.title.includes("تحقق") ? (
+                                    <StudyBadge tone="warning">
+                                      <TriangleAlert
+                                        size={12}
+                                        aria-hidden="true"
+                                      />
+                                      تثبيت
+                                    </StudyBadge>
+                                  ) : null}
+                                </span>
+                                <strong>{concept.title}</strong>
+                                <em>
+                                  {index + 1}/{group.concepts.length}
+                                </em>
+                              </span>
+                              <span className="course-snake-node-action">
+                                افتح
+                                <ArrowLeft aria-hidden="true" />
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))
+            ) : (
+              <EmptyState
+                title="محتوى الدرس غير جاهز بعد"
+                description="سنفتح الدرس هنا عندما يصبح المحتوى القانوني جاهزاً. حالياً يمكنك التدريب على نفس المحور إن وُجدت تمارين منشورة."
+                action={
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-11 rounded-full px-5"
+                  >
+                    <Link href={trainingHref}>فتح التدريب</Link>
+                  </Button>
+                }
+              />
+            )}
           </div>
         </section>
       </div>

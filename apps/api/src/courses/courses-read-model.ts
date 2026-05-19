@@ -491,19 +491,6 @@ export function buildCourseTopicResponse(input: {
   const section = curriculumJourney
     ? findSectionForTopic(curriculumJourney.sections, topicCode)
     : null;
-  const fallbackConcepts = topic
-    ? (topic.children.length > 0 ? topic.children : [topic]).map((child) => ({
-        conceptCode: child.code,
-        slug: child.slug,
-        unitCode: null,
-        role: 'LESSON' as const,
-        title: child.name,
-        description: child.children.length
-          ? `${child.children.length} محاور فرعية`
-          : null,
-      }))
-    : [];
-
   const concepts = input.authoredTopic?.concepts.length
     ? input.authoredTopic.concepts.map((concept) => ({
         conceptCode: concept.conceptCode,
@@ -513,7 +500,7 @@ export function buildCourseTopicResponse(input: {
         title: concept.curriculumJourneyTitle ?? concept.title,
         description: concept.summary,
       }))
-    : fallbackConcepts;
+    : [];
   const subject =
     curriculumJourney?.subject ??
     resolveSubjectIdentity(input.filters, input.subjectCode);

@@ -333,7 +333,7 @@ describe('courses read-model builders', () => {
     });
   });
 
-  it('builds a course topic response with fallback concept checkpoints', () => {
+  it('builds a course topic response without fake concept fallbacks', () => {
     expect(
       buildCourseTopicResponse({
         subjectCode: 'MATHEMATICS',
@@ -356,24 +356,7 @@ describe('courses read-model builders', () => {
       description: 'فهم السلوك العام للدوال.',
       progressPercent: 55,
       status: 'IN_PROGRESS',
-      concepts: [
-        {
-          conceptCode: 'EXPONENTIAL',
-          slug: 'exponential',
-          unitCode: null,
-          role: 'LESSON',
-          title: 'الدالة الأسية',
-          description: null,
-        },
-        {
-          conceptCode: 'LOGARITHM',
-          slug: 'logarithm',
-          unitCode: null,
-          role: 'LESSON',
-          title: 'الدالة اللوغاريتمية',
-          description: null,
-        },
-      ],
+      concepts: [],
     });
   });
 
