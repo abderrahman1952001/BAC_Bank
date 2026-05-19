@@ -120,6 +120,26 @@ This loop must stay typed: recovery actions are links or commands into existing
 platform surfaces. They are not free-form AI plans, hidden fallback drills, or
 content-generation promises.
 
+## Secondary Landing States
+
+When Study Command opens a surface instead of creating a session, that landing
+surface must preserve the student's requested context and explain any mismatch:
+
+- if Lab has no ready tool for the requested subject, open Lab with the subject
+  in the route and show a clear unavailable-subject notice.
+- if Simulation receives a subject with no official paper in the active stream,
+  explain that the requested subject is not ready before showing available
+  subjects.
+- if Mistake Repair receives a subject with no weak signals, explain that the
+  repair queue has no real data for that subject and show only real weak-signal
+  subjects.
+- if a repair or simulation preview has zero matching content, show that as a
+  needs-content state; do not leave a disabled action without explanation.
+
+These states should feel like honest product answers, not errors. The student
+should always understand whether the blocker is missing content, missing
+personal history, quota, or a temporary loading/API issue.
+
 ## Guardrails
 
 - Do not add a standalone open chatbot as the student product center.
