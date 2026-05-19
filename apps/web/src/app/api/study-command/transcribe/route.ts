@@ -50,7 +50,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const formData = await request.formData();
+  let formData: FormData;
+
+  try {
+    formData = await request.formData();
+  } catch {
+    return NextResponse.json(
+      { message: "Audio form data is invalid." },
+      { status: 400 },
+    );
+  }
+
   const audio = formData.get("audio");
 
   if (!(audio instanceof File)) {
@@ -90,17 +100,26 @@ export async function POST(request: Request) {
     "The speaker is an Algerian BAC student. They may mix Arabic, Darija, French, Arabizi, and school-subject terminology.",
   );
 
-  const response = await fetch(
-    "https://api.openai.com/v1/audio/transcriptions",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
+  let response: Response;
+
+  try {
+    response = await fetch(
+      "https://api.openai.com/v1/audio/transcriptions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: upstreamFormData,
+        signal: AbortSignal.timeout(TRANSCRIPTION_TIMEOUT_MS),
       },
-      body: upstreamFormData,
-      signal: AbortSignal.timeout(TRANSCRIPTION_TIMEOUT_MS),
-    },
-  );
+    );
+  } catch {
+    return NextResponse.json(
+      { message: "Voice transcription failed." },
+      { status: 502 },
+    );
+  }
 
   if (!response.ok) {
     return NextResponse.json(
@@ -109,7 +128,17 @@ export async function POST(request: Request) {
     );
   }
 
-  const payload = (await response.json()) as { text?: unknown };
+  let payload: { text?: unknown };
+
+  try {
+    payload = (await response.json()) as { text?: unknown };
+  } catch {
+    return NextResponse.json(
+      { message: "Voice transcription returned invalid data." },
+      { status: 502 },
+    );
+  }
+
   const text = typeof payload.text === "string" ? payload.text.trim() : "";
 
   if (!text) {
