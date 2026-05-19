@@ -422,6 +422,53 @@ describe("session player helpers", () => {
     ]);
   });
 
+  it("preserves the subject when suggesting another simulation", () => {
+    const actions = buildSessionRecoveryActions({
+      session: {
+        ...session,
+        family: "SIMULATION",
+        kind: "PAPER_SIMULATION",
+        filters: {
+          ...session.filters,
+          topicCodes: [],
+        },
+      },
+      progress: {
+        activeExerciseId: "exercise-1",
+        activeQuestionId: "q2",
+        mode: "SOLVE",
+        questionStates: {
+          q1: { completed: true, timeSpentSeconds: 0 },
+          q2: { completed: true, timeSpentSeconds: 0 },
+          q3: { completed: true, timeSpentSeconds: 0 },
+        },
+        updatedAt: "2026-03-28T01:00:00.000Z",
+      },
+      progressCounts: {
+        totalCount: 3,
+        completedCount: 3,
+        skippedCount: 0,
+        solutionViewedCount: 0,
+        openedCount: 0,
+        trackedTimeSeconds: 0,
+        unansweredCount: 0,
+      },
+      recoveryContext: {
+        subjectCode: "MATH",
+        openMistakeCount: 0,
+        dueMistakeCount: 0,
+        dueFlashcardCount: 0,
+      },
+    });
+
+    expect(actions).toEqual([
+      expect.objectContaining({
+        id: "simulation",
+        href: "/student/training/simulation?subject=MATH",
+      }),
+    ]);
+  });
+
   it("builds active exercise topics and navigator rows", () => {
     expect(buildActiveExerciseTopics(exercises[0])).toEqual([
       { code: "ALG", name: "Algebra" },

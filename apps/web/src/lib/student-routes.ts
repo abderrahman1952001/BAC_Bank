@@ -207,8 +207,12 @@ export function buildStudentTrainingDrillRoute(input?: {
     : STUDENT_TRAINING_DRILL_ROUTE;
 }
 
-export function buildStudentTrainingSimulationRoute() {
-  return STUDENT_TRAINING_SIMULATION_ROUTE;
+export function buildStudentTrainingSimulationRoute(
+  subjectCode?: string | null,
+) {
+  return buildRouteWithSearchParams(STUDENT_TRAINING_SIMULATION_ROUTE, {
+    subject: subjectCode ?? undefined,
+  });
 }
 
 export function buildStudentTrainingWeakPointsRoute(

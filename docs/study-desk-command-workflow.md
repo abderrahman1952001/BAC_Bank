@@ -96,6 +96,30 @@ owner and fallback behavior.
 | `LIBRARY_SEARCH` | Archive, annales, official paper lookup, source finding | None required; subject/stream improve targeting | Open Library with stream/subject query when known | `READY` when catalog has published entries | Open Library with a needs-content message when catalog is empty |
 | `CONTINUE_SESSION` | Continue/resume an unfinished study session | Active session | Open the active session directly | Active session must exist | Fall back to normal command routing if no active session exists |
 
+## Session Aftermath Loop
+
+Session completion is part of Study Command, not a generic success screen. The
+post-session state should help the student make one believable next move from
+real signals:
+
+- due or open mistakes take priority over generic repeat-practice suggestions
+  because they are already persisted repair work.
+- skipped questions, viewed solutions, hard/missed reflections, and concept,
+  method, or calculation diagnoses may create a local repair suggestion for the
+  just-finished session.
+- due flashcards may open flashcard review; the recovery layer must not invent
+  flashcards or imply that canonical decks exist when they do not.
+- drill sessions may suggest another drill with the same verified subject/topic
+  filters, leaving the builder or API preview to check availability again.
+- simulation sessions may suggest another simulation while preserving the
+  session subject when known.
+- if no recovery signal exists, send the student back to My Space so smart
+  starters can use persisted context instead of client-only assumptions.
+
+This loop must stay typed: recovery actions are links or commands into existing
+platform surfaces. They are not free-form AI plans, hidden fallback drills, or
+content-generation promises.
+
 ## Guardrails
 
 - Do not add a standalone open chatbot as the student product center.

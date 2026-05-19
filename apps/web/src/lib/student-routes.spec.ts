@@ -143,6 +143,9 @@ describe("student route helpers", () => {
     expect(buildStudentTrainingSimulationRoute()).toBe(
       "/student/training/simulation",
     );
+    expect(buildStudentTrainingSimulationRoute("MATH")).toBe(
+      "/student/training/simulation?subject=MATH",
+    );
     expect(STUDENT_TRAINING_WEAK_POINTS_ROUTE).toBe(
       "/student/training/weak-points",
     );

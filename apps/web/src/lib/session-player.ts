@@ -411,7 +411,7 @@ export function buildSessionRecoveryActions(input: {
       title: "حضّر محاكاة أخرى",
       description:
         "ارجع إلى المحاكاة لتختار فرضاً زمنياً جديداً عندما تكون جاهزاً.",
-      href: buildStudentTrainingSimulationRoute(),
+      href: buildStudentTrainingSimulationRoute(subjectCode),
       tone: "neutral",
     });
   }
