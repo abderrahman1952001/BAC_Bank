@@ -12,11 +12,11 @@ import {
 } from "@/lib/study-api";
 import { describeStudentExerciseState } from "@/lib/study-exercise-state";
 import {
-  STUDENT_TRAINING_SIMULATION_ROUTE,
   buildStudentLibraryExamRoute,
   buildStudentLibraryExamRouteWithSearch,
   buildStudentMySpaceCurriculumJourneyRoute,
   buildStudentTrainingDrillRoute,
+  buildStudentTrainingSimulationRoute,
   buildStudentTrainingSessionRoute,
   buildStudentTrainingWeakPointsRoute,
 } from "@/lib/student-routes";
@@ -395,7 +395,9 @@ export function buildCurriculumJourneyItems(
               "mistakes",
             )
           : curriculumJourney.nextAction?.type === "PAPER_SIMULATION"
-            ? STUDENT_TRAINING_SIMULATION_ROUTE
+            ? buildStudentTrainingSimulationRoute(
+                curriculumJourney.subject.code,
+              )
             : detailsHref;
     const tone: HubCurriculumJourneyTone =
       needsReview > 0 || curriculumJourney.openReviewItemCount > 0

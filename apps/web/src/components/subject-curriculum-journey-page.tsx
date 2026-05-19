@@ -13,10 +13,10 @@ import {
   STUDENT_LIBRARY_ROUTE,
   STUDENT_MY_SPACE_ROUTE,
   STUDENT_TRAINING_ROUTE,
-  STUDENT_TRAINING_SIMULATION_ROUTE,
   buildStudentLibraryExamRouteWithSearch,
   buildStudentMySpaceCurriculumJourneyRoute,
   buildStudentTrainingDrillRoute,
+  buildStudentTrainingSimulationRoute,
 } from "@/lib/student-routes";
 import type { CurriculumJourney } from "@/lib/subject-curriculum-journey-view";
 import { formatRelativeStudyTimestamp } from "@/lib/study-time";
@@ -64,7 +64,9 @@ function buildCurriculumJourneyNextActionHref(
         "mistakes",
       );
     case "PAPER_SIMULATION":
-      return STUDENT_TRAINING_SIMULATION_ROUTE;
+      return buildStudentTrainingSimulationRoute(
+        curriculumJourney.subject.code,
+      );
     default:
       return STUDENT_TRAINING_ROUTE;
   }
@@ -189,7 +191,11 @@ export function SubjectCurriculumJourneyPage({
                 variant="outline"
                 className="h-11 rounded-full px-5"
               >
-                <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>
+                <Link
+                  href={buildStudentTrainingSimulationRoute(
+                    curriculumJourney.subject.code,
+                  )}
+                >
                   محاكاة كاملة
                 </Link>
               </Button>
@@ -244,7 +250,11 @@ export function SubjectCurriculumJourneyPage({
               action={
                 <div className="study-action-row">
                   <Button asChild className="h-11 rounded-full px-5">
-                    <Link href={STUDENT_TRAINING_SIMULATION_ROUTE}>
+                    <Link
+                      href={buildStudentTrainingSimulationRoute(
+                        curriculumJourney.subject.code,
+                      )}
+                    >
                       ابدأ محاكاة
                     </Link>
                   </Button>

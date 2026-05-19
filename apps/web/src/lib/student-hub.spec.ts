@@ -418,7 +418,7 @@ describe("student hub helpers", () => {
         tone: "warning",
       }),
       expect.objectContaining({
-        actionHref: "/student/training/simulation",
+        actionHref: "/student/training/simulation?subject=PHYS",
         detailsHref: "/student/my-space/curriculum/PHYS",
         summaryLabel: "جاهز للمحاكاة",
         tone: "success",
