@@ -45,6 +45,7 @@ import {
 } from "@/lib/flashcards-surface";
 import {
   STUDENT_COURSES_ROUTE,
+  STUDENT_FLASHCARDS_ROUTE,
   STUDENT_TRAINING_ROUTE,
 } from "@/lib/student-routes";
 
@@ -61,9 +62,11 @@ const REVIEW_RATINGS: FlashcardReviewRating[] = [
 export function FlashcardsHomePage({
   initialDecks,
   initialDueCards,
+  requestedSubjectCode,
 }: {
   initialDecks?: FlashcardDeckSummary[];
   initialDueCards?: DueFlashcardItem[];
+  requestedSubjectCode?: string | null;
 }) {
   const router = useRouter();
   const [decks, setDecks] = useState<FlashcardDeckSummary[]>(
@@ -109,6 +112,11 @@ export function FlashcardsHomePage({
   ).length;
   const initialDataUnavailable =
     initialDecks === undefined || initialDueCards === undefined;
+  const requestedSubjectLabel =
+    dueCards.find((item) => item.card.subject?.code === requestedSubjectCode)
+      ?.card.subject?.name ??
+    activeDueCard?.card.subject?.name ??
+    requestedSubjectCode;
 
   async function refreshFlashcardData() {
     if (refreshing) {
@@ -124,6 +132,7 @@ export function FlashcardsHomePage({
         fetchFlashcardDecks(),
         fetchDueFlashcards({
           limit: 20,
+          subjectCode: requestedSubjectCode,
         }),
       ]);
       setDecks(deckPayload.data);
@@ -230,9 +239,15 @@ export function FlashcardsHomePage({
         card: response.card,
         state: response.state,
       };
-      setDueCards((current) => [nextItem, ...current]);
-      setActiveDueIndex(0);
-      setAnswerVisible(false);
+      const createdCardMatchesSubject =
+        !requestedSubjectCode ||
+        response.card.subject?.code === requestedSubjectCode;
+
+      if (createdCardMatchesSubject) {
+        setDueCards((current) => [nextItem, ...current]);
+        setActiveDueIndex(0);
+        setAnswerVisible(false);
+      }
 
       if (cardDeckId) {
         setDecks((current) =>
@@ -257,7 +272,11 @@ export function FlashcardsHomePage({
 
       setCardFront("");
       setCardBack("");
-      setNotice("تم حفظ البطاقة وأضيفت لمراجعة اليوم.");
+      setNotice(
+        createdCardMatchesSubject
+          ? "تم حفظ البطاقة وأضيفت لمراجعة اليوم."
+          : "تم حفظ البطاقة. أزل فلتر المادة لرؤيتها في مراجعة اليوم.",
+      );
     } catch (requestError) {
       setError(
         requestError instanceof Error
@@ -286,6 +305,7 @@ export function FlashcardsHomePage({
         }),
         fetchDueFlashcards({
           limit: 20,
+          subjectCode: requestedSubjectCode,
         }),
       ]);
       setDecks((current) =>
@@ -462,6 +482,20 @@ export function FlashcardsHomePage({
               disabled={refreshing}
             >
               إعادة المحاولة
+            </Button>
+          </div>
+        ) : null}
+
+        {requestedSubjectCode ? (
+          <div className="hub-sync-notice">
+            <p>
+              وصلنا من Study Command إلى بطاقات {requestedSubjectLabel}.{" "}
+              {dueCards.length
+                ? "هذه المراجعة مفلترة على المادة المطلوبة."
+                : "لا توجد بطاقات مستحقة لهذه المادة الآن."}
+            </p>
+            <Button asChild variant="outline" className="h-10 rounded-full px-4">
+              <Link href={STUDENT_FLASHCARDS_ROUTE}>كل البطاقات</Link>
             </Button>
           </div>
         ) : null}

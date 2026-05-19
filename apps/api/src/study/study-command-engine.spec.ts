@@ -714,10 +714,26 @@ describe('study command', () => {
     );
 
     expect(proposal?.mode).toBe('MEMORIZATION_REVIEW');
-    expect(proposal?.primaryHref).toBe('/student/flashcards');
+    expect(proposal?.primaryHref).toBe('/student/flashcards?subject=SVT');
     expect(proposal?.availability).toMatchObject({
       status: 'READY',
       matchingExerciseCount: 1,
+    });
+  });
+
+  it('keeps memorization availability scoped to the requested subject', () => {
+    const proposal = buildStudyCommandProposal(
+      'راجعلي تعريفات الرياضيات',
+      context,
+    );
+
+    expect(proposal?.mode).toBe('MEMORIZATION_REVIEW');
+    expect(proposal?.primaryHref).toBe(
+      '/student/flashcards?subject=MATHEMATICS',
+    );
+    expect(proposal?.availability).toMatchObject({
+      status: 'NEEDS_CONTENT',
+      matchingExerciseCount: 0,
     });
   });
 
@@ -734,7 +750,9 @@ describe('study command', () => {
       status: 'NEEDS_CONTENT',
       matchingExerciseCount: 0,
     });
-    expect(proposal?.primaryHref).toBe('/student/flashcards');
+    expect(proposal?.primaryHref).toBe(
+      '/student/flashcards?subject=NATURAL_SCIENCES',
+    );
   });
 
   it('returns null for empty commands', () => {

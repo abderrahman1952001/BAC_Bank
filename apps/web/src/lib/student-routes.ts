@@ -154,8 +154,12 @@ export function buildStudentCourseConceptRoute(
   )}/concepts/${encodeURIComponent(conceptSlug)}`;
 }
 
-export function buildStudentFlashcardsRoute(): string {
-  return STUDENT_FLASHCARDS_ROUTE;
+export function buildStudentFlashcardsRoute(
+  subjectCode?: string | null,
+): string {
+  return buildRouteWithSearchParams(STUDENT_FLASHCARDS_ROUTE, {
+    subject: subjectCode ?? undefined,
+  });
 }
 
 export function buildStudentLabRoute(subjectCode?: string | null): string {

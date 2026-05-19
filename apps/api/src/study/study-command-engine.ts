@@ -81,6 +81,12 @@ function buildStudentLibraryRoute(input?: {
   });
 }
 
+function buildStudentFlashcardsRoute(subjectCode?: string | null) {
+  return buildRouteWithSearchParams(STUDENT_FLASHCARDS_ROUTE, {
+    subject: subjectCode ?? undefined,
+  });
+}
+
 function buildStudentLabRoute(subjectCode?: string | null) {
   return buildRouteWithSearchParams(STUDENT_LAB_ROUTE, {
     subject: subjectCode ?? undefined,
@@ -700,7 +706,21 @@ function subjectReferenceMatches(
   }
 
   return (
-    subjectRef.code === subject.code || subjectRef.family?.code === subject.code
+    subjectCodeMatches(subjectRef.code, subject.code) ||
+    (subjectRef.family?.code
+      ? subjectCodeMatches(subjectRef.family.code, subject.code)
+      : false)
+  );
+}
+
+function subjectCodeMatches(left: string, right: string) {
+  if (left === right) {
+    return true;
+  }
+
+  return SUBJECT_HINTS.some(
+    (hint) =>
+      hint.preferredCodes.includes(left) && hint.preferredCodes.includes(right),
   );
 }
 
@@ -1412,18 +1432,25 @@ function buildSurfaceAvailability(input: {
   context?: StudyCommandContext;
 }) {
   switch (input.mode) {
-    case 'MEMORIZATION_REVIEW':
-      return input.context?.dueFlashcards.length
+    case 'MEMORIZATION_REVIEW': {
+      const dueCardCount = countDueFlashcardsForSubject(
+        input.subject,
+        input.context,
+      );
+
+      return dueCardCount > 0
         ? {
             status: 'READY' as const,
-            matchingExerciseCount: input.context.dueFlashcards.length,
+            matchingExerciseCount: dueCardCount,
           }
         : {
             status: 'NEEDS_CONTENT' as const,
             matchingExerciseCount: 0,
-            message:
-              'لا توجد بطاقات مستحقة الآن. افتح البطاقات لاختيار Deck أو إنشاء بطاقات من الدروس والتمارين.',
+            message: input.subject
+              ? `لا توجد بطاقات مستحقة الآن في ${input.subject.name}. افتح البطاقات لاختيار Deck أو إنشاء بطاقات من الدروس والتمارين.`
+              : 'لا توجد بطاقات مستحقة الآن. افتح البطاقات لاختيار Deck أو إنشاء بطاقات من الدروس والتمارين.',
           };
+    }
     case 'MISTAKE_REPAIR':
       return (input.context?.myMistakes.length ?? 0) > 0 ||
         (input.context?.weakPointInsights.length ?? 0) > 0
@@ -1469,6 +1496,44 @@ function buildSurfaceAvailability(input: {
     default:
       return undefined;
   }
+}
+
+function countDueFlashcardsForSubject(
+  subject: InferredSubject | null,
+  context?: StudyCommandContext,
+) {
+  const dueFlashcards = context?.dueFlashcards ?? [];
+
+  if (!subject) {
+    return dueFlashcards.length;
+  }
+
+  if (!subject.canCreateSession) {
+    return 0;
+  }
+
+  return dueFlashcards.filter((item) =>
+    item.card.subject
+      ? subjectReferenceMatches(item.card.subject, subject)
+      : false,
+  ).length;
+}
+
+function resolveFlashcardSubjectCode(
+  subject: InferredSubject | null,
+  context?: StudyCommandContext,
+) {
+  if (!subject) {
+    return null;
+  }
+
+  const matchingDueCardSubject = context?.dueFlashcards.find((item) =>
+    item.card.subject
+      ? subjectReferenceMatches(item.card.subject, subject)
+      : false,
+  )?.card.subject;
+
+  return matchingDueCardSubject?.code ?? subject.code;
 }
 
 function buildLessonHref(input: {
@@ -1698,7 +1763,9 @@ export function buildStudyCommandProposal(
       subjectCode,
       topic,
     }),
-    MEMORIZATION_REVIEW: STUDENT_FLASHCARDS_ROUTE,
+    MEMORIZATION_REVIEW: buildStudentFlashcardsRoute(
+      resolveFlashcardSubjectCode(subject, context),
+    ),
     SIMULATION: buildStudentTrainingSimulationRoute(subjectCode),
     MISTAKE_REPAIR: buildStudentTrainingWeakPointsRoute(subjectCode),
     LAB_EXPLORATION: buildLabHref({
@@ -1843,19 +1910,19 @@ export function buildStudyCommandStarters(
   }
 
   if (context.dueFlashcards.length > 0) {
-    const firstCardSubject = context.dueFlashcards[0]?.card.subject?.name;
+    const firstCardSubject = context.dueFlashcards[0]?.card.subject ?? null;
     starters.push({
       id: 'due-flashcards',
       title: `${context.dueFlashcards.length} بطاقة مستحقة`,
       prompt: firstCardSubject
-        ? `أريد مراجعة بطاقات ${firstCardSubject} المستحقة بسرعة`
+        ? `أريد مراجعة بطاقات ${firstCardSubject.name} المستحقة بسرعة`
         : 'أريد مراجعة البطاقات المستحقة بسرعة',
       reason: firstCardSubject
-        ? `مراجعة حفظ في ${firstCardSubject}`
+        ? `مراجعة حفظ في ${firstCardSubject.name}`
         : 'مراجعة حفظ جاهزة',
       tone: 'cool',
       mode: 'MEMORIZATION_REVIEW',
-      href: STUDENT_FLASHCARDS_ROUTE,
+      href: buildStudentFlashcardsRoute(firstCardSubject?.code),
     });
   }
 

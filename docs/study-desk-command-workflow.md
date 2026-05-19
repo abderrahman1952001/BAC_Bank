@@ -133,6 +133,9 @@ surface must preserve the student's requested context and explain any mismatch:
 - if Mistake Repair receives a subject with no weak signals, explain that the
   repair queue has no real data for that subject and show only real weak-signal
   subjects.
+- if Flashcards receives a subject from Study Command, keep that subject in the
+  route and filter the due queue to real due cards for that subject. If none are
+  due, explain that clearly and let the student open all cards.
 - if a repair or simulation preview has zero matching content, show that as a
   needs-content state; do not leave a disabled action without explanation.
 

@@ -260,7 +260,7 @@ describe('StudyCommandService', () => {
     expect(studyService.createStudySession).not.toHaveBeenCalled();
     expect(response).toMatchObject({
       kind: 'OPEN_ROUTE',
-      href: '/student/flashcards',
+      href: '/student/flashcards?subject=NATURAL_SCIENCES',
       proposal: {
         mode: 'MEMORIZATION_REVIEW',
       },
