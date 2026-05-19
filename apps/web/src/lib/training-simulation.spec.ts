@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { CatalogResponse } from "@/lib/study-api";
 import {
   buildOfficialSimulationPaperKey,
+  hasTrainingSimulationSubjectCode,
   listOfficialSimulationPapers,
   listTrainingSimulationStreams,
   listTrainingSimulationSubjects,
@@ -81,6 +82,18 @@ describe("training simulation helpers", () => {
         "PHYS",
       ),
     ).toBe("MATH");
+    expect(
+      hasTrainingSimulationSubjectCode(
+        listTrainingSimulationSubjects(stream),
+        "PHYS",
+      ),
+    ).toBe(false);
+    expect(
+      hasTrainingSimulationSubjectCode(
+        listTrainingSimulationSubjects(stream),
+        "MATH",
+      ),
+    ).toBe(true);
   });
 
   it("builds and repairs sorted official paper options", () => {

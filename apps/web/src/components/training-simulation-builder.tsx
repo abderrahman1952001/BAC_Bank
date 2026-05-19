@@ -19,6 +19,7 @@ import {
 } from "@/lib/study-api";
 import {
   buildOfficialSimulationPaperKey,
+  hasTrainingSimulationSubjectCode,
   listOfficialSimulationPapers,
   listTrainingSimulationStreams,
   listTrainingSimulationSubjects,
@@ -78,6 +79,11 @@ export function TrainingSimulationBuilder({
   const availableSubjects = useMemo(
     () => listTrainingSimulationSubjects(activeStream),
     [activeStream],
+  );
+  const requestedSubjectUnavailable = Boolean(
+    initialSubjectCode &&
+      availableSubjects.length > 0 &&
+      !hasTrainingSimulationSubjectCode(availableSubjects, initialSubjectCode),
   );
   const papers = useMemo(
     () => listOfficialSimulationPapers(activeStream, selectedSubjectCode),
@@ -280,6 +286,16 @@ export function TrainingSimulationBuilder({
           <section className="builder-wizard-alert" role="status">
             <h3>بدء محاكاة جديدة غير متاح حالياً</h3>
             <p>{simulationStartBlockedMessage}</p>
+          </section>
+        ) : null}
+
+        {requestedSubjectUnavailable ? (
+          <section className="builder-wizard-alert" role="status">
+            <h3>المادة المطلوبة غير جاهزة للمحاكاة</h3>
+            <p>
+              لم نجد موضوعاً منشوراً للمادة المطلوبة داخل هذه الشعبة، فاخترنا
+              أقرب مادة متاحة من الفهرس الرسمي.
+            </p>
           </section>
         ) : null}
 

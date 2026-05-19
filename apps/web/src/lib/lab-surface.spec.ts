@@ -3,7 +3,9 @@ import {
   getLabToolById,
   getLabToolsForCourseConcept,
   labTools,
+  listLabToolsForSubjectCode,
   listLabSubjectGroups,
+  subjectCodeToLabSlug,
 } from "./lab-surface";
 
 describe("lab surface registry", () => {
@@ -35,6 +37,16 @@ describe("lab surface registry", () => {
       subjectSlug: "svt",
       title: "SVT Lab",
     });
+  });
+
+  it("maps Study Command subject requests to ready Lab subjects", () => {
+    expect(subjectCodeToLabSlug("MATHEMATICS")).toBe("math");
+    expect(subjectCodeToLabSlug("SVT")).toBe("svt");
+    expect(subjectCodeToLabSlug("PHYSICS")).toBeNull();
+    expect(listLabToolsForSubjectCode("PHYSICS")).toEqual([]);
+    expect(
+      listLabToolsForSubjectCode("NATURAL_SCIENCES").map((tool) => tool.id),
+    ).toEqual(["dna-to-protein"]);
   });
 
   it("resolves contextual course links conservatively", () => {

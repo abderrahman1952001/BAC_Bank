@@ -158,8 +158,10 @@ export function buildStudentFlashcardsRoute(): string {
   return STUDENT_FLASHCARDS_ROUTE;
 }
 
-export function buildStudentLabRoute(): string {
-  return STUDENT_LAB_ROUTE;
+export function buildStudentLabRoute(subjectCode?: string | null): string {
+  return buildRouteWithSearchParams(STUDENT_LAB_ROUTE, {
+    subject: subjectCode ?? undefined,
+  });
 }
 
 export function buildStudentLabToolRoute(

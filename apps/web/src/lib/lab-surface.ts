@@ -88,6 +88,31 @@ const labSubjectDescriptions: Record<LabSubjectSlug, string> = {
   svt: "آليات ووثائق.",
 };
 
+export function subjectCodeToLabSlug(
+  subjectCode: string | null | undefined,
+): LabSubjectSlug | null {
+  switch (subjectCode?.trim().toUpperCase()) {
+    case "MATHEMATICS":
+    case "MATH":
+      return "math";
+    case "NATURAL_SCIENCES":
+    case "SVT":
+      return "svt";
+    default:
+      return null;
+  }
+}
+
+export function listLabToolsForSubjectCode(
+  subjectCode: string | null | undefined,
+) {
+  const subjectSlug = subjectCodeToLabSlug(subjectCode);
+
+  return subjectSlug
+    ? labTools.filter((tool) => tool.subjectSlug === subjectSlug)
+    : [];
+}
+
 export function getLabToolById(toolId: LabTool["id"]): LabTool | null {
   return labTools.find((tool) => tool.id === toolId) ?? null;
 }

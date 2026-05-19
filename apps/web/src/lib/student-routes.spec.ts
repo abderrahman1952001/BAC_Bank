@@ -136,6 +136,9 @@ describe("student route helpers", () => {
     expect(buildStudentTrainingSessionRoute("session-1")).toBe(
       "/student/training/session-1",
     );
+    expect(buildStudentLabRoute("PHYSICS")).toBe(
+      "/student/lab?subject=PHYSICS",
+    );
     expect(STUDENT_TRAINING_DRILL_ROUTE).toBe("/student/training/drill");
     expect(STUDENT_TRAINING_SIMULATION_ROUTE).toBe(
       "/student/training/simulation",

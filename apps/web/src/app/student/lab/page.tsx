@@ -4,7 +4,20 @@ import {
   fetchServerLabTools,
 } from "@/lib/server-lab-api";
 
-export default async function StudentLabPage() {
+function toUppercaseSearchParam(value: string | string[] | undefined) {
+  const raw = Array.isArray(value) ? value[0] : value;
+  return raw?.trim().toUpperCase() || null;
+}
+
+export default async function StudentLabPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const requestedSubjectCode = toUppercaseSearchParam(
+    resolvedSearchParams?.subject,
+  );
   const initialTools = await fetchServerLabTools()
     .then((payload) => payload.data)
     .catch(() => undefined);
@@ -23,6 +36,7 @@ export default async function StudentLabPage() {
     <LabHomePage
       initialTools={initialTools}
       initialToolMissions={initialToolMissions}
+      requestedSubjectCode={requestedSubjectCode}
     />
   );
 }

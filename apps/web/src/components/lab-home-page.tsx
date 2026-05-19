@@ -5,7 +5,11 @@ import { StudentNavbar } from "@/components/student-navbar";
 import { StudyBadge, StudyHeader, StudyShell } from "@/components/study-shell";
 import { Button } from "@/components/ui/button";
 import type { LabToolMissionsResponse, LabToolSummary } from "@/lib/lab-api";
-import { listLabSubjectGroups, type LabTool } from "@/lib/lab-surface";
+import {
+  listLabSubjectGroups,
+  listLabToolsForSubjectCode,
+  type LabTool,
+} from "@/lib/lab-surface";
 
 function LabToolInstrument({ tool }: { tool: LabTool }) {
   const isDnaTool = tool.id === "dna-to-protein";
@@ -66,11 +70,19 @@ function LabToolInstrument({ tool }: { tool: LabTool }) {
 export function LabHomePage({
   initialTools,
   initialToolMissions,
+  requestedSubjectCode,
 }: {
   initialTools?: LabToolSummary[];
   initialToolMissions?: Record<string, LabToolMissionsResponse>;
+  requestedSubjectCode?: string | null;
 }) {
   const groups = listLabSubjectGroups();
+  const requestedSubjectTools = listLabToolsForSubjectCode(
+    requestedSubjectCode,
+  );
+  const requestedSubjectUnavailable = Boolean(
+    requestedSubjectCode && requestedSubjectTools.length === 0,
+  );
   const toolEntries = groups.flatMap((group) =>
     group.tools.map((tool) => ({
       group,
@@ -105,6 +117,22 @@ export function LabHomePage({
               : []),
           ]}
         />
+
+        {requestedSubjectUnavailable ? (
+          <section className="builder-wizard-alert" role="status">
+            <h3>لا يوجد مختبر جاهز لهذه المادة بعد</h3>
+            <p>
+              طلب Study Command مادة {requestedSubjectCode}. الأدوات المنشورة
+              الآن تظهر بالأسفل فقط.
+            </p>
+          </section>
+        ) : null}
+
+        {initialTools === undefined ? (
+          <div className="hub-sync-notice">
+            <p>تعذر تحميل تقدم مهمات المختبر الآن. الأدوات الأساسية متاحة.</p>
+          </div>
+        ) : null}
 
         <div className="lab-tool-grid">
           {toolEntries.map(({ group, tool }) => (

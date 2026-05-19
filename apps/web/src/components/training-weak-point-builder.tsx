@@ -68,6 +68,13 @@ export function TrainingWeakPointBuilder({
   );
   const preferredSubjectCode =
     searchParams.get("subject")?.trim().toUpperCase() ?? null;
+  const preferredSubjectUnavailable = Boolean(
+    preferredSubjectCode &&
+      insights.length > 0 &&
+      !insights.some(
+        (subject) => subject.subject.code === preferredSubjectCode,
+      ),
+  );
   const selectedInsight = useMemo(
     () =>
       insights.find((subject) => subject.subject.code === selectedSubjectCode) ??
@@ -285,6 +292,16 @@ export function TrainingWeakPointBuilder({
           </p>
         </section>
 
+        {preferredSubjectUnavailable ? (
+          <section className="builder-wizard-alert" role="status">
+            <h3>لا توجد إشارات ضعف لهذه المادة بعد</h3>
+            <p>
+              وصلنا من Study Command إلى مادة {preferredSubjectCode}. لا توجد
+              إشارات كافية لها الآن، لذلك عرضنا المواد التي تملك إشارات حقيقية.
+            </p>
+          </section>
+        ) : null}
+
         <section className="builder-preview-card">
           <h3>المواد ذات الإشارات الأوضح</h3>
           <div className="builder-subject-grid">
@@ -374,6 +391,17 @@ export function TrainingWeakPointBuilder({
 
         {preview ? (
           <div className="builder-preview-stack">
+            {preview.matchingExerciseCount === 0 ? (
+              <section className="builder-wizard-alert" role="status">
+                <h3>لا توجد تمارين كافية لهذا الدريل بعد</h3>
+                <p>
+                  إشارات الضعف موجودة، لكن الربط الحالي لا يجد تمارين منشورة
+                  كافية. جرّب مادة أخرى أو ابدأ تدريباً عادياً لبناء إشارات
+                  أحدث.
+                </p>
+              </section>
+            ) : null}
+
             <section className="builder-preview-card builder-preview-summary-card">
               <h3>معاينة الجلسة</h3>
               <div className="study-meta-row">

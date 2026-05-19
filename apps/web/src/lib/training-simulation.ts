@@ -70,6 +70,18 @@ export function resolveTrainingSimulationSubjectCode(
     : (subjects[0]?.code ?? "");
 }
 
+export function hasTrainingSimulationSubjectCode(
+  subjects: CatalogSubject[],
+  subjectCode: string | null | undefined,
+) {
+  const normalizedSubjectCode = subjectCode?.trim().toUpperCase();
+
+  return Boolean(
+    normalizedSubjectCode &&
+      subjects.some((subject) => subject.code === normalizedSubjectCode),
+  );
+}
+
 export function listOfficialSimulationPapers(
   stream: CatalogStream | null | undefined,
   subjectCode: string,

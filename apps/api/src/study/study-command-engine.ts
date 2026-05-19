@@ -81,6 +81,12 @@ function buildStudentLibraryRoute(input?: {
   });
 }
 
+function buildStudentLabRoute(subjectCode?: string | null) {
+  return buildRouteWithSearchParams(STUDENT_LAB_ROUTE, {
+    subject: subjectCode ?? undefined,
+  });
+}
+
 function subjectCodeToLabSlug(subjectCode: string | null | undefined) {
   switch (subjectCode) {
     case 'MATHEMATICS':
@@ -1514,7 +1520,7 @@ function buildLabHref(input: {
   );
 
   if (!matchingTool || !subjectSlug) {
-    return STUDENT_LAB_ROUTE;
+    return buildStudentLabRoute(subjectCode);
   }
 
   return buildStudentLabToolRoute(subjectSlug, matchingTool.slug);

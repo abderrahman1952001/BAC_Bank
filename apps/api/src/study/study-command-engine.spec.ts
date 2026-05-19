@@ -562,14 +562,14 @@ describe('study command', () => {
 
     expect(proposal).toMatchObject({
       mode: 'LAB_EXPLORATION',
-      primaryHref: '/student/lab',
+      primaryHref: '/student/lab?subject=PHYSICS',
       availability: {
         status: 'NEEDS_CONTENT',
         matchingExerciseCount: 0,
       },
       primaryAction: {
         kind: 'OPEN_ROUTE',
-        href: '/student/lab',
+        href: '/student/lab?subject=PHYSICS',
       },
     });
   });
