@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { StudyCommandProposal } from "@bac-bank/contracts/study-command";
 import type {
   MyMistakesResponse,
   RecentExamActivitiesResponse,
@@ -15,6 +16,7 @@ import {
   buildWeakPointItems,
   describeMistakeReviewCadence,
   findActiveHubSession,
+  resolveStudyCommandProposalStartState,
 } from "./student-hub";
 
 const recentStudySessions = [
@@ -339,6 +341,32 @@ const curriculumJourneys = [
   },
 ] satisfies CurriculumJourneysResponse["data"];
 
+function buildCommandProposal(
+  availability?: StudyCommandProposal["availability"],
+): StudyCommandProposal {
+  return {
+    mode: "BAC_TRAINING",
+    title: "تدريب BAC",
+    subtitle: "رياضيات",
+    estimatedMinutes: 30,
+    rationale: "تدريب مرتبط بما طلبه الطالب.",
+    availability,
+    primaryHref: "/student/training/drill?subject=MATH",
+    primaryLabel: "بدء الجلسة",
+    primaryAction: {
+      kind: "CREATE_STUDY_SESSION",
+      request: {
+        title: "تدريب BAC",
+        subjectCode: "MATH",
+        kind: "MIXED_DRILL",
+        exerciseCount: 4,
+      },
+    },
+    steps: [],
+    fineTuneOptions: [],
+  };
+}
+
 describe("student hub helpers", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -425,6 +453,46 @@ describe("student hub helpers", () => {
         relativeTimestamp: "جديد",
       }),
     ]);
+  });
+
+  it("starts create-session proposals only after server availability is ready", () => {
+    expect(
+      resolveStudyCommandProposalStartState(
+        buildCommandProposal({
+          status: "READY",
+          matchingExerciseCount: 4,
+        }),
+      ),
+    ).toEqual({
+      canStart: true,
+      reason: null,
+    });
+
+    expect(
+      resolveStudyCommandProposalStartState(
+        buildCommandProposal({
+          status: "NEEDS_CONTENT",
+          matchingExerciseCount: 0,
+          message: "لا توجد تمارين مطابقة.",
+        }),
+      ),
+    ).toEqual({
+      canStart: false,
+      reason: "لا توجد تمارين مطابقة.",
+    });
+
+    expect(
+      resolveStudyCommandProposalStartState({
+        ...buildCommandProposal(),
+        primaryAction: {
+          kind: "OPEN_ROUTE",
+          href: "/student/training/drill?subject=MATH",
+        },
+      }),
+    ).toEqual({
+      canStart: true,
+      reason: null,
+    });
   });
 
   it("describes mistake cadence across due, scheduled, and stabilized items", () => {

@@ -1,3 +1,4 @@
+import type { StudyCommandProposal } from "@bac-bank/contracts/study-command";
 import {
   formatSessionType,
   formatStudyReviewReason,
@@ -122,6 +123,36 @@ export type CurriculumJourneyActivityItem = {
   summaryLabel: string;
   tone: HubCurriculumJourneyTone;
 };
+
+export type StudyCommandProposalStartState = {
+  canStart: boolean;
+  reason: string | null;
+};
+
+export function resolveStudyCommandProposalStartState(
+  proposal: StudyCommandProposal,
+): StudyCommandProposalStartState {
+  if (proposal.primaryAction.kind === "OPEN_ROUTE") {
+    return {
+      canStart: true,
+      reason: null,
+    };
+  }
+
+  if (proposal.availability?.status === "READY") {
+    return {
+      canStart: true,
+      reason: null,
+    };
+  }
+
+  return {
+    canStart: false,
+    reason:
+      proposal.availability?.message ??
+      "لم يتم تأكيد توفر تمارين مطابقة لهذه الجلسة بعد.",
+  };
+}
 
 export function getSummaryProgressPercent(
   summary: StudySessionProgressSummary | null,

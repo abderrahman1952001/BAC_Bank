@@ -2,7 +2,6 @@
 
 import {
   parseStudyCommandProposalResponse,
-  type StudyCommandCreateSessionRequest,
   type StudyCommandProposal,
   type StudyCommandStarter,
 } from "@bac-bank/contracts/study-command";
@@ -51,14 +50,12 @@ import {
   fetchJson,
   formatStudySessionKind,
   parseCreateSessionResponse,
-  parseSessionPreviewResponse,
   type CreateSessionResponse,
   type MyMistakesResponse,
   type RecentExerciseStatesResponse,
   type CurriculumJourneysResponse,
   type RecentExamActivitiesResponse,
   type RecentStudySessionsResponse,
-  type SessionPreviewResponse,
   type WeakPointInsightsResponse,
 } from "@/lib/study-api";
 import type { DueFlashcardsResponse } from "@/lib/flashcards-api";
@@ -74,6 +71,7 @@ import {
   buildSavedExerciseItems,
   buildWeakPointItems,
   findActiveHubSession,
+  resolveStudyCommandProposalStartState,
   studentHubStatusLabels,
   studentHubStatusTones,
 } from "@/lib/student-hub";
@@ -178,6 +176,9 @@ export function StudentHub({
     () => findActiveHubSession(sessions),
     [sessions],
   );
+  const commandProposalStartState = commandProposal
+    ? resolveStudyCommandProposalStartState(commandProposal)
+    : null;
   const latestSession = sessions[0] ?? null;
   const spotlightSession = activeSession ?? latestSession;
   const displayName = user?.username ?? "مِراس";
@@ -358,37 +359,16 @@ export function StudentHub({
     void createProposal(nextCommand);
   }
 
-  async function previewCommandSession(
-    request: StudyCommandCreateSessionRequest,
-  ) {
-    return fetchJson<SessionPreviewResponse>(
-      `${API_BASE_URL}/study/sessions/preview`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(request),
-      },
-      parseSessionPreviewResponse,
-    );
-  }
-
-  async function resolveCreateSessionRequest(
-    request: StudyCommandCreateSessionRequest,
-  ) {
-    const preview = await previewCommandSession(request);
-
-    if (preview.matchingExerciseCount > 0) {
-      return request;
-    }
-
-    return null;
-  }
-
   async function handleStartCommandProposal(proposal: StudyCommandProposal) {
     if (proposal.primaryAction.kind === "OPEN_ROUTE") {
       router.push(proposal.primaryAction.href);
+      return;
+    }
+
+    const startState = resolveStudyCommandProposalStartState(proposal);
+
+    if (!startState.canStart) {
+      setCommandError(startState.reason ?? "تعذر إنشاء الجلسة الآن.");
       return;
     }
 
@@ -400,17 +380,6 @@ export function StudentHub({
     setCommandError(null);
 
     try {
-      const createSessionRequest = await resolveCreateSessionRequest(
-        proposal.primaryAction.request,
-      );
-
-      if (!createSessionRequest) {
-        setCommandError(
-          "لم نجد تمارين مطابقة لهذا الاختيار حالياً. افتح إعداد الجلسة ووسّع المادة أو السنوات.",
-        );
-        return;
-      }
-
       const payload = await fetchJson<CreateSessionResponse>(
         `${API_BASE_URL}/study/sessions`,
         {
@@ -418,7 +387,7 @@ export function StudentHub({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(createSessionRequest),
+          body: JSON.stringify(proposal.primaryAction.request),
         },
         parseCreateSessionResponse,
       );
@@ -744,7 +713,10 @@ export function StudentHub({
                     onClick={() =>
                       void handleStartCommandProposal(commandProposal)
                     }
-                    disabled={creatingCommandSession}
+                    disabled={
+                      creatingCommandSession ||
+                      commandProposalStartState?.canStart === false
+                    }
                   >
                     {creatingCommandSession
                       ? "جارٍ إنشاء الجلسة..."
