@@ -107,6 +107,13 @@ you are intentionally managing env files outside the platform.
 - `R2_BUCKET_NAME`
 - `R2_ENDPOINT`
 
+### Study Command
+
+See `docs/non-content-v1-launch-readiness.md` for the full non-content launch
+checklist. The important production knobs are the controlled AI router flags,
+push-to-talk transcription config, and Study Command rate limits. The product
+must remain usable with AI and voice disabled.
+
 ## Deploy Order
 
 1. Run database migrations.
