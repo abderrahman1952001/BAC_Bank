@@ -248,7 +248,13 @@ The first implementation should be intentionally narrow:
 - deterministic smart starters from existing context. If there is no useful
   context, show no starters rather than generic static chips.
 - text command entrance
-- push-to-talk transcription feeding the same text entrance
+- push-to-talk transcription feeding the same text entrance. Voice V1 is a
+  convenience input, not a separate assistant; it must degrade to normal text
+  entry when disabled or unconfigured. Configure it with:
+  `STUDY_COMMAND_VOICE_ENABLED`, `OPENAI_API_KEY`,
+  `STUDY_COMMAND_VOICE_TRANSCRIBE_MODEL` or legacy `OPENAI_TRANSCRIBE_MODEL`,
+  `STUDY_COMMAND_VOICE_MAX_AUDIO_BYTES`, and
+  `STUDY_COMMAND_VOICE_TIMEOUT_MS`.
 - API-owned command proposal and smart-starter composition under
   `apps/api/src/study/study-command-*`, with the web route acting as a thin
   authenticated proxy. The frontend renders typed contracts from

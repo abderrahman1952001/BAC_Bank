@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MAX_AUDIO_BYTES = 8 * 1024 * 1024;
 const DEFAULT_TRANSCRIBE_MODEL = "gpt-4o-mini-transcribe";
-const TRANSCRIPTION_TIMEOUT_MS = 30_000;
+const DEFAULT_MAX_AUDIO_BYTES = 8 * 1024 * 1024;
+const DEFAULT_TRANSCRIPTION_TIMEOUT_MS = 30_000;
 
 async function canUseTranscription() {
   if (process.env.PLAYWRIGHT_TEST_AUTH === "true") {
@@ -33,6 +33,47 @@ function getAudioFileName(file: File) {
   return "study-command.webm";
 }
 
+function readPositiveIntegerEnv(name: string, fallback: number) {
+  const rawValue = process.env[name];
+
+  if (!rawValue) {
+    return fallback;
+  }
+
+  const parsedValue = Number.parseInt(rawValue, 10);
+
+  if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
+    return fallback;
+  }
+
+  return parsedValue;
+}
+
+function isVoiceTranscriptionEnabled() {
+  const rawValue = process.env.STUDY_COMMAND_VOICE_ENABLED;
+
+  return rawValue !== "false" && rawValue !== "0";
+}
+
+function readVoiceTranscriptionConfig() {
+  return {
+    enabled: isVoiceTranscriptionEnabled(),
+    apiKey: process.env.OPENAI_API_KEY,
+    model:
+      process.env.STUDY_COMMAND_VOICE_TRANSCRIBE_MODEL ||
+      process.env.OPENAI_TRANSCRIBE_MODEL ||
+      DEFAULT_TRANSCRIBE_MODEL,
+    maxAudioBytes: readPositiveIntegerEnv(
+      "STUDY_COMMAND_VOICE_MAX_AUDIO_BYTES",
+      DEFAULT_MAX_AUDIO_BYTES,
+    ),
+    timeoutMs: readPositiveIntegerEnv(
+      "STUDY_COMMAND_VOICE_TIMEOUT_MS",
+      DEFAULT_TRANSCRIPTION_TIMEOUT_MS,
+    ),
+  };
+}
+
 export async function POST(request: Request) {
   if (!(await canUseTranscription())) {
     return NextResponse.json(
@@ -41,9 +82,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const apiKey = process.env.OPENAI_API_KEY;
+  const config = readVoiceTranscriptionConfig();
 
-  if (!apiKey) {
+  if (!config.enabled) {
+    return NextResponse.json(
+      { message: "Voice transcription is disabled." },
+      { status: 503 },
+    );
+  }
+
+  if (!config.apiKey) {
     return NextResponse.json(
       { message: "Voice transcription is not configured." },
       { status: 503 },
@@ -77,7 +125,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (audio.size > MAX_AUDIO_BYTES) {
+  if (audio.size > config.maxAudioBytes) {
     return NextResponse.json(
       { message: "Audio file is too large." },
       { status: 413 },
@@ -91,10 +139,7 @@ export async function POST(request: Request) {
       type: audio.type || "audio/webm",
     }),
   );
-  upstreamFormData.set(
-    "model",
-    process.env.OPENAI_TRANSCRIBE_MODEL || DEFAULT_TRANSCRIBE_MODEL,
-  );
+  upstreamFormData.set("model", config.model);
   upstreamFormData.set(
     "prompt",
     "The speaker is an Algerian BAC student. They may mix Arabic, Darija, French, Arabizi, and school-subject terminology.",
@@ -108,10 +153,10 @@ export async function POST(request: Request) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${apiKey}`,
+          Authorization: `Bearer ${config.apiKey}`,
         },
         body: upstreamFormData,
-        signal: AbortSignal.timeout(TRANSCRIPTION_TIMEOUT_MS),
+        signal: AbortSignal.timeout(config.timeoutMs),
       },
     );
   } catch {

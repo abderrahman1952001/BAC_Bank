@@ -38,6 +38,21 @@ describe("study command voice transcription route", () => {
     });
   });
 
+  it("returns a clean disabled state when voice is turned off", async () => {
+    vi.stubEnv("PLAYWRIGHT_TEST_AUTH", "true");
+    vi.stubEnv("OPENAI_API_KEY", "test-key");
+    vi.stubEnv("STUDY_COMMAND_VOICE_ENABLED", "false");
+
+    const response = await POST(
+      buildAudioRequest(new File(["audio"], "voice.webm", { type: "audio/webm" })),
+    );
+
+    expect(response.status).toBe(503);
+    await expect(readJson(response)).resolves.toEqual({
+      message: "Voice transcription is disabled.",
+    });
+  });
+
   it("validates that an audio file is present", async () => {
     vi.stubEnv("PLAYWRIGHT_TEST_AUTH", "true");
     vi.stubEnv("OPENAI_API_KEY", "test-key");
@@ -47,6 +62,21 @@ describe("study command voice transcription route", () => {
     expect(response.status).toBe(400);
     await expect(readJson(response)).resolves.toEqual({
       message: "Audio file is required.",
+    });
+  });
+
+  it("enforces the configured audio byte limit", async () => {
+    vi.stubEnv("PLAYWRIGHT_TEST_AUTH", "true");
+    vi.stubEnv("OPENAI_API_KEY", "test-key");
+    vi.stubEnv("STUDY_COMMAND_VOICE_MAX_AUDIO_BYTES", "2");
+
+    const response = await POST(
+      buildAudioRequest(new File(["audio"], "voice.webm", { type: "audio/webm" })),
+    );
+
+    expect(response.status).toBe(413);
+    await expect(readJson(response)).resolves.toEqual({
+      message: "Audio file is too large.",
     });
   });
 
@@ -68,7 +98,8 @@ describe("study command voice transcription route", () => {
   it("returns trimmed text from the transcription provider", async () => {
     vi.stubEnv("PLAYWRIGHT_TEST_AUTH", "true");
     vi.stubEnv("OPENAI_API_KEY", "test-key");
-    vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    vi.stubEnv("STUDY_COMMAND_VOICE_TRANSCRIBE_MODEL", "test-transcribe-model");
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
       Response.json({ text: "  عندي فرض في الفيزياء  " }),
     );
 
@@ -80,5 +111,8 @@ describe("study command voice transcription route", () => {
     await expect(readJson(response)).resolves.toEqual({
       text: "عندي فرض في الفيزياء",
     });
+    const body = fetchMock.mock.calls[0]?.[1]?.body;
+    expect(body).toBeInstanceOf(FormData);
+    expect((body as FormData).get("model")).toBe("test-transcribe-model");
   });
 });
