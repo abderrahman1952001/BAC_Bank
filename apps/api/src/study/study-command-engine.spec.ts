@@ -609,6 +609,53 @@ describe('study command', () => {
     });
   });
 
+  it('lets validated AI interpretation improve a messy mixed-language command without owning the workflow', () => {
+    const proposal = buildStudyCommandProposal(
+      'nheb session full f maths',
+      context,
+      {
+        mode: 'SIMULATION',
+        confidence: 0.88,
+        subjectHint: 'maths الرياضيات',
+        topicHint: null,
+        deadline: null,
+        durationMinutes: 80,
+        language: 'ARABIZI',
+        missingFields: [],
+        studentFacingSummary: 'الطالب يريد محاكاة كاملة في الرياضيات.',
+      },
+    );
+
+    expect(proposal).toMatchObject({
+      mode: 'SIMULATION',
+      estimatedMinutes: 80,
+      primaryHref: '/student/training/simulation?subject=MATHEMATICS',
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/training/simulation?subject=MATHEMATICS',
+      },
+    });
+  });
+
+  it('keeps explicit continue-session routing deterministic even if AI suggests another mode', () => {
+    const proposal = buildStudyCommandProposal('واصل الجلسة', context, {
+      mode: 'BAC_TRAINING',
+      confidence: 0.95,
+      subjectHint: 'maths',
+      topicHint: 'fonctions',
+      deadline: null,
+      durationMinutes: 45,
+      language: 'MIXED',
+      missingFields: [],
+      studentFacingSummary: 'الطالب يريد تدريباً في الدوال.',
+    });
+
+    expect(proposal).toMatchObject({
+      mode: 'CONTINUE_SESSION',
+      primaryHref: '/student/training/session-1',
+    });
+  });
+
   it('preserves stream and subject when opening the library surface', () => {
     const proposal = buildStudyCommandProposal(
       'افتحلي أرشيف مواضيع باك علوم الطبيعة',

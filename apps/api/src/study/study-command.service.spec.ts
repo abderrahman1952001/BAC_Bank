@@ -74,6 +74,7 @@ const catalog = {
 function createService(input?: {
   matchingExerciseCount?: number;
   previewRejects?: boolean;
+  aiInterpretation?: unknown;
 }) {
   const matchingExerciseCount = input?.matchingExerciseCount ?? 2;
   const studyService = {
@@ -114,9 +115,16 @@ function createService(input?: {
   const labService = {
     listTools: jest.fn().mockResolvedValue({ data: [] }),
   };
+  const studyCommandAiRouterService = {
+    interpret: jest.fn().mockResolvedValue({
+      interpretation: input?.aiInterpretation ?? null,
+      usageEvent: null,
+    }),
+  };
 
   return {
     studyService,
+    studyCommandAiRouterService,
     service: new StudyCommandService(
       prisma as never,
       studyService as never,
@@ -125,6 +133,7 @@ function createService(input?: {
       studyWeakPointService as never,
       flashcardsService as never,
       labService as never,
+      studyCommandAiRouterService as never,
     ),
   };
 }
@@ -153,6 +162,52 @@ describe('StudyCommandService', () => {
       matchingExerciseCount: 2,
     });
     expect(response.proposal?.primaryAction.kind).toBe('CREATE_STUDY_SESSION');
+  });
+
+  it('uses validated AI interpretation as hints before deterministic proposal composition', async () => {
+    const { service, studyService, studyCommandAiRouterService } =
+      createService({
+        matchingExerciseCount: 2,
+        aiInterpretation: {
+          mode: 'TUTOR_REPLAY',
+          confidence: 0.9,
+          subjectHint: 'svt علوم الطبيعة',
+          topicHint: 'التركيب الضوئي',
+          deadline: null,
+          durationMinutes: 30,
+          language: 'MIXED',
+          missingFields: [],
+          studentFacingSummary: 'حصة دعم تحتاج تثبيتاً.',
+        },
+      });
+
+    const response = await service.propose(
+      'user-1',
+      'خرجت من cours ta3 prof و نحتاج نفس الستايل',
+    );
+
+    expect(studyCommandAiRouterService.interpret).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: 'user-1',
+        command: 'خرجت من cours ta3 prof و نحتاج نفس الستايل',
+      }),
+    );
+    expect(studyService.previewStudySession).toHaveBeenCalledWith(
+      'user-1',
+      expect.objectContaining({
+        subjectCode: 'NATURAL_SCIENCES',
+        kind: 'TOPIC_DRILL',
+        topicCodes: ['PHOTOSYNTHESIS'],
+        exerciseCount: 3,
+      }),
+    );
+    expect(response.proposal).toMatchObject({
+      mode: 'TUTOR_REPLAY',
+      estimatedMinutes: 30,
+      availability: {
+        status: 'READY',
+      },
+    });
   });
 
   it('does not widen unavailable topic proposals after preview returns zero matches', async () => {

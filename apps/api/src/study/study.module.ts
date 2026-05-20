@@ -3,6 +3,7 @@ import { CatalogModule } from '../catalog/catalog.module';
 import { FlashcardsModule } from '../flashcards/flashcards.module';
 import { LabModule } from '../lab/lab.module';
 import { StudyCommandController } from './study-command.controller';
+import { StudyCommandAiRouterService } from './study-command-ai-router.service';
 import { StudyCommandService } from './study-command.service';
 import { StudyController } from './study.controller';
 import { StudyReadModelService } from './study-read-model.service';
@@ -20,6 +21,7 @@ import { StudyWeakPointService } from './study-weak-point.service';
   controllers: [StudyController, StudyCommandController],
   providers: [
     StudyService,
+    StudyCommandAiRouterService,
     StudyCommandService,
     StudySessionService,
     StudyExamActivityService,

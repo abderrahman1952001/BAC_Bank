@@ -1,5 +1,6 @@
 import type {
   StudyCommandClarification,
+  StudyCommandAiInterpretation,
   StudyCommandProposal,
   StudyCommandProposalAction,
   StudyCommandStarter,
@@ -282,10 +283,12 @@ const SUBJECT_HINTS: SubjectHint[] = [
       'geography',
       'histoire',
       'géographie',
+      'geographie',
       'تاريخ',
       'جغرافيا',
       'خرائط',
       'maps',
+      'cartes',
       'تواريخ',
       'شخصيات',
     ],
@@ -434,7 +437,7 @@ const TOPIC_HINTS: TopicHint[] = [
   {
     preferredCodes: ['MAPS'],
     name: 'الخرائط',
-    aliases: ['الخرائط', 'خرائط', 'maps'],
+    aliases: ['الخرائط', 'خرائط', 'maps', 'cartes'],
   },
   {
     preferredCodes: ['HISTORICAL_DATES'],
@@ -899,6 +902,50 @@ function hasSimulationIntent(command: string) {
   ]);
 }
 
+function buildAiInterpretationCommand(
+  command: string,
+  interpretation: StudyCommandAiInterpretation | null | undefined,
+) {
+  if (!interpretation) {
+    return command;
+  }
+
+  const hints = [
+    interpretation.subjectHint,
+    interpretation.topicHint,
+    interpretation.deadline,
+  ].filter((hint): hint is string => Boolean(hint));
+
+  return hints.length ? `${command}\n${hints.join(' ')}` : command;
+}
+
+function resolveCommandRouting(input: {
+  command: string;
+  context?: StudyCommandContext;
+  interpretation?: StudyCommandAiInterpretation | null;
+}) {
+  const deterministicMode = inferStudyCommandMode(input.command, input.context);
+
+  if (!input.interpretation || deterministicMode === 'CONTINUE_SESSION') {
+    return {
+      mode: deterministicMode,
+      commandForInference: input.command,
+      durationMinutes: null,
+      deadline: null,
+    };
+  }
+
+  return {
+    mode: input.interpretation.mode,
+    commandForInference: buildAiInterpretationCommand(
+      input.command,
+      input.interpretation,
+    ),
+    durationMinutes: input.interpretation.durationMinutes,
+    deadline: input.interpretation.deadline,
+  };
+}
+
 function shouldUsePassiveContextSubject(input: {
   mode: StudyCommandStarterMode;
   command: string;
@@ -990,6 +1037,7 @@ export function inferStudyCommandMode(
       'تواريخ',
       'خرائط',
       'maps',
+      'cartes',
       'flashcard',
       'بطاقات',
     ])
@@ -1004,6 +1052,9 @@ export function inferStudyCommandMode(
   if (
     includesAny(normalized, [
       'مافهمتش',
+      'mafhmtch',
+      'mafhemtch',
+      'mafhamtch',
       'لم أفهم',
       'اشرح',
       'شرح',
@@ -1023,9 +1074,14 @@ export function inferStudyCommandMode(
       'غلطت',
       'غلطة',
       'mistake',
+      'erreur',
+      'erreurs',
+      'faute',
+      'fautes',
       'weak',
       'weakness',
       'ضعف',
+      'ghlat',
       'نقطة ضعفي',
     ])
   ) {
@@ -1691,6 +1747,7 @@ function buildProposalAction(input: {
 export function buildStudyCommandProposal(
   command: string,
   context?: StudyCommandContext,
+  interpretation?: StudyCommandAiInterpretation | null,
 ): StudyCommandProposal | null {
   const trimmedCommand = command.trim();
 
@@ -1699,10 +1756,16 @@ export function buildStudyCommandProposal(
   }
 
   const activeSession = findActiveSession(context?.sessions ?? []);
-  const mode = inferStudyCommandMode(trimmedCommand, context);
-  const subject = inferSubject(trimmedCommand, context, mode);
-  const topic = inferTopic(trimmedCommand, subject, context);
-  const deadline = inferDeadline(trimmedCommand);
+  const routing = resolveCommandRouting({
+    command: trimmedCommand,
+    context,
+    interpretation,
+  });
+  const mode = routing.mode;
+  const subject = inferSubject(routing.commandForInference, context, mode);
+  const topic = inferTopic(routing.commandForInference, subject, context);
+  const deadline =
+    routing.deadline ?? inferDeadline(routing.commandForInference);
   const subjectName = subject?.name ?? null;
   const subjectCode = subject?.canCreateSession ? subject.code : null;
   const topicName = topic?.name ?? null;
@@ -1779,7 +1842,9 @@ export function buildStudyCommandProposal(
     CONTINUE_SESSION: STUDENT_TRAINING_ROUTE,
   }[mode];
 
-  const estimatedMinutes = buildEstimatedMinutes(mode, trimmedCommand);
+  const estimatedMinutes =
+    routing.durationMinutes ??
+    buildEstimatedMinutes(mode, routing.commandForInference);
   const title = `${baseTitle}${deadlineSuffix}`;
   const clarification = buildProposalClarification({
     mode,
@@ -1793,7 +1858,7 @@ export function buildStudyCommandProposal(
   });
   const primaryAction = buildProposalAction({
     mode,
-    command: trimmedCommand,
+    command: routing.commandForInference,
     title,
     primaryHref,
     subject,

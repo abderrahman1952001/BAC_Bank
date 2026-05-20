@@ -55,6 +55,33 @@ mistake repair, labs, and the student's recent work.
 9. During the session, keep AI object-aware: lesson-aware, correction-aware,
    exercise-aware, flashcard-aware, or mistake-aware.
 
+## Controlled AI Routing
+
+Study Command may use AI to improve interpretation, but AI is not the product
+owner. The student can type or speak freely, yet the server still turns that
+input into a typed platform command.
+
+The routing contract is:
+
+- deterministic routing always exists and remains the fallback.
+- AI routing is disabled unless the server has an explicit feature flag, model,
+  provider credentials, and a registered provider adapter.
+- AI output must parse as `StudyCommandAiInterpretation` from
+  `packages/contracts/src/study-command.ts`.
+- valid AI output may only provide interpretation hints: mode, confidence,
+  subject hint, topic hint, deadline, duration, language, missing fields, and a
+  short student-facing summary.
+- AI output feeds the existing deterministic proposal composer. It cannot create
+  sessions, open routes, invent workflow steps, generate arbitrary UI, bypass
+  preview checks, or hide missing-content states.
+- provider failures, invalid output, low confidence, timeouts, missing
+  credentials, and missing adapters all fall back to deterministic routing.
+- usage logging must stay content-free: feature, provider, model, status,
+  estimated tokens, latency, and error code only.
+
+This is intentionally not a generic chatbot. It is a controlled interpreter in
+front of real Study Command workflows.
+
 ## V1 Hidden Study Modes
 
 The command layer should route into a small set of internal modes. These are
@@ -83,18 +110,18 @@ This matrix is the shipping contract for the command layer. If a new prompt,
 starter, or AI router changes a mode, it should preserve the mode's workflow
 owner and fallback behavior.
 
-| Mode | Student situation | Required fields | Primary workflow | Availability rule | Honest fallback |
-| --- | --- | --- | --- | --- | --- |
-| `SCHOOL_TEST_PREP` | "I have a school test / devoir / فرض soon." | Subject, topic when mentioned | Create a short drill session with previewed exercises | `READY` only after preview finds matches | Open the drill builder with subject/topic prefilled |
-| `TUTOR_REPLAY` | "I just came from tutor/private lesson and need recap or similar exercises." | Subject, topic when mentioned | Create a short drill session from the tutor topic | `READY` only after preview finds matches | Open the drill builder with subject/topic prefilled |
-| `BAC_TRAINING` | "I want BAC practice, official-style exercises, or recent years." | Subject, topic when mentioned | Create a drill session from mapped BAC content | `READY` only after preview finds matches | Ask one subject clarification, or open the builder if mapped content is missing |
-| `LESSON_UNDERSTANDING` | "I did not understand this lesson/concept." | Subject, topic when mentioned | Open the course subject/topic surface | Route must use known subject/topic slugs when available | Open the closest course surface; let that surface show its own empty state |
-| `MEMORIZATION_REVIEW` | Definitions, laws, maps, dates, formulas, methods, theory prompts | None required; subject/topic improve targeting | Open flashcards | `READY` when due cards exist in context | Open flashcards with a needs-content message when no due cards exist |
-| `MISTAKE_REPAIR` | Open mistakes, weak topics, repeated errors, "fix my weak point" | None required; passive weak/mistake context may fill subject | Open weak-points / mistake repair | `READY` when mistakes or weak signals exist | Open weak-points with a needs-content message |
-| `SIMULATION` | Timed mock, full exam, bac blanc, full paper | Subject when the student names it | Open simulation builder with subject preselected | Builder owns official-paper availability | Ask one subject clarification if missing; builder shows empty states |
-| `LAB_EXPLORATION` | Visual/interactive understanding request | Subject | Open matching ready lab tool | `READY` only for a ready lab matching the requested subject | Ask one subject clarification, or open Lab with needs-content state |
-| `LIBRARY_SEARCH` | Archive, annales, official paper lookup, source finding | None required; subject/stream improve targeting | Open Library with stream/subject query when known | `READY` when catalog has published entries | Open Library with a needs-content message when catalog is empty |
-| `CONTINUE_SESSION` | Continue/resume an unfinished study session | Active session | Open the active session directly | Active session must exist | Fall back to normal command routing if no active session exists |
+| Mode                   | Student situation                                                            | Required fields                                              | Primary workflow                                      | Availability rule                                           | Honest fallback                                                                 |
+| ---------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `SCHOOL_TEST_PREP`     | "I have a school test / devoir / فرض soon."                                  | Subject, topic when mentioned                                | Create a short drill session with previewed exercises | `READY` only after preview finds matches                    | Open the drill builder with subject/topic prefilled                             |
+| `TUTOR_REPLAY`         | "I just came from tutor/private lesson and need recap or similar exercises." | Subject, topic when mentioned                                | Create a short drill session from the tutor topic     | `READY` only after preview finds matches                    | Open the drill builder with subject/topic prefilled                             |
+| `BAC_TRAINING`         | "I want BAC practice, official-style exercises, or recent years."            | Subject, topic when mentioned                                | Create a drill session from mapped BAC content        | `READY` only after preview finds matches                    | Ask one subject clarification, or open the builder if mapped content is missing |
+| `LESSON_UNDERSTANDING` | "I did not understand this lesson/concept."                                  | Subject, topic when mentioned                                | Open the course subject/topic surface                 | Route must use known subject/topic slugs when available     | Open the closest course surface; let that surface show its own empty state      |
+| `MEMORIZATION_REVIEW`  | Definitions, laws, maps, dates, formulas, methods, theory prompts            | None required; subject/topic improve targeting               | Open flashcards                                       | `READY` when due cards exist in context                     | Open flashcards with a needs-content message when no due cards exist            |
+| `MISTAKE_REPAIR`       | Open mistakes, weak topics, repeated errors, "fix my weak point"             | None required; passive weak/mistake context may fill subject | Open weak-points / mistake repair                     | `READY` when mistakes or weak signals exist                 | Open weak-points with a needs-content message                                   |
+| `SIMULATION`           | Timed mock, full exam, bac blanc, full paper                                 | Subject when the student names it                            | Open simulation builder with subject preselected      | Builder owns official-paper availability                    | Ask one subject clarification if missing; builder shows empty states            |
+| `LAB_EXPLORATION`      | Visual/interactive understanding request                                     | Subject                                                      | Open matching ready lab tool                          | `READY` only for a ready lab matching the requested subject | Ask one subject clarification, or open Lab with needs-content state             |
+| `LIBRARY_SEARCH`       | Archive, annales, official paper lookup, source finding                      | None required; subject/stream improve targeting              | Open Library with stream/subject query when known     | `READY` when catalog has published entries                  | Open Library with a needs-content message when catalog is empty                 |
+| `CONTINUE_SESSION`     | Continue/resume an unfinished study session                                  | Active session                                               | Open the active session directly                      | Active session must exist                                   | Fall back to normal command routing if no active session exists                 |
 
 ## Session Aftermath Loop
 
@@ -210,16 +237,21 @@ The first implementation should be intentionally narrow:
   important wording should become an eval fixture with expected mode, subject,
   topic, and clarification behavior. The system should pass those fixtures
   before adding broader autonomy.
+- controlled AI routing lives behind `StudyCommandAiRouterService`. It is
+  disabled by default and requires `AI_STUDY_COMMAND_ROUTER_ENABLED=true`,
+  `AI_STUDY_COMMAND_ROUTER_MODEL`, provider credentials, and an adapter
+  registered as `STUDY_COMMAND_AI_ROUTER_PROVIDER`. Without that, My Space uses
+  deterministic routing normally.
+- the AI router should use compact context only: stream, active-session signal,
+  due counts, weak subjects, and available subject/topic codes. Do not send full
+  history, full curriculum, private notes, raw secrets, or large content blobs
+  into the router.
+- the server may pass validated AI interpretation into
+  `buildStudyCommandProposal`, but proposal actions and availability remain
+  owned by the existing Study Command composer and preview logic.
 - a full-stack Playwright smoke can be run with `PLAYWRIGHT_FULL_STACK=true`
   to verify command proposal, API preview, real session creation, and training
   navigation against the local API and database
 
-Deeper AI routing should only be added behind typed schemas, model-routing
-budgets, usage logging, and deterministic fallbacks. The current V1 command
-router remains rules-first; future AI routing should improve interpretation,
-not bypass preview checks, availability states, or platform-owned workflows. AI
-runtime boundaries currently live in `apps/api/src/ai/ai-runtime.ts` and provide
-credential detection, model/output-token guardrails, coarse token estimates, and
-content-free usage-event metadata for explanation features.
 Persisted proposal history should be added only when we need auditability or
 cross-device resume beyond the created session itself.

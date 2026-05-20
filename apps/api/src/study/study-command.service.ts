@@ -9,6 +9,7 @@ import { FlashcardsService } from '../flashcards/flashcards.service';
 import { LabService } from '../lab/lab.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StudyCurriculumJourneyService } from './study-curriculum-journey.service';
+import { StudyCommandAiRouterService } from './study-command-ai-router.service';
 import {
   buildStudyCommandProposal,
   buildStudyCommandStarters,
@@ -40,6 +41,7 @@ export class StudyCommandService {
     private readonly studyWeakPointService: StudyWeakPointService,
     private readonly flashcardsService: FlashcardsService,
     private readonly labService: LabService,
+    private readonly studyCommandAiRouterService: StudyCommandAiRouterService,
   ) {}
 
   async listStarters(userId: string): Promise<StudyCommandStartersResponse> {
@@ -55,7 +57,19 @@ export class StudyCommandService {
     command: string,
   ): Promise<StudyCommandProposalResponse> {
     const context = await this.buildContext(userId);
-    const proposal = buildStudyCommandProposal(command, context);
+    const aiRouterResult = await this.safe(
+      this.studyCommandAiRouterService.interpret({
+        userId,
+        command,
+        context,
+      }),
+      null,
+    );
+    const proposal = buildStudyCommandProposal(
+      command,
+      context,
+      aiRouterResult?.interpretation ?? null,
+    );
 
     return {
       proposal: proposal

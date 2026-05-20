@@ -16,6 +16,13 @@ export type StudyCommandSystemAction = "CONTINUE_SESSION";
 export type StudyCommandStarterMode =
   | StudyCommandMode
   | StudyCommandSystemAction;
+export type StudyCommandAiLanguage =
+  | "ARABIC"
+  | "DARIJA"
+  | "FRENCH"
+  | "ARABIZI"
+  | "MIXED"
+  | "UNKNOWN";
 export type StudyCommandStarterTone =
   | "primary"
   | "cool"
@@ -119,7 +126,19 @@ export type StudyCommandStartersResponse = {
   data: StudyCommandStarter[];
 };
 
-const studyCommandModeSchema: z.ZodType<StudyCommandMode> = z.enum([
+export type StudyCommandAiInterpretation = {
+  mode: StudyCommandMode;
+  confidence: number;
+  subjectHint: string | null;
+  topicHint: string | null;
+  deadline: string | null;
+  durationMinutes: number | null;
+  language: StudyCommandAiLanguage;
+  missingFields: string[];
+  studentFacingSummary: string;
+};
+
+export const studyCommandModeSchema: z.ZodType<StudyCommandMode> = z.enum([
   "SCHOOL_TEST_PREP",
   "TUTOR_REPLAY",
   "BAC_TRAINING",
@@ -133,6 +152,15 @@ const studyCommandModeSchema: z.ZodType<StudyCommandMode> = z.enum([
 
 const studyCommandStarterModeSchema: z.ZodType<StudyCommandStarterMode> =
   z.union([studyCommandModeSchema, z.literal("CONTINUE_SESSION")]);
+
+const studyCommandAiLanguageSchema: z.ZodType<StudyCommandAiLanguage> = z.enum([
+  "ARABIC",
+  "DARIJA",
+  "FRENCH",
+  "ARABIZI",
+  "MIXED",
+  "UNKNOWN",
+]);
 
 const sessionTypeSchema: z.ZodType<SessionType> = z.enum(["NORMAL", "MAKEUP"]);
 
@@ -249,6 +277,19 @@ export const studyCommandStartersResponseSchema: z.ZodType<StudyCommandStartersR
     data: z.array(studyCommandStarterSchema),
   });
 
+export const studyCommandAiInterpretationSchema: z.ZodType<StudyCommandAiInterpretation> =
+  z.object({
+    mode: studyCommandModeSchema,
+    confidence: z.number().min(0).max(1),
+    subjectHint: z.string().trim().min(1).max(120).nullable(),
+    topicHint: z.string().trim().min(1).max(160).nullable(),
+    deadline: z.string().trim().min(1).max(80).nullable(),
+    durationMinutes: z.number().int().min(5).max(180).nullable(),
+    language: studyCommandAiLanguageSchema,
+    missingFields: z.array(z.string().trim().min(1).max(80)).max(3),
+    studentFacingSummary: z.string().trim().min(1).max(240),
+  });
+
 export function parseStudyCommandProposalRequest(value: unknown) {
   return parseContract(
     studyCommandProposalRequestSchema,
@@ -286,5 +327,13 @@ export function parseStudyCommandStartersResponse(value: unknown) {
     studyCommandStartersResponseSchema,
     value,
     "StudyCommandStartersResponse",
+  );
+}
+
+export function parseStudyCommandAiInterpretation(value: unknown) {
+  return parseContract(
+    studyCommandAiInterpretationSchema,
+    value,
+    "StudyCommandAiInterpretation",
   );
 }

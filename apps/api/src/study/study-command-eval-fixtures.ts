@@ -42,6 +42,14 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     expectedTopicCodes: ['FUNCTIONS'],
   },
   {
+    id: 'tutor-replay-darja-french-physics-electricity',
+    command:
+      'rani jay mn soutien physique électricité, hab exercices kima prof',
+    expectedMode: 'TUTOR_REPLAY',
+    expectedSubjectCode: 'PHYSICS',
+    expectedTopicCodes: ['ELECTRICITY'],
+  },
+  {
     id: 'bac-training-svt-photosynthesis',
     command: 'أريد تدريب BAC في علوم الطبيعة على التركيب الضوئي آخر 3 سنوات',
     expectedMode: 'BAC_TRAINING',
@@ -63,10 +71,23 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     expectedTopicCodes: ['PROTEIN_SYNTHESIS'],
   },
   {
+    id: 'lesson-understanding-arabizi-svt-proteins',
+    command: 'mafhmtch svt protéines explainli',
+    expectedMode: 'LESSON_UNDERSTANDING',
+    expectedSubjectCode: 'NATURAL_SCIENCES',
+    expectedTopicCodes: ['PROTEINS'],
+  },
+  {
     id: 'memorization-history-dates',
     command: 'راجعلي التواريخ والشخصيات بسرعة',
     expectedMode: 'MEMORIZATION_REVIEW',
     expectedTopicCodes: ['HISTORICAL_DATES'],
+  },
+  {
+    id: 'memorization-french-geography-maps',
+    command: 'راجعلي les cartes ta3 géographie',
+    expectedMode: 'MEMORIZATION_REVIEW',
+    expectedTopicCodes: ['MAPS'],
   },
   {
     id: 'memorization-due-cards-context',
@@ -91,6 +112,15 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
     expectedPrimaryHref: '/student/training/simulation?subject=MATHEMATICS',
   },
   {
+    id: 'simulation-bac-blanc-svt',
+    command: 'nheb bac blanc f svt',
+    expectedMode: 'SIMULATION',
+    expectedSubjectCode: 'NATURAL_SCIENCES',
+    expectedActionKind: 'OPEN_ROUTE',
+    expectedPrimaryHref:
+      '/student/training/simulation?subject=NATURAL_SCIENCES',
+  },
+  {
     id: 'continue-active-session',
     command: 'واصل الجلسة لي حبست فيها',
     expectedMode: 'CONTINUE_SESSION',
@@ -100,6 +130,12 @@ export const studyCommandEvalFixtures: StudyCommandEvalFixture[] = [
   {
     id: 'mistake-repair',
     command: 'أريد إصلاح أخطائي في الفيزياء',
+    expectedMode: 'MISTAKE_REPAIR',
+    expectedSubjectCode: 'PHYSICS',
+  },
+  {
+    id: 'mistake-repair-french-physics-errors',
+    command: 'bghit nréparer les erreurs ta3i f physique',
     expectedMode: 'MISTAKE_REPAIR',
     expectedSubjectCode: 'PHYSICS',
   },
