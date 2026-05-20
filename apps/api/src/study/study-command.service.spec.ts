@@ -77,6 +77,9 @@ function createService(input?: {
   previewRejects?: boolean;
   aiInterpretation?: unknown;
   usageGuardRejects?: boolean;
+  startState?:
+    | { allowed: true }
+    | { allowed: false; reason: 'QUOTA_EXHAUSTED'; message: string };
 }) {
   const matchingExerciseCount = input?.matchingExerciseCount ?? 2;
   const studyService = {
@@ -89,6 +92,9 @@ function createService(input?: {
       : jest.fn().mockResolvedValue({
           matchingExerciseCount,
         }),
+    getStudySessionStartState: jest
+      .fn()
+      .mockResolvedValue(input?.startState ?? { allowed: true }),
     createStudySession: jest.fn().mockResolvedValue({
       id: '11111111-1111-4111-8111-111111111111',
     }),
@@ -306,6 +312,43 @@ describe('StudyCommandService', () => {
     expect(response.proposal?.primaryAction).toMatchObject({
       kind: 'OPEN_ROUTE',
       href: '/student/training/drill?subject=NATURAL_SCIENCES&topic=PHOTOSYNTHESIS',
+    });
+  });
+
+  it('marks content-ready drill proposals unavailable when quota is exhausted', async () => {
+    const { service, studyService } = createService({
+      matchingExerciseCount: 2,
+      startState: {
+        allowed: false,
+        reason: 'QUOTA_EXHAUSTED',
+        message: 'Your monthly drill session quota is exhausted until reset.',
+      },
+    });
+
+    const response = await service.propose(
+      'user-1',
+      'أريد تدريب BAC في علوم الطبيعة على التركيب الضوئي',
+    );
+
+    expect(studyService.getStudySessionStartState).toHaveBeenCalledWith(
+      'user-1',
+      {
+        family: 'DRILL',
+        kind: 'TOPIC_DRILL',
+      },
+    );
+    expect(response.proposal).toMatchObject({
+      availability: {
+        status: 'UNAVAILABLE',
+        matchingExerciseCount: 2,
+        message: expect.stringContaining('quota is exhausted'),
+      },
+      primaryHref: '/student/billing',
+      primaryLabel: 'فتح الاشتراك',
+      primaryAction: {
+        kind: 'OPEN_ROUTE',
+        href: '/student/billing',
+      },
     });
   });
 

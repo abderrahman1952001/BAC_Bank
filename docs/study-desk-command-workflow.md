@@ -217,6 +217,9 @@ surface must preserve the student's requested context and explain any mismatch:
   due, explain that clearly and let the student open all cards.
 - if a repair or simulation preview has zero matching content, show that as a
   needs-content state; do not leave a disabled action without explanation.
+- if a drill proposal has real matching exercises but the student's current
+  plan or quota cannot start it, mark the proposal unavailable and route to the
+  subscription state instead of showing a ready session that fails after Start.
 
 These states should feel like honest product answers, not errors. The student
 should always understand whether the blocker is missing content, missing

@@ -21,6 +21,8 @@ import {
   ExamNodeType,
   PublicationStatus,
   SessionType,
+  StudySessionFamily,
+  StudySessionKind,
   StudySessionStatus,
   SubscriptionStatus,
 } from '@prisma/client';
@@ -32,7 +34,10 @@ import { StudyExamActivityService } from './study-exam-activity.service';
 import { UpdateStudySessionProgressDto } from './dto/update-study-session-progress.dto';
 import { SubmitStudyQuestionEvaluationDto } from './dto/submit-study-question-evaluation.dto';
 import { SubmitStudyQuestionAnswerDto } from './dto/submit-study-question-answer.dto';
-import { StudySessionService } from './study-session.service';
+import {
+  StudySessionService,
+  type StudySessionStartState,
+} from './study-session.service';
 import { StudyQuestionAiExplanationService } from './study-question-ai-explanation.service';
 import {
   buildHierarchyExerciseSummaries,
@@ -648,6 +653,21 @@ export class StudyService {
     payload: CreateStudySessionDto,
   ): Promise<SessionPreviewResponse> {
     return this.studySessionService.previewStudySession(userId, payload);
+  }
+
+  async getStudySessionStartState(
+    userId: string,
+    input: {
+      family: StudySessionFamily;
+      kind: StudySessionKind;
+    },
+  ): Promise<StudySessionStartState> {
+    return this.studySessionService.getStudySessionStartState(userId, {
+      family: input.family,
+      kind: input.kind,
+      sourceExamId: null,
+      sourceSujetNumber: null,
+    });
   }
 
   async createStudySession(

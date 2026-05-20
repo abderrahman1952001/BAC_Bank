@@ -101,6 +101,17 @@ type ResolvedStudySessionMode = {
   sourceSujetNumber: SujetNumber | null;
 };
 
+export type StudySessionStartState =
+  | {
+      allowed: true;
+    }
+  | {
+      allowed: false;
+      reason: 'WEAK_POINT_PREMIUM_REQUIRED' | 'QUOTA_EXHAUSTED';
+      message: string;
+      resetsAt?: string;
+    };
+
 @Injectable()
 export class StudySessionService {
   constructor(
@@ -267,6 +278,69 @@ export class StudySessionService {
     });
 
     return this.getStudySessionById(userId, created.id);
+  }
+
+  async getStudySessionStartState(
+    userId: string,
+    sessionMode: ResolvedStudySessionMode,
+  ): Promise<StudySessionStartState> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        subscriptionStatus: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Student account not found.');
+    }
+
+    const [drillStartsUsed, simulationStartsUsed] =
+      await this.readMonthlySessionStartUsage(userId);
+    const entitlements = buildStudyEntitlements({
+      subscriptionStatus: user.subscriptionStatus,
+      drillStartsUsed,
+      simulationStartsUsed,
+    });
+
+    if (
+      sessionMode.kind === StudySessionKind.WEAK_POINT_DRILL &&
+      user.subscriptionStatus !== SubscriptionStatus.ACTIVE
+    ) {
+      return {
+        allowed: false,
+        reason: 'WEAK_POINT_PREMIUM_REQUIRED',
+        message: 'Weak-point drill is available on premium plans only.',
+      };
+    }
+
+    if (
+      !canStartStudySessionKind({
+        entitlements,
+        family: sessionMode.family,
+        kind: sessionMode.kind,
+      })
+    ) {
+      const quotaBucket =
+        sessionMode.family === StudySessionFamily.SIMULATION
+          ? entitlements.quotas.simulationStarts
+          : entitlements.quotas.drillStarts;
+      const sessionLabel =
+        sessionMode.family === StudySessionFamily.SIMULATION
+          ? 'simulation'
+          : 'drill session';
+
+      return {
+        allowed: false,
+        reason: 'QUOTA_EXHAUSTED',
+        message: `Your monthly ${sessionLabel} quota is exhausted until ${quotaBucket.resetsAt}.`,
+        resetsAt: quotaBucket.resetsAt,
+      };
+    }
+
+    return {
+      allowed: true,
+    };
   }
 
   async getStudySessionById(
@@ -1338,53 +1412,13 @@ export class StudySessionService {
     userId: string,
     sessionMode: ResolvedStudySessionMode,
   ) {
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        subscriptionStatus: true,
-      },
-    });
+    const startState = await this.getStudySessionStartState(
+      userId,
+      sessionMode,
+    );
 
-    if (!user) {
-      throw new NotFoundException('Student account not found.');
-    }
-
-    const [drillStartsUsed, simulationStartsUsed] =
-      await this.readMonthlySessionStartUsage(userId);
-    const entitlements = buildStudyEntitlements({
-      subscriptionStatus: user.subscriptionStatus,
-      drillStartsUsed,
-      simulationStartsUsed,
-    });
-
-    if (
-      sessionMode.kind === StudySessionKind.WEAK_POINT_DRILL &&
-      user.subscriptionStatus !== SubscriptionStatus.ACTIVE
-    ) {
-      throw new ForbiddenException(
-        'Weak-point drill is available on premium plans only.',
-      );
-    }
-
-    if (
-      !canStartStudySessionKind({
-        entitlements,
-        family: sessionMode.family,
-        kind: sessionMode.kind,
-      })
-    ) {
-      const quotaBucket =
-        sessionMode.family === StudySessionFamily.SIMULATION
-          ? entitlements.quotas.simulationStarts
-          : entitlements.quotas.drillStarts;
-      const sessionLabel =
-        sessionMode.family === StudySessionFamily.SIMULATION
-          ? 'simulation'
-          : 'drill session';
-
-      throw new ForbiddenException(
-        `Your monthly ${sessionLabel} quota is exhausted until ${quotaBucket.resetsAt}.`,
-      );
+    if (!startState.allowed) {
+      throw new ForbiddenException(startState.message);
     }
   }
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { StudySessionFamily, StudySessionKind } from '@prisma/client';
 import type {
   StudyCommandAcceptResponse,
   StudyCommandDiagnosticsResponse,
@@ -33,6 +34,9 @@ const UNAVAILABLE_PREVIEW_MESSAGE =
   'لم نستطع تأكيد توفر تمارين مطابقة بهذا الربط الآن. افتح إعداد الجلسة واختر المادة أو المحور يدوياً.';
 const NO_PROPOSAL_MESSAGE =
   'اكتب ما تريد دراسته الآن حتى نحوله إلى جلسة واضحة.';
+const STUDY_COMMAND_BILLING_ROUTE = '/student/billing';
+const QUOTA_UNAVAILABLE_MESSAGE =
+  'هذه الجلسة جاهزة من ناحية المحتوى، لكن حصة الخطة الحالية لا تسمح بإنشائها الآن.';
 
 function buildStudentTrainingSessionRoute(sessionId: string) {
   return `/student/training/${encodeURIComponent(sessionId)}`;
@@ -227,6 +231,37 @@ export class StudyCommandService {
 
     if (preview.matchingExerciseCount <= 0) {
       return markStudyCommandProposalNeedsContent(proposal);
+    }
+
+    const startState = await this.safe(
+      this.studyService.getStudySessionStartState(userId, {
+        family: StudySessionFamily.DRILL,
+        kind:
+          proposal.primaryAction.request.kind === 'TOPIC_DRILL'
+            ? StudySessionKind.TOPIC_DRILL
+            : StudySessionKind.MIXED_DRILL,
+      }),
+      null,
+    );
+
+    if (startState && !startState.allowed) {
+      return {
+        ...proposal,
+        availability: {
+          status: 'UNAVAILABLE',
+          matchingExerciseCount: preview.matchingExerciseCount,
+          message:
+            startState.reason === 'QUOTA_EXHAUSTED'
+              ? `${QUOTA_UNAVAILABLE_MESSAGE} ${startState.message}`
+              : startState.message,
+        },
+        primaryHref: STUDY_COMMAND_BILLING_ROUTE,
+        primaryLabel: 'فتح الاشتراك',
+        primaryAction: {
+          kind: 'OPEN_ROUTE',
+          href: STUDY_COMMAND_BILLING_ROUTE,
+        },
+      };
     }
 
     return markStudyCommandProposalReady(
