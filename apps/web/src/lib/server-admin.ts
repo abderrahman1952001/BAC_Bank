@@ -14,6 +14,10 @@ import {
   type AdminSourceWorkbenchSourceResponse,
 } from "@/lib/admin";
 import {
+  parseStudyCommandDiagnosticsResponse,
+  type StudyCommandDiagnosticsResponse,
+} from "@bac-bank/contracts/study-command";
+import {
   clonePlaywrightFixture,
   playwrightTestAdminBillingSettings,
   playwrightTestAdminCropQueueResponse,
@@ -94,6 +98,92 @@ export async function fetchServerAdminBillingSettings(): Promise<AdminBillingSet
     "/billing/settings",
     undefined,
     parseAdminBillingSettingsResponse,
+  );
+}
+
+export async function fetchServerAdminStudyCommandDiagnostics(): Promise<StudyCommandDiagnosticsResponse> {
+  if (shouldUsePlaywrightFixtures()) {
+    return {
+      generatedAt: "2026-04-18T12:00:00.000Z",
+      windowDays: 30,
+      sampledEventCount: 4,
+      summary: {
+        proposals: 2,
+        accepted: 2,
+        createdStudySessions: 1,
+        openedRoutes: 1,
+        noProposal: 0,
+        clarifications: 1,
+      },
+      modes: [
+        {
+          key: "BAC_TRAINING",
+          count: 2,
+        },
+        {
+          key: "LESSON_UNDERSTANDING",
+          count: 1,
+        },
+      ],
+      availability: [
+        {
+          key: "READY",
+          count: 2,
+        },
+        {
+          key: "NEEDS_CONTENT",
+          count: 1,
+        },
+      ],
+      actions: [
+        {
+          key: "CREATE_STUDY_SESSION",
+          count: 2,
+        },
+        {
+          key: "OPEN_ROUTE",
+          count: 1,
+        },
+      ],
+      aiRouting: [
+        {
+          key: "SKIPPED:DISABLED",
+          count: 3,
+        },
+        {
+          key: "SUCCESS",
+          count: 1,
+        },
+      ],
+      topSubjects: [
+        {
+          key: "NATURAL_SCIENCES",
+          count: 3,
+        },
+      ],
+      topTopics: [
+        {
+          key: "PROTEINS",
+          count: 2,
+        },
+      ],
+      missingContentSignals: [
+        {
+          key: "LESSON_UNDERSTANDING|NATURAL_SCIENCES|PROTEINS",
+          mode: "LESSON_UNDERSTANDING",
+          subjectCode: "NATURAL_SCIENCES",
+          topicCodes: ["PROTEINS"],
+          count: 1,
+          lastSeenAt: "2026-04-18T09:10:00.000Z",
+        },
+      ],
+    };
+  }
+
+  return fetchServerAdminJson<StudyCommandDiagnosticsResponse>(
+    "/study-command/diagnostics",
+    undefined,
+    parseStudyCommandDiagnosticsResponse,
   );
 }
 

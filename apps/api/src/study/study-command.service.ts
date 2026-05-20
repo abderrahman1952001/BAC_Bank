@@ -106,6 +106,7 @@ export class StudyCommandService {
         kind: 'ACCEPTED',
         resultKind: response.kind,
         sourceId: null,
+        resultHref: null,
       });
 
       return response;
@@ -127,6 +128,7 @@ export class StudyCommandService {
         kind: 'ACCEPTED',
         resultKind: response.kind,
         sourceId: null,
+        resultHref: response.href,
       });
 
       return response;
@@ -153,6 +155,7 @@ export class StudyCommandService {
       kind: 'ACCEPTED',
       resultKind: response.kind,
       sourceId: created.id,
+      resultHref: response.href,
     });
 
     return response;

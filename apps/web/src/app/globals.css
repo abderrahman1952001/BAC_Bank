@@ -3517,6 +3517,185 @@ textarea {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.admin-study-command-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.admin-study-command-page .admin-page-intro p:not(.page-kicker) {
+  max-width: 54rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.admin-command-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.admin-command-metric-card,
+.admin-command-panel {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.012)
+    ),
+    var(--surface-soft);
+  box-shadow: none;
+}
+
+.admin-command-metric-card {
+  min-width: 0;
+  padding: 0.9rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.72rem;
+  align-items: start;
+}
+
+.admin-command-metric-card > span,
+.admin-command-signal-row > span,
+.admin-command-guardrail > span {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--app-accent-line);
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  color: var(--app-accent);
+  background: var(--app-accent-ghost);
+}
+
+.admin-command-metric-card div {
+  min-width: 0;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.admin-command-metric-card p {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: var(--weight-label);
+}
+
+.admin-command-metric-card strong {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  line-height: 0.98;
+}
+
+.admin-command-metric-card small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.admin-command-diagnostics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.admin-command-panel {
+  min-width: 0;
+  padding: 1rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.admin-command-panel h2 {
+  font-size: 1.05rem;
+}
+
+.admin-command-panel-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.admin-command-panel-head p,
+.admin-command-empty,
+.admin-command-guardrail p {
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.admin-command-bucket-list,
+.admin-command-signal-list {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.admin-command-bucket-row {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-command-bucket-row > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.admin-command-bucket-row strong,
+.admin-command-bucket-row span {
+  font-size: 0.88rem;
+}
+
+.admin-command-bucket-row span {
+  color: var(--ink-soft);
+  font-weight: var(--weight-label);
+}
+
+.admin-command-bucket-row > div:last-child {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink-soft) 13%, transparent);
+}
+
+.admin-command-bucket-row > div:last-child span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--app-accent), var(--brand-alt-ink));
+}
+
+.admin-command-signal-row {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 0.72rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.65rem;
+  background: var(--surface);
+}
+
+.admin-command-signal-row div {
+  min-width: 0;
+  display: grid;
+  gap: 0.12rem;
+}
+
+.admin-command-signal-row strong,
+.admin-command-signal-row p {
+  overflow-wrap: anywhere;
+}
+
+.admin-command-signal-row p {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+
+.admin-command-guardrail {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
 .ingestion-entry-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -8684,6 +8863,98 @@ textarea {
   background: var(--danger-ghost);
 }
 
+.hub-command-history {
+  border: 1px solid rgba(248, 250, 252, 0.1);
+  border-radius: 24px;
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.hub-command-history-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.hub-command-history-head span {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: var(--weight-label);
+}
+
+.hub-command-history-head small {
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+}
+
+.hub-command-history-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.hub-command-history-item {
+  min-width: 0;
+  border: 1px solid rgba(248, 250, 252, 0.1);
+  border-radius: 20px;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.7rem;
+  align-content: space-between;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.hub-command-history-item > div {
+  min-width: 0;
+  display: grid;
+  gap: 0.22rem;
+}
+
+.hub-command-history-item span {
+  width: fit-content;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.18rem 0.48rem;
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.72rem;
+  font-weight: var(--weight-label);
+}
+
+.hub-command-history-item h3 {
+  overflow-wrap: anywhere;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.hub-command-history-item p {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.hub-command-history-item.tone-success span {
+  border-color: var(--success-line);
+  color: var(--success);
+  background: var(--success-ghost);
+}
+
+.hub-command-history-item.tone-brand span {
+  border-color: rgba(0, 229, 153, 0.22);
+  color: var(--app-accent);
+  background: rgba(0, 229, 153, 0.08);
+}
+
+.hub-command-history-item.tone-warning span {
+  border-color: var(--brand-alt-line);
+  color: var(--brand-alt-ink);
+  background: var(--brand-alt-ghost);
+}
+
 .hub-command-proposal {
   border: 1px solid rgba(248, 250, 252, 0.12);
   border-radius: 26px;
@@ -12384,6 +12655,8 @@ textarea {
 }
 
 [data-theme="light"] .hub-command-form,
+[data-theme="light"] .hub-command-history,
+[data-theme="light"] .hub-command-history-item,
 [data-theme="light"] .hub-command-proposal,
 [data-theme="light"] .hub-command-proposal-steps div {
   border-color: rgba(203, 213, 225, 0.74);
@@ -13969,6 +14242,11 @@ textarea {
     grid-column: auto;
   }
 
+  .admin-command-metric-grid,
+  .admin-command-diagnostics-grid {
+    grid-template-columns: 1fr;
+  }
+
   .student-bottom-nav {
     position: sticky;
     top: max(0.75rem, env(safe-area-inset-top));
@@ -14040,6 +14318,10 @@ textarea {
     min-width: 0;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
+  }
+
+  .hub-command-history-grid {
+    grid-template-columns: 1fr;
   }
 
   .hub-command-proposal-steps {

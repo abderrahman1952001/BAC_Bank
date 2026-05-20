@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { StudyCommandProposal } from "@bac-bank/contracts/study-command";
+import type {
+  StudyCommandHistoryEvent,
+  StudyCommandProposal,
+} from "@bac-bank/contracts/study-command";
 import type {
   MyMistakesResponse,
   RecentExamActivitiesResponse,
@@ -13,6 +16,7 @@ import {
   buildCurriculumJourneyItems,
   buildMyMistakeItems,
   buildSavedExerciseItems,
+  buildStudyCommandHistoryItems,
   buildWeakPointItems,
   describeMistakeReviewCadence,
   findActiveHubSession,
@@ -341,6 +345,55 @@ const curriculumJourneys = [
   },
 ] satisfies CurriculumJourneysResponse["data"];
 
+const studyCommandHistory = [
+  {
+    id: "command-older",
+    kind: "PROPOSED",
+    occurredAt: "2026-04-18T09:10:00.000Z",
+    mode: "LESSON_UNDERSTANDING",
+    title: "درس البروتينات",
+    href: "/student/courses/NATURAL_SCIENCES",
+    subjectCode: "NATURAL_SCIENCES",
+    topicCodes: ["PROTEINS"],
+    availabilityStatus: "NEEDS_CONTENT",
+    matchingExerciseCount: 0,
+    actionKind: "OPEN_ROUTE",
+    resultKind: null,
+    clarificationRequired: false,
+    aiRoute: {
+      status: "SKIPPED",
+      provider: null,
+      model: null,
+      skippedReason: "DISABLED",
+      failureCode: null,
+      confidence: null,
+    },
+  },
+  {
+    id: "command-newer",
+    kind: "ACCEPTED",
+    occurredAt: "2026-04-18T11:20:00.000Z",
+    mode: "BAC_TRAINING",
+    title: "تدريب BAC",
+    href: "/student/training/session-123",
+    subjectCode: "MATH",
+    topicCodes: ["FUNC"],
+    availabilityStatus: "READY",
+    matchingExerciseCount: 6,
+    actionKind: "CREATE_STUDY_SESSION",
+    resultKind: "CREATED_STUDY_SESSION",
+    clarificationRequired: false,
+    aiRoute: {
+      status: "SUCCESS",
+      provider: "openai",
+      model: "router",
+      skippedReason: null,
+      failureCode: null,
+      confidence: 0.88,
+    },
+  },
+] satisfies StudyCommandHistoryEvent[];
+
 function buildCommandProposal(
   availability?: StudyCommandProposal["availability"],
 ): StudyCommandProposal {
@@ -451,6 +504,28 @@ describe("student hub helpers", () => {
         summaryLabel: "جاهز للمحاكاة",
         tone: "success",
         relativeTimestamp: "جديد",
+      }),
+    ]);
+  });
+
+  it("builds safe Study Command history items without raw command text", () => {
+    expect(buildStudyCommandHistoryItems(studyCommandHistory)).toEqual([
+      expect.objectContaining({
+        key: "command-newer",
+        title: "تدريب BAC",
+        href: "/student/training/session-123",
+        actionLabel: "فتح",
+        badgeLabel: "جاهز",
+        tone: "success",
+        subtitle: expect.stringContaining("6 مطابق"),
+      }),
+      expect.objectContaining({
+        key: "command-older",
+        title: "درس البروتينات",
+        href: "/student/courses/NATURAL_SCIENCES",
+        actionLabel: "فتح المسار",
+        badgeLabel: "ينتظر محتوى",
+        tone: "warning",
       }),
     ]);
   });

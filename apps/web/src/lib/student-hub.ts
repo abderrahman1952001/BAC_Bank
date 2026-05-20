@@ -1,4 +1,8 @@
-import type { StudyCommandProposal } from "@bac-bank/contracts/study-command";
+import type {
+  StudyCommandHistoryEvent,
+  StudyCommandProposal,
+  StudyCommandStarterMode,
+} from "@bac-bank/contracts/study-command";
 import {
   formatSessionType,
   formatStudyReviewReason,
@@ -26,6 +30,7 @@ import { formatRelativeStudyTimestamp } from "@/lib/study-time";
 type StudyBadgeTone = "neutral" | "brand" | "success" | "warning" | "accent";
 type HubActionTone = "neutral" | "brand" | "success";
 type HubCurriculumJourneyTone = "warning" | "brand" | "success";
+type StudyCommandHistoryTone = "neutral" | "brand" | "success" | "warning";
 
 type RecentStudySession = RecentStudySessionsResponse["data"][number];
 type RecentExamActivity = RecentExamActivitiesResponse["data"][number];
@@ -124,9 +129,42 @@ export type CurriculumJourneyActivityItem = {
   tone: HubCurriculumJourneyTone;
 };
 
+export type StudyCommandHistoryItem = {
+  key: string;
+  title: string;
+  subtitle: string;
+  badgeLabel: string;
+  href: string | null;
+  prompt: string;
+  actionLabel: string;
+  tone: StudyCommandHistoryTone;
+};
+
 export type StudyCommandProposalStartState = {
   canStart: boolean;
   reason: string | null;
+};
+
+const studyCommandModeLabels: Record<StudyCommandStarterMode, string> = {
+  SCHOOL_TEST_PREP: "تحضير فرض",
+  TUTOR_REPLAY: "بعد الدرس الخصوصي",
+  BAC_TRAINING: "تدريب BAC",
+  LESSON_UNDERSTANDING: "فهم درس",
+  MEMORIZATION_REVIEW: "حفظ",
+  MISTAKE_REPAIR: "إصلاح أخطاء",
+  SIMULATION: "محاكاة",
+  LAB_EXPLORATION: "مختبر",
+  LIBRARY_SEARCH: "مكتبة",
+  CONTINUE_SESSION: "متابعة",
+};
+
+const studyCommandAvailabilityLabels: Record<
+  NonNullable<StudyCommandHistoryEvent["availabilityStatus"]>,
+  string
+> = {
+  READY: "جاهز",
+  NEEDS_CONTENT: "ينتظر محتوى",
+  UNAVAILABLE: "غير متاح",
 };
 
 export function resolveStudyCommandProposalStartState(
@@ -164,6 +202,63 @@ export function getSummaryProgressPercent(
   return Math.round(
     (summary.completedQuestionCount / summary.totalQuestionCount) * 100,
   );
+}
+
+export function buildStudyCommandHistoryItems(
+  events: StudyCommandHistoryEvent[],
+): StudyCommandHistoryItem[] {
+  return [...events]
+    .sort((left, right) => right.occurredAt.localeCompare(left.occurredAt))
+    .map((event) => {
+      const modeLabel = event.mode
+        ? studyCommandModeLabels[event.mode]
+        : "Study Command";
+      const title = event.title ?? modeLabel;
+      const topicLabel = event.topicCodes.length
+        ? event.topicCodes.slice(0, 2).join("، ")
+        : null;
+      const contextParts = [
+        event.subjectCode,
+        topicLabel,
+        formatRelativeStudyTimestamp(event.occurredAt),
+      ].filter((part): part is string => Boolean(part));
+      const accepted = event.kind === "ACCEPTED";
+      const needsContent = event.availabilityStatus === "NEEDS_CONTENT";
+      const unavailable = event.availabilityStatus === "UNAVAILABLE";
+      const tone: StudyCommandHistoryTone = unavailable
+        ? "warning"
+        : needsContent
+          ? "warning"
+          : accepted
+            ? "success"
+            : "brand";
+      const matchLabel =
+        typeof event.matchingExerciseCount === "number"
+          ? `${event.matchingExerciseCount} مطابق`
+          : null;
+      const availabilityLabel = event.availabilityStatus
+        ? studyCommandAvailabilityLabels[event.availabilityStatus]
+        : null;
+      const badgeLabel =
+        availabilityLabel ?? (accepted ? "مقبول" : "مقترح");
+
+      return {
+        key: event.id,
+        title,
+        subtitle: [modeLabel, matchLabel, ...contextParts]
+          .filter((part): part is string => Boolean(part))
+          .join(" · "),
+        badgeLabel,
+        href: event.href,
+        prompt: title,
+        actionLabel: event.href
+          ? accepted
+            ? "فتح"
+            : "فتح المسار"
+          : "حضّر مجدداً",
+        tone,
+      };
+    });
 }
 
 export function describeMistakeReviewCadence(

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookCopy,
+  BrainCircuit,
   CreditCard,
   FileText,
   GraduationCap,
@@ -39,6 +40,11 @@ const navItems = [
     href: "/admin/library",
     label: "Library",
     icon: LibraryBig,
+  },
+  {
+    href: "/admin/study-command",
+    label: "Command",
+    icon: BrainCircuit,
   },
   {
     href: "/admin/sources",

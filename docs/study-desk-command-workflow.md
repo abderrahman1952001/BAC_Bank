@@ -104,6 +104,9 @@ Those events must stay safe and diagnostic:
 
 The student-facing history endpoint may show recent structured command events,
 but it should remain a practical trace of product actions, not a chat log.
+My Space may render this as a compact command trail with safe titles, modes,
+availability, matching counts, and resume/open links. It must not display raw
+student commands or transcripts.
 
 The internal diagnostic endpoint is `GET /api/v1/admin/study-command/diagnostics`
 and is guarded by admin auth. It summarizes the recent command window:
@@ -113,6 +116,10 @@ and is guarded by admin auth. It summarizes the recent command window:
 - top modes, subjects, topics, action kinds, availability states, and AI routing
   outcomes
 - top `NEEDS_CONTENT` signals so content work can target real student demand
+
+The web admin surface for this loop is `/admin/study-command`. It should remain
+an operational report for routing quality, missing-content pressure, and AI
+fallback behavior, not a prompt-inspection console.
 
 This gives BAC Bank a product feedback loop while preserving the core rule:
 deterministic routing and availability checks remain the source of truth.
@@ -238,6 +245,11 @@ The first implementation should be intentionally narrow:
   server re-runs proposal composition and availability before creating a drill
   session or returning the platform route to open; the client must not create
   sessions directly from a stale embedded proposal payload.
+- My Space can show recent structured command events from
+  `GET /api/v1/study/command/history`, but only as safe recovery/action
+  metadata. It should never recreate a chat transcript.
+- Admin can inspect aggregate routing health from `/admin/study-command`, backed
+  by `GET /api/v1/admin/study-command/diagnostics`.
 - explicit proposal actions, optional one-question clarifications, and runtime
   contracts
 - real content mappings before relying on topic drills. For the current SVT SE

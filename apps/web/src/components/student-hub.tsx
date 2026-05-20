@@ -3,6 +3,7 @@
 import {
   parseStudyCommandAcceptResponse,
   parseStudyCommandProposalResponse,
+  type StudyCommandHistoryEvent,
   type StudyCommandProposal,
   type StudyCommandStarter,
 } from "@bac-bank/contracts/study-command";
@@ -66,6 +67,7 @@ import {
   buildCurriculumJourneyItems,
   buildMyMistakeItems,
   buildSavedExerciseItems,
+  buildStudyCommandHistoryItems,
   buildWeakPointItems,
   findActiveHubSession,
   resolveStudyCommandProposalStartState,
@@ -91,6 +93,7 @@ export function StudentHub({
   initialDueFlashcards,
   initialLabTools,
   initialStudyCommandStarters,
+  initialStudyCommandHistory,
 }: {
   initialRecentStudySessions?: RecentStudySessionsResponse["data"];
   initialRecentExamActivities?: RecentExamActivitiesResponse["data"];
@@ -101,6 +104,7 @@ export function StudentHub({
   initialDueFlashcards?: DueFlashcardsResponse["data"];
   initialLabTools?: LabToolsResponse["data"];
   initialStudyCommandStarters?: StudyCommandStarter[];
+  initialStudyCommandHistory?: StudyCommandHistoryEvent[];
 }) {
   const router = useRouter();
   const [refreshingHub, startRefreshingHub] = useTransition();
@@ -265,6 +269,10 @@ export function StudentHub({
   const studyCommandStarters = useMemo(
     () => initialStudyCommandStarters ?? [],
     [initialStudyCommandStarters],
+  );
+  const studyCommandHistoryItems = useMemo(
+    () => buildStudyCommandHistoryItems(initialStudyCommandHistory ?? []),
+    [initialStudyCommandHistory],
   );
   const reviewCount =
     dueFlashcards.length + myMistakeItems.length + savedExerciseItems.length;
@@ -664,6 +672,47 @@ export function StudentHub({
                   <small>{starter.reason}</small>
                 </Button>
               ))}
+            </div>
+          ) : null}
+
+          {studyCommandHistoryItems.length ? (
+            <div className="hub-command-history" aria-label="آخر أوامر الدراسة">
+              <div className="hub-command-history-head">
+                <span>آخر أوامر Study Command</span>
+                <small>مسارات آمنة من نشاطك، بدون حفظ نصوصك الخام.</small>
+              </div>
+              <div className="hub-command-history-grid">
+                {studyCommandHistoryItems.slice(0, 3).map((item) => (
+                  <article
+                    key={item.key}
+                    className={`hub-command-history-item tone-${item.tone}`}
+                  >
+                    <div>
+                      <span>{item.badgeLabel}</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.subtitle}</p>
+                    </div>
+                    {item.href ? (
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Link href={item.href}>{item.actionLabel}</Link>
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleStarterClick(item.prompt)}
+                      >
+                        {item.actionLabel}
+                      </Button>
+                    )}
+                  </article>
+                ))}
+              </div>
             </div>
           ) : null}
 

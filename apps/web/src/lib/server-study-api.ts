@@ -1,6 +1,9 @@
 import {
+  parseStudyCommandHistoryResponse,
   parseStudyCommandStartersResponse,
   type StudyCommandCreateSessionRequest,
+  type StudyCommandHistoryEvent,
+  type StudyCommandHistoryResponse,
   type StudyCommandStartersResponse,
 } from "@bac-bank/contracts/study-command";
 import {
@@ -178,6 +181,74 @@ export async function fetchServerStudyCommandStarters(): Promise<StudyCommandSta
     "Study command starters failed.",
     parseStudyCommandStartersResponse,
   );
+}
+
+export async function fetchServerStudyCommandHistory(
+  limit = 8,
+): Promise<StudyCommandHistoryResponse> {
+  if (shouldUsePlaywrightFixtures()) {
+    const fixtureHistory = [
+      {
+        id: "fixture-command-accepted",
+        kind: "ACCEPTED",
+        occurredAt: "2026-04-18T11:20:00.000Z",
+        mode: "BAC_TRAINING",
+        title: "Focused training",
+        href: "/student/training/session-123",
+        subjectCode: "NATURAL_SCIENCES",
+        topicCodes: ["PROTEINS"],
+        availabilityStatus: "READY",
+        matchingExerciseCount: 3,
+        actionKind: "CREATE_STUDY_SESSION",
+        resultKind: "CREATED_STUDY_SESSION",
+        clarificationRequired: false,
+        aiRoute: {
+          status: "SKIPPED",
+          provider: null,
+          model: null,
+          skippedReason: "DISABLED",
+          failureCode: null,
+          confidence: null,
+        },
+      },
+      {
+        id: "fixture-command-content-gap",
+        kind: "PROPOSED",
+        occurredAt: "2026-04-18T09:10:00.000Z",
+        mode: "LESSON_UNDERSTANDING",
+        title: "درس البروتينات",
+        href: "/student/courses/NATURAL_SCIENCES",
+        subjectCode: "NATURAL_SCIENCES",
+        topicCodes: ["PROTEINS"],
+        availabilityStatus: "NEEDS_CONTENT",
+        matchingExerciseCount: 0,
+        actionKind: "OPEN_ROUTE",
+        resultKind: null,
+        clarificationRequired: false,
+        aiRoute: {
+          status: "SKIPPED",
+          provider: null,
+          model: null,
+          skippedReason: "DISABLED",
+          failureCode: null,
+          confidence: null,
+        },
+      },
+    ] satisfies StudyCommandHistoryEvent[];
+
+    return {
+      data: fixtureHistory.slice(0, limit),
+    };
+  }
+
+  return fetchServerApiJson<StudyCommandHistoryResponse>(
+    "/study/command/history",
+    undefined,
+    "Study command history failed.",
+    parseStudyCommandHistoryResponse,
+  ).then((payload) => ({
+    data: payload.data.slice(0, limit),
+  }));
 }
 
 export async function fetchServerRecentStudySessions(

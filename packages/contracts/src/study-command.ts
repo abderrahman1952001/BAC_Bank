@@ -155,11 +155,13 @@ export type StudyCommandHistoryEvent = {
   occurredAt: string;
   mode: StudyCommandStarterMode | null;
   title: string | null;
+  href: string | null;
   subjectCode: string | null;
   topicCodes: string[];
   availabilityStatus:
     | NonNullable<StudyCommandProposal["availability"]>["status"]
     | null;
+  matchingExerciseCount: number | null;
   actionKind: StudyCommandProposalAction["kind"] | null;
   resultKind: StudyCommandAcceptResponse["kind"] | null;
   clarificationRequired: boolean;
@@ -383,11 +385,13 @@ const studyCommandHistoryEventSchema: z.ZodType<StudyCommandHistoryEvent> =
     occurredAt: z.string(),
     mode: studyCommandStarterModeSchema.nullable(),
     title: z.string().nullable(),
+    href: z.string().nullable(),
     subjectCode: z.string().nullable(),
     topicCodes: z.array(z.string()),
     availabilityStatus: z
       .enum(["READY", "NEEDS_CONTENT", "UNAVAILABLE"])
       .nullable(),
+    matchingExerciseCount: z.number().int().nonnegative().nullable(),
     actionKind: z.enum(["CREATE_STUDY_SESSION", "OPEN_ROUTE"]).nullable(),
     resultKind: z
       .enum(["CREATED_STUDY_SESSION", "OPEN_ROUTE", "NO_PROPOSAL"])

@@ -37,6 +37,8 @@ type StudyCommandEventValue = {
   commandFingerprint: string | null;
   mode: StudyCommandProposal['mode'] | null;
   title: string | null;
+  primaryHref: string | null;
+  resultHref: string | null;
   subjectCode: string | null;
   topicCodes: string[];
   availabilityStatus:
@@ -68,6 +70,7 @@ export class StudyCommandBrainService {
     kind: 'PROPOSED' | 'ACCEPTED';
     resultKind: StudyCommandAcceptResponse['kind'] | null;
     sourceId: string | null;
+    resultHref?: string | null;
   }) {
     const value = this.buildEventValue(input);
 
@@ -148,6 +151,7 @@ export class StudyCommandBrainService {
     aiRouterResult: StudyCommandAiRouterResult | null;
     kind: 'PROPOSED' | 'ACCEPTED';
     resultKind: StudyCommandAcceptResponse['kind'] | null;
+    resultHref?: string | null;
   }): StudyCommandEventValue {
     const proposal = input.proposal;
     const primaryAction = proposal?.primaryAction ?? null;
@@ -160,6 +164,8 @@ export class StudyCommandBrainService {
       commandFingerprint: command ? this.hashCommand(command) : null,
       mode: proposal?.mode ?? null,
       title: proposal?.title ?? null,
+      primaryHref: proposal?.primaryHref ?? null,
+      resultHref: input.resultHref ?? null,
       subjectCode: this.extractSubjectCode(proposal),
       topicCodes: this.extractTopicCodes(proposal),
       availabilityStatus: proposal?.availability?.status ?? null,
@@ -282,9 +288,11 @@ export class StudyCommandBrainService {
       occurredAt: event.occurredAt.toISOString(),
       mode: value.mode,
       title: value.title,
+      href: value.resultHref ?? value.primaryHref,
       subjectCode: value.subjectCode,
       topicCodes: value.topicCodes,
       availabilityStatus: value.availabilityStatus,
+      matchingExerciseCount: value.matchingExerciseCount,
       actionKind: value.actionKind,
       resultKind: value.resultKind,
       clarificationRequired: value.clarificationRequired,
@@ -469,6 +477,12 @@ export class StudyCommandBrainService {
         ? candidate.mode
         : null,
       title: typeof candidate.title === 'string' ? candidate.title : null,
+      primaryHref:
+        typeof candidate.primaryHref === 'string'
+          ? candidate.primaryHref
+          : null,
+      resultHref:
+        typeof candidate.resultHref === 'string' ? candidate.resultHref : null,
       subjectCode:
         typeof candidate.subjectCode === 'string'
           ? candidate.subjectCode

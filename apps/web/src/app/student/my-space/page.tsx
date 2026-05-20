@@ -4,6 +4,7 @@ import {
   fetchServerRecentExamActivities,
   fetchServerRecentExerciseStates,
   fetchServerRecentStudySessions,
+  fetchServerStudyCommandHistory,
   fetchServerStudyCommandStarters,
   fetchServerStudyCurriculumJourneys,
   fetchServerWeakPointInsights,
@@ -22,6 +23,7 @@ export default async function StudentMySpacePage() {
     initialDueFlashcards,
     initialLabTools,
     initialStudyCommandStarters,
+    initialStudyCommandHistory,
   ] = await Promise.all([
     fetchServerRecentStudySessions(6)
       .then((payload) => payload.data)
@@ -56,6 +58,9 @@ export default async function StudentMySpacePage() {
     fetchServerStudyCommandStarters()
       .then((payload) => payload.data)
       .catch(() => undefined),
+    fetchServerStudyCommandHistory(8)
+      .then((payload) => payload.data)
+      .catch(() => undefined),
   ]);
 
   return (
@@ -69,6 +74,7 @@ export default async function StudentMySpacePage() {
       initialDueFlashcards={initialDueFlashcards}
       initialLabTools={initialLabTools}
       initialStudyCommandStarters={initialStudyCommandStarters}
+      initialStudyCommandHistory={initialStudyCommandHistory}
     />
   );
 }
