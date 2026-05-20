@@ -1,3 +1,4 @@
+import { StudyCommandBrainService } from './study-command-brain.service';
 import { StudyCommandService } from './study-command.service';
 
 const filters = {
@@ -99,6 +100,10 @@ function createService(input?: {
         },
       }),
     },
+    studentLearningEvent: {
+      create: jest.fn().mockResolvedValue({}),
+      findMany: jest.fn().mockResolvedValue([]),
+    },
   };
   const studyReviewService = {
     listMyMistakes: jest.fn().mockResolvedValue({ data: [] }),
@@ -121,8 +126,12 @@ function createService(input?: {
       usageEvent: null,
     }),
   };
+  const studyCommandBrainService = new StudyCommandBrainService(
+    prisma as never,
+  );
 
   return {
+    prisma,
     studyService,
     studyCommandAiRouterService,
     service: new StudyCommandService(
@@ -134,6 +143,7 @@ function createService(input?: {
       flashcardsService as never,
       labService as never,
       studyCommandAiRouterService as never,
+      studyCommandBrainService,
     ),
   };
 }
@@ -162,6 +172,44 @@ describe('StudyCommandService', () => {
       matchingExerciseCount: 2,
     });
     expect(response.proposal?.primaryAction.kind).toBe('CREATE_STUDY_SESSION');
+  });
+
+  it('records proposal telemetry without storing the raw command', async () => {
+    const { service, prisma } = createService({
+      matchingExerciseCount: 2,
+    });
+
+    await service.propose(
+      'user-1',
+      'أريد تدريب BAC في علوم الطبيعة على التركيب الضوئي',
+    );
+
+    expect(prisma.studentLearningEvent.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        userId: 'user-1',
+        eventType: 'STUDY_COMMAND_PROPOSED',
+        sourceType: 'STUDY_COMMAND',
+        sourceId: null,
+        value: expect.objectContaining({
+          version: 1,
+          kind: 'PROPOSED',
+          mode: 'BAC_TRAINING',
+          subjectCode: 'NATURAL_SCIENCES',
+          topicCodes: ['PHOTOSYNTHESIS'],
+          availabilityStatus: 'READY',
+          actionKind: 'CREATE_STUDY_SESSION',
+          resultKind: null,
+          clarificationRequired: false,
+          commandLength: expect.any(Number),
+          commandFingerprint: expect.stringMatching(/^[a-f0-9]{64}$/),
+        }),
+      }),
+    });
+    expect(
+      JSON.stringify(
+        prisma.studentLearningEvent.create.mock.calls[0][0].data.value,
+      ),
+    ).not.toContain('أريد تدريب BAC');
   });
 
   it('uses validated AI interpretation as hints before deterministic proposal composition', async () => {
@@ -245,7 +293,7 @@ describe('StudyCommandService', () => {
   });
 
   it('accepts a ready command by creating the server-owned study session', async () => {
-    const { service, studyService } = createService({
+    const { service, studyService, prisma } = createService({
       matchingExerciseCount: 2,
     });
 
@@ -278,6 +326,18 @@ describe('StudyCommandService', () => {
           matchingExerciseCount: 2,
         },
       },
+    });
+    expect(prisma.studentLearningEvent.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        eventType: 'STUDY_COMMAND_ACCEPTED',
+        sourceType: 'STUDY_COMMAND',
+        sourceId: '11111111-1111-4111-8111-111111111111',
+        value: expect.objectContaining({
+          kind: 'ACCEPTED',
+          resultKind: 'CREATED_STUDY_SESSION',
+          availabilityStatus: 'READY',
+        }),
+      }),
     });
   });
 
@@ -333,5 +393,170 @@ describe('StudyCommandService', () => {
       kind: 'NO_PROPOSAL',
       message: 'اكتب ما تريد دراسته الآن حتى نحوله إلى جلسة واضحة.',
     });
+  });
+
+  it('lists safe Study Command history from learning events', async () => {
+    const { service, prisma } = createService();
+    prisma.studentLearningEvent.findMany.mockResolvedValue([
+      {
+        id: 'event-1',
+        eventType: 'STUDY_COMMAND_PROPOSED',
+        occurredAt: new Date('2026-05-20T08:00:00.000Z'),
+        value: {
+          version: 1,
+          kind: 'PROPOSED',
+          commandLength: 24,
+          commandFingerprint: 'a'.repeat(64),
+          mode: 'BAC_TRAINING',
+          title: 'تدريب BAC علوم الطبيعة والحياة',
+          subjectCode: 'NATURAL_SCIENCES',
+          topicCodes: ['PHOTOSYNTHESIS'],
+          availabilityStatus: 'NEEDS_CONTENT',
+          matchingExerciseCount: 0,
+          actionKind: 'OPEN_ROUTE',
+          resultKind: null,
+          clarificationRequired: false,
+          aiRoute: {
+            status: 'SKIPPED',
+            provider: null,
+            model: null,
+            skippedReason: 'DISABLED',
+            failureCode: null,
+            confidence: null,
+          },
+        },
+      },
+    ]);
+
+    await expect(service.listHistory('user-1')).resolves.toEqual({
+      data: [
+        {
+          id: 'event-1',
+          kind: 'PROPOSED',
+          occurredAt: '2026-05-20T08:00:00.000Z',
+          mode: 'BAC_TRAINING',
+          title: 'تدريب BAC علوم الطبيعة والحياة',
+          subjectCode: 'NATURAL_SCIENCES',
+          topicCodes: ['PHOTOSYNTHESIS'],
+          availabilityStatus: 'NEEDS_CONTENT',
+          actionKind: 'OPEN_ROUTE',
+          resultKind: null,
+          clarificationRequired: false,
+          aiRoute: {
+            status: 'SKIPPED',
+            provider: null,
+            model: null,
+            skippedReason: 'DISABLED',
+            failureCode: null,
+            confidence: null,
+          },
+        },
+      ],
+    });
+  });
+
+  it('builds internal diagnostics for routing quality and missing-content signals', async () => {
+    const { service, prisma } = createService();
+    prisma.studentLearningEvent.findMany.mockResolvedValue([
+      {
+        id: 'event-1',
+        eventType: 'STUDY_COMMAND_PROPOSED',
+        occurredAt: new Date('2026-05-20T08:00:00.000Z'),
+        value: {
+          version: 1,
+          kind: 'PROPOSED',
+          commandLength: 24,
+          commandFingerprint: 'a'.repeat(64),
+          mode: 'BAC_TRAINING',
+          title: 'تدريب BAC علوم الطبيعة والحياة',
+          subjectCode: 'NATURAL_SCIENCES',
+          topicCodes: ['PHOTOSYNTHESIS'],
+          availabilityStatus: 'NEEDS_CONTENT',
+          matchingExerciseCount: 0,
+          actionKind: 'OPEN_ROUTE',
+          resultKind: null,
+          clarificationRequired: false,
+          aiRoute: {
+            status: 'SKIPPED',
+            provider: null,
+            model: null,
+            skippedReason: 'DISABLED',
+            failureCode: null,
+            confidence: null,
+          },
+        },
+      },
+      {
+        id: 'event-2',
+        eventType: 'STUDY_COMMAND_ACCEPTED',
+        occurredAt: new Date('2026-05-20T08:01:00.000Z'),
+        value: {
+          version: 1,
+          kind: 'ACCEPTED',
+          commandLength: 24,
+          commandFingerprint: 'b'.repeat(64),
+          mode: 'BAC_TRAINING',
+          title: 'تدريب BAC علوم الطبيعة والحياة',
+          subjectCode: 'NATURAL_SCIENCES',
+          topicCodes: ['PHOTOSYNTHESIS'],
+          availabilityStatus: 'READY',
+          matchingExerciseCount: 2,
+          actionKind: 'CREATE_STUDY_SESSION',
+          resultKind: 'CREATED_STUDY_SESSION',
+          clarificationRequired: false,
+          aiRoute: {
+            status: 'SUCCESS',
+            provider: 'openai',
+            model: 'router-model',
+            skippedReason: null,
+            failureCode: null,
+            confidence: 0.88,
+          },
+        },
+      },
+    ]);
+
+    const diagnostics = await service.getDiagnostics();
+
+    expect(diagnostics).toMatchObject({
+      windowDays: 30,
+      sampledEventCount: 2,
+      summary: {
+        proposals: 1,
+        accepted: 1,
+        createdStudySessions: 1,
+        openedRoutes: 0,
+        noProposal: 0,
+        clarifications: 0,
+      },
+      modes: [
+        {
+          key: 'BAC_TRAINING',
+          count: 2,
+        },
+      ],
+      missingContentSignals: [
+        {
+          key: 'BAC_TRAINING|NATURAL_SCIENCES|PHOTOSYNTHESIS',
+          mode: 'BAC_TRAINING',
+          subjectCode: 'NATURAL_SCIENCES',
+          topicCodes: ['PHOTOSYNTHESIS'],
+          count: 1,
+          lastSeenAt: '2026-05-20T08:00:00.000Z',
+        },
+      ],
+    });
+    expect(diagnostics.aiRouting).toEqual(
+      expect.arrayContaining([
+        {
+          key: 'SKIPPED:DISABLED',
+          count: 1,
+        },
+        {
+          key: 'SUCCESS',
+          count: 1,
+        },
+      ]),
+    );
   });
 });

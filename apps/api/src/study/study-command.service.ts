@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import type {
   StudyCommandAcceptResponse,
+  StudyCommandDiagnosticsResponse,
+  StudyCommandHistoryResponse,
   StudyCommandProposal,
   StudyCommandProposalResponse,
   StudyCommandStartersResponse,
@@ -9,7 +11,10 @@ import { FlashcardsService } from '../flashcards/flashcards.service';
 import { LabService } from '../lab/lab.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StudyCurriculumJourneyService } from './study-curriculum-journey.service';
-import { StudyCommandAiRouterService } from './study-command-ai-router.service';
+import {
+  StudyCommandAiRouterService,
+  type StudyCommandAiRouterResult,
+} from './study-command-ai-router.service';
 import {
   buildStudyCommandProposal,
   buildStudyCommandStarters,
@@ -18,6 +23,7 @@ import {
   markStudyCommandProposalNeedsContent,
   type StudyCommandContext,
 } from './study-command-engine';
+import { StudyCommandBrainService } from './study-command-brain.service';
 import { StudyReviewService } from './study-review.service';
 import { StudyService } from './study.service';
 import { StudyWeakPointService } from './study-weak-point.service';
@@ -31,6 +37,11 @@ function buildStudentTrainingSessionRoute(sessionId: string) {
   return `/student/training/${encodeURIComponent(sessionId)}`;
 }
 
+type StudyCommandProposalBuild = {
+  proposal: StudyCommandProposal | null;
+  aiRouterResult: StudyCommandAiRouterResult | null;
+};
+
 @Injectable()
 export class StudyCommandService {
   constructor(
@@ -42,6 +53,7 @@ export class StudyCommandService {
     private readonly flashcardsService: FlashcardsService,
     private readonly labService: LabService,
     private readonly studyCommandAiRouterService: StudyCommandAiRouterService,
+    private readonly studyCommandBrainService: StudyCommandBrainService,
   ) {}
 
   async listStarters(userId: string): Promise<StudyCommandStartersResponse> {
@@ -56,6 +68,108 @@ export class StudyCommandService {
     userId: string,
     command: string,
   ): Promise<StudyCommandProposalResponse> {
+    const result = await this.buildProposalForCommand(userId, command);
+
+    await this.studyCommandBrainService.recordEvent({
+      userId,
+      command,
+      proposal: result.proposal,
+      aiRouterResult: result.aiRouterResult,
+      kind: 'PROPOSED',
+      resultKind: null,
+      sourceId: null,
+    });
+
+    return {
+      proposal: result.proposal,
+    };
+  }
+
+  async accept(
+    userId: string,
+    command: string,
+  ): Promise<StudyCommandAcceptResponse> {
+    const result = await this.buildProposalForCommand(userId, command);
+    const proposal = result.proposal;
+
+    if (!proposal) {
+      const response = {
+        kind: 'NO_PROPOSAL',
+        message: NO_PROPOSAL_MESSAGE,
+      } satisfies StudyCommandAcceptResponse;
+
+      await this.studyCommandBrainService.recordEvent({
+        userId,
+        command,
+        proposal,
+        aiRouterResult: result.aiRouterResult,
+        kind: 'ACCEPTED',
+        resultKind: response.kind,
+        sourceId: null,
+      });
+
+      return response;
+    }
+
+    if (proposal.primaryAction.kind === 'OPEN_ROUTE') {
+      const response = {
+        kind: 'OPEN_ROUTE',
+        href: proposal.primaryAction.href,
+        proposal,
+        message: proposal.availability?.message,
+      } satisfies StudyCommandAcceptResponse;
+
+      await this.studyCommandBrainService.recordEvent({
+        userId,
+        command,
+        proposal,
+        aiRouterResult: result.aiRouterResult,
+        kind: 'ACCEPTED',
+        resultKind: response.kind,
+        sourceId: null,
+      });
+
+      return response;
+    }
+
+    const created = await this.studyService.createStudySession(
+      userId,
+      proposal.primaryAction.request,
+    );
+    const href = buildStudentTrainingSessionRoute(created.id);
+
+    const response = {
+      kind: 'CREATED_STUDY_SESSION',
+      sessionId: created.id,
+      href,
+      proposal,
+    } satisfies StudyCommandAcceptResponse;
+
+    await this.studyCommandBrainService.recordEvent({
+      userId,
+      command,
+      proposal,
+      aiRouterResult: result.aiRouterResult,
+      kind: 'ACCEPTED',
+      resultKind: response.kind,
+      sourceId: created.id,
+    });
+
+    return response;
+  }
+
+  async listHistory(userId: string): Promise<StudyCommandHistoryResponse> {
+    return this.studyCommandBrainService.listHistory(userId);
+  }
+
+  async getDiagnostics(): Promise<StudyCommandDiagnosticsResponse> {
+    return this.studyCommandBrainService.getDiagnostics();
+  }
+
+  private async buildProposalForCommand(
+    userId: string,
+    command: string,
+  ): Promise<StudyCommandProposalBuild> {
     const context = await this.buildContext(userId);
     const aiRouterResult = await this.safe(
       this.studyCommandAiRouterService.interpret({
@@ -75,43 +189,7 @@ export class StudyCommandService {
       proposal: proposal
         ? await this.resolveProposalAvailability(userId, proposal)
         : null,
-    };
-  }
-
-  async accept(
-    userId: string,
-    command: string,
-  ): Promise<StudyCommandAcceptResponse> {
-    const response = await this.propose(userId, command);
-    const proposal = response.proposal;
-
-    if (!proposal) {
-      return {
-        kind: 'NO_PROPOSAL',
-        message: NO_PROPOSAL_MESSAGE,
-      };
-    }
-
-    if (proposal.primaryAction.kind === 'OPEN_ROUTE') {
-      return {
-        kind: 'OPEN_ROUTE',
-        href: proposal.primaryAction.href,
-        proposal,
-        message: proposal.availability?.message,
-      };
-    }
-
-    const created = await this.studyService.createStudySession(
-      userId,
-      proposal.primaryAction.request,
-    );
-    const href = buildStudentTrainingSessionRoute(created.id);
-
-    return {
-      kind: 'CREATED_STUDY_SESSION',
-      sessionId: created.id,
-      href,
-      proposal,
+      aiRouterResult,
     };
   }
 

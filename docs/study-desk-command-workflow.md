@@ -54,6 +54,9 @@ mistake repair, labs, and the student's recent work.
    or a return to My Space. Do not invent follow-up content.
 9. During the session, keep AI object-aware: lesson-aware, correction-aware,
    exercise-aware, flashcard-aware, or mistake-aware.
+10. Persist safe command metadata so the platform can learn where routing,
+    availability, and missing-content states break down without storing raw
+    student prompts as the product truth.
 
 ## Controlled AI Routing
 
@@ -81,6 +84,38 @@ The routing contract is:
 
 This is intentionally not a generic chatbot. It is a controlled interpreter in
 front of real Study Command workflows.
+
+## Platform Brain And Evaluation Loop
+
+Study Command needs an improvement loop, not just a proposal card. The platform
+records proposal and acceptance metadata into `student_learning_events` using
+the event types `STUDY_COMMAND_PROPOSED` and `STUDY_COMMAND_ACCEPTED`.
+
+Those events must stay safe and diagnostic:
+
+- store mode, title, subject code, topic codes, action kind, result kind,
+  availability status, clarification presence, and matching-count metadata.
+- store command length and a normalized hash fingerprint for deduplication, not
+  the raw command text.
+- store AI routing outcome as metadata only: status, provider, model,
+  skipped/failure reason, and confidence.
+- never store API keys, raw prompts, full chat transcripts, private notes, or
+  source/content blobs in Study Command telemetry.
+
+The student-facing history endpoint may show recent structured command events,
+but it should remain a practical trace of product actions, not a chat log.
+
+The internal diagnostic endpoint is `GET /api/v1/admin/study-command/diagnostics`
+and is guarded by admin auth. It summarizes the recent command window:
+
+- proposal and acceptance counts
+- created-session, opened-route, no-proposal, and clarification counts
+- top modes, subjects, topics, action kinds, availability states, and AI routing
+  outcomes
+- top `NEEDS_CONTENT` signals so content work can target real student demand
+
+This gives BAC Bank a product feedback loop while preserving the core rule:
+deterministic routing and availability checks remain the source of truth.
 
 ## V1 Hidden Study Modes
 
@@ -237,6 +272,10 @@ The first implementation should be intentionally narrow:
   important wording should become an eval fixture with expected mode, subject,
   topic, and clarification behavior. The system should pass those fixtures
   before adding broader autonomy.
+- the executable eval harness lives in
+  `apps/api/src/study/study-command-eval-harness.ts` and is exercised by the
+  Study Command unit tests. It should remain deterministic and run without live
+  AI credentials.
 - controlled AI routing lives behind `StudyCommandAiRouterService`. It is
   disabled by default and requires `AI_STUDY_COMMAND_ROUTER_ENABLED=true`,
   `AI_STUDY_COMMAND_ROUTER_MODEL`, provider credentials, and an adapter
@@ -249,6 +288,9 @@ The first implementation should be intentionally narrow:
 - the server may pass validated AI interpretation into
   `buildStudyCommandProposal`, but proposal actions and availability remain
   owned by the existing Study Command composer and preview logic.
+- the command brain reuses `student_learning_events`; do not create a parallel
+  analytics table until event volume, retention, or query performance requires a
+  dedicated migration.
 - a full-stack Playwright smoke can be run with `PLAYWRIGHT_FULL_STACK=true`
   to verify command proposal, API preview, real session creation, and training
   navigation against the local API and database

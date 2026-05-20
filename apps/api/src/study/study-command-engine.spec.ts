@@ -17,6 +17,7 @@ import {
   markStudyCommandProposalNeedsContent,
   type StudyCommandContext,
 } from './study-command-engine';
+import { evaluateStudyCommandFixtures } from './study-command-eval-harness';
 import { studyCommandEvalFixtures } from './study-command-eval-fixtures';
 
 const sessions = [
@@ -804,6 +805,21 @@ describe('study command', () => {
 
   it('returns null for empty commands', () => {
     expect(buildStudyCommandProposal('   ', context)).toBeNull();
+  });
+
+  it('passes the executable Study Command routing eval harness', () => {
+    const results = evaluateStudyCommandFixtures(
+      studyCommandEvalFixtures,
+      (fixture) => (fixture.context === 'empty' ? emptyContext : context),
+    );
+    const failures = results
+      .filter((result) => !result.passed)
+      .map((result) => ({
+        id: result.id,
+        failures: result.failures,
+      }));
+
+    expect(failures).toEqual([]);
   });
 
   it.each(studyCommandEvalFixtures)(

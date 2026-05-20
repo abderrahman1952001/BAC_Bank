@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
+import { AdminRoleGuard } from '../admin/admin.guard';
 import { CatalogModule } from '../catalog/catalog.module';
 import { FlashcardsModule } from '../flashcards/flashcards.module';
 import { LabModule } from '../lab/lab.module';
+import { StudyCommandAdminController } from './study-command-admin.controller';
+import { StudyCommandBrainService } from './study-command-brain.service';
 import { StudyCommandController } from './study-command.controller';
 import { StudyCommandAiRouterService } from './study-command-ai-router.service';
 import { StudyCommandService } from './study-command.service';
@@ -18,10 +21,15 @@ import { StudyWeakPointService } from './study-weak-point.service';
 
 @Module({
   imports: [CatalogModule, FlashcardsModule, LabModule],
-  controllers: [StudyController, StudyCommandController],
+  controllers: [
+    StudyController,
+    StudyCommandController,
+    StudyCommandAdminController,
+  ],
   providers: [
     StudyService,
     StudyCommandAiRouterService,
+    StudyCommandBrainService,
     StudyCommandService,
     StudySessionService,
     StudyExamActivityService,
@@ -31,6 +39,7 @@ import { StudyWeakPointService } from './study-weak-point.service';
     StudyReadModelService,
     StudyReviewService,
     StudyWeakPointService,
+    AdminRoleGuard,
   ],
   exports: [StudyCurriculumJourneyService, StudyService],
 })

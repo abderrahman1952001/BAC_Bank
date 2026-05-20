@@ -126,6 +126,17 @@ export type StudyCommandStartersResponse = {
   data: StudyCommandStarter[];
 };
 
+export type StudyCommandHistoryEventKind = "PROPOSED" | "ACCEPTED";
+
+export type StudyCommandAiRouteTelemetry = {
+  status: "SKIPPED" | "SUCCESS" | "FAILED" | "SERVICE_ERROR" | "NOT_ATTEMPTED";
+  provider: string | null;
+  model: string | null;
+  skippedReason: string | null;
+  failureCode: string | null;
+  confidence: number | null;
+};
+
 export type StudyCommandAiInterpretation = {
   mode: StudyCommandMode;
   confidence: number;
@@ -136,6 +147,62 @@ export type StudyCommandAiInterpretation = {
   language: StudyCommandAiLanguage;
   missingFields: string[];
   studentFacingSummary: string;
+};
+
+export type StudyCommandHistoryEvent = {
+  id: string;
+  kind: StudyCommandHistoryEventKind;
+  occurredAt: string;
+  mode: StudyCommandStarterMode | null;
+  title: string | null;
+  subjectCode: string | null;
+  topicCodes: string[];
+  availabilityStatus:
+    | NonNullable<StudyCommandProposal["availability"]>["status"]
+    | null;
+  actionKind: StudyCommandProposalAction["kind"] | null;
+  resultKind: StudyCommandAcceptResponse["kind"] | null;
+  clarificationRequired: boolean;
+  aiRoute: StudyCommandAiRouteTelemetry;
+};
+
+export type StudyCommandHistoryResponse = {
+  data: StudyCommandHistoryEvent[];
+};
+
+export type StudyCommandDiagnosticsBucket = {
+  key: string;
+  count: number;
+};
+
+export type StudyCommandMissingContentSignal = {
+  key: string;
+  mode: StudyCommandStarterMode | null;
+  subjectCode: string | null;
+  topicCodes: string[];
+  count: number;
+  lastSeenAt: string;
+};
+
+export type StudyCommandDiagnosticsResponse = {
+  generatedAt: string;
+  windowDays: number;
+  sampledEventCount: number;
+  summary: {
+    proposals: number;
+    accepted: number;
+    createdStudySessions: number;
+    openedRoutes: number;
+    noProposal: number;
+    clarifications: number;
+  };
+  modes: StudyCommandDiagnosticsBucket[];
+  availability: StudyCommandDiagnosticsBucket[];
+  actions: StudyCommandDiagnosticsBucket[];
+  aiRouting: StudyCommandDiagnosticsBucket[];
+  topSubjects: StudyCommandDiagnosticsBucket[];
+  topTopics: StudyCommandDiagnosticsBucket[];
+  missingContentSignals: StudyCommandMissingContentSignal[];
 };
 
 export const studyCommandModeSchema: z.ZodType<StudyCommandMode> = z.enum([
@@ -161,6 +228,25 @@ const studyCommandAiLanguageSchema: z.ZodType<StudyCommandAiLanguage> = z.enum([
   "MIXED",
   "UNKNOWN",
 ]);
+
+const studyCommandHistoryEventKindSchema: z.ZodType<StudyCommandHistoryEventKind> =
+  z.enum(["PROPOSED", "ACCEPTED"]);
+
+const studyCommandAiRouteTelemetrySchema: z.ZodType<StudyCommandAiRouteTelemetry> =
+  z.object({
+    status: z.enum([
+      "SKIPPED",
+      "SUCCESS",
+      "FAILED",
+      "SERVICE_ERROR",
+      "NOT_ATTEMPTED",
+    ]),
+    provider: z.string().nullable(),
+    model: z.string().nullable(),
+    skippedReason: z.string().nullable(),
+    failureCode: z.string().nullable(),
+    confidence: z.number().min(0).max(1).nullable(),
+  });
 
 const sessionTypeSchema: z.ZodType<SessionType> = z.enum(["NORMAL", "MAKEUP"]);
 
@@ -290,6 +376,69 @@ export const studyCommandAiInterpretationSchema: z.ZodType<StudyCommandAiInterpr
     studentFacingSummary: z.string().trim().min(1).max(240),
   });
 
+const studyCommandHistoryEventSchema: z.ZodType<StudyCommandHistoryEvent> =
+  z.object({
+    id: z.string(),
+    kind: studyCommandHistoryEventKindSchema,
+    occurredAt: z.string(),
+    mode: studyCommandStarterModeSchema.nullable(),
+    title: z.string().nullable(),
+    subjectCode: z.string().nullable(),
+    topicCodes: z.array(z.string()),
+    availabilityStatus: z
+      .enum(["READY", "NEEDS_CONTENT", "UNAVAILABLE"])
+      .nullable(),
+    actionKind: z.enum(["CREATE_STUDY_SESSION", "OPEN_ROUTE"]).nullable(),
+    resultKind: z
+      .enum(["CREATED_STUDY_SESSION", "OPEN_ROUTE", "NO_PROPOSAL"])
+      .nullable(),
+    clarificationRequired: z.boolean(),
+    aiRoute: studyCommandAiRouteTelemetrySchema,
+  });
+
+export const studyCommandHistoryResponseSchema: z.ZodType<StudyCommandHistoryResponse> =
+  z.object({
+    data: z.array(studyCommandHistoryEventSchema),
+  });
+
+const studyCommandDiagnosticsBucketSchema: z.ZodType<StudyCommandDiagnosticsBucket> =
+  z.object({
+    key: z.string(),
+    count: z.number().int().min(0),
+  });
+
+const studyCommandMissingContentSignalSchema: z.ZodType<StudyCommandMissingContentSignal> =
+  z.object({
+    key: z.string(),
+    mode: studyCommandStarterModeSchema.nullable(),
+    subjectCode: z.string().nullable(),
+    topicCodes: z.array(z.string()),
+    count: z.number().int().min(0),
+    lastSeenAt: z.string(),
+  });
+
+export const studyCommandDiagnosticsResponseSchema: z.ZodType<StudyCommandDiagnosticsResponse> =
+  z.object({
+    generatedAt: z.string(),
+    windowDays: z.number().int().min(1),
+    sampledEventCount: z.number().int().min(0),
+    summary: z.object({
+      proposals: z.number().int().min(0),
+      accepted: z.number().int().min(0),
+      createdStudySessions: z.number().int().min(0),
+      openedRoutes: z.number().int().min(0),
+      noProposal: z.number().int().min(0),
+      clarifications: z.number().int().min(0),
+    }),
+    modes: z.array(studyCommandDiagnosticsBucketSchema),
+    availability: z.array(studyCommandDiagnosticsBucketSchema),
+    actions: z.array(studyCommandDiagnosticsBucketSchema),
+    aiRouting: z.array(studyCommandDiagnosticsBucketSchema),
+    topSubjects: z.array(studyCommandDiagnosticsBucketSchema),
+    topTopics: z.array(studyCommandDiagnosticsBucketSchema),
+    missingContentSignals: z.array(studyCommandMissingContentSignalSchema),
+  });
+
 export function parseStudyCommandProposalRequest(value: unknown) {
   return parseContract(
     studyCommandProposalRequestSchema,
@@ -335,5 +484,21 @@ export function parseStudyCommandAiInterpretation(value: unknown) {
     studyCommandAiInterpretationSchema,
     value,
     "StudyCommandAiInterpretation",
+  );
+}
+
+export function parseStudyCommandHistoryResponse(value: unknown) {
+  return parseContract(
+    studyCommandHistoryResponseSchema,
+    value,
+    "StudyCommandHistoryResponse",
+  );
+}
+
+export function parseStudyCommandDiagnosticsResponse(value: unknown) {
+  return parseContract(
+    studyCommandDiagnosticsResponseSchema,
+    value,
+    "StudyCommandDiagnosticsResponse",
   );
 }

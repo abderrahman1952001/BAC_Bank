@@ -3,6 +3,7 @@ import {
   parseStudyCommandAcceptRequest,
   parseStudyCommandProposalRequest,
   type StudyCommandAcceptResponse,
+  type StudyCommandHistoryResponse,
   type StudyCommandProposalResponse,
   type StudyCommandStartersResponse,
 } from '@bac-bank/contracts/study-command';
@@ -20,6 +21,13 @@ export class StudyCommandController {
     @Req() request: AuthenticatedRequest,
   ): Promise<StudyCommandStartersResponse> {
     return this.studyCommandService.listStarters(request.user!.id);
+  }
+
+  @Get('history')
+  listHistory(
+    @Req() request: AuthenticatedRequest,
+  ): Promise<StudyCommandHistoryResponse> {
+    return this.studyCommandService.listHistory(request.user!.id);
   }
 
   @Post('propose')
