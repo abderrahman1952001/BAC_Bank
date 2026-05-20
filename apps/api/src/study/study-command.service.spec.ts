@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { StudyCommandBrainService } from './study-command-brain.service';
 import { StudyCommandService } from './study-command.service';
 
@@ -138,7 +139,15 @@ function createService(input?: {
   );
   const studyCommandUsageGuardService = {
     consume: input?.usageGuardRejects
-      ? jest.fn().mockRejectedValue(new Error('rate limited'))
+      ? jest.fn().mockRejectedValue(
+          new HttpException(
+            {
+              message: 'rate limited',
+              code: 'STUDY_COMMAND_RATE_LIMITED',
+            },
+            HttpStatus.TOO_MANY_REQUESTS,
+          ),
+        )
       : jest.fn().mockResolvedValue(undefined),
   };
 
@@ -199,13 +208,27 @@ describe('StudyCommandService', () => {
         usageGuardRejects: true,
       });
 
-    await expect(service.propose('user-1', 'أريد تدريب BAC')).rejects.toThrow(
-      'rate limited',
-    );
+    await expect(
+      service.propose('user-1', 'أريد تدريب BAC'),
+    ).rejects.toBeInstanceOf(HttpException);
 
     expect(studyCommandAiRouterService.interpret).not.toHaveBeenCalled();
     expect(studyService.previewStudySession).not.toHaveBeenCalled();
-    expect(prisma.studentLearningEvent.create).not.toHaveBeenCalled();
+    expect(prisma.studentLearningEvent.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        userId: 'user-1',
+        eventType: 'STUDY_COMMAND_GUARD_BLOCKED',
+        sourceType: 'STUDY_COMMAND',
+        sourceId: null,
+        value: expect.objectContaining({
+          version: 1,
+          kind: 'GUARD_BLOCKED',
+          guardAction: 'propose',
+          guardReason: 'RATE_LIMITED',
+          commandFingerprint: expect.stringMatching(/^[a-f0-9]{64}$/),
+        }),
+      }),
+    });
   });
 
   it('records proposal telemetry without storing the raw command', async () => {
@@ -594,13 +617,45 @@ describe('StudyCommandService', () => {
           },
         },
       },
+      {
+        id: 'event-3',
+        eventType: 'STUDY_COMMAND_GUARD_BLOCKED',
+        occurredAt: new Date('2026-05-20T08:02:00.000Z'),
+        value: {
+          version: 1,
+          kind: 'GUARD_BLOCKED',
+          commandLength: 24,
+          commandFingerprint: 'c'.repeat(64),
+          mode: null,
+          title: null,
+          primaryHref: null,
+          resultHref: null,
+          subjectCode: null,
+          topicCodes: [],
+          availabilityStatus: null,
+          matchingExerciseCount: null,
+          actionKind: null,
+          resultKind: null,
+          guardAction: 'accept',
+          guardReason: 'RATE_LIMITED',
+          clarificationRequired: false,
+          aiRoute: {
+            status: 'NOT_ATTEMPTED',
+            provider: null,
+            model: null,
+            skippedReason: null,
+            failureCode: null,
+            confidence: null,
+          },
+        },
+      },
     ]);
 
     const diagnostics = await service.getDiagnostics();
 
     expect(diagnostics).toMatchObject({
       windowDays: 30,
-      sampledEventCount: 2,
+      sampledEventCount: 3,
       summary: {
         proposals: 1,
         accepted: 1,
@@ -608,6 +663,7 @@ describe('StudyCommandService', () => {
         openedRoutes: 0,
         noProposal: 0,
         clarifications: 0,
+        guardBlocked: 1,
       },
       modes: [
         {
@@ -626,6 +682,12 @@ describe('StudyCommandService', () => {
         },
       ],
     });
+    expect(diagnostics.guardrails).toEqual([
+      {
+        key: 'accept:RATE_LIMITED',
+        count: 1,
+      },
+    ]);
     expect(diagnostics.aiRouting).toEqual(
       expect.arrayContaining([
         {
@@ -634,6 +696,10 @@ describe('StudyCommandService', () => {
         },
         {
           key: 'SUCCESS',
+          count: 1,
+        },
+        {
+          key: 'NOT_ATTEMPTED',
           count: 1,
         },
       ]),

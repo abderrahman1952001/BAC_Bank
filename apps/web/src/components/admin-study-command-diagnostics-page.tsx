@@ -35,6 +35,10 @@ const diagnosticKeyLabels: Record<string, string> = {
   OPEN_ROUTE: "Opens route",
   SUCCESS: "AI success",
   "SKIPPED:DISABLED": "AI disabled",
+  "propose:RATE_LIMITED": "Proposal rate limit",
+  "accept:RATE_LIMITED": "Acceptance rate limit",
+  "propose:GUARD_ERROR": "Proposal guard error",
+  "accept:GUARD_ERROR": "Acceptance guard error",
   "FAILED:LOW_CONFIDENCE": "Low confidence",
   "FAILED:INVALID_OUTPUT": "Invalid AI output",
   "FAILED:TIMEOUT": "AI timeout",
@@ -163,10 +167,16 @@ export function AdminStudyCommandDiagnosticsPage({
       icon: GitBranch,
     },
     {
+      label: "Guard blocked",
+      value: String(diagnostics.summary.guardBlocked),
+      detail: "Rate or safety guard stops",
+      icon: AlertTriangle,
+    },
+    {
       label: "Missing content",
       value: String(missingContentCount),
       detail: `${diagnostics.missingContentSignals.length} grouped signals`,
-      icon: AlertTriangle,
+      icon: BrainCircuit,
     },
   ];
 
@@ -228,6 +238,11 @@ export function AdminStudyCommandDiagnosticsPage({
           title="Actions"
           buckets={diagnostics.actions}
           emptyLabel="No accepted actions yet."
+        />
+        <DiagnosticsBucketList
+          title="Guardrails"
+          buckets={diagnostics.guardrails}
+          emptyLabel="No guard pressure in this window."
         />
         <DiagnosticsBucketList
           title="AI routing"

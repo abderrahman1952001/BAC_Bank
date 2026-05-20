@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { StudySessionFamily, StudySessionKind } from '@prisma/client';
 import type {
   StudyCommandAcceptResponse,
@@ -74,7 +74,7 @@ export class StudyCommandService {
     userId: string,
     command: string,
   ): Promise<StudyCommandProposalResponse> {
-    await this.studyCommandUsageGuardService.consume(userId, 'propose');
+    await this.consumeUsageGuard(userId, command, 'propose');
 
     const result = await this.buildProposalForCommand(userId, command);
 
@@ -97,7 +97,7 @@ export class StudyCommandService {
     userId: string,
     command: string,
   ): Promise<StudyCommandAcceptResponse> {
-    await this.studyCommandUsageGuardService.consume(userId, 'accept');
+    await this.consumeUsageGuard(userId, command, 'accept');
 
     const result = await this.buildProposalForCommand(userId, command);
     const proposal = result.proposal;
@@ -204,6 +204,38 @@ export class StudyCommandService {
         : null,
       aiRouterResult,
     };
+  }
+
+  private async consumeUsageGuard(
+    userId: string,
+    command: string,
+    action: 'propose' | 'accept',
+  ) {
+    try {
+      await this.studyCommandUsageGuardService.consume(userId, action);
+    } catch (error) {
+      await this.studyCommandBrainService.recordGuardBlocked({
+        userId,
+        command,
+        action,
+        reason: this.toUsageGuardReason(error),
+      });
+
+      throw error;
+    }
+  }
+
+  private toUsageGuardReason(error: unknown) {
+    const tooManyRequestsStatus: number = HttpStatus.TOO_MANY_REQUESTS;
+
+    if (
+      error instanceof HttpException &&
+      error.getStatus() === tooManyRequestsStatus
+    ) {
+      return 'RATE_LIMITED';
+    }
+
+    return 'GUARD_ERROR';
   }
 
   private async resolveProposalAvailability(

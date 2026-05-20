@@ -14,6 +14,7 @@ import type { StudyCommandAiRouterResult } from './study-command-ai-router.servi
 
 const STUDY_COMMAND_PROPOSED_EVENT = 'STUDY_COMMAND_PROPOSED';
 const STUDY_COMMAND_ACCEPTED_EVENT = 'STUDY_COMMAND_ACCEPTED';
+const STUDY_COMMAND_GUARD_BLOCKED_EVENT = 'STUDY_COMMAND_GUARD_BLOCKED';
 const STUDY_COMMAND_SOURCE_TYPE = 'STUDY_COMMAND';
 const STUDY_COMMAND_DIAGNOSTIC_WINDOW_DAYS = 30;
 const STUDY_COMMAND_DIAGNOSTIC_SAMPLE_LIMIT = 1000;
@@ -32,7 +33,7 @@ const STUDY_COMMAND_EVENT_MODES = new Set([
 
 type StudyCommandEventValue = {
   version: 1;
-  kind: 'PROPOSED' | 'ACCEPTED';
+  kind: 'PROPOSED' | 'ACCEPTED' | 'GUARD_BLOCKED';
   commandLength: number;
   commandFingerprint: string | null;
   mode: StudyCommandProposal['mode'] | null;
@@ -47,6 +48,8 @@ type StudyCommandEventValue = {
   matchingExerciseCount: number | null;
   actionKind: StudyCommandProposal['primaryAction']['kind'] | null;
   resultKind: StudyCommandAcceptResponse['kind'] | null;
+  guardAction: 'propose' | 'accept' | null;
+  guardReason: string | null;
   clarificationRequired: boolean;
   aiRoute: StudyCommandAiRouteTelemetry;
 };
@@ -91,6 +94,51 @@ export class StudyCommandBrainService {
     );
   }
 
+  async recordGuardBlocked(input: {
+    userId: string;
+    command: string;
+    action: 'propose' | 'accept';
+    reason: string;
+  }) {
+    const command = input.command.trim();
+    const value: StudyCommandEventValue = {
+      version: 1,
+      kind: 'GUARD_BLOCKED',
+      commandLength: command.length,
+      commandFingerprint: command ? this.hashCommand(command) : null,
+      mode: null,
+      title: null,
+      primaryHref: null,
+      resultHref: null,
+      subjectCode: null,
+      topicCodes: [],
+      availabilityStatus: null,
+      matchingExerciseCount: null,
+      actionKind: null,
+      resultKind: null,
+      guardAction: input.action,
+      guardReason: input.reason,
+      clarificationRequired: false,
+      aiRoute: this.toAiRouteTelemetry({
+        interpretation: null,
+        usageEvent: null,
+      }),
+    };
+
+    await this.safe(
+      this.prisma.studentLearningEvent.create({
+        data: {
+          userId: input.userId,
+          eventType: STUDY_COMMAND_GUARD_BLOCKED_EVENT,
+          sourceType: STUDY_COMMAND_SOURCE_TYPE,
+          sourceId: null,
+          value: this.toJsonValue(value),
+        },
+      }),
+      null,
+    );
+  }
+
   async listHistory(userId: string): Promise<StudyCommandHistoryResponse> {
     const events = await this.prisma.studentLearningEvent.findMany({
       where: {
@@ -124,7 +172,11 @@ export class StudyCommandBrainService {
     const events = await this.prisma.studentLearningEvent.findMany({
       where: {
         eventType: {
-          in: [STUDY_COMMAND_PROPOSED_EVENT, STUDY_COMMAND_ACCEPTED_EVENT],
+          in: [
+            STUDY_COMMAND_PROPOSED_EVENT,
+            STUDY_COMMAND_ACCEPTED_EVENT,
+            STUDY_COMMAND_GUARD_BLOCKED_EVENT,
+          ],
         },
         occurredAt: {
           gte: since,
@@ -173,6 +225,8 @@ export class StudyCommandBrainService {
         proposal?.availability?.matchingExerciseCount ?? null,
       actionKind: primaryAction?.kind ?? null,
       resultKind: input.resultKind,
+      guardAction: null,
+      guardReason: null,
       clarificationRequired: Boolean(proposal?.clarification),
       aiRoute: this.toAiRouteTelemetry(input.aiRouterResult),
     };
@@ -282,6 +336,10 @@ export class StudyCommandBrainService {
       return null;
     }
 
+    if (value.kind === 'GUARD_BLOCKED') {
+      return null;
+    }
+
     return {
       id: event.id,
       kind: value.kind,
@@ -315,6 +373,9 @@ export class StudyCommandBrainService {
       );
     const proposals = values.filter((event) => event.value.kind === 'PROPOSED');
     const accepted = values.filter((event) => event.value.kind === 'ACCEPTED');
+    const guardBlocked = values.filter(
+      (event) => event.value.kind === 'GUARD_BLOCKED',
+    );
 
     return {
       generatedAt: new Date().toISOString(),
@@ -335,12 +396,20 @@ export class StudyCommandBrainService {
         clarifications: values.filter(
           (event) => event.value.clarificationRequired,
         ).length,
+        guardBlocked: guardBlocked.length,
       },
       modes: this.bucket(values.map((event) => event.value.mode)),
       availability: this.bucket(
         values.map((event) => event.value.availabilityStatus),
       ),
       actions: this.bucket(values.map((event) => event.value.actionKind)),
+      guardrails: this.bucket(
+        guardBlocked.map((event) =>
+          [event.value.guardAction, event.value.guardReason]
+            .filter((part): part is string => Boolean(part))
+            .join(':'),
+        ),
+      ),
       aiRouting: this.bucket(
         values.map((event) =>
           event.value.aiRoute.skippedReason
@@ -457,7 +526,9 @@ export class StudyCommandBrainService {
 
     if (
       candidate.version !== 1 ||
-      (candidate.kind !== 'PROPOSED' && candidate.kind !== 'ACCEPTED')
+      (candidate.kind !== 'PROPOSED' &&
+        candidate.kind !== 'ACCEPTED' &&
+        candidate.kind !== 'GUARD_BLOCKED')
     ) {
       return null;
     }
@@ -512,6 +583,15 @@ export class StudyCommandBrainService {
         candidate.resultKind === 'OPEN_ROUTE' ||
         candidate.resultKind === 'NO_PROPOSAL'
           ? candidate.resultKind
+          : null,
+      guardAction:
+        candidate.guardAction === 'propose' ||
+        candidate.guardAction === 'accept'
+          ? candidate.guardAction
+          : null,
+      guardReason:
+        typeof candidate.guardReason === 'string'
+          ? candidate.guardReason
           : null,
       clarificationRequired: candidate.clarificationRequired === true,
       aiRoute: this.toStoredAiRouteTelemetry(candidate.aiRoute),

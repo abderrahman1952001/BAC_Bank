@@ -197,10 +197,12 @@ export type StudyCommandDiagnosticsResponse = {
     openedRoutes: number;
     noProposal: number;
     clarifications: number;
+    guardBlocked: number;
   };
   modes: StudyCommandDiagnosticsBucket[];
   availability: StudyCommandDiagnosticsBucket[];
   actions: StudyCommandDiagnosticsBucket[];
+  guardrails: StudyCommandDiagnosticsBucket[];
   aiRouting: StudyCommandDiagnosticsBucket[];
   topSubjects: StudyCommandDiagnosticsBucket[];
   topTopics: StudyCommandDiagnosticsBucket[];
@@ -433,10 +435,12 @@ export const studyCommandDiagnosticsResponseSchema: z.ZodType<StudyCommandDiagno
       openedRoutes: z.number().int().min(0),
       noProposal: z.number().int().min(0),
       clarifications: z.number().int().min(0),
+      guardBlocked: z.number().int().min(0),
     }),
     modes: z.array(studyCommandDiagnosticsBucketSchema),
     availability: z.array(studyCommandDiagnosticsBucketSchema),
     actions: z.array(studyCommandDiagnosticsBucketSchema),
+    guardrails: z.array(studyCommandDiagnosticsBucketSchema),
     aiRouting: z.array(studyCommandDiagnosticsBucketSchema),
     topSubjects: z.array(studyCommandDiagnosticsBucketSchema),
     topTopics: z.array(studyCommandDiagnosticsBucketSchema),

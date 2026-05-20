@@ -114,6 +114,7 @@ export async function fetchServerAdminStudyCommandDiagnostics(): Promise<StudyCo
         openedRoutes: 1,
         noProposal: 0,
         clarifications: 1,
+        guardBlocked: 1,
       },
       modes: [
         {
@@ -142,6 +143,12 @@ export async function fetchServerAdminStudyCommandDiagnostics(): Promise<StudyCo
         },
         {
           key: "OPEN_ROUTE",
+          count: 1,
+        },
+      ],
+      guardrails: [
+        {
+          key: "propose:RATE_LIMITED",
           count: 1,
         },
       ],

@@ -113,6 +113,8 @@ and is guarded by admin auth. It summarizes the recent command window:
 
 - proposal and acceptance counts
 - created-session, opened-route, no-proposal, and clarification counts
+- usage-guard blocks grouped by safe reason, such as proposal or acceptance
+  rate-limit pressure
 - top modes, subjects, topics, action kinds, availability states, and AI routing
   outcomes
 - top `NEEDS_CONTENT` signals so content work can target real student demand
@@ -133,6 +135,11 @@ repo's memory fallback and is configurable through:
 - `STUDY_COMMAND_RATE_LIMIT_WINDOW_MS`
 - `STUDY_COMMAND_PROPOSE_LIMIT_PER_WINDOW`
 - `STUDY_COMMAND_ACCEPT_LIMIT_PER_WINDOW`
+
+When the guard blocks a request, the platform may persist a safe aggregate event
+with the action and reason, but not the raw student command or transcript. Admin
+diagnostics should use this to spot overload or abuse pressure without becoming
+a prompt-inspection console.
 
 ## V1 Hidden Study Modes
 
