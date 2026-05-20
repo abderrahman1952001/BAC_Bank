@@ -124,6 +124,16 @@ fallback behavior, not a prompt-inspection console.
 This gives BAC Bank a product feedback loop while preserving the core rule:
 deterministic routing and availability checks remain the source of truth.
 
+Study Command proposal and acceptance endpoints should pass through a per-user
+usage guard before AI routing, context building, availability preview, or
+session creation. The current API guard uses Redis-backed counters with the
+repo's memory fallback and is configurable through:
+
+- `STUDY_COMMAND_RATE_LIMIT_ENABLED`
+- `STUDY_COMMAND_RATE_LIMIT_WINDOW_MS`
+- `STUDY_COMMAND_PROPOSE_LIMIT_PER_WINDOW`
+- `STUDY_COMMAND_ACCEPT_LIMIT_PER_WINDOW`
+
 ## V1 Hidden Study Modes
 
 The command layer should route into a small set of internal modes. These are

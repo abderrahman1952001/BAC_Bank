@@ -8,6 +8,7 @@ import { StudyCommandBrainService } from './study-command-brain.service';
 import { StudyCommandController } from './study-command.controller';
 import { StudyCommandAiRouterService } from './study-command-ai-router.service';
 import { StudyCommandService } from './study-command.service';
+import { StudyCommandUsageGuardService } from './study-command-usage-guard.service';
 import { StudyController } from './study.controller';
 import { StudyReadModelService } from './study-read-model.service';
 import { StudyExamActivityService } from './study-exam-activity.service';
@@ -31,6 +32,7 @@ import { StudyWeakPointService } from './study-weak-point.service';
     StudyCommandAiRouterService,
     StudyCommandBrainService,
     StudyCommandService,
+    StudyCommandUsageGuardService,
     StudySessionService,
     StudyExamActivityService,
     StudyExerciseStateService,

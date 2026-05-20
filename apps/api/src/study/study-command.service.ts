@@ -24,6 +24,7 @@ import {
   type StudyCommandContext,
 } from './study-command-engine';
 import { StudyCommandBrainService } from './study-command-brain.service';
+import { StudyCommandUsageGuardService } from './study-command-usage-guard.service';
 import { StudyReviewService } from './study-review.service';
 import { StudyService } from './study.service';
 import { StudyWeakPointService } from './study-weak-point.service';
@@ -54,6 +55,7 @@ export class StudyCommandService {
     private readonly labService: LabService,
     private readonly studyCommandAiRouterService: StudyCommandAiRouterService,
     private readonly studyCommandBrainService: StudyCommandBrainService,
+    private readonly studyCommandUsageGuardService: StudyCommandUsageGuardService,
   ) {}
 
   async listStarters(userId: string): Promise<StudyCommandStartersResponse> {
@@ -68,6 +70,8 @@ export class StudyCommandService {
     userId: string,
     command: string,
   ): Promise<StudyCommandProposalResponse> {
+    await this.studyCommandUsageGuardService.consume(userId, 'propose');
+
     const result = await this.buildProposalForCommand(userId, command);
 
     await this.studyCommandBrainService.recordEvent({
@@ -89,6 +93,8 @@ export class StudyCommandService {
     userId: string,
     command: string,
   ): Promise<StudyCommandAcceptResponse> {
+    await this.studyCommandUsageGuardService.consume(userId, 'accept');
+
     const result = await this.buildProposalForCommand(userId, command);
     const proposal = result.proposal;
 

@@ -76,6 +76,7 @@ function createService(input?: {
   matchingExerciseCount?: number;
   previewRejects?: boolean;
   aiInterpretation?: unknown;
+  usageGuardRejects?: boolean;
 }) {
   const matchingExerciseCount = input?.matchingExerciseCount ?? 2;
   const studyService = {
@@ -129,11 +130,17 @@ function createService(input?: {
   const studyCommandBrainService = new StudyCommandBrainService(
     prisma as never,
   );
+  const studyCommandUsageGuardService = {
+    consume: input?.usageGuardRejects
+      ? jest.fn().mockRejectedValue(new Error('rate limited'))
+      : jest.fn().mockResolvedValue(undefined),
+  };
 
   return {
     prisma,
     studyService,
     studyCommandAiRouterService,
+    studyCommandUsageGuardService,
     service: new StudyCommandService(
       prisma as never,
       studyService as never,
@@ -144,15 +151,17 @@ function createService(input?: {
       labService as never,
       studyCommandAiRouterService as never,
       studyCommandBrainService,
+      studyCommandUsageGuardService as never,
     ),
   };
 }
 
 describe('StudyCommandService', () => {
   it('marks create-session proposals ready only after real preview availability', async () => {
-    const { service, studyService } = createService({
-      matchingExerciseCount: 2,
-    });
+    const { service, studyService, studyCommandUsageGuardService } =
+      createService({
+        matchingExerciseCount: 2,
+      });
 
     const response = await service.propose(
       'user-1',
@@ -167,11 +176,30 @@ describe('StudyCommandService', () => {
         topicCodes: ['PHOTOSYNTHESIS'],
       }),
     );
+    expect(studyCommandUsageGuardService.consume).toHaveBeenCalledWith(
+      'user-1',
+      'propose',
+    );
     expect(response.proposal?.availability).toEqual({
       status: 'READY',
       matchingExerciseCount: 2,
     });
     expect(response.proposal?.primaryAction.kind).toBe('CREATE_STUDY_SESSION');
+  });
+
+  it('checks usage limits before proposal composition work', async () => {
+    const { service, studyService, studyCommandAiRouterService, prisma } =
+      createService({
+        usageGuardRejects: true,
+      });
+
+    await expect(service.propose('user-1', 'أريد تدريب BAC')).rejects.toThrow(
+      'rate limited',
+    );
+
+    expect(studyCommandAiRouterService.interpret).not.toHaveBeenCalled();
+    expect(studyService.previewStudySession).not.toHaveBeenCalled();
+    expect(prisma.studentLearningEvent.create).not.toHaveBeenCalled();
   });
 
   it('records proposal telemetry without storing the raw command', async () => {
