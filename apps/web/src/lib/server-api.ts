@@ -21,6 +21,16 @@ export function getRequestOriginFromHeaders(requestHeaders: Headers): string {
   return `${protocol}://${host}`;
 }
 
+export class ServerApiResponseError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+    this.name = "ServerApiResponseError";
+  }
+}
+
 export async function fetchServerApi(
   path: string,
   init?: RequestInit,
@@ -53,7 +63,10 @@ export async function fetchServerApi(
   });
 
   if (!response.ok) {
-    throw new Error(await readApiErrorMessage(response, fallbackMessage));
+    throw new ServerApiResponseError(
+      await readApiErrorMessage(response, fallbackMessage),
+      response.status,
+    );
   }
 
   return response;

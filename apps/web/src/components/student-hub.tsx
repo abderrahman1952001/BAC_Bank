@@ -83,6 +83,23 @@ import {
 } from "@/lib/student-routes";
 import { formatRelativeStudyTimestamp } from "@/lib/study-time";
 
+function readStudyCommandErrorMessage(
+  payload: unknown,
+  fallbackMessage: string,
+) {
+  if (
+    payload &&
+    typeof payload === "object" &&
+    "message" in payload &&
+    typeof payload.message === "string" &&
+    payload.message.trim()
+  ) {
+    return payload.message;
+  }
+
+  return fallbackMessage;
+}
+
 export function StudentHub({
   initialRecentStudySessions,
   initialRecentExamActivities,
@@ -337,7 +354,9 @@ export function StudentHub({
       const payload = (await response.json().catch(() => null)) as unknown;
 
       if (!response.ok) {
-        throw new Error("تعذر تحضير الجلسة الآن.");
+        throw new Error(
+          readStudyCommandErrorMessage(payload, "تعذر تحضير الجلسة الآن."),
+        );
       }
 
       setCommandProposal(parseStudyCommandProposalResponse(payload).proposal);
@@ -392,15 +411,9 @@ export function StudentHub({
       const payload = (await response.json().catch(() => null)) as unknown;
 
       if (!response.ok) {
-        const message =
-          payload &&
-          typeof payload === "object" &&
-          "message" in payload &&
-          typeof payload.message === "string"
-            ? payload.message
-            : "تعذر إنشاء الجلسة.";
-
-        throw new Error(message);
+        throw new Error(
+          readStudyCommandErrorMessage(payload, "تعذر إنشاء الجلسة."),
+        );
       }
 
       const result = parseStudyCommandAcceptResponse(payload);

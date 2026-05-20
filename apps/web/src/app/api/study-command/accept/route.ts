@@ -6,6 +6,7 @@ import {
 import { NextResponse } from "next/server";
 import { fetchServerApiJson } from "@/lib/server-api";
 import { readServerSessionUser } from "@/lib/server-auth";
+import { studyCommandRouteErrorResponse } from "@/lib/study-command-api-route";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,7 +22,16 @@ export async function POST(request: Request) {
   }
 
   const body = (await request.json().catch(() => null)) as unknown;
-  const payload = parseStudyCommandAcceptRequest(body);
+  let payload: ReturnType<typeof parseStudyCommandAcceptRequest>;
+
+  try {
+    payload = parseStudyCommandAcceptRequest(body);
+  } catch {
+    return NextResponse.json(
+      { message: "Study command acceptance request is invalid." },
+      { status: 400 },
+    );
+  }
 
   if (
     process.env.PLAYWRIGHT_TEST_AUTH === "true" &&
@@ -32,20 +42,27 @@ export async function POST(request: Request) {
     );
   }
 
-  const response = await fetchServerApiJson<StudyCommandAcceptResponse>(
-    "/study/command/accept",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const response = await fetchServerApiJson<StudyCommandAcceptResponse>(
+      "/study/command/accept",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    },
-    "Study command acceptance failed.",
-    parseStudyCommandAcceptResponse,
-  );
+      "Study command acceptance failed.",
+      parseStudyCommandAcceptResponse,
+    );
 
-  return NextResponse.json(response);
+    return NextResponse.json(response);
+  } catch (error: unknown) {
+    return studyCommandRouteErrorResponse(
+      error,
+      "Study command acceptance failed.",
+    );
+  }
 }
 
 function buildPlaywrightStudyCommandAcceptResponse(
