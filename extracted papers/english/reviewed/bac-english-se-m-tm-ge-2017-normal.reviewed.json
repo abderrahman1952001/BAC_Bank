@@ -1,0 +1,900 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "s1_part1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_part1_a",
+          "nodeType": "PART",
+          "parentId": "s1_part1",
+          "orderIndex": 1,
+          "label": "A/ Comprehension",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_p1_a_ctx",
+          "nodeType": "CONTEXT",
+          "parentId": "s1_part1_a",
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_a_ctx_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully and do the activities.\n\nThe term “obese” describes a person who is very overweight, with a lot of body fat. Obesity, which is a common problem in the UK, is estimated to affect around one in every four adults and around one in every five children. For many people, modern living involves eating excessive amounts of cheap, high-calorie food and spending a lot of time sitting down at desks, on sofas or in cars.\n\nIt is very important to take steps to tackle obesity because, as well as causing obvious physical changes, it can lead to a number of serious and potentially life-threatening conditions, such as type 2 diabetes, heart disease and some types of cancer like breast cancer. It may also affect the quality of life and lead to psychological problems such as depression and low self-esteem.\n\nThe best way to treat obesity is to eat a healthy, reduced-calorie diet, eat slowly and avoid situations where to overeat. In addition, sport should be practised regularly.\n\nAdapted from: NHS Choices June 15th, 2016\nhttps://healthunlocked.com"
+            }
+          ]
+        },
+        {
+          "id": "s1_p1_a_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_a",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_a_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The text is...\na. a web article\nb. a newspaper article\nc. an extract from a novel"
+            },
+            {
+              "id": "s1_p1_a_q1_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1. a- a web article"
+            },
+            {
+              "id": "s1_p1_a_q1_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt"
+            }
+          ]
+        },
+        {
+          "id": "s1_p1_a_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_a",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_a_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Are the following statements true or false? Write T or F next to the letter corresponding to the statement.\na. One fifth of children are affected by obesity in the UK.\nb. Being obese is due only to a lack of physical activity.\nc. Obesity does not pose a serious public health problem.\nd. Obesity can cause deadly diseases."
+            },
+            {
+              "id": "s1_p1_a_q2_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "2. a- T / b-F / c-F / d-T"
+            },
+            {
+              "id": "s1_p1_a_q2_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 4 = 2 pts"
+            }
+          ]
+        },
+        {
+          "id": "s1_p1_a_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_a",
+          "orderIndex": 4,
+          "label": "3",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_a_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. What are the causes of obesity?\nb. How does obesity affect people’s health?\nc. What measures should be taken to overcome obesity problem?"
+            },
+            {
+              "id": "s1_p1_a_q3_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "3. a- bad eating habits and inactivity (or eating excessive amounts of cheap, high-calorie food, spending a lot of time sitting down at desks, on sofas or in cars.)\nb- by generating serious and deadly diseases (or causing obvious physical changes, serious and potentially life-threatening conditions, diabetes, heart disease and some types of cancer, psychological problems such as depression and low self-esteem.)\nc- eat a healthy, reduced-calorie diet / eat slowly / avoid situations where to overeat / sport should be practised regularly"
+            },
+            {
+              "id": "s1_p1_a_q3_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a. 1 pt\nb. 1.5 pts\nc. 1.5 pts\nTotal = 4 pts"
+            }
+          ]
+        },
+        {
+          "id": "s1_p1_a_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_a",
+          "orderIndex": 5,
+          "label": "4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_a_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Who or what do the underlined words refer to in the text?\na. who (§1)\nb. It (§2)"
+            },
+            {
+              "id": "s1_p1_a_q4_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "4. a. who (§1)….. person\nb- It (§2)….. obesity"
+            },
+            {
+              "id": "s1_p1_a_q4_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 2 = 1 pt"
+            }
+          ]
+        },
+        {
+          "id": "s1_part1_b",
+          "nodeType": "PART",
+          "parentId": "s1_part1",
+          "orderIndex": 2,
+          "label": "B/ Text Exploration",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_p1_b_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_b",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_b_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words or phrases that are closest in meaning to the following:\na. includes (§1)\nb. evident (§2)\nc. kinds (§2)"
+            },
+            {
+              "id": "s1_p1_b_q1_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1. a-involves\nb-obvious\nc-types"
+            },
+            {
+              "id": "s1_p1_b_q1_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 3 = 1.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "s1_p1_b_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_b",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_b_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the chart as shown in the example."
+            },
+            {
+              "id": "s1_p1_b_q2_prompt_2",
+              "role": "PROMPT",
+              "type": "table",
+              "value": "| | Verb | Noun | Adjective |\n|---|---|---|---|\n| Example: | to treat | treatment | treated |\n| | to reduce | ………………… | ………………… |\n| | ………………… | ………………… | threatening |\n| | ………………… | advertisement | …………… |",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "Example:",
+                    "to treat",
+                    "treatment",
+                    "treated"
+                  ],
+                  [
+                    "to reduce",
+                    "…………………",
+                    "…………………"
+                  ],
+                  [
+                    "…………………",
+                    "…………………",
+                    "threatening"
+                  ],
+                  [
+                    "…………………",
+                    "advertisement",
+                    "……………"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "s1_p1_b_q2_solution_3",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "| Verb | Noun | Adjective |\n|---|---|---|\n| to reduce | /reduction/reducer /reducing/ | reducible/ reduced reductive |\n| to threaten | threat | threatening |\n| to advertise | advertisement | advertised |",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "to reduce",
+                    "/reduction/reducer /reducing/",
+                    "reducible/ reduced reductive"
+                  ],
+                  [
+                    "to threaten",
+                    "threat",
+                    "threatening"
+                  ],
+                  [
+                    "to advertise",
+                    "advertisement",
+                    "advertised"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "s1_p1_b_q2_rubric_4",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 × 6 = 1.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "s1_p1_b_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_b",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_b_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Rewrite sentence “B” so that it means the same as sentence “A”.\n1. A. Children become obese because they consume a lot of fast food.\nB. Children consume………………………………………………………………\n2. A. Parents feel that the government should reduce junk food advertising.\nB. It is high time …………………………………………………………………."
+            },
+            {
+              "id": "s1_p1_b_q3_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "3.1. b- Children consume a lot of fast food; as a result, they become obese.\nAccept any other correct connectors.\n2. b-It’s high time the government reduced junk food advertising."
+            },
+            {
+              "id": "s1_p1_b_q3_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt per sentence\nTotal: 2 pts"
+            }
+          ]
+        },
+        {
+          "id": "s1_p1_b_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part1_b",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p1_b_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in the gaps with words from the list given.\ninactive - struggling - lack - buy\n\nObesity experts say parents are… (1)…with a multitude of problems when it comes to their child’s weight. They range from a … (2)…of education about food, limited cooking skills, limited money to… (3)… healthy food, long working hours to easy access to snack food. At the same time, people are increasingly living more … (4)… lifestyles and therefore burning fewer calories."
+            },
+            {
+              "id": "s1_p1_b_q4_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "4. 1- struggling\n2-lack\n3-buy\n4-inactive"
+            },
+            {
+              "id": "s1_p1_b_q4_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 4 = 2 pts"
+            }
+          ]
+        },
+        {
+          "id": "s1_part2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "Part Two: Written Expression",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_part2_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Choose ONE of the following topics"
+            },
+            {
+              "id": "s1_part2_solution_3",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "The following grid is used for the scoring of both topics."
+            },
+            {
+              "id": "s1_part2_rubric_4",
+              "role": "RUBRIC",
+              "type": "table",
+              "value": "| Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocabulary and creativity) | Final score |\n|---|---|---|---|---|---|\n| Sc. Exp, M, T.M,G.E,, | 1 | 1 | 2 | 1 | 5 pts |",
+              "data": {
+                "rows": [
+                  [
+                    "Criteria",
+                    "Relevance",
+                    "Semantic coherence",
+                    "Correct use of English",
+                    "Excellence (vocabulary and creativity)",
+                    "Final score"
+                  ],
+                  [
+                    "Sc. Exp, M, T.M,G.E,,",
+                    "1",
+                    "1",
+                    "2",
+                    "1",
+                    "5 pts"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "s1_p2_t1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part2",
+          "orderIndex": 1,
+          "label": "Topic One",
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p2_t1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic One:\nAs a member of an association that fights obesity among children, write an article of about 70-80 words for the school magazine in which you denounce TV ads promoting high-calorie and high-fat products.\nThe following notes may help you:\n- Attractive advertisements of junk food\n- Health risks: obesity / overweight / diseases …\n- Role of parents and consumers’ associations: pressure to reduce junk food TV ads / promote various types of healthy food\n- Obligation for food companies to comply with food regulation standards (reduce sugar, salt…)."
+            }
+          ]
+        },
+        {
+          "id": "s1_p2_t2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_part2",
+          "orderIndex": 2,
+          "label": "Topic Two",
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_p2_t2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic Two:\nThere are companies whose only concern is making profits. Being a successful businessman, you are invited to attend a conference and deliver a speech of about 70-80 words on the benefits for a company to be socially responsible."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "s2_part1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_part1_a",
+          "nodeType": "PART",
+          "parentId": "s2_part1",
+          "orderIndex": 1,
+          "label": "A/ Comprehension",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_p1_a_ctx",
+          "nodeType": "CONTEXT",
+          "parentId": "s2_part1_a",
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_a_ctx_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully and do the activities.\n\nIf you believe that children are our future, you have the power to educate them to change a corrupt society. To teach children the values they need to be conscientious young leaders, you have to help them develop awareness and the ability to think outside the box.\n\nTeach your child responsibility. If he has made a mistake, he needs to learn to admit that he did something wrong, and to apologize for it. Teach your child that cheating is wrong and inexcusable under any circumstances. Tell your child that being honest is the only way to succeed.\n\nMake sure your child develops an internal moral code. Do not just make him follow rules because that is the best way to avoid trouble. Your child should be given moral values to be ready to defeat negative behaviour and illegal acts to build a society based on justice, morality, honesty and loyalty.\n\nBy D. John & D. Paul (Adapted)\nwww.wikiHow.com"
+            }
+          ]
+        },
+        {
+          "id": "s2_p1_a_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_a",
+          "orderIndex": 2,
+          "label": "1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_a_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Write the letter that corresponds to the right answer.\na. To change a corrupt society, children ……. be well-educated.\nA) will B) may C) need to\nb. When a child ……. his mistake, he becomes a responsible citizen.\nA) recognizes B) denies C) ignores\nc. Honesty is the unique way to……..\nA) be corrupt B) achieve goals C) fail in life\nd. Internal moral codes help ……. corruption.\nA) overcome B) serve C) encourage"
+            },
+            {
+              "id": "s2_p1_a_q1_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1. MCQ\na…. (C) b…. (A) c…. (B) d…. (A)"
+            },
+            {
+              "id": "s2_p1_a_q1_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 4 = 2 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_p1_a_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_a",
+          "orderIndex": 3,
+          "label": "2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_a_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Reorder the following statements according to their occurrence in the text.\na. Cheating has always been unacceptable.\nb. Children obey rules for various reasons.\nc. Learning values needs being aware of right and wrong.\nd. Children are societies’ hope for the time to come."
+            },
+            {
+              "id": "s2_p1_a_q2_solution_2",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | c | a | b |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "d",
+                    "c",
+                    "a",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "s2_p1_a_q2_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 4 = 2 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_p1_a_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_a",
+          "orderIndex": 4,
+          "label": "3",
+          "maxPoints": 3.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_a_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. How can a child become a good leader?\nb. Is cheating forgivable? Justify by quoting the text.\nc. What are the characteristics of the society we want the child to build?"
+            },
+            {
+              "id": "s2_p1_a_q3_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "3. Answering questions\na. A child becomes a good leader when he develops awareness and the ability to think outside the box.\nb. No, it is not. “Teach your child that cheating is wrong and inexcusable under any circumstances.”\nc.... justice, morality, honesty and loyalty."
+            },
+            {
+              "id": "s2_p1_a_q3_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a. 0.75 × 2 = 1.5 pts\nb. 0.5 × 2 = 1 pt\nc. 0.25 × 4 = 1 pt\nTotal = 3.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_p1_a_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_a",
+          "orderIndex": 5,
+          "label": "4",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_a_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The text is:\na. narrative\nb. prescriptive\nc. expository"
+            },
+            {
+              "id": "s2_p1_a_q4_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "4. Type of discourse\nb. prescriptive"
+            },
+            {
+              "id": "s2_p1_a_q4_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "s2_part1_b",
+          "nodeType": "PART",
+          "parentId": "s2_part1",
+          "orderIndex": 2,
+          "label": "B/ Text Exploration",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_p1_b_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_b",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_b_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words that are opposite in meaning to the following:\na. ignorance (§1)\nb. corrupt (§2)"
+            },
+            {
+              "id": "s2_p1_b_q1_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1.Opposites\na. (§1)… awareness\nb.(§2)… honest"
+            },
+            {
+              "id": "s2_p1_b_q1_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 2 = 1 pt"
+            }
+          ]
+        },
+        {
+          "id": "s2_p1_b_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_b",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_b_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the chart as shown in the example."
+            },
+            {
+              "id": "s2_p1_b_q2_prompt_2",
+              "role": "PROMPT",
+              "type": "table",
+              "value": "| | Verb | Noun | Adjective |\n|---|---|---|---|\n| Example | to educate | education | educational |\n| | ……………… | ……………… | corrupt |\n| | to develop | ……………… | ……………… |\n| | ……………… | value | ……………… |",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "Example",
+                    "to educate",
+                    "education",
+                    "educational"
+                  ],
+                  [
+                    "………………",
+                    "………………",
+                    "corrupt"
+                  ],
+                  [
+                    "to develop",
+                    "………………",
+                    "………………"
+                  ],
+                  [
+                    "………………",
+                    "value",
+                    "………………"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "s2_p1_b_q2_solution_3",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "| Verb | Noun | Adjective |\n|---|---|---|\n| to corrupt | corruption / corrupt / corruptness | / |\n| / | development / developer | developed / developing / developmental / developable |\n| to value | / | valued / valueless / valuable |",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "to corrupt",
+                    "corruption / corrupt / corruptness",
+                    "/"
+                  ],
+                  [
+                    "/",
+                    "development / developer",
+                    "developed / developing / developmental / developable"
+                  ],
+                  [
+                    "to value",
+                    "/",
+                    "valued / valueless / valuable"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "s2_p1_b_q2_solution_4",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "(Accept other possible answers.)"
+            },
+            {
+              "id": "s2_p1_b_q2_rubric_5",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 × 6 = 1.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_p1_b_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_b",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 2.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_b_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete sentence (b) so that it means the same as sentence (a).\n1- a. The writer says: “Make sure your child develops an internal moral code. Do not just make your child follow rules. ”\nb. The writer advises us……...................................................................................................…..…..\n2- a. Your child should be given moral values.\nb. You ………..................................................................................................…..…........................."
+            },
+            {
+              "id": "s2_p1_b_q3_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "3.Grammar\nb1. The writer advises us to make sure our child develops an internal moral code and not to just make our child follow rules.\nb2. You should give your child moral values. (Accept other possible answers.)"
+            },
+            {
+              "id": "s2_p1_b_q3_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "b1 = 1.5 pts\nb2 = 1 pt\nTotal = 2.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_p1_b_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part1_b",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p1_b_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in the gaps with FOUR words from the list.\ndevelop - responsible - contribute - unaware - change - citizenship\n\nTeach your child to be a responsible citizen. Good ... (1) ... is necessary in any flourishing society. If you want your child to ... (2) ... a corrupt society, then he has to learn that he is not just ... (3) ... for his own little plot of land; he has to look past his own property to help … (4) … to positive change."
+            },
+            {
+              "id": "s2_p1_b_q4_solution_2",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "4.Cloze passage\n1. citizenship\n2. change\n3. responsible\n4. Contribute"
+            },
+            {
+              "id": "s2_p1_b_q4_rubric_3",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 × 4 = 2 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_part2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "Part Two: Written Expression",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_part2_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Choose ONE of the following topics."
+            },
+            {
+              "id": "s2_part2_solution_3",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "Part Two: Written Expression\nGrid for scoring both topics:"
+            },
+            {
+              "id": "s2_part2_rubric_4",
+              "role": "RUBRIC",
+              "type": "table",
+              "value": "| Criteria | relevance | Semantic coherence | Correct use of English | Excellence ( vocabulary & creativity) | Final score |\n|---|---|---|---|---|---|\n| Sc.Exp, M, T.M, G.E | 1 | 1 | 2 | 1 | 5 pts |",
+              "data": {
+                "rows": [
+                  [
+                    "Criteria",
+                    "relevance",
+                    "Semantic coherence",
+                    "Correct use of English",
+                    "Excellence ( vocabulary & creativity)",
+                    "Final score"
+                  ],
+                  [
+                    "Sc.Exp, M, T.M, G.E",
+                    "1",
+                    "1",
+                    "2",
+                    "1",
+                    "5 pts"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "s2_p2_t1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part2",
+          "orderIndex": 1,
+          "label": "Topic ONE",
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p2_t1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic ONE:\nUsing the following notes, write a composition of about 70 to 80 words.\nYou are a person who knows the importance of being a responsible citizen in society. Help your generation be aware of that. Address them and write your speech.\nThe notes:\n- responsibility / necessity\n- serious / honest / ethical\n- respect / elders\n- help / needy\n- care / environment\n- preserve / public property"
+            }
+          ]
+        },
+        {
+          "id": "s2_p2_t2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_part2",
+          "orderIndex": 2,
+          "label": "Topic TWO",
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_p2_t2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic TWO:\nWrite a composition of about 70 to 80 words on the following topic.\nYou are a fan of a famous football player, a singer, an actor or an actress.... Would you buy a product just because it is advertised by your star? Explain."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    "Corrected OCR error '28 pts' to '08 pts' in Part One A/ Comprehension for Sujet 1 based on clear context and point additions.",
+    "Left 'https//:healthunlocked.com' URL exactly as written in source OCR instead of fixing to standard 'https://'."
+  ],
+  "exam": {
+    "title": "امتحان بكالوريا التعليم الثانوي دورة: 2017",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "sourceLanguage": "eng",
+    "hasCorrection": true
+  },
+  "metadata": {
+    "route": "gemini_source_extract_with_codex_normalization",
+    "sourceArtifact": "extracted papers/english/2017 others.txt",
+    "normalizedAt": "2026-05-18T22:52:45.809Z",
+    "notes": "English sweep normalization: source-close prompts, native table rows where present, no human crop debt for simple tables."
+  }
+}

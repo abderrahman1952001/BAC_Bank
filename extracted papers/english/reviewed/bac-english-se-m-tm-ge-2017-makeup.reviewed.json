@@ -1,0 +1,767 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "shared2017m_s1_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (15 points)",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s1_comp",
+          "nodeType": "PART",
+          "parentId": "shared2017m_s1_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (08 pts)",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s1_text",
+          "nodeType": "CONTEXT",
+          "parentId": "shared2017m_s1_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully and do the activities."
+            },
+            {
+              "id": "shared2017m_s1_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "“Why should we spend money on space exploration when we have so many problems here on planet Earth?” I’m asked all the time. Many NASA engineers give their expertise to apply space program technology to problems facing the developing world."
+            },
+            {
+              "id": "shared2017m_s1_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "A solar powered refrigerator designed to support life on the Moon earned NASA Commercial Invention for the year 2011. With approximately 2 billion inhabitants lacking access to electricity, this technology developed at NASA’s Johnson Space Center will help us explore space as well as significantly improve the lives of so many on Earth. It can be an incredible asset in places people don’t have refrigeration. Electricity is essential for storage of vaccines and medicines. This technology can greatly reduce the cost and increase the availability of vaccines delivered to the most impoverished regions of the world. The solar powered refrigerator has been approved by the WHO* as it provides cooling for vaccines in developing countries."
+            },
+            {
+              "id": "shared2017m_s1_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Adapted from ‘Why Give a Damn’ by Ron Garan"
+            },
+            {
+              "id": "shared2017m_s1_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "WHO*: World Health Organization"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Are the following statements true or false? Write T or F next to the letter corresponding to the statement.\na. Some people think that it is worth spending money on Earth’s problems.\nb. The invention of the solar powered refrigerator was rewarded.\nc. Nearly two billion people benefit from electricity.\nd. The solar powered refrigerator is used for space research only."
+            },
+            {
+              "id": "shared2017m_s1_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) T    b) T    c) F    d) F"
+            },
+            {
+              "id": "shared2017m_s1_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 3.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. How do NASA engineers help solving problems facing the developing world?\nb. What are the benefits of the solar powered refrigerator on Earth?\nc. Is the writer for or against space exploration? Justify your answer from the text."
+            },
+            {
+              "id": "shared2017m_s1_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) Many NASA engineers give their expertise by applying space exploration technology to developing countries’ problems.\nb) It provides refrigeration in places where there is not any; it reduces the cost of vaccines and makes them available. At least two concrete benefits are accepted.\nc) He is for space exploration. Justification: solar powered refrigeration / give expertise / any relevant evidence from the text."
+            },
+            {
+              "id": "shared2017m_s1_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a) 1 pt    b) 1 pt    c) 1.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Who or what do the underlined words refer to in the text?\na. I (§1)    b. their (§1)    c. it (§2)"
+            },
+            {
+              "id": "shared2017m_s1_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) the writer / the author / Ron Garan\nb) NASA engineers\nc) the solar powered refrigerator"
+            },
+            {
+              "id": "shared2017m_s1_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The text is...\na. narrative    b. descriptive    c. argumentative"
+            },
+            {
+              "id": "shared2017m_s1_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "c) argumentative"
+            },
+            {
+              "id": "shared2017m_s1_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_exploration",
+          "nodeType": "PART",
+          "parentId": "shared2017m_s1_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (07 pts)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s1_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words or phrases that are closest in meaning to the following:\na. confronting (§1)    b. ameliorate (§2)    c. necessary (§2)"
+            },
+            {
+              "id": "shared2017m_s1_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) facing\nb) improve\nc) essential"
+            },
+            {
+              "id": "shared2017m_s1_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Give the opposites of the following words keeping the same root:\na. approve    b. apply    c. availability"
+            },
+            {
+              "id": "shared2017m_s1_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) disapprove\nb) misapply\nc) unavailability"
+            },
+            {
+              "id": "shared2017m_s1_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Rewrite sentence “B” so that it means the same as sentence “A”.\n1.A. “Why must we spend money on space exploration?” he asked.\nB. He asked ...............................................................\n2.A. Satellites improve the accuracy of weather forecast.\nB. The accuracy of weather forecast ........................................"
+            },
+            {
+              "id": "shared2017m_s1_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1.B. He asked why we had to spend money on space exploration.\n2.B. The accuracy of weather forecast is improved by satellites."
+            },
+            {
+              "id": "shared2017m_s1_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 x 2"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Re-order the following sentences to get a coherent passage.\na. it is also leading to countless improvements for life on Earth.\nb. It is therefore a two-way technology transfer.\nc. Research on this orbiting laboratory is not only enabling humans to explore the solar system,\nd. The International Space Station provides a unique environment for scientific discovery."
+            },
+            {
+              "id": "shared2017m_s1_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1-d    2-c    3-a    4-b"
+            },
+            {
+              "id": "shared2017m_s1_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 for the topic sentence; 0.5 for each correct link"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s1_written",
+          "nodeType": "PART",
+          "parentId": "shared2017m_s1_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (05 pts)",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s1_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s1_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s1_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic One:\nThe astronomy club of your school organizes an open-day on space exploration. You are asked to deliver a speech of about 70-80 words to the visitors on the benefits of satellite uses in people’s everyday life.\nThe following notes may help you:\n- Facilitate / TV and radio programmes / broadcasting\n- Shorten distances / save time\n- Ensure communication / The Internet / phone\n- Provide / remote population/access to education / medical expertise\n- Provide data / weather forecast / climate change / natural catastrophes\n- Enable people / determine locations (GPS)\n\nTopic Two:\nYour friend wants to buy a genuine electronic device (smartphone, laptop, tablet...). But it is too expensive. So, he is thinking of purchasing a fake one.\nWrite an e-mail of about 70-80 words in which you advise him to avoid buying a fake product stating your reasons."
+            },
+            {
+              "id": "shared2017m_s1_written_q_rubric",
+              "role": "RUBRIC",
+              "type": "table",
+              "value": "Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocab & creativity) | Final score\nSc.Exp, M, T.M, G.E | 1 | 1 | 2 | 1 | 5",
+              "data": {
+                "rows": [
+                  [
+                    "Criteria",
+                    "Relevance",
+                    "Semantic coherence",
+                    "Correct use of English",
+                    "Excellence (vocab & creativity)",
+                    "Final score"
+                  ],
+                  [
+                    "Sc.Exp, M, T.M, G.E",
+                    "1",
+                    "1",
+                    "2",
+                    "1",
+                    "5"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "shared2017m_s2_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (15 points)",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s2_comp",
+          "nodeType": "PART",
+          "parentId": "shared2017m_s2_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (08 pts)",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s2_text",
+          "nodeType": "CONTEXT",
+          "parentId": "shared2017m_s2_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully and do the activities."
+            },
+            {
+              "id": "shared2017m_s2_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Bullying is when someone keeps saying or doing things to have power over you. This includes calling you stupid names, saying nasty things about you, leaving you out of activities, not talking to you, threatening, making you feel uncomfortable or scared, taking or damaging your things, hitting or kicking you, or even making you do things you don’t want to do. Moreover, you can also be bullied by someone’s lack of attention or reaction."
+            },
+            {
+              "id": "shared2017m_s2_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "It is estimated that about 20% of all students are bullied in school at any time, and about half have experienced bullying at some points before. Bullied students can feel unhappy, afraid, uncomfortable, depressed, hurt and alone. Therefore, many of them begin to perform poorly in academic work. Some end up dropping out of school. They may suffer depression and anxiety. They suffer eating and sleep disorders and lose interest in activities they used to enjoy."
+            },
+            {
+              "id": "shared2017m_s2_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Adapted from: http://eschooltoday.com"
+            },
+            {
+              "id": "shared2017m_s2_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Nii Noi Odonkor"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "On your answer sheet, copy the letter which best completes the statement.\nThe text is a:    a. magazine article.    b. website article.    c. newspaper article."
+            },
+            {
+              "id": "shared2017m_s2_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b) website article"
+            },
+            {
+              "id": "shared2017m_s2_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Re-order the following ideas according to their occurrence in the text.\na. Lack of attention is considered a form of bullying.\nb. We can bully a person using words.\nc. Some psychological problems are related to bullying.\nd. Children are victims of bullying at school."
+            },
+            {
+              "id": "shared2017m_s2_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1-b    2-a    3-d    4-c"
+            },
+            {
+              "id": "shared2017m_s2_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 3.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. Why do people bully one another?\nb. How does a bullied person feel?\nc. Does bullying affect school results? Explain."
+            },
+            {
+              "id": "shared2017m_s2_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) To have power over one another.\nb) A bullied person feels unhappy, afraid, uncomfortable, depressed, hurt and alone.\nc) Yes, it affects school results. Students perform poorly in academic work and end up dropping out of school."
+            },
+            {
+              "id": "shared2017m_s2_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a) 1 pt    b) 1.5 pts    c) 1 pt"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Who or what do the underlined words refer to in the text?\na. This (§1)    b. many of them (§2)"
+            },
+            {
+              "id": "shared2017m_s2_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) bullying\nb) bullied students"
+            },
+            {
+              "id": "shared2017m_s2_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 x 2"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_exploration",
+          "nodeType": "PART",
+          "parentId": "shared2017m_s2_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (07 pts)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s2_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words whose definitions follow:\na. afraid that something bad might happen (§1)\nb. to undergo an emotional sensation (§2)\nc. a state of worry and nervousness accompanied by panic (§2)"
+            },
+            {
+              "id": "shared2017m_s2_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) scared\nb) feel\nc) anxiety"
+            },
+            {
+              "id": "shared2017m_s2_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Divide the following words into roots and affixes.\ndisorders - reaction - damaging"
+            },
+            {
+              "id": "shared2017m_s2_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Prefix | Root | Suffix\ndis | order | s\nre | act | ion\n//// | damage | ing",
+              "data": {
+                "rows": [
+                  [
+                    "Prefix",
+                    "Root",
+                    "Suffix"
+                  ],
+                  [
+                    "dis",
+                    "order",
+                    "s"
+                  ],
+                  [
+                    "re",
+                    "act",
+                    "ion"
+                  ],
+                  [
+                    "////",
+                    "damage",
+                    "ing"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "shared2017m_s2_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Combine each pair of sentences with the connectors given in brackets. Make any necessary changes.\na. Bullied students feel very depressed. Bullied students end up dropping out of school. (so...that)\nb. Bullying is physical violence. Bullying is verbal violence. (both...and)"
+            },
+            {
+              "id": "shared2017m_s2_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) Bullied students feel so depressed that they end up dropping out of school.\nb) Bullying is both physical and verbal violence."
+            },
+            {
+              "id": "shared2017m_s2_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 x 2"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete what “B” says to “A”.\nA: Mom, my classmate makes fun of me in front of the others.\nB: ................................................?\nA: She says I’m “chicken” and tries to hit me.\nB: ................................................?\nA: Unfortunately, I tried to speak to her but it was useless!\nB: ................................................?\nA: No, she’s a bad student...too bad.\nB: Oh I see, my dear! But you should try again."
+            },
+            {
+              "id": "shared2017m_s2_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "B: Really? What does she say?\nB: Did you speak to her?\nB: Is she a good student?"
+            },
+            {
+              "id": "shared2017m_s2_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "Accept other possible answers: 1 pt, 0.5 pt, 0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "shared2017m_s2_written",
+          "nodeType": "PART",
+          "parentId": "shared2017m_s2_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (05 pts)",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "shared2017m_s2_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "shared2017m_s2_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "shared2017m_s2_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic One:\nUsing the following notes, write a composition of about 70 to 80 words.\nYou discovered that a hacker has been using your facebook account to post harmful photos and comments. How did you feel? And what did you do?\nThe notes:\n- shocked / depressed / anxious / lost\n- contact / police / complain\n- meet / computing specialist\n- inform / contacts / problem\n- install / software / protect / account\n\nTopic Two:\nWrite a composition of about 70 to 80 words on the following topic.\nA new factory is being built in your area. You believe that this would endanger environment including people, animals and plants. As a newspaper journalist, you decide to write an article to denounce this project. (sign the article as Mohammed Taleb)"
+            },
+            {
+              "id": "shared2017m_s2_written_q_rubric",
+              "role": "RUBRIC",
+              "type": "table",
+              "value": "Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocab & creativity) | Final score\nSc.Exp, M, T.M, G.E | 1 | 1 | 2 | 1 | 5",
+              "data": {
+                "rows": [
+                  [
+                    "Criteria",
+                    "Relevance",
+                    "Semantic coherence",
+                    "Correct use of English",
+                    "Excellence (vocab & creativity)",
+                    "Final score"
+                  ],
+                  [
+                    "Sc.Exp, M, T.M, G.E",
+                    "1",
+                    "1",
+                    "2",
+                    "1",
+                    "5"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [],
+  "exam": {
+    "title": "بكالوريا 2017 الاستثنائية - اختبار في مادة: اللغة الإنجليزية",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "metadata": {
+    "route": "codex_direct_visual_reconstruction",
+    "sourceArtifact": "output/r2-bac-assets/bac/2017/pages/bac-exam-english-se-m-tm-ge-2017-makeup",
+    "normalizedAt": "2026-05-20T10:57:25.859Z",
+    "notes": "Direct visual extraction from stored page images; native text/table blocks; no human crop debt."
+  }
+}

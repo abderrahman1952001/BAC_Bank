@@ -1,0 +1,944 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "le2012_s1_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (14 points)",
+          "maxPoints": 14,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s1_comp",
+          "nodeType": "PART",
+          "parentId": "le2012_s1_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s1_text",
+          "nodeType": "CONTEXT",
+          "parentId": "le2012_s1_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully then do the activities."
+            },
+            {
+              "id": "le2012_s1_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "In sports, the use of performance-enhancing drugs is referred to by the term “doping”, particularly by those organizations that regulate competitions. The use of performance-enhancing drugs is typically done to get better athletic performance. This is why many sports organizations prohibit the use of performance-enhancing drugs."
+            },
+            {
+              "id": "le2012_s1_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The use of enhancement “substances” for sporting purposes dated back to the ancient Maya and ancient Greece. Performance enhancements in the form of potions were utilized by the people of both civilizations, who were thought to use coca leaves to improve their abilities. Today’s athletes have many options, including: Steroids, Amphetamines, and many other issues."
+            },
+            {
+              "id": "le2012_s1_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Most international sports organizations consider the use of drugs to enhance performance unethical although ethicists continue to argue that it is little different from the use of new materials in the construction of suits and sporting equipments, which in the same way, aid performance and can give competitors advantage over others."
+            },
+            {
+              "id": "le2012_s1_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Most athletes use performance-enhancing drugs for a number of reasons such as reducing weight, dulling the pain response in the body, building muscles at an accelerated rate, lowering stress, and even hiding other drugs that may be in the system. These drugs are used for each of these purposes and some athletes are taking daily doses which consist of a variety of steroids and growth supplements. Yet, most athletes are risking their lifetime health for a temporary condition just to win the game. This fact is being neglected by both athletes and coaches."
+            },
+            {
+              "id": "le2012_s1_text_prompt_6",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "www.helium.com"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Are these statements true or false? Write T or F next to the letter corresponding to the statement.\na. Doping can improve sport results.\nb. The use of performance-enhancing drugs is a recent practice.\nc. Some of these drugs reduce stress.\nd. Steroids represent a real threat for athletes."
+            },
+            {
+              "id": "le2012_s1_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) T    b) F    c) T    d) T"
+            },
+            {
+              "id": "le2012_s1_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in the table with information from the text."
+            },
+            {
+              "id": "le2012_s1_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Reasons of doping | Doping options\nreducing weight; dulling pain; building muscles; lowering stress; hiding other drugs | steroids; amphetamines; cocoa leaves",
+              "data": {
+                "rows": [
+                  [
+                    "Reasons of doping",
+                    "Doping options"
+                  ],
+                  [
+                    "reducing weight; dulling pain; building muscles; lowering stress; hiding other drugs",
+                    "steroids; amphetamines; cocoa leaves"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "le2012_s1_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4; accept any two correct answers for each"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 2.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. What do athletes use performance-enhancing drugs for during competitions?\nb. How is the use of performance-enhancing drugs considered by sports organizations?\nc. Is performance-enhancing drug-taking harmful? Justify your answer."
+            },
+            {
+              "id": "le2012_s1_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) Athletes use performance-enhancing drugs for getting / to get better athletic performance, to obtain good sports results, to win the game, or to break records.\nb) They are considered as unethical / prohibited.\nc) Yes, it is. Most athletes are risking their lifetime health."
+            },
+            {
+              "id": "le2012_s1_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a) 1 pt    b) 0.75 pt    c) 0.75 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text and put the following sentences in the order they appear in the text.\na. Doping is dishonest because it favours athletes over others.\nb. The consumption of performance-enhancing drugs is not without risks.\nc. Sport regulations are against the consumption of performance-enhancing drugs.\nd. Body-building uses drugs to quicken the development of muscles."
+            },
+            {
+              "id": "le2012_s1_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "c - a - d - b"
+            },
+            {
+              "id": "le2012_s1_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_comp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_comp",
+          "orderIndex": 6,
+          "label": "Question 5",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_comp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Give a title to the text."
+            },
+            {
+              "id": "le2012_s1_comp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "Doping / Doping and sports / Ethics in Sports."
+            },
+            {
+              "id": "le2012_s1_comp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_exploration",
+          "nodeType": "PART",
+          "parentId": "le2012_s1_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s1_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words that are opposite in meaning to the following:\na. permit (§1)    b. hinder (§3)    c. drawback (§3)"
+            },
+            {
+              "id": "le2012_s1_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) prohibit\nb) aid\nc) advantage"
+            },
+            {
+              "id": "le2012_s1_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Give the opposites of the following words keeping the same root.\nregulate - risky - harmful"
+            },
+            {
+              "id": "le2012_s1_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "regulate ≠ deregulate\nrisky ≠ unrisky\nharmful ≠ harmless"
+            },
+            {
+              "id": "le2012_s1_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Rewrite sentence (b) so that it means the same as sentence (a).\n1. a) Some athletes are taking daily doses of steroids.\n   b) Daily doses of steroids .................................................\n2. a) Tests had revealed that Carl Lewis cheated; that’s why he was disqualified from the competition.\n   b) Because of .............................................................\n3. a) “Have athletes encountered any pressure?” the journalist said.\n   b) The journalist asked ....................................................\n4. a) It’s high time sport organizations passed strict anti-doping laws.\n   b) Sport organizations ....................................................."
+            },
+            {
+              "id": "le2012_s1_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1. Daily doses of steroids are being taken by some athletes.\n2. Because of cheating / because of his cheating, Carl Lewis was disqualified from the competition.\n3. The journalist asked if / whether athletes had encountered some pressure.\n4. Sport organizations had better / should / ought to pass strict anti-doping laws."
+            },
+            {
+              "id": "le2012_s1_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Classify the following words according to their stressed syllables.\nnecessity - ethical - competition - sportsmen"
+            },
+            {
+              "id": "le2012_s1_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "1st syllable | 2nd syllable | 3rd syllable\nethical\nsportsmen | necessity | competition",
+              "data": {
+                "rows": [
+                  [
+                    "1st syllable",
+                    "2nd syllable",
+                    "3rd syllable"
+                  ],
+                  [
+                    "ethical\nsportsmen",
+                    "necessity",
+                    "competition"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "le2012_s1_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_exp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_exploration",
+          "orderIndex": 5,
+          "label": "Question 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_exp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in the gaps with only FOUR words from the list.\ngame - doping - practice - earn - athletic - victory\nStar athletes know that training paves the way to ...(1).... They can ...(2)... a lot of money and gain fame. However, they should be aware that ...(3)... can boost their effort and give them shortcut even if they risk their health and their ...(4)... career."
+            },
+            {
+              "id": "le2012_s1_exp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1) victory    2) earn    3) doping    4) athletic"
+            },
+            {
+              "id": "le2012_s1_exp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s1_written",
+          "nodeType": "PART",
+          "parentId": "le2012_s1_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (06 pts)",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s1_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s1_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s1_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic One:\nYou are a fan of a famous sportsman. Unfortunately, you have found out he won the game by using drugs (doping).\nUsing the following notes, write a composition of 120-150 words in which you urge athletes to show the sense of fair-play.\n- doping in competitions: dishonest - unethical\n- respect sports laws / game rules\n- be careful: anti-dope tests; disqualification / penalties; bad reputation / career compromised\n\nTopic Two:\nWrite a composition of 120-150 words on the following:\nImagine one of your classmates cheated at an exam to get higher grades. What advice would you give in order to refrain him/her from behaving in such a way?"
+            },
+            {
+              "id": "le2012_s1_written_q_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "Topic one: form 3.5 pts; content 2.5 pts.\nTopic two: form 3 pts; content 3 pts."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "le2012_s2_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (14 points)",
+          "maxPoints": 14,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s2_comp",
+          "nodeType": "PART",
+          "parentId": "le2012_s2_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s2_text",
+          "nodeType": "CONTEXT",
+          "parentId": "le2012_s2_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully then do the activities."
+            },
+            {
+              "id": "le2012_s2_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Dr Gerald Gary is the principal of Jackson school in Camden, South California which has a high number of students receiving free and reduced-price lunches, an indicator of low-income families. He found that parents and the community did not have the same expectations for their children as those in other schools. Gary knew his students could do better; he had just to convince them and their families. He improved student achievement and changed the school’s culture by setting high expectations for everyone in the building."
+            },
+            {
+              "id": "le2012_s2_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Concerned that his students’ parents had lower expectations for their children than parents in other communities, Gary introduced parents at his school to research about the effect of parental involvement on student achievement. Soon parents began to take more than an interest in what students were learning at school and at home."
+            },
+            {
+              "id": "le2012_s2_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Gary began holding meetings for parents during which he presented data showing that when parents get involved with their children’s education, achievement increases. He talked about the importance of reading to children at home and checking their homework regularly, noting that these efforts have a positive effect on students performance. He showed them data from schools with the same background as theirs and how they could get similar results. The Jackson school parents couldn’t say their children were not doing well because of poverty."
+            },
+            {
+              "id": "le2012_s2_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "After about a year, the school staff started seeing gradual achievement growth, and now the school holds parent workshops six or seven times a year on topics such as how to help children with reading, maths and science."
+            },
+            {
+              "id": "le2012_s2_text_prompt_6",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Adapted from Article by Ellen R. Delisio, “Education World”, 2009."
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Choose the general idea of the text.\na. Applying high expectations to Jackson students.\nb. Parents’ work in South California.\nc. The principal describes the curriculum of Jackson school."
+            },
+            {
+              "id": "le2012_s2_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) Applying high expectations to Jackson students."
+            },
+            {
+              "id": "le2012_s2_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Are these statements true or false? Write T or F next to the letter corresponding to the statement.\na. The principal Dr Gerald Gary received free lunches at Jackson school.\nb. Thanks to principal Gary, parents started to show more interest in their children’s studies.\nc. Checking homework doesn’t have any effect on the student’s performance.\nd. Parents are convinced that their children’s bad results were due to poverty."
+            },
+            {
+              "id": "le2012_s2_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) F    b) T    c) F    d) F"
+            },
+            {
+              "id": "le2012_s2_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "In which paragraph is it mentioned that:\nGary urged parents to help their children at home?"
+            },
+            {
+              "id": "le2012_s2_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "§3"
+            },
+            {
+              "id": "le2012_s2_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text and put the following sentences in the order they appear in the text.\na. The students’ results at Jackson gradually got better.\nb. Students in Jackson school come from poor families.\nc. Parents were actively involved in their children’s studies."
+            },
+            {
+              "id": "le2012_s2_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b - c - a"
+            },
+            {
+              "id": "le2012_s2_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_comp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_comp",
+          "orderIndex": 6,
+          "label": "Question 5",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_comp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. What did the principal Gary do to reach his objective?\nb. Why did Gary have to convince the parents to get involved in their children’s education?\nc. How can the parents help their children at home?"
+            },
+            {
+              "id": "le2012_s2_comp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) He introduced parents at school to research about the effect of parental involvement.\nb) Because he knew his students could do better / he wanted to improve students’ achievement and change the school’s culture.\nc) By checking their homework and making them read."
+            },
+            {
+              "id": "le2012_s2_comp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a) 0.5 pt    b) 1 pt    c) 0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_comp_q6",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_comp",
+          "orderIndex": 7,
+          "label": "Question 6",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_comp_q6_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What or who do the underlined words refer to in the text?\na. them (§1)    b. which (§3)"
+            },
+            {
+              "id": "le2012_s2_comp_q6_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) students\nb) meetings"
+            },
+            {
+              "id": "le2012_s2_comp_q6_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 2"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_exploration",
+          "nodeType": "PART",
+          "parentId": "le2012_s2_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s2_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words whose definitions follow.\na. to study carefully to find out new facts (§2)\nb. process of teaching, training and learning (§3)\nc. details of a person’s family, education, etc. (§3)\nd. team working together in an organization (§4)"
+            },
+            {
+              "id": "le2012_s2_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) research\nb) education\nc) background\nd) staff"
+            },
+            {
+              "id": "le2012_s2_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the table as shown in the example."
+            },
+            {
+              "id": "le2012_s2_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Verb | Noun | Adjective\nto reduce | reduction | reducible\n/// | knowledge | known / knowing / knowledgeable\nto educate | /// | educative / educational / educated\nto grade / graduate | grade / graduation | ///",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "to reduce",
+                    "reduction",
+                    "reducible"
+                  ],
+                  [
+                    "///",
+                    "knowledge",
+                    "known / knowing / knowledgeable"
+                  ],
+                  [
+                    "to educate",
+                    "///",
+                    "educative / educational / educated"
+                  ],
+                  [
+                    "to grade / graduate",
+                    "grade / graduation",
+                    "///"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "le2012_s2_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3, one line each"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Ask the questions which the underlined words answer.\na. Three years ago, Gary held meetings for parents in his school.\nb. Parents have to check their children’s homework regularly."
+            },
+            {
+              "id": "le2012_s2_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) How long ago did Gary hold meetings for parents in his school?\nb) How often have parents to check their children’s homework?"
+            },
+            {
+              "id": "le2012_s2_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 2"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Rewrite sentence (b) so that it means the same as sentence (a).\n1. a) “Parents must focus on positive things,” Gary said.\n   b) Gary said that .........................................................\n2. a) The school holds parents workshops.\n   b) Parents workshops ......................................................\n3. a) Jackson school students were of low-income but they managed to get high scores.\n   b) Although ................................................................"
+            },
+            {
+              "id": "le2012_s2_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1. Gary said that parents had to focus on positive things.\n2. Parents workshops are held by the school.\n3. Although Jackson school students were of low-income, they managed to get high scores."
+            },
+            {
+              "id": "le2012_s2_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_exp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_exploration",
+          "orderIndex": 5,
+          "label": "Question 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_exp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Underline the silent letter in each of the following words.\nknew - higher - honesty - talked"
+            },
+            {
+              "id": "le2012_s2_exp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "k in knew; gh in higher; h in honesty; l in talked"
+            },
+            {
+              "id": "le2012_s2_exp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_exp_q6",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_exploration",
+          "orderIndex": 6,
+          "label": "Question 6",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_exp_q6_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Reorder the following sentences to make a coherent paragraph.\na. Some of them succeed and access to various universities.\nb. In Jackson school, children follow a compulsory education till the age of sixteen.\nc. or simply become delinquents.\nd. However, others fail and, either go to a technical training"
+            },
+            {
+              "id": "le2012_s2_exp_q6_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b - a - d - c"
+            },
+            {
+              "id": "le2012_s2_exp_q6_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2012_s2_written",
+          "nodeType": "PART",
+          "parentId": "le2012_s2_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (06 pts)",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2012_s2_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "le2012_s2_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2012_s2_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic One:\nWrite a composition of 120-150 words on the following topic. Use the notes below:\nFailure at school has become a world wide issue. What are its consequences and what solutions do you suggest?\nConsequences:\n- delinquency / increase in the rate of crimes\n- unemployment / exploitation / child labour\n- no future prospects / illegal immigration\n- family, society deeply worried\nSolutions:\n- improve educational system\n- rehabilitate school leavers\n- build more schools, training centres, youth clubs\n\nTopic Two:\nSuppose you were a historian, write a composition of 120-150 words stating how most ancient civilizations rose, flourished and declined."
+            },
+            {
+              "id": "le2012_s2_written_q_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "Topic one: form 3.5 pts; content 2.5 pts.\nTopic two: form 3 pts; content 3 pts."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [],
+  "exam": {
+    "title": "بكالوريا 2012 - اختبار في مادة: اللغة الإنجليزية",
+    "durationMinutes": 210,
+    "totalPoints": 20,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "metadata": {
+    "route": "codex_direct_visual_reconstruction",
+    "sourceArtifact": "output/r2-bac-assets/bac/2012/pages/bac-exam-english-le-2012-normal",
+    "normalizedAt": "2026-05-20T10:57:25.850Z",
+    "notes": "Direct visual extraction from stored page images; native text/table blocks; no human crop debt."
+  }
+}

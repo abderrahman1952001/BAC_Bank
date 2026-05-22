@@ -1,0 +1,922 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "s1_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (15 pts)",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_comp",
+          "nodeType": "PART",
+          "parentId": "s1_reading",
+          "orderIndex": 1,
+          "label": "A/ Comprehension (08 pts)",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_text",
+          "nodeType": "CONTEXT",
+          "parentId": "s1_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully to do the activities."
+            },
+            {
+              "id": "s1_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Research clearly shows that being overweight greatly increases your risk for many diseases including heart disease, cancer, and diabetes. If you are overweight, combining regular physical activity with a healthful eating plan is the most effective way to lose weight and to sustain the loss. If you are at a healthy weight, your goal is to maintain that weight."
+            },
+            {
+              "id": "s1_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Whether you are young or old, you can improve your health by being more active each day. Choose activities that you enjoy and can do regularly. Although you will gain more health benefits with high intensity exercise that lasts 30 minutes or more, low-to-moderate activities can be part of your regular physical exercise. For some people, this means fitting more activity of daily living into their usual routine. This could include using the elevator less and using the stairs more, parking farther from rather than closer to your destination, gardening, or golfing without a cart. For others, a more structured programme might be preferred, such as at a worksite or a health club."
+            },
+            {
+              "id": "s1_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "In addition to physical exercise, your body needs more than 40 nutrients and other substances for good health. No one food can give you all the nutrients your body needs, no matter how much you enjoy it or how nutritious the food is. By eating a wide variety of foods each day, you will keep your meals exciting and you will achieve the balance of nutrients that best ensures good health."
+            },
+            {
+              "id": "s1_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Adapted from Encyclopedia of Foods: A Guide to Healthy Nutrition - Part One - 2002"
+            }
+          ]
+        },
+        {
+          "id": "s1_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Say whether the following statements are true or false.\na) Obesity can be responsible for many diseases.\nb) A healthy diet is enough to keep a healthy weight.\nc) Only intense physical activity is good for health.\nd) Some types of food contain all the nutrients your body needs."
+            },
+            {
+              "id": "s1_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) true    b) false    c) false    d) false"
+            },
+            {
+              "id": "s1_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "s1_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Identify the paragraphs in which the following ideas are mentioned:\na) Daily physical activity keeps people in good health.\nb) No particular food can provide the body with all it needs."
+            },
+            {
+              "id": "s1_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) §2    b) §3"
+            },
+            {
+              "id": "s1_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 x 2"
+            }
+          ]
+        },
+        {
+          "id": "s1_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 3,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text."
+            }
+          ]
+        },
+        {
+          "id": "s1_comp_q3_a",
+          "nodeType": "SUBQUESTION",
+          "parentId": "s1_comp_q3",
+          "orderIndex": 1,
+          "label": "Question 3.a",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_comp_q3_a_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What two measures should obese people take to reduce their weight?"
+            },
+            {
+              "id": "s1_comp_q3_a_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a healthful eating plan and regular physical activity."
+            },
+            {
+              "id": "s1_comp_q3_a_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt"
+            }
+          ]
+        },
+        {
+          "id": "s1_comp_q3_b",
+          "nodeType": "SUBQUESTION",
+          "parentId": "s1_comp_q3",
+          "orderIndex": 2,
+          "label": "Question 3.b",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_comp_q3_b_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Which activities of daily living can help people improve their health?"
+            },
+            {
+              "id": "s1_comp_q3_b_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "using the elevator less and using the stairs more, parking farther from rather than closer to your destination, gardening, or golfing without a cart."
+            },
+            {
+              "id": "s1_comp_q3_b_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt (0.25 for each item)"
+            }
+          ]
+        },
+        {
+          "id": "s1_comp_q3_c",
+          "nodeType": "SUBQUESTION",
+          "parentId": "s1_comp_q3",
+          "orderIndex": 3,
+          "label": "Question 3.c",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_comp_q3_c_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Why is it necessary for people to eat different types of food?"
+            },
+            {
+              "id": "s1_comp_q3_c_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "because no food contains all the nutrients and substances the body needs, or to provide the body with all the nutrients and substances it needs, or to achieve the balance that best ensures good health."
+            },
+            {
+              "id": "s1_comp_q3_c_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt"
+            }
+          ]
+        },
+        {
+          "id": "s1_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find what or who the underlined words in the text refer to.\na) that weight (§1)    b) their (§2)"
+            },
+            {
+              "id": "s1_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) healthy weight    b) some people"
+            },
+            {
+              "id": "s1_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 2"
+            }
+          ]
+        },
+        {
+          "id": "s1_exploration",
+          "nodeType": "PART",
+          "parentId": "s1_reading",
+          "orderIndex": 2,
+          "label": "B/ Text Exploration (07 pts)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words or phrases that are closest in meaning to the following:\na) obese (§1)    b) advantages (§2)    c) guarantees (§3)"
+            },
+            {
+              "id": "s1_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) overweight    b) benefits    c) ensures"
+            },
+            {
+              "id": "s1_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "s1_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Give the opposites of the following words keeping the same root.\nregular - active - healthy"
+            },
+            {
+              "id": "s1_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "regular ≠ irregular\nactive ≠ inactive\nhealthy ≠ unhealthy"
+            },
+            {
+              "id": "s1_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "s1_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Put the verbs in brackets in the right form.\nWeight control is the process of losing or avoiding excess body fat. It (to depend) on the relationship between the amount of food you eat and the energy your body (to use) to maintain itself or to exercise. This relationship (to govern) partly by heredity and other factors that people cannot control. But in general, the less you eat and the more you exercise, the less fat you (to have)."
+            },
+            {
+              "id": "s1_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "depends; uses or will use; is governed; have or will have"
+            },
+            {
+              "id": "s1_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "s1_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Reorder the following sentences to get a coherent passage.\na) But they are so inactive that, even with a moderate appetite,\nb) Physical inactivity is a leading cause of obesity among the young.\nc) they eat more than they need and accumulate excess fat.\nd) Most of these obese young people do not eat more than young people of average weight."
+            },
+            {
+              "id": "s1_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1-b    2-d    3-a    4-c"
+            },
+            {
+              "id": "s1_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 for opening sentence and 0.5 for each correct link"
+            }
+          ]
+        },
+        {
+          "id": "s1_written",
+          "nodeType": "PART",
+          "parentId": "s1_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (05 pts)",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "s1_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic 1:\nStatistics released by the Department of Health show that many young people suffer from different health problems because they are physically inactive.\nWrite an article of about 80 to 120 words for your school magazine to sensitize your schoolmates about the benefits of physical exercise for health.\nMake the best use of the following notes:\n- lose weight / prevent against obesity\n- strengthen the immune system\n- reduce stress and anxiety\n\nTopic 2:\nIn some parts of the world, thousands of children are illegally employed and exploited by unscrupulous businesses.\nWrite a letter of about 80 to 120 words to the UNICEF representative in your country to denounce such an unethical practice."
+            },
+            {
+              "id": "s1_written_q_rubric",
+              "role": "RUBRIC",
+              "type": "table",
+              "value": "Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocab & creativity) | Final score\nCommon streams | 1 | 1 | 2 | 1 | 5",
+              "data": {
+                "rows": [
+                  [
+                    "Criteria",
+                    "Relevance",
+                    "Semantic coherence",
+                    "Correct use of English",
+                    "Excellence (vocab & creativity)",
+                    "Final score"
+                  ],
+                  [
+                    "Common streams",
+                    "1",
+                    "1",
+                    "2",
+                    "1",
+                    "5"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "s2_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (15 pts)",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_comp",
+          "nodeType": "PART",
+          "parentId": "s2_reading",
+          "orderIndex": 1,
+          "label": "A/ Comprehension (08 pts)",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_text",
+          "nodeType": "CONTEXT",
+          "parentId": "s2_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully to do the activities."
+            },
+            {
+              "id": "s2_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Ethical employees are those who make decisions in the best interest of their employers, co-workers and outside stakeholders in addition to themselves. Workplace ethics centre on such diverse issues as discrimination, fraud, theft and harassment. Although all people are intrinsically valuable, ethical employees can actually be more financially valuable to their employers, and more valued by co-workers and peers."
+            },
+            {
+              "id": "s2_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Understanding how ethics can make you a better person in the workplace is a solid starting point for a commitment to always doing the right thing. Therefore, gaining the trust of your co-workers can enhance your productivity by making it easier for you to communicate and work with others in the workplace."
+            },
+            {
+              "id": "s2_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Employees who spread distrust can meet resistance when seeking help from others, but trusted co-workers can always find a helping hand. Gaining the trust of their managers can open doors to workers for new responsibilities at work, possibly leading to promotions and pay raise."
+            },
+            {
+              "id": "s2_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Adapted from https://smallbusiness.chron.com/ethics-"
+            }
+          ]
+        },
+        {
+          "id": "s2_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Choose the answer to complete each statement.\na) Ethical workers are those who improve ........\n- their profits    - human relationships    - the number of stakeholders.\nb) Workplace can be exposed to ...............\n- unethical practices.    - unfair competition    - regular audits.\nc) Lack of confidence between workers ...........\n- saves time and money    - encourages human contact    - affects work quality."
+            },
+            {
+              "id": "s2_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) human relationships    b) unethical practices    c) affects work quality"
+            },
+            {
+              "id": "s2_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "s2_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Put the following ideas in the order they appear in the text.\na) Mutual trust is important for cooperation at work.\nb) Workplace code of conduct is concerned with unethical behaviours.\nc) Ethical employees contribute more to their employers’ wealth."
+            },
+            {
+              "id": "s2_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b - c - a"
+            },
+            {
+              "id": "s2_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "s2_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 3.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text."
+            }
+          ]
+        },
+        {
+          "id": "s2_comp_q3_a",
+          "nodeType": "SUBQUESTION",
+          "parentId": "s2_comp_q3",
+          "orderIndex": 1,
+          "label": "Question 3.a",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_comp_q3_a_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What unethical practices do workplace ethics focus on?"
+            },
+            {
+              "id": "s2_comp_q3_a_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "discrimination, fraud, theft and harassment."
+            },
+            {
+              "id": "s2_comp_q3_a_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt (0.25 for each item)"
+            }
+          ]
+        },
+        {
+          "id": "s2_comp_q3_b",
+          "nodeType": "SUBQUESTION",
+          "parentId": "s2_comp_q3",
+          "orderIndex": 2,
+          "label": "Question 3.b",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_comp_q3_b_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Why is it important to trust your workmates?"
+            },
+            {
+              "id": "s2_comp_q3_b_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "because it enhances your productivity by making it easier for you to communicate and work with others in the workplace, or because it improves productivity and makes communication easier between each other at work."
+            },
+            {
+              "id": "s2_comp_q3_b_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt"
+            }
+          ]
+        },
+        {
+          "id": "s2_comp_q3_c",
+          "nodeType": "SUBQUESTION",
+          "parentId": "s2_comp_q3",
+          "orderIndex": 3,
+          "label": "Question 3.c",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_comp_q3_c_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Is confidence between employees and employers fruitful? Justify your answer."
+            },
+            {
+              "id": "s2_comp_q3_c_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "Yes, it is. It can open doors to workers for new responsibilities at work, possibly leading to promotions and pay raise."
+            },
+            {
+              "id": "s2_comp_q3_c_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Choose the most appropriate title.\na) Decision making in companies.\nb) Productivity factors in business.\nc) Ethics at the workplace."
+            },
+            {
+              "id": "s2_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "The title: Ethics at the Workplace."
+            },
+            {
+              "id": "s2_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "s2_exploration",
+          "nodeType": "PART",
+          "parentId": "s2_reading",
+          "orderIndex": 2,
+          "label": "B/ Text Exploration (07 pts)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words or phrases that are opposite in meaning to the following:\na) worst (§1)    b) suspicion (§2)    c) reduction (§3)"
+            },
+            {
+              "id": "s2_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) worst (§1) ≠ best\nb) suspicion (§2) ≠ trust\nc) reduction (§3) ≠ raise"
+            },
+            {
+              "id": "s2_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "s2_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the chart as shown in the example."
+            },
+            {
+              "id": "s2_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Verbs | Nouns | Adjectives\nE.g. corrupt | corruption | corrupt\nTo defraud | Fraud / fraudster / fraudulence | fraudulent\nTo communicate | communication | Communicative / communicable\nTo value | Value / valuation / valuer / valuables | Valuable / valueless",
+              "data": {
+                "rows": [
+                  [
+                    "Verbs",
+                    "Nouns",
+                    "Adjectives"
+                  ],
+                  [
+                    "E.g. corrupt",
+                    "corruption",
+                    "corrupt"
+                  ],
+                  [
+                    "To defraud",
+                    "Fraud / fraudster / fraudulence",
+                    "fraudulent"
+                  ],
+                  [
+                    "To communicate",
+                    "communication",
+                    "Communicative / communicable"
+                  ],
+                  [
+                    "To value",
+                    "Value / valuation / valuer / valuables",
+                    "Valuable / valueless"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "s2_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 6; accept any other correct form"
+            }
+          ]
+        },
+        {
+          "id": "s2_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Combine each pair of sentences with the connectors given between brackets. Make changes where necessary.\na) Some workers generally get promotions. They respect their company’s code of conduct. (as a result)\nb) The manager and the workers trust each other. The company’s productivity increases. (provided that)"
+            },
+            {
+              "id": "s2_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) Some workers respect their company’s code of conduct; as a result, they generally get promotions.\nb) Provided that the manager and the workers trust each other, the company’s productivity will increase.\n- The company’s productivity will increase provided that the manager and the workers trust each other."
+            },
+            {
+              "id": "s2_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt + 1 pt"
+            }
+          ]
+        },
+        {
+          "id": "s2_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in each gap with the appropriate word from the list given.\ninvolved - obey - professional - consequences\nEthical behaviour and good citizenship can improve your .........(1)......... and social success. In order to be a good citizen, you should consider the .........(2)............... of your actions, .........(3)......... laws and be respectful. By being morally.........(4)........., you encourage others to do the same."
+            },
+            {
+              "id": "s2_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1- professional    2- consequences    3- obey    4- involved"
+            },
+            {
+              "id": "s2_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "s2_written",
+          "nodeType": "PART",
+          "parentId": "s2_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (05 pts)",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "s2_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic 1:\nSome people are more likely to feel above the law because they are rich. They lie, steal, cheat and engage in other unethical behaviours because their money makes them feel untouchable.\nWrite an opinion article of about 80 to 120 words for the local newspaper to denounce those people and suggest what you can do to become a good citizen.\nMake the best use of the following notes:\n- encourage whistleblowing\n- engage in anti-corruption associations\n- act ethically and legally\n- respect the rules of the community\n\nTopic 2:\nStudents who live far from schools, where there are no canteens, are likely to eat whatever they can afford for lunch (junk food, chips, sweets...). Therefore, they often fall sick. Write an article of about 80 to 120 words, for your school magazine, where you suggest solutions to help these students make their eating habits healthier."
+            },
+            {
+              "id": "s2_written_q_rubric",
+              "role": "RUBRIC",
+              "type": "table",
+              "value": "Criteria | Relevance | Semantic coherence | Correct use of English | Excellence (vocab & creativity) | Final score\nCommon streams | 1 | 1 | 2 | 1 | 5",
+              "data": {
+                "rows": [
+                  [
+                    "Criteria",
+                    "Relevance",
+                    "Semantic coherence",
+                    "Correct use of English",
+                    "Excellence (vocab & creativity)",
+                    "Final score"
+                  ],
+                  [
+                    "Common streams",
+                    "1",
+                    "1",
+                    "2",
+                    "1",
+                    "5"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [],
+  "exam": {
+    "title": "بكالوريا 2021 - اختبار في مادة: اللغة الإنجليزية",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "metadata": {
+    "route": "codex_direct_visual_reconstruction",
+    "sourceArtifact": "output/r2-bac-assets/bac/2021/pages/bac-exam-english-se-m-tm-ge-2021-normal",
+    "normalizedAt": "2026-05-20T10:57:25.841Z",
+    "notes": "Direct visual extraction from stored page images; native text/table blocks; no human crop debt."
+  }
+}

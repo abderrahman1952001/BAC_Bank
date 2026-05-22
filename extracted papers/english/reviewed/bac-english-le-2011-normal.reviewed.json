@@ -1,0 +1,934 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "le2011_s1_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (14 points)",
+          "maxPoints": 14,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s1_comp",
+          "nodeType": "PART",
+          "parentId": "le2011_s1_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s1_text",
+          "nodeType": "CONTEXT",
+          "parentId": "le2011_s1_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully then do the following activities."
+            },
+            {
+              "id": "le2011_s1_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The old cities of Egypt have disappeared from the face of the earth. Nineveh and Babylon are deserted mounds of dust and brick. One city alone has survived the ages. It is called Damascus."
+            },
+            {
+              "id": "le2011_s1_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Damascus was a fortified frontier town of the Amorites, those famous desert people who had given birth to the great King Hammurabi. When the Amorites moved further eastward into the valley of Mesopotamia to establish the Kingdom of Babylon, Damascus had continued to be a trading post with the wild Hittites who inhabited the mountains of Asia Minor. Later, the earliest inhabitants had been absorbed by another tribe, called the Aramaeans. They were semi-nomadic and pastoralist people. The city itself, however, had not changed its character. It remained an important center of commerce thanks to its geographical situation. It traded with the entire world and offered a safe home to the merchant and to the artisan. Incidentally it spread its language all over western Asia."
+            },
+            {
+              "id": "le2011_s1_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Commerce has always demanded quick and practical ways of communication between different nations. The Aramaean business man found it difficult to use the elaborate system of nail-writing of the ancient Sumerians, so he invented a new alphabet which could be written much faster than the old wedge-shaped figures of Babylon."
+            },
+            {
+              "id": "le2011_s1_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The spoken language of the Aramaeans, Aramaic, became the language of the merchants and of the simple people of the old Mediterranean world. In most parts of Mesopotamia, it was understood as readily as the native tongue."
+            },
+            {
+              "id": "le2011_s1_text_prompt_6",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Adapted from Ancient Man: The Beginning of Civilizations by H.W. Van Loon"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Say whether the following statements are True or False according to the text.\na. Damascus has disappeared from the face of the earth.\nb. King Hammurabi was an Amorite.\nc. Damascus was an insecure city.\nd. Aramaic was widely used in Mesopotamia."
+            },
+            {
+              "id": "le2011_s1_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) F    b) T    c) F    d) T"
+            },
+            {
+              "id": "le2011_s1_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "In which paragraph is it mentioned that...\na. Damascus was a well-protected town?\nb. The Aramaeans invented a new language?"
+            },
+            {
+              "id": "le2011_s1_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) §2\nb) §3"
+            },
+            {
+              "id": "le2011_s1_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 2"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 2.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. Why did the Amorites move eastward?\nb. What made Damascus an important center of commerce?\nc. Why did the Aramaean business man invent a new alphabet?\nd. Give some reasons why Damascus hasn’t disappeared and has survived the ages."
+            },
+            {
+              "id": "le2011_s1_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) To establish the kingdom of Babylon.\nb) Its geographical situation.\nc) Because he found it difficult to use the elaborate system of nail-writing of the ancient Sumerians.\nd) It was a fortified frontier town; it had a strategic geographical situation; it was an important commercial centre."
+            },
+            {
+              "id": "le2011_s1_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a) 0.5 pt    b) 0.5 pt    c) 0.5 pt    d) 1 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What or who do the underlined words refer to in the text?\na. They (§2)    b. The city (§2)    c. he (§3)    d. it (§4)"
+            },
+            {
+              "id": "le2011_s1_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) The Aramaeans\nb) Damascus\nc) The Aramaean business man\nd) Aramaic"
+            },
+            {
+              "id": "le2011_s1_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_comp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_comp",
+          "orderIndex": 6,
+          "label": "Question 5",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_comp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Choose the most appropriate title to the text.\na. The Old Cities of Egypt\nb. Damascus: The City of Trade\nc. The Aramaeans\nd. The Amorites"
+            },
+            {
+              "id": "le2011_s1_comp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b) Damascus: The City of Trade."
+            },
+            {
+              "id": "le2011_s1_comp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_exploration",
+          "nodeType": "PART",
+          "parentId": "le2011_s1_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s1_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words that are closest in meaning to the following.\na. vanished (§1)\nb. lived in (§2)\nc. secure (§2)\nd. very old (§3)"
+            },
+            {
+              "id": "le2011_s1_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) disappeared\nb) inhabited\nc) safe\nd) ancient"
+            },
+            {
+              "id": "le2011_s1_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the following chart as shown in the example."
+            },
+            {
+              "id": "le2011_s1_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Verb | Noun | Adjective\nto establish | establishment | established\nto save | safety | safe\nto commercialize | commerce | commercial\nto move | movement | movable",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "to establish",
+                    "establishment",
+                    "established"
+                  ],
+                  [
+                    "to save",
+                    "safety",
+                    "safe"
+                  ],
+                  [
+                    "to commercialize",
+                    "commerce",
+                    "commercial"
+                  ],
+                  [
+                    "to move",
+                    "movement",
+                    "movable"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "le2011_s1_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 6"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Choose the appropriate connector to join the following pairs of sentences. Make changes where necessary.\nif - despite the fact that - while - therefore\na. Damascus was a fortified town. It was conquered by Alexander the Great.\nb. They invented a new alphabet. They could not use the Ancient Sumerians’ writing."
+            },
+            {
+              "id": "le2011_s1_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) Despite the fact that Damascus was a fortified town, it was conquered by Alexander the Great.\nb) They could not use the Ancient Sumerians’ writing; therefore they invented a new alphabet."
+            },
+            {
+              "id": "le2011_s1_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 2"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Classify the following words according to the number of their syllables.\na. desert    b. mounds    c. difficult    d. another"
+            },
+            {
+              "id": "le2011_s1_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "One syllable | Two syllables | Three syllables\nmounds | desert | difficult\nanother",
+              "data": {
+                "rows": [
+                  [
+                    "One syllable",
+                    "Two syllables",
+                    "Three syllables"
+                  ],
+                  [
+                    "mounds",
+                    "desert",
+                    "difficult\nanother"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "le2011_s1_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_exp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_exploration",
+          "orderIndex": 5,
+          "label": "Question 5",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_exp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Reorder the following sentences to make a coherent paragraph.\na. They established the water distribution system of the city\nb. When the Aramaeans entered Damascus,\nc. by constructing canals and tunnels.\nd. they noticed the agricultural potential of the area."
+            },
+            {
+              "id": "le2011_s1_exp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1-b    2-d    3-a    4-c"
+            },
+            {
+              "id": "le2011_s1_exp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3; count the couple"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s1_written",
+          "nodeType": "PART",
+          "parentId": "le2011_s1_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (06 pts)",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s1_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s1_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s1_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic one:\nUsing the following notes, write a composition of about 120 to 150 words explaining why Damascus was an important city.\nnear the river / near the trade routes / centre of commerce / safe town...\n\nTopic two:\nWrite a composition of about 120 to 150 words on the following topic.\nA number of clothes manufactures are developing exploiting children (physically, mentally, morally, having no respect for their rights). Would you boycott their products even if you know they are the cheapest on the market?"
+            },
+            {
+              "id": "le2011_s1_written_q_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "Topic 1: form 3.5 pts; content 2.5 pts.\nTopic 2: form 3 pts; content 3 pts."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "le2011_s2_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (14 points)",
+          "maxPoints": 14,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s2_comp",
+          "nodeType": "PART",
+          "parentId": "le2011_s2_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s2_text",
+          "nodeType": "CONTEXT",
+          "parentId": "le2011_s2_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully then do the following activities."
+            },
+            {
+              "id": "le2011_s2_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "All the children in the United States have to receive an education, but the law does not say they have to be educated at school. A number of parents prefer not to send their children to school. Children who are educated at home are known as “home-schoolers”. There are about 300,000 home-schooled children in the United States today."
+            },
+            {
+              "id": "le2011_s2_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "David and his wife teach their three children at home. David says that his children learn differently from children in school. Learning starts with the children’s interests and questions. For example when there is a heavy snowfall on a winter day, it may start a discussion or reading about climate, snow removal-equipment, Alaska polar bears, and winter tourism. On a spring day evening the family is out watching the stars, it is then a good opportunity to ask questions about space program. If the Brazilian rain forests are on TV news, it could be a perfect time to talk about how rain forests influence the climate, how deserts are formed, and how the polar ice caps affect ocean levels."
+            },
+            {
+              "id": "le2011_s2_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Home-schooling is often more interesting than regular schools, but critics say that home-schoolers might find it difficult to mix with other people in adult life. Critics also say that most parents are not well qualified to teach their children. Furthermore, most parents don’t have time or the desire to teach their children at home, so schools will continue to be where most children get their formal education."
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 0.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The text is...\na. narrative\nb. expository\nc. descriptive"
+            },
+            {
+              "id": "le2011_s2_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b) expository"
+            },
+            {
+              "id": "le2011_s2_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Say whether the following statements are True or False according to the text.\na. Education at school is not obligatory in the USA.\nb. Children can receive their education at home.\nc. Parents teach their children in the same way as teachers do in schools.\nd. Learning at home is related to daily life."
+            },
+            {
+              "id": "le2011_s2_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) T    b) T    c) F    d) T"
+            },
+            {
+              "id": "le2011_s2_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "In which paragraph are the disadvantages of home-schooling mentioned?"
+            },
+            {
+              "id": "le2011_s2_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "§3"
+            },
+            {
+              "id": "le2011_s2_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 3,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na. List some of the topics that are taught at home.\nb. What advantages can home-schooling give to children?\nc. What problem might home-schoolers face when they become adults?"
+            },
+            {
+              "id": "le2011_s2_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) Climate, space, environment.\nb) It associates learning with their daily life. It broadens their knowledge.\nc) They might find it difficult to mix with other people."
+            },
+            {
+              "id": "le2011_s2_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 x 3"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_comp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_comp",
+          "orderIndex": 6,
+          "label": "Question 5",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_comp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What or who do the underlined words refer to in the text?\na. they (§1)\nb. it (§3)\nc. their (§3)"
+            },
+            {
+              "id": "le2011_s2_comp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) children in the U.S.\nb) to mix with other people\nc) most parents"
+            },
+            {
+              "id": "le2011_s2_comp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 3"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_comp_q6",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_comp",
+          "orderIndex": 7,
+          "label": "Question 6",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_comp_q6_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Give a title to the text."
+            },
+            {
+              "id": "le2011_s2_comp_q6_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "Home-schooling in the U.S."
+            },
+            {
+              "id": "le2011_s2_comp_q6_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_exploration",
+          "nodeType": "PART",
+          "parentId": "le2011_s2_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s2_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words closest in meaning to the following.\na. nearly (§1)\nb. begins (§2)\nc. chance (§2)\nd. hard (§3)"
+            },
+            {
+              "id": "le2011_s2_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) about\nb) starts\nc) opportunity\nd) difficult"
+            },
+            {
+              "id": "le2011_s2_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the following chart as shown in the example."
+            },
+            {
+              "id": "le2011_s2_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Verb | Noun | Adjective\neducate | education | educational\nto differ | difference | different\nto influence | influence | influential\ncriticize | critic | critical",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "educate",
+                    "education",
+                    "educational"
+                  ],
+                  [
+                    "to differ",
+                    "difference",
+                    "different"
+                  ],
+                  [
+                    "to influence",
+                    "influence",
+                    "influential"
+                  ],
+                  [
+                    "criticize",
+                    "critic",
+                    "critical"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "le2011_s2_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 6"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete sentence (b) so that it means the same as sentence (a).\n1. a. It is advisable that parents send their children to school.\n   b. Parents ..............................................................\n2. a. They will refuse your justifications unless you convince them.\n   b. If ....................................................................\n3. a. I regret not having learnt how to play a musical instrument when I was a child.\n   b. I wish ................................................................."
+            },
+            {
+              "id": "le2011_s2_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1. Parents should send their children to school.\n2. If you convince them, they will not refuse your justifications. / If you don’t convince them, they will refuse your justifications.\n3. I wish I had learnt how to play a musical instrument when I was a child."
+            },
+            {
+              "id": "le2011_s2_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 pts: 0.5, 0.75, 0.75"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Classify the following words according to the pronunciation of their final “ed”.\neducated - received - included - mixed - preferred - picked"
+            },
+            {
+              "id": "le2011_s2_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "/t/ | /d/ | /id/\nmixed\npicked | received\npreferred | educated\nincluded",
+              "data": {
+                "rows": [
+                  [
+                    "/t/",
+                    "/d/",
+                    "/id/"
+                  ],
+                  [
+                    "mixed\npicked",
+                    "received\npreferred",
+                    "educated\nincluded"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "le2011_s2_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 6"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_exp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_exploration",
+          "orderIndex": 5,
+          "label": "Question 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_exp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in the gaps with words from the list.\nclassroom - either - children - home\nIn England, many children do not go to school ...(1)... because their parents want them at ...(2)... as careers for ...(3)... or simply because their parents can’t be bothered to send them. The Ministry of Education has introduced drastic laws to bring truant and excluded children back into the ...(4)...."
+            },
+            {
+              "id": "le2011_s2_exp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "1) either    2) home    3) children    4) classroom"
+            },
+            {
+              "id": "le2011_s2_exp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "le2011_s2_written",
+          "nodeType": "PART",
+          "parentId": "le2011_s2_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (06 pts)",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "le2011_s2_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "le2011_s2_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "le2011_s2_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Topic one:\nUsing the following notes, write a composition of about 120 to 150 words on the objectives of education.\n- broaden one’s knowledge\n- provide skillful workforce\n- create a good citizen\n- establish contact with other civilizations\n\nTopic two:\nWrite a composition of about 120 to 150 words on the following topic.\nExplain how wars, internal conflicts and natural disasters led to the disappearance of ancient civilizations."
+            },
+            {
+              "id": "le2011_s2_written_q_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "Topic 1: form 3.5 pts; content 2.5 pts.\nTopic 2: form 3 pts; content 3 pts."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [],
+  "exam": {
+    "title": "بكالوريا 2011 - اختبار في مادة: اللغة الإنجليزية",
+    "durationMinutes": 210,
+    "totalPoints": 20,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "metadata": {
+    "route": "codex_direct_visual_reconstruction",
+    "sourceArtifact": "output/r2-bac-assets/bac/2011/pages/bac-exam-english-le-2011-normal",
+    "normalizedAt": "2026-05-20T10:57:25.852Z",
+    "notes": "Direct visual extraction from stored page images; native text/table blocks; no human crop debt."
+  }
+}

@@ -1,0 +1,881 @@
+{
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "lp2009_s1_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (15 points)",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s1_comp",
+          "nodeType": "PART",
+          "parentId": "lp2009_s1_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s1_text",
+          "nodeType": "CONTEXT",
+          "parentId": "lp2009_s1_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully then do the activities."
+            },
+            {
+              "id": "lp2009_s1_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Bribery, a form of pecuniary corruption, constitutes a crime and is defined as the offering, receiving, or soliciting of any item of value to influence the actions of an official or other person in discharge of a public or legal duty. The bribe is the gift bestowed to influence the recipient’s conduct. It may be any money, good, right in action, property, privilege, advantage, or merely a promise or undertaking to induce or influence the action, vote, or influence of a person in an official public capacity."
+            },
+            {
+              "id": "lp2009_s1_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The offence may be divided into two great classes: the one, where a person invested with power is induced by payment to use it unjustly; the other, where power is obtained by purchasing the suffrages of those who can impart it. Likewise, the briber might hold a powerful role and control the transaction; or in other cases, a bribe may be effectively extracted from the person paying it, although this is better known as extortion."
+            },
+            {
+              "id": "lp2009_s1_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The forms that bribery takes are numerous. For example, a motorist might bribe a police officer not to issue a ticket for speeding, a citizen seeking paperwork or utility line connections might bribe a functionary for faster service. Bribery may also take the form of a secret commission, a profit made by an agent, in the course of his employment, without the knowledge of his principal. Bribers and recipients of bribery are likewise numerous although bribers have one common denominator and that is the financial ability to bribe."
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Say whether the following statements are True or False according to the text.\na) Bribery is giving a valuable item to influence the recipient conduct.\nb) Bribery is a lawful activity.\nc) Bribery can take different forms."
+            },
+            {
+              "id": "lp2009_s1_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) T    b) F    c) T"
+            },
+            {
+              "id": "lp2009_s1_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the following table with information from paragraph three."
+            },
+            {
+              "id": "lp2009_s1_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Who uses bribery? | Who receives the bribe? | Why do they use bribery?\nA motorist | A police officer | Not to issue a ticket for speeding\nA citizen | A functionary | For faster service",
+              "data": {
+                "rows": [
+                  [
+                    "Who uses bribery?",
+                    "Who receives the bribe?",
+                    "Why do they use bribery?"
+                  ],
+                  [
+                    "A motorist",
+                    "A police officer",
+                    "Not to issue a ticket for speeding"
+                  ],
+                  [
+                    "A citizen",
+                    "A functionary",
+                    "For faster service"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "lp2009_s1_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 pts"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What or who do the underlined words refer to in the text?\na) It (§1)    b) the one (§2)    c) his (§3)"
+            },
+            {
+              "id": "lp2009_s1_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) the bribe\nb) class\nc) an agent"
+            },
+            {
+              "id": "lp2009_s1_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na) What are the effects of bribery?\nb) What is meant by extortion?\nc) What characterizes bribers?"
+            },
+            {
+              "id": "lp2009_s1_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) It influences the action, vote or influence of a person in an official public capacity.\nb) Extortion is a bribe effectively extracted from the person paying it.\nc) The financial ability to bribe."
+            },
+            {
+              "id": "lp2009_s1_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_comp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_comp",
+          "orderIndex": 6,
+          "label": "Question 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_comp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What type is the text?\na) narrative    b) expository    c) prescriptive"
+            },
+            {
+              "id": "lp2009_s1_comp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b) expository"
+            },
+            {
+              "id": "lp2009_s1_comp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 pt"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_exploration",
+          "nodeType": "PART",
+          "parentId": "lp2009_s1_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (08 points)",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s1_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words or phrases closest in meaning to the following:\na) effect (§1)    b) unfairly (§2)    c) looking for (§3)"
+            },
+            {
+              "id": "lp2009_s1_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) influence\nb) unjustly\nc) seeking"
+            },
+            {
+              "id": "lp2009_s1_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the following chart as shown in the example."
+            },
+            {
+              "id": "lp2009_s1_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Verb | Noun | Adjective\nto corrupt | corruption | corrupt\nto act / to activate | action | active / acting\nto influence | influence | influential\nto finance | finance | financial",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "to corrupt",
+                    "corruption",
+                    "corrupt"
+                  ],
+                  [
+                    "to act / to activate",
+                    "action",
+                    "active / acting"
+                  ],
+                  [
+                    "to influence",
+                    "influence",
+                    "influential"
+                  ],
+                  [
+                    "to finance",
+                    "finance",
+                    "financial"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "lp2009_s1_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 6"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Combine the following pairs of sentences using the given connectors. Make any necessary changes.\na) The system of law is well implemented. Companies avoid bribery actions. (so...that)\nb) Specialists consultancies will help multinational companies. Multinational companies trade more ethically. (provided that)"
+            },
+            {
+              "id": "lp2009_s1_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) The system of law is so well implemented that companies avoid bribery actions.\nb) Specialists consultancies will help multinational companies provided that they trade more ethically."
+            },
+            {
+              "id": "lp2009_s1_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 x 2"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 2.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in each gap with one word from the list.\ncontract - exchange - services - offering - business\nEmployees, managers, or salespeople of a ........ may offer money or gifts to a potential client in ........ of favour. For instance, a food service company was recently accused of ........ gifts to an assistant warden of a local prison in exchange of a ........ allowing the company to provide the food ........ in the state’s prisons."
+            },
+            {
+              "id": "lp2009_s1_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "business - exchange - offering - contract - services"
+            },
+            {
+              "id": "lp2009_s1_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 5"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_exp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_exploration",
+          "orderIndex": 5,
+          "label": "Question 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_exp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Underline the stressed syllables in the following words.\ncorruption - public - capacity - extortion"
+            },
+            {
+              "id": "lp2009_s1_exp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "corRUPtion - PUBlic - caPAcity - exTORtion"
+            },
+            {
+              "id": "lp2009_s1_exp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 4"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s1_written",
+          "nodeType": "PART",
+          "parentId": "lp2009_s1_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (05 pts)",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s1_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s1_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s1_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Either Topic 1:\nAccording to you, how can we fight bribery? Use the following notes to write a composition of about 100 words.\n- setting well implemented system of law\n- punishing any offence (bribery activities)\n- making companies sign commitment contracts\n- inspecting the work of public officials/agents\n\nOr Topic 2:\nYou were a victim of a corrupt agent or civil servant. Write a composition of about 100 words in which you speak about the circumstances of that situation and how you reacted."
+            },
+            {
+              "id": "lp2009_s1_written_q_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "Topic 1: form = 3 pts; content = 2 pts.\nTopic 2: form = 2.5 pts; content = 2.5 pts."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "lp2009_s2_reading",
+          "nodeType": "PART",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": "Part One: Reading (15 points)",
+          "maxPoints": 15,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s2_comp",
+          "nodeType": "PART",
+          "parentId": "lp2009_s2_reading",
+          "orderIndex": 1,
+          "label": "A) Comprehension (07 points)",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s2_text",
+          "nodeType": "CONTEXT",
+          "parentId": "lp2009_s2_comp",
+          "orderIndex": 1,
+          "label": "Reading Text",
+          "maxPoints": 0,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_text_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Read the text carefully then do the activities."
+            },
+            {
+              "id": "lp2009_s2_text_prompt_2",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The term Aztec refers to the empire of the Mexicas. In Nahuatl, the native language of the Mexicas, it means “someone who comes from Aztlan”, a place commonly believed to be situated in northern Mexico or the southwest U.S. It is applied to all the people linked by trade, custom, religion and language."
+            },
+            {
+              "id": "lp2009_s2_text_prompt_3",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The society traditionally was divided into two social classes: the Macehualli (people) or peasantry and the Pilli or nobility. In the later days of the empire, the concept of Macehualli had changed: only 20% of the population were dedicated to agriculture and food production. The other 80% of society were not only warriors, but also skilled artisans and aggressive traders. Eventually, most of the Macehuallis were dedicated to arts and crafts. Their works were an important source of income for the city."
+            },
+            {
+              "id": "lp2009_s2_text_prompt_4",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The Mexica, one of the Aztec groups, were one of the first people in the world to have mandatory education for nearly all children. There were two types of schools: the telpochcalli, for practical and military studies, and the calmecac, for advanced learning in writing, astronomy, statesmanship, and theology. Until the age of 14, the education of children was in the hands of their parents, but supervised by the authorities. Periodically they attended their local temples to test their progress."
+            },
+            {
+              "id": "lp2009_s2_text_prompt_5",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Adapted from Wikipedia, the free encyclopedia."
+            },
+            {
+              "id": "lp2009_s2_text_prompt_6",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "* Compulsory/obligatory"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_comp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_comp",
+          "orderIndex": 2,
+          "label": "Question 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_comp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "The passage is taken from:\na) a newspaper    b) the Internet    c) a book"
+            },
+            {
+              "id": "lp2009_s2_comp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b) the Internet"
+            },
+            {
+              "id": "lp2009_s2_comp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "The visible source line says “Adapted from Wikipedia, the free encyclopedia.”"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_comp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_comp",
+          "orderIndex": 3,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_comp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "What or who do the underlined words refer to in the text?\na) it (§1)    b) they (§3)"
+            },
+            {
+              "id": "lp2009_s2_comp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) The term Aztec\nb) children"
+            },
+            {
+              "id": "lp2009_s2_comp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a) 0.75 pt    b) 0.75 pt"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_comp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_comp",
+          "orderIndex": 4,
+          "label": "Question 3",
+          "maxPoints": 2.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_comp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Answer the following questions according to the text.\na) What were the common things that related the Aztecs?\nb) The Aztec society comprised two classes. What were they?\nc) Was the Aztec education reserved to one particular group? Justify from the text."
+            },
+            {
+              "id": "lp2009_s2_comp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) The common things that related the Aztecs were trade, custom, religion and language.\nb) The Macehualli or peasantry and the Pilli or nobility.\nc) No, it was not. The Mexica, one of the Aztec groups, were one of the first people in the world to have mandatory education for nearly all children."
+            },
+            {
+              "id": "lp2009_s2_comp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "a) 1 pt    b) 1 pt    c) 0.5 pt"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_comp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_comp",
+          "orderIndex": 5,
+          "label": "Question 4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_comp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Order the following ideas according to their occurrence in the text.\na) Social classes and economic activities.\nb) Location of the empire.\nc) Schooling of the Aztec children.\nd) The financial importance of craftwork."
+            },
+            {
+              "id": "lp2009_s2_comp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "b - a - d - c"
+            },
+            {
+              "id": "lp2009_s2_comp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_exploration",
+          "nodeType": "PART",
+          "parentId": "lp2009_s2_reading",
+          "orderIndex": 2,
+          "label": "B) Text Exploration (08 points)",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s2_exp_q1",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_exploration",
+          "orderIndex": 1,
+          "label": "Question 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_exp_q1_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Find in the text words or phrases closest in meaning to the following:\na) connected (§1)    b) qualified (§2)    c) advance (§3)"
+            },
+            {
+              "id": "lp2009_s2_exp_q1_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) linked\nb) skilled\nc) progress"
+            },
+            {
+              "id": "lp2009_s2_exp_q1_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 3"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_exp_q2",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_exploration",
+          "orderIndex": 2,
+          "label": "Question 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_exp_q2_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Ask the questions that the underlined words answer.\na) The term Aztec refers to the empire of the Mexicas.\nb) There were two types of schools."
+            },
+            {
+              "id": "lp2009_s2_exp_q2_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "a) What does the term Aztec refer to?\nb) How many types of schools were there?"
+            },
+            {
+              "id": "lp2009_s2_exp_q2_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 x 2"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_exp_q3",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_exploration",
+          "orderIndex": 3,
+          "label": "Question 3",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_exp_q3_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Complete the following chart as shown in the example."
+            },
+            {
+              "id": "lp2009_s2_exp_q3_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "Verb | Noun | Adjective\nto produce | production | productive\nto practise | practice / practicality / practitioner | practical\nto educate | education | educated / educational / educative\nto believe | belief / believer | believable",
+              "data": {
+                "rows": [
+                  [
+                    "Verb",
+                    "Noun",
+                    "Adjective"
+                  ],
+                  [
+                    "to produce",
+                    "production",
+                    "productive"
+                  ],
+                  [
+                    "to practise",
+                    "practice / practicality / practitioner",
+                    "practical"
+                  ],
+                  [
+                    "to educate",
+                    "education",
+                    "educated / educational / educative"
+                  ],
+                  [
+                    "to believe",
+                    "belief / believer",
+                    "believable"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "lp2009_s2_exp_q3_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 6"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_exp_q4",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_exploration",
+          "orderIndex": 4,
+          "label": "Question 4",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_exp_q4_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Fill in each gap with one word from the list.\nGod - famous - would - of\nBy AD 1500, the leading groups of people in central Mexico were the Aztecs. They were ______ for their ferocity and warfare was extremely so important for them. The blood ______ the captured prisoners was a gift offered to their ______. This, they believed, ______ bring them god’s satisfaction."
+            },
+            {
+              "id": "lp2009_s2_exp_q4_solution_1",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "famous - of - God - would"
+            },
+            {
+              "id": "lp2009_s2_exp_q4_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 x 4"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_exp_q5",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_exploration",
+          "orderIndex": 5,
+          "label": "Question 5",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_exp_q5_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Classify the following words according to the pronunciation of their final “ed”.\nbelieved - situated - linked - applied - divided - advanced"
+            },
+            {
+              "id": "lp2009_s2_exp_q5_solution_1",
+              "role": "SOLUTION",
+              "type": "table",
+              "value": "/t/ | /d/ | /id/\nlinked\nadvanced | believed\napplied | situated\ndivided",
+              "data": {
+                "rows": [
+                  [
+                    "/t/",
+                    "/d/",
+                    "/id/"
+                  ],
+                  [
+                    "linked\nadvanced",
+                    "believed\napplied",
+                    "situated\ndivided"
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "lp2009_s2_exp_q5_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 x 6"
+            }
+          ]
+        },
+        {
+          "id": "lp2009_s2_written",
+          "nodeType": "PART",
+          "parentId": "lp2009_s2_reading",
+          "orderIndex": 3,
+          "label": "Part Two: Written Expression (05 pts)",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "lp2009_s2_written_q",
+          "nodeType": "QUESTION",
+          "parentId": "lp2009_s2_written",
+          "orderIndex": 1,
+          "label": "Choose only ONE topic",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "lp2009_s2_written_q_prompt_1",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "Either Topic 1:\nSome people think that the Islamic civilization brought little if not nothing to humanity. Using the following notes, write a composition of about 100 words convincing these people that this idea is not true.\nThe Islamic civilization brought many benefits to mankind.\n- bring back dignity to mankind\n- establish principles of equality / democracy\n- formulate theories / write referential medical books\n- establish the ideal way of governing\n\nOr Topic 2:\nDo you think that the study of ancient civilizations is so important? Justify."
+            },
+            {
+              "id": "lp2009_s2_written_q_rubric_1",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "Topic 1: form = 3 pts; content = 2 pts.\nTopic 2: form = 2.5 pts; content = 2.5 pts."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [],
+  "exam": {
+    "title": "بكالوريا 2009 - اختبار في مادة: اللغة الإنجليزية",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "sourceLanguage": "en",
+    "hasCorrection": true
+  },
+  "metadata": {
+    "route": "codex_direct_visual_reconstruction",
+    "sourceArtifact": "output/r2-bac-assets/bac/2009/pages/bac-exam-english-lp-2009-normal",
+    "normalizedAt": "2026-05-20T10:57:25.858Z",
+    "notes": "Direct visual extraction from stored page images; native text/table blocks; no human crop debt."
+  }
+}
