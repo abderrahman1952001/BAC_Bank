@@ -20,6 +20,7 @@ describe("lab surface registry", () => {
       "function-explorer",
       "dna-to-protein",
       "svt-document-workbench",
+      "svt-experimental-graph-table",
     ]);
     expect(getLabToolById("function-explorer")?.href).toBe(
       "/student/lab/math/function-explorer",
@@ -84,7 +85,11 @@ describe("lab surface registry", () => {
     expect(listLabToolsForSubjectCode("PHYSICS")).toEqual([]);
     expect(
       listLabToolsForSubjectCode("NATURAL_SCIENCES").map((tool) => tool.id),
-    ).toEqual(["dna-to-protein", "svt-document-workbench"]);
+    ).toEqual([
+      "dna-to-protein",
+      "svt-document-workbench",
+      "svt-experimental-graph-table",
+    ]);
     expect(
       listLabToolsForSubjectCode("PHYSICS", { statuses: ["DRAFT"] }).map(
         (tool) => tool.id,
@@ -122,7 +127,7 @@ describe("lab surface registry", () => {
         subjectCode: "NATURAL_SCIENCES",
         topicSlug: "proteins",
         conceptSlug: "enzyme-conditions",
-      }),
-    ).toEqual([]);
+      }).map((tool) => tool.id),
+    ).toEqual(["svt-experimental-graph-table"]);
   });
 });

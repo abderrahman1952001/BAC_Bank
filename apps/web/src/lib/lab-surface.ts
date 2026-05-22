@@ -226,6 +226,31 @@ export const labTools: LabTool[] = [
     ],
   },
   {
+    id: "svt-experimental-graph-table",
+    subjectSlug: "svt",
+    subjectTitle: getSubjectTitle("svt"),
+    title: "ورشة المنحنيات والجداول التجريبية",
+    shortTitle: "Experimental Graphs",
+    description: "تجارب، جداول، منحنيات، واستنتاج علمي.",
+    bacUseCase: "النشاط الإنزيمي، قراءة القيم، مقارنة الشواهد، وتفسير المنحنيات.",
+    href: buildStudentLabToolRoute("svt", "experimental-graph-table"),
+    status: "READY",
+    engineKinds: ["graph", "table", "document-reasoning"],
+    missionSupport: makeMissionSupport(["SVT_EXPERIMENTAL_GRAPH_TABLE"]),
+    relatedCourseRefs: [
+      {
+        subjectCode: "NATURAL_SCIENCES",
+        topicSlug: "proteins",
+        conceptSlug: "enzyme-conditions",
+      },
+      {
+        subjectCode: "NATURAL_SCIENCES",
+        topicSlug: "proteins",
+        conceptSlug: "enzyme-activity-graphs",
+      },
+    ],
+  },
+  {
     id: "physics-experiment-graphs",
     subjectSlug: "physics",
     subjectTitle: getSubjectTitle("physics"),

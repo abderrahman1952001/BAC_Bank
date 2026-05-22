@@ -565,6 +565,80 @@ function evaluateGraphPoint(exitCheck: JsonRecord, resultJson: JsonRecord) {
   );
 }
 
+function evaluateSvtExperimentalGraphTable(
+  exitCheck: JsonRecord,
+  resultJson: JsonRecord,
+) {
+  const expectedReadings = readRecordArray(exitCheck, 'expectedReadings');
+  const readings = readRecordArray(resultJson, 'readings');
+  const readingsById = new Map(
+    readings.map((reading) => [readString(reading, 'id'), reading]),
+  );
+  const checkedReadings = expectedReadings.map((expected) => {
+    const id = readString(expected, 'id');
+    const expectedValue = readNumber(expected, 'expectedValue');
+    const tolerance = readNumber(expected, 'tolerance') ?? 0;
+    const answer = readingsById.get(id) ?? null;
+    const actualValue = answer ? readComparableNumber(answer.value) : null;
+    const passed = Boolean(
+      expectedValue !== null &&
+        actualValue !== null &&
+        Math.abs(actualValue - expectedValue) <= tolerance,
+    );
+
+    return {
+      id,
+      label: readString(expected, 'label'),
+      expectedValue,
+      actualValue,
+      tolerance,
+      passed,
+    };
+  });
+  const requiredObservationIds = readStringArray(
+    exitCheck,
+    'requiredObservationIds',
+  );
+  const selectedObservationIds = new Set(
+    readStringArray(resultJson, 'selectedObservationIds'),
+  );
+  const missingObservationIds = requiredObservationIds.filter(
+    (observationId) => !selectedObservationIds.has(observationId),
+  );
+  const conclusion = normalizeCheckText(
+    readString(resultJson, 'conclusion') ?? '',
+  );
+  const missingKeywords = readStringArray(
+    exitCheck,
+    'requiredConclusionKeywords',
+  ).filter((keyword) => !conclusion.includes(normalizeCheckText(keyword)));
+  const readingPassCount = checkedReadings.filter(
+    (reading) => reading.passed,
+  ).length;
+  const readingsPassed =
+    expectedReadings.length > 0 && readingPassCount === expectedReadings.length;
+  const passed =
+    readingsPassed &&
+    missingObservationIds.length === 0 &&
+    missingKeywords.length === 0;
+
+  return buildEvaluation(
+    'SVT_EXPERIMENTAL_GRAPH_TABLE',
+    passed,
+    passed
+      ? 'القراءات والملاحظات والاستنتاج توافق المهمة.'
+      : 'القراءات أو الملاحظات أو الاستنتاج لا تزال ناقصة.',
+    {
+      readingPassCount,
+      totalReadingCount: expectedReadings.length,
+      readings: checkedReadings,
+      requiredObservationIds,
+      missingObservationIds,
+      missingKeywords,
+    },
+  );
+}
+
 export function evaluateLabMissionExitCheck(
   exitCheck: JsonRecord | null,
   resultJson: JsonRecord | null | undefined,
@@ -611,6 +685,8 @@ export function evaluateLabMissionExitCheck(
       return evaluateFormulaValue(exitCheck, resultJson);
     case 'GRAPH_POINT':
       return evaluateGraphPoint(exitCheck, resultJson);
+    case 'SVT_EXPERIMENTAL_GRAPH_TABLE':
+      return evaluateSvtExperimentalGraphTable(exitCheck, resultJson);
     default:
       return buildEvaluation(
         kind,

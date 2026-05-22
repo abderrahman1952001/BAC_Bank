@@ -221,4 +221,80 @@ describe('evaluateLabMissionExitCheck', () => {
       },
     });
   });
+
+  it('accepts SVT experimental graph/table results with required readings and observations', () => {
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'SVT_EXPERIMENTAL_GRAPH_TABLE',
+          expectedReadings: [
+            {
+              id: 'without-activity-25',
+              label: 'النشاط دون الدواء عند 25 mmol',
+              expectedValue: 9,
+              tolerance: 0.4,
+            },
+            {
+              id: 'with-activity-25',
+              label: 'النشاط مع Glucobay عند 25 mmol',
+              expectedValue: 4.2,
+              tolerance: 0.45,
+            },
+          ],
+          requiredObservationIds: [
+            'without-rises-plateaus',
+            'glucobay-lowers-activity',
+          ],
+          requiredConclusionKeywords: ['Glucobay', 'α غلوكوزيداز', 'يثبط'],
+        },
+        {
+          readings: [
+            { id: 'without-activity-25', value: 9.1 },
+            { id: 'with-activity-25', value: 4.3 },
+          ],
+          selectedObservationIds: [
+            'without-rises-plateaus',
+            'glucobay-lowers-activity',
+          ],
+          conclusion: 'Glucobay يثبط نشاط α غلوكوزيداز.',
+        },
+      ),
+    ).toMatchObject({
+      passed: true,
+      kind: 'SVT_EXPERIMENTAL_GRAPH_TABLE',
+    });
+  });
+
+  it('rejects SVT experimental graph/table results with missing readings or conclusion terms', () => {
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'SVT_EXPERIMENTAL_GRAPH_TABLE',
+          expectedReadings: [
+            {
+              id: 'optimum-ph',
+              label: 'pH الأمثل',
+              expectedValue: 7,
+              tolerance: 0.1,
+            },
+          ],
+          requiredObservationIds: ['ph7-optimum'],
+          requiredConclusionKeywords: ['pH', 'الموقع الفعال'],
+        },
+        {
+          readings: [{ id: 'optimum-ph', value: 5 }],
+          selectedObservationIds: [],
+          conclusion: 'النشاط يتغير.',
+        },
+      ),
+    ).toMatchObject({
+      passed: false,
+      kind: 'SVT_EXPERIMENTAL_GRAPH_TABLE',
+      details: {
+        readingPassCount: 0,
+        missingObservationIds: ['ph7-optimum'],
+        missingKeywords: ['pH', 'الموقع الفعال'],
+      },
+    });
+  });
 });

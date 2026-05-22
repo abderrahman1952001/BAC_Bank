@@ -66,6 +66,8 @@ function describeExitCheck(exitCheck: Record<string, unknown> | null) {
       return "صنّف أثر الطفرة على السلسلة البروتينية.";
     case "DOCUMENT_EVIDENCE":
       return "اختر الأدلة الأساسية واكتب استنتاجا يتضمن العلاقات المطلوبة.";
+    case "SVT_EXPERIMENTAL_GRAPH_TABLE":
+      return "تحقق من القراءات، الملاحظات، والاستنتاج التجريبي.";
     default:
       return "أنهِ المهمة عندما تستطيع شرح الملاحظة بكلماتك.";
   }

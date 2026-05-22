@@ -32,6 +32,7 @@ import type {
   WeakPointInsightsResponse,
 } from "@bac-bank/contracts/study";
 import { svtDocumentWorkbenchPresets } from "@/lib/lab-svt-document-workbench";
+import { svtExperimentalGraphTablePresets } from "@/lib/lab-svt-experimental-graph-table";
 
 const playwrightFreeStudyEntitlements = {
   tier: "FREE",
@@ -152,6 +153,25 @@ export const playwrightTestLabTools = {
       slug: "svt-document-workbench",
       title: "ورشة الوثائق والمنحنيات",
       description: "قراءة وثائق، اختيار أدلة، وبناء استنتاج.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "svt",
+      },
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "12121212-1212-4212-9212-121212121212",
+      slug: "svt-experimental-graph-table",
+      title: "ورشة المنحنيات والجداول التجريبية",
+      description: "تجارب، جداول، منحنيات، واستنتاج علمي.",
       status: "READY",
       metadata: {
         subjectSlug: "svt",
@@ -351,6 +371,87 @@ export const playwrightTestLabToolMissionsBySlug: Record<
             code: "DOCUMENT_ANALYSIS",
             name: "تحليل الوثائق",
             slug: "document-analysis",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "svt-experimental-graph-table": {
+    tool: playwrightTestLabTools.data[3],
+    missions: [
+      {
+        mission: {
+          id: "13131313-1313-4313-9313-131313131313",
+          toolId: "12121212-1212-4212-9212-121212121212",
+          title: "حلل تأثير Glucobay على نشاط الإنزيم",
+          goal: "اقرأ القيمتين عند 25 mmol، قارن المنحنيين، ثم اكتب استنتاجا يفسر أثر الدواء على نسبة الغلوكوز.",
+          preset: svtExperimentalGraphTablePresets[0],
+          exitCheck: {
+            kind: "SVT_EXPERIMENTAL_GRAPH_TABLE",
+            expectedReadings:
+              svtExperimentalGraphTablePresets[0].expectedReadings,
+            requiredObservationIds:
+              svtExperimentalGraphTablePresets[0].prompt
+                .requiredObservationIds,
+            requiredConclusionKeywords:
+              svtExperimentalGraphTablePresets[0].prompt
+                .requiredConclusionKeywords,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "14141414-1414-4414-9414-141414141414",
+            code: "ENZYMES",
+            name: "الإنزيمات",
+            slug: "enzymes",
+          },
+          learningTarget: {
+            id: "15151515-1515-4515-9515-151515151515",
+            code: "ENZYME_ACTIVITY_GRAPHS",
+            name: "تحليل منحنيات النشاط الإنزيمي",
+            slug: "enzyme-activity-graphs",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "16161616-1616-4616-9616-161616161616",
+          toolId: "12121212-1212-4212-9212-121212121212",
+          title: "حدد pH الأمثل لنشاط إنزيمي",
+          goal: "استخرج pH الأمثل من الجدول والمنحنى، ثم فسر لماذا ينخفض النشاط خارج هذا الوسط.",
+          preset: svtExperimentalGraphTablePresets[1],
+          exitCheck: {
+            kind: "SVT_EXPERIMENTAL_GRAPH_TABLE",
+            expectedReadings:
+              svtExperimentalGraphTablePresets[1].expectedReadings,
+            requiredObservationIds:
+              svtExperimentalGraphTablePresets[1].prompt
+                .requiredObservationIds,
+            requiredConclusionKeywords:
+              svtExperimentalGraphTablePresets[1].prompt
+                .requiredConclusionKeywords,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "17171717-1717-4717-9717-171717171717",
+            code: "ENZYMES",
+            name: "الإنزيمات",
+            slug: "enzymes",
+          },
+          learningTarget: {
+            id: "18181818-1818-4818-9818-181818181818",
+            code: "ENZYME_CONDITIONS",
+            name: "شروط النشاط الإنزيمي",
+            slug: "enzyme-conditions",
           },
           courseLesson: null,
           createdAt: "2026-05-13T08:00:00.000Z",
