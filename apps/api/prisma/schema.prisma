@@ -190,6 +190,12 @@ enum ExamNodeLearningTargetSource {
   MANUAL_REVIEW
 }
 
+enum ExamNodeCurriculumNodeSource {
+  AUTO_RULE
+  AI_CANDIDATE
+  MANUAL_REVIEW
+}
+
 enum IngestionJobStatus {
   DRAFT
   QUEUED
@@ -636,13 +642,20 @@ model CurriculumNodeLearningTarget {
 }
 
 model ExamNodeCurriculumNode {
-  nodeId           String         @map("node_id") @db.Uuid
-  curriculumNodeId String         @map("curriculum_node_id") @db.Uuid
-  node             ExamNode       @relation(fields: [nodeId], references: [id], onDelete: Cascade)
-  curriculumNode   CurriculumNode @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
+  nodeId           String                       @map("node_id") @db.Uuid
+  curriculumNodeId String                       @map("curriculum_node_id") @db.Uuid
+  source           ExamNodeCurriculumNodeSource @default(AUTO_RULE)
+  confidence       Decimal?                     @db.Decimal(4, 2)
+  isPrimary        Boolean                      @default(true) @map("is_primary")
+  reviewedAt       DateTime?                    @map("reviewed_at")
+  node             ExamNode                     @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  curriculumNode   CurriculumNode               @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
+  createdAt        DateTime                     @default(now()) @map("created_at")
+  updatedAt        DateTime                     @updatedAt @map("updated_at")
 
   @@id([nodeId, curriculumNodeId])
   @@index([curriculumNodeId])
+  @@index([source])
   @@map("exam_node_curriculum_nodes")
 }
 
