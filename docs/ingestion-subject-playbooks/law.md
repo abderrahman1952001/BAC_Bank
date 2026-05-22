@@ -50,4 +50,3 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
   them into the 6/6/8 modern split.
 - Watch for duplicated structural headings in block text after import, especially
   when the same label is already represented by a node.
-

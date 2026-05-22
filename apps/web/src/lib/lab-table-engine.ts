@@ -131,4 +131,3 @@ export function summarizeLabTableRows(evaluation: LabTableEvaluation) {
     passed: totals.correct === totals.total,
   }));
 }
-

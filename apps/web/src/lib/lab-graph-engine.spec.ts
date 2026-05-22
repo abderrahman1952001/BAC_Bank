@@ -66,4 +66,3 @@ describe("lab graph engine", () => {
     expect(getGraphSeries(model, "missing")).toBeNull();
   });
 });
-

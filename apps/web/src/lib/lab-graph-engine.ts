@@ -169,4 +169,3 @@ export function findHorizontalGraphIntersections(
 
   return intersections;
 }
-

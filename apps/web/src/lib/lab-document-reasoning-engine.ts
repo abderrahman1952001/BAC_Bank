@@ -68,4 +68,3 @@ export function groupEvidenceByDocument(evidence: LabEvidenceItem[]) {
     items,
   }));
 }
-

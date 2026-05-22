@@ -59,4 +59,3 @@ describe("lab mission engine", () => {
     });
   });
 });
-

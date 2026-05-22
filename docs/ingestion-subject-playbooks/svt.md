@@ -48,4 +48,3 @@ It supplements the BAC ingestion skill and the canonical ingestion workflow.
 - Reuse or create the canonical published-revision draft for the current paper,
   then run the same source/crop/native/presentation review before approval and
   revision publication.
-

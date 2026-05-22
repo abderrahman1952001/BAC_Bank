@@ -15,4 +15,3 @@ Use them for:
 Do not use them for one-paper quirks, universal ingestion workflow rules, or
 instructions that conflict with the BAC ingestion skill and canonical workflow
 docs.
-

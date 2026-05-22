@@ -76,4 +76,3 @@ export function revealDiagramLabels(targets: LabDiagramLabelTarget[]) {
     hotspot: target.hotspot,
   }));
 }
-
