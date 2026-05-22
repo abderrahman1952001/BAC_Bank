@@ -580,11 +580,10 @@ function evaluateSvtExperimentalGraphTable(
     const tolerance = readNumber(expected, 'tolerance') ?? 0;
     const answer = readingsById.get(id) ?? null;
     const actualValue = answer ? readComparableNumber(answer.value) : null;
-    const passed = Boolean(
+    const passed =
       expectedValue !== null &&
-        actualValue !== null &&
-        Math.abs(actualValue - expectedValue) <= tolerance,
-    );
+      actualValue !== null &&
+      Math.abs(actualValue - expectedValue) <= tolerance;
 
     return {
       id,
