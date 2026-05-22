@@ -1,0 +1,1878 @@
+{
+  "exam": {
+    "title": "اختبار في مادة الرياضيات - بكالوريا 2025 - شعبة رياضيات",
+    "durationMinutes": 270,
+    "totalPoints": 20,
+    "hasCorrection": true,
+    "sourceLanguage": "ar"
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "s1_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "يحتوي الموضوع الأول على ثلاث صفحات من الصفحة 1 من 5 إلى الصفحة 3 من 5."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "يحتوي الصندوق $U_1$ على 12 كرة منها 3 حمراء و4 بيضاء و5 خضراء، ويحتوي الصندوق $U_2$ على 7 كرات منها 4 حمراء و3 بيضاء. جميع الكريات متماثلة ولا نفرق بينها باللمس. نرمي نردا غير مزيف له 6 أوجه مرقمة بـ: $1,1,1,1,2,2$. إذا ظهر الرقم 1 نسحب عشوائيا 3 كريات في آن واحد من $U_1$، وإذا ظهر الرقم 2 نسحب عشوائيا 3 كريات على التوالي من $U_2$ دون إرجاع. نعتبر الحوادث: $A$ «ظهور الرقم 1»، $B$ «الحصول على 3 كريات من نفس اللون»، $C$ «الحصول على 3 كريات مختلفة الألوان مثنى مثنى»، و$D$ «الحصول على كريتين بالضبط من نفس اللون»."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q1_prompt",
+              "role": "PROMPT",
+              "type": "image",
+              "value": "انقل وأكمل شجرة الاحتمالات المقابلة.",
+              "assetId": "s1_e1_prompt_tree"
+            },
+            {
+              "id": "s1_e1_q1_solution",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "شجرة الاحتمالات المكتملة.",
+              "assetId": "s1_e1_solution_tree"
+            },
+            {
+              "id": "s1_e1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب احتمالات الحوادث $B$ و$C$ و$D$ و$B\\cup C$ على الترتيب. ب) بين أن $P(A\\cap\\overline{B})=\\frac{41}{66}$. ج) احسب $P_{\\overline{B}}(A)$."
+            },
+            {
+              "id": "s1_e1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$P(B)=\\frac{43}{462}$ و$P(C)=\\frac{2}{11}$ و$P(D)=\\frac{335}{462}$ و$P(B\\cup C)=\\frac{127}{462}$. كما أن $P(A\\cap\\overline{B})=\\frac23\\times\\frac{12}{44}+\\frac23\\times\\frac{29}{44}=\\frac{41}{66}$، ومنه $P_{\\overline{B}}(A)=\\frac{287}{419}$."
+            },
+            {
+              "id": "s1_e1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "ليكن $X$ المتغير العشوائي الذي يرفق بكل عملية سحب لـ3 كريات كما سبق عدد الألوان التي تحملها الكريات المسحوبة. عين قانون احتمال المتغير العشوائي $X$ ثم احسب أمله الرياضي."
+            },
+            {
+              "id": "s1_e1_q3_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "قانون احتمال المتغير العشوائي $X$.",
+              "assetId": "s1_e1_probability_law"
+            },
+            {
+              "id": "s1_e1_q3_solution_expectation",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "قيم $X$ هي $\\{1;2;3\\}$، وأمله الرياضي هو $E(X)=\\frac{965}{462}$."
+            },
+            {
+              "id": "s1_e1_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "حل في مجموعة الأعداد المركبة $\\mathbb{C}$ المعادلة ذات المجهول $z$: $(z^2+1)(z^2-6z+13)=0$."
+            },
+            {
+              "id": "s1_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "مجموعة الحلول هي $S=\\{-i;i;3-2i;3+2i\\}$."
+            },
+            {
+              "id": "s1_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المستوي المركب منسوب إلى المعلم المتعامد والمتجانس $(O;\\vec{u},\\vec{v})$. النقط $A$ و$B$ و$C$ لواحقها على الترتيب $z_A=2-3i$ و$z_B=iz_A$ و$z_C=-i$، وليكن $L=\\frac{z_A-z_C}{z_B-z_C}$. أ) اكتب كلا من العددين $z_A-z_C$ و$z_B-z_C$ على الشكل المثلثي. ب) عين طويلة وعمدة العدد $L$ ثم حدد طبيعة المثلث $ABC$. ج) بين أن النقط $O$ و$A$ و$B$ و$C$ تنتمي إلى نفس الدائرة المطلوب تعيين مركزها ونصف قطرها. د) من أجل كل عدد طبيعي $n$ نضع $S_n=|L|+|L|^2+\\cdots+|L|^n$؛ احسب $S_n$ بدلالة $n$ ثم استنتج نهايته."
+            },
+            {
+              "id": "s1_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$z_A-z_C=2\\sqrt2\\left(\\cos\\left(-\\frac\\pi4\\right)+i\\sin\\left(-\\frac\\pi4\\right)\\right)$ و$z_B-z_C=3\\sqrt2\\left(\\cos\\frac\\pi4+i\\sin\\frac\\pi4\\right)$. ومنه $|L|=\\frac23$ و$\\arg(L)=-\\frac\\pi2+2k\\pi$، فيكون المثلث $ABC$ قائما في $C$. تنتمي النقط إلى الدائرة مركزها $\\omega$ لاحقته $\\frac52-\\frac12i$ ونصف قطرها $\\frac{\\sqrt{26}}2$. كما أن $S_n=2\\left(1-\\left(\\frac23\\right)^n\\right)$ و$\\lim_{n\\to+\\infty}S_n=2$."
+            },
+            {
+              "id": "s1_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عدد مركب $z_\\theta=1+\\cos(2\\theta)-i\\sin(2\\theta)$ حيث $0<\\theta<\\pi$ و$\\theta\\ne\\frac\\pi2$. بين أن $z_\\theta=2\\cos\\theta(\\cos\\theta-i\\sin\\theta)$ ثم استنتج حسب قيم $\\theta$ طويلة وعمدة العدد $z_\\theta$."
+            },
+            {
+              "id": "s1_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$z_\\theta=2\\cos\\theta(\\cos\\theta-i\\sin\\theta)$. إذا $0<\\theta<\\frac\\pi2$ فإن $|z_\\theta|=2\\cos\\theta$ و$\\arg(z_\\theta)=-\\theta+2k\\pi$. وإذا $\\frac\\pi2<\\theta<\\pi$ فإن $|z_\\theta|=-2\\cos\\theta$ و$\\arg(z_\\theta)=\\pi-\\theta+2k\\pi$."
+            },
+            {
+              "id": "s1_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نعتبر المعادلة $(E): 13x-2y=35$ ذات المجهولين الصحيحين $x$ و$y$."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه إذا كانت الثنائية $(x;y)$ حلا للمعادلة $(E)$ فإن $y\\equiv2\\ [13]$ ثم حل المعادلة $(E)$. ب) جد كل الثنائيات $(x;y)$ حلول المعادلة $(E)$ حيث $PGCD(x;y)=35$."
+            },
+            {
+              "id": "s1_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "حلول المعادلة هي $x=2k+3$ و$y=13k+2$ حيث $k\\in\\mathbb{Z}$. ومع الشرط $PGCD(x;y)=35$ نحصل على $x=70k'+35$ و$y=455k'+210$ حيث $k'\\in\\mathbb{Z}$."
+            },
+            {
+              "id": "s1_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) ادرس حسب قيم العدد الطبيعي $n$ بواقي القسمة الإقليدية للعدد $5^n$ على $11$. ب) عين قيم العدد الطبيعي $n$ التي من أجلها يكون العدد $6n^2+1446^{x+y}$ قابلا للقسمة على $11$ والثنائية $(x;y)$ حلا للمعادلة $(E)$."
+            },
+            {
+              "id": "s1_e3_q2_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول بواقي $5^n$ بترديد $11$.",
+              "assetId": "s1_e3_power_table"
+            },
+            {
+              "id": "s1_e3_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بما أن $1446\\equiv5\\ [11]$ وباستعمال حلول $(E)$ نحصل على $1446^{x+y}\\equiv5^{5(3k+1)}\\ [11]$. يكون $6n^2+1446^{x+y}\\equiv0\\ [11]$ مكافئا لـ$n^2\\equiv9\\ [11]$، ومنه $n=11\\gamma+3$ أو $n=11\\gamma+8$ حيث $\\gamma\\in\\mathbb{N}$."
+            },
+            {
+              "id": "s1_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عدد طبيعي $\\lambda$ يكتب $\\overline{1\\alpha\\alpha\\beta\\beta1}$ في نظام التعداد ذي الأساس $4$ ويكتب $\\overline{1\\alpha\\beta13}$ في نظام التعداد ذي الأساس $6$. عين $\\alpha$ و$\\beta$ ثم اكتب $\\lambda$ في النظام العشري."
+            },
+            {
+              "id": "s1_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "نحصل على $13\\alpha-2\\beta=35$ مع $0\\le\\alpha<4$ و$0\\le\\beta<4$، ومنه $(\\alpha;\\beta)=(3;2)$ و$\\lambda=2025$."
+            },
+            {
+              "id": "s1_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عددان طبيعيان $a$ و$b$ و$d$ قاسمهما المشترك الأكبر. حلل العدد $2025$ إلى جداء عوامل أولية ثم عين كل الثنائيات $(a;b)$ حيث $7(ab)^2-3d^4=2025$."
+            },
+            {
+              "id": "s1_e3_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$2025=3^4\\times5^2$. بكتابة $a=da'$ و$b=db'$ مع $PGCD(a';b')=1$ نحصل على $d\\in\\{1;3\\}$. لا يعطي $d=1$ حلا طبيعيا، ولما $d=3$ نحصل على $a'b'=2$، ومنه $(a;b)\\in\\{(3;6),(6;3)\\}$."
+            },
+            {
+              "id": "s1_e3_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 5,
+          "label": "التمرين الرابع",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_e4_p1",
+          "nodeType": "PART",
+          "parentId": "s1_e4",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 1.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $g$ معرفة على $\\mathbb{R}$ بـ: $g(x)=1+xe^x$. والدالة $h$ معرفة على $\\mathbb{R}$ بـ: $h(x)=(x^2+1)e^{2x}+(x-2)e^x+1$، وتمثيلها البياني $(C_h)$ يقطع محور الفواصل في نقطتين فاصلتاهما $\\alpha$ و$0$ كما في الشكل."
+            },
+            {
+              "id": "s1_e4_p1_graph_prompt",
+              "role": "PROMPT",
+              "type": "graph",
+              "value": "التمثيل البياني المعطى للدالة $h$.",
+              "assetId": "s1_e4_h_prompt_graph"
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "ادرس اتجاه تغير الدالة $g$ ثم استنتج أنه من أجل كل عدد حقيقي $x$: $1+xe^x>0$."
+            },
+            {
+              "id": "s1_e4_p1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$g'(x)=(1+x)e^x$. الدالة $g$ متناقصة تماما على $]-\\infty;-1]$ ومتزايدة تماما على $[-1;+\\infty[$، و$g(-1)=1-e^{-1}>0$، ومنه $1+xe^x>0$ لكل $x\\in\\mathbb{R}$."
+            },
+            {
+              "id": "s1_e4_p1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بقراءة بيانية، حدد إشارة $h(x)$ على $\\mathbb{R}$. ب) تحقق أن $-0.7<\\alpha<-0.6$."
+            },
+            {
+              "id": "s1_e4_p1_q2_solution_sign",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "إشارة $h(x)$ حسب القراءة البيانية.",
+              "assetId": "s1_e4_h_sign"
+            },
+            {
+              "id": "s1_e4_p1_q2_solution_interval",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "باستعمال القيمتين الرسميتين حول الجذر نحصل على $-0.7<\\alpha<-0.6$."
+            },
+            {
+              "id": "s1_e4_p1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2",
+          "nodeType": "PART",
+          "parentId": "s1_e4",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 5.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $f$ معرفة على $\\mathbb{R}$ بـ: $f(x)=2x+\\frac{2-2e^x}{1+xe^x}$، وتمثيلها البياني $(C_f)$ في معلم متعامد ومتجانس."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $\\lim_{x\\to-\\infty} f(x)$ وبين أن $\\lim_{x\\to+\\infty} f(x)=+\\infty$. ب) بين أن المستقيم $(\\Delta):y=2x+2$ مقارب مائل لـ$(C_f)$ عند $-\\infty$ وأن المستقيم $(\\Delta'):y=2x$ مقارب مائل لـ$(C_f)$ عند $+\\infty$. ج) ادرس وضعية كل من $(\\Delta)$ و$(\\Delta')$ بالنسبة إلى $(C_f)$."
+            },
+            {
+              "id": "s1_e4_p2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to-\\infty}f(x)=-\\infty$ و$\\lim_{x\\to+\\infty}f(x)=+\\infty$. كما أن $\\lim_{x\\to-\\infty}(f(x)-(2x+2))=0$ و$\\lim_{x\\to+\\infty}(f(x)-2x)=0$. يقطع $(C_f)$ المستقيم $(\\Delta)$ في $A(-1;0)$، ويكون فوقه إذا $x<-1$ وتحته إذا $x>-1$. ويقطع $(\\Delta')$ في $O(0;0)$، ويكون فوقه إذا $x<0$ وتحته إذا $x>0$."
+            },
+            {
+              "id": "s1_e4_p2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل عدد حقيقي $x$: $f'(x)=\\frac{2h(x)}{(1+xe^x)^2}$. ب) استنتج اتجاه تغير الدالة $f$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s1_e4_p2_q2_solution_variation",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $f$.",
+              "assetId": "s1_e4_f_variation"
+            },
+            {
+              "id": "s1_e4_p2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "تكون $f$ متزايدة تماما على $]-\\infty;\\alpha]$ وعلى $[0;+\\infty[$، ومتناقصة تماما على $[\\alpha;0]$."
+            },
+            {
+              "id": "s1_e4_p2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "ارسم كلا من $(\\Delta)$ و$(\\Delta')$ و$(C_f)$، مع أخذ $f(\\alpha)\\approx0.15$."
+            },
+            {
+              "id": "s1_e4_p2_q3_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي لـ$(\\Delta)$ و$(\\Delta')$ و$(C_f)$.",
+              "assetId": "s1_e4_solution_graph"
+            },
+            {
+              "id": "s1_e4_p2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) تحقق أنه من أجل كل عدد حقيقي $x$: $1-\\frac{1-e^x}{1+xe^x}=\\frac{(x+1)e^x}{1+xe^x}$. ب) استنتج بالتكامل مساحة الحيز المستوي المحدد بالمنحنى $(C_f)$ والمستقيمات ذات المعادلات $y=2x+2$ و$x=0$ و$x=1$."
+            },
+            {
+              "id": "s1_e4_p2_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "المساحة الرسمية هي $A=\\int_0^1\\frac{2(x+1)e^x}{1+xe^x}\\,dx=8\\ln(e+1)\\ \\text{cm}^2$."
+            },
+            {
+              "id": "s1_e4_p2_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $k$ معرفة على $\\mathbb{R}$ بـ: $k(x)=f(x^2)$. دون حساب عبارة $k(x)$، حدد اتجاه تغير الدالة $k$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s1_e4_p2_q5_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$k'(x)=2xf'(x^2)$. الدالة $k$ متناقصة تماما على $]-\\infty;0]$ ومتزايدة تماما على $[0;+\\infty[$."
+            },
+            {
+              "id": "s1_e4_p2_q5_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $k$.",
+              "assetId": "s1_e4_k_variation"
+            },
+            {
+              "id": "s1_e4_p2_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "s2_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "يحتوي الموضوع الثاني على صفحتين من الصفحة 4 من 5 إلى الصفحة 5 من 5."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $f$ معرفة على $[-1;-\\frac12]$ بـ: $f(x)=\\frac{-x^2+x}{x^2+1}$. بين أن الدالة $f$ متزايدة تماما."
+            },
+            {
+              "id": "s2_e1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f'(x)=\\frac{-x^2-2x+1}{(x^2+1)^2}$، وإشارتها موجبة على $[-1;-\\frac12]$، ومنه $f$ متزايدة تماما على هذا المجال."
+            },
+            {
+              "id": "s2_e1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية $(u_n)$ معرفة بـ: $u_0=-\\frac12$، ومن أجل كل عدد طبيعي $n$: $u_{n+1}=f(u_n)$. أ) برهن بالتراجع أنه من أجل كل عدد طبيعي $n$: $-1<u_n\\le-\\frac12$. ب) ادرس اتجاه تغير المتتالية $(u_n)$."
+            },
+            {
+              "id": "s2_e1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بالتراجع نحصل على $-1<u_n\\le-\\frac12$. كما أن $u_{n+1}-u_n=\\frac{-u_n^2(u_n+1)}{u_n^2+1}$، ومنه المتتالية $(u_n)$ متناقصة تماما."
+            },
+            {
+              "id": "s2_e1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل عدد طبيعي $n$: $u_{n+1}+1\\le\\frac45(u_n+1)$. ب) استنتج أنه من أجل كل عدد طبيعي $n$: $0<u_n+1\\le\\frac12\\left(\\frac45\\right)^n$ ثم احسب $\\lim_{n\\to+\\infty}u_n$."
+            },
+            {
+              "id": "s2_e1_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$u_{n+1}+1=\\frac{u_n+1}{u_n^2+1}$، ومع $\\frac12<\\frac1{u_n^2+1}\\le\\frac45$ نحصل على المطلوب. إذن $0<u_n+1\\le\\frac12\\left(\\frac45\\right)^n$، ومنه $\\lim u_n=-1$."
+            },
+            {
+              "id": "s2_e1_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "من أجل كل عدد طبيعي $n$ نضع $S_n=u_0+u_1+\\cdots+u_n$. بين أن $S_n\\le-2\\left(\\frac45\\right)^n-n+\\frac32$ ثم احسب $\\lim_{n\\to+\\infty}S_n$."
+            },
+            {
+              "id": "s2_e1_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "حسب التصحيح الرسمي: $S_n\\le-2\\left(\\frac45\\right)^n-n+\\frac32$، ومنه $\\lim_{n\\to+\\infty}S_n=-\\infty$."
+            },
+            {
+              "id": "s2_e1_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "حل في مجموعة الأعداد المركبة $\\mathbb{C}$ المعادلة ذات المجهول $z$: $(iz-1+2i)(z^2-4z+5)=0$."
+            },
+            {
+              "id": "s2_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "مجموعة الحلول هي $S=\\{-2-i;2-i;2+i\\}$."
+            },
+            {
+              "id": "s2_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "في المستوي المركب المنسوب إلى المعلم المتعامد والمتجانس $(O;\\vec{u},\\vec{v})$، النقط $A$ و$B$ و$C$ لواحقها على الترتيب $z_A=2-i$ و$z_B=\\overline{z_A}$ و$z_C=-2-i$، وليكن $L=\\frac{z_C-z_A}{z_B-z_A}$. أ) اكتب العدد $L$ على الشكل المثلثي ثم حدد طبيعة المثلث $ABC$. ب) بين أن النقط $A$ و$B$ و$C$ تنتمي إلى نفس الدائرة التي مركزها $O$، مع تعيين نصف قطرها. ج) عين لاحقتي النقطتين $D$ و$E$ حتى يكون الرباعي $BCDE$ معينا مركزه $A$."
+            },
+            {
+              "id": "s2_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$L=2\\left(\\cos\\frac\\pi2+i\\sin\\frac\\pi2\\right)=2i$، ومنه المثلث $ABC$ قائم في $A$. كما أن $|z_A|=|z_B|=|z_C|=\\sqrt5$، فتقع النقط على الدائرة مركزها $O$ ونصف قطرها $\\sqrt5$. ولأجل أن يكون $BCDE$ معينا مركزه $A$ نحصل على $z_D=2-3i$ و$z_E=6-i$."
+            },
+            {
+              "id": "s2_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عدد مركب $z_\\theta=1-\\cos(2\\theta)+i\\sin(2\\theta)$ حيث $-\\frac\\pi2<\\theta<\\frac\\pi2$ و$\\theta$ غير معدوم. بين أن $z_\\theta=2\\sin\\theta(\\sin\\theta+i\\cos\\theta)$ ثم استنتج حسب قيم $\\theta$ طويلة وعمدة العدد $z_\\theta$."
+            },
+            {
+              "id": "s2_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$z_\\theta=2\\sin\\theta\\left(\\cos\\left(\\frac\\pi2-\\theta\\right)+i\\sin\\left(\\frac\\pi2-\\theta\\right)\\right)$. إذا $-\\frac\\pi2<\\theta<0$ فإن $|z_\\theta|=-2\\sin\\theta$ و$\\arg(z_\\theta)=\\frac{3\\pi}{2}-\\theta+2k\\pi$. وإذا $0<\\theta<\\frac\\pi2$ فإن $|z_\\theta|=2\\sin\\theta$ و$\\arg(z_\\theta)=\\frac\\pi2-\\theta+2k\\pi$."
+            },
+            {
+              "id": "s2_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نعتبر المعادلة $(E):116x-81y=2$ ذات المجهولين الصحيحين $x$ و$y$."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أن العددين $116$ و$81$ أوليان فيما بينهما. ب) حل المعادلة $(E)$ علما أن الثنائية $(7;10)$ حل لها."
+            },
+            {
+              "id": "s2_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$116=2^2\\times29$ و$81=3^4$ ومنه $PGCD(116;81)=1$. وحلول $(E)$ هي $(x;y)=(81k+7;116k+10)$ حيث $k\\in\\mathbb{Z}$."
+            },
+            {
+              "id": "s2_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) ادرس حسب قيم العدد الطبيعي $n$ بواقي القسمة الإقليدية للعدد $7^n$ على $9$. ب) استنتج حسب قيم $n$ بواقي القسمة الإقليدية للعدد $7^{2n+1}$ على $9$. ج) عين الثنائيات الطبيعية $(x;y)$ حلول المعادلة $(E)$ والتي تحقق $x^y\\equiv4\\ [9]$."
+            },
+            {
+              "id": "s2_e3_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$7^0\\equiv1\\ [9]$ و$7^1\\equiv7\\ [9]$ و$7^2\\equiv4\\ [9]$، ومنه الدور $3$. لذلك $7^{2n+1}\\equiv7\\ [9]$ إذا $n=3k$، و$\\equiv1\\ [9]$ إذا $n=3k+1$، و$\\equiv4\\ [9]$ إذا $n=3k+2$. الشرط $x^y\\equiv4\\ [9]$ يكافئ $k=3k'+2$، ومنه $(x;y)=(243k'+169;348k'+242)$ حيث $k'\\in\\mathbb{N}$."
+            },
+            {
+              "id": "s2_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$\\alpha$ و$\\beta$ عددان طبيعيان أوليان فيما بينهما، و$a$ و$b$ عددان حيث $a=7\\alpha+3\\beta$ و$b=5\\alpha+2\\beta$. أ) بين أن العددين $a$ و$b$ أوليان فيما بينهما. ب) عين العددين $\\alpha$ و$\\beta$ حتى يكون $a=116$ و$b=81$."
+            },
+            {
+              "id": "s2_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "إذا كان $d$ قاسما مشتركا لـ$a$ و$b$ فإنه يقسم $5a-7b$ و$3b-2a$، وبالتالي يقسم $\\alpha$ و$\\beta$، ومنه $a$ و$b$ أوليان فيما بينهما. ولما $a=116$ و$b=81$ نحصل على $\\alpha=11$ و$\\beta=13$."
+            },
+            {
+              "id": "s2_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 5,
+          "label": "التمرين الرابع",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e4_p1",
+          "nodeType": "PART",
+          "parentId": "s2_e4",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالتان $g$ و$h$ معرفتان على $]0;+\\infty[$ بـ: $g(x)=-x+(4-x)\\ln x$ و$h(x)=4-x-4\\ln x$، والتمثيلان البيانيان لهما هما $(C_g)$ و$(C_h)$ على الترتيب. يقطع $(C_h)$ محور الفواصل في النقطة ذات الفاصلة $\\alpha$ كما في الشكل."
+            },
+            {
+              "id": "s2_e4_p1_graph_prompt",
+              "role": "PROMPT",
+              "type": "graph",
+              "value": "التمثيلان البيانيان المعطيان للدالتين $g$ و$h$.",
+              "assetId": "s2_e4_prompt_graph"
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "بقراءة بيانية، حدد إشارة كل من $g(x)$ و$h(x)$ ثم تحقق أن $1.7<\\alpha<1.8$."
+            },
+            {
+              "id": "s2_e4_p1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$g$ سالبة تماما على $]0;+\\infty[$. كما أن $h(\\alpha)=0$، و$h$ موجبة على $]0;\\alpha[$ وسالبة على $]\\alpha;+\\infty[$. وبالحساب: $h(1.7)\\approx0.18$ و$h(1.8)\\approx-0.15$، ومنه $1.7<\\alpha<1.8$."
+            },
+            {
+              "id": "s2_e4_p1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2",
+          "nodeType": "PART",
+          "parentId": "s2_e4",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 5.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $f$ معرفة على $]0;+\\infty[$ بـ: $f(x)=(-x+2\\ln x)\\ln x$، وتمثيلها البياني $(C_f)$ في معلم متعامد ومتجانس."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $\\lim_{x\\to0^+}f(x)$ و$\\lim_{x\\to+\\infty}f(x)$. ب) بين أنه من أجل كل $x$ من $]0;+\\infty[$: $f'(x)=\\frac{g(x)}{x}$. ج) استنتج اتجاه تغير الدالة $f$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s2_e4_p2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to0^+}f(x)=+\\infty$ و$\\lim_{x\\to+\\infty}f(x)=-\\infty$. كما أن $f'(x)=\\frac{g(x)}{x}$، وبما أن $g$ سالبة على المجال فإن $f$ متناقصة تماما على $]0;+\\infty[$."
+            },
+            {
+              "id": "s2_e4_p2_q1_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $f$.",
+              "assetId": "s2_e4_f_variation"
+            },
+            {
+              "id": "s2_e4_p2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "بين أن للمنحنى $(C_f)$ مماسين $(T)$ و$(T')$ معامل توجيه كل منهما $-1$، ثم عين معادلة لكل منهما."
+            },
+            {
+              "id": "s2_e4_p2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f'(x)=-1$ يكافئ $x=1$ أو $x=4$. لذلك $(T):y=-x+1$ و$(T'):y=-x+4-8\\ln2+8(\\ln2)^2$."
+            },
+            {
+              "id": "s2_e4_p2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل $x$ من $]0;+\\infty[$: $f''(x)=\\frac{h(x)}{x^2}$. ب) استنتج أن للمنحنى $(C_f)$ نقطة انعطاف يطلب تعيين فاصلتها."
+            },
+            {
+              "id": "s2_e4_p2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f''(x)=\\frac{h(x)}{x^2}$. تنعدم $f''$ وتغير إشارتها عند $\\alpha$، ومنه نقطة الانعطاف هي $B(\\alpha;f(\\alpha))$."
+            },
+            {
+              "id": "s2_e4_p2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $f(e^2)$، ثم ارسم $(T)$ و$(T')$ و$(C_f)$، مع أخذ $f(\\alpha)\\approx-0.35$ و$4-8\\ln2+8(\\ln2)^2\\approx2.3$."
+            },
+            {
+              "id": "s2_e4_p2_q4_solution_value",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f(e^2)=8-2e^2$."
+            },
+            {
+              "id": "s2_e4_p2_q4_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي للمماسين والمنحنى $(C_f)$.",
+              "assetId": "s2_e4_solution_graph"
+            },
+            {
+              "id": "s2_e4_p2_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أن الدالة $k:x\\mapsto x(\\ln x)^2-2x\\ln x+2x$ أصلية للدالة $x\\mapsto(\\ln x)^2$ على $]0;+\\infty[$. ب) باستعمال المكاملة بالتجزئة، بين أن $\\int_1^e x\\ln x\\,dx=\\frac{e^2+1}{4}$. ج) استنتج، بوحدة المساحة، مساحة الحيز المستوي المحدد بالمنحنى $(C_f)$ والمستقيمات ذات المعادلات $y=0$ و$x=1$ و$x=e$."
+            },
+            {
+              "id": "s2_e4_p2_q5_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$k'(x)=(\\ln x)^2$، و$\\int_1^e x\\ln x\\,dx=\\left[\\frac{x^2}{2}\\ln x-\\frac{x^2}{4}\\right]_1^e=\\frac{e^2+1}{4}$. المساحة هي $A=\\frac{e^2-8e+17}{4}\\ \\text{u.a}$."
+            },
+            {
+              "id": "s2_e4_p2_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q6",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 6,
+          "label": "السؤال 6",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q6_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $\\varphi$ معرفة على $]0;+\\infty[$ بـ: $\\varphi(x)=f\\left(\\frac1x\\right)$. دون حساب عبارة $\\varphi(x)$، حدد اتجاه تغير الدالة $\\varphi$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s2_e4_p2_q6_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\varphi'(x)=-\\frac1{x^2}f'\\left(\\frac1x\\right)$، ومنه $\\varphi$ متزايدة تماما على $]0;+\\infty[$."
+            },
+            {
+              "id": "s2_e4_p2_q6_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $\\varphi$.",
+              "assetId": "s2_e4_phi_variation"
+            },
+            {
+              "id": "s2_e4_p2_q6_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_e1_prompt_tree",
+      "exerciseOrderIndex": 1,
+      "questionOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "tree",
+      "pageNumber": 1,
+      "cropBox": {
+        "x": 120,
+        "y": 1340,
+        "width": 720,
+        "height": 520
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "شجرة احتمالات ناقصة",
+      "caption": null,
+      "notes": "Native prompt tree rebuilt from the rendered exam page.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "tree",
+        "value": "شجرة احتمالات ناقصة",
+        "data": {
+          "kind": "probability_tree",
+          "direction": "ltr",
+          "root": {
+            "label": "",
+            "children": [
+              {
+                "label": "A",
+                "probability": "",
+                "children": [
+                  {
+                    "label": "B",
+                    "probability": ""
+                  },
+                  {
+                    "label": "C",
+                    "probability": ""
+                  },
+                  {
+                    "label": "D",
+                    "probability": ""
+                  }
+                ]
+              },
+              {
+                "label": "$\\overline{A}$",
+                "probability": "",
+                "children": [
+                  {
+                    "label": "B",
+                    "probability": ""
+                  },
+                  {
+                    "label": "D",
+                    "probability": ""
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from visual scan; blank probabilities intentionally match the prompt."
+        ]
+      }
+    },
+    {
+      "id": "s1_e1_solution_tree",
+      "exerciseOrderIndex": 1,
+      "questionOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "tree",
+      "pageNumber": 1,
+      "cropBox": {
+        "x": 850,
+        "y": 330,
+        "width": 520,
+        "height": 430
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "شجرة احتمالات مكتملة",
+      "caption": null,
+      "notes": "Native solution tree rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "tree",
+        "value": "شجرة الاحتمالات",
+        "data": {
+          "kind": "probability_tree",
+          "direction": "ltr",
+          "root": {
+            "label": "",
+            "children": [
+              {
+                "label": "A",
+                "probability": "$\\frac{2}{3}$",
+                "children": [
+                  {
+                    "label": "B",
+                    "probability": "$\\frac{3}{44}$"
+                  },
+                  {
+                    "label": "C",
+                    "probability": "$\\frac{12}{44}$"
+                  },
+                  {
+                    "label": "D",
+                    "probability": "$\\frac{29}{44}$"
+                  }
+                ]
+              },
+              {
+                "label": "$\\overline{A}$",
+                "probability": "$\\frac{1}{3}$",
+                "children": [
+                  {
+                    "label": "B",
+                    "probability": "$\\frac{1}{7}$"
+                  },
+                  {
+                    "label": "D",
+                    "probability": "$\\frac{6}{7}$"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e1_probability_law",
+      "exerciseOrderIndex": 1,
+      "questionOrderIndex": 3,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 1,
+      "cropBox": {
+        "x": 500,
+        "y": 1000,
+        "width": 620,
+        "height": 200
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "قانون احتمال المتغير العشوائي X",
+      "caption": null,
+      "notes": "Native probability-law table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "قانون احتمال $X$",
+        "data": {
+          "rows": [
+            [
+              "$x_i$",
+              "1",
+              "2",
+              "3"
+            ],
+            [
+              "$P(X=x_i)$",
+              "$\\frac{43}{462}$",
+              "$\\frac{335}{462}$",
+              "$\\frac{84}{462}$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e3_power_table",
+      "exerciseOrderIndex": 3,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2,
+      "cropBox": {
+        "x": 520,
+        "y": 780,
+        "width": 700,
+        "height": 130
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "بواقي 5^n بترديد 11",
+      "caption": null,
+      "notes": "Native modular residue table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "بواقي $5^n$ بترديد $11$",
+        "data": {
+          "rows": [
+            [
+              "$n=$",
+              "$5k$",
+              "$5k+1$",
+              "$5k+2$",
+              "$5k+3$",
+              "$5k+4$",
+              "$k\\in\\mathbb{N}$"
+            ],
+            [
+              "$5^n$",
+              "1",
+              "5",
+              "3",
+              "4",
+              "9",
+              "$[11]$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e4_h_prompt_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 3,
+      "cropBox": {
+        "x": 210,
+        "y": 500,
+        "width": 620,
+        "height": 520
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "التمثيل البياني المعطى للدالة h",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s1_e4_h_sign",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2,
+      "cropBox": {
+        "x": 570,
+        "y": 2220,
+        "width": 650,
+        "height": 150
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "إشارة h",
+      "caption": null,
+      "notes": "Native sign table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "إشارة $h$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "$\\alpha$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$h(x)$",
+              "+",
+              "0",
+              "-",
+              "0",
+              "+"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e4_f_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3,
+      "cropBox": {
+        "x": 600,
+        "y": 1160,
+        "width": 610,
+        "height": 330
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "$\\alpha$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$f'(x)$",
+              "+",
+              "0",
+              "-",
+              "0",
+              "+"
+            ],
+            [
+              "$f(x)$",
+              "$-\\infty$ ↗",
+              "$f(\\alpha)$",
+              "↘ 0",
+              "↗ $+\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e4_solution_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 3,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 3,
+      "cropBox": {
+        "x": 650,
+        "y": 1480,
+        "width": 560,
+        "height": 520
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم المقاربين والمنحنى في الموضوع الأول",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s1_e4_k_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 5,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3,
+      "cropBox": {
+        "x": 760,
+        "y": 2200,
+        "width": 430,
+        "height": 300
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات k",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $k$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$k'(x)$",
+              "-",
+              "0",
+              "+"
+            ],
+            [
+              "$k(x)$",
+              "$+\\infty$ ↘",
+              "0",
+              "↗ $+\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s2_e4_prompt_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 1,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 5,
+      "cropBox": {
+        "x": 150,
+        "y": 680,
+        "width": 620,
+        "height": 560
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "التمثيلان البيانيان المعطيان للدالتين g وh",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s2_e4_f_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 5,
+      "cropBox": {
+        "x": 560,
+        "y": 2140,
+        "width": 520,
+        "height": 320
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$f'(x)$",
+              "-"
+            ],
+            [
+              "$f(x)$",
+              "$+\\infty$ ↘",
+              "$-\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s2_e4_solution_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 4,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 6,
+      "cropBox": {
+        "x": 500,
+        "y": 620,
+        "width": 620,
+        "height": 560
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم المماسين والمنحنى في الموضوع الثاني",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s2_e4_phi_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 6,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 6,
+      "cropBox": {
+        "x": 560,
+        "y": 1970,
+        "width": 500,
+        "height": 300
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات phi",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $\\varphi$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$\\varphi'(x)$",
+              "+"
+            ],
+            [
+              "$\\varphi(x)$",
+              "$-\\infty$ ↗",
+              "$+\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    }
+  ],
+  "uncertainties": [
+    {
+      "scope": "graph-assets",
+      "note": "Hand-drawn function graphs are kept as cropped source assets, not formula-graph native render data."
+    },
+    {
+      "scope": "s1-e4-h-root-check",
+      "note": "The correction scan around the numeric check for alpha is visually noisy; the interval -0.7 < alpha < -0.6 is preserved from the visible official conclusion."
+    }
+  ]
+}

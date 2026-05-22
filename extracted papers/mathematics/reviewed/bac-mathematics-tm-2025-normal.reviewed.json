@@ -1,0 +1,1712 @@
+{
+  "exam": {
+    "title": "اختبار في مادة الرياضيات - بكالوريا 2025 - شعبة تقني رياضي",
+    "durationMinutes": 270,
+    "totalPoints": 20,
+    "hasCorrection": true,
+    "sourceLanguage": "ar"
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "s1_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الموضوع الأول."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "يحتوي صندوق على 10 كريات متماثلة ولا نفرق بينها باللمس، منها كريتان خضراوان مرقمتان بـ $1$ و$2$، وثلاث كريات بيضاء مرقمة بـ $1,1,2$، وخمس كريات حمراء مرقمة بـ $1,1,2,2,3$."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_p1",
+          "nodeType": "PART",
+          "parentId": "s1_e1",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 3.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_p1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نسحب عشوائيا من الصندوق 3 كريات في آن واحد. نعتبر الحوادث: $A$ «الحصول على 3 كريات مختلفة الألوان مثنى مثنى»، $B$ «الحصول على 3 كريات تحمل نفس الرقم»، و$C$ «الحصول على 3 كريات مجموع أرقامها 6»."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_p1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1_p1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 2.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_p1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $P(A)$ و$P(B)$ و$P(C)$ على الترتيب. ب) احسب $P(A\\cap B)$ ثم استنتج $P(A\\cup B)$."
+            },
+            {
+              "id": "s1_e1_p1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "عدد الحالات الممكنة هو $C_{10}^3=120$. حسب التصحيح الرسمي: $P(A)=\\frac14$ و$P(B)=\\frac7{60}$ و$P(C)=\\frac13$. كما أن $P(A\\cap B)=\\frac1{20}$، ومنه $P(A\\cup B)=P(A)+P(B)-P(A\\cap B)=\\frac{19}{60}$."
+            },
+            {
+              "id": "s1_e1_p1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_p1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1_p1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_p1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتغير العشوائي $X$ يرفق بكل عملية سحب لـ3 كريات الكيفية الثابتة عدد ألوان الكريات المسحوبة. عين قانون احتمال المتغير العشوائي $X$ ثم احسب أمله الرياضي."
+            },
+            {
+              "id": "s1_e1_p1_q2_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "قانون احتمال المتغير العشوائي $X$.",
+              "assetId": "s1_e1_probability_law"
+            },
+            {
+              "id": "s1_e1_p1_q2_solution_expectation",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$X(\\Omega)=\\{1;2;3\\}$ و$E(X)=\\frac{259}{120}$."
+            },
+            {
+              "id": "s1_e1_p1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_p2",
+          "nodeType": "PART",
+          "parentId": "s1_e1",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_e1_p2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1_p2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_p2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نسحب عشوائيا من الصندوق 3 كريات على التوالي دون إرجاع. ما احتمال ألا يبقى في الصندوق أية كرية خضراء؟"
+            },
+            {
+              "id": "s1_e1_p2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الاحتمال هو $\\frac{3A_2^2A_8^1}{A_{10}^3}=\\frac1{15}$."
+            },
+            {
+              "id": "s1_e1_p2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(u_n)$ معرفة بـ $u_0=e^2$، ومن أجل كل عدد طبيعي $n$: $u_{n+1}=2\\sqrt{u_n}$. أ) احسب $u_1$ و$u_2$ ثم خمن اتجاه تغير المتتالية $(u_n)$. ب) برهن بالتراجع أنه من أجل كل عدد طبيعي $n$: $4<u_n\\le e^2$. ج) ادرس اتجاه تغير $(u_n)$."
+            },
+            {
+              "id": "s1_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$u_1=2e$ و$u_2=2\\sqrt{2e}$، والتخمين أن $(u_n)$ متناقصة تماما. بالبرهان بالتراجع نحصل على $4<u_n\\le e^2$. كما أن $u_{n+1}-u_n=\\sqrt{u_n}(2-\\sqrt{u_n})$، ومنه $(u_n)$ متناقصة تماما."
+            },
+            {
+              "id": "s1_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(v_n)$ معرفة على $\\mathbb{N}$ بـ: $v_n=\\ln u_n-2\\ln2$. أ) بين أن $(v_n)$ متتالية هندسية أساسها $\\frac12$ ثم اكتب $v_n$ بدلالة $n$. ب) استنتج كتابة $u_n$ بدلالة $n$ ثم احسب $\\lim_{n\\to+\\infty}u_n$."
+            },
+            {
+              "id": "s1_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "لدينا $v_{n+1}=\\frac12v_n$ و$v_0=2-\\ln4$، ومنه $v_n=\\frac{2-\\ln4}{2^n}=\\frac{1-\\ln2}{2^{n-1}}$. لذلك $u_n=4e^{v_n}=4e^{\\frac{1-\\ln2}{2^{n-1}}}$ و$\\lim_{n\\to+\\infty}u_n=4$."
+            },
+            {
+              "id": "s1_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب بدلالة $n$ المجموع $S_n=v_0+v_1+\\cdots+v_n$. ب) استنتج بدلالة $n$ الجداء $P_n=u_0\\times u_1\\times\\cdots\\times u_n$."
+            },
+            {
+              "id": "s1_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$S_n=4(1-\\ln2)\\left(1-\\left(\\frac12\\right)^{n+1}\\right)$، ومنه $P_n=4^{n+1}e^{S_n}$."
+            },
+            {
+              "id": "s1_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نعتبر المعادلة $(E):7x-5y=9$ ذات المجهولين الصحيحين $x$ و$y$."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 2.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) عين الأعداد الصحيحة $x$ التي تحقق $7x\\equiv9\\ [5]$ ثم حل المعادلة $(E)$. ب) نضع $d=PGCD(x;y)$ حيث الثنائية $(x;y)$ تحقق المعادلة $(E)$. عين القيم الممكنة للعدد $d$ ثم جد كل الثنائيات $(x;y)$ حلول المعادلة $(E)$ حيث $d=9$."
+            },
+            {
+              "id": "s1_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$7x\\equiv9\\ [5]$ تكافئ $x=5k+2$ حيث $k\\in\\mathbb{Z}$، ومنه حلول $(E)$ هي $(x;y)=(5k+2;7k+1)$. القيم الممكنة لـ$d$ هي $\\{1;3;9\\}$، ومن أجل $d=9$ نحصل على $(x;y)=(45k+27;63k+36)$ حيث $k\\in\\mathbb{Z}$."
+            },
+            {
+              "id": "s1_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) ادرس حسب قيم العدد الطبيعي $n$ بواقي القسمة الإقليدية للعدد $3^n$ على $7$. ب) عين الأعداد الطبيعية $n$ التي من أجلها يكون العدد $1446^{2025}+5n+2$ قابلا للقسمة على $7$."
+            },
+            {
+              "id": "s1_e3_q2_solution_residues",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل عدد طبيعي $k$: $3^{6k}\\equiv1$، $3^{6k+1}\\equiv3$، $3^{6k+2}\\equiv2$، $3^{6k+3}\\equiv6$، $3^{6k+4}\\equiv4$، $3^{6k+5}\\equiv5\\ [7]$."
+            },
+            {
+              "id": "s1_e3_q2_solution_n",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الشرط $1446^{2025}+5n+2\\equiv0\\ [7]$ يكافئ $n=7k+5$ حيث $k\\in\\mathbb{N}$."
+            },
+            {
+              "id": "s1_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عين كل الثنائيات الطبيعية $(x;y)$ حلول المعادلة $(E)$ والتي تحقق $3^{y-x}\\equiv5\\ [7]$."
+            },
+            {
+              "id": "s1_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "حسب التصحيح الرسمي، يتحقق الشرط عندما $k=3\\alpha+3$ حيث $\\alpha\\in\\mathbb{N}$، ومنه $(x;y)=(15\\alpha+17;21\\alpha+22)$."
+            },
+            {
+              "id": "s1_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 5,
+          "label": "التمرين الرابع",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_e4_p1",
+          "nodeType": "PART",
+          "parentId": "s1_e4",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $g$ معرفة على $\\mathbb{R}$ بـ: $g(x)=1-(x-1)^2e^{-x}$."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $\\lim_{x\\to-\\infty}g(x)$ وبين أن $\\lim_{x\\to+\\infty}g(x)=1$. ب) تحقق أنه من أجل كل عدد حقيقي $x$: $g'(x)=(x-1)(x-3)e^{-x}$. ج) ادرس اتجاه تغير الدالة $g$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s1_e4_p1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to-\\infty}g(x)=-\\infty$ و$\\lim_{x\\to+\\infty}g(x)=1$. ولدينا $g'(x)=(x-1)(x-3)e^{-x}$، فتكون $g$ متزايدة على $]-\\infty;1]$ و$[3;+\\infty[$ ومتناقصة على $[1;3]$."
+            },
+            {
+              "id": "s1_e4_p1_q1_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $g$.",
+              "assetId": "s1_e4_g_variation"
+            },
+            {
+              "id": "s1_e4_p1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $g(0)$ ثم استنتج حسب قيم $x$ إشارة $g(x)$."
+            },
+            {
+              "id": "s1_e4_p1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$g(0)=0$."
+            },
+            {
+              "id": "s1_e4_p1_q2_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "إشارة $g(x)$.",
+              "assetId": "s1_e4_g_sign"
+            },
+            {
+              "id": "s1_e4_p1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2",
+          "nodeType": "PART",
+          "parentId": "s1_e4",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $f$ معرفة على $\\mathbb{R}$ بـ: $f(x)=x+(x^2+1)e^{-x}$، وتمثيلها البياني $(C_f)$ في معلم متعامد ومتجانس، وحدة الطول $2cm$."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $\\lim_{x\\to+\\infty}f(x)$ وبين أن $\\lim_{x\\to-\\infty}f(x)=+\\infty$. ب) بين أن المستقيم $(\\Delta):y=x$ مقارب مائل للمنحنى $(C_f)$ عند $+\\infty$."
+            },
+            {
+              "id": "s1_e4_p2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to+\\infty}f(x)=+\\infty$ و$\\lim_{x\\to-\\infty}f(x)=+\\infty$. كما أن $\\lim_{x\\to+\\infty}(f(x)-x)=0$، ومنه $(\\Delta):y=x$ مقارب مائل عند $+\\infty$."
+            },
+            {
+              "id": "s1_e4_p2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل عدد حقيقي $x$: $f'(x)=g(x)$. ب) استنتج اتجاه تغير الدالة $f$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s1_e4_p2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f'(x)=g(x)$. وباستعمال إشارة $g$، تكون $f$ متناقصة على $]-\\infty;0]$ ومتزايدة على $[0;+\\infty[$."
+            },
+            {
+              "id": "s1_e4_p2_q2_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $f$.",
+              "assetId": "s1_e4_f_variation"
+            },
+            {
+              "id": "s1_e4_p2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أن المنحنى $(C_f)$ يقبل مماسا $(T)$ موازيا لـ$(\\Delta)$، يطلب تعيين معادلة له. ب) تحقق أن للمنحنى $(C_f)$ نقطتي انعطاف، يطلب تعيين إحداثييهما."
+            },
+            {
+              "id": "s1_e4_p2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f'(x)=1$ تكافئ $x=1$، ومنه $(T):y=x+\\frac2e$. كما أن $f''(x)=g'(x)$، وللمنحنى نقطتا انعطاف هما $A\\left(1;1+\\frac2e\\right)$ و$B\\left(3;3+\\frac{10}{e^3}\\right)$."
+            },
+            {
+              "id": "s1_e4_p2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $f(-1)$ ثم ارسم كلا من $(\\Delta)$ و$(T)$ و$(C_f)$."
+            },
+            {
+              "id": "s1_e4_p2_q4_solution_value",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f(-1)=-1+2e$."
+            },
+            {
+              "id": "s1_e4_p2_q4_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي للمستقيمين والمنحنى $(C_f)$.",
+              "assetId": "s1_e4_solution_graph"
+            },
+            {
+              "id": "s1_e4_p2_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_p2_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4_p2",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_p2_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) عين العددين الحقيقيين $a$ و$b$ حتى تكون الدالة $h:x\\mapsto(-x^2+ax+b)e^{-x}$ أصلية للدالة $k:x\\mapsto(x^2+1)e^{-x}$ على $\\mathbb{R}$. ب) استنتج بالتكامل بالتجزئة حساب مساحة الحيز المستوي المحدد بالمنحنى $(C_f)$ والمستقيمات ذات المعادلات $y=x$ و$x=0$ و$x=1$."
+            },
+            {
+              "id": "s1_e4_p2_q5_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$h'(x)=(x^2-(a+2)x+a-b)e^{-x}$، ومنه $(a;b)=(-2;-3)$. المساحة هي $A=4\\int_0^1k(x)\\,dx=4(h(1)-h(0))=12-\\frac{24}{e}\\ \\text{cm}^2$."
+            },
+            {
+              "id": "s1_e4_p2_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "s2_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الموضوع الثاني."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "يحتوي صندوق على 12 كرية منها 3 كريات خضراء و4 كريات بيضاء و5 كريات حمراء، وكل الكريات متماثلة ولا نفرق بينها باللمس."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_p1",
+          "nodeType": "PART",
+          "parentId": "s2_e1",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 3.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_p1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نسحب عشوائيا من الصندوق 4 كريات في آن واحد، ونعتبر الحوادث: $A$ «الحصول على 3 كريات بالضبط من نفس اللون»، $B$ «لا نحصل على أية كرية بيضاء»، و$C$ «الحصول على كرية واحدة بيضاء على الأقل»."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_p1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1_p1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_p1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $P(A)$ و$P(B)$ و$P(C)$ على الترتيب. ب) احسب $P(A\\cap B)$ ثم استنتج $P(A\\cup B)$."
+            },
+            {
+              "id": "s2_e1_p1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "عدد الحالات الممكنة هو $C_{12}^4=495$. حسب التصحيح الرسمي: $P(A)=\\frac{37}{165}$ و$P(B)=\\frac{14}{99}$ و$P(C)=\\frac{85}{99}$. كما أن $P(A\\cap B)=\\frac7{99}$، ومنه $P(A\\cup B)=\\frac{146}{495}$."
+            },
+            {
+              "id": "s2_e1_p1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_p1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1_p1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_p1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتغير العشوائي $X$ يرفق بكل عملية سحب لـ4 كريات الكيفية الثابتة عدد الكريات الخضراء المسحوبة. عين قانون احتمال المتغير العشوائي $X$، ثم احسب أمله الرياضي."
+            },
+            {
+              "id": "s2_e1_p1_q2_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "قانون احتمال المتغير العشوائي $X$.",
+              "assetId": "s2_e1_probability_law"
+            },
+            {
+              "id": "s2_e1_p1_q2_solution_expectation",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$X(\\Omega)=\\{0;1;2;3\\}$ و$E(X)=1$."
+            },
+            {
+              "id": "s2_e1_p1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_p2",
+          "nodeType": "PART",
+          "parentId": "s2_e1",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e1_p2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1_p2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_p2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نسحب عشوائيا من الصندوق 4 كريات على التوالي دون إرجاع. ما احتمال ألا يبقى في الصندوق أية كرية خضراء؟"
+            },
+            {
+              "id": "s2_e1_p2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الاحتمال هو $\\frac{4A_3^3A_9^1}{A_{12}^4}=\\frac1{55}$."
+            },
+            {
+              "id": "s2_e1_p2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(u_n)$ معرفة بـ $u_0=0$، ومن أجل كل عدد طبيعي $n$: $u_{n+1}=\\frac{3+5u_n}{3+u_n}$. أ) تحقق أنه من أجل كل عدد طبيعي $n$: $u_{n+1}=5-\\frac{12}{3+u_n}$. ب) برهن بالتراجع أنه من أجل كل عدد طبيعي $n$: $0\\le u_n<3$. ج) ادرس اتجاه تغير المتتالية $(u_n)$."
+            },
+            {
+              "id": "s2_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$u_{n+1}=5-\\frac{12}{3+u_n}$. بالبرهان بالتراجع نحصل على $0\\le u_n<3$. كما أن $u_{n+1}-u_n=\\frac{-u_n^2+2u_n+3}{3+u_n}=\\frac{(3-u_n)(1+u_n)}{3+u_n}$، ومنه $(u_n)$ متزايدة تماما."
+            },
+            {
+              "id": "s2_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(v_n)$ معرفة على $\\mathbb{N}$ بـ: $v_n=\\frac{-3+u_n}{1+u_n}$. أ) أثبت أن $(v_n)$ متتالية هندسية أساسها $\\frac13$ ثم اكتب $v_n$ بدلالة $n$. ب) استنتج عبارة $u_n$ بدلالة $n$ ثم احسب نهايتها."
+            },
+            {
+              "id": "s2_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$v_{n+1}=\\frac13v_n$ و$v_n=-3\\left(\\frac13\\right)^n$. ومنه $u_n=\\frac{3-3\\left(\\frac13\\right)^n}{1+3\\left(\\frac13\\right)^n}=-1+\\frac6{1+3\\left(\\frac13\\right)^n}$، وبالتالي $\\lim u_n=3$."
+            },
+            {
+              "id": "s2_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل عدد طبيعي $n$: $\\frac4{1+u_n}=1-v_n$. ب) استنتج بدلالة $n$ حساب المجموع $S_n=\\frac4{1+u_0}+\\frac4{1+u_1}+\\cdots+\\frac4{1+u_n}$."
+            },
+            {
+              "id": "s2_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\frac4{1+u_n}=1-v_n$. ومنه $S_n=n+1+\\frac92\\left(1-\\left(\\frac13\\right)^{n+1}\\right)=n+\\frac{11}{2}-\\frac32\\left(\\frac13\\right)^n$."
+            },
+            {
+              "id": "s2_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 5,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "العددان الطبيعيان $a$ و$b$ مكتوبان في نظام التعداد ذي الأساس $7$ كما يلي: $a=\\overline{4134}$ و$b=\\overline{4630}$. اكتب كلا من $a$ و$b$ في النظام العشري."
+            },
+            {
+              "id": "s2_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$a=1446$ و$b=1687$."
+            },
+            {
+              "id": "s2_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نعتبر المعادلة $(E):1446x-1687y=241$ ذات المجهولين الصحيحين $x$ و$y$. أ) بين أن $PGCD(1446;1687)=241$ ثم حل المعادلة $(E)$. ب) جد الثنائية $(x_0;y_0)$ حل المعادلة $(E)$ والتي تحقق $PPCM(x_0;y_0)=340$."
+            },
+            {
+              "id": "s2_e3_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$PGCD(1446;1687)=241$، والمعادلة $(E)$ تكافئ $6x-7y=1$. حلولها هي $x=7k+6$ و$y=6k+5$ حيث $k\\in\\mathbb{Z}$. ومن $PPCM(x_0;y_0)=340$ نحصل على $k=2$، أي $(x_0;y_0)=(20;17)$."
+            },
+            {
+              "id": "s2_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عين الأعداد الصحيحة $\\alpha$ التي تحقق الجملة: $\\alpha\\equiv5\\ [6]$ و$\\alpha\\equiv6\\ [7]$."
+            },
+            {
+              "id": "s2_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "حل الجملة هو $\\alpha=42k+41$ حيث $k\\in\\mathbb{Z}$."
+            },
+            {
+              "id": "s2_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$A$ و$B$ عددان حيث $A=7n^2+13n+6$ و$B=6n^2+11n+5$ مع $n$ عدد طبيعي. بين أن $A$ و$B$ يقبلان القسمة على $n+1$، ثم استنتج بدلالة $n$ القاسم المشترك الأكبر للعددين $A$ و$B$."
+            },
+            {
+              "id": "s2_e3_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$A=(n+1)(7n+6)$ و$B=(n+1)(6n+5)$. ومنه $PGCD(A;B)=(n+1)PGCD(7n+6;6n+5)=n+1$."
+            },
+            {
+              "id": "s2_e3_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 5,
+          "label": "التمرين الرابع",
+          "maxPoints": 7,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e4_p1",
+          "nodeType": "PART",
+          "parentId": "s2_e4",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $g$ معرفة على $]-1;+\\infty[$ بـ: $g(x)=x^2+2x+2-2\\ln(x+1)$."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل $x$ من $]-1;+\\infty[$: $g'(x)=\\frac{2x(x+2)}{x+1}$. ب) ادرس اتجاه تغير الدالة $g$ ثم شكل جدول تغيراتها، ولا يطلب حساب النهايات."
+            },
+            {
+              "id": "s2_e4_p1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$g'(x)=\\frac{2x(x+2)}{x+1}$. الدالة $g$ متناقصة تماما على $]-1;0]$ ومتزايدة تماما على $[0;+\\infty[$."
+            },
+            {
+              "id": "s2_e4_p1_q1_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $g$.",
+              "assetId": "s2_e4_g_variation"
+            },
+            {
+              "id": "s2_e4_p1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 0.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "استنتج إشارة $g(x)$."
+            },
+            {
+              "id": "s2_e4_p1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من جدول التغيرات وقيمة الحد الأدنى، $g(x)>0$ من أجل كل $x\\in]-1;+\\infty[$."
+            },
+            {
+              "id": "s2_e4_p1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2",
+          "nodeType": "PART",
+          "parentId": "s2_e4",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": 5.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $f$ معرفة على $]-1;+\\infty[$ بـ: $f(x)=x+\\frac{1+2\\ln(x+1)}{x+1}$، وتمثيلها البياني $(C_f)$ في معلم متعامد ومتجانس."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $\\lim_{x\\to-1^+}f(x)$ و$\\lim_{x\\to+\\infty}f(x)$. ب) بين أنه من أجل كل $x$ من $]-1;+\\infty[$: $f'(x)=\\frac{g(x)}{(x+1)^2}$. ج) استنتج اتجاه تغير الدالة $f$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s2_e4_p2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to-1^+}f(x)=-\\infty$ و$\\lim_{x\\to+\\infty}f(x)=+\\infty$. كما أن $f'(x)=\\frac{g(x)}{(x+1)^2}$، وبما أن $g(x)>0$ فإن $f$ متزايدة تماما على $]-1;+\\infty[$."
+            },
+            {
+              "id": "s2_e4_p2_q1_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $f$.",
+              "assetId": "s2_e4_f_variation"
+            },
+            {
+              "id": "s2_e4_p2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أن المستقيم $(\\Delta)$ ذا المعادلة $y=x$ مقارب مائل للمنحنى $(C_f)$. ب) بين أن المنحنى $(C_f)$ يقبل مماسا $(T)$ موازيا لـ$(\\Delta)$، يطلب تعيين معادلة له."
+            },
+            {
+              "id": "s2_e4_p2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to+\\infty}(f(x)-x)=0$، ومنه $(\\Delta):y=x$ مقارب مائل عند $+\\infty$. كما أن $f'(x)=1$ تكافئ $x=\\sqrt e-1$، ومعادلة المماس هي $(T):y=x+\\frac2{\\sqrt e}$."
+            },
+            {
+              "id": "s2_e4_p2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل $x$ من $]-1;+\\infty[$: $f''(x)=\\frac{4\\ln(x+1)-4}{(x+1)^3}$. ب) استنتج أن للمنحنى $(C_f)$ نقطة انعطاف، يطلب تعيين إحداثييها."
+            },
+            {
+              "id": "s2_e4_p2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f''(x)=\\frac{4\\ln(x+1)-4}{(x+1)^3}$. تنعدم $f''$ وتغير إشارتها عند $e-1$، ومنه نقطة الانعطاف هي $B\\left(e-1;e-1+\\frac3e\\right)$."
+            },
+            {
+              "id": "s2_e4_p2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $f(0)$ ثم ارسم كلا من $(\\Delta)$ و$(T)$ و$(C_f)$. ب) ناقش بيانيا وبحسب قيم العدد الحقيقي $m$ عدد حلول المعادلة $1+2\\ln(x+1)=m(x+1)$."
+            },
+            {
+              "id": "s2_e4_p2_q4_solution_value",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f(0)=1$."
+            },
+            {
+              "id": "s2_e4_p2_q4_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي للمستقيمين والمنحنى $(C_f)$.",
+              "assetId": "s2_e4_solution_graph"
+            },
+            {
+              "id": "s2_e4_p2_q4_solution_discussion",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "المعادلة تكافئ $f(x)=x+m$. إذا $m\\le0$ أو $m=\\frac2{\\sqrt e}$ يوجد حل واحد، وإذا $0<m<\\frac2{\\sqrt e}$ يوجد حلان مختلفان، وإذا $m>\\frac2{\\sqrt e}$ لا يوجد حل."
+            },
+            {
+              "id": "s2_e4_p2_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_p2",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب مساحة الحيز المستوي المحدد بالمنحنى $(C_f)$ والمستقيمات ذات المعادلات $y=x$ و$x=0$ و$x=e-1$."
+            },
+            {
+              "id": "s2_e4_p2_q5_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$A=\\int_0^{e-1}\\frac{1+2\\ln(x+1)}{x+1}\\,dx=2\\ \\text{u.a}$."
+            },
+            {
+              "id": "s2_e4_p2_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_e1_probability_law",
+      "exerciseOrderIndex": 1,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 1,
+      "cropBox": {
+        "x": 500,
+        "y": 890,
+        "width": 720,
+        "height": 230
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "قانون احتمال المتغير العشوائي X",
+      "caption": null,
+      "notes": "Native probability-law table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "قانون احتمال $X$",
+        "data": {
+          "rows": [
+            [
+              "$x_i$",
+              "1",
+              "2",
+              "3"
+            ],
+            [
+              "$P(X=x_i)$",
+              "$\\frac{11}{120}$",
+              "$\\frac{79}{120}$",
+              "$\\frac{30}{120}$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e4_g_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2,
+      "cropBox": {
+        "x": 530,
+        "y": 1180,
+        "width": 720,
+        "height": 500
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات g",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $g$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "1",
+              "3",
+              "$+\\infty$"
+            ],
+            [
+              "$g'(x)$",
+              "+",
+              "0",
+              "-",
+              "0",
+              "+"
+            ],
+            [
+              "$g(x)$",
+              "$-\\infty$ ↗",
+              "1",
+              "↘ $1-4e^{-3}$",
+              "↗ 1"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e4_g_sign",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2,
+      "cropBox": {
+        "x": 680,
+        "y": 1650,
+        "width": 520,
+        "height": 180
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "إشارة g",
+      "caption": null,
+      "notes": "Native sign table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "إشارة $g$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$g(x)$",
+              "-",
+              "0",
+              "+"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e4_f_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3,
+      "cropBox": {
+        "x": 570,
+        "y": 150,
+        "width": 620,
+        "height": 310
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$f'(x)$",
+              "-",
+              "0",
+              "+"
+            ],
+            [
+              "$f(x)$",
+              "$+\\infty$ ↘",
+              "1",
+              "↗ $+\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e4_solution_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 4,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 3,
+      "cropBox": {
+        "x": 500,
+        "y": 790,
+        "width": 820,
+        "height": 680
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم المستقيمين والمنحنى في الموضوع الأول",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s2_e1_probability_law",
+      "exerciseOrderIndex": 1,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 4,
+      "cropBox": {
+        "x": 540,
+        "y": 820,
+        "width": 690,
+        "height": 220
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "قانون احتمال المتغير العشوائي X",
+      "caption": null,
+      "notes": "Native probability-law table rebuilt from the official correction.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "قانون احتمال $X$",
+        "data": {
+          "rows": [
+            [
+              "$x_i$",
+              "0",
+              "1",
+              "2",
+              "3"
+            ],
+            [
+              "$P(X=x_i)$",
+              "$\\frac{14}{55}$",
+              "$\\frac{28}{55}$",
+              "$\\frac{12}{55}$",
+              "$\\frac{1}{55}$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s2_e4_g_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 5,
+      "cropBox": {
+        "x": 570,
+        "y": 870,
+        "width": 520,
+        "height": 330
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات g",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $g$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "-1",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$g'(x)$",
+              "-",
+              "0",
+              "+"
+            ],
+            [
+              "$g(x)$",
+              "↘",
+              "2",
+              "↗"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s2_e4_f_variation",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 5,
+      "cropBox": {
+        "x": 590,
+        "y": 1950,
+        "width": 510,
+        "height": 340
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "-1",
+              "$+\\infty$"
+            ],
+            [
+              "$f'(x)$",
+              "+"
+            ],
+            [
+              "$f(x)$",
+              "$-\\infty$ ↗",
+              "$+\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s2_e4_solution_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 4,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 6,
+      "cropBox": {
+        "x": 520,
+        "y": 540,
+        "width": 780,
+        "height": 700
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم المستقيمين والمنحنى في الموضوع الثاني",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": null
+    }
+  ],
+  "uncertainties": [
+    {
+      "scope": "graph-assets",
+      "note": "Function graphs are kept as cropped source assets, not formula-graph native render data."
+    }
+  ]
+}

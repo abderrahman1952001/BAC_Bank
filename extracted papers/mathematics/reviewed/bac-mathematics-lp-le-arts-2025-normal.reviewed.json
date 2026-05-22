@@ -1,0 +1,1068 @@
+{
+  "exam": {
+    "title": "اختبار في مادة الرياضيات - بكالوريا 2025 - شعب آداب وفلسفة، لغات أجنبية، فنون",
+    "durationMinutes": 150,
+    "totalPoints": 20,
+    "hasCorrection": true,
+    "sourceLanguage": "ar"
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "s1_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ]
+        },
+        {
+          "id": "s1_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "ليكن $a$ و$b$ عددين طبيعيين حيث: $a=2025$ و$b\\equiv12\\ [7]$."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 3,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) عين باقي القسمة الإقليدية لكل من $a$ و$b$ على $7$. ب) استنتج باقي قسمة العدد $5a+2b^2$ على $7$."
+            },
+            {
+              "id": "s1_e1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "لدينا $a=7\\times289+2$ ومنه باقي قسمة $a$ على $7$ هو $2$. كما أن $b\\equiv7+5\\ [7]$ ومنه باقي قسمة $b$ على $7$ هو $5$. ومنه $5a\\equiv3\\ [7]$ و$2b^2\\equiv1\\ [7]$، وبالتالي $5a+2b^2\\equiv4\\ [7]$."
+            },
+            {
+              "id": "s1_e1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "3 نقاط حسب التفصيل الرسمي."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) برهن أنه من أجل كل عدد طبيعي $n$: $2^{3n}\\equiv1\\ [7]$. ب) استنتج باقي قسمة العدد $a^{1446}$ على $7$."
+            },
+            {
+              "id": "s1_e1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل عدد طبيعي $n$: $2^{3n}=8^n\\equiv1\\ [7]$. وبما أن $a\\equiv2\\ [7]$ و$1446=3\\times482$ فإن $a^{1446}\\equiv2^{3\\times482}\\equiv1\\ [7]$."
+            },
+            {
+              "id": "s1_e1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "تحقق أن $b\\equiv-2\\ [7]$، ثم استنتج باقي قسمة العدد $b^{1446}$ على $7$."
+            },
+            {
+              "id": "s1_e1_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "لدينا $b\\equiv5\\equiv-2\\ [7]$. ومنه $b^{1446}\\equiv(-2)^{1446}\\equiv2^{3\\times482}\\equiv1\\ [7]$."
+            },
+            {
+              "id": "s1_e1_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "حدد قيم العدد الطبيعي $n$ بحيث: $3n+a^{1446}+b^{1446}\\equiv0\\ [7]$."
+            },
+            {
+              "id": "s1_e1_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بما أن $a^{1446}\\equiv1\\ [7]$ و$b^{1446}\\equiv1\\ [7]$ فإن $3n+2\\equiv0\\ [7]$، ومنه $n\\equiv4\\ [7]$."
+            },
+            {
+              "id": "s1_e1_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s1_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 3,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نعتبر المتتالية العددية $(v_n)$ المعرفة على $\\mathbb{N}$ بـ: $v_n=3\\times4^n$. أ) احسب $v_0$ و$v_1$ و$v_2$. ب) برهن أن $(v_n)$ متتالية هندسية أساسها $4$. ج) احسب $S_n=v_0+v_1+\\cdots+v_n$ بدلالة $n$."
+            },
+            {
+              "id": "s1_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$v_0=3$ و$v_1=12$ و$v_2=48$. ومن أجل كل عدد طبيعي $n$: $v_{n+1}=4v_n$، ومنه $(v_n)$ هندسية أساسها $4$. كما أن $S_n=3\\frac{4^{n+1}-1}{4-1}=4^{n+1}-1$."
+            },
+            {
+              "id": "s1_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "3 نقاط."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "لتكن $(u_n)$ متتالية هندسية حدودها موجبة، حدها الأول $u_0$ وأساسها $q$، حيث $u_5=32$ و$u_1\\times u_3=16$. أ) احسب $u_2$. ب) بين أن $q=2$ و$u_0=1$. ج) اكتب $u_n$ بدلالة $n$."
+            },
+            {
+              "id": "s1_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من خاصية المتتالية الهندسية وحدودها الموجبة نحصل على $u_2=4$. ثم $q=2$ و$u_0=1$، وبالتالي $u_n=2^n$."
+            },
+            {
+              "id": "s1_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) تحقق أنه من أجل كل عدد طبيعي $n$: $v_n=3u_{2n}$. ب) استنتج $T_n=u_0+u_2+u_4+\\cdots+u_{2n}$."
+            },
+            {
+              "id": "s1_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بما أن $u_{2n}=2^{2n}=4^n$ فإن $v_n=3u_{2n}$. ومنه $T_n=\\frac{1}{3}S_n=\\frac{4^{n+1}-1}{3}$."
+            },
+            {
+              "id": "s1_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "لتكن الدالة $f$ المعرفة على $\\mathbb{R}$ بـ: $f(x)=2x^3+3x^2-1$، وليكن $(C_f)$ تمثيلها البياني في معلم متعامد ومتجانس."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $\\lim_{x\\to-\\infty} f(x)$ و$\\lim_{x\\to+\\infty} f(x)$."
+            },
+            {
+              "id": "s1_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to-\\infty} f(x)=-\\infty$ و$\\lim_{x\\to+\\infty} f(x)=+\\infty$."
+            },
+            {
+              "id": "s1_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) برهن أنه من أجل كل عدد حقيقي $x$: $f'(x)=6x(x+1)$. ب) ادرس اتجاه تغير الدالة $f$ وشكل جدول تغيراتها."
+            },
+            {
+              "id": "s1_e3_q2_solution_derivative",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل عدد حقيقي $x$: $f'(x)=6x(x+1)$. إشارة $f'(x)$ موجبة على $]-\\infty;-1[$ و$]0;+\\infty[$، سالبة على $]-1;0[$، وتنعدم عند $-1$ و$0$."
+            },
+            {
+              "id": "s1_e3_q2_solution_variation",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول التغيرات الرسمي للدالة $f$.",
+              "assetId": "s1_e3_variation_table"
+            },
+            {
+              "id": "s1_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أثبت أن النقطة $A\\left(-\\frac12;-\\frac12\\right)$ نقطة انعطاف للمنحنى $(C_f)$."
+            },
+            {
+              "id": "s1_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "لدينا من أجل كل عدد حقيقي $x$: $f''(x)=12x+6$. تنعدم $f''$ وتغير إشارتها عند $x=-\\frac12$، ومنه $A\\left(-\\frac12;-\\frac12\\right)$ نقطة انعطاف."
+            },
+            {
+              "id": "s1_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عين معادلة المماس $(T)$ للمنحنى $(C_f)$ عند النقطة $A$."
+            },
+            {
+              "id": "s1_e3_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "معادلة المماس هي: $(T): y=-\\frac32x-\\frac54$."
+            },
+            {
+              "id": "s1_e3_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) أثبت أنه من أجل كل عدد حقيقي $x$: $f(x)=(2x-1)(x+1)^2$. ب) استنتج فواصل نقاط تقاطع المنحنى $(C_f)$ مع محور الفواصل."
+            },
+            {
+              "id": "s1_e3_q5_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل عدد حقيقي $x$: $f(x)=(2x-1)(x+1)^2$. ومنه $f(x)=0$ يكافئ $x=-1$ أو $x=\\frac12$."
+            },
+            {
+              "id": "s1_e3_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q6",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 6,
+          "label": "السؤال 6",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q6_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $f(-2)$ و$f(1)$، ثم ارسم كلا من $(T)$ و$(C_f)$."
+            },
+            {
+              "id": "s1_e3_q6_solution_values",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f(-2)=-5$ و$f(1)=4$."
+            },
+            {
+              "id": "s1_e3_q6_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي للمماس $(T)$ والمنحنى $(C_f)$.",
+              "assetId": "s1_e3_graph"
+            },
+            {
+              "id": "s1_e3_q6_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "s2_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الموضوع الثاني."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "لتكن $a$ و$b$ و$c$ أعدادا طبيعية حيث: $a=2025$ و$b=1446$ و$c+5\\equiv0\\ [8]$."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 3,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) عين باقي القسمة الإقليدية لكل من $a$ و$b$ على $8$. ب) أثبت أن $c\\equiv3\\ [8]$، ثم استنتج أن $b+c-a\\equiv0\\ [8]$."
+            },
+            {
+              "id": "s2_e1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "لدينا $a=8\\times253+1$، ومنه باقي قسمة $a$ على $8$ هو $1$. ولدينا $b=8\\times180+6$، ومنه باقي قسمة $b$ على $8$ هو $6$. كما أن $c+5\\equiv0\\ [8]$ يعطي $c\\equiv3\\ [8]$، وبالتالي $b+c-a\\equiv6+3-1\\equiv0\\ [8]$."
+            },
+            {
+              "id": "s2_e1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "3 نقاط."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أثبت أن العدد $(c+6)^{1954}+1871$ يقبل القسمة على $8$."
+            },
+            {
+              "id": "s2_e1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "لدينا $c\\equiv3\\ [8]$ ومنه $c+6\\equiv1\\ [8]$. بالتالي $(c+6)^{1954}+1871\\equiv1+7\\equiv0\\ [8]$، فيقبل العدد القسمة على $8$."
+            },
+            {
+              "id": "s2_e1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) عين الأعداد الطبيعية $n$ التي تحقق $3n\\equiv a\\ [8]$. ب) استنتج الأعداد الطبيعية $n$ التي تحقق $3n\\equiv a\\ [8]$ و$40<n<60$."
+            },
+            {
+              "id": "s2_e1_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بما أن $a\\equiv1\\ [8]$ فإن $3n\\equiv1\\ [8]$، ومنه $n\\equiv3\\ [8]$ أي $n=8k+3$ حيث $k\\in\\mathbb{N}$. ومع الشرط $40<n<60$ نحصل على $n\\in\\{43;51;59\\}$."
+            },
+            {
+              "id": "s2_e1_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 6,
+          "topicCodes": [],
+          "blocks": []
+        },
+        {
+          "id": "s2_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نعتبر المتتالية العددية $(u_n)$ المعرفة على $\\mathbb{N}$ بـ: $u_n=3n-9$. احسب $u_0$ و$u_1$ و$u_2$."
+            },
+            {
+              "id": "s2_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$u_0=-9$ و$u_1=-6$ و$u_2=-3$."
+            },
+            {
+              "id": "s2_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أثبت أن $(u_n)$ متتالية حسابية أساسها $3$، ثم عين اتجاه تغيرها."
+            },
+            {
+              "id": "s2_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل $n\\in\\mathbb{N}$: $u_{n+1}-u_n=3$، ومنه $(u_n)$ متتالية حسابية أساسها $3$، وهي متزايدة تماما."
+            },
+            {
+              "id": "s2_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) تحقق أن $2025$ حد من حدود المتتالية $(u_n)$. ب) احسب $S=u_0+u_1+\\cdots+u_{678}$."
+            },
+            {
+              "id": "s2_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "حل المعادلة $3n-9=2025$ يعطي $n=678$، ومنه $2025$ حد من حدود المتتالية. كما أن $S=\\frac{679}{2}(u_0+u_{678})=684432$."
+            },
+            {
+              "id": "s2_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نعتبر المتتالية العددية $(v_n)$ المعرفة على $\\mathbb{N}$ بـ: $v_n=2^n+3n-9$. أ) احسب $v_0$ و$v_1$ و$v_2$. ب) برر أن $(v_n)$ ليست حسابية وليست هندسية."
+            },
+            {
+              "id": "s2_e2_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$v_0=-8$ و$v_1=-4$ و$v_2=1$. وبما أن $v_0+v_2\\ne2v_1$ فهي ليست حسابية، وبما أن $v_0\\times v_2\\ne v_1^2$ فهي ليست هندسية."
+            },
+            {
+              "id": "s2_e2_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "لتكن الدالة $f$ المعرفة على $\\mathbb{R}$ بـ: $f(x)=\\frac12(x^3-3x^2+2)$، وليكن $(C_f)$ تمثيلها البياني في معلم متعامد ومتجانس."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $\\lim_{x\\to-\\infty} f(x)$ و$\\lim_{x\\to+\\infty} f(x)$."
+            },
+            {
+              "id": "s2_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to-\\infty} f(x)=-\\infty$ و$\\lim_{x\\to+\\infty} f(x)=+\\infty$."
+            },
+            {
+              "id": "s2_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) برهن أنه من أجل كل عدد حقيقي $x$: $f'(x)=\\frac32x(x-2)$. ب) استنتج اتجاه تغير الدالة $f$ وشكل جدول تغيراتها."
+            },
+            {
+              "id": "s2_e3_q2_solution_derivative",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل عدد حقيقي $x$: $f'(x)=\\frac32x(x-2)$. إشارة $f'(x)$ موجبة على $]-\\infty;0[$ و$]2;+\\infty[$، سالبة على $]0;2[$، وتنعدم عند $0$ و$2$."
+            },
+            {
+              "id": "s2_e3_q2_solution_variation",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول التغيرات الرسمي للدالة $f$.",
+              "assetId": "s2_e3_variation_table"
+            },
+            {
+              "id": "s2_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عين معادلة المماس $(T)$ للمنحنى $(C_f)$ عند النقطة ذات الفاصلة $1$."
+            },
+            {
+              "id": "s2_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "معادلة المماس هي: $(T): y=-\\frac32x+\\frac32$."
+            },
+            {
+              "id": "s2_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "بين أن المنحنى $(C_f)$ يقبل نقطة انعطاف $A$، ثم عين إحداثييها."
+            },
+            {
+              "id": "s2_e3_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "لدينا من أجل كل عدد حقيقي $x$: $f''(x)=3x-3$. تنعدم $f''$ وتغير إشارتها عند $1$، ومنه نقطة الانعطاف هي $A(1;0)$."
+            },
+            {
+              "id": "s2_e3_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) احسب $f(-1)$ و$f(3)$، ثم ارسم كلا من $(T)$ و$(C_f)$. ب) حدد بيانيا عدد حلول المعادلة $f(x)=0$."
+            },
+            {
+              "id": "s2_e3_q5_solution_values",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f(-1)=-1$ و$f(3)=1$."
+            },
+            {
+              "id": "s2_e3_q5_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي للمماس $(T)$ والمنحنى $(C_f)$.",
+              "assetId": "s2_e3_graph"
+            },
+            {
+              "id": "s2_e3_q5_solution_count",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بيانيا، للمعادلة $f(x)=0$ ثلاثة حلول."
+            },
+            {
+              "id": "s2_e3_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_e3_variation_table",
+      "exerciseOrderIndex": 3,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2,
+      "cropBox": {
+        "x": 690,
+        "y": 180,
+        "width": 650,
+        "height": 330
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "$-1$",
+              "0",
+              "$+\\infty$"
+            ],
+            [
+              "$f'(x)$",
+              "+",
+              "0",
+              "-",
+              "0",
+              "+"
+            ],
+            [
+              "$f(x)$",
+              "$-\\infty$ ↗",
+              "0",
+              "↘ $-1$",
+              "↗ $+\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s1_e3_graph",
+      "exerciseOrderIndex": 3,
+      "questionOrderIndex": 6,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 2,
+      "cropBox": {
+        "x": 500,
+        "y": 760,
+        "width": 780,
+        "height": 640
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم المماس والمنحنى في الموضوع الأول",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s2_e3_variation_table",
+      "exerciseOrderIndex": 3,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 4,
+      "cropBox": {
+        "x": 650,
+        "y": 170,
+        "width": 660,
+        "height": 310
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            [
+              "$x$",
+              "$-\\infty$",
+              "0",
+              "2",
+              "$+\\infty$"
+            ],
+            [
+              "$f'(x)$",
+              "+",
+              "0",
+              "-",
+              "0",
+              "+"
+            ],
+            [
+              "$f(x)$",
+              "$-\\infty$ ↗",
+              "1",
+              "↘ $-1$",
+              "↗ $+\\infty$"
+            ]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": [
+          "Rendered natively from the official correction."
+        ]
+      }
+    },
+    {
+      "id": "s2_e3_graph",
+      "exerciseOrderIndex": 3,
+      "questionOrderIndex": 5,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 4,
+      "cropBox": {
+        "x": 460,
+        "y": 700,
+        "width": 880,
+        "height": 640
+      },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم المماس والمنحنى في الموضوع الثاني",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": null
+    }
+  ],
+  "uncertainties": [
+    {
+      "scope": "graph-assets",
+      "note": "Function graphs are kept as cropped source assets, not formula-graph native render data."
+    }
+  ]
+}

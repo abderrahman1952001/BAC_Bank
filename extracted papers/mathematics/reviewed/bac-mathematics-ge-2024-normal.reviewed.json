@@ -1,0 +1,1501 @@
+{
+  "exam": {
+    "title": "اختبار في مادة الرياضيات - بكالوريا 2024 - شعبة تسيير واقتصاد",
+    "durationMinutes": 210,
+    "totalPoints": 20,
+    "hasCorrection": true,
+    "sourceLanguage": "ar"
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "id": "s1_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ]
+        },
+        {
+          "id": "s1_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(u_n)$ المعرفة على $\\mathbb{N}$ بـ: $u_0=0$، ومن أجل كل عدد طبيعي $n$: $u_{n+1}=\\frac56u_n-\\frac13$."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب الحدين $u_1$ و$u_2$."
+            },
+            {
+              "id": "s1_e1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$u_1=-\\frac13$ و$u_2=-\\frac{11}{18}$."
+            },
+            {
+              "id": "s1_e1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) برهن بالتراجع أنه من أجل كل عدد طبيعي $n$: $-2<u_n\\le0$. ب) بين أن المتتالية $(u_n)$ متناقصة تماما."
+            },
+            {
+              "id": "s1_e1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بالبرهان بالتراجع نحصل من أجل كل $n\\in\\mathbb{N}$ على $-2<u_n\\le0$. كما أن $u_{n+1}-u_n=-\\frac16(u_n+2)$، ومنه المتتالية $(u_n)$ متناقصة تماما."
+            },
+            {
+              "id": "s1_e1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة حسب سلم التصحيح."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(v_n)$ المعرفة على $\\mathbb{N}$ بـ: $v_n=u_n+2$. أ) بين أن $(v_n)$ متتالية هندسية أساسها $\\frac56$. ب) اكتب $v_n$ بدلالة $n$ ثم بين أن من أجل كل عدد طبيعي $n$: $u_n=2(\\frac56)^n-2$. ج) احسب $\\lim_{n\\to+\\infty}u_n$."
+            },
+            {
+              "id": "s1_e1_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$v_{n+1}=\\frac56v_n$، ومنه $(v_n)$ هندسية أساسها $\\frac56$. وبما أن $v_0=2$ فإن $v_n=2(\\frac56)^n$، وبالتالي $u_n=2(\\frac56)^n-2$. إذن $\\lim_{n\\to+\\infty}u_n=-2$."
+            },
+            {
+              "id": "s1_e1_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e1_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e1",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e1_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "نضع: $S_n=v_0+v_1+v_2+\\cdots+v_n$ و$T_n=u_0+u_1+u_2+\\cdots+u_n$. احسب كلا من $S_n$ و$T_n$ بدلالة $n$."
+            },
+            {
+              "id": "s1_e1_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$S_n=12\\left[1-(\\frac56)^{n+1}\\right]$، ومنه $T_n=12\\left[1-(\\frac56)^{n+1}\\right]-2(n+1)$."
+            },
+            {
+              "id": "s1_e1_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عين الاقتراح الصحيح الوحيد من بين الاقتراحات الثلاثة في كل حالة من الحالات الآتية مع التبرير."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المعادلة $2e^{2x}+3e^x-2=0$ ذات المجهول الحقيقي $x$: (أ) تقبل حلا وحيدا، (ب) تقبل حلين مختلفين، (ج) لا تقبل حلا."
+            },
+            {
+              "id": "s1_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (أ): للمعادلة حل وحيد هو $-\\ln 2$."
+            },
+            {
+              "id": "s1_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$\\displaystyle\\int_0^1(3x^2+3e^{3x})\\,dx$ يساوي: (أ) $e^3+1$، (ب) $e^3$، (ج) $e^3-1$."
+            },
+            {
+              "id": "s1_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (ب)، لأن $\\int_0^1(3x^2+3e^{3x})\\,dx=[x^3+e^{3x}]_0^1=e^3$."
+            },
+            {
+              "id": "s1_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية المعرفة بـ $u_0=1$، ومن أجل كل عدد طبيعي $n$: $u_{n+1}=2u_n+1$ لها عبارة الحد العام: (أ) $2^{n+1}+1$، (ب) $2^n-1$، (ج) $2^{n+1}-1$."
+            },
+            {
+              "id": "s1_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (ج): $u_n=2^{n+1}-1$، وهي الوحيدة التي تحقق $u_0=1$."
+            },
+            {
+              "id": "s1_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e2_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e2",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e2_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$\\displaystyle\\lim_{x\\to+\\infty}\\frac{\\ln(2x)}{1+\\ln x}$ يساوي: (أ) $\\ln2$، (ب) $1$، (ج) $2$."
+            },
+            {
+              "id": "s1_e2_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (ب)، إذ $\\displaystyle\\frac{\\ln(2x)}{1+\\ln x}=\\frac{\\frac{\\ln2}{\\ln x}+1}{\\frac1{\\ln x}+1}$ ومنه النهاية تساوي $1$."
+            },
+            {
+              "id": "s1_e2_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "في الشكل المقابل، $(C_f)$ التمثيل البياني لدالة $f$ معرفة على $\\mathbb{R}$، والذي يقطع حامل محور الفواصل في نقطتين فاصلتاهما $1$ و$\\alpha$، و$(T)$ مماس المنحنى $(C_f)$ في النقطة $A(1;0)$."
+            },
+            {
+              "id": "s1_e3_graph_prompt",
+              "role": "PROMPT",
+              "type": "graph",
+              "value": "الشكل البياني المعطى لـ$(C_f)$ والمماس $(T)$.",
+              "assetId": "s1_e3_graph"
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "بقراءة بيانية: عين $f(1)$ و$f'(1)$ ثم أعط معادلة للمماس $(T)$."
+            },
+            {
+              "id": "s1_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f(1)=0$ و$f'(1)=-1$، ومعادلة المماس هي $(T):y=-x+1$."
+            },
+            {
+              "id": "s1_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "برر أن $A$ نقطة انعطاف لـ$(C_f)$."
+            },
+            {
+              "id": "s1_e3_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من الوضع النسبي لـ$(C_f)$ والمماس $(T)$، تكون النقطة $A$ نقطة انعطاف لـ$(C_f)$."
+            },
+            {
+              "id": "s1_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "حل في $\\mathbb{R}$ المعادلة $f(x)\\times f'(x)=0$."
+            },
+            {
+              "id": "s1_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من القراءة البيانية: $f(x)=0$ أو $f'(x)=0$، ومنه مجموعة الحلول هي $S=\\{\\alpha;0;1\\}$."
+            },
+            {
+              "id": "s1_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e3_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e3",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e3_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$F$ دالة أصلية للدالة $f$ على $\\mathbb{R}$. حدد حسب قيم $x$ إشارة $f(x)$ ثم استنتج اتجاه تغير الدالة $F$."
+            },
+            {
+              "id": "s1_e3_q4_solution_sign",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول إشارة $f$.",
+              "assetId": "s1_e3_sign_table"
+            },
+            {
+              "id": "s1_e3_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بما أن $F'=f$، فإن $F$ متناقصة تماما على كل من $]-\\infty;\\alpha]$ و$[1;+\\infty[$، ومتزايدة تماما على $[\\alpha;1]$."
+            },
+            {
+              "id": "s1_e3_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 5,
+          "label": "التمرين الرابع",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$f$ الدالة المعرفة على المجال $]0;+\\infty[$ بـ: $f(x)=1+\\frac{1+2\\ln x}{x^2}$، و$(C_f)$ تمثيلها البياني في المستوى المنسوب إلى معلم متعامد ومتجانس."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $\\lim_{x\\to+\\infty}f(x)$ و$\\lim_{x\\to0^+}f(x)$ ثم فسر النتيجتين هندسيا."
+            },
+            {
+              "id": "s1_e4_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to+\\infty}f(x)=1$ و$\\lim_{x\\to0^+}f(x)=-\\infty$. هندسيا، المستقيم $y=1$ مقارب أفقي لـ$(C_f)$ عند $+\\infty$، ويهبط المنحنى نحو $-\\infty$ عند الاقتراب من $0$ من اليمين."
+            },
+            {
+              "id": "s1_e4_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل $x$ من $]0;+\\infty[$: $f'(x)=\\frac{-4\\ln x}{x^3}$. ب) ادرس اتجاه تغير الدالة $f$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s1_e4_q2_solution_derivative",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل $x>0$: $f'(x)=\\frac{-4\\ln x}{x^3}$. إذن $f$ متزايدة تماما على $]0;1]$ ومتناقصة تماما على $[1;+\\infty[$."
+            },
+            {
+              "id": "s1_e4_q2_solution_variation",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $f$.",
+              "assetId": "s1_e4_variation_table"
+            },
+            {
+              "id": "s1_e4_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "بين أن المنحنى $(C_f)$ يقطع حامل محور الفواصل في نقطة وحيدة فاصلتها $\\alpha$ حيث $0.52<\\alpha<0.53$."
+            },
+            {
+              "id": "s1_e4_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الدالة $f$ مستمرة ومتزايدة تماما على $[0.52;0.53]$ و$f(0.52)\\times f(0.53)<0$، ومنه يقطع $(C_f)$ حامل محور الفواصل في نقطة وحيدة فاصلتها $\\alpha$ حيث $0.52<\\alpha<0.53$."
+            },
+            {
+              "id": "s1_e4_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 2.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) ادرس الوضع النسبي للمنحنى $(C_f)$ والمستقيم $(\\Delta)$ ذي المعادلة $y=1$. ب) احسب $f(e)$ ثم ارسم كلا من $(\\Delta)$ و$(C_f)$."
+            },
+            {
+              "id": "s1_e4_q4_solution_position",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f(x)-1=\\frac{1+2\\ln x}{x^2}$. لذلك يكون $(C_f)$ أسفل $(\\Delta)$ لما $0<x<\\frac1{\\sqrt e}$، وأعلى $(\\Delta)$ لما $x>\\frac1{\\sqrt e}$، و$(C_f)\\cap(\\Delta)=\\{A(\\frac1{\\sqrt e};1)\\}$. كما أن $f(e)=1+\\frac3{e^2}$."
+            },
+            {
+              "id": "s1_e4_q4_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي لـ$(C_f)$ و$(\\Delta)$.",
+              "assetId": "s1_e4_graph"
+            },
+            {
+              "id": "s1_e4_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s1_e4_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s1_e4",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s1_e4_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) اثبت أن الدالة $H:x\\mapsto\\frac{-3-2\\ln x}{x}$ دالة أصلية للدالة $h:x\\mapsto\\frac{1+2\\ln x}{x^2}$ على المجال $]0;+\\infty[$. ب) استنتج مساحة الحيز المستوي المحدد بـ$(C_f)$ و$(\\Delta)$ والمستقيمين $x=1$ و$x=e$."
+            },
+            {
+              "id": "s1_e4_q5_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$H'(x)=h(x)$ على $]0;+\\infty[$. ومنه $\\displaystyle\\int_1^e\\frac{1+2\\ln x}{x^2}\\,dx=[H(x)]_1^e=3-\\frac5e$، وبالتالي $\\mathcal{A}=(3-\\frac5e)\\,u.a$."
+            },
+            {
+              "id": "s1_e4_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "id": "s2_context",
+          "nodeType": "CONTEXT",
+          "parentId": null,
+          "orderIndex": 1,
+          "label": null,
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_context_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الموضوع الثاني."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 2,
+          "label": "التمرين الأول",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عين الاقتراح الصحيح الوحيد من بين الاقتراحات الثلاثة في كل حالة من الحالات الآتية دون التبرير."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $f$ المعرفة على $\\mathbb{R}$ بـ $f(x)=8x^3+1$. الدالة الأصلية $F$ للدالة $f$ والتي تنعدم عند $1$ هي: (أ) $F(x)=x^4+x-2$، (ب) $F(x)=2x^4+x-3$، (ج) $F(x)=2x^4-2x$."
+            },
+            {
+              "id": "s2_e1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (ب)."
+            },
+            {
+              "id": "s2_e1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة، والتبرير غير مطلوب."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $g$ المعرفة على $\\mathbb{R}$ بـ $g(x)=\\frac{e^x}{1+e^x}$. القيمة المتوسطة للدالة $g$ على المجال $[-\\ln2;\\ln2]$ هي: (أ) $2\\ln2$، (ب) $\\frac1{2\\ln2}$، (ج) $\\frac12$."
+            },
+            {
+              "id": "s2_e1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (ج)."
+            },
+            {
+              "id": "s2_e1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة، والتبرير غير مطلوب."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "حل المعادلة $\\ln(x-2)+\\ln(x-4)=3\\ln2$ على المجال $]4;+\\infty[$ هو: (أ) $6$، (ب) $8$، (ج) $9$."
+            },
+            {
+              "id": "s2_e1_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (أ)."
+            },
+            {
+              "id": "s2_e1_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة، والتبرير غير مطلوب."
+            }
+          ]
+        },
+        {
+          "id": "s2_e1_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e1",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e1_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "الدالة $h$ المعرفة على $]-1;1[$ بـ $h(x)=\\ln\\left(\\frac{1+x}{1-x}\\right)$ هي: (أ) زوجية، (ب) فردية، (ج) لا زوجية ولا فردية."
+            },
+            {
+              "id": "s2_e1_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الإجابة الصحيحة هي (ب)."
+            },
+            {
+              "id": "s2_e1_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة، والتبرير غير مطلوب."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 3,
+          "label": "التمرين الثاني",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$P(X)=(2X-1)(X^2+X-2)$ كثيرة حدود معرفة على $\\mathbb{R}$."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "ادرس إشارة $P(X)$."
+            },
+            {
+              "id": "s2_e2_q1_solution_table",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول إشارة $P(X)$.",
+              "assetId": "s2_e2_sign_table"
+            },
+            {
+              "id": "s2_e2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$P(X)$ سالب تماما على $]-\\infty;-2[$ و$]\\frac12;1[$، وموجب تماما على $]-2;\\frac12[$ و$]1;+\\infty[$، وينعدم عند $-2$ و$\\frac12$ و$1$."
+            },
+            {
+              "id": "s2_e2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) حل في المجال $]0;+\\infty[$ المعادلة $(2\\ln x-1)((\\ln x)^2+\\ln x-2)=0$. ب) استنتج في $]0;+\\infty[$ حلول المتراجحة $(2\\ln x-1)((\\ln x)^2+\\ln x-2)<0$."
+            },
+            {
+              "id": "s2_e2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "مجموعة حلول المعادلة هي $\\{e^{-2};\\sqrt e;e\\}$. ومجموعة حلول المتراجحة هي $]0;e^{-2}[\\cup]\\sqrt e;e[$."
+            },
+            {
+              "id": "s2_e2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        },
+        {
+          "id": "s2_e2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "حل في المجال $]-1;+\\infty[$ المعادلة $(\\ln(x+1))^2+\\ln(x+1)-2=0$."
+            },
+            {
+              "id": "s2_e2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "مجموعة الحلول هي $\\{e^{-2}-1;e-1\\}$."
+            },
+            {
+              "id": "s2_e2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 4,
+          "label": "التمرين الثالث",
+          "maxPoints": 4,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(u_n)$ معرفة بـ: $u_0=4$، ومن أجل كل عدد طبيعي $n$: $u_{n+1}=\\frac34u_n-\\frac12$."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $u_1$ و$u_2$."
+            },
+            {
+              "id": "s2_e3_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$u_1=\\frac52$ و$u_2=\\frac{11}{8}$."
+            },
+            {
+              "id": "s2_e3_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) برهن بالتراجع أنه من أجل كل عدد طبيعي $n$: $u_n>-2$. ب) بين أن المتتالية $(u_n)$ متناقصة تماما."
+            },
+            {
+              "id": "s2_e3_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "بالبرهان بالتراجع نحصل على $u_n>-2$ لكل $n\\in\\mathbb{N}$. كما أن $u_{n+1}-u_n=-\\frac14(u_n+2)$، ومنه $(u_n)$ متناقصة تماما."
+            },
+            {
+              "id": "s2_e3_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة حسب سلم التصحيح."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 1.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "المتتالية العددية $(v_n)$ المعرفة على $\\mathbb{N}$ بـ: $v_n=u_n+2$. أ) بين أن $(v_n)$ متتالية هندسية أساسها $\\frac34$. ب) اكتب $v_n$ بدلالة $n$ ثم بين أن $u_n=6(\\frac34)^n-2$. ج) احسب $\\lim_{n\\to+\\infty}u_n$."
+            },
+            {
+              "id": "s2_e3_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$v_{n+1}=\\frac34v_n$، ومنه أساسها $q=\\frac34$. وبما أن $v_0=6$ فإن $v_n=6(\\frac34)^n$، وبالتالي $u_n=6(\\frac34)^n-2$. إذن $\\lim_{n\\to+\\infty}u_n=-2$."
+            },
+            {
+              "id": "s2_e3_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e3_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e3",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e3_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب كلا من $S_n=v_0+v_1+\\cdots+v_n$ و$T_n=\\frac1{2+u_0}+\\frac1{2+u_1}+\\cdots+\\frac1{2+u_n}$ بدلالة $n$."
+            },
+            {
+              "id": "s2_e3_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$S_n=24\\left(1-(\\frac34)^{n+1}\\right)$ و$T_n=\\frac12\\left((\\frac43)^{n+1}-1\\right)$."
+            },
+            {
+              "id": "s2_e3_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4",
+          "nodeType": "EXERCISE",
+          "parentId": null,
+          "orderIndex": 5,
+          "label": "التمرين الرابع",
+          "maxPoints": 8,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "يتكون التمرين من جزأين."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_part1",
+          "nodeType": "PART",
+          "parentId": "s2_e4",
+          "orderIndex": 1,
+          "label": "الجزء الأول",
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_part1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "لتكن $g$ الدالة المعرفة على $\\mathbb{R}$ بـ: $g(x)=1-(x+1)e^{-x}$."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p1_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part1",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p1_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "ادرس اتجاه تغير الدالة $g$."
+            },
+            {
+              "id": "s2_e4_p1_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "من أجل كل $x\\in\\mathbb{R}$، $g'(x)=xe^{-x}$. إذن $g$ متناقصة تماما على $]-\\infty;0]$ ومتزايدة تماما على $[0;+\\infty[$."
+            },
+            {
+              "id": "s2_e4_p1_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p1_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part1",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p1_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $g(0)$، ثم استنتج أنه من أجل كل عدد حقيقي $x$: $g(x)\\ge0$."
+            },
+            {
+              "id": "s2_e4_p1_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$g(0)=0$، وبما أن $g$ تبلغ قيمتها الصغرى عند $0$ فإن $g(x)\\ge0$ من أجل كل $x\\in\\mathbb{R}$."
+            },
+            {
+              "id": "s2_e4_p1_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_part2",
+          "nodeType": "PART",
+          "parentId": "s2_e4",
+          "orderIndex": 2,
+          "label": "الجزء الثاني",
+          "maxPoints": null,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_part2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "$f$ الدالة المعرفة على $\\mathbb{R}$ بـ: $f(x)=x+(x+2)e^{-x}$، و$(C_f)$ تمثيلها البياني في المستوى المنسوب إلى معلم متعامد ومتجانس."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q1",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part2",
+          "orderIndex": 1,
+          "label": "السؤال 1",
+          "maxPoints": 0.75,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q1_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "احسب $\\lim_{x\\to-\\infty}f(x)$، وبين أن $\\lim_{x\\to+\\infty}f(x)=+\\infty$."
+            },
+            {
+              "id": "s2_e4_p2_q1_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to-\\infty}f(x)=-\\infty$ و$\\lim_{x\\to+\\infty}f(x)=+\\infty$."
+            },
+            {
+              "id": "s2_e4_p2_q1_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.75 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q2",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part2",
+          "orderIndex": 2,
+          "label": "السؤال 2",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q2_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أنه من أجل كل عدد حقيقي $x$: $f'(x)=g(x)$. ب) استنتج اتجاه تغير الدالة $f$ ثم شكل جدول تغيراتها."
+            },
+            {
+              "id": "s2_e4_p2_q2_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$f'(x)=g(x)$، وبما أن $g(x)\\ge0$ فإن الدالة $f$ متزايدة تماما على $\\mathbb{R}$."
+            },
+            {
+              "id": "s2_e4_p2_q2_solution_variation",
+              "role": "SOLUTION",
+              "type": "image",
+              "value": "جدول تغيرات $f$.",
+              "assetId": "s2_e4_variation_table"
+            },
+            {
+              "id": "s2_e4_p2_q2_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q3",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part2",
+          "orderIndex": 3,
+          "label": "السؤال 3",
+          "maxPoints": 0.5,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q3_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "عين معادلة للمماس $(T)$ للمنحنى $(C_f)$ في النقطة ذات الفاصلة $0$."
+            },
+            {
+              "id": "s2_e4_p2_q3_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "معادلة المماس هي $(T):y=2$."
+            },
+            {
+              "id": "s2_e4_p2_q3_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "0.5 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q4",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part2",
+          "orderIndex": 4,
+          "label": "السؤال 4",
+          "maxPoints": 1.25,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q4_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أن المستقيم $(\\Delta)$ ذي المعادلة $y=x$ مقارب مائل للمنحنى $(C_f)$ عند $+\\infty$. ب) ادرس الوضع النسبي للمنحنى $(C_f)$ والمستقيم $(\\Delta)$."
+            },
+            {
+              "id": "s2_e4_p2_q4_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$\\lim_{x\\to+\\infty}(f(x)-x)=0$، ومنه $(\\Delta):y=x$ مقارب مائل لـ$(C_f)$ عند $+\\infty$. كما أن $f(x)-x=(x+2)e^{-x}$، فيكون $(C_f)$ أسفل $(\\Delta)$ على $]-\\infty;-2[$ وأعلاه على $]-2;+\\infty[$، ويقطعه في النقطة $A(-2;-2)$."
+            },
+            {
+              "id": "s2_e4_p2_q4_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1.25 نقطة."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q5",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part2",
+          "orderIndex": 5,
+          "label": "السؤال 5",
+          "maxPoints": 2,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q5_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أن المنحنى $(C_f)$ يقطع حامل محور الفواصل في نقطة وحيدة فاصلتها $\\alpha$ حيث $-1.69<\\alpha<-1.68$. ب) ارسم $(T)$ و$(\\Delta)$ و$(C_f)$."
+            },
+            {
+              "id": "s2_e4_p2_q5_solution_root",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "الدالة $f$ مستمرة ومتزايدة تماما على $[-1.69;-1.68]$ و$f(-1.69)\\times f(-1.68)<0$، ومنه للمعادلة $f(x)=0$ حل وحيد $\\alpha$ حيث $-1.69<\\alpha<-1.68$."
+            },
+            {
+              "id": "s2_e4_p2_q5_solution_graph",
+              "role": "SOLUTION",
+              "type": "graph",
+              "value": "الرسم الرسمي لـ$(C_f)$ و$(\\Delta)$ و$(T)$.",
+              "assetId": "s2_e4_graph"
+            },
+            {
+              "id": "s2_e4_p2_q5_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "2 نقطتان."
+            }
+          ]
+        },
+        {
+          "id": "s2_e4_p2_q6",
+          "nodeType": "QUESTION",
+          "parentId": "s2_e4_part2",
+          "orderIndex": 6,
+          "label": "السؤال 6",
+          "maxPoints": 1,
+          "topicCodes": [],
+          "blocks": [
+            {
+              "id": "s2_e4_p2_q6_prompt",
+              "role": "PROMPT",
+              "type": "paragraph",
+              "value": "أ) بين أن الدالة $H:x\\mapsto-(x+3)e^{-x}$ دالة أصلية للدالة $h:x\\mapsto(x+2)e^{-x}$ على $\\mathbb{R}$. ب) احسب مساحة الحيز المستوي المحدد بالمنحنى $(C_f)$ والمستقيمات التي معادلاتها: $y=x$ و$x=0$ و$x=2$."
+            },
+            {
+              "id": "s2_e4_p2_q6_solution",
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "value": "$H'(x)=h(x)$ على $\\mathbb{R}$. ومنه $\\displaystyle\\mathcal{A}=\\int_0^2(f(x)-x)\\,dx=H(2)-H(0)=3-\\frac5{e^2}$، أي $\\mathcal{A}=(3-\\frac5{e^2})\\,u.a$."
+            },
+            {
+              "id": "s2_e4_p2_q6_rubric",
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "value": "1 نقطة."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "s1_e3_graph",
+      "exerciseOrderIndex": 3,
+      "questionOrderIndex": null,
+      "documentKind": "EXAM",
+      "role": "PROMPT",
+      "classification": "graph",
+      "pageNumber": 2,
+      "cropBox": { "x": 0, "y": 410, "width": 770, "height": 570 },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "الشكل البياني للتمرين الثالث في الموضوع الأول",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s1_e3_sign_table",
+      "exerciseOrderIndex": 3,
+      "questionOrderIndex": 4,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 1,
+      "cropBox": { "x": 570, "y": 1820, "width": 760, "height": 300 },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول إشارة f",
+      "caption": null,
+      "notes": "Native sign table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "إشارة $f$",
+        "data": {
+          "rows": [
+            ["$x$", "$-\\infty$", "$\\alpha$", "1", "$+\\infty$"],
+            ["$f(x)$", "-", "0", "+", "0", "-"]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": ["Rendered natively from the official correction."]
+      }
+    },
+    {
+      "id": "s1_e4_variation_table",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 2,
+      "cropBox": { "x": 570, "y": 250, "width": 620, "height": 420 },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            ["$x$", "0", "1", "$+\\infty$"],
+            ["$f'(x)$", "+", "0", "-"],
+            ["$f(x)$", "$-\\infty$ ↗", "2", "↘ 1"]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": ["Rendered natively from the official correction."]
+      }
+    },
+    {
+      "id": "s1_e4_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 4,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 2,
+      "cropBox": { "x": 520, "y": 900, "width": 700, "height": 560 },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم Cf وDelta",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_1",
+      "nativeSuggestion": null
+    },
+    {
+      "id": "s2_e2_sign_table",
+      "exerciseOrderIndex": 2,
+      "questionOrderIndex": 1,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 3,
+      "cropBox": { "x": 350, "y": 760, "width": 1200, "height": 360 },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول إشارة P",
+      "caption": null,
+      "notes": "Native sign table rebuilt from the official correction text.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "إشارة $P(X)$",
+        "data": {
+          "rows": [
+            ["$X$", "$-\\infty$", "-2", "$\\frac12$", "1", "$+\\infty$"],
+            ["$P(X)$", "-", "0", "+", "0", "-", "0", "+"]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": ["Rendered natively from the official correction."]
+      }
+    },
+    {
+      "id": "s2_e4_variation_table",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 2,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "table",
+      "pageNumber": 4,
+      "cropBox": { "x": 470, "y": 230, "width": 660, "height": 430 },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "جدول تغيرات f",
+      "caption": null,
+      "notes": "Native variation table rebuilt from the official correction.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": {
+        "type": "table",
+        "value": "جدول تغيرات $f$",
+        "data": {
+          "rows": [
+            ["$x$", "$-\\infty$", "0", "$+\\infty$"],
+            ["$f'(x)$", "+", "0", "+"],
+            ["$f(x)$", "$-\\infty$ ↗", "2", "↗ $+\\infty$"]
+          ]
+        },
+        "status": "suggested",
+        "source": "reviewed_extract",
+        "notes": ["Rendered natively from the official correction."]
+      }
+    },
+    {
+      "id": "s2_e4_graph",
+      "exerciseOrderIndex": 4,
+      "questionOrderIndex": 5,
+      "documentKind": "CORRECTION",
+      "role": "SOLUTION",
+      "classification": "graph",
+      "pageNumber": 4,
+      "cropBox": { "x": 520, "y": 1050, "width": 650, "height": 620 },
+      "cleanupRequired": false,
+      "cleanupMasks": [],
+      "label": "رسم Cf وDelta وT",
+      "caption": null,
+      "notes": "Graph kept as source crop; not converted to structured graph data.",
+      "variantCode": "SUJET_2",
+      "nativeSuggestion": null
+    }
+  ],
+  "uncertainties": [
+    {
+      "scope": "graph-assets",
+      "note": "Hand-drawn function graphs are kept as cropped source assets, not formula-graph native render data."
+    },
+    {
+      "scope": "visual-extraction",
+      "note": "Extracted directly from canonical stored page PNGs without Gemini, OCR, PDF text, or text-layer extraction."
+    }
+  ]
+}
