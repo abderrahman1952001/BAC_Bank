@@ -37,6 +37,400 @@ export type DraftAssetNativeSuggestionSource =
   | "codex_app_extraction"
   | "reviewed_extract"
   | "manual_review";
+export type NativeRendererReviewStatus = "candidate" | "visual_checked";
+export type TechnicalDiagramReviewStatus = NativeRendererReviewStatus;
+export type TechnicalDiagramKind =
+  | "technical_flow"
+  | "technical_grid"
+  | "technical_waveform";
+export type TechnicalDiagramPoint = {
+  x: number;
+  y: number;
+};
+export type TechnicalFlowNode = {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  label: string;
+  type?:
+    | "box"
+    | "state"
+    | "step"
+    | "action"
+    | "decision"
+    | "junction"
+    | "terminal";
+  subtitle?: string;
+  rows?: string[];
+};
+export type TechnicalFlowConnector = {
+  from?: string;
+  to?: string;
+  points?: TechnicalDiagramPoint[];
+  label?: string;
+  labelX?: number;
+  labelY?: number;
+  labelWidth?: number;
+  dashed?: boolean;
+  arrowStart?: boolean;
+  arrowEnd?: boolean;
+};
+export type TechnicalFlowFrame = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  label?: string;
+};
+export type TechnicalGridCell = {
+  row: number;
+  col: number;
+  rowSpan?: number;
+  colSpan?: number;
+  text?: string;
+  label?: string;
+  tone?: "neutral" | "header" | "answer" | "muted";
+};
+export type TechnicalGridGroup = {
+  row: number;
+  col: number;
+  rowSpan: number;
+  colSpan: number;
+  label?: string;
+};
+export type TechnicalWaveformSignal = {
+  label: string;
+  wave: string;
+  values?: string[];
+};
+export type TechnicalDiagramRenderData = {
+  kind: TechnicalDiagramKind;
+  title?: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+  direction?: "ltr" | "rtl";
+  reviewStatus?: TechnicalDiagramReviewStatus;
+  nodes?: TechnicalFlowNode[];
+  connectors?: TechnicalFlowConnector[];
+  frames?: TechnicalFlowFrame[];
+  rows?: string[][];
+  cells?: TechnicalGridCell[];
+  groups?: TechnicalGridGroup[];
+  cellWidth?: number;
+  cellHeight?: number;
+  signals?: TechnicalWaveformSignal[];
+  notes?: string[];
+};
+export type CivilDiagramReviewStatus = NativeRendererReviewStatus;
+export type CivilDiagramPoint = TechnicalDiagramPoint;
+export type CivilDiagramTextAnchor = "start" | "middle" | "end";
+export type CivilDiagramDirection = "up" | "down" | "left" | "right";
+export type CivilDiagramSupport = "pin" | "roller" | "fixed";
+export type CivilDiagramElementType =
+  | "line"
+  | "member"
+  | "polyline"
+  | "polygon"
+  | "arrow"
+  | "load"
+  | "distributedLoad"
+  | "support"
+  | "dimension"
+  | "text"
+  | "node"
+  | "rect"
+  | "arc"
+  | "moment";
+export type CivilDiagramElement = {
+  type: CivilDiagramElementType;
+  id?: string;
+  from?: CivilDiagramPoint;
+  to?: CivilDiagramPoint;
+  at?: CivilDiagramPoint;
+  points?: CivilDiagramPoint[];
+  center?: CivilDiagramPoint;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  radius?: number;
+  startAngle?: number;
+  endAngle?: number;
+  label?: string;
+  text?: string;
+  support?: CivilDiagramSupport;
+  direction?: CivilDiagramDirection;
+  anchor?: CivilDiagramTextAnchor;
+  offset?: number;
+  length?: number;
+  count?: number;
+  closed?: boolean;
+  dashed?: boolean;
+  arrowStart?: boolean;
+  arrowEnd?: boolean;
+  strokeWidth?: number;
+};
+export type CivilDiagramRenderData = {
+  kind?: "civil_diagram";
+  title?: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+  viewBox?: [number, number, number, number];
+  reviewStatus?: CivilDiagramReviewStatus;
+  elements: CivilDiagramElement[];
+};
+export type ChemistryStructureReviewStatus = NativeRendererReviewStatus;
+export type ChemistryStructureFormat = "smiles" | "molblock";
+export type ChemistryStructureLayout = "grid" | "row" | "stack";
+export type ChemistryStructureRenderItem = {
+  format?: ChemistryStructureFormat;
+  source: string;
+  title?: string;
+  width?: number;
+  height?: number;
+  caption?: string;
+};
+export type ChemistryStructureRenderData = {
+  kind?: "chemistry_structure";
+  format?: ChemistryStructureFormat;
+  source?: string;
+  title?: string;
+  width?: number;
+  height?: number;
+  caption?: string;
+  reviewStatus?: ChemistryStructureReviewStatus;
+  layout?: ChemistryStructureLayout;
+  items?: ChemistryStructureRenderItem[];
+  notes?: string[];
+};
+export const nativeRendererReviewStatusSchema: z.ZodType<NativeRendererReviewStatus> =
+  z.enum(["candidate", "visual_checked"]);
+export const technicalDiagramKindSchema: z.ZodType<TechnicalDiagramKind> =
+  z.enum(["technical_flow", "technical_grid", "technical_waveform"]);
+export const technicalDiagramPointSchema: z.ZodType<TechnicalDiagramPoint> =
+  z.object({
+    x: z.number(),
+    y: z.number(),
+  });
+export const technicalFlowNodeSchema: z.ZodType<TechnicalFlowNode> = z.object({
+  id: z.string(),
+  x: z.number(),
+  y: z.number(),
+  width: z.number(),
+  height: z.number(),
+  label: z.string(),
+  type: z
+    .enum([
+      "box",
+      "state",
+      "step",
+      "action",
+      "decision",
+      "junction",
+      "terminal",
+    ])
+    .optional(),
+  subtitle: z.string().optional(),
+  rows: z.array(z.string()).optional(),
+});
+export const technicalFlowConnectorSchema: z.ZodType<TechnicalFlowConnector> =
+  z.object({
+    from: z.string().optional(),
+    to: z.string().optional(),
+    points: z.array(technicalDiagramPointSchema).optional(),
+    label: z.string().optional(),
+    labelX: z.number().optional(),
+    labelY: z.number().optional(),
+    labelWidth: z.number().optional(),
+    dashed: z.boolean().optional(),
+    arrowStart: z.boolean().optional(),
+    arrowEnd: z.boolean().optional(),
+  });
+export const technicalFlowFrameSchema: z.ZodType<TechnicalFlowFrame> = z.object(
+  {
+    x: z.number(),
+    y: z.number(),
+    width: z.number(),
+    height: z.number(),
+    label: z.string().optional(),
+  },
+);
+export const technicalGridCellSchema: z.ZodType<TechnicalGridCell> = z.object({
+  row: z.number(),
+  col: z.number(),
+  rowSpan: z.number().optional(),
+  colSpan: z.number().optional(),
+  text: z.string().optional(),
+  label: z.string().optional(),
+  tone: z.enum(["neutral", "header", "answer", "muted"]).optional(),
+});
+export const technicalGridGroupSchema: z.ZodType<TechnicalGridGroup> = z.object(
+  {
+    row: z.number(),
+    col: z.number(),
+    rowSpan: z.number(),
+    colSpan: z.number(),
+    label: z.string().optional(),
+  },
+);
+export const technicalWaveformSignalSchema: z.ZodType<TechnicalWaveformSignal> =
+  z.object({
+    label: z.string(),
+    wave: z.string(),
+    values: z.array(z.string()).optional(),
+  });
+export const technicalDiagramRenderDataSchema: z.ZodType<TechnicalDiagramRenderData> =
+  z
+    .object({
+      kind: technicalDiagramKindSchema,
+      title: z.string().optional(),
+      caption: z.string().optional(),
+      width: z.number().optional(),
+      height: z.number().optional(),
+      direction: z.enum(["ltr", "rtl"]).optional(),
+      reviewStatus: nativeRendererReviewStatusSchema.optional(),
+      nodes: z.array(technicalFlowNodeSchema).optional(),
+      connectors: z.array(technicalFlowConnectorSchema).optional(),
+      frames: z.array(technicalFlowFrameSchema).optional(),
+      rows: z.array(z.array(z.string())).optional(),
+      cells: z.array(technicalGridCellSchema).optional(),
+      groups: z.array(technicalGridGroupSchema).optional(),
+      cellWidth: z.number().optional(),
+      cellHeight: z.number().optional(),
+      signals: z.array(technicalWaveformSignalSchema).optional(),
+      notes: z.array(z.string()).optional(),
+    })
+    .refine(
+      (value) =>
+        (value.kind === "technical_flow" && Boolean(value.nodes?.length)) ||
+        (value.kind === "technical_grid" &&
+          Boolean(value.rows?.length || value.cells?.length)) ||
+        (value.kind === "technical_waveform" && Boolean(value.signals?.length)),
+      "Technical diagram render data needs payload for its kind.",
+    );
+export const civilDiagramElementTypeSchema: z.ZodType<CivilDiagramElementType> =
+  z.enum([
+    "line",
+    "member",
+    "polyline",
+    "polygon",
+    "arrow",
+    "load",
+    "distributedLoad",
+    "support",
+    "dimension",
+    "text",
+    "node",
+    "rect",
+    "arc",
+    "moment",
+  ]);
+export const civilDiagramPointSchema: z.ZodType<CivilDiagramPoint> =
+  technicalDiagramPointSchema;
+export const civilDiagramElementSchema: z.ZodType<CivilDiagramElement> =
+  z.object({
+    type: civilDiagramElementTypeSchema,
+    id: z.string().optional(),
+    from: civilDiagramPointSchema.optional(),
+    to: civilDiagramPointSchema.optional(),
+    at: civilDiagramPointSchema.optional(),
+    points: z.array(civilDiagramPointSchema).optional(),
+    center: civilDiagramPointSchema.optional(),
+    x: z.number().optional(),
+    y: z.number().optional(),
+    width: z.number().optional(),
+    height: z.number().optional(),
+    radius: z.number().optional(),
+    startAngle: z.number().optional(),
+    endAngle: z.number().optional(),
+    label: z.string().optional(),
+    text: z.string().optional(),
+    support: z.enum(["pin", "roller", "fixed"]).optional(),
+    direction: z.enum(["up", "down", "left", "right"]).optional(),
+    anchor: z.enum(["start", "middle", "end"]).optional(),
+    offset: z.number().optional(),
+    length: z.number().optional(),
+    count: z.number().optional(),
+    closed: z.boolean().optional(),
+    dashed: z.boolean().optional(),
+    arrowStart: z.boolean().optional(),
+    arrowEnd: z.boolean().optional(),
+    strokeWidth: z.number().optional(),
+  });
+export const civilDiagramRenderDataSchema: z.ZodType<CivilDiagramRenderData> =
+  z.object({
+    kind: z.literal("civil_diagram").optional(),
+    title: z.string().optional(),
+    caption: z.string().optional(),
+    width: z.number().optional(),
+    height: z.number().optional(),
+    viewBox: z
+      .tuple([z.number(), z.number(), z.number(), z.number()])
+      .optional(),
+    reviewStatus: nativeRendererReviewStatusSchema.optional(),
+    elements: z.array(civilDiagramElementSchema).min(1),
+  });
+export const chemistryStructureFormatSchema: z.ZodType<ChemistryStructureFormat> =
+  z.enum(["smiles", "molblock"]);
+export const chemistryStructureRenderItemSchema: z.ZodType<ChemistryStructureRenderItem> =
+  z.object({
+    format: chemistryStructureFormatSchema.optional(),
+    source: z.string().min(1),
+    title: z.string().optional(),
+    width: z.number().optional(),
+    height: z.number().optional(),
+    caption: z.string().optional(),
+  });
+export const chemistryStructureRenderDataSchema: z.ZodType<ChemistryStructureRenderData> =
+  z
+    .object({
+      kind: z.literal("chemistry_structure").optional(),
+      format: chemistryStructureFormatSchema.optional(),
+      source: z.string().optional(),
+      title: z.string().optional(),
+      width: z.number().optional(),
+      height: z.number().optional(),
+      caption: z.string().optional(),
+      reviewStatus: nativeRendererReviewStatusSchema.optional(),
+      layout: z.enum(["grid", "row", "stack"]).optional(),
+      items: z.array(chemistryStructureRenderItemSchema).optional(),
+      notes: z.array(z.string()).optional(),
+    })
+    .refine(
+      (value) => Boolean(value.source?.trim() || value.items?.length),
+      "Chemistry structure render data needs a source or item sources.",
+    );
+export function parseTechnicalDiagramRenderData(
+  value: unknown,
+): TechnicalDiagramRenderData {
+  return parseContract(
+    technicalDiagramRenderDataSchema,
+    value,
+    "TechnicalDiagramRenderData",
+  );
+}
+export function parseCivilDiagramRenderData(
+  value: unknown,
+): CivilDiagramRenderData {
+  return parseContract(
+    civilDiagramRenderDataSchema,
+    value,
+    "CivilDiagramRenderData",
+  );
+}
+export function parseChemistryStructureRenderData(
+  value: unknown,
+): ChemistryStructureRenderData {
+  return parseContract(
+    chemistryStructureRenderDataSchema,
+    value,
+    "ChemistryStructureRenderData",
+  );
+}
 export type DraftSessionType = StudySessionType;
 export type DraftDocumentKind = "EXAM" | "CORRECTION";
 export type AdminIngestionSession = "normal" | "rattrapage";

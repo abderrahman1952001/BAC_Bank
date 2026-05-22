@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import katex from "katex";
+import "katex/contrib/mhchem";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";

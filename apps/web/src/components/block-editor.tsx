@@ -1,6 +1,7 @@
 'use client';
 
 import katex from 'katex';
+import 'katex/contrib/mhchem';
 import { ChangeEvent, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FilterChip } from '@/components/ui/filter-chip';

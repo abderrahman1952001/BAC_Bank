@@ -1,20 +1,30 @@
-'use client';
+"use client";
 
-import katex from 'katex';
-import Image, { ImageLoaderProps } from 'next/image';
-import { ReactNode } from 'react';
+import katex from "katex";
+import "katex/contrib/mhchem";
+import Image, { ImageLoaderProps } from "next/image";
+import { ReactNode } from "react";
+import {
+  CivilDiagramRenderer,
+  extractCivilDiagramRenderData,
+} from "@/components/civil-diagram-renderer";
+import {
+  ChemistryStructureRenderer,
+  extractChemistryStructureRenderData,
+} from "@/components/chemistry-structure-renderer";
 import {
   FormulaGraphJson,
   FormulaGraphPlot,
-} from '@/components/formula-graph-plot';
+} from "@/components/formula-graph-plot";
 import {
   ProbabilityTreeJson,
   ProbabilityTreeSvg,
-} from '@/components/probability-tree-svg';
+} from "@/components/probability-tree-svg";
 import {
-  ExamHierarchyBlock,
-  toAssetUrl,
-} from '@/lib/study-api';
+  TechnicalDiagramRenderer,
+  extractTechnicalDiagramRenderData,
+} from "@/components/technical-diagram-renderer";
+import { ExamHierarchyBlock, toAssetUrl } from "@/lib/study-api";
 
 const INLINE_MATH_REGEX = /\$\$([\s\S]+?)\$\$|\$([^\n$]+?)\$|`([^`\n]+?)`/g;
 const INLINE_BOLD_REGEX = /\*\*([^*\n]+?)\*\*/g;
@@ -24,7 +34,7 @@ function passthroughLoader({ src }: ImageLoaderProps): string {
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function readStringField(value: unknown, field: string): string | null {
@@ -33,11 +43,11 @@ function readStringField(value: unknown, field: string): string | null {
   }
 
   const candidate = value[field];
-  return typeof candidate === 'string' ? candidate : null;
+  return typeof candidate === "string" ? candidate : null;
 }
 
 type ScripturePresentation = {
-  kind: 'quran' | 'hadith';
+  kind: "quran" | "hadith";
   displayText: string;
   intro: string | null;
   reference: string | null;
@@ -58,20 +68,20 @@ function resolveScripturePresentation(
     return null;
   }
 
-  const rawKind = readStringField(payload, 'kind');
+  const rawKind = readStringField(payload, "kind");
   const kind =
-    rawKind === 'quran' || rawKind === 'quran_quote'
-      ? 'quran'
-      : rawKind === 'hadith' || rawKind === 'hadith_quote'
-        ? 'hadith'
+    rawKind === "quran" || rawKind === "quran_quote"
+      ? "quran"
+      : rawKind === "hadith" || rawKind === "hadith_quote"
+        ? "hadith"
         : null;
 
   if (!kind) {
     return null;
   }
 
-  const displayText = readStringField(payload, 'displayText');
-  const resolvedDisplayText = displayText ?? block.textValue ?? '';
+  const displayText = readStringField(payload, "displayText");
+  const resolvedDisplayText = displayText ?? block.textValue ?? "";
 
   if (!resolvedDisplayText.trim()) {
     return null;
@@ -81,13 +91,13 @@ function resolveScripturePresentation(
     kind,
     displayText: resolvedDisplayText,
     intro:
-      readStringField(payload, 'intro') ??
-      (displayText ? (kind === 'quran' ? 'قال تعالى' : 'حديث شريف') : null),
-    reference: readStringField(payload, 'reference'),
+      readStringField(payload, "intro") ??
+      (displayText ? (kind === "quran" ? "قال تعالى" : "حديث شريف") : null),
+    reference: readStringField(payload, "reference"),
     sourceLabel:
-      readStringField(payload, 'sourceLabel') ??
-      readStringField(payload, 'collection'),
-    riwaya: readStringField(payload, 'riwaya'),
+      readStringField(payload, "sourceLabel") ??
+      readStringField(payload, "collection"),
+    riwaya: readStringField(payload, "riwaya"),
   };
 }
 
@@ -95,7 +105,7 @@ function renderKatexToHtml(latex: string, displayMode: boolean): string {
   return katex.renderToString(latex, {
     displayMode,
     throwOnError: false,
-    strict: 'ignore',
+    strict: "ignore",
   });
 }
 
@@ -126,9 +136,7 @@ function renderInlineText(text: string, keyPrefix: string): ReactNode {
     }
 
     parts.push(
-      <strong key={`${keyPrefix}-bold-${matchIndex}`}>
-        {match[1] ?? ''}
-      </strong>,
+      <strong key={`${keyPrefix}-bold-${matchIndex}`}>{match[1] ?? ""}</strong>,
     );
 
     cursor = start + match[0].length;
@@ -136,9 +144,7 @@ function renderInlineText(text: string, keyPrefix: string): ReactNode {
   }
 
   if (cursor < text.length) {
-    parts.push(
-      <span key={`${keyPrefix}-tail`}>{text.slice(cursor)}</span>,
-    );
+    parts.push(<span key={`${keyPrefix}-tail`}>{text.slice(cursor)}</span>);
   }
 
   return parts.length ? parts : text;
@@ -169,10 +175,12 @@ function renderInlineMathText(text: string, keyPrefix: string): ReactNode {
       );
     }
 
-    const displayLatex = token.startsWith('$$') ? match[1] ?? '' : null;
+    const displayLatex = token.startsWith("$$") ? (match[1] ?? "") : null;
     const inlineLatex =
-      token.startsWith('$') && !token.startsWith('$$') ? match[2] ?? '' : null;
-    const backtickLatex = token.startsWith('`') ? match[3] ?? '' : null;
+      token.startsWith("$") && !token.startsWith("$$")
+        ? (match[2] ?? "")
+        : null;
+    const backtickLatex = token.startsWith("`") ? (match[3] ?? "") : null;
 
     if (displayLatex !== null) {
       parts.push(
@@ -185,7 +193,7 @@ function renderInlineMathText(text: string, keyPrefix: string): ReactNode {
         />,
       );
     } else {
-      const latex = inlineLatex ?? backtickLatex ?? '';
+      const latex = inlineLatex ?? backtickLatex ?? "";
       parts.push(
         <span
           key={`${keyPrefix}-inline-${matchIndex}`}
@@ -217,7 +225,9 @@ function parseTableRows(block: ExamHierarchyBlock): string[][] {
     return (block.data as { rows: unknown[] }).rows
       .map((row) =>
         Array.isArray(row)
-          ? row.map((cell) => (typeof cell === 'string' ? cell : String(cell ?? '')))
+          ? row.map((cell) =>
+              typeof cell === "string" ? cell : String(cell ?? ""),
+            )
           : [],
       )
       .filter((row) => row.length > 0);
@@ -230,14 +240,34 @@ function parseTableRows(block: ExamHierarchyBlock): string[][] {
   }
 
   return rawText
-    .split('\n')
+    .split("\n")
     .map((line) =>
       line
-        .split('|')
+        .split("|")
         .map((cell) => cell.trim())
         .filter(Boolean),
     )
-    .filter((row) => row.length > 0);
+      .filter((row) => row.length > 0);
+}
+
+function parseTableDirection(
+  block: ExamHierarchyBlock,
+): "ltr" | "rtl" | undefined {
+  if (!isRecord(block.data)) {
+    return undefined;
+  }
+
+  const candidates = [
+    readStringField(block.data, "direction"),
+    isRecord(block.data.table)
+      ? readStringField(block.data.table, "direction")
+      : null,
+  ];
+  const direction = candidates.find(
+    (candidate) => candidate === "ltr" || candidate === "rtl",
+  );
+
+  return direction === "ltr" || direction === "rtl" ? direction : undefined;
 }
 
 function isProbabilityTreeNode(value: unknown): boolean {
@@ -247,10 +277,10 @@ function isProbabilityTreeNode(value: unknown): boolean {
 
   return (
     Array.isArray(value.children) ||
-    typeof value.label === 'string' ||
-    typeof value.edgeLabel === 'string' ||
-    typeof value.probability === 'string' ||
-    typeof value.probability === 'number'
+    typeof value.label === "string" ||
+    typeof value.edgeLabel === "string" ||
+    typeof value.probability === "string" ||
+    typeof value.probability === "number"
   );
 }
 
@@ -272,22 +302,22 @@ function asProbabilityTreePayload(value: unknown): ProbabilityTreeJson | null {
     }
 
     const directionRaw = candidate.direction;
-    const direction = directionRaw === 'rtl' ? 'rtl' : 'ltr';
+    const direction = directionRaw === "rtl" ? "rtl" : "ltr";
     const root = candidate.root;
 
     if (isProbabilityTreeNode(root)) {
       return {
-        type: 'probability_tree',
+        type: "probability_tree",
         direction,
-        root: root as ProbabilityTreeJson['root'],
+        root: root as ProbabilityTreeJson["root"],
       };
     }
 
     if (isProbabilityTreeNode(candidate)) {
       return {
-        type: 'probability_tree',
+        type: "probability_tree",
         direction,
-        root: candidate as ProbabilityTreeJson['root'],
+        root: candidate as ProbabilityTreeJson["root"],
       };
     }
   }
@@ -309,7 +339,7 @@ function extractProbabilityTreeFromBlock(
 
   const trimmed = block.textValue.trim();
 
-  if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
+  if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) {
     return null;
   }
 
@@ -321,7 +351,7 @@ function extractProbabilityTreeFromBlock(
 }
 
 function isFormulaCurve(value: unknown): boolean {
-  return isRecord(value) && typeof value.fn === 'string' && value.fn.length > 0;
+  return isRecord(value) && typeof value.fn === "string" && value.fn.length > 0;
 }
 
 function asFormulaGraphPayload(value: unknown): FormulaGraphJson | null {
@@ -329,7 +359,12 @@ function asFormulaGraphPayload(value: unknown): FormulaGraphJson | null {
     return null;
   }
 
-  const candidates: unknown[] = [value, value.formulaGraph, value.graph, value.payload];
+  const candidates: unknown[] = [
+    value,
+    value.formulaGraph,
+    value.graph,
+    value.payload,
+  ];
 
   for (const candidate of candidates) {
     if (!isRecord(candidate)) {
@@ -347,18 +382,19 @@ function asFormulaGraphPayload(value: unknown): FormulaGraphJson | null {
     }
 
     return {
-      type: 'formula_graph',
-      title: typeof candidate.title === 'string' ? candidate.title : undefined,
+      type: "formula_graph",
+      title: typeof candidate.title === "string" ? candidate.title : undefined,
       xDomain: Array.isArray(candidate.xDomain)
         ? (candidate.xDomain as [number, number])
         : undefined,
       yDomain: Array.isArray(candidate.yDomain)
         ? (candidate.yDomain as [number, number])
         : undefined,
-      width: typeof candidate.width === 'number' ? candidate.width : undefined,
-      height: typeof candidate.height === 'number' ? candidate.height : undefined,
-      grid: typeof candidate.grid === 'boolean' ? candidate.grid : undefined,
-      curves: curves as FormulaGraphJson['curves'],
+      width: typeof candidate.width === "number" ? candidate.width : undefined,
+      height:
+        typeof candidate.height === "number" ? candidate.height : undefined,
+      grid: typeof candidate.grid === "boolean" ? candidate.grid : undefined,
+      curves: curves as FormulaGraphJson["curves"],
     };
   }
 
@@ -379,7 +415,7 @@ function extractFormulaGraphFromBlock(
 
   const trimmed = block.textValue.trim();
 
-  if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
+  if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) {
     return null;
   }
 
@@ -390,9 +426,32 @@ function extractFormulaGraphFromBlock(
   }
 }
 
+function extractChemistryStructureFromBlock(block: ExamHierarchyBlock) {
+  const fromData = extractChemistryStructureRenderData(block.data);
+  if (fromData) {
+    return fromData;
+  }
+
+  if (!block.textValue) {
+    return null;
+  }
+
+  const trimmed = block.textValue.trim();
+
+  if (!trimmed.startsWith("{")) {
+    return null;
+  }
+
+  try {
+    return extractChemistryStructureRenderData(JSON.parse(trimmed) as unknown);
+  } catch {
+    return null;
+  }
+}
+
 function renderTextBlock(block: string, key: string) {
   const lines = block
-    .split('\n')
+    .split("\n")
     .map((line) => line.trim())
     .filter(Boolean);
 
@@ -405,7 +464,10 @@ function renderTextBlock(block: string, key: string) {
       <ul key={key}>
         {lines.map((line, index) => (
           <li key={`${key}-${index}`} className="study-text-block">
-            {renderInlineMathText(line.replace(/^[-*•]\s+/, ''), `${key}-${index}`)}
+            {renderInlineMathText(
+              line.replace(/^[-*•]\s+/, ""),
+              `${key}-${index}`,
+            )}
           </li>
         ))}
       </ul>
@@ -418,7 +480,7 @@ function renderTextBlock(block: string, key: string) {
         {lines.map((line, index) => (
           <li key={`${key}-${index}`} className="study-text-block">
             {renderInlineMathText(
-              line.replace(/^\d+[.)]\s+/, ''),
+              line.replace(/^\d+[.)]\s+/, ""),
               `${key}-${index}`,
             )}
           </li>
@@ -427,7 +489,7 @@ function renderTextBlock(block: string, key: string) {
     );
   }
 
-  if (block.startsWith('### ')) {
+  if (block.startsWith("### ")) {
     return (
       <h4 key={key} className="study-text-block">
         {renderInlineMathText(block.slice(4), key)}
@@ -435,7 +497,7 @@ function renderTextBlock(block: string, key: string) {
     );
   }
 
-  if (block.startsWith('## ')) {
+  if (block.startsWith("## ")) {
     return (
       <h3 key={key} className="study-text-block">
         {renderInlineMathText(block.slice(3), key)}
@@ -443,7 +505,7 @@ function renderTextBlock(block: string, key: string) {
     );
   }
 
-  if (block.startsWith('# ')) {
+  if (block.startsWith("# ")) {
     return (
       <h3 key={key} className="study-text-block">
         {renderInlineMathText(block.slice(2), key)}
@@ -451,10 +513,12 @@ function renderTextBlock(block: string, key: string) {
     );
   }
 
-  if (block.startsWith('```') && block.endsWith('```')) {
+  if (block.startsWith("```") && block.endsWith("```")) {
     return (
       <pre key={key}>
-        <code>{block.replace(/^```[a-z]*\n?/i, '').replace(/\n?```$/, '')}</code>
+        <code>
+          {block.replace(/^```[a-z]*\n?/i, "").replace(/\n?```$/, "")}
+        </code>
       </pre>
     );
   }
@@ -468,7 +532,7 @@ function renderTextBlock(block: string, key: string) {
 
 export function StudyMarkdown({ text }: { text: string }) {
   const blocks = normalizeMathDelimiters(text)
-    .replace(/\r/g, '')
+    .replace(/\r/g, "")
     .split(/\n{2,}/)
     .map((block) => block.trim())
     .filter(Boolean);
@@ -483,11 +547,11 @@ export function StudyMarkdown({ text }: { text: string }) {
 }
 
 export function StudySectionCard({
-  tone = 'neutral',
+  tone = "neutral",
   title,
   children,
 }: {
-  tone?: 'neutral' | 'prompt' | 'solution' | 'hint' | 'commentary';
+  tone?: "neutral" | "prompt" | "solution" | "hint" | "commentary";
   title?: string;
   children: ReactNode;
 }) {
@@ -510,16 +574,16 @@ function StudyScriptureBlock({
 }) {
   const metaItems = [
     presentation.reference,
-    presentation.kind === 'quran' ? presentation.riwaya : null,
+    presentation.kind === "quran" ? presentation.riwaya : null,
     presentation.sourceLabel,
   ].filter((item): item is string => Boolean(item));
   const className = [
-    'study-scripture-block',
+    "study-scripture-block",
     `study-scripture-${presentation.kind}`,
-    compact ? 'study-block-compact' : null,
+    compact ? "study-block-compact" : null,
   ]
     .filter(Boolean)
-    .join(' ');
+    .join(" ");
 
   return (
     <figure key={blockKey} className={className} dir="rtl">
@@ -551,9 +615,12 @@ export function StudyHierarchyBlockView({
   blockKey: string;
   compact?: boolean;
 }) {
-  const source = block.media?.url ?? readStringField(block.data, 'url');
+  const source = block.media?.url ?? readStringField(block.data, "url");
   const imageUrl = source ? toAssetUrl(source) : null;
   const formulaGraph = extractFormulaGraphFromBlock(block);
+  const chemistryStructure = extractChemistryStructureFromBlock(block);
+  const civilDiagram = extractCivilDiagramRenderData(block.data);
+  const technicalDiagram = extractTechnicalDiagramRenderData(block.data);
   const resolvedFormulaGraph =
     compact && formulaGraph
       ? {
@@ -563,17 +630,17 @@ export function StudyHierarchyBlockView({
         }
       : formulaGraph;
   const mediaBlockClassName = compact
-    ? 'study-media-block study-block-compact'
-    : 'study-media-block';
+    ? "study-media-block study-block-compact"
+    : "study-media-block";
   const mediaFrameClassName = compact
-    ? 'study-media-frame study-block-compact'
-    : 'study-media-frame';
+    ? "study-media-frame study-block-compact"
+    : "study-media-frame";
   const tableWrapClassName = compact
-    ? 'study-table-wrap study-block-compact'
-    : 'study-table-wrap';
+    ? "study-table-wrap study-block-compact"
+    : "study-table-wrap";
   const scripturePresentation = resolveScripturePresentation(block);
 
-  if (block.blockType === 'GRAPH') {
+  if (block.blockType === "GRAPH") {
     if (resolvedFormulaGraph) {
       return (
         <div key={blockKey} className={mediaBlockClassName}>
@@ -610,7 +677,7 @@ export function StudyHierarchyBlockView({
 
   const probabilityTree = extractProbabilityTreeFromBlock(block);
 
-  if (block.blockType === 'TREE') {
+  if (block.blockType === "TREE") {
     if (probabilityTree) {
       return (
         <div key={blockKey} className={mediaBlockClassName}>
@@ -645,7 +712,73 @@ export function StudyHierarchyBlockView({
     );
   }
 
-  if (block.blockType === 'IMAGE') {
+  if (technicalDiagram) {
+    const fallback = imageUrl ? (
+      <Image
+        src={imageUrl}
+        loader={passthroughLoader}
+        alt={technicalDiagram.title ?? "Technical diagram source"}
+        width={1400}
+        height={1000}
+        unoptimized
+      />
+    ) : null;
+
+    return (
+      <TechnicalDiagramRenderer
+        key={blockKey}
+        compact={compact}
+        data={technicalDiagram}
+        fallback={fallback}
+      />
+    );
+  }
+
+  if (civilDiagram) {
+    const fallback = imageUrl ? (
+      <Image
+        src={imageUrl}
+        loader={passthroughLoader}
+        alt={civilDiagram.title ?? "Civil engineering diagram source"}
+        width={1400}
+        height={1000}
+        unoptimized
+      />
+    ) : null;
+
+    return (
+      <CivilDiagramRenderer
+        key={blockKey}
+        compact={compact}
+        data={civilDiagram}
+        fallback={fallback}
+      />
+    );
+  }
+
+  if (chemistryStructure) {
+    const fallback = imageUrl ? (
+      <Image
+        src={imageUrl}
+        loader={passthroughLoader}
+        alt={chemistryStructure.title ?? "Chemical structure source"}
+        width={1400}
+        height={1000}
+        unoptimized
+      />
+    ) : null;
+
+    return (
+      <ChemistryStructureRenderer
+        key={blockKey}
+        compact={compact}
+        data={chemistryStructure}
+        fallback={fallback}
+      />
+    );
+  }
+
+  if (block.blockType === "IMAGE") {
     if (!imageUrl) {
       return null;
     }
@@ -664,22 +797,22 @@ export function StudyHierarchyBlockView({
     );
   }
 
-  if (block.blockType === 'LATEX') {
+  if (block.blockType === "LATEX") {
     return (
       <div
         key={blockKey}
         className="math-display"
         dangerouslySetInnerHTML={{
-          __html: renderKatexToHtml((block.textValue ?? '').trim(), true),
+          __html: renderKatexToHtml((block.textValue ?? "").trim(), true),
         }}
       />
     );
   }
 
-  if (block.blockType === 'CODE') {
+  if (block.blockType === "CODE") {
     return (
       <pre key={blockKey}>
-        <code>{block.textValue ?? ''}</code>
+        <code>{block.textValue ?? ""}</code>
       </pre>
     );
   }
@@ -694,16 +827,17 @@ export function StudyHierarchyBlockView({
     );
   }
 
-  if (block.blockType === 'HEADING') {
+  if (block.blockType === "HEADING") {
     return (
       <h3 key={blockKey} className="study-text-block">
-        {renderInlineMathText(block.textValue ?? '', blockKey)}
+        {renderInlineMathText(block.textValue ?? "", blockKey)}
       </h3>
     );
   }
 
-  if (block.blockType === 'TABLE') {
+  if (block.blockType === "TABLE") {
     const rows = parseTableRows(block);
+    const tableDirection = parseTableDirection(block);
 
     if (!rows.length) {
       if (imageUrl) {
@@ -726,7 +860,7 @@ export function StudyHierarchyBlockView({
 
     return (
       <div key={blockKey} className={tableWrapClassName}>
-        <table className="study-table">
+        <table className="study-table" dir={tableDirection}>
           <tbody>
             {rows.map((row, rowIndex) => (
               <tr key={`${blockKey}-row-${rowIndex}`}>
@@ -746,17 +880,17 @@ export function StudyHierarchyBlockView({
     );
   }
 
-  if (block.blockType === 'LIST') {
+  if (block.blockType === "LIST") {
     return (
       <div key={blockKey} className="study-prose">
-        {renderTextBlock(block.textValue ?? '', blockKey)}
+        {renderTextBlock(block.textValue ?? "", blockKey)}
       </div>
     );
   }
 
   return (
     <div key={blockKey} className="study-prose">
-      <StudyMarkdown text={block.textValue ?? ''} />
+      <StudyMarkdown text={block.textValue ?? ""} />
     </div>
   );
 }
