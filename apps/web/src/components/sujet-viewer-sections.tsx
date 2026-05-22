@@ -281,6 +281,10 @@ function formatNodeLabel(
     return `الجزء ${node.orderIndex}`;
   }
 
+  if (node.nodeType === "EXERCISE") {
+    return `التمرين ${node.orderIndex}`;
+  }
+
   return `السؤال ${node.orderIndex}`;
 }
 
@@ -549,7 +553,7 @@ function SujetViewerStructuredExerciseBody({
   );
 
   const renderNode = (node: ExamHierarchyNode, depth = 0): ReactNode => {
-    if (node.nodeType === "PART") {
+    if (node.nodeType === "PART" || node.nodeType === "EXERCISE") {
       return (
         <SujetViewerStructuredBranchNode
           key={node.id}

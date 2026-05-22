@@ -125,7 +125,10 @@ export function parseReviewedPaperExtract(
   value: unknown,
   sourceLabel = 'reviewed paper extract',
 ): ReviewedPaperExtract {
-  const root = asRecord(value, sourceLabel);
+  const root = normalizeReviewedExtractRoot(
+    asRecord(value, sourceLabel),
+    sourceLabel,
+  );
 
   return {
     variants: readArray(root.variants, `${sourceLabel}.variants`).map(
@@ -141,6 +144,173 @@ export function parseReviewedPaperExtract(
       `${sourceLabel}.uncertainties`,
     ).map((entry) => entry),
     exam: parseReviewedExamMetadata(root.exam, `${sourceLabel}.exam`),
+  };
+}
+
+function normalizeReviewedExtractRoot(
+  root: Record<string, unknown>,
+  sourceLabel: string,
+): Record<string, unknown> {
+  if (
+    root.schemaVersion === 'bac_gemini_source_extract/v1' ||
+    (root.paper !== undefined &&
+      root.exam === undefined &&
+      root.variants !== undefined)
+  ) {
+    return normalizeGeminiSourceExtractRoot(root, sourceLabel);
+  }
+
+  if (root.variants !== undefined || root.exercises !== undefined) {
+    return root;
+  }
+
+  return root;
+}
+
+function normalizeGeminiSourceExtractRoot(
+  root: Record<string, unknown>,
+  sourceLabel: string,
+): Record<string, unknown> {
+  const paper =
+    root.paper === undefined || root.paper === null
+      ? {}
+      : asRecord(root.paper, `${sourceLabel}.paper`);
+  const assets = readArray(
+    root.assets ?? paper.assets,
+    `${sourceLabel}.assets`,
+  ).map((entry, index) =>
+    normalizeGeminiSourceAsset(entry, `${sourceLabel}.assets[${index}]`),
+  );
+  const assetsById = new Map(
+    assets.map((asset) => [
+      readRequiredString(asset.id, `${sourceLabel}.assets.id`),
+      asset,
+    ]),
+  );
+
+  return {
+    variants: readArray(
+      root.variants ?? paper.variants,
+      `${sourceLabel}.variants`,
+    ).map((entry, index) =>
+      normalizeGeminiSourceVariant(
+        entry,
+        `${sourceLabel}.variants[${index}]`,
+        assetsById,
+      ),
+    ),
+    assets,
+    uncertainties: readArray(
+      root.uncertainties ?? paper.uncertainties,
+      `${sourceLabel}.uncertainties`,
+    ),
+    exam: paper,
+  };
+}
+
+function normalizeGeminiSourceVariant(
+  value: unknown,
+  sourceLabel: string,
+  assetsById: Map<string, Record<string, unknown>>,
+): Record<string, unknown> {
+  const record = asRecord(value, sourceLabel);
+  const variantCode = readVariantCode(record.code, `${sourceLabel}.code`);
+
+  return {
+    ...record,
+    code: variantCode,
+    title:
+      normalizeOptionalString(record.title) ??
+      DEFAULT_VARIANT_TITLES[variantCode],
+    nodes: readArray(record.nodes, `${sourceLabel}.nodes`).map((entry, index) =>
+      normalizeGeminiSourceNode(
+        entry,
+        `${sourceLabel}.nodes[${index}]`,
+        assetsById,
+      ),
+    ),
+  };
+}
+
+function normalizeGeminiSourceNode(
+  value: unknown,
+  sourceLabel: string,
+  assetsById: Map<string, Record<string, unknown>>,
+): Record<string, unknown> {
+  const record = asRecord(value, sourceLabel);
+  const nodeId =
+    normalizeOptionalString(record.id) ??
+    readRequiredString(record.localId, `${sourceLabel}.localId`);
+  const textBlocks = readArray(record.blocks, `${sourceLabel}.blocks`).map(
+    (entry, index) =>
+      normalizeGeminiSourceBlock(
+        entry,
+        `${sourceLabel}.blocks[${index}]`,
+        `${nodeId}_block_${index + 1}`,
+      ),
+  );
+  const assetBlocks = readOptionalStringArray(
+    record.assetIds,
+    `${sourceLabel}.assetIds`,
+  ).flatMap((assetId, index) => {
+    const asset = assetsById.get(assetId);
+
+    if (!asset) {
+      return [];
+    }
+
+    return [
+      {
+        id: `${nodeId}_asset_${index + 1}`,
+        role: asset.role,
+        type: asset.classification,
+        value: asset.label ?? asset.caption ?? '',
+        assetId,
+      },
+    ];
+  });
+
+  return {
+    ...record,
+    id: nodeId,
+    parentId: normalizeOptionalString(record.parentId ?? record.parentLocalId),
+    topicCodes: readOptionalStringArray(
+      record.topicCodes,
+      `${sourceLabel}.topicCodes`,
+    ),
+    blocks: [...textBlocks, ...assetBlocks],
+  };
+}
+
+function normalizeGeminiSourceBlock(
+  value: unknown,
+  sourceLabel: string,
+  fallbackId: string,
+): Record<string, unknown> {
+  const record = asRecord(value, sourceLabel);
+
+  return {
+    ...record,
+    id: normalizeOptionalString(record.id) ?? fallbackId,
+    value:
+      typeof record.value === 'string'
+        ? record.value
+        : typeof record.text === 'string'
+          ? record.text
+          : '',
+  };
+}
+
+function normalizeGeminiSourceAsset(
+  value: unknown,
+  sourceLabel: string,
+): Record<string, unknown> {
+  const record = asRecord(value, sourceLabel);
+
+  return {
+    ...record,
+    id: readRequiredString(record.id, `${sourceLabel}.id`),
+    exerciseOrderIndex: record.exerciseOrderIndex ?? 1,
   };
 }
 
@@ -310,9 +480,7 @@ function buildImportSummary(
     (sum, variant) =>
       sum +
       (variant.nodes
-        ? variant.nodes.filter(
-            (node) => node.nodeType === 'EXERCISE' && node.parentId === null,
-          ).length
+        ? variant.nodes.filter((node) => node.nodeType === 'EXERCISE').length
         : variant.exercises.length),
     0,
   );

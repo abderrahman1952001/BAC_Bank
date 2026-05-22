@@ -60,6 +60,87 @@ function createBaseDraft() {
 }
 
 describe('reviewed-paper-import', () => {
+  it('accepts Gemini source-extract draft graph files', () => {
+    const extract = parseReviewedPaperExtract({
+      schemaVersion: 'bac_gemini_source_extract/v1',
+      paper: {
+        title: 'اختبار في مادة: القانون',
+        durationMinutes: 150,
+        totalPoints: 20,
+        sourceLanguage: 'ar',
+        hasCorrection: true,
+      },
+      variants: [
+        {
+          code: 'SUJET_1',
+          title: 'الموضوع الأول',
+          nodes: [
+            {
+              localId: 's1_part1',
+              nodeType: 'PART',
+              parentLocalId: null,
+              orderIndex: 1,
+              label: 'الجزء الأول',
+              maxPoints: 10,
+              blocks: [
+                {
+                  role: 'PROMPT',
+                  type: 'paragraph',
+                  text: 'سند قصير.',
+                },
+              ],
+              assetIds: [],
+            },
+            {
+              localId: 's1_part1_q1',
+              nodeType: 'QUESTION',
+              parentLocalId: 's1_part1',
+              orderIndex: 1,
+              label: 'السؤال 1',
+              maxPoints: 2,
+              blocks: [
+                {
+                  role: 'SOLUTION',
+                  type: 'paragraph',
+                  text: 'إجابة مختصرة.',
+                },
+              ],
+              assetIds: [],
+            },
+          ],
+        },
+      ],
+      assets: [],
+      uncertainties: ['needs visual check'],
+    });
+
+    expect(extract.exam).toMatchObject({
+      title: 'اختبار في مادة: القانون',
+      durationMinutes: 150,
+      totalPoints: 20,
+      sourceLanguage: 'ar',
+      hasCorrection: true,
+    });
+    expect(extract.uncertainties).toEqual(['needs visual check']);
+    expect(extract.variants[0]?.nodes?.[0]).toMatchObject({
+      id: 's1_part1',
+      nodeType: 'PART',
+      parentId: null,
+      blocks: [
+        {
+          id: 's1_part1_block_1',
+          role: 'PROMPT',
+          type: 'paragraph',
+          value: 'سند قصير.',
+        },
+      ],
+    });
+    expect(extract.variants[0]?.nodes?.[1]).toMatchObject({
+      id: 's1_part1_q1',
+      parentId: 's1_part1',
+    });
+  });
+
   it('converts the reviewed extract shape into an ingestion draft', () => {
     const extract = parseReviewedPaperExtract({
       variants: [
@@ -384,6 +465,80 @@ describe('reviewed-paper-import', () => {
           ['f(x)', '2', '3'],
         ],
       },
+    });
+  });
+
+  it('counts exercises nested under part-first reviewed graph roots', () => {
+    const extract = parseReviewedPaperExtract({
+      variants: [
+        {
+          code: 'SUJET_1',
+          title: 'الموضوع الأول',
+          nodes: [
+            {
+              id: 's1_part1',
+              nodeType: 'PART',
+              parentId: null,
+              orderIndex: 1,
+              label: 'الجزء الأول',
+              maxPoints: null,
+              topicCodes: [],
+              blocks: [],
+            },
+            {
+              id: 's1_ex1',
+              nodeType: 'EXERCISE',
+              parentId: 's1_part1',
+              orderIndex: 1,
+              label: 'التمرين الأول',
+              maxPoints: 10,
+              topicCodes: [],
+              blocks: [],
+            },
+            {
+              id: 's1_q1',
+              nodeType: 'QUESTION',
+              parentId: 's1_ex1',
+              orderIndex: 1,
+              label: 'السؤال 1',
+              maxPoints: 2,
+              topicCodes: [],
+              blocks: [
+                {
+                  id: 's1_q1_prompt',
+                  role: 'PROMPT',
+                  type: 'paragraph',
+                  value: 'حلل الوثيقة.',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      assets: [],
+      uncertainties: [],
+      exam: {},
+    });
+
+    const { draft, summary } = importReviewedPaperExtract({
+      baseDraft: createBaseDraft(),
+      reviewedExtract: extract,
+      importFilePath: 'tmp/reviewed/part-first.json',
+    });
+
+    expect(summary).toMatchObject({
+      exerciseCount: 1,
+      questionCount: 1,
+    });
+    expect(draft.variants[0]?.nodes[0]).toMatchObject({
+      id: 's1_part1',
+      nodeType: 'PART',
+      parentId: null,
+    });
+    expect(draft.variants[0]?.nodes[1]).toMatchObject({
+      id: 's1_ex1',
+      nodeType: 'EXERCISE',
+      parentId: 's1_part1',
     });
   });
 

@@ -234,9 +234,9 @@ describe("admin ingestion student preview", () => {
         questionCount: 2,
       },
     ]);
-    expect(
-      exam?.hierarchy?.exercises[0]?.blocks[0]?.media?.url,
-    ).toBe("/api/v1/ingestion/jobs/job-svt-2025-se/assets/asset-doc-1/preview");
+    expect(exam?.hierarchy?.exercises[0]?.blocks[0]?.media?.url).toBe(
+      "/api/v1/ingestion/jobs/job-svt-2025-se/assets/asset-doc-1/preview",
+    );
     expect(exam?.hierarchy?.exercises[0]?.status).toBe("DRAFT");
   });
 
@@ -248,6 +248,142 @@ describe("admin ingestion student preview", () => {
 
     expect(exam?.selectedSujetNumber).toBe(1);
     expect(exam?.stream.code).toBe("SE");
+  });
+
+  it("keeps non-exercise root nodes visible in the student draft preview", () => {
+    const payload = makePayload();
+    payload.draft_json.variants[0].nodes = [
+      {
+        id: "s1-part-1",
+        nodeType: "PART",
+        parentId: null,
+        orderIndex: 1,
+        label: "الجزء الأول",
+        maxPoints: null,
+        topicCodes: [],
+        blocks: [],
+      },
+      {
+        id: "s1-ex-1",
+        nodeType: "EXERCISE",
+        parentId: "s1-part-1",
+        orderIndex: 1,
+        label: "التمرين الأول",
+        maxPoints: null,
+        topicCodes: [],
+        blocks: [],
+      },
+      {
+        id: "s1-q-1",
+        nodeType: "QUESTION",
+        parentId: "s1-ex-1",
+        orderIndex: 1,
+        label: "السؤال 1",
+        maxPoints: 2,
+        topicCodes: [],
+        blocks: [
+          {
+            id: "s1-q-1-prompt",
+            role: "PROMPT",
+            type: "paragraph",
+            value: "حلل الوثيقة.",
+            assetId: null,
+            data: null,
+          },
+        ],
+      },
+    ];
+
+    const exam = buildAdminIngestionStudentPreviewExam(payload, {
+      sujetNumber: 1,
+    });
+
+    expect(exam).not.toBeNull();
+    expect(() => parseExamResponse(exam)).not.toThrow();
+    expect(exam?.exerciseCount).toBe(1);
+    expect(exam?.exercises).toEqual([
+      {
+        id: "s1-part-1",
+        orderIndex: 1,
+        title: "الجزء الأول",
+        totalPoints: 2,
+        questionCount: 1,
+      },
+    ]);
+    expect(exam?.hierarchy?.exercises[0]).toMatchObject({
+      id: "s1-part-1",
+      nodeType: "PART",
+      children: [
+        {
+          id: "s1-ex-1",
+          nodeType: "EXERCISE",
+        },
+      ],
+    });
+  });
+
+  it("keeps leading root context visible when exercise roots are present", () => {
+    const payload = makePayload();
+    payload.draft_json.variants[0].nodes = [
+      {
+        id: "s1-context",
+        nodeType: "CONTEXT",
+        parentId: null,
+        orderIndex: 1,
+        label: null,
+        maxPoints: null,
+        topicCodes: [],
+        blocks: [
+          {
+            id: "s1-context-prompt",
+            role: "PROMPT",
+            type: "paragraph",
+            value: "أجب عن أحد الموضوعين الآتيين على الخيار.",
+            assetId: null,
+            data: null,
+          },
+        ],
+      },
+      {
+        id: "s1-ex-1",
+        nodeType: "EXERCISE",
+        parentId: null,
+        orderIndex: 2,
+        label: "الجزء الأول",
+        maxPoints: 16,
+        topicCodes: [],
+        blocks: [],
+      },
+      {
+        id: "s1-q-1",
+        nodeType: "QUESTION",
+        parentId: "s1-ex-1",
+        orderIndex: 1,
+        label: "السؤال 1",
+        maxPoints: 4,
+        topicCodes: [],
+        blocks: [
+          {
+            id: "s1-q-1-prompt",
+            role: "PROMPT",
+            type: "paragraph",
+            value: "عرّف المصطلح.",
+            assetId: null,
+            data: null,
+          },
+        ],
+      },
+    ];
+
+    const exam = buildAdminIngestionStudentPreviewExam(payload, {
+      sujetNumber: 1,
+    });
+
+    expect(exam?.hierarchy?.exercises).toHaveLength(1);
+    expect(exam?.hierarchy?.exercises[0]?.blocks[0]).toMatchObject({
+      id: "s1-context-prompt",
+      textValue: "أجب عن أحد الموضوعين الآتيين على الخيار.",
+    });
   });
 
   it("returns null when a draft has no populated variants", () => {

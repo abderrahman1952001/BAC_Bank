@@ -225,8 +225,13 @@ export function mapVariantHierarchy(variant: ExamVariantWithNodes): {
 
   const rootNodes = nodesByParent.get(null) ?? [];
   const mappedRoots = rootNodes.map((rootNode) => mapNode(rootNode));
-  const mappedExercises = mappedRoots.filter(
-    (node) => node.nodeType === ExamNodeType.EXERCISE,
+  const mappedExercises = rootsWithLeadingContext(
+    mappedRoots,
+    mappedRoots.filter((node) => node.nodeType === ExamNodeType.EXERCISE),
+  );
+  const visibleRoots = rootsWithLeadingContext(
+    mappedRoots,
+    mappedRoots.filter((node) => node.nodeType !== ExamNodeType.CONTEXT),
   );
 
   return {
@@ -235,8 +240,48 @@ export function mapVariantHierarchy(variant: ExamVariantWithNodes): {
     title: variant.title || 'الموضوع',
     status: variant.status,
     nodeCount: variant.nodes.length,
-    exercises: mappedExercises.length ? mappedExercises : mappedRoots,
+    exercises: mappedExercises.length ? mappedExercises : visibleRoots,
   };
+}
+
+function rootsWithLeadingContext(
+  rootNodes: HierarchyNodePayload[],
+  visibleRoots: HierarchyNodePayload[],
+) {
+  if (!visibleRoots.length) {
+    return rootNodes;
+  }
+
+  const visibleRootIds = new Set(visibleRoots.map((node) => node.id));
+  const roots: HierarchyNodePayload[] = [];
+  let pendingContextNodes: HierarchyNodePayload[] = [];
+
+  for (const rootNode of rootNodes) {
+    if (rootNode.nodeType === ExamNodeType.CONTEXT) {
+      pendingContextNodes.push(rootNode);
+      continue;
+    }
+
+    if (!visibleRootIds.has(rootNode.id)) {
+      continue;
+    }
+
+    roots.push({
+      ...rootNode,
+      children: [...pendingContextNodes, ...rootNode.children],
+    });
+    pendingContextNodes = [];
+  }
+
+  if (pendingContextNodes.length && roots.length) {
+    const lastRoot = roots[roots.length - 1];
+    roots[roots.length - 1] = {
+      ...lastRoot,
+      children: [...lastRoot.children, ...pendingContextNodes],
+    };
+  }
+
+  return roots;
 }
 
 export function collectHierarchyQuestionItemsForSession(

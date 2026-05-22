@@ -24,7 +24,7 @@ describe('IngestionPublishedVariantService', () => {
       createMany: jest.Mock;
     };
     examNodeBlock: {
-      create: jest.Mock;
+      createMany: jest.Mock;
     };
   };
 
@@ -131,7 +131,7 @@ describe('IngestionPublishedVariantService', () => {
         createMany: jest.fn().mockResolvedValue(undefined),
       },
       examNodeBlock: {
-        create: jest.fn().mockResolvedValue(undefined),
+        createMany: jest.fn().mockResolvedValue(undefined),
       },
     };
   });
@@ -292,35 +292,171 @@ describe('IngestionPublishedVariantService', () => {
       ],
       skipDuplicates: true,
     });
-    expect(tx.examNodeBlock.create).toHaveBeenNthCalledWith(1, {
-      data: {
-        nodeId: 'node-exercise-1',
-        role: 'PROMPT',
-        orderIndex: 1,
-        blockType: 'IMAGE',
-        textValue: null,
-        mediaId: 'media-1',
-        data: {
-          assetId: 'asset-1',
-          kind: 'reviewed_asset',
+    expect(tx.examNodeBlock.createMany).toHaveBeenNthCalledWith(1, {
+      data: [
+        {
+          nodeId: 'node-exercise-1',
+          role: 'PROMPT',
+          orderIndex: 1,
+          blockType: 'IMAGE',
+          textValue: null,
+          mediaId: 'media-1',
+          data: {
+            assetId: 'asset-1',
+            kind: 'reviewed_asset',
+          },
         },
-      },
+      ],
     });
-    expect(tx.examNodeBlock.create).toHaveBeenNthCalledWith(2, {
-      data: {
-        nodeId: 'node-question-1',
-        role: 'SOLUTION',
-        orderIndex: 1,
-        blockType: 'GRAPH',
-        textValue: 'Rendered graph',
-        mediaId: 'media-2',
-        data: {
-          kind: 'formula_graph',
-          points: [],
-          language: 'latex',
-          assetId: 'asset-2',
+    expect(tx.examNodeBlock.createMany).toHaveBeenNthCalledWith(2, {
+      data: [
+        {
+          nodeId: 'node-question-1',
+          role: 'SOLUTION',
+          orderIndex: 1,
+          blockType: 'GRAPH',
+          textValue: 'Rendered graph',
+          mediaId: 'media-2',
+          data: {
+            kind: 'formula_graph',
+            points: [],
+            language: 'latex',
+            assetId: 'asset-2',
+          },
         },
+      ],
+    });
+  });
+
+  it('does not publish empty draft variants', async () => {
+    tx.curriculumNode.findMany.mockResolvedValueOnce([]);
+
+    await service.createPublishedVariants({
+      tx: tx as never,
+      jobId: 'job-1',
+      paperId: 'paper-1',
+      draft: {
+        ...draft,
+        variants: [
+          ...draft.variants,
+          {
+            code: 'SUJET_2',
+            title: 'Sujet 2',
+            nodes: [],
+          },
+        ],
       },
+      topicIdsByCode: new Map([
+        ['ALG', 'topic-1'],
+        ['FUNC', 'topic-2'],
+      ]),
+      assetMediaIds: new Map([
+        ['asset-1', 'media-1'],
+        ['asset-2', 'media-2'],
+      ]),
+      createId: createDeterministicIdFactory([
+        'variant-1',
+        'node-exercise-1',
+        'node-question-1',
+      ]),
+    });
+
+    expect(tx.examVariant.create).toHaveBeenCalledTimes(1);
+    expect(tx.examVariant.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          code: 'SUJET_1',
+        }),
+      }),
+    );
+  });
+
+  it('publishes technical diagram data as a structured block with source fallback', async () => {
+    tx.curriculumNode.findMany.mockResolvedValueOnce([]);
+
+    await service.createPublishedVariants({
+      tx: tx as never,
+      jobId: 'job-technical',
+      paperId: 'paper-technical',
+      draft: {
+        ...draft,
+        variants: [
+          {
+            code: 'SUJET_1',
+            title: 'Sujet 1',
+            nodes: [
+              {
+                id: 'node-technical',
+                nodeType: 'EXERCISE',
+                parentId: null,
+                orderIndex: 1,
+                label: 'Technical node',
+                maxPoints: null,
+                topicCodes: [],
+                blocks: [
+                  {
+                    id: 'block-technical',
+                    role: 'PROMPT',
+                    type: 'image',
+                    value: 'Native GRAFCET',
+                    assetId: 'asset-technical',
+                    data: {
+                      kind: 'technical_flow',
+                      reviewStatus: 'visual_checked',
+                      nodes: [
+                        {
+                          id: 'step-1',
+                          x: 10,
+                          y: 20,
+                          width: 120,
+                          height: 48,
+                          label: '1',
+                          type: 'step',
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      topicIdsByCode: new Map(),
+      assetMediaIds: new Map([['asset-technical', 'media-technical']]),
+      createId: createDeterministicIdFactory([
+        'variant-technical',
+        'node-technical-published',
+      ]),
+    });
+
+    expect(tx.examNodeBlock.createMany).toHaveBeenCalledWith({
+      data: [
+        {
+          nodeId: 'node-technical-published',
+          role: 'PROMPT',
+          orderIndex: 1,
+          blockType: 'PARAGRAPH',
+          textValue: 'Native GRAFCET',
+          mediaId: 'media-technical',
+          data: {
+            kind: 'technical_flow',
+            reviewStatus: 'visual_checked',
+            nodes: [
+              {
+                id: 'step-1',
+                x: 10,
+                y: 20,
+                width: 120,
+                height: 48,
+                label: '1',
+                type: 'step',
+              },
+            ],
+            assetId: 'asset-technical',
+          },
+        },
+      ],
     });
   });
 });

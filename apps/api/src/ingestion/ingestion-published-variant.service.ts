@@ -98,7 +98,9 @@ export class IngestionPublishedVariantService {
         Array.from(input.topicIdsByCode.values()),
       );
 
-    for (const variant of input.draft.variants) {
+    for (const variant of input.draft.variants.filter(
+      (draftVariant) => draftVariant.nodes.length > 0,
+    )) {
       const variantId = createId();
 
       await input.tx.examVariant.create({
@@ -332,15 +334,18 @@ export class IngestionPublishedVariantService {
     blocks: DraftBlock[],
     assetMediaIds: Map<string, string>,
   ) {
-    for (let index = 0; index < blocks.length; index += 1) {
-      const block = blocks[index];
-      const mediaId =
-        block.assetId !== undefined && block.assetId !== null
-          ? (assetMediaIds.get(block.assetId) ?? null)
-          : null;
+    if (blocks.length === 0) {
+      return;
+    }
 
-      await tx.examNodeBlock.create({
-        data: {
+    await tx.examNodeBlock.createMany({
+      data: blocks.map((block, index) => {
+        const mediaId =
+          block.assetId !== undefined && block.assetId !== null
+            ? (assetMediaIds.get(block.assetId) ?? null)
+            : null;
+
+        return {
           nodeId,
           role: this.toPrismaBlockRole(block.role),
           orderIndex: index + 1,
@@ -382,9 +387,9 @@ export class IngestionPublishedVariantService {
                 }
               : {}),
           }),
-        },
-      });
-    }
+        };
+      }),
+    });
   }
 
   private toPrismaVariantCode(value: DraftVariantCode) {
@@ -478,6 +483,14 @@ export class IngestionPublishedVariantService {
       return PrismaBlockType.TABLE;
     }
 
+    if (this.hasCivilDiagramData(value)) {
+      return PrismaBlockType.PARAGRAPH;
+    }
+
+    if (this.hasTechnicalDiagramData(value)) {
+      return PrismaBlockType.PARAGRAPH;
+    }
+
     if (value.type === 'image' || value.assetId) {
       return PrismaBlockType.IMAGE;
     }
@@ -556,6 +569,18 @@ export class IngestionPublishedVariantService {
       return 'probability_tree';
     }
 
+    if (this.hasChemistryStructureData(block)) {
+      return 'chemistry_structure';
+    }
+
+    if (this.hasCivilDiagramData(block)) {
+      return 'civil_diagram';
+    }
+
+    if (this.hasTechnicalDiagramData(block)) {
+      return this.inferTechnicalDiagramKind(block) ?? 'technical_diagram';
+    }
+
     return this.readJsonString(block.data ?? null, 'kind');
   }
 
@@ -563,8 +588,211 @@ export class IngestionPublishedVariantService {
     return (
       this.hasStructuredTableData(block) ||
       this.hasFormulaGraphData(block) ||
-      this.hasProbabilityTreeData(block)
+      this.hasProbabilityTreeData(block) ||
+      this.hasChemistryStructureData(block) ||
+      this.hasCivilDiagramData(block) ||
+      this.hasTechnicalDiagramData(block)
     );
+  }
+
+  private hasChemistryStructureData(block: DraftBlock) {
+    const data = this.readChemistryStructureData(block);
+
+    return Boolean(data);
+  }
+
+  private readChemistryStructureData(block: DraftBlock) {
+    const data = this.asDraftBlockData(block);
+
+    if (!data) {
+      return null;
+    }
+
+    const candidates: unknown[] = [
+      data,
+      data.chemistryStructure,
+      data.molecule,
+      data.payload,
+    ];
+
+    for (const candidate of candidates) {
+      if (
+        !candidate ||
+        typeof candidate !== 'object' ||
+        Array.isArray(candidate)
+      ) {
+        continue;
+      }
+
+      const record = candidate as Record<string, unknown>;
+      const source =
+        this.readJsonString(record, 'source') ??
+        this.readJsonString(record, 'smiles') ??
+        this.readJsonString(record, 'molblock');
+      const hasMoleculeItems =
+        Array.isArray(record.items) &&
+        record.items.some((item) => {
+          if (!item || typeof item !== 'object' || Array.isArray(item)) {
+            return false;
+          }
+
+          const molecule = item as Record<string, unknown>;
+
+          return Boolean(
+            this.readJsonString(molecule, 'source')?.trim() ||
+            this.readJsonString(molecule, 'smiles')?.trim() ||
+            this.readJsonString(molecule, 'molblock')?.trim(),
+          );
+        });
+      const explicitChemistryKind =
+        this.readJsonString(record, 'kind') === 'chemistry_structure' ||
+        this.readJsonString(data, 'kind') === 'chemistry_structure';
+      const hasMoleculeSourceField = Boolean(
+        this.readJsonString(record, 'smiles') ??
+        this.readJsonString(record, 'molblock'),
+      );
+
+      if (
+        (source?.trim() || hasMoleculeItems) &&
+        (explicitChemistryKind || hasMoleculeSourceField || hasMoleculeItems)
+      ) {
+        return record;
+      }
+    }
+
+    return null;
+  }
+
+  private hasCivilDiagramData(block: DraftBlock) {
+    const data = this.readCivilDiagramData(block);
+
+    return Boolean(data);
+  }
+
+  private hasTechnicalDiagramData(block: DraftBlock) {
+    const data = this.readTechnicalDiagramData(block);
+
+    return Boolean(data);
+  }
+
+  private inferTechnicalDiagramKind(block: DraftBlock) {
+    const data = this.readTechnicalDiagramData(block);
+
+    if (!data) {
+      return null;
+    }
+
+    const kind = this.readJsonString(data, 'kind');
+
+    if (
+      kind === 'technical_flow' ||
+      kind === 'technical_grid' ||
+      kind === 'technical_waveform'
+    ) {
+      return kind;
+    }
+
+    return this.readJsonString(block.data ?? null, 'kind');
+  }
+
+  private readTechnicalDiagramData(block: DraftBlock) {
+    const data = this.asDraftBlockData(block);
+
+    if (!data) {
+      return null;
+    }
+
+    const candidates: unknown[] = [
+      data,
+      data.technicalDiagram,
+      data.technicalFlow,
+      data.technicalGrid,
+      data.technicalWaveform,
+      data.payload,
+    ];
+
+    for (const candidate of candidates) {
+      if (
+        !candidate ||
+        typeof candidate !== 'object' ||
+        Array.isArray(candidate)
+      ) {
+        continue;
+      }
+
+      const record = candidate as Record<string, unknown>;
+      const kind =
+        this.readJsonString(record, 'kind') ??
+        this.readJsonString(data, 'kind');
+      const family =
+        this.readJsonString(record, 'family') ??
+        this.readJsonString(record, 'type') ??
+        this.readJsonString(data, 'family') ??
+        this.readJsonString(data, 'type');
+      const hasFlow = Array.isArray(record.nodes) && record.nodes.length > 0;
+      const hasGrid =
+        (Array.isArray(record.rows) && record.rows.length > 0) ||
+        (Array.isArray(record.cells) && record.cells.length > 0);
+      const hasWaveform =
+        Array.isArray(record.signals) && record.signals.length > 0;
+
+      if (
+        (kind === 'technical_flow' && hasFlow) ||
+        (kind === 'technical_grid' && hasGrid) ||
+        (kind === 'technical_waveform' && hasWaveform) ||
+        (kind === 'technical_diagram' &&
+          ((family === 'flow' && hasFlow) ||
+            (family === 'grafcet' && hasFlow) ||
+            (family === 'fast' && hasFlow) ||
+            (family === 'grid' && hasGrid) ||
+            (family === 'karnaugh' && hasGrid) ||
+            (family === 'form' && hasGrid) ||
+            (family === 'waveform' && hasWaveform) ||
+            (family === 'timing' && hasWaveform)))
+      ) {
+        return record;
+      }
+    }
+
+    return null;
+  }
+
+  private readCivilDiagramData(block: DraftBlock) {
+    const data = this.asDraftBlockData(block);
+
+    if (!data) {
+      return null;
+    }
+
+    const candidates: unknown[] = [
+      data,
+      data.civilDiagram,
+      data.diagram,
+      data.payload,
+    ];
+
+    for (const candidate of candidates) {
+      if (
+        !candidate ||
+        typeof candidate !== 'object' ||
+        Array.isArray(candidate)
+      ) {
+        continue;
+      }
+
+      const record = candidate as Record<string, unknown>;
+      const explicitCivilKind =
+        this.readJsonString(record, 'kind') === 'civil_diagram' ||
+        this.readJsonString(data, 'kind') === 'civil_diagram';
+      const hasElements =
+        Array.isArray(record.elements) && record.elements.length > 0;
+
+      if (explicitCivilKind && hasElements) {
+        return record;
+      }
+    }
+
+    return null;
   }
 
   private readJsonString(value: unknown, field: string) {

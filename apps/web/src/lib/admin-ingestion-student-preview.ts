@@ -100,9 +100,7 @@ function readStringArray(value: unknown): string[] {
 }
 
 function readString(value: unknown): string | null {
-  return typeof value === "string" && value.trim().length
-    ? value.trim()
-    : null;
+  return typeof value === "string" && value.trim().length ? value.trim() : null;
 }
 
 function readNumber(value: unknown): number | null {
@@ -113,7 +111,9 @@ function resolveDraftStreamCodes(
   payload: AdminIngestionJobResponse,
   draft: AdminIngestionDraft,
 ) {
-  const metadataStreamCodes = readStringArray(draft.exam.metadata.paperStreamCodes);
+  const metadataStreamCodes = readStringArray(
+    draft.exam.metadata.paperStreamCodes,
+  );
   const candidates = [
     ...metadataStreamCodes,
     ...payload.job.stream_codes,
@@ -241,17 +241,71 @@ function buildVariantExercises(
 ) {
   const childrenByParent = buildChildrenMap(variant.nodes);
   const assetById = new Map(assets.map((asset) => [asset.id, asset]));
+  const rootNodes = childrenByParent.get(null) ?? [];
+  const exerciseRoots = rootNodes.filter(
+    (node) => node.nodeType === "EXERCISE",
+  );
+  const visibleRoots = mergeRootContextIntoVisibleRoots(
+    rootNodes,
+    exerciseRoots.length
+      ? exerciseRoots
+      : rootNodes.filter((node) => node.nodeType !== "CONTEXT"),
+  );
 
-  return (childrenByParent.get(null) ?? [])
-    .filter((node) => node.nodeType === "EXERCISE")
-    .map((node) =>
-      buildHierarchyNode({
-        node,
-        childrenByParent,
-        assetById,
-        assetPreviewBaseUrl,
-      }),
-    );
+  return visibleRoots.map((node) =>
+    buildHierarchyNode({
+      node,
+      childrenByParent,
+      assetById,
+      assetPreviewBaseUrl,
+    }),
+  );
+}
+
+function mergeRootContextIntoVisibleRoots(
+  rootNodes: DraftNode[],
+  visibleRoots: DraftNode[],
+) {
+  if (!visibleRoots.length) {
+    return rootNodes;
+  }
+
+  const visibleRootIds = new Set(visibleRoots.map((node) => node.id));
+  const mergedRoots: DraftNode[] = [];
+  let pendingContextNodes: DraftNode[] = [];
+
+  for (const rootNode of rootNodes) {
+    if (rootNode.nodeType === "CONTEXT") {
+      pendingContextNodes.push(rootNode);
+      continue;
+    }
+
+    if (!visibleRootIds.has(rootNode.id)) {
+      continue;
+    }
+
+    mergedRoots.push({
+      ...rootNode,
+      blocks: [
+        ...pendingContextNodes.flatMap((contextNode) => contextNode.blocks),
+        ...rootNode.blocks,
+      ],
+    });
+    pendingContextNodes = [];
+  }
+
+  if (pendingContextNodes.length && mergedRoots.length) {
+    const lastRoot = mergedRoots[mergedRoots.length - 1];
+    mergedRoots[mergedRoots.length - 1] = {
+      ...lastRoot,
+      blocks: [
+        ...lastRoot.blocks,
+        ...pendingContextNodes.flatMap((contextNode) => contextNode.blocks),
+      ],
+    };
+  }
+
+  return mergedRoots;
 }
 
 function resolveSelectedVariant(

@@ -50,6 +50,7 @@ export function validateIngestionDraft(
   const sourcePageMap = new Map<string, DraftSourcePage>();
   const assetMap = new Map<string, DraftAsset>();
   const referencedAssetIds = new Set<string>();
+  const nativeRenderedAssetIds = collectNativeRenderedAssetIds(draft);
   const revisionDraft = isPublishedRevisionDraft(draft);
 
   if (resolveDraftPaperStreamCodes(draft).length === 0) {
@@ -165,7 +166,13 @@ export function validateIngestionDraft(
   }
 
   for (const asset of draft.assets) {
-    validateAsset(asset, assetMap, sourcePageMap, collector);
+    validateAsset(
+      asset,
+      assetMap,
+      sourcePageMap,
+      nativeRenderedAssetIds,
+      collector,
+    );
   }
 
   const variantsWithNodes = draft.variants.filter(
@@ -188,32 +195,8 @@ export function validateIngestionDraft(
     });
   }
 
-  const totalExerciseRoots = draft.variants.reduce(
-    (sum, variant) =>
-      sum +
-      variant.nodes.filter(
-        (node) => node.parentId === null && node.nodeType === 'EXERCISE',
-      ).length,
-    0,
-  );
-
-  if (variantsWithNodes.length > 0 && totalExerciseRoots === 0) {
-    collector.error({
-      code: 'draft_has_no_root_exercise',
-      target: 'exam',
-      message: 'Draft does not contain any root EXERCISE nodes.',
-      variantCode: null,
-      nodeId: null,
-      blockId: null,
-      assetId: null,
-      sourcePageId: null,
-      pageNumber: null,
-      field: 'variants',
-    });
-  }
-
   for (const variant of draft.variants) {
-    validateVariant(variant, assetMap, referencedAssetIds, collector);
+    validateVariant(variant, draft, assetMap, referencedAssetIds, collector);
   }
 
   for (const asset of draft.assets) {
@@ -284,6 +267,7 @@ function validateAsset(
   asset: DraftAsset,
   assetMap: Map<string, DraftAsset>,
   sourcePageMap: Map<string, DraftSourcePage>,
+  nativeRenderedAssetIds: Set<string>,
   collector: ValidationCollector,
 ) {
   if (assetMap.has(asset.id)) {
@@ -411,7 +395,10 @@ function validateAsset(
     });
   }
 
-  if (isFullPageCrop(asset.cropBox, page)) {
+  if (
+    isFullPageCrop(asset.cropBox, page) &&
+    !nativeRenderedAssetIds.has(asset.id)
+  ) {
     collector.warning({
       code: 'asset_crop_placeholder',
       target: 'asset',
@@ -533,6 +520,22 @@ function validateAsset(
   }
 }
 
+function collectNativeRenderedAssetIds(draft: IngestionDraft) {
+  const assetIds = new Set<string>();
+
+  for (const variant of draft.variants) {
+    for (const node of variant.nodes) {
+      for (const block of node.blocks) {
+        if (block.assetId && hasTrustedNativeRenderData(block)) {
+          assetIds.add(block.assetId);
+        }
+      }
+    }
+  }
+
+  return assetIds;
+}
+
 function isFullPageCrop(
   cropBox: DraftAsset['cropBox'],
   sourcePage: DraftSourcePage,
@@ -566,6 +569,7 @@ function readMetadataString(
 
 function validateVariant(
   variant: DraftVariant,
+  draft: IngestionDraft,
   assetMap: Map<string, DraftAsset>,
   referencedAssetIds: Set<string>,
   collector: ValidationCollector,
@@ -585,7 +589,10 @@ function validateVariant(
     });
   }
 
-  if (variant.nodes.length === 0) {
+  if (
+    variant.nodes.length === 0 &&
+    !isIntentionalEmptyVariant(draft, variant)
+  ) {
     collector.warning({
       code: 'variant_empty',
       target: 'variant',
@@ -664,15 +671,11 @@ function validateVariant(
       });
     }
 
-    if (
-      !node.parentId &&
-      node.nodeType !== 'EXERCISE' &&
-      node.nodeType !== 'CONTEXT'
-    ) {
+    if (!node.parentId && !isAllowedRootNodeType(node.nodeType)) {
       collector.error({
         code: 'node_invalid_root_type',
         target: 'node',
-        message: `Root node ${node.id} in ${variant.code} must be EXERCISE or CONTEXT, got ${node.nodeType}.`,
+        message: `Root node ${node.id} in ${variant.code} must be EXERCISE, PART, or CONTEXT, got ${node.nodeType}.`,
         variantCode: variant.code,
         nodeId: node.id,
         blockId: null,
@@ -683,11 +686,15 @@ function validateVariant(
       });
     }
 
-    if (node.parentId && node.nodeType === 'EXERCISE') {
+    if (
+      parent &&
+      node.nodeType === 'EXERCISE' &&
+      !isAllowedExerciseParent(parent)
+    ) {
       collector.error({
-        code: 'exercise_has_parent',
+        code: 'exercise_invalid_parent',
         target: 'node',
-        message: `Exercise node ${node.id} in ${variant.code} cannot have a parent.`,
+        message: `Exercise node ${node.id} in ${variant.code} can only be nested under a root PART node.`,
         variantCode: variant.code,
         nodeId: node.id,
         blockId: null,
@@ -712,6 +719,27 @@ function validateVariant(
   for (const node of variant.nodes) {
     detectCycle(variant.code, node, nodeMap, collector);
   }
+}
+
+function isIntentionalEmptyVariant(
+  draft: IngestionDraft,
+  variant: DraftVariant,
+) {
+  return (
+    variant.code === 'SUJET_2' &&
+    readMetadataString(draft.exam.metadata, 'paperChoiceMode') ===
+      'single_paper_optional_roots'
+  );
+}
+
+function isAllowedRootNodeType(nodeType: DraftNode['nodeType']) {
+  return (
+    nodeType === 'EXERCISE' || nodeType === 'PART' || nodeType === 'CONTEXT'
+  );
+}
+
+function isAllowedExerciseParent(parent: DraftNode) {
+  return parent.nodeType === 'PART' && parent.parentId === null;
 }
 
 function validateSiblingOrder(
@@ -1000,6 +1028,57 @@ function validateBlock(
     }
 
     if (
+      hasChemistryStructureData(block) &&
+      !hasTrustedChemistryStructureData(block)
+    ) {
+      collector.warning({
+        code: 'chemistry_structure_needs_visual_check',
+        target: 'block',
+        message: `Node ${node.id} in ${variantCode} has chemistry structure data for asset ${asset.id}, but it is not marked as visually checked yet.`,
+        variantCode,
+        nodeId: node.id,
+        blockId: block.id,
+        assetId: asset.id,
+        sourcePageId: asset.sourcePageId,
+        pageNumber: asset.pageNumber,
+        field: 'data.chemistryStructure.reviewStatus',
+      });
+    }
+
+    if (hasCivilDiagramData(block) && !hasTrustedCivilDiagramData(block)) {
+      collector.warning({
+        code: 'civil_diagram_needs_visual_check',
+        target: 'block',
+        message: `Node ${node.id} in ${variantCode} has civil diagram data for asset ${asset.id}, but it is not marked as visually checked yet.`,
+        variantCode,
+        nodeId: node.id,
+        blockId: block.id,
+        assetId: asset.id,
+        sourcePageId: asset.sourcePageId,
+        pageNumber: asset.pageNumber,
+        field: 'data.civilDiagram.reviewStatus',
+      });
+    }
+
+    if (
+      hasTechnicalDiagramData(block) &&
+      !hasTrustedTechnicalDiagramData(block)
+    ) {
+      collector.warning({
+        code: 'technical_diagram_needs_visual_check',
+        target: 'block',
+        message: `Node ${node.id} in ${variantCode} has technical diagram data for asset ${asset.id}, but it is not marked as visually checked yet.`,
+        variantCode,
+        nodeId: node.id,
+        blockId: block.id,
+        assetId: asset.id,
+        sourcePageId: asset.sourcePageId,
+        pageNumber: asset.pageNumber,
+        field: 'data.technicalDiagram.reviewStatus',
+      });
+    }
+
+    if (
       asset.nativeSuggestion?.status === 'stale' &&
       (block.type === asset.nativeSuggestion.type ||
         (asset.nativeSuggestion.type === 'graph' &&
@@ -1024,6 +1103,57 @@ function validateBlock(
     }
 
     return;
+  }
+
+  if (
+    hasChemistryStructureData(block) &&
+    !hasTrustedChemistryStructureData(block)
+  ) {
+    collector.warning({
+      code: 'chemistry_structure_needs_visual_check',
+      target: 'block',
+      message: `Node ${node.id} in ${variantCode} has chemistry structure data, but it is not marked as visually checked yet.`,
+      variantCode,
+      nodeId: node.id,
+      blockId: block.id,
+      assetId: null,
+      sourcePageId: null,
+      pageNumber: null,
+      field: 'data.chemistryStructure.reviewStatus',
+    });
+  }
+
+  if (hasCivilDiagramData(block) && !hasTrustedCivilDiagramData(block)) {
+    collector.warning({
+      code: 'civil_diagram_needs_visual_check',
+      target: 'block',
+      message: `Node ${node.id} in ${variantCode} has civil diagram data, but it is not marked as visually checked yet.`,
+      variantCode,
+      nodeId: node.id,
+      blockId: block.id,
+      assetId: null,
+      sourcePageId: null,
+      pageNumber: null,
+      field: 'data.civilDiagram.reviewStatus',
+    });
+  }
+
+  if (
+    hasTechnicalDiagramData(block) &&
+    !hasTrustedTechnicalDiagramData(block)
+  ) {
+    collector.warning({
+      code: 'technical_diagram_needs_visual_check',
+      target: 'block',
+      message: `Node ${node.id} in ${variantCode} has technical diagram data, but it is not marked as visually checked yet.`,
+      variantCode,
+      nodeId: node.id,
+      blockId: block.id,
+      assetId: null,
+      sourcePageId: null,
+      pageNumber: null,
+      field: 'data.technicalDiagram.reviewStatus',
+    });
   }
 
   if (
@@ -1140,6 +1270,17 @@ function hasStructuredBlockData(block: DraftBlock) {
   );
 }
 
+function hasTrustedNativeRenderData(block: DraftBlock) {
+  return (
+    hasStructuredTableRows(block) ||
+    hasFormulaGraphData(block) ||
+    hasProbabilityTreeData(block) ||
+    hasTrustedChemistryStructureData(block) ||
+    hasTrustedCivilDiagramData(block) ||
+    hasTrustedTechnicalDiagramData(block)
+  );
+}
+
 function hasStructuredTableRows(block: DraftBlock) {
   if (
     !block.data ||
@@ -1184,6 +1325,185 @@ function hasProbabilityTreeData(block: DraftBlock) {
     isRecord(data.probabilityTree) ||
     isRecord(data.tree)
   );
+}
+
+function hasChemistryStructureData(block: DraftBlock) {
+  return Boolean(readChemistryStructureData(block));
+}
+
+function hasTrustedChemistryStructureData(block: DraftBlock) {
+  const data = readChemistryStructureData(block);
+
+  return readRecordString(data, 'reviewStatus') === 'visual_checked';
+}
+
+function hasCivilDiagramData(block: DraftBlock) {
+  return Boolean(readCivilDiagramData(block));
+}
+
+function hasTrustedCivilDiagramData(block: DraftBlock) {
+  const data = readCivilDiagramData(block);
+
+  return readRecordString(data, 'reviewStatus') === 'visual_checked';
+}
+
+function hasTechnicalDiagramData(block: DraftBlock) {
+  return Boolean(readTechnicalDiagramData(block));
+}
+
+function hasTrustedTechnicalDiagramData(block: DraftBlock) {
+  const data = readTechnicalDiagramData(block);
+
+  return readRecordString(data, 'reviewStatus') === 'visual_checked';
+}
+
+function readTechnicalDiagramData(block: DraftBlock) {
+  if (!isRecord(block.data)) {
+    return null;
+  }
+
+  const candidates: unknown[] = [
+    block.data,
+    block.data.technicalDiagram,
+    block.data.technicalFlow,
+    block.data.technicalGrid,
+    block.data.technicalWaveform,
+    block.data.payload,
+  ];
+
+  for (const candidate of candidates) {
+    if (!isRecord(candidate)) {
+      continue;
+    }
+
+    const kind =
+      readRecordString(candidate, 'kind') ??
+      readRecordString(block.data, 'kind');
+    const family =
+      readRecordString(candidate, 'family') ??
+      readRecordString(candidate, 'type') ??
+      readRecordString(block.data, 'family') ??
+      readRecordString(block.data, 'type');
+    const hasFlow =
+      Array.isArray(candidate.nodes) && candidate.nodes.length > 0;
+    const hasGrid =
+      (Array.isArray(candidate.rows) && candidate.rows.length > 0) ||
+      (Array.isArray(candidate.cells) && candidate.cells.length > 0);
+    const hasWaveform =
+      Array.isArray(candidate.signals) && candidate.signals.length > 0;
+
+    if (
+      (kind === 'technical_flow' && hasFlow) ||
+      (kind === 'technical_grid' && hasGrid) ||
+      (kind === 'technical_waveform' && hasWaveform) ||
+      (kind === 'technical_diagram' &&
+        ((family === 'flow' && hasFlow) ||
+          (family === 'grafcet' && hasFlow) ||
+          (family === 'fast' && hasFlow) ||
+          (family === 'grid' && hasGrid) ||
+          (family === 'karnaugh' && hasGrid) ||
+          (family === 'form' && hasGrid) ||
+          (family === 'waveform' && hasWaveform) ||
+          (family === 'timing' && hasWaveform)))
+    ) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function readCivilDiagramData(block: DraftBlock) {
+  if (!isRecord(block.data)) {
+    return null;
+  }
+
+  const candidates: unknown[] = [
+    block.data,
+    block.data.civilDiagram,
+    block.data.diagram,
+    block.data.payload,
+  ];
+
+  for (const candidate of candidates) {
+    if (!isRecord(candidate)) {
+      continue;
+    }
+
+    const explicitCivilKind =
+      readRecordString(candidate, 'kind') === 'civil_diagram' ||
+      readRecordString(block.data, 'kind') === 'civil_diagram';
+    const hasElements =
+      Array.isArray(candidate.elements) && candidate.elements.length > 0;
+
+    if (explicitCivilKind && hasElements) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function readChemistryStructureData(block: DraftBlock) {
+  if (!isRecord(block.data)) {
+    return null;
+  }
+
+  const candidates: unknown[] = [
+    block.data,
+    block.data.chemistryStructure,
+    block.data.molecule,
+    block.data.payload,
+  ];
+
+  for (const candidate of candidates) {
+    if (!isRecord(candidate)) {
+      continue;
+    }
+
+    const source =
+      readRecordString(candidate, 'source') ??
+      readRecordString(candidate, 'smiles') ??
+      readRecordString(candidate, 'molblock');
+    const hasMoleculeItems =
+      Array.isArray(candidate.items) &&
+      candidate.items.some((item) => {
+        if (!isRecord(item)) {
+          return false;
+        }
+
+        return Boolean(
+          readRecordString(item, 'source')?.trim() ||
+          readRecordString(item, 'smiles')?.trim() ||
+          readRecordString(item, 'molblock')?.trim(),
+        );
+      });
+    const explicitChemistryKind =
+      readRecordString(candidate, 'kind') === 'chemistry_structure' ||
+      readRecordString(block.data, 'kind') === 'chemistry_structure';
+    const hasMoleculeSourceField = Boolean(
+      readRecordString(candidate, 'smiles') ??
+      readRecordString(candidate, 'molblock'),
+    );
+
+    if (
+      (source?.trim() || hasMoleculeItems) &&
+      (explicitChemistryKind || hasMoleculeSourceField || hasMoleculeItems)
+    ) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function readRecordString(
+  value: Record<string, unknown> | null,
+  field: string,
+) {
+  const candidate = value?.[field];
+
+  return typeof candidate === 'string' ? candidate : null;
 }
 
 function createCollector(): ValidationCollector {

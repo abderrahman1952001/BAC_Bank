@@ -30,6 +30,18 @@ import {
 import { validateIngestionDraft } from './ingestion-validation';
 import { IngestionPaperSourceService } from './ingestion-paper-source.service';
 import { R2StorageClient, readR2ConfigFromEnv } from './r2-storage';
+import { resolvePositiveInteger } from '../runtime/runtime-config';
+
+const PUBLICATION_TRANSACTION_MAX_WAIT_MS = resolvePositiveInteger({
+  value: process.env.INGESTION_PUBLICATION_TRANSACTION_MAX_WAIT_MS,
+  fallback: 30_000,
+  min: 1_000,
+});
+const PUBLICATION_TRANSACTION_TIMEOUT_MS = resolvePositiveInteger({
+  value: process.env.INGESTION_PUBLICATION_TRANSACTION_TIMEOUT_MS,
+  fallback: 180_000,
+  min: 10_000,
+});
 
 @Injectable()
 export class IngestionPublicationService {
@@ -202,270 +214,282 @@ export class IngestionPublicationService {
       const publishResult: {
         paperId: string;
         publishedExamIds: string[];
-      } = await this.prisma.$transaction(async (tx) => {
-        const currentExistingPaper =
-          job.publishedPaperId ??
-          (
-            await tx.paper.findFirst({
+      } = await this.prisma.$transaction(
+        async (tx) => {
+          const currentExistingPaper =
+            job.publishedPaperId ??
+            (
+              await tx.paper.findFirst({
+                where: {
+                  paperSourceId: job.paperSourceId,
+                },
+                select: {
+                  id: true,
+                },
+              })
+            )?.id ??
+            null;
+
+          if (currentExistingPaper && currentExistingPaper !== paperId) {
+            throw new BadRequestException(
+              'A canonical paper already exists for this year/subject/session/family.',
+            );
+          }
+
+          obsoletePublishedMedia = currentExistingPaper
+            ? await this.publishedAssetsService.listPublishedMediaForPaper(
+                tx,
+                paperId,
+              )
+            : [];
+
+          const officialSourceReference = this.buildOfficialSourceReference(
+            job,
+            draft,
+          );
+          const durationMinutes = readOptionalMetadataInteger(
+            draft.exam.metadata,
+            'durationMinutes',
+          );
+
+          if (currentExistingPaper) {
+            await tx.paper.update({
               where: {
+                id: paperId,
+              },
+              data: {
                 paperSourceId: job.paperSourceId,
+                year: draft.exam.year,
+                subjectId: subject.id,
+                sessionType,
+                familyCode: paperFamilyCode,
+                durationMinutes: durationMinutes ?? 210,
+                officialSourceReference,
               },
-              select: {
-                id: true,
-              },
-            })
-          )?.id ??
-          null;
+            });
 
-        if (currentExistingPaper && currentExistingPaper !== paperId) {
-          throw new BadRequestException(
-            'A canonical paper already exists for this year/subject/session/family.',
+            await tx.examVariant.deleteMany({
+              where: {
+                paperId,
+              },
+            });
+          } else {
+            await tx.paper.create({
+              data: {
+                id: paperId,
+                paperSourceId: job.paperSourceId,
+                year: draft.exam.year,
+                subjectId: subject.id,
+                sessionType,
+                familyCode: paperFamilyCode,
+                durationMinutes: durationMinutes ?? 210,
+                officialSourceReference,
+              },
+            });
+          }
+
+          const currentPaperOfferings = await tx.exam.findMany({
+            where: {
+              paperId,
+            },
+            select: {
+              id: true,
+              streamId: true,
+            },
+          });
+          const currentConflictingExams = await tx.exam.findMany({
+            where: {
+              year: draft.exam.year,
+              subjectId: subject.id,
+              sessionType,
+              streamId: {
+                in: selectedStreamIds,
+              },
+            },
+            select: {
+              id: true,
+              streamId: true,
+              paperId: true,
+            },
+          });
+
+          for (const conflict of currentConflictingExams) {
+            if (conflict.paperId === paperId) {
+              continue;
+            }
+
+            const streamCode =
+              selectedStreams.find((stream) => stream.id === conflict.streamId)
+                ?.code ?? conflict.streamId;
+
+            throw new BadRequestException(
+              `A live exam already exists for stream ${streamCode} in this year/subject/session.`,
+            );
+          }
+
+          const matchedOfferingsByStreamId = new Map(
+            currentPaperOfferings.map((offering) => [
+              offering.streamId,
+              offering,
+            ]),
           );
-        }
+          const reusableOfferings = currentPaperOfferings.filter(
+            (offering) => !selectedStreamIds.includes(offering.streamId),
+          );
+          const publishedExamIdsByStreamCode = new Map<string, string>();
+          const activeExamIds = new Set<string>();
 
-        obsoletePublishedMedia = currentExistingPaper
-          ? await this.publishedAssetsService.listPublishedMediaForPaper(
+          for (const stream of selectedStreams) {
+            const matchedOffering = matchedOfferingsByStreamId.get(stream.id);
+
+            if (matchedOffering) {
+              await tx.exam.update({
+                where: {
+                  id: matchedOffering.id,
+                },
+                data: {
+                  year: draft.exam.year,
+                  streamId: stream.id,
+                  subjectId: subject.id,
+                  sessionType,
+                  paperId,
+                  isPublished: true,
+                },
+              });
+
+              activeExamIds.add(matchedOffering.id);
+              publishedExamIdsByStreamCode.set(stream.code, matchedOffering.id);
+              continue;
+            }
+
+            const reusableOffering = reusableOfferings.shift();
+
+            if (reusableOffering) {
+              await tx.exam.update({
+                where: {
+                  id: reusableOffering.id,
+                },
+                data: {
+                  year: draft.exam.year,
+                  streamId: stream.id,
+                  subjectId: subject.id,
+                  sessionType,
+                  paperId,
+                  isPublished: true,
+                },
+              });
+
+              activeExamIds.add(reusableOffering.id);
+              publishedExamIdsByStreamCode.set(
+                stream.code,
+                reusableOffering.id,
+              );
+              continue;
+            }
+
+            const nextExamId = randomUUID();
+            await tx.exam.create({
+              data: {
+                id: nextExamId,
+                year: draft.exam.year,
+                streamId: stream.id,
+                subjectId: subject.id,
+                sessionType,
+                paperId,
+                isPublished: true,
+              },
+            });
+
+            activeExamIds.add(nextExamId);
+            publishedExamIdsByStreamCode.set(stream.code, nextExamId);
+          }
+
+          const staleOfferingIds = currentPaperOfferings
+            .filter((offering) => !activeExamIds.has(offering.id))
+            .map((offering) => offering.id);
+
+          if (staleOfferingIds.length > 0) {
+            await tx.exam.deleteMany({
+              where: {
+                id: {
+                  in: staleOfferingIds,
+                },
+              },
+            });
+          }
+
+          const assetMediaIds = new Map<string, string>();
+          const topicIdsByCode =
+            await this.publishedVariantService.buildSubjectTopicIdMap(
               tx,
-              paperId,
-            )
-          : [];
+              subject.id,
+              collectDraftTopicCodes(draft),
+              draft.exam.subjectCode,
+              draft.exam.streamCode ? [draft.exam.streamCode] : [],
+              [draft.exam.year],
+            );
 
-        const officialSourceReference = this.buildOfficialSourceReference(
-          job,
-          draft,
-        );
-        const durationMinutes = readOptionalMetadataInteger(
-          draft.exam.metadata,
-          'durationMinutes',
-        );
-
-        if (currentExistingPaper) {
-          await tx.paper.update({
-            where: {
-              id: paperId,
-            },
-            data: {
-              paperSourceId: job.paperSourceId,
-              year: draft.exam.year,
-              subjectId: subject.id,
-              sessionType,
-              familyCode: paperFamilyCode,
-              durationMinutes: durationMinutes ?? 210,
-              officialSourceReference,
-            },
-          });
-
-          await tx.examVariant.deleteMany({
-            where: {
-              paperId,
-            },
-          });
-        } else {
-          await tx.paper.create({
-            data: {
-              id: paperId,
-              paperSourceId: job.paperSourceId,
-              year: draft.exam.year,
-              subjectId: subject.id,
-              sessionType,
-              familyCode: paperFamilyCode,
-              durationMinutes: durationMinutes ?? 210,
-              officialSourceReference,
-            },
-          });
-        }
-
-        const currentPaperOfferings = await tx.exam.findMany({
-          where: {
-            paperId,
-          },
-          select: {
-            id: true,
-            streamId: true,
-          },
-        });
-        const currentConflictingExams = await tx.exam.findMany({
-          where: {
-            year: draft.exam.year,
-            subjectId: subject.id,
-            sessionType,
-            streamId: {
-              in: selectedStreamIds,
-            },
-          },
-          select: {
-            id: true,
-            streamId: true,
-            paperId: true,
-          },
-        });
-
-        for (const conflict of currentConflictingExams) {
-          if (conflict.paperId === paperId) {
-            continue;
-          }
-
-          const streamCode =
-            selectedStreams.find((stream) => stream.id === conflict.streamId)
-              ?.code ?? conflict.streamId;
-
-          throw new BadRequestException(
-            `A live exam already exists for stream ${streamCode} in this year/subject/session.`,
-          );
-        }
-
-        const matchedOfferingsByStreamId = new Map(
-          currentPaperOfferings.map((offering) => [
-            offering.streamId,
-            offering,
-          ]),
-        );
-        const reusableOfferings = currentPaperOfferings.filter(
-          (offering) => !selectedStreamIds.includes(offering.streamId),
-        );
-        const publishedExamIdsByStreamCode = new Map<string, string>();
-        const activeExamIds = new Set<string>();
-
-        for (const stream of selectedStreams) {
-          const matchedOffering = matchedOfferingsByStreamId.get(stream.id);
-
-          if (matchedOffering) {
-            await tx.exam.update({
-              where: {
-                id: matchedOffering.id,
-              },
-              data: {
-                year: draft.exam.year,
-                streamId: stream.id,
-                subjectId: subject.id,
-                sessionType,
-                paperId,
-                isPublished: true,
-              },
+          for (const preparedAsset of preparedAssets) {
+            await tx.media.create({
+              data: buildPublishedMediaCreateData(
+                preparedAsset,
+                getApiBaseUrl(),
+              ),
             });
 
-            activeExamIds.add(matchedOffering.id);
-            publishedExamIdsByStreamCode.set(stream.code, matchedOffering.id);
-            continue;
+            assetMediaIds.set(preparedAsset.assetId, preparedAsset.mediaId);
           }
 
-          const reusableOffering = reusableOfferings.shift();
-
-          if (reusableOffering) {
-            await tx.exam.update({
-              where: {
-                id: reusableOffering.id,
-              },
-              data: {
-                year: draft.exam.year,
-                streamId: stream.id,
-                subjectId: subject.id,
-                sessionType,
-                paperId,
-                isPublished: true,
-              },
-            });
-
-            activeExamIds.add(reusableOffering.id);
-            publishedExamIdsByStreamCode.set(stream.code, reusableOffering.id);
-            continue;
-          }
-
-          const nextExamId = randomUUID();
-          await tx.exam.create({
-            data: {
-              id: nextExamId,
-              year: draft.exam.year,
-              streamId: stream.id,
-              subjectId: subject.id,
-              sessionType,
-              paperId,
-              isPublished: true,
-            },
-          });
-
-          activeExamIds.add(nextExamId);
-          publishedExamIdsByStreamCode.set(stream.code, nextExamId);
-        }
-
-        const staleOfferingIds = currentPaperOfferings
-          .filter((offering) => !activeExamIds.has(offering.id))
-          .map((offering) => offering.id);
-
-        if (staleOfferingIds.length > 0) {
-          await tx.exam.deleteMany({
-            where: {
-              id: {
-                in: staleOfferingIds,
-              },
-            },
-          });
-        }
-
-        const assetMediaIds = new Map<string, string>();
-        const topicIdsByCode =
-          await this.publishedVariantService.buildSubjectTopicIdMap(
+          await this.publishedVariantService.createPublishedVariants({
             tx,
-            subject.id,
-            collectDraftTopicCodes(draft),
-            draft.exam.subjectCode,
-            draft.exam.streamCode ? [draft.exam.streamCode] : [],
-            [draft.exam.year],
-          );
-
-        for (const preparedAsset of preparedAssets) {
-          await tx.media.create({
-            data: buildPublishedMediaCreateData(preparedAsset, getApiBaseUrl()),
+            jobId: job.id,
+            paperId,
+            draft,
+            topicIdsByCode,
+            assetMediaIds,
           });
 
-          assetMediaIds.set(preparedAsset.assetId, preparedAsset.mediaId);
-        }
-
-        await this.publishedVariantService.createPublishedVariants({
-          tx,
-          jobId: job.id,
-          paperId,
-          draft,
-          topicIdsByCode,
-          assetMediaIds,
-        });
-
-        const publishedExamIds = Array.from(
-          publishedExamIdsByStreamCode.values(),
-        );
-
-        if (publishedExamIds.length === 0) {
-          throw new BadRequestException(
-            'Publishing did not produce any exam offerings for this paper.',
+          const publishedExamIds = Array.from(
+            publishedExamIdsByStreamCode.values(),
           );
-        }
 
-        await tx.ingestionJob.update({
-          where: {
-            id: job.id,
-          },
-          data: {
-            ...projectIngestionJobMetadataFromDraft(draft),
-            status: IngestionJobStatus.PUBLISHED,
-            publishedAt: new Date(),
-            publishedExamId: null,
-            publishedPaperId: paperId,
-            errorMessage: null,
-            processingFinishedAt: new Date(),
-            processingLeaseExpiresAt: null,
-            processingWorkerId: null,
-            draftJson: toJsonValue(draft),
-            metadata: toJsonValue(
-              withoutIngestionWorkerRequestMetadata(job.metadata),
-            ),
-          },
-        });
+          if (publishedExamIds.length === 0) {
+            throw new BadRequestException(
+              'Publishing did not produce any exam offerings for this paper.',
+            );
+          }
 
-        return {
-          paperId,
-          publishedExamIds,
-        };
-      });
+          await tx.ingestionJob.update({
+            where: {
+              id: job.id,
+            },
+            data: {
+              ...projectIngestionJobMetadataFromDraft(draft),
+              status: IngestionJobStatus.PUBLISHED,
+              publishedAt: new Date(),
+              publishedExamId: null,
+              publishedPaperId: paperId,
+              errorMessage: null,
+              processingFinishedAt: new Date(),
+              processingLeaseExpiresAt: null,
+              processingWorkerId: null,
+              draftJson: toJsonValue(draft),
+              metadata: toJsonValue(
+                withoutIngestionWorkerRequestMetadata(job.metadata),
+              ),
+            },
+          });
+
+          return {
+            paperId,
+            publishedExamIds,
+          };
+        },
+        {
+          maxWait: PUBLICATION_TRANSACTION_MAX_WAIT_MS,
+          timeout: PUBLICATION_TRANSACTION_TIMEOUT_MS,
+        },
+      );
 
       paperIdResult = publishResult.paperId;
       publishedExamIdsResult = publishResult.publishedExamIds;

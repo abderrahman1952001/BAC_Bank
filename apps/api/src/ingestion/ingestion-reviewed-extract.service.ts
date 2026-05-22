@@ -62,10 +62,22 @@ export class IngestionReviewedExtractService {
       jobTitle: input.jobTitle ?? job.label,
     });
     const validation = validateIngestionDraft(imported.draft);
+    const preApprovalChecklist = buildReviewedExtractPreApprovalChecklist({
+      summary: imported.summary,
+      validation,
+      nativeSuggestionCount: imported.draft.assets.filter((asset) =>
+        Boolean(asset.nativeSuggestion),
+      ).length,
+    });
+    imported.draft.exam.metadata = {
+      ...imported.draft.exam.metadata,
+      preApprovalChecklist,
+    };
     const reviewNotes = buildReviewedExtractImportReviewNotes({
       importFilePath: input.importFilePath,
       summary: imported.summary,
       validation,
+      preApprovalChecklist,
     });
 
     await this.opsService.resetToDraft(input.jobId, {
@@ -99,6 +111,9 @@ function buildReviewedExtractImportReviewNotes(input: {
   importFilePath: string;
   summary: ReviewedPaperImportSummary;
   validation: IngestionDraftValidation;
+  preApprovalChecklist: ReturnType<
+    typeof buildReviewedExtractPreApprovalChecklist
+  >;
 }) {
   const notes = [
     `Imported from ${input.importFilePath}.`,
@@ -131,5 +146,72 @@ function buildReviewedExtractImportReviewNotes(input: {
     );
   }
 
+  notes.push(
+    `Pre-approval checklist: ${input.preApprovalChecklist.items
+      .map((item) => item.label)
+      .join(' ')}`,
+  );
+
   return notes.join(' ');
+}
+
+function buildReviewedExtractPreApprovalChecklist(input: {
+  summary: ReviewedPaperImportSummary;
+  validation: IngestionDraftValidation;
+  nativeSuggestionCount: number;
+}) {
+  return {
+    schema: 'bac_ingestion_pre_approval_checklist/v1',
+    source: 'reviewed_extract_import',
+    status: input.validation.errors.length > 0 ? 'blocked' : 'pending_review',
+    counts: {
+      placeholderAssetCount: input.summary.placeholderAssetCount,
+      nativeSuggestionCount: input.nativeSuggestionCount,
+      uncertaintyCount: input.summary.uncertaintyCount,
+      validationErrorCount: input.validation.errors.length,
+      validationWarningCount: input.validation.warnings.length,
+    },
+    items: [
+      {
+        key: 'visual_coverage',
+        status: 'pending',
+        label:
+          'Record exam/correction page visual coverage and high-risk regions checked.',
+      },
+      {
+        key: 'crop_review',
+        status:
+          input.summary.placeholderAssetCount > 0
+            ? 'pending'
+            : 'pending_confirmation',
+        label:
+          input.summary.placeholderAssetCount > 0
+            ? `Refine or confirm ${input.summary.placeholderAssetCount} placeholder crop(s).`
+            : 'Confirm supplied crop geometry in the crop UI.',
+      },
+      {
+        key: 'native_assets',
+        status: input.nativeSuggestionCount > 0 ? 'pending' : 'not_applicable',
+        label:
+          input.nativeSuggestionCount > 0
+            ? `Visually check ${input.nativeSuggestionCount} native-rendered asset suggestion(s).`
+            : 'No native-rendered asset suggestions were imported.',
+      },
+      {
+        key: 'uncertainties',
+        status:
+          input.summary.uncertaintyCount > 0 ? 'pending' : 'not_applicable',
+        label:
+          input.summary.uncertaintyCount > 0
+            ? `Resolve or explicitly accept ${input.summary.uncertaintyCount} extraction uncertainty item(s).`
+            : 'No extraction uncertainties were imported.',
+      },
+      {
+        key: 'student_preview',
+        status: 'pending',
+        label:
+          'Open the student-side draft preview and check hierarchy, RTL layout, assets, and solution reveal before approval.',
+      },
+    ],
+  };
 }

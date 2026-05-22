@@ -165,6 +165,7 @@ describe('IngestionReviewedExtractService', () => {
     expect(resetPayload?.reviewNotes).toContain(
       'Imported from tmp/mathematics-se-2025.json.',
     );
+    expect(resetPayload?.reviewNotes).toContain('Pre-approval checklist:');
     expect(resetPayload?.draft.exam.title).toBe('BAC 2025 MATHEMATICS SE');
     expect(resetPayload?.draft.exam.metadata.importedFromReviewedExtract).toBe(
       true,
@@ -172,6 +173,28 @@ describe('IngestionReviewedExtractService', () => {
     expect(resetPayload?.draft.exam.metadata.reviewedExtractFile).toBe(
       'tmp/mathematics-se-2025.json',
     );
+    expect(
+      resetPayload?.draft.exam.metadata.preApprovalChecklist,
+    ).toMatchObject({
+      schema: 'bac_ingestion_pre_approval_checklist/v1',
+      status: 'pending_review',
+      counts: {
+        placeholderAssetCount: 0,
+        nativeSuggestionCount: 0,
+        uncertaintyCount: 0,
+        validationErrorCount: 0,
+      },
+      items: expect.arrayContaining([
+        expect.objectContaining({
+          key: 'visual_coverage',
+          status: 'pending',
+        }),
+        expect.objectContaining({
+          key: 'student_preview',
+          status: 'pending',
+        }),
+      ]),
+    });
     expect(runStage).toHaveBeenCalledWith({
       jobId: 'job-1',
       replaceExisting: false,

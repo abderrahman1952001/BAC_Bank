@@ -382,6 +382,9 @@ The draft should carry enough metadata to explain where it came from, including:
 - operator or agent identifier when useful
 - prompt version or prompt bundle reference
 - extraction timestamp
+- pre-approval checklist status for visual coverage, crop review,
+  native-rendered assets, unresolved uncertainties, and student-side draft
+  preview
 
 The extraction route must follow the source faithfulness contract in
 `docs/premium-ingestion-extraction.md`. The reviewed extract is allowed to
