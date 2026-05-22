@@ -1,0 +1,1007 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2020",
+    "totalPoints": 20,
+    "year": 2020
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Malek Bennabi ist ein algerischer Denker. Er wurde am 1. Januar 1905 in Constantine geboren. Sein Vater war ein ehemaliger Medresianer und zweisprachiger Gelehrter. 1911 begann Malek seine Schulausbildung an der Koranschule in Tébessa. Danach kehrte er nach Constantine zurück, wo er seine Studien am Ould-Ali-Kolleg und dann an der Medersa von Constantine fortsetzte. Bennabi besuchte diese Einrichtung drei Jahre lang, um sein Abschlussdiplom zu erhalten.\n\nEr interessierte sich für die Probleme der Zivilisation im Allgemeinen und der muslimischen Welt im Besonderen. Von 1927 arbeitete er als Gerichtsassistent am Hof von Aflou und dann in Châteaudun-du-Rhumel. 1928 traf er zum ersten Mal mit dem reformistischen Theologen Ibn Bâdîs zusammen. Arbeitslos entschied er sich im Frühsommer 1942, in Deutschland zu arbeiten. Ende 1943 beschloss Bennabi, nach Frankreich zurückzukehren. 1956 ging er nach Kairo. Dort perfektionierte er sein Arabisch. Er besuchte auch Syrien und den Libanon bei mehreren Gelegenheiten, um Vorträge zu halten.\n\n1963 kehrte Malek Bennabi nach Algerien zurück, wo er zum Direktor für Hochschulbildung ernannt wurde. Die letzten Jahre seines Lebens verbrachte er in Algerien, wo er am 31. Oktober 1973 starb. Malek Bennabi hinterließ viele Werke und Studien wie z. B.: Le Phénomène coranique, Les conditions de la renaissance, Vocation de l'Islam, L'afro-asiatisme... usw\n\nAus: https://fr.wikipedia.org/wiki/Malek_Bennabi (Verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nMedersa: مدرسة قرآنية / Ecole coranique\nfortsetzte: poursuivait / تابع\nbeschloss: قرر / décidait"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat |\n|---|---|---|---|\n| a. Malek Bennabi wurde in Ostalgerien geboren. | | | |\n| b. Malek Bennabi war nie in Tébessa. | | | |\n| c. Im Jahr 1928 lernte Malek Bennabi Ibn Bâdîs kennen. | | | |\n| d. Malek Bennabi starb in Deutschland. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat"],
+                  ["a. Malek Bennabi wurde in Ostalgerien geboren.", "", "", ""],
+                  ["b. Malek Bennabi war nie in Tébessa.", "", "", ""],
+                  ["c. Im Jahr 1928 lernte Malek Bennabi Ibn Bâdîs kennen.", "", "", ""],
+                  ["d. Malek Bennabi starb in Deutschland.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Er wurde am 1. Januar 1905 in Constantine geboren.\n\nb. Falsch: 1911 begann Malek seine Schulausbildung an der Koranschule in Tébessa.\n\nc. Richtig: 1928 traf er zum ersten Mal mit dem reformistischen Theologen Ibn Bâdîs zusammen.\n\nd. Falsch: Die letzten Jahre seines Lebens verbrachte er in Algerien, wo er am 31. Oktober 1973 starb."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 2.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Wie alt war Malek Bennabi, als er starb?\nb) Wofür interessierte sich Malek Bennabi?\nc) Erklären Sie den folgenden Satz: „Sein Vater war ein ehemaliger Medresianer und zweisprachiger Gelehrter.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Er war 68 Jahre alt, als er starb.\n\nb) Er interessierte sich für die Probleme der Zivilisation im Allgemeinen und der muslimischen Welt im Besonderen.\n\nc) Sein Vater war sowohl ein Koranlehrer als auch ein zweisprachiger Religionswissenschaftler. (Andere Erklärungen können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "a) 1 Punkt\nb) 1 Punkt\nc) 0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| der Maler | die Philosophie | der Geburt | der Roman |\n\n| a | b | c | d |\n|---|---|---|---|\n| zur Welt kommen | das Gemälde | der Schriftsteller | das Studium |",
+              "data": {
+                "rows": [
+                  ["1", "der Maler"],
+                  ["2", "die Philosophie"],
+                  ["3", "der Geburt"],
+                  ["4", "der Roman"],
+                  ["a", "zur Welt kommen"],
+                  ["b", "das Gemälde"],
+                  ["c", "der Schriftsteller"],
+                  ["d", "das Studium"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | d | a | c |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["b", "d", "a", "c"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Titel: Malek Bennabi. (Andere Titel können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch das passende Synonym aus dem Text.\nDer Maler besichtigt die Kunsthochschule."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "besichtigt = besucht"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das unterstrichene Wort durch das passende Gegenteil aus dem Text.\nMozart hat ein hartes .......... erlebt, deshalb hat Niemand von seinem Tod gehört."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Tod ≠ Leben"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus dem folgenden Substantiv das passende Verb: das Studium: ........................\nb) Bilden Sie ein Kompositum: der Islam + die Wissenschaft = d....... ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Verb: studieren\nb) Kompositum: die Islamwissenschaft"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 + 0.5 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die letzten Jahre seines Lebens verbrachte er in Algerien, wo er am 31. Oktober 1973 starb.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "قضى مالك بن نبي سنواته الأخيرة في الجزائر إلى أن توفي فيها بتاريخ 31 أكتوبر 1973."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie den folgenden Satz ins Perfekt.\nEr verbrachte sein Leben in Algerien."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Er hat sein Leben in Algerien verbracht."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Stellen Sie eine Frage zu den unterstrichenen Wörtern.\nDer Schriftsteller fragt nach der Geschichte „Yemma Gouraya.“ in Bejaia."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wonach fragt der Schriftsteller in Bejaia?"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie den folgenden Satz ins Passiv Futur.\nDer Dichter veröffentlicht viele Werke."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Werke werden von dem Schriftsteller veröffentlicht werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Verbinden Sie die folgenden Sätze mit den passenden Konjunktionen (sowohl...als auch - weil).\n- Der Maler hinterließ nicht nur Ölbilder, sondern auch Skulpturen aus Stein und Bronze.\n- Er lernte den ganzen Koran auswendig, denn sein Vater war Koranlehrer."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Maler hinterließ sowohl Ölbilder als auch Skulpturen aus Stein und Bronze.\n\nEr lernte den ganzen Koran auswendig, weil sein Vater Koranlehrer war."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 + 1 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie den unterstrichenen Ausdruck durch das passende Modalverb.\nDie Künstler haben die Möglichkeit, den Armen finanziell zu helfen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Künstler können den Armen finanziell helfen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie kurz die Biographie eines Künstlers.\n\nThema 2: Schreiben Sie Anhand folgender Stichpunkte über die Schriftstellerin „Sigrid Hunke.“\nPerson: Sigrid Hunke.\nGeburtsort: Kiel, Deutschland.\nGeburtsdatum: 26. April 1913.\nFamilie: Der Vater: Heinrich Hunke (Verleger)\nStudium: Religionswissenschaft, Philosophie, Psychologie, Journalismus, Geschichte und Germanistik.\nUniversität: Kiel, Freiburg und Berlin.\nArbeit: Schriftstellerin.\nAktivitäten: NSDAP Mitglied, Orientalistin.\nWerke: „Allahs Sonne über dem Abendland“, „Allah ist ganz anders“.\nTod: 15. Juni 1999 in Hamburg."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthografie / Stil / Ideen / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Berlin ist die Hauptstadt Deutschlands und zugleich ein Bundesland. Mit etwa 3,7 Millionen Einwohnern ist sie die größte deutsche Stadt und auch die größte Stadt der europäischen Union. Sie liegt im Osten Deutschlands und wird von allen Seiten vom Bundesland Brandenburg umgeben.\n\nHeute leben in der Stadt viele Menschen, die aus anderen Teilen Deutschlands oder aus anderen Ländern der Welt kommen. Dadurch ist Berlin eine sehr bunte Stadt mit sehr unterschiedlichen Stadtteilen.\n\nEin Drittel (1/3) der Stadtfläche besteht aus Wald, Wiesen und Wasser. Es gibt viele Parks und Seen, wohin die Berliner im Sommer gerne baden gehen. Durch die Stadt fließen auch zwei wasserreiche Flüsse, „die Spree“ im Osten und „die Havel“ im Westen.\n\nNach Berlin kommen auch viele Menschen aus aller Welt zu Besuch. Berlin ist sehr bekannt für seine Museen und hat ein großes Angebot an Kultur wie klassische Konzerte, Kinos, Galerien, Theater und auch Sehenswürdigkeiten, wie das Brandenburger Tor, der Reichstag, der Fernsehturm oder der Zoo. Außerdem kann man in Berlin viel über die Geschichte Deutschlands lernen.\n\nViele Fernsehsender, Zeitungen und andere Firmen haben ihren Sitz in Berlin. Es gibt auch mehrere Universitäten und Hochschulen, an denen viele ausländischen Studenten studieren.\n\nBerlin ist eine Stadt des Sports. Man findet in Berlin mehrere bekannte Fußball-, Handball-, Basketball- und Eishockeyvereine. Zum großen Leichtathletikfest im Sommer kommen viele Menschen aus aller Welt.\n\nAus: www.klexikon.zum.de/wiki/Berlin (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nSehenswürdigkeiten: sites touristiques / معالم سياحية\nder Sitz: le siège / المقر"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat |\n|---|---|---|---|\n| a. Berlin hat die größte Einwohnerzahl in Deutschland. | | | |\n| b. In Berlin leben nur die Deutschen. | | | |\n| c. Berlin hat keine Waldflächen. | | | |\n| d. Die Berliner Sportvereine sind sehr bekannt. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat"],
+                  ["a. Berlin hat die größte Einwohnerzahl in Deutschland.", "", "", ""],
+                  ["b. In Berlin leben nur die Deutschen.", "", "", ""],
+                  ["c. Berlin hat keine Waldflächen.", "", "", ""],
+                  ["d. Die Berliner Sportvereine sind sehr bekannt.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Mit etwa 3.7 Millionen Einwohnern ist Berlin die größte deutsche Stadt.\n\nb. Falsch: Heute leben in der Stadt viele Menschen, die aus anderen Teilen Deutschlands oder aus anderen Ländern der Welt kommen.\n\nc. Falsch: Berlin ist eine grüne Stadt: Ein Drittel (1/3) der Stadtfläche besteht aus Wald, Wiesen und Wasser.\n\nd. Richtig: Es gibt mehrere bekannte Fußball-, Handball-, Basketball-, und Eishockeyvereine."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Wie viele Einwohner zählt Berlin?\nb) Welche Sehenswürdigkeiten bietet Berlin den Touristen?\nc) Erklären Sie den folgenden Satz: „Nach Berlin kommen auch viele Menschen aus aller Welt zu Besuch.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Berlin zählt etwa 3,7 Millionen Einwohner.\n\nb) Berlin bietet den Touristen viele Sehenswürdigkeiten wie das Brandenburger Tor, den Reichstag, den Fernsehturm und den Zoo.\n\nc) Satzerklärung: Viele Touristen aus der ganzen Welt besichtigen Berlin. Oder: Viele Leute wollen Berlin entdecken. (Andere Antworten können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Nachbarland | Industrie | Museum | Deutsch |\n\n| a | b | c | d |\n|---|---|---|---|\n| sprechen | grenzen | produzieren | besichtigen |",
+              "data": {
+                "rows": [
+                  ["1", "Nachbarland"],
+                  ["2", "Industrie"],
+                  ["3", "Museum"],
+                  ["4", "Deutsch"],
+                  ["a", "sprechen"],
+                  ["b", "grenzen"],
+                  ["c", "produzieren"],
+                  ["d", "besichtigen"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | c | d | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["b", "c", "d", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Berlin. (Andere Titel können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch das passende Synonym aus dem Text.\nDie Ströme in Deutschland sind wasserreich."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Ströme = Flüsse"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das unterstrichene Wort durch das passende Gegenteil aus dem Text.\nWenige Leute besuchen „Sankt Augustinus“ in Annaba, aber .......... kommen zu Besuch den Baum „Eldardara“ in Mascara."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "wenige ≠ viele"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus dem folgenden Verb das passende Substantiv: umgeben: d...... ................\nb) Bilden Sie ein Kompositum: das Land + der Bewohner = d...... ................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Substantiv: die Umgebung oder das Umgeben\nb) Kompositum: der Landesbewohner / der Landbewohner"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 + 0.5 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Mit etwa 3,7 Millionen Einwohnern ist sie die größte deutsche Stadt sowie die größte Stadt der europäischen Union.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تعد برلين بعدد سكانها حوالي 3.7 مليون نسمة من أكبر مدن ألمانيا وكذلك في الاتحاد الأوروبي."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nMillionen Menschen kommen jährlich in Azeffoun, um ihre Sommerferien zu verbringen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Millionen Menschen kamen jährlich in Azeffoun, um ihre Sommerferien zu verbringen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv Perfekt.\nViele Touristen haben die Hauptstadt Berlin besuchen können."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Hauptstadt Berlin hat von vielen Touristen besucht werden können."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passende Präposition (zu - für - über - an).\na) Die Ausländer interessieren sich ...... die Kultur des Landes.\nb) Berlin gehört ...... den meistbesuchten Städten Europas.\nc) Dieser Ort verfügt ...... viele Cafés und Restaurants.\nd) Die Studenten denken ...... den geplanten Urlaub."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) für\nb) zu\nc) über\nd) an"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Relativsatz.\nDie Stadt zählt drei Millionen Einwohner. Die Stadt besteht aus mehreren Stadtvierteln."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Stadt, die aus mehreren Stadtvierteln besteht, zählt 3 Millionen Einwohner."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „um ... zu“ oder „damit“.\nDie Touristen besuchen Berlin. Die Touristen wollen die Geschichte dieser Stadt kennenlernen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Touristen besuchen Berlin, um die Geschichte dieser Stadt kennenzulernen.\n\nOder:\n\nDie Touristen besuchen Berlin, damit die Touristen (sie) die Geschichte dieser Stadt kennenlernen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie einen Abschnitt über ein Land oder eine Stadt, das oder die Sie gern haben.\n\nThema 2: Deutschland ist eines der reichsten Länder der Welt und ein wichtiges Mitglied der europäischen Union. Mit Hilfe folgender Stichpunkte schreiben Sie ein paar Zeilen dazu.\nLage: Mitteleuropa\nHauptstadt: Berlin\nFläche: 357.000 Km²\nBundesländer: 16\nNachbarländer: Dänemark, die Ostsee, die Nordsee, Polen, die Tschechische Republik, Österreich, die Schweiz, Frankreich, Belgien, Luxemburg und Holland\nEinwohnerzahl: etwa 83 Millionen\nSprache: Deutsch\nExport: Autos, Maschinen, Elektronik...\nImport: Rohstoffe (Erdöl und Erdgas)..."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthografie / Stil / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2020-normal",
+      "note": "SUJET_1 official correction assigns 0.5 point to question 2.c and 1.5 points to the title question; those visible point splits were preserved instead of applying the usual 1-point title pattern."
+    },
+    {
+      "paper": "bac-german-le-2020-normal",
+      "note": "SUJET_2 official correction preserves unusual wording in the Passiv Perfekt answer and offers both 'die Umgebung' and 'das Umgeben' for umgeben; the official forms were kept."
+    }
+  ]
+}

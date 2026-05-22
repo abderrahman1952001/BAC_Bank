@@ -1,0 +1,955 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2017",
+    "totalPoints": 20,
+    "year": 2017
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wien ist die Hauptstadt von Österreich. Circa 1.7 Millionen Menschen leben hier - so viele Einwohner haben keine andere Stadt in Österreich. Wien liegt an einem großen Fluss, an der Donau. Die Großstadt hat eine lange Tradition. Wien war und ist auch heute noch ein sehr wichtiges kulturelles Zentrum in Europa - für Musik und Theater, Kunst und Psychologie.\n\nViele berühmte Leute waren in Wien: Komponisten wie Joseph Haydn, Wolfgang Amadeus Mozart, Ludwig van Beethoven, Franz Schubert, Gustav Mahler und Arnold Schönberg, aber auch Künstler wie Gustav Klimt und Egon Schiele.\n\nWien hat sehr viele Museen - für Kunst und Natur, Geschichte und Technik. Die Stadt zieht* jedes Jahr zahlreiche Touristen aus der ganzen Welt an, sie besuchen die Museen oder die Oper, sie gehen ins Theater oder ins Musical, sie hören klassische Konzerte und erfreuen sich auch an den Kulinarischen Spezialitäten, die man in den gemütlichen Cafés und Gasthäusern serviert. Die Wiener Philharmoniker sind ein sehr gutes Orchester. Und die Stadt hat auch einen Chor* mit Tradition: Die Wiener Sängerknaben geben international viele Konzerte. Die Wiener Universität gibt es seit 1365. Sie ist sehr groß und für internationale Wissenschaftler attraktiv. Sie hat heute rund 91.000 Studenten. Der Psychologe Sigmund Freud, die Philosophen Ludwig Wittgenstein und Karl Popper und der Mathematiker Kurt Gödel waren auch hier. Heute finden in Wien viele Kongresse statt. Viele internationale Organisationen sind in der Stadt, darunter die Vereinten Nationen (UNO).\n\nAus: www.cornelsen.de/daf 2013\nDagmar Giersberg / studio, Band A1 (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nder Chor: la chorale / الجوق الموسيقي\nan/ziehen: attirer / تجذب"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a) Die meisten Menschen leben in Wien. | | | |\n| b) Nicht viele Touristen besuchen die Stadt Wien. | | | |\n| c) Die Stadt Wien hat ein sehr gutes Orchester. | | | |\n| d) Heute finden in Wien keine Kongresse statt. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a) Die meisten Menschen leben in Wien.", "", "", ""],
+                  ["b) Nicht viele Touristen besuchen die Stadt Wien.", "", "", ""],
+                  ["c) Die Stadt Wien hat ein sehr gutes Orchester.", "", "", ""],
+                  ["d) Heute finden in Wien keine Kongresse statt.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: So viele Einwohner haben keine andere Stadt in Österreich.\n\nb. Falsch: Die Stadt zieht jedes Jahr viele Touristen aus der ganzen Welt an.\n\nc. Richtig: Die Wiener Philharmoniker sind ein sehr gutes Orchester.\n\nd. Falsch: Heute finden in Wien viele Kongresse statt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na) Wie viele Menschen wohnen in Wien?\nb) Welche berühmte Leute waren in Wien?\nc) Erklären Sie den folgenden Satz: „Wien ist ein sehr wichtiges kulturelles Zentrum in Europa.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. In Wien wohnen circa 1.7 Millionen Menschen.\n\nb. Viele berühmte Leute waren in Wien: Komponisten wie Joseph Haydn, Wolfgang Amadeus Mozart, Ludwig van Beethoven, Franz Schubert, Gustav Mahler und Arnold Schönberg, aber auch Künstler wie Gustav Klimt und Egon Schiele.\n\nc. Satzerklärung: Wien ist die Stadt der Kunst und der Musik. / Die Kultur der Stadt Wien ist von großer Bedeutung in Europa."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Stadt | Nachbarländer | Industrie | See |\n\n| a | b | c | d |\n|---|---|---|---|\n| entwickeln | baden | grenzen | besichtigen |",
+              "data": {
+                "rows": [
+                  ["1", "Stadt"],
+                  ["2", "Nachbarländer"],
+                  ["3", "Industrie"],
+                  ["4", "See"],
+                  ["a", "entwickeln"],
+                  ["b", "baden"],
+                  ["c", "grenzen"],
+                  ["d", "besichtigen"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | c | a | b |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["d", "c", "a", "b"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Wien heute / die Stadt Wien / Wien, die Wiege der Kultur. (Andere Titel können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nSehr bekannt sind auch Cafés und Gasthäuser in Wien."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "bekannt = berühmt"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nFrüher war die Wiener Universität für viele Wissenschaftler attraktiv. Hier kommen noch .......... viele Studenten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Früher ≠ heute"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na) Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nkulturell: ..... ..............\n\nb) Bilden Sie ein Kompositum.\ndie Stadt + das Museum: ...... .................."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. kulturell → die Kultur\nb. die Stadt + das Museum → das Stadtmuseum"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die Stadt zieht jedes Jahr zahlreiche Touristen aus der ganzen Welt an.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تستقطب مدينة فيينا الكثير من السياح من جميع أنحاء العالم."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nDie Besucher fahren in die Altstadt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Besucher fuhren in die Altstadt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDie Musiker geben viele Konzerte."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Konzerte werden von den Musikern gegeben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\nDie Touristen haben die Möglichkeit, die Nationalbibliothek zu besuchen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Touristen können die Nationalbibliothek besuchen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\na) Die Wiener Universität, ..... für viele Wissenschaftler attraktiv ist, gibt es seit 1365.\nb) Der Freund, ..... ich besuche, lebt in Wien."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die Wiener Universität, die für Wissenschaftler attraktiv ist, gibt es seit 1365.\nb. Der Freund, den ich besuche, lebt in Wien."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie einige Zeilen über Ihre eigene Stadt.\n\nThema 2: Österreich ist das Land der Berge und Seen. Schreiben Sie anhand folgender Stichpunkte einige Zeilen darüber.\n- Lage: Mitteleuropa\n- Hauptstadt: Wien\n- Oberfläche: 84.000 Km²\n- Nachbarländer: Deutschland, die Schweiz, die tschechische Republik, die Slowakei, Slowenien, Italien und Liechtenstein\n- Gliederung: 9 Bundesländer\n- Einwohnerzahl: 8 Millionen\n- Berge und Seen: der Großglockner 3798 Meter, der Neusiedler See 315 m²\n- Wirtschaft: Tourismus, Holzindustrie"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Nach Recherchen von Greenpeace und anderen Instituten verbraucht ein Deutscher im Durchschnitt* 250 kg Papier im Jahr. Außerdem ist in den letzten 50 Jahren der Papierverbrauch weltweit um das Sechsfache gestiegen. Bisher sind davon ungefähr 70 % Recyclingpapier.\n\nJeder weiß, dass Papier aus Holz gemacht wird. Jeder dritte gefällte Baum wird weltweit zu Papier verarbeitet. Dadurch verschwinden jedes Jahr etwa 15 Millionen Hektar Wald. Das ist, wie wenn wir jede zweite Sekunde ein Waldstück verlieren würden, das so groß wie ein Fußballplatz ist.\n\nGreenpeace hat eine Aktion gestartet, um die Leute auf das Problem aufmerksam zu machen. Die Organisation möchte, dass die Menschen erstens Papier sparen und zweitens nur Recyclingpapier verwenden.\n\nDurch das Sparen von Papier - im Büro, in der Schule, bei den Verpackungen - und durch die Verwendung von Recyclingpapier werden weniger Bäume gefällt und es wird weniger CO² produziert. Außerdem spart man etwa 60 % Wasser und Energie, die bei der Produktion von neuem Papier nötig wären. Und der Müll wird auch reduziert!\n\nAus: „genial klick“ Arbeitsbuch B1"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nIm Durchschnitt: en moyenne / بمعدل"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a) Nach der Regierung verbraucht ein Deutscher im Durchschnitt 250 kg Papier im Jahr. | | | |\n| b) Man produziert das Papier aus Holz. | | | |\n| c) Niemand reagiert für den Schutz der Wälder. | | | |\n| d) Es gibt keine Lösung, um die Bäume zu schützen. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a) Nach der Regierung verbraucht ein Deutscher im Durchschnitt 250 kg Papier im Jahr.", "", "", ""],
+                  ["b) Man produziert das Papier aus Holz.", "", "", ""],
+                  ["c) Niemand reagiert für den Schutz der Wälder.", "", "", ""],
+                  ["d) Es gibt keine Lösung, um die Bäume zu schützen.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Nach Recherchen von Greenpeace verbraucht ein Deutscher im Durchschnitt 250 kg Papier im Jahr.\n\nb. Richtig: Jeder weiß, dass Papier aus Holz gemacht wird.\n\nc. Falsch: Greenpeace hat eine Aktion gestartet, um die Leute auf das Problem aufmerksam zu machen.\n\nd. Falsch: Durch das Sparen von Papier werden weniger Bäume gefällt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na) Wie viel Kg Papier verbraucht ein Deutscher im Jahr?\nb) Wozu hat Greenpeace eine Aktion gestartet?\nc) Erklären Sie den folgenden Satz: „Durch das Sparen von Papier werden weniger Bäume gefällt.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Ein Deutscher verbraucht im Durchschnitt 250 kg Papier im Jahr.\n\nb. Greenpeace hat eine Aktion gestartet, um die Leute auf das Problem aufmerksam zu machen.\n\nc. Satzerklärung: Wenn man Papier spart und richtig benutzt, so werden die Bäume geschützt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| sparen | Baum | Papier | CO² |\n\n| a | b | c | d |\n|---|---|---|---|\n| Kohlendioxid | Recyclingpapier | Holz | Bücher |",
+              "data": {
+                "rows": [
+                  ["1", "sparen"],
+                  ["2", "Baum"],
+                  ["3", "Papier"],
+                  ["4", "CO²"],
+                  ["a", "Kohlendioxid"],
+                  ["b", "Recyclingpapier"],
+                  ["c", "Holz"],
+                  ["d", "Bücher"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | c | d | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["b", "c", "d", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Papierverbrauch in Deutschland / Greenpeace Aktion. (Andere Titel können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch das passende Synonym aus dem Text.\nDer Abfall bedroht die Gesundheit der Menschen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "der Abfall = der Müll"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nDer Mensch verschwendet viel Papier. Um Wälder zu schützen, soll man Papier ......."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "verschwenden ≠ sparen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na) Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\naufmerksam: ..... ..............\n\nb) Bilden Sie aus dem folgenden Substantiv das passende Verb.\ndie Verschwendung: ..............."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. aufmerksam → die Aufmerksamkeit\nb. die Verschwendung → verschwenden"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Nach Recherchen von Greenpeace verbraucht ein Deutscher im Durchschnitt 250 kg Papier im Jahr.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "حسب أبحاث منظمة السلام الأخضر (قرين بيس) يستهلك الفرد الألماني بمعدل 250 كغ من الورق سنويا."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nMan spart etwa 60% Wasser und Energie."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Man sparte etwa 60% Wasser und Energie."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Verbinden Sie die folgenden Sätze mit der passenden Konjunktion: (damit, sowohl...als auch).\nNicht nur Regierungen sondern auch Bürger sollen an die Umwelt denken.\nMan fährt mehr Fahrrad. CO² wird weniger in der Luft."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Sowohl Regierungen als auch Bürger sollen an die Umwelt denken.\nb. Man fährt mehr Fahrrad, damit CO² weniger in der Luft wird."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 x 2 = 1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Aktiv.\nDer Müll wird auch reduziert."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Man reduziert auch den Müll."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie den unterstrichenen Ausdruck durch das passende Modalverb.\nHeutzutage sind wir gezwungen, auf unsere Umwelt zu achten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Heutzutage müssen wir auf unsere Umwelt achten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Unsere Umwelt wird durch die Verschmutzung gefährdet. Was sollen wir als Bürger tun, um sie sauber zu halten? Schreiben Sie einige Zeilen darüber.\n\nThema 2: Luft, Wasser und Wälder sind in vielen Ländern verschmutzt. Welche sind die Ursachen der Umweltverschmutzung? Und was kann man dagegen tun? Anhand folgender Stichpunkte schreiben Sie einige Zeilen darüber.\n- Giftiger Rauch aus Fabriken und Industrieanlagen.\n- Abgase von Motoren.\n- Abwässer aus Häusern und Fabriken.\n- Plastikmüll und Industrieabfälle.\n- Schutz vor Abgasen und Abwässern.\n- Schutz vor schädlichem Gebrauch chemischer Mittel.\n- Strenge Maßnahmen treffen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2017-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    },
+    {
+      "paper": "bac-german-le-2017-normal",
+      "note": "The scan prints CO²/Co² inconsistently in Subject 2. The reviewed extract normalizes the chemistry notation to CO² while preserving the original prompt meaning."
+    }
+  ]
+}

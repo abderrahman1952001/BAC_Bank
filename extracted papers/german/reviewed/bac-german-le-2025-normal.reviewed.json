@@ -1,0 +1,1059 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2025",
+    "totalPoints": 20,
+    "year": 2025
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Der deutsche Schriftsteller Thomas Mann wurde als Sohn eines Kaufmannes am 6. Juni 1875 in Lübeck geboren. Thomas Mann zählt zu den bedeutendsten Schriftstellern und größten Essayisten des 20. Jahrhunderts. Thomas Mann schrieb Erzählungen und Romane. Er besuchte zunächst eine Privatschule in seiner Geburtsstadt, später wechselte er dort auf das Gymnasium. Drei Jahre nach dem Tod seines Vaters verließ er die Schule vorzeitig und folgte 1894 seiner deutsch-brasilianischen Mutter nach München, wo er fast die Hälfte seines Lebens verbrachte.\n\nIn der Zeit von 1896 bis 1898 lebte Thomas Mann in Italien. Nach seiner Rückkehr war er kurzzeitig tätig in der Zeitschrift \"Simplicissimus\". Sein literarischer Erfolg war der Roman „Buddenbrooks“ (1901), für den er 1929 den Nobelpreis für Literatur erhielt. 1905 heiratete er Katia Pringsheim, Tochter eines Münchner Universitätsprofessors. Von 1934 bis 1938 lebte die Familie in Küsnacht am Zürichsee.\n\nDann folgte der Schriftsteller dem Ruf als Gastprofessor nach Princeton in New Jersey (USA) und lebte von 1940 bis 1952 in Kalifornien. Am 23. Juni 1944 erhielten Thomas und Katia Mann die amerikanische Staatsbürgerschaft. 1949 besuchte Thomas Mann erstmals wieder Ost- und Westdeutschland. Im Sommer 1952 kam Thomas Familie nach Europa zurück. Er wohnte ab 1954 in Zürich, wo er am 12. August 1955 starb.\n\nEr hinterließ viele Werke darunter „Buddenbrooks“ (1901), „Lotte in Weimar“ (1939) und „Doktor Faustus“ (1947).\n\nLiteratur-Lexikon Herausgegeben von Heinrich Pleticha (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n- vorzeitig: prématurément / قبل الأوان\n- Staatsbürgerschaft: la nationalité / الجنسية"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. TEXTVERSTÄNDNIS",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat aus dem Text |\n|---|---|---|---|\n| a. Der Vater von Thomas Mann war Lehrer. | | | |\n| b. Thomas Mann ist einer der bekanntesten Schriftsteller in der Welt. | | | |\n| c. Er hat keinen Nobelpreis bekommen. | | | |\n| d. Er wohnte bis zu seinem Tod in Zürich. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat aus dem Text"],
+                  ["a. Der Vater von Thomas Mann war Lehrer.", "", "", ""],
+                  ["b. Thomas Mann ist einer der bekanntesten Schriftsteller in der Welt.", "", "", ""],
+                  ["c. Er hat keinen Nobelpreis bekommen.", "", "", ""],
+                  ["d. Er wohnte bis zu seinem Tod in Zürich.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. falsch: Der deutsche Schriftsteller Thomas Mann wurde als Sohn eines Kaufmannes .......... geboren.\n\nb. richtig: Thomas Mann zählt zu den bedeutendsten Schriftstellern und größten Essayisten des 20. Jahrhunderts.\n\nc. falsch: Sein literarischer Erfolg war der Roman „Buddenbrooks“ (1901), für den er 1929 den Nobelpreis für Literatur erhielt.\n\nd. richtig: Im Sommer 1952 kam Thomas Familie nach Europa zurück und wohnten ab 1954 in Zürich, wo er am 12. August 1955 starb."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Wann und wo wurde Thomas Mann geboren?\nb) Wo lebte die Familie Thomas von 1934 bis 1938?\nc) Welche Werke hinterließ er?"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Thomas Mann wurde am 6. Juni 1875 in Lübeck geboren.\n\nb. Von 1934 bis 1938 lebte die Familie Thomas in Küsnacht am Zürichsee.\n\nc. Er hinterließ viele Werke darunter: „Buddenbrooks (1939), „Lotte in Weimar“ und „Doktor Faustus„, (1947)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Dichter | Schriftsteller | Komponist | Schauspieler |\n\n| a | b | c | d |\n|---|---|---|---|\n| Filme | Musikstücke | Gedichte | Romane |",
+              "data": {
+                "rows": [
+                  ["1", "Dichter"],
+                  ["2", "Schriftsteller"],
+                  ["3", "Komponist"],
+                  ["4", "Schauspieler"],
+                  ["a", "Filme"],
+                  ["b", "Musikstücke"],
+                  ["c", "Gedichte"],
+                  ["d", "Romane"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | d | b | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "d", "b", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Biografie von Thomas Mann (Andere Titel können berücksichtigt werden)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. SPRACHFÄHIGKEIT",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nAssia Djebbar bekam viele Preise."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Synonym: bekam = erhielt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nMoufdi Zakaria lebte in Ghardaia, aber er ........ in Tunesien."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Gegenteil: lebte ≠ starb"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus dem folgenden Substantiv das passende Verb.\ndie Erzählung: ............\n\nb) Bilden Sie ein Kompositum.\ndie Literatur + das Werk: ...... ......................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Verb: erzählen\nb) Kompositum: das Literaturwerk"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 + 0.5 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Von 1896 bis 1898 lebte Thomas Mann in Italien.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ومن 1896 إلى 1898 عاشت عائلة توماس مان بإيطاليا."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nThomas Mann besucht eine Privatschule in seiner Geburtsstadt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Thomas Mann hat eine Privatschule in seiner Geburtsstadt besucht."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präsens.\nThomas Mann heiratete Katia Pringsheim."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Thomas Mann heiratet Katia Pringsheim."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDer Schriftsteller schreibt Erzählungen und Romane."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Erzählungen und Romane werden von dem Schriftsteller geschrieben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDie Privatschule, ... Thomas Mann besuchte, befindet sich in Lübeck.\nDas Musikstück, ... der Komponist hinterlassen hat, war weltbekannt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Privatschule, die Thomas Mann besuchte, befindet sich in Lübeck.\n\nDas Musikstück, das der Komponist hinterlassen hat, war weltbekannt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\nDer Dichter ist gezwungen, sein Heimatland zu verlassen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Dichter muss sein Heimatland verlassen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... bekannt... Schriftsteller hat mit d... letzt... Werk einen großen Erfolg."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der bekannte Schriftsteller hat mit dem letzten Werk einen großen Erfolg."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. SCHREIBFÄHIGKEIT",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "Ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ein Thema zur Wahl.\n\nThema 01: Schreiben Sie ein paar Zeilen über eine(n) algerische(n) Künstler(in).\n\nThema 02: Anhand folgender Stichpunkte schreiben Sie die Biographie von Ludwig van Beethoven.\n- Geburtsdatum: 16. Dezember 1770 in Bonn.\n- Familie: Vater Johann van Beethoven Musiker.\n- Hauptereignisse: mit 8 Jahren ein öffentliches Konzert - 1778; ab 1782 komponierte er Musikstücke; 1787 Schüler von Wolfgang Amadeus Mozart; 1795 wird er krank (taub).\n- Werke: 9 Sinfonien.\n- Tod: 26. März 1827 in Wien."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen Grammatik Stil: 3 Punkte\nOrthographie: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Medien sind Kommunikationsmittel, die dem Zweck dienen, sehr schnell Informationen weiter zu geben.\n\nHeute werden häufig alle elektronischen und digitalen Medien unter den Oberbegriff neue Medien gesammelt. Dazu zählen zum Beispiel das Internet, Smartphone und Tablets. Fernseher und Radio gehören heute nicht mehr zu den neuen Medien, sie werden traditionelle Medien genannt.\n\nDigitale Medien: Webseiten, Apps, E-Books oder Computerspiele sind in der heutigen Welt überall.\n\nKinder und Jugendliche sind mit diesen neuen Medien aufgewachsen; ihre Faszination für sie beginnt schon früh. Sie sitzen ständig an ihren elektronischen Geräten, um immer auf dem aktuellsten Stand zu sein. Diese Medien bieten zahlreiche Möglichkeiten: Hier können sie Informationen finden, aber auch eine der häufigsten Anwendungen von den digitalen Medien ist das Anschauen von Fotos und Profilen von Freunden und Bekannten sowie Chatten. Zum Spielen von Games und beim Knüpfen von Kontakten werden Instagram, Facebook, WhatsApp usw. oft genutzt.\n\nAber digitale Medien können auch negative Auswirkungen verursachen: Schlaf-und Essstörungen, Mangel an Konzentration, schlechte Schulleistungen und soziale Isolation sind die gravierenden Folgen des exzessiven Gebrauchs von sozialen Medien.\n\nDeshalb sollten die Eltern den Medienkonsum ihrer Kinder kontrollieren und orientieren, um sie vor dieser Suchtgefahr schützen zu können.\n\n[Aus: www.jugendundmedien.ch (verarbeitet)]"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n- Digitale Medien: Media digitales / الوسائط الرقمية\n- Knüpfen von Kontakten: nouer des contactes / ربط علاقات"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. TEXTVERSTÄNDNIS",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat aus dem Text |\n|---|---|---|---|\n| a. Die Medien verbreiten sehr schnell die Informationen. | | | |\n| b. Fernsehen zählt zu den neuen Medien. | | | |\n| c. Nur Kinder interessieren sich für neue digitale Medien. | | | |\n| d. Die Kontrolle der Medienverbrauch von Kindern ist die Aufgabe der Eltern. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat aus dem Text"],
+                  ["a. Die Medien verbreiten sehr schnell die Informationen.", "", "", ""],
+                  ["b. Fernsehen zählt zu den neuen Medien.", "", "", ""],
+                  ["c. Nur Kinder interessieren sich für neue digitale Medien.", "", "", ""],
+                  ["d. Die Kontrolle der Medienverbrauch von Kindern ist die Aufgabe der Eltern.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: „Medien sind Kommunikationsmittel ..................... weiter zu geben.“\n\nb. Falsch: „Fernseher und Radio ..................... traditionelle Medien genannt.“\n\nc. Falsch: „Kinder und Jugendliche ..................... aufgewachsen“\n\nd. Richtig: „Deshalb sollten die Eltern ..................... kontrollieren und orientieren“"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Was gehört zu den neuen elektronischen Medien?\nb) Die digitalen Medien bieten zahlreiche Möglichkeiten. Zitieren Sie zwei (02) Beispiele aus dem Text.\nc) Welches sind die negativen Auswirkungen der digitalen Medien?"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Zu den neuen elektronischen Medien gehört: das Internet, Smartphone und Tablets.\n\nb. Die digitalen Medien bieten zahlreiche Möglichkeiten: Informationen finden, das Anschauen von Fotos und Profilen von Freunden und Bekannten.\n\nc. Die negativen Auswirkungen der digitalen Medien sind: Schlaf-und Essstörungen, Mangel an Konzentrationen, schlechte Schulleistungen und soziale Isolation."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| SMS / E-Mail | Radio | Handy | Games |\n\n| a | b | c | d |\n|---|---|---|---|\n| anrufen | spielen | hören | schicken |",
+              "data": {
+                "rows": [
+                  ["1", "SMS / E-Mail"],
+                  ["2", "Radio"],
+                  ["3", "Handy"],
+                  ["4", "Games"],
+                  ["a", "anrufen"],
+                  ["b", "spielen"],
+                  ["c", "hören"],
+                  ["d", "schicken"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | c | a | b |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["d", "c", "a", "b"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Titel: Die Massenmedien / Die digitalen Medien. (Andere Titel können auch berücksichtigt werden)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. SPRACHFÄHIGKEIT",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nZeitungen vermitteln verschiedene Nachrichten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Synonym: Nachrichten = Informationen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nFrüher waren die Medien nicht sehr entwickelt wie ........"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Gegenteil: früher ≠ heute"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus dem folgenden Substantiv das passende Adjektiv.\ndie Möglichkeit: ............\n\nb) Bilden Sie ein Kompositum.\ndie Daten + der Austausch = der ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) (Substantiv → Adjektiv) möglich\nb) Ein Kompositum: der Datenaustausch"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 + 0.5 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\nKinder und Jugendliche interessieren sich mehr für die neuen Medien."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يهتم الأطفال والشباب أكثر بوسائل الإعلام الحديثة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDie Eltern kontrollieren den Medienkonsum ihrer Kinder."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Eltern haben den Medienkonsum ihrer Kinder kontrolliert."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präsens.\nDie Jugendlichen nutzten in der Freizeit digitale Medien."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Jugendlichen nutzen in der Freizeit digitale Medien."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „damit“ oder „um…zu“.\nViele Jugendliche benutzen heute neue Medien. Sie können Fotos und Videos austauschen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Jugendliche benutzen heute neue Medien, damit sie Fotos und Videos austauschen können.\n\nOder: Viele Jugendliche benutzen heute neue Medien, um Fotos und Videos austauschen zu können."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\nDie Familie ist gezwungen, ihre Kinder zu sensibilisieren."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Familie muss ihre Kinder sensibilisieren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie den folgenden Satz ins Passiv.\nJugendliche kommentieren täglich die online Publikationen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die online Publikationen werden täglich von Jugendlichen kommentiert."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD… täglich… Nutzung von den modern… Spielkonsolen stört die Konzentration der Jugendlichen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die tägliche Nutzung von den modernen Spielkonsolen stört die Konzentration der Jugendlichen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. SCHREIBFÄHIGKEIT",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "Ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ein Thema zur Wahl.\n\nThema 01: Immer mehr interessieren sich viele Jugendliche für ein bestimmtes Massenmedium. Schreiben Sie ein paar Zeilen über Ihr beliebtes Medium.\n\nThema 02: Soziale Medien wie z.B. Instagram, Snapchat, Facebook, TikTok und Youtube sind das meist besprechende Thema für uns und faszinieren vor allem Jugendliche. Anhand folgender Stichpunkte schreiben Sie ein paar Zeilen über den Gebrauch von diesen Medien.\n- Sich schnell über aktuelle Nachrichten informieren.\n- Neuigkeiten von Freunden und Bekannten erfahren.\n- Kontakte mit neuen Freunden knüpfen.\n- Spaß haben (Kurze Videos und Bilder posten).\n- Publikationen von anderen kommentieren und liken."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen, Stil, Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2025-normal",
+      "note": "The official correction for SUJET_1 question 2.c prints „Buddenbrooks (1939)“, while the exam text prints „Buddenbrooks“ (1901) and „Lotte in Weimar“ (1939). The reviewed extract preserves the official correction text and flags the mismatch."
+    },
+    {
+      "paper": "bac-german-le-2025-normal",
+      "note": "The official Arabic translation for SUJET_1 vocabulary question 4 translates the sentence with „عائلة توماس مان“ although the German exam sentence says Thomas Mann. The reviewed extract preserves the visible correction."
+    }
+  ]
+}

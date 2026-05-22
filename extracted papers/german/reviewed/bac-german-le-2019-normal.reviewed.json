@@ -1,0 +1,1007 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2019",
+    "totalPoints": 20,
+    "year": 2019
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Hannover, die Hauptstadt Niedersachsens, ist eine bedeutende, zentral gelegene Industrie- und Messestadt in der Mitte Europas. Sie liegt am Fluss „Leine“. Sie besteht aus 21 Gemeinde und zählt etwa 2.290 km². 11 % ihrer Oberfläche ist mit Wäldern bedeckt, deswegen wird Hannover als „Großstadt im Grünen“ genannt. Hier leben ungefähr 1.1 Millionen Einwohner.\n\nDie Stadt Hannover verfügt über weltbekannte Industriebetriebe, wie die Volkswagen Nutzfahrzeuge, das Varta Batteriewerk und der Baumaschinenhersteller „Komatsu Hanomag“. Daneben besitzt Hannover zahlreiche Infrastrukturen besonders im Verkehrsbereich wie Autobahnen, die die Stadtteile verbinden. Vom Hannover Flughafen werden über 100 Direktziele angeflogen. Der Mittellandkanal ist die längste künstliche Wasserstraße in Deutschland, er verbindet Hannover mit den größten See- und Binnenhäfen des Kontinents. Das World Music Festival „MASALA“ lockt jährlich tausende Musiker von der ganzen Welt.\n\nHannover bietet den Touristen schöne Sehenswürdigkeiten zu entdecken, ihr Wildpark mit seinen alten Bäumen, der Maschsee, das Rathaus, Gärten und die Altstadt zählen zu den beliebtesten Freizeitangeboten der Stadt.\n\nAus google (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nMessestadt: la ville des foires / مدينة المعارض\nNutzfahrzeuge: véhicules utilitaires / مركبات نفعية\nBinnenhäfen: ports fluviaux / موانئ نهرية\nkünstlich: artificiel / اصطناعي"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Hannover ist eine Industriestadt. | | | |\n| b. In Hannover findet man keine Wälder. | | | |\n| c. Viele Musiker nehmen an dem Musikfest „MASALA“ teil. | | | |\n| d. Die Touristen entdecken nur eine Sehenswürdigkeit. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Hannover ist eine Industriestadt.", "", "", ""],
+                  ["b. In Hannover findet man keine Wälder.", "", "", ""],
+                  ["c. Viele Musiker nehmen an dem Musikfest „MASALA“ teil.", "", "", ""],
+                  ["d. Die Touristen entdecken nur eine Sehenswürdigkeit.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Hannover, die Hauptstadt Niedersachsens, ist eine bedeutende, zentral gelegene Industriestadt.\n\nb. Falsch: 11 % ihrer Oberfläche ist mit Wäldern bedeckt.\n\nc. Richtig: Das World Musik Festival MASALA lockt jährlich tausende Musiker von der ganzen Welt.\n\nd. Falsch: Schöne Sehenswürdigkeiten zu entdecken, ihr Wildpark mit seinen alten Bäumen, der Maschsee, das Rathaus, Gärten und die Altstadt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na) Wie groß ist Hannover?\nb) In Hannover findet man viele Fabriken. Zitieren Sie zwei (2) Beispiele aus dem Text.\nc) Erklären Sie den folgenden Satz: „Hannover verfügt über weltbekannte Industriebetriebe“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Hannover zählt etwa 2.290 km² / Hannover ist 2.290 Km² groß.\n\nb) In Hannover findet man viele Fabriken, zum Beispiel: die Volkswagen Nutzfahrzeuge; das Varta Batteriewerk; der Baumaschinenhersteller „Komatsu Hanomag“.\n\nc) Satzerklärung: Die Industriebetriebe von Hannover sind in der ganzen Welt bekannt. / Die Stadt Hannover besitzt Fabriken und Industriewerke, die in der ganzen Welt bekannt sind. (Andere Erklärungen können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "a) 1 Punkt\nb) 0.5 x 2 = 1 Punkt\nc) 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Land | Klima | die Donau | Wirtschaft |\n\n| a | b | c | d |\n|---|---|---|---|\n| trocken | Kontinent | Industrie | Fluss |",
+              "data": {
+                "rows": [
+                  ["1", "Land"],
+                  ["2", "Klima"],
+                  ["3", "die Donau"],
+                  ["4", "Wirtschaft"],
+                  ["a", "trocken"],
+                  ["b", "Kontinent"],
+                  ["c", "Industrie"],
+                  ["d", "Fluss"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | a | d | c |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["b", "a", "d", "c"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Hannover. (Andere Titel können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 2.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nIn Deutschland gibt es verschiedene Fabriken."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Fabriken = Betriebe / Werke"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Gegenteil aus dem Text.\nWenige afrikanische Länder führen Nahrungsmittel ein."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wenige ≠ zahlreiche"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na) Bilden Sie aus dem folgenden Verb das passende Substantiv: verfügen: d... ........................\nb) Bilden Sie aus dem folgenden Adjektiv das folgende Adjektiv: bedeutend = ................."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Substantiv: die Verfügung\nb) Adjektiv: unbedeutend. Die offizielle Korrektur vermerkt, dass diese Frage gestrichen wurde und ihre 0.5 Punkte der Grammatikfrage Nr. 3 zugeschlagen werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "a) 0.5 Punkt\nb) gestrichen laut offizieller Korrektur"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische:\n„Das World Music MASALA lockt jährlich tausende Musiker von der ganzen Welt.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يستقطب المهرجان العالمي مصالا للموسيقى سنويا آلاف الموسيقيين من كل أنحاء العالم."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDiese schöne Altstadt lockt viele Touristen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Diese schöne Altstadt hat viele Touristen gelockt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Aktiv.\nVerschiedene Produkte können exportiert werden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Man kann verschiedene Produkte exportieren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit den passenden Konjunktionen (deren / obwohl / als / entweder...oder).\na) Ich besichtigte den Eiffelturm, ........ ich zum ersten Mal in Paris war.\nb) In einigen Ländern ist die Wirtschaft sehr entwickelt, ...... sie arm an Rohstoffen sind.\nc) Zur Stadtoper fährt man ............ mit der U-Bahn ............ mit dem Bus.\nd) Die Schweiz, ...... Oberfläche klein ist, liegt in Europa."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) als\nb) obwohl\nc) entweder ... oder\nd) deren"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Konditionalsatz.\nIch bin nicht in Berlin gewesen. Ich habe den Alexanderplatz nicht besichtigt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wenn ich in Berlin gewesen wäre, hätte ich den Alexanderplatz besichtigt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 2 = 0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nDie Länder d... dritt... Welt haben gut... Handelsbeziehungen mit d... Industrieländern."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Länder der dritten Welt haben gute Handelsbeziehungen mit den Industrieländern."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie ein paar Zeilen über eine Stadt oder ein Land.\n\nThema 2: Anhand folgender Stichpunkte schreiben Sie einige Zeilen über die Stadt „Stuttgart“.\n- Lage: Im Zentrum des Landes Baden-Württemberg.\n- Fläche: 207.35 km²\n- Stadtbezirke: 23.\n- Einwohnerzahl: 632.743 Einwohner.\n- Klima: mild\n- Fluss: der Neckar\n- Wirtschaft: Automobil- und Maschinenbau, Firmen (Daimler, Porsche, Bosch)\n- Kultur und Sehenswürdigkeiten: Oper, Theater, Museums (Kunstmuseum, Porschmuseum..)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen / Stil / Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Handys waren der erste Schritt auf dem Weg zur mobilen Kommunikation. Mit den alten Handys konnte der Nutzer nur telefonieren und SMS verschicken. Heutzutage sind sie Multimedia-Plattformen geworden, die unter dem Namen Smartphone sind. Sie bieten viele Möglichkeiten: E-Mails schreiben, soziale Netzwerke und das mobile Internet nutzen. Die Smartphones haben auch eine größere Kapazität als die einfachen Handys und werden immer noch weiterentwickelt.\n\nSie ersetzen Spielkonsole, MP3-Player, Fotoapparat und Videokamera, ganz nebenbei kann man noch telefonieren und Kurznachrichten versenden. Fast alle Kinder und Jugendlichen verfügen über ein Smartphone. Es ist klein, leicht und einfach zu transportieren. Mit diesem kann man jeden anderen Nutzer auf der Welt erreichen. Aber Smartphones können auch Probleme mit sich bringen. Sie sind teuer und ihre Kosten sind immer höher. Viele Jugendliche geben ihr Geld für nutzlose Gespräche aus. Für sie ist es normal, eine oder mehrere Stunden täglich am Handy in sozialen Medien zu verbringen. Sie verlieren völlig den Kontakt mit der Familie und werden deswegen isoliert. Sie können süchtig werden. Deshalb ist es den Eltern sehr wichtig, dass sie mit ihren Kindern über die Gefahren von Smartphones diskutieren.\n\nAus: www.fleetnet.de (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nSoziale Netzwerke: réseaux sociaux / مواقع التواصل الاجتماعي\nausgegeben: dépenser / يصرف"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Handys ermöglichen die mobile Kommunikation. | | | |\n| b. Die Kinder haben kein Smartphone. | | | |\n| c. Smartphones kosten viel. | | | |\n| d. Die Eltern sollten über die Probleme der Smartphones sprechen. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Handys ermöglichen die mobile Kommunikation.", "", "", ""],
+                  ["b. Die Kinder haben kein Smartphone.", "", "", ""],
+                  ["c. Smartphones kosten viel.", "", "", ""],
+                  ["d. Die Eltern sollten über die Probleme der Smartphones sprechen.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Handys waren der erste Schritt auf dem Weg zur mobilen Kommunikation.\n\nb. Falsch: Fast alle Kinder und Jugendlichen verfügen über ein Smartphone.\n\nc. Richtig: Sie sind teuer und ihre Kosten sind immer höher.\n\nd. Richtig: Deshalb ist es den Eltern sehr wichtig, dass sie mit ihren Kindern über die Gefahren von Smartphones diskutieren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Welche Möglichkeiten bieten die Smartphones?\nb) Smartphones bringen viele Probleme mit sich. Zitieren Sie zwei Beispiele aus dem Text.\nc) Erklären Sie den folgenden Satz: „Sie verlieren den Kontakt mit der Familie und werden deswegen isoliert.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Die Smartphones bieten viele Möglichkeiten: E-Mails schreiben, soziale Netzwerke und das mobile Internet nutzen. Oder: Sie ersetzen Spielkonsole, MP3-Player, Fotoapparat und Videokamera, ganz nebenbei kann man noch telefonieren und Kurznachrichten versenden.\n\nb) Smartphones bringen viele Probleme mit sich; zum Beispiel: Sie sind teuer und ihre Kosten sind immer höher. Viele Jugendliche geben ihr Geld für nutzlose Gespräche aus. Sie können auch süchtig machen.\n\nc) Satzerklärung: Die Jugendlichen beschäftigen sich sehr oft mit ihren Smartphones, deshalb haben sie keinen Kontakt mit den Eltern. / Die Jugendlichen, die sich stundenlang mit ihren Smartphones beschäftigen, haben keinen Kontakt mehr mit ihren Familien. (Andere Erklärungen können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "a) 1 Punkt\nb) 0.5 x 2 = 1 Punkt\nc) 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Zeitung | Fotos | Handy | Internet |\n\n| a | b | c | d |\n|---|---|---|---|\n| chatten | telefonieren | lesen | austauschen |",
+              "data": {
+                "rows": [
+                  ["1", "Zeitung"],
+                  ["2", "Fotos"],
+                  ["3", "Handy"],
+                  ["4", "Internet"],
+                  ["a", "chatten"],
+                  ["b", "telefonieren"],
+                  ["c", "lesen"],
+                  ["d", "austauschen"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | d | b | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "d", "b", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Smartphones. (Andere Titel können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nMit dem Smartphone kann man bequem anrufen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "anrufen = telefonieren"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Gegenteil aus dem Text.\nDie Smartphones sind nicht billig, sondern ......................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "billig ≠ teuer"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus dem folgenden Adjektiv das passende Substantiv: wichtig: d... ......................\nb) Bilden Sie ein Kompositum: das Internet + der Nutzer = d..... ................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) die Wichtigkeit\nb) der Internetnutzer"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Fast alle Kinder und Jugendlichen verfügen über ein Smartphone.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تقريبا كل الأطفال والمراهقين يملكون هاتفا ذكيا."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nViele Jugendliche geben ihr Geld für nutzlose Gespräche aus."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Jugendliche gaben ihr Geld für nutzlose Gespräche aus."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDas Internet hat hohe Kosten verursacht."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Hohe Kosten sind durch das / von dem Internet verursacht worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit «damit» oder «um.....zu».\nJunge Leute nutzen die sozialen Netzwerke. Sie bleiben in Kontakt mit ihren Freunden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Junge Leute nutzen die sozialen Netzwerke, damit sie in Kontakt mit ihren Freunden bleiben.\n\nOder:\n\nJunge Leute nutzen die sozialen Netzwerke, um in Kontakt mit ihren Freunden zu bleiben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie den unterstrichenen Ausdruck durch das passende Modalverb.\nDie Nutzer haben die Möglichkeit, Informationen im Internet zu finden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Nutzer können Informationen im Internet finden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... meist... Leute interessieren sich für d... digital... Medien."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die meisten Leute interessieren sich für die digitalen Medien."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Was ist Ihr Lieblingsmedium? Schreiben Sie einige Zeilen dazu.\n\nThema 2: Soziale Netzwerke spielen eine wichtige Rolle im Leben des modernen Menschen. Facebook, Instagram, Whatsapp und Twitter sind speziell bei Jugendlichen sehr beliebt. Mit Hilfe folgender Stichpunkte schreiben Sie einige Zeilen dazu.\n- mit Freunden chatten / neue Kontakte suchen\n- Fotos und Videos teilen und austauschen\n- Informationen finden\n- Internet-Spiele machen\n- Musik hören"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2019-normal",
+      "note": "SUJET_1 A.3.b is printed in the exam but the official correction says the subquestion was suppressed and its 0.5 point was transferred to grammar question 3. The node keeps the prompt and official note."
+    },
+    {
+      "paper": "bac-german-le-2019-normal",
+      "note": "A Gemini extraction attempt for this paper was abandoned because the configured Gemini account returned quota errors; this reviewed file was reconstructed directly from source page images."
+    }
+  ]
+}

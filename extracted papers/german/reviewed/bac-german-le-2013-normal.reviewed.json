@@ -1,0 +1,1177 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2013",
+    "totalPoints": 20,
+    "year": 2013
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fernsehen ist immer noch das Medium Nummer Eins. Kein anderes Medium ist in der Lage, so schnell über wichtige aktuelle Ereignisse zu berichten. Viele Jugendliche gebrauchen das Fernsehen beim Essen und bei den Hausaufgaben. Auch bei Gesprächen mit den Freunden läuft der Fernseher.\nAber dieser Überkonsum von Fernsehen kann zu katastrophalen Folgen führen. Wer täglich viele Stunden vor dem Fernsehen sitzt, und schließlich nicht genug schläft, verliert seine Konzentration. Vor allem sind Kinder und Jugendliche gefährdet: Sie werden oft ängstlich, nervös und sogar aggressiv. Deshalb ist es wichtig und richtig das Fernsehen auch manchmal auszuschalten*. Die Eltern sollten ihren Kindern andere Freizeitmöglichkeiten vorschlagen*: Sport live erleben, Gespräche und Spiele mit Freunden, eine Wanderung, die Natur beobachten, ein Musikinstrument spielen, ein interessantes Buch lesen, basteln, fotografieren ... . Das Leben ist viel interessanter als das Fernsehen.\n\nAus: Richtiges Fernsehen will gelernt werden (Google)\n(verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*ausschalten: éteindre / يطفئ\n*vorschlagen: proposer / يقترح"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Das Fernsehen ist kein beliebtes Medium. | | | |\n| b. Zuviel Fernsehen ist gefährlich. | | | |\n| c. Kinder und Jugendliche werden nicht gestresst. | | | |\n| d. Die Kinder sollten andere Aktivitäten haben. | | | |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Das Fernsehen ist kein beliebtes Medium.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Zuviel Fernsehen ist gefährlich.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Kinder und Jugendliche werden nicht gestresst.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Die Kinder sollten andere Aktivitäten haben.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Das Fernsehen ist immer noch das Medium Nummer Eins.\n\nb. Richtig: Aber dieser Überkonsum von Fernsehen kann zu katastrophalen Folgen führen.\n\nc. Falsch: Sie werden oft ängstlich, nervös und sogar aggressiv.\n\nd. Richtig: Die Eltern sollten ihren Kindern andere Freizeitmöglichkeiten vorschlagen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Welches Medium wird am meisten gebraucht?\nb. Das Fernsehen hat einen negativen Einfluss auf die Kinder. Zitieren Sie drei (3) Beispiele aus dem Text.\nc. Wozu sollte man das Fernsehen manchmal ausschalten?\nd. Erklären Sie den folgenden Satz: „Das Fernsehen ist immer noch das Medium Nummer Eins.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Das Fernsehen wird am meisten gebraucht.\n\nb. Das Fernsehen hat einen negativen Einfluss auf die Kinder: Sie werden ängstlich, nervös und aggressiv.\n\nc. Man sollte das Fernsehen auch manchmal ausschalten, um andere Aktivitäten zu machen.\n\nd. Das Fernsehen ist das beliebteste Medium."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Fernseher | Bücher | Freunde | Sport |\n\n| a | b | c | d |\n|---|---|---|---|\n| treiben | treffen | lesen | einschalten |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Fernseher"
+                  ],
+                  [
+                    "2",
+                    "Bücher"
+                  ],
+                  [
+                    "3",
+                    "Freunde"
+                  ],
+                  [
+                    "4",
+                    "Sport"
+                  ],
+                  [
+                    "a",
+                    "treiben"
+                  ],
+                  [
+                    "b",
+                    "treffen"
+                  ],
+                  [
+                    "c",
+                    "lesen"
+                  ],
+                  [
+                    "d",
+                    "einschalten"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | c | b | a |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "d",
+                    "c",
+                    "b",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das Fernsehen / Richtiges Fernsehen / Das Medium Nummer Eins / Vorteile und Nachteile des Fernsehens. Andere Titel werden auch berücksichtigt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Eltern sollten mehr Diskussionen mit ihren Kindern haben."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Diskussionen = Gespräche"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nDas Fernsehen hat ........ und Feinde."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Feinde ≠ Freunde"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nwichtig: ...... ............\n\nb. Bilden Sie aus dem folgenden Substantiv das passende Substantiv.\ndas Kind: ...... ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. wichtig → die Wichtigkeit\nb. das Kind → die Kindheit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Viele Jugendliche gebrauchen das Fernsehen beim Essen und bei den Hausaufgaben.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "كثير من الشباب ينظرون إلى التلفاز أثناء الأكل وأثناء حل الفروض المنزلية."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nNach Meinung der Großeltern ist das Leben ohne Fernsehen viel interessanter."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Nach Meinung der Großeltern war das Leben ohne Fernsehen viel interessanter."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDurch Fernsehen verlieren die Kinder ihre Kreativität."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Durch Fernsehen haben die Kinder ihre Kreativität verloren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDas Fernsehen verursacht Augenkrankheiten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Augenkrankheiten werden durch das Fernsehen verursacht."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit der passenden Konjunktion: „dass“, „obwohl“, „wenn“, „sowohl ... als auch“.\na. ........ junge Leute ........ Erwachsene sehen gern fern.\nb. ........ das Fernsehen Nachteile hat, bleibt es das Medium Nummer Eins.\nc. Viele Experten sagen, ........ häufiges stundenlanges Fernsehen gefährlich ist.\nd. ........ die Kinder mit ihren Hausaufgaben fertig sind, dürfen sie fernsehen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. sowohl ... als auch\nb. obwohl\nc. dass\nd. wenn"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDie Kinder, ...... zu viel fernsehen, verlieren ihre Konzentration."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Kinder, die zu viel fernsehen, verlieren ihre Konzentration."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD.... Eltern sollten ihr.... Kinder auf die schlecht.... Seiten d.... Fernsehens aufmerksam machen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Eltern sollten ihre Kinder auf die schlechten Seiten des Fernsehens aufmerksam machen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Heutzutage verfügt der moderne Mensch über mehrere Massenmedien (das Internet, das Fernsehen, das Radio, die Zeitung ...). Welches Medium haben Sie am liebsten? Warum?\n\nThema 2: Das Fernsehen hat Vor- und Nachteile. Schreiben Sie mit Hilfe folgender Stichpunkte einige Zeilen dazu.\n- Informationsmittel: Politik, Ökonomie, Sport ...\n- Bildungsmittel: Sendungen über Wissenschaft, Kultur, Kunst und über das Leben in fremden Ländern\n- Unterhaltungsmittel: Musik, Spiele, Filme ...\n- Augenkrankheiten\n- keine Kreativität\n- Faulheit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen, Stil und Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Nach Meinung der Umweltexperten sterben viele Wälder aus. Die kranken Bäume produzieren nicht genug Sauerstoff* und immer mehr Menschen leiden unter Luftverschmutzung. Auch in Zukunft wird das Waldsterben weitergehen, und der Mensch wird immer noch Gesundheitsprobleme haben. Die Autos verunreinigen die Umwelt durch ihre Abgase. Besonders der Autoverkehr hat in den letzten Jahren stark zugenommen. Dies führt zur Luftverschmutzung und zur Umweltzerstörung. Aber auch die Industriebetriebe geben ihre Schadstoffe* einfach in die Luft ab. Deshalb treffen Regierungen und Umweltexperten Maßnahmen:\n- Benutzung von Verkehrsmitteln wie Bahn oder Bus statt Autos.\n- stärkere Kontrolle der chemischen Produkte in der Industrie.\n- Einbau von Filtern in die Industriebetriebe.\nAlle diese Maßnahmen sind zum Schutz der Umwelt und der Menschen gedacht.\n\nAus: „Mit Hörtexten arbeiten“ 1. Auflage 1997\n(Text verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*Sauerstoff: oxygène / الأكسجين\n*Schadstoffe: matières nocives / المواد الملوثة (المضرة)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Das Leben auf der Erde ist nicht in Gefahr. | | | |\n| b. Die Luft ist nicht sauber. | | | |\n| c. Die Autos sind umweltfreundlich. | | | |\n| d. Die Staaten tun etwas gegen die Umweltverschmutzung. | | | |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Das Leben auf der Erde ist nicht in Gefahr.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Die Luft ist nicht sauber.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Die Autos sind umweltfreundlich.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Die Staaten tun etwas gegen die Umweltverschmutzung.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Nach Meinung der Umweltexperten sterben viele Wälder aus. Die Bäume produzieren nicht genug Sauerstoff.\n\nb. Richtig: Immer mehr Menschen leiden unter Luftverschmutzung.\n\nc. Falsch: Die Autos verunreinigen die Umwelt.\n\nd. Richtig: Deshalb treffen Regierungen Maßnahmen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Was meinen die Umweltexperten?\nb. Was verschmutzt die Umwelt?\nc. An welche Lösungen denken die Politiker und Umweltexperten?\nd. Erklären Sie den folgenden Satz: „Alle diese Maßnahmen sind zum Schutz der Umwelt und der Menschen gedacht.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die Umweltexperten meinen, dass viele Wälder aussterben.\n\nb. Die Autos und die Industriebetriebe verschmutzen die Umwelt durch ihre Abgase.\n\nc. Sie denken an folgende Lösungen: auf das Auto verzichten, nur Bahn und Bus gebrauchen, den Gebrauch der chemischen Produkte stark kontrollieren, Filter in die Industriebetriebe einrichten.\n\nd. Diese Aktionen tragen zum Schutz der Umwelt und der Menschen bei."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Kläranlagen | Abgase | Tierarten | Autos |\n\n| a | b | c | d |\n|---|---|---|---|\n| filtern | bauen | Benzin | aussterben |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Kläranlagen"
+                  ],
+                  [
+                    "2",
+                    "Abgase"
+                  ],
+                  [
+                    "3",
+                    "Tierarten"
+                  ],
+                  [
+                    "4",
+                    "Autos"
+                  ],
+                  [
+                    "a",
+                    "filtern"
+                  ],
+                  [
+                    "b",
+                    "bauen"
+                  ],
+                  [
+                    "c",
+                    "Benzin"
+                  ],
+                  [
+                    "d",
+                    "aussterben"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | a | d | c |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "b",
+                    "a",
+                    "d",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Umweltverschmutzung und der Umweltschutz / Umweltprobleme. Andere Titel werden berücksichtigt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie meisten Industriewerke sind umweltfeindlich."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Industriewerke = Industriebetriebe"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nMan sollte nur gesunde Produkte essen, damit man nicht ........ wird."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "gesund ≠ krank"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Substantiv das passende Verb.\ndie Benutzung: ............\n\nb. Bilden Sie aus dem folgenden Substantiv das passende Substantiv.\nder Mensch: ........ ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. die Benutzung → benutzen\nb. der Mensch → die Menschheit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Deshalb treffen Regierungen und Umweltexperten Maßnahmen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ولهذا السبب تتخذ الحكومات وخبراء البيئة إجراءات."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nErst stirbt der Wald."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Erst starb der Wald."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDie Menschen protestieren gegen die Umweltzerstörung."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Menschen haben gegen die Umweltzerstörung protestiert."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDie Autos zerstören die Landschaft."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Landschaft wird durch die Autos zerstört."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDie Stoffe, ...... die Gesundheit des Menschen gefährden, müssen kontrolliert werden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Stoffe, die die Gesundheit des Menschen gefährden, müssen kontrolliert werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passende Präposition: aus, über, mit, auf.\na. Die Zeitungen berichten ...... das Ozonloch.\nb. Die biologische Kette besteht ...... Menschen, Tieren, Erde, Pflanzen, Luft und Wasser.\nc. Greenpeace, eine internationale Organisation, beschäftigt sich ...... dem Umweltschutz.\nd. Die Bürger warten ...... konkrete Lösungen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. über\nb. aus\nc. mit\nd. auf"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD..... umweltfreundlich..... Bürger engagieren sich für d..... Schutz d..... Wälder."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die umweltfreundlichen Bürger engagieren sich für den Schutz der Wälder."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Wie könnte man die Leute über die Gefahren der Umweltverschmutzung bewusst machen? Begründen Sie Ihre Antwort mit Beispielen.\n\nThema 2: „Der Wald stirbt“. Was kann der Mensch gegen das Waldsterben tun? Schreiben Sie mit Hilfe der folgenden Stichpunkte einige Zeilen.\n- Lebensraum der Tiere und der Pflanzen bewahren\n- Bau neuer Fabriken, Autobahnen ... begrenzen, kontrollieren\n- Bäume, Pflanzen durch Chemikalien nicht schädigen\n- Bäume nicht absägen, sondern anpflanzen\n- Feuer im Wald verbieten\n- Müll / Abfälle zur Sammelstelle bringen\n- schädliche Stoffe reduzieren\n- ..."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen, Stil und Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2013-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    },
+    {
+      "paper": "bac-german-le-2013-normal",
+      "note": "The official correction gives the passive grammar items 1.5 points; this reviewed extract preserves that nonstandard split."
+    }
+  ]
+}

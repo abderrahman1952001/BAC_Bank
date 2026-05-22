@@ -1,0 +1,1173 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2011",
+    "totalPoints": 20,
+    "year": 2011
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Handys gehören heute zu unserem Alltagsleben. Kinder, Jugendliche und Erwachsene haben ein eigenes Handy. Dieses Kommunikationsmittel wird sowohl privat als auch beruflich genutzt.\nHandys haben viele Vorteile. Man kann seine Freunde und seine Familie jederzeit und überall erreichen¹. Es bietet auch die Möglichkeit mit Freunden spontan und schnell zu diskutieren.\nDas Handy ist mehr als ein Telefon. Neben Telefonieren und SMS schreiben können die Nutzer auch Musik und Radio hören, spielen, Fotos und Videos machen und im Internet surfen.\nDas Handy hat aber auch Nachteile. Immer erreichbar sein kann manchmal stressen. Muss immer jeder wissen, wo man gerade ist und was man gerade tut? In den Schulen wird das Handy verboten, weil es stört (Klingeln). Es kann auch zu Konflikten mit den Eltern führen, wenn die Kommunikationskosten zu hoch sind. Einige Menschen und Organisationen machen sich Sorgen um mögliche Gesundheitsprobleme. Aber wissenschaftliche Experimente haben noch nicht gezeigt, dass das Handy krank macht.\n\nAus: www.handywissen.at"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n¹ erreichen: joindre une personne / يتصل بشخص"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n| --- | --- | --- | --- |\n| a. Heutzutage hat fast jeder von uns ein Handy. |  |  |  |\n| b. Das Mobiltelefon benutzt man nur im Privatleben. |  |  |  |\n| c. Das Handy hat nur positive Aspekte. |  |  |  |\n| d. Die Handykosten sind kein Problem für die Eltern. |  |  |  |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Heutzutage hat fast jeder von uns ein Handy.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Das Mobiltelefon benutzt man nur im Privatleben.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Das Handy hat nur positive Aspekte.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Die Handykosten sind kein Problem für die Eltern.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Kinder, Jugendliche und Erwachsene haben ein eigenes Handy.\n\nb. Falsch: Dieses Kommunikationsmittel wird sowohl privat als auch beruflich genutzt.\n\nc. Falsch: Das Handy hat aber auch Nachteile.\n\nd. Falsch: Es kann auch zu Konflikten mit den Eltern führen, wenn die Kommunikationskosten zu hoch sind."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Mit welchem Mittel kommunizieren heute die meisten Leute?\nb. Was kann man alles mit einem Handy machen?\nc. Welches sind die Nachteile des Mobiltelefons?\nd. Erklären Sie den folgenden Satz: „Handys gehören heute zu unserem Alltagsleben.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die meisten Leute kommunizieren heute mit dem Handy.\n\nb. Mit einem Handy kann man telefonieren, SMS schreiben, Musik und Radio hören, spielen, Fotos und Videos machen und im Internet surfen.\n\nc. Die Nachteile des Mobiltelefons sind: Es kann stressen; es stört in den Schulen; es kann zu Konflikten mit den Eltern wegen der hohen Kommunikationskosten führen.\n\nd. Handys werden privat und beruflich gebraucht. Andere Antworten können berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Nr. | Ausdruck |\n|---|---|\n| 1 | Videospiele |\n| 2 | Handy |\n| 3 | Internet |\n| 4 | SMS |\n\n| Buchstabe | Ausdruck |\n|---|---|\n| a | stressen |\n| b | recherchieren |\n| c | schreiben |\n| d | machen |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Videospiele"
+                  ],
+                  [
+                    "2",
+                    "Handy"
+                  ],
+                  [
+                    "3",
+                    "Internet"
+                  ],
+                  [
+                    "4",
+                    "SMS"
+                  ],
+                  [
+                    "a",
+                    "stressen"
+                  ],
+                  [
+                    "b",
+                    "recherchieren"
+                  ],
+                  [
+                    "c",
+                    "schreiben"
+                  ],
+                  [
+                    "d",
+                    "machen"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n| --- | --- | --- | --- |\n| d | a | b | c |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "d",
+                    "a",
+                    "b",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Titel: Das Handy. Andere Titel können berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Jugendlichen sprechen über ihre beliebtesten Handyfunktionen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "sprechen = diskutieren"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nFür manche Lehrer ist der Handygebrauch erlaubt, für andere dagegen ist er ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "erlaubt ≠ verboten"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. nutzen: ........ ............\nb. das Handy + die Kamera: ........ ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. das Substantiv: die Nutzung\nb. das Kompositum: die Handykamera"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„In den Schulen wird das Handy verboten.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يمنع استعمال الهاتف في المدارس."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Futur.\nDie Jugendlichen surfen viel im Internet."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Jugendlichen werden viel im Internet surfen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDas Handy verändert unsere Lebensweise."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das Handy hat unsere Lebensweise verändert."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDas Mobiltelefon erleichtert die Kommunikation."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Kommunikation wird durch das Mobiltelefon erleichtert."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „damit“ oder „um ... zu“.\nViele Jugendliche benutzen heute das Handy. Sie tauschen Fotos und Videos aus."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Jugendliche benutzen heute das Handy, um Fotos und Videos auszutauschen.\nOder: Viele Jugendliche benutzen heute das Handy, damit sie Fotos und Videos austauschen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDas Handy, ... die Kommunikation mit Freunden erleichtert, ist bei Jugendlichen sehr beliebt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das Handy, das die Kommunikation mit Freunden erleichtert, ist bei Jugendlichen sehr beliebt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nKinder und Jugendliche nutzen d.... verschieden.... Funktionen d.... Handy.... ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Kinder und Jugendliche nutzen die verschiedenen Funktionen des Handys."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Wie benutzen Sie persönlich das Handy in Ihrem Alltagsleben? Schreiben Sie einige Zeilen dazu.\n\nThema 2: Das Handy hat auch Nachteile. Mit Hilfe folgender Stichpunkte schreiben Sie einige Zeilen dazu:\n- hohe Handykosten\n- Stress verursachen\n- Das Handy stört: lautes Telefonieren (im Bus ...), Handyklingeln (im Unterricht)\n- keine Grenze mehr zwischen Berufs- und Privatleben ..."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen, Stil und Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Unser Planet muss gerettet werden"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Umwelt ist die Welt, die den Menschen umgibt. In dieser Umwelt herrscht ein Gleichgewicht¹ zwischen Menschen, Pflanzen, Tieren, Luft, Wasser und Erde: das ökologische Gleichgewicht.\nAber mit der Industrialisierung hat der Mensch dieses natürliche Gleichgewicht nicht bewahren können.\n- Wasser, Luft und Erde sind heute verschmutzt.\n- Viele Pflanzen- und Tierarten sterben aus.\n- Die Erderwärmung verursacht Naturkatastrophen wie Hochwasser und Trockenperioden ....\n- Atom- und Chemiekatastrophen bedrohen den Lebensraum aller Lebewesen.\nUm diese langsame aber sichere Selbstzerstörung zu vermeiden, sollten die Biologen, Chemiker, Techniker und Politiker aller Länder konkrete Umweltschutzmaßnahmen treffen und immer im Interesse der ganzen Menschheit handeln.\n\nAus: www.bmu.de/bildungsservice"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n¹ das Gleichgewicht: l'équilibre / التوازن"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n| --- | --- | --- | --- |\n| a. Die Umwelt ist sauber. |  |  |  |\n| b. Der technische Fortschritt ist keine Gefahr für das Ökosystem. |  |  |  |\n| c. Es gibt keine Naturkatastrophen. |  |  |  |\n| d. Der Umweltschutz ist die Aufgabe aller Staaten. |  |  |  |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Die Umwelt ist sauber.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Der technische Fortschritt ist keine Gefahr für das Ökosystem.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Es gibt keine Naturkatastrophen.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Der Umweltschutz ist die Aufgabe aller Staaten.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Wasser, Luft und Erde sind heute verschmutzt.\n\nb. Falsch: Aber mit der Industrialisierung hat der Mensch dieses natürliche Gleichgewicht nicht bewahren können.\n\nc. Falsch: Die Erderwärmung verursacht Naturkatastrophen wie Hochwasser und Trockenperioden.\n\nd. Richtig: Die Biologen, Chemiker, Techniker und Politiker aller Länder sollten konkrete Umweltschutzmaßnahmen treffen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Was nennt man „Umwelt des Menschen“?\nb. Was ist das ökologische Gleichgewicht?\nc. Welches sind die Folgen der Erderwärmung?\nd. Erklären Sie den folgenden Satz: „Die Chemiekatastrophen bedrohen den Lebensraum aller Lebewesen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Man nennt die Umwelt des Menschen die Welt, die ihn umgibt.\n\nb. Das ökologische Gleichgewicht ist ein Gleichgewicht zwischen Menschen, Pflanzen, Tieren, Luft, Wasser und Erde.\n\nc. Die Folgen der Erderwärmung sind Naturkatastrophen wie Hochwasser und Trockenperioden.\n\nd. Die chemischen Produkte der Industriewerke gefährden das Leben auf der Erde (Menschen, Tiere ...)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Nr. | Ausdruck |\n|---|---|\n| 1 | Treibhausgase |\n| 2 | Lebewesen |\n| 3 | Unrein |\n| 4 | Natur |\n\n| Buchstabe | Ausdruck |\n|---|---|\n| a | Zerstörung |\n| b | Erderwärmung |\n| c | Menschen, Tiere, Pflanzen |\n| d | Wasser |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Treibhausgase"
+                  ],
+                  [
+                    "2",
+                    "Lebewesen"
+                  ],
+                  [
+                    "3",
+                    "Unrein"
+                  ],
+                  [
+                    "4",
+                    "Natur"
+                  ],
+                  [
+                    "a",
+                    "Zerstörung"
+                  ],
+                  [
+                    "b",
+                    "Erderwärmung"
+                  ],
+                  [
+                    "c",
+                    "Menschen, Tiere, Pflanzen"
+                  ],
+                  [
+                    "d",
+                    "Wasser"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n| --- | --- | --- | --- |\n| b | c | d | a |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "b",
+                    "c",
+                    "d",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit dem passenden Wort: retten, gefährdet, Lebensraum, Trockenperioden.\na. Das ökologische Gleichgewicht wird durch die Umweltverschmutzung ....\nb. Man handelt umweltbewusst, um die Umwelt zu ....\nc. In vielen Regionen herrschen ....\nd. Die wachsende Industrie zerstört den .... des Menschen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. gefährdet\nb. retten\nc. Trockenperioden\nd. Lebensraum"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Industrieabwässer verunreinigen das Grundwasser."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "verunreinigen = verschmutzen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\n........ Länder haben an der Kyoto-Konferenz teilgenommen, aber nur wenige Projekte zum Umweltschutz wurden realisiert."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "wenige ≠ viele"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. die Erwärmung: ........\nb. natürlich: ........"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. das Verb: erwärmen\nb. das Substantiv: die Natürlichkeit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die Biologen, Chemiker, Techniker und Politiker sollten Umweltschutzmaßnahmen treffen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "على البيولوجيين والكيميائيين والتقنيين والسياسيين أخذ إجراءات لحماية البيئة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nViele Fische sterben in verschmutzten Flüssen aus."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Fische starben in verschmutzten Flüssen aus."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDie Vertreter aller Länder sollen konkret handeln."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Vertreter aller Länder haben konkret handeln sollen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Aktiv.\nDie Umwelt muss gerettet werden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Man muss die Umwelt retten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie „fähig sein ... zu“ durch ein Modalverb.\nDer Mensch ist fähig den Planeten zu retten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Mensch kann den Planeten retten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit der passenden Präposition: um, für, vor, über.\na. Jeder Bürger sollte seine Umwelt .... der Zerstörung schützen.\nb. Überall diskutiert man heute .... die Folgen der Naturkatastrophen.\nc. Algerien interessiert sich auch .... die Sonnenenergie.\nd. Die Biologen kümmern sich .... die Umweltprobleme."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. vor\nb. über\nc. für\nd. um"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD..... giftig..... Abfallstoffe, die in d..... Abwässern enthalten sind, töten nützlich.... Pflanzen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die giftigen Abfallstoffe, die in den Abwässern enthalten sind, töten nützliche Pflanzen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Umweltverschmutzung ist Selbstzerstörung. Sind Sie auch dieser Meinung? Begründen Sie Ihre Antwort.\n\nThema 2: Wie könnte der Mensch die Umwelt schützen? Mit Hilfe folgender Stichpunkte schreiben Sie einige Zeilen dazu:\n- umweltbewusst erziehen (im Elternhaus, in der Schule und durch Massenmedien)\n- weniger Auto fahren / öffentliche Verkehrsmittel benutzen\n- Abwässer klären / Abgase filtern\n- Recycling (Papier, Plastik, Glas ...)\n- Zusammenarbeit der Staaten"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen, Stil und Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2011-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    }
+  ]
+}

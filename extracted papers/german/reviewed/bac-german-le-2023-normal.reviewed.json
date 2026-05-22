@@ -1,0 +1,1007 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2023",
+    "totalPoints": 20,
+    "year": 2023
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "In der heutigen Welt findet man die Anwendung des Computers sowohl im privat- als auch im Geschäftsleben. Der Computer hat zurzeit eine bedeutende Rolle. Die Menschen schätzen die Nutzung des Computers als Helfer bei den anstrengenden Situationen. Die Datenverarbeitung entlastet den Menschen von der harten und monotonen Arbeit. Mit dem Computer kann man schnell arbeiten. Er ist zuverlässig, weil die Arbeit am Computer präziser ist. Heute kann jeder Einzelne zu Hause über einen Computer verfügen. Er ermöglicht den schnellen und breiten Zugang zu den Informationen. Er ist leicht zu bedienen. Man kann geprüfte Lern- und Spielprogramme kaufen. Mit Hilfe des Computers können Arbeitsvorgänge beschleunigt werden. Er kann für den Menschen gefährliche und gesundheitsschädliche Aufgaben übernehmen. Die Weltraumforschung wäre ohne Computer undenkbar. Heute kann er sehr schlimme Krankheiten diagnostizieren und bei Operationen helfen. Er erweitert unser Wissen und regelt unsere Neugier an. Durch Computer kann man Internet benutzen. Computer und Internet gehören inzwischen in fast allen Haushalten mit Kindern zur üblichen Medienausstattung: Profile mit Daten füllen, online einkaufen, sich über „Netzwerke“ verabreden, Musik hören und auch Bücher veröffentlichen. So wundert es nicht, dass der Computer auch im Alltag von Kindern und Jugendlichen zu einem immer selbstverständlicheren Medium geworden ist. Der Computer und das Internet sind sehr brauchbar und nötig im Leben des Menschen. Trotz einiger Nachteile, wie z.B. süchtig nach elektronischen Spielen, bleibt der Computer eine sehr wichtige Maschine und hat einen großen Einfluss auf das Leben.\n\nAus: sciaga.pl/tekst.com (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n1) schätzen = estimer = يقدر\n2) entlasten = soulager = يخفف العبء\n3) übernehmen = prendre en charge = تكفل"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch. Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat |\n|---|---|---|---|\n| a. Dank dem Computer gewinnt man viel Zeit. | | | |\n| b. Die Computerverwendung ist kompliziert. | | | |\n| c. Durch den Computer kann man viel lernen. | | | |\n| d. Wir brauchen nicht den Computer und das Internet in unserem Alltag. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat"],
+                  ["a. Dank dem Computer gewinnt man viel Zeit.", "", "", ""],
+                  ["b. Die Computerverwendung ist kompliziert.", "", "", ""],
+                  ["c. Durch den Computer kann man viel lernen.", "", "", ""],
+                  ["d. Wir brauchen nicht den Computer und das Internet in unserem Alltag.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. richtig. Mit dem Computer kann man schnell arbeiten.\n\nb. falsch. Er ist leicht zu bedienen.\n\nc. richtig. Er erweitert unser Wissen.\n\nd. falsch. Der Computer und das Internet sind sehr .... Leben des Menschen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 04 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Wo wird der Computer verwendet?\nb) Dank dem Computer kann man viele Arbeiten realisieren. Zitieren Sie zwei Beispiele aus dem Text.\nc) Erklären Sie den folgenden Satz: „In der heutigen Welt findet man die Anwendung des Computers sowohl im privat- als auch im Geschäftsleben.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) In der heutigen Welt findet man die Anwendung des Computers sowohl im privat- als auch im Geschäftsleben.\n\nb) Zitate aus dem Text: 1) Online einkaufen / 2) Bücher veröffentlichen ... (Andere Zitate können auch berücksichtigt werden)\n\nc) Satzerklärung: Heute kann man den Computer in allen Bereichen gebrauchen. (Andere Erklärungen können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01 x 03 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Internet | Computer | Daten | Programm |\n\n| a | b | c | d |\n|---|---|---|---|\n| speichern | surfen | installieren | einschalten |",
+              "data": {
+                "rows": [
+                  ["1", "Internet"],
+                  ["2", "Computer"],
+                  ["3", "Daten"],
+                  ["4", "Programm"],
+                  ["a", "speichern"],
+                  ["b", "surfen"],
+                  ["c", "installieren"],
+                  ["d", "einschalten"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | d | a | c |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["b", "d", "a", "c"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "der Titel: Der Computer (andere Titel können auch berücksichtigt werden)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 7.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 2.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": null,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch sein Synonym aus dem Text.\nDank dem Internet kann man Forschungen weltweit edieren."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Synonym: edieren = veröffentlichen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "The official correction does not print an explicit score for this exam item."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.25,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nHeute ist der Mensch ........ nach modernen Geräten, aber früher war er selbstständig."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Gegenteil: selbstständig ≠ süchtig"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.25,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus den folgenden Wörtern ein Kompositum.\n- der Computer + die Spiele = d....... ....................\n\nb) Bilden Sie aus dem folgenden Verb ein Adjektiv.\n- verfügen = ...................."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Kompositum: die Computerspiele\nb) Adjektiv aus dem Verb: verfügbar"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 + 0.50 = 1.25 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Heute kann jeder Einzelne zu Hause über einen Computer verfügen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يستطيع (بإمكان) كل فرد أن يمتلك جهاز الإعلام الآلي في البيت"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 4.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schreiben Sie den folgenden Satz ins Präteritum.\nHeute sitzen die Wissenschaftler tagelang vor dem Computer."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Früher saßen die Wissenschaftler tagelang vor dem Computer."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schreiben Sie den folgenden Satz ins Aktiv.\nMit Hilfe des Computers können Arbeitsvorgänge beschleunigt werden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Mit Hilfe des Computers kann man Arbeitsvorgänge beschleunigen.\n\noder\n\nMan kann Arbeitsvorgänge mit Hilfe des Computers beschleunigen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schreiben Sie den folgenden Satz mit dem passenden Modalverb.\nDer Expert sagt mir: „Surfe nicht viel im Internet.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Ich soll nicht viel im Internet surfen. (Man bewertet nur das richtige Modalverb)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz.\nDer Nutzer arbeitet am Computer. Er will seine Arbeit schneller machen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Nutzer arbeitet am Computer, damit er seine Arbeit schneller macht.\n\noder:\n\nDer Nutzer arbeitet am Computer, um seine Arbeit schneller zu machen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... nützlich... Gebrauch des Computers verkürzt d... lang... Arbeitszeit."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der nützliche Gebrauch des Computers verkürzt die lange Arbeitszeit."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 01: Die Erfindungen haben unser Leben gründlich geändert. In einem kurzen Aufsatz Schreiben Sie über die positiven Aspekte dieser Erfindungen in unserem Alltag und welche Gefahren haben sie mit sich gebracht.\n\nThema 02: Natürlich bringt auch der Computer mit sich Nachteile. Schreiben Sie mit Hilfe folgender Stichpunkte ein paar Zeilen darüber.\n- Abhängigkeit von Spielprogrammen\n- Familienmitglieder; trennen / Konflikte mit den Eltern - Bildschirm; Augen schaden - Rückenschmerzen\n- Kopfschmerzen bekommen\n- Probleme in der Schule; schlechte Schulleistungen\n- schlechte Webseiten und Programme"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 2 Punkte\nIdeen: 2 Punkte\nGrammatik, Orthografie, Stil: 1 Punkt\n\nFür das Thema 1: Über Erfindungen im Allgemeinen oder eine besondere Erfindungen wie z.B.: Handy, Fernseher, Tabletten ... werden berücksichtigt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Es gibt zu viel Müll auf der Welt: Jedes Jahr allein in Deutschland über 400.000.000 Tonnen. Warum also nicht aus Alt neu machen? Das macht Upcycling: Man gebraucht Material und stellt daraus moderne Dinge her. Die Idee ist einfach: Warum soll man Material neu erzeugen, wenn es schon so viel gibt?\n\nUpcycling findet auf der ganzen Welt statt, nicht nur in Deutschland. Überall gibt es Upcycling-Kunst, Upcycling-Design oder Upcycling-Spielzeug. Auch Möbel oder Kleidung entstehen aus archaischen Materialien. Ja eigentlich fast alles. Sogar Häuser. Nicht immer geht es um die Umwelt, wenn man alte Gegenstände nutzt und nichts Neues kauft. Oft ist es auch billiger. Das war natürlich schon immer so. Deshalb gibt es Upcycling auch bereits seit langer Zeit. Nur das Wort „Upcycling“ ist noch jung: Ein deutscher Ingenieur hat es 1994 zum ersten Mal benutzt. Seine Idee: Man soll beim Upcycling nicht einfach nur alte Sachen benutzen, sondern etwas mit einem höheren Wert herstellen.\n\nWer aus Müll ein neues Produkt herstellen möchte, braucht gute Ideen. Dann können aus alten Fußbällen Blumenkästen werden, aus alten Plastikflaschen werden Lampen, eine alte Blechdose wird zu einem Spielzeugmotorrad. Und vieles mehr. Obwohl es zwar viel Müll gibt, kann man viele Menschen mit vielen Ideen finden, was man mit dem Müll so machen kann.\n\nQuelle: Goethe-Institut - Kalender 2021 Ökologie und Nachhaltigkeit – Dezember."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n1) Upcycling = transformation des déchets = تحويل النفايات\n2) der Wert = la valeur = القيمة\n3) die Blumenkästen = bacs à fleurs = صناديق زهور\n4) die Blechdose = boîte en fer blanc = علبة من صفيح"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch. begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat |\n|---|---|---|---|\n| a. In Deutschland gibt es zu wenig Müll. | | | |\n| b. Upcycling kann man nur in den Industrieländern finden. | | | |\n| c. Der Name „Upcycling“ ist neu. | | | |\n| d. Wer aus Rest etwas Neues produzieren will, benutzt nur echte Gedanken. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat"],
+                  ["a. In Deutschland gibt es zu wenig Müll.", "", "", ""],
+                  ["b. Upcycling kann man nur in den Industrieländern finden.", "", "", ""],
+                  ["c. Der Name „Upcycling“ ist neu.", "", "", ""],
+                  ["d. Wer aus Rest etwas Neues produzieren will, benutzt nur echte Gedanken.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Jedes Jahr allein in Deutschland über 400.000.000 Tonnen.\n\nb. Falsch: Upcycling findet auf der ganzen Welt statt.\n\nc. Richtig: Nur das Wort „Upcycling“ ist noch jung.\n\nd. Richtig: Wer aus Müll ein neues Produkt herstellen möchte, braucht gute Ideen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 04 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 2.25,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Was macht eigentlich Upcycling?\nb) Welche Produkte kann man durch Upcycling bekommen?\nc) Erklären Sie den folgenden Satz: „Nicht immer geht es um die Umwelt, wenn man alte Gegenstände nutzt und nichts Neues kauft. Oft ist es auch billiger.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Upcycling macht: Neue Produkte von alten Materialien herstellen. (Man benutzt altes Material, um daraus neue Dinge herzustellen)\n\nb) Durch Upcycling kann man z.B. Lampen, Tische, Spielzeuge...usw herstellen. Oder: „Dann können aus alten ...... und vieles mehr.“\n\nc) Erklärung: Nutzen von alten Gegenstände ist nicht nur gut für die Umwelt, sondern auch billig. (Andere Erklärungen werden auch berücksichtigt.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 + 1 + 0.25 = 2.25 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Müll | Produkte | Umwelt | Abwasser |\n\n| a | b | c | d |\n|---|---|---|---|\n| klären | schützen | herstellen | werfen |",
+              "data": {
+                "rows": [
+                  ["1", "Müll"],
+                  ["2", "Produkte"],
+                  ["3", "Umwelt"],
+                  ["4", "Abwasser"],
+                  ["a", "klären"],
+                  ["b", "schützen"],
+                  ["c", "herstellen"],
+                  ["d", "werfen"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | c | b | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["d", "c", "b", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Upcycling oder Umweltschutz (andere Titel werden auch berücksichtigt)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01.75 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch das passende Synonym aus dem Text:\nJährlich stellen die Menschen viel Müll her."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Synonym: herstellen = erzeugen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text:\nFrüher arbeitete man mit archaischen Werkzeugen, aber heute benutzt er ............... Instrumente"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Gegenteil: modern ≠ archaisch (andere Gegenteile könnten auch berücksichtigt)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na) Bilden Sie aus den folgenden Wörtern ein Kompositum.\n- das Wasser + kraft: ................................\n\nb) Bilden Sie aus dem folgenden Substantiv ein Adjektiv.\n- ohne Wert: ............................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Kompositum: die Wasserkraft (ohne Artikel oder klein geschrieben ist es richtig)\nb) Adjektiv aus dem Substantiv: wertlos"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 + 0.5 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Wer aus Müll ein neues Produkt herstellen möchte, braucht gute Ideen“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الذي يريد أن ينتج من النفايات منتجات جديدة، يحتاج إلى أفكار جيدة"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schreiben Sie den folgenden Satz ins Futur.\nDie Künstler stellen aus alten Materialien viele Produkte her."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Künstler werden aus alten Materialien viele Produkte herstellen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.50 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDie Wasserpflanzen, ........ das chemische Produkt schadet, müssen gerettet werden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Wasserpflanzen, denen das chemische Produkt schadet, müssen gerettet werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schreiben Sie den folgenden Satz ins Passiv.\nIngenieuren haben umweltfreundliche Materialien für die Projekte eingesetzt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Umweltfreundliche Materialien sind von Ingenieuren für die Projekte eingesetzt worden.\n\noder\n\nFür die Projekte sind umweltfreundliche Materialien von Ingenieuren eingesetzt worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.25,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie den unterstrichenen Ausdruck durch das passende Modalverb.\nEs ist möglich, dass der Bürger seine Umwelt schützt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Bürger kann seine Umwelt schützen. (Man bewertet nur das richtige Modalverb)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "01.25 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.25,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schreiben Sie den folgenden Satz mit „bevor“ oder „nachdem“.\nDer Bürger muss zuerst umweltbewusst handeln, nachher schützt er seine Umwelt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Bürger muss zuerst umweltbewusst handeln, bevor er seine Umwelt schützt.\n\noder\n\nBevor der Bürger (er) seine Umwelt schützt, muss er zuerst umweltbewusst handeln."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "Ein Thema zur Auswahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 01: Um unsere Umwelt zu bewahren, müssen nicht nur Maßnahmen von der Regierung getroffen werden, sondern das Bewusstsein der Menschen geweckt werden. In einem kurzen Aufsatz erklären Sie euren Freunden, wie sie umweltfreundlich werden können.\n\nThema 02: Die Welt leidet heute unter unterschiedlichen Problemen, die unser Leben bedrohen werden, dazu gehören natürlich die Umweltprobleme. Anhand der folgenden Stichpunkte schreiben Sie einen Aufsatz zum Thema Umweltprobleme.\n\n- Die Erde ist in Gefahr.\n- Einfluss der Industrie.\n- Einfluss des einzelnen Menschen.\n- Die Zukunft unseres Planeten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 2 Punkte\nIdeen: 2 Punkte\nGrammatik, Stil, Wortschatz: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2023-normal",
+      "note": "For SUJET_1 vocabulary question 1, the exam prints the synonym prompt but the official correction page does not visibly print the synonym answer or an explicit score. The reviewed solution uses the source-supported synonym edieren = veröffentlichen from the reading passage, and the item is left unscored."
+    },
+    {
+      "paper": "bac-german-le-2023-normal",
+      "note": "The official correction for SUJET_1 uses 7.5 and 7.5 section totals while the exam page labels the sections as 7 and 8 points. Detailed correction points were preserved."
+    }
+  ]
+}

@@ -1,0 +1,1142 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2010",
+    "totalPoints": 20,
+    "year": 2010
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Die Schweiz"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Die Schweiz ist eines der kleinsten europäischen Länder. Das Land in den Alpen ist nur halb so groß wie Österreich. Es ist in 23 Kantonen unterteilt. Seine Hauptstadt ist Bern, aber die größte Stadt ist Zürich. Hier spricht man vier Sprachen. Die meisten Einwohner sprechen Deutsch als Muttersprache (69%). An zweiter Stelle folgt Französisch (18%), danach Italienisch (12%). Romanisch wird nur von einem Prozent gesprochen. In diesem Land leben 7 483 700 Einwohner; mehr als eine Million sind Ausländer.\nInternational bekannt ist die Schweiz durch die Herstellung von Käse, Uhren und Schokolade. Aber vor allem Medikamente, chemische Produkte und Maschinen werden exportiert. Wenn man gern auf Berge steigt, sollte man seinen Urlaub in diesem Land machen. Sieben Berggipfel haben eine Höhe von über 4000 Metern. Natürlich laden auch die vielen Seen zum Wassersport ein. Die größten sind der Bodensee im Nordosten und der Genfersee im Südwesten des Landes.\n\nAus: Leichte Tests. Deutsch als Fremdsprache.\nMax Hueber Verlag, Seite 145 (verarbeitet)"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n| --- | --- | --- | --- |\n| a. Die Schweiz ist größer als Österreich. |  |  |  |\n| b. Die erste Muttersprache ist Französisch. |  |  |  |\n| c. Dieses Land führt Medikamente aus. |  |  |  |\n| d. Die Schweiz ist auch durch ihre Berge bekannt. |  |  |  |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Die Schweiz ist größer als Österreich.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Die erste Muttersprache ist Französisch.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Dieses Land führt Medikamente aus.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Die Schweiz ist auch durch ihre Berge bekannt.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Das Land in den Alpen ist nur halb so groß wie Österreich.\n\nb. Falsch: Die meisten Einwohner sprechen Deutsch als Muttersprache (69%).\n\nc. Richtig: Aber vor allem Medikamente werden exportiert.\n\nd. Richtig: Wenn man gern auf Berge steigt, sollte man seinen Urlaub in diesem Land machen. / Sieben Berggipfel haben eine Höhe von über 4000 Metern."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Wo liegt die Schweiz?\nb. Welche Sprachen spricht man in diesem Land?\nc. Wodurch ist die Schweiz in der ganzen Welt bekannt? Zitieren Sie drei Produkte.\nd. Erklären Sie den folgenden Satz: „International bekannt ist die Schweiz durch die Herstellung von Käse“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die Schweiz liegt in Europa / in den Alpen.\n\nb. Man spricht Deutsch, Französisch, Italienisch und Romanisch.\n\nc. Die Schweiz ist durch Käse, Uhren und Schokolade in der ganzen Welt bekannt. Und auch durch Medikamente, chemische Produkte und Maschinen.\n\nd. In der ganzen Welt ist die Schweiz durch die Produktion von Käse bekannt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Nr. | Ausdruck |\n|---|---|\n| 1 | Land |\n| 2 | Käse |\n| 3 | See |\n| 4 | Bevölkerung |\n\n| Buchstabe | Ausdruck |\n|---|---|\n| a | Milchprodukt |\n| b | Einwohner |\n| c | Grenzen |\n| d | Wasser |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Land"
+                  ],
+                  [
+                    "2",
+                    "Käse"
+                  ],
+                  [
+                    "3",
+                    "See"
+                  ],
+                  [
+                    "4",
+                    "Bevölkerung"
+                  ],
+                  [
+                    "a",
+                    "Milchprodukt"
+                  ],
+                  [
+                    "b",
+                    "Einwohner"
+                  ],
+                  [
+                    "c",
+                    "Grenzen"
+                  ],
+                  [
+                    "d",
+                    "Wasser"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n| --- | --- | --- | --- |\n| c | a | d | b |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "c",
+                    "a",
+                    "d",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit dem passenden Wort: herstellen, Einwohner, Hauptstadt, Uhren.\na. Seit dem 3. Oktober 1990 ist Berlin wieder die ........ Deutschlands.\nb. Deutschland .......... verschiedene Maschinen ...... .\nc. Die ..........industrie in der Schweiz ist sehr entwickelt.\nd. Österreich zählt mehr als 8 Millionen ............ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Hauptstadt\nb. stellt ... her\nc. Uhren\nd. Einwohner"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nViele Touristen möchten oft ihre Ferien in der Schweiz verbringen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Ferien = Urlaub"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nDie Schweiz ........ Schokolade, aber sie muss Erdöl und Gas einführen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "einführen ≠ exportieren"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Verb das passende Substantiv.\neinladen: ........ ............\nb. Bilden Sie aus dem folgenden Substantiv das passende Substantiv.\ndas Land: ........ ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. die Einladung\nb. die Landschaft"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die Schweiz ist eines der kleinsten europäischen Länder.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "سويسرا هي إحدى أصغر البلدان الأوروبية."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nIn der Schweiz gibt es eine Million Ausländer."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "In der Schweiz gab es eine Million Ausländer."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nManche Leute verbringen ihre Ferien im Ausland."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Manche Leute haben ihre Ferien im Ausland verbracht."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\na. Der Tourist hat die Absicht von seinem Land zu sprechen.\nb. Nicht alle Sportler sind in der Lage auf den Großglockner zu steigen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Der Tourist will von seinem Land sprechen.\nb. Nicht alle Sportler können auf den Großglockner steigen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 x 2 = 1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die Präpositionen: aus, über, zu, an.\nDie Schweiz grenzt .... Frankreich, Österreich, das Liechtenstein und Italien. Das Land besteht ..... 23 Kantonen. Es gehört ..... den deutschsprachigen Ländern und verfügt ..... sehr viel Wald."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Schweiz grenzt an Frankreich, Österreich, das Liechtenstein und Italien. Das Land besteht aus 23 Kantonen. Es gehört zu den deutschsprachigen Ländern und verfügt über sehr viel Wald."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nÖsterreich ist ein beliebt..... Reiseland für zahlreich..... Touristen aus d..... ganz..... Welt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Österreich ist ein beliebtes Reiseland für zahlreiche Touristen aus der ganzen Welt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie ein paar Zeilen über Algerien.\n\nThema 2: Schreiben Sie mit Hilfe folgender Stichpunkte ein paar Zeilen über Österreich.\nLage: Mitteleuropa\nHauptstadt: Wien\nBundesländer: 09\noffizielle Sprache: Deutsch\nFläche: 83860 Km²\nNachbarländer: Deutschland, Tschechien, die Slowakei, Ungarn, Slowenien, das Liechtenstein, Italien und die Schweiz\nEinwohnerzahl: 08 Millionen\ndie größten Städte: Graz, Linz, Innsbruck, Salzburg\nRelief: 800 Berge über 3000 Meter hoch\nKlima: kalt\nTourismus: Winter (Ski fahren), Sommer (wandern)\nLandwirtschaft: wichtige Rolle"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen, Stil und Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Der Klimawandel hat schon begonnen und wird auch in Zukunft weitergehen. Die Klimakatastrophe bedroht unsere Welt: Erderwärmung, Eisschmelze*, Hochwasser und Trockenperioden gefährden das Leben von Millionen Menschen, Tieren und Pflanzen. Schuld an dieser Katastrophe ist die Erwärmung der Erdatmosphäre.\nWichtigste Hauptursache des Klimawandels ist das Kohlendioxid (CO₂). Es entsteht besonders durch die Verbrennung von Öl oder Kohle, bei der Produktion von Elektrizität und Benzin, durch Heizen und natürlich beim Autofahren. Das Kohlendioxid steigt in die Atmosphäre auf und lässt die Sonnenwärme nicht mehr in den Kosmos entweichen.\nDie Konsequenz: Es wird immer wärmer auf der Erde, das ist der bekannte Treibhauseffekt, der zu einer Veränderung des Klimas führt.\nWenn das so weiter geht, dann zerstören wir selbst unsere Erde, unsere Existenz.\n\nAus: Cyberbeauty (Google)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "*Eisschmelze: la fonte des glaciers / ذوبان الجليد"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n| --- | --- | --- | --- |\n| a. Das Leben auf der Erde ist in Gefahr. |  |  |  |\n| b. Das Kohlendioxid verursacht die Klimaveränderung. |  |  |  |\n| c. Die Verbrennung von Öl und Kohle produziert kein Kohlendioxid. |  |  |  |\n| d. Der Klimawandel ist die direkte Konsequenz des Treibhauseffekts. |  |  |  |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Das Leben auf der Erde ist in Gefahr.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Das Kohlendioxid verursacht die Klimaveränderung.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Die Verbrennung von Öl und Kohle produziert kein Kohlendioxid.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Der Klimawandel ist die direkte Konsequenz des Treibhauseffekts.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Erderwärmung, Eisschmelze, Hochwasser und Trockenperioden gefährden das Leben von Millionen Menschen, Tieren und Pflanzen.\n\nb. Richtig: Wichtigste Hauptursache des Klimawandels ist das Kohlendioxid (CO₂).\n\nc. Falsch: Es entsteht besonders durch die Verbrennung von Öl oder Kohle.\n\nd. Richtig: Die Konsequenz: Es wird immer wärmer auf der Erde, das ist der bekannte Treibhauseffekt, der zu einer Veränderung des Klimas führt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Was bedroht heute unsere Erde?\nb. Der Klimawandel verursacht Naturkatastrophen. Welche? Zitieren Sie drei Beispiele.\nc. Wodurch entsteht das Kohlendioxid?\nd. Erklären Sie den folgenden Satz: „Wenn das so weiter geht, dann zerstören wir selbst unsere Erde, unsere Existenz.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die heutige Gefahr auf unserer Erde ist der Klimawandel. / Die Klimakatastrophe bedroht unsere Welt.\n\nb. Die Naturkatastrophen sind: Erderwärmung, Eisschmelze, Hochwasser und Trockenperioden.\n\nc. Durch Verbrennung von Öl oder Kohle, bei der Herstellung von Elektrizität und Benzin, durch Heizen und beim Autofahren entsteht das Kohlendioxid.\n\nd. Der Mensch soll seinen Planeten vor der Erderwärmung schützen. So wird er sein Leben retten, bevor es zu spät wird."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Nr. | Ausdruck |\n|---|---|\n| 1 | Klima |\n| 2 | Naturkatastrophe |\n| 3 | Müll |\n| 4 | Rohstoffe |\n\n| Buchstabe | Ausdruck |\n|---|---|\n| a | Öl und Gas |\n| b | Verbrennung |\n| c | Wetter |\n| d | Hochwasser |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Klima"
+                  ],
+                  [
+                    "2",
+                    "Naturkatastrophe"
+                  ],
+                  [
+                    "3",
+                    "Müll"
+                  ],
+                  [
+                    "4",
+                    "Rohstoffe"
+                  ],
+                  [
+                    "a",
+                    "Öl und Gas"
+                  ],
+                  [
+                    "b",
+                    "Verbrennung"
+                  ],
+                  [
+                    "c",
+                    "Wetter"
+                  ],
+                  [
+                    "d",
+                    "Hochwasser"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n| --- | --- | --- | --- |\n| c | d | b | a |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "c",
+                    "d",
+                    "b",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Klimawandel / Der Treibhauseffekt / Die Erderwärmung. Andere Titel werden berücksichtigt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDer Klimawandel ist die Folge der Erderwärmung."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "die Folge = die Konsequenz"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nIn einigen Erdteilen ist es kalt, in anderen ist es ........ ."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "kalt ≠ warm"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Verb das passende Substantiv.\nheizen: ........ ............\nb. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\ntrocken: ........ ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. die Heizung / das Heizen\nb. die Trockenheit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Der Treibhauseffekt führt zur Veränderung des Klimas.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الاحتباس الحراري يؤدي إلى تغير المناخ."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Futur.\nDer Treibhauseffekt führt zur Klimaveränderung."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Treibhauseffekt wird zur Klimaveränderung führen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präsens.\nViele Länder nahmen an der Klimakonferenz in Kopenhagen teil."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Länder nehmen an der Klimakonferenz in Kopenhagen teil."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDer Klimawandel gefährdet die Erde."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Erde wird durch den Klimawandel gefährdet."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passenden Relativpronomen.\na. Das Kohlendioxid, .... in der Atmosphäre konzentriert ist, bedroht alle Lebewesen.\nb. Die Länder, .... unter den Folgen des Klimawandels leiden, brauchen eine internationale Hilfe."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Das Kohlendioxid, das in der Atmosphäre konzentriert ist, bedroht alle Lebewesen.\nb. Die Länder, die unter den Folgen des Klimawandels leiden, brauchen eine internationale Hilfe."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passenden Präpositionen: an, über.\na. Alle Medien informieren uns ..... die Klimaveränderung.\nb. Besonders die Industrienationen müssen ..... die Zukunft der Menschheit denken."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. über\nb. an"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 2 = 0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD.... Mitglieder d.... international.... Umweltorganisation, Greenpeace, demonstrieren für d.... Klimaschutz."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Mitglieder der internationalen Umweltorganisation Greenpeace demonstrieren für den Klimaschutz."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Auch in Algerien ist die Umweltverschmutzung ein großes Problem. Was könnte man dagegen tun? Argumentieren Sie Ihre Antwort.\n\nThema 2: Der Klimawandel ist ein aktuelles Problem. Wie kann man die Erde vor der Klimaerwärmung schützen? Schreiben Sie mit Hilfe der folgenden Stichpunkte einige Zeilen.\n- die Leute für die Umweltprobleme sensibilisieren (zu Hause, Schule, Massenmedien ...)\n- weniger Energie konsumieren (Strom, Benzin, Wasser ...).\n- erneuerbare Energien benutzen (Wasser, Wind, Sonne).\n- Treibhausgasemissionen in der Industrie reduzieren.\n- die Abholzung der Wälder verbieten.\n- Klimaschutzprojekte in den armen Ländern entwickeln.\n- Geld in den Umweltschutz investieren.\n- ........"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nIdeen, Stil und Orthografie: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2010-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    }
+  ]
+}

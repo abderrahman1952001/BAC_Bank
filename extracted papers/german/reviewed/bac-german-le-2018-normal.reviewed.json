@@ -1,0 +1,1011 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2018",
+    "totalPoints": 20,
+    "year": 2018
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Sigmund Freud wurde am 06. Mai 1856 in Freiberg in der Tschechischen Republik geboren. Er war Neurologe und Gründer der Psychoanalyse. Er stammte aus einer jüdischen Familie, die sieben andere Kinder hatte.\n\n1860 zog die Familie nach Wien; dort besuchte er das Gymnasium. Im Alter von 17 Jahren bestand er sein Abitur. 1873 begann er sein Studium an der medizinischen Fakultät in Wien. Von 1876 bis 1882 arbeitete er im physiologischen Labor von Ernst Wilhelm von Brücke. Er studierte 1885/1886 bei J.M. Charcot in Paris; und 1889 bei Liébault und Bernheim in Nancy die Hypnosetechnik* und die Probleme der Hysterie. Seine Versuche mit Kokain führten zur Entwicklung der Lokalanästhesie.\n\n1886 heiratete er Martha Bernays. Sie hatten sechs Kinder; darunter Anna Freud, die sich auch für Psychologie interessierte.\n\nAb 1902 lehrte Sigmund Freud als Professor für Neuropathologie* an der Universität Wien. 1939 wurde er zum Ehrenmitglied* der „Britisch Royal Society of Medeicine“ ernannt.\n\n1938 emigrierte er zusammen mit seiner Tochter Anna nach Großbritannien, wo er in London als Psychoanalytiker tätig war.\n\nSigmund Freud starb am 23. September 1939 in London.\n\nAus: Wikipedia: Biografien (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nHypnosetechnik: technique de l‘hypnose / تقنية التنويم المغناطيسي\nNeuropathologie: Neuropathologie / علم الأمراض العصبية\nEhrenmitglied: membre d’honneur / عضو شرفي"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Die Psychoanalyse wurde von Sigmund Freud gegründet. | | | |\n| b. Er studierte Rechtswissenschaften. | | | |\n| c. Freud arbeitete als Lehrer an der Universität Wien. | | | |\n| d. Seine Tochter Anna beschäftigte sich nicht mit der Psychologie. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Die Psychoanalyse wurde von Sigmund Freud gegründet.", "", "", ""],
+                  ["b. Er studierte Rechtswissenschaften.", "", "", ""],
+                  ["c. Freud arbeitete als Lehrer an der Universität Wien.", "", "", ""],
+                  ["d. Seine Tochter Anna beschäftigte sich nicht mit der Psychologie.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Er war Neurologe und Gründer der Psychoanalyse.\n\nb. Falsch: 1873 begann er sein Studium an der medizinischen Fakultät in Wien.\n\nc. Richtig: Ab 1902 lehrte Sigmund Freud als Professor für Neuropathologie an der Universität Wien.\n\nd. Falsch: Sie hatten sechs Kinder; darunter Anna Freud, die sich auch für Psychologie interessierte."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Wer war Sigmund Freud?\nb. Welche Tätigkeiten hat er ausgeübt?\nc. Erklären Sie den folgenden Satz: „Seine Versuche mit Kokain führten zur Entwicklung der Lokalanästhesie“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Sigmund Freud war Neurologe und Gründer der Psychoanalyse.\n\nb. Er war Lehrer an der Universität Wien. Er arbeitete auch als Psychoanalytiker in London.\n\nc. Satzerklärung: Freud entwickelte die Lokalanästhesie durch seine Experimente mit Kokain. (Andere Antworten können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "a) 1 Punkt\nb) 1.5 Punkte\nc) 0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Psychologie | Musik | Film | Bücher |\n\n| a | b | c | d |\n|---|---|---|---|\n| Komponist | Schauspieler | schreiben | studieren |",
+              "data": {
+                "rows": [
+                  ["1", "Psychologie"],
+                  ["2", "Musik"],
+                  ["3", "Film"],
+                  ["4", "Bücher"],
+                  ["a", "Komponist"],
+                  ["b", "Schauspieler"],
+                  ["c", "schreiben"],
+                  ["d", "studieren"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | a | b | c |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["d", "a", "b", "c"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Sigmund Freud-Biografie. (Andere Titel können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nSigmund Freud unterrichtete Psychologie an der Universität."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "unterrichtete = lehrte"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit dem Gegenteil des unterstrichenen Wortes aus dem Text.\nCheikh Ben Badis ...... 1908 sein Studium an der Zeituna-Universität und endete es im Jahr 1912."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "endete ≠ begann"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Substantiv das passende Adjektiv.\ndie Kinder → ................\n\nb. Bilden Sie aus dem folgenden Verb das passende Substantiv.\nstudieren → .... ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. die Kinder → kinderlos\nb. studieren → das Studium"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische: „Ab 1902 lehrte Sigmund Freud als Professor für Neuropathologie an der Universität Wien“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1902 شغل فرويد منصب بروفيسور لتدريس علم الأمراض العصبية بجامعة فيينا."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präsens.\nFreud bestand sein Abitur im Alter von 17 Jahren."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Freud besteht sein Abitur im Alter von 17 Jahren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDer Wissenschaftler hat eine Heilungstherapie entwickelt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Eine Heilungstherapie ist von dem Wissenschaftler entwickelt worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „damit“ oder „um,...zu“.\nFreud entwickelte die Lokalanästhesie. Er konnte den Kranken helfen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Freud entwickelte die Lokalanästhesie, um den Kranken helfen zu können.\nOder: Freud entwickelte die Lokalanästhesie, damit er den Kranken helfen kann."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit den folgenden Präpositionen (auf - aus - um - an).\na) Viele Menschen leiden ........ psychologischen Krankheiten.\nb) Die Patienten warten ........ ihren Facharzt.\nc) Die Krankenschwester kümmert sich .... die Kranken.\nd) Die Universität besteht ...... vielen Fakultäten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) leiden an\nb) warten auf\nc) kümmert sich um\nd) besteht aus"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... bekannt.....Schriftsteller hat einen groß.... Erfolg mit sein.... letzten Werk."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der bekannte Schriftsteller hat einen großen Erfolg mit seinem letzten Werk."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie kurz über einen Künstler oder eine Künstlerin, die Sie gern haben.\n\nThema 2: Anhand folgender Informationen schreiben Sie ein paar Zeilen über „Kateb Yacine“.\n- Geburtsdatum: 6. August 1929\n- Geburtsort: Constantine\n- Was ist er? Schriftsteller\n- Studium: Koranschule, dann das Französische Gymnasium.\n- Wichtige Ereignisse:\n  - Teilnahme an der nationalistischen Demonstration von 1945 in Sétif.\n  - Verhaftung von der französischen Armee.\n- Tätigkeit: 1948-1951 Journalist bei „Alger Républicain-Zeitung“.\n- Werke:\n  - Nedjma (1956)\n  - La guerre de 2000 ans (1974)\n  - Mohammed prends ta valise (1972)\n- Tod: 28. Oktober 1989 in Grenoble (Frankreich)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Die Erfindungen haben eine große Bedeutung für die Menschheit und ihren Fortschritt. Die Entwicklung der Wissenschaft und Technik verbessert das Leben des Menschen. Die alten Wissenschaftler, Erfinder und Entdecker, wie zum Beispiel Gutenberg, Edison, Röntgen und Einstein haben das Leben in allen Bereichen revolutioniert. Früher waren die Maschinen und Geräte nicht so entwickelt wie heute. Die moderne Technik macht uns heute das Leben leichter, einfacher und bequemer, z.B. Handy, Computer, Auto. Die Technik erlaubt uns, unsere Arbeit schneller, besser und präziser zu machen. Wir haben heute zu Hause die Mikrowelle, die Spülmaschine, die Waschmaschine, den Mixer und den Kühlschrank. Ein kleines technisches Wunder - das Handy - erleichtert uns das Leben. Mit Handy kann man telefonieren, Fotos machen, E-Mails schicken, im Internet surfen und Radio hören. Die jungen Leute tauschen gerne SMS aus, benutzen es als Rechner oder Wecker. Auch die älteren Menschen lernen ein Handy zu gebrauchen. Nachteil: das ständige Klingeln* nervt und störend* ist das laute Sprechen und Lachen beim Telefonieren. Durch alle diese Erfindungen und Entdeckungen sind die großen Persönlichkeiten weltberühmt geworden.\n\nwww.google.de (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\ndas Klingeln: la sonnerie / الرنة\nstörend: gênant / مزعج"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Die Maschinen waren früher sehr entwickelt. | | | |\n| b. Heutzutage wird die Arbeit schneller gemacht. | | | |\n| c. Nur junge Leute gebrauchen das Handy. | | | |\n| d. Viele Wissenschaftler wurden durch ihre Forschungen bekannt. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Die Maschinen waren früher sehr entwickelt.", "", "", ""],
+                  ["b. Heutzutage wird die Arbeit schneller gemacht.", "", "", ""],
+                  ["c. Nur junge Leute gebrauchen das Handy.", "", "", ""],
+                  ["d. Viele Wissenschaftler wurden durch ihre Forschungen bekannt.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Früher waren die Maschinen und Geräte nicht so entwickelt wie heute.\n\nb. Richtig: Die Technik erlaubt uns, unsere Arbeit schneller, besser und präziser zu machen.\n\nc. Falsch: Auch die älteren Menschen lernen ein Handy zu gebrauchen.\n\nd. Richtig: Durch alle diese Erfindungen und Entdeckungen sind die großen Persönlichkeiten weltberühmt geworden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Welche Geräte sind heute nützlich bei der Hausarbeit?\nb. Das Handy hat viele Funktionen. Zitieren Sie vier Beispiele aus dem Text.\nc. Erklären Sie den folgenden Satz: „Die Entwicklung der Wissenschaft und Technik verbessert das Leben des Menschen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die Mikrowelle, die Spülmaschine, die Waschmaschine, der Mixer und der Kühlschrank sind nützlich bei der Arbeit zu Hause.\n\nb. Mit Handy kann man telefonieren, Fotos machen, E-Mails schicken, im Internet surfen, Radio hören, SMS austauschen usw.\n\nc. Satzerklärung: Dank Wissenschaft und Technik ist unser Leben besser geworden. Die Wissenschaft und Technik bieten uns zahlreiche gute Möglichkeiten in allen Bereichen des Lebens (Kommunikation, Transport, Medizin, ...)."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Gerät | Handy | Daten | Technik |\n\n| a | b | c | d |\n|---|---|---|---|\n| entwickeln | speichern | anrufen | funktionieren |",
+              "data": {
+                "rows": [
+                  ["1", "Gerät"],
+                  ["2", "Handy"],
+                  ["3", "Daten"],
+                  ["4", "Technik"],
+                  ["a", "entwickeln"],
+                  ["b", "speichern"],
+                  ["c", "anrufen"],
+                  ["d", "funktionieren"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | c | b | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["d", "c", "b", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Wissenschaft und Technik. (Andere Titel können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDank dem technischen Fortschritt haben die Menschen ein komfortables Leben."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "komfortabel = bequem"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Gegenteil aus dem Text.\nDer Gebrauch dieses Geräts ist kompliziert."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "kompliziert ≠ einfach, leicht"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Verb das passende Substantiv.\nstören: ..... ..................\n\nb. Bilden Sie ein Kompositum.\ndas Handy + die Kosten → ..... .................."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. stören → die Störung\nb. das Handy + die Kosten → die Handykosten"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Früher waren die Maschinen und Geräte nicht so entwickelt wie heute.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "قديما لم تكن الآلات والأجهزة متطورة مثل اليوم."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nDie Wissenschaft und die Technik verbessern unser Leben."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Wissenschaft und die Technik verbesserten unser Leben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nGutenberg hat die Druckmaschine erfunden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Druckmaschine ist von Gutenberg erfunden worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „damit“ oder „um...zu“.\nDie Menschen brauchen neue Maschinen. Sie können ihre Arbeit erleichtern."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Menschen brauchen neue Maschinen, damit sie ihre Arbeit erleichtern können.\nOder: Die Menschen brauchen neue Maschinen, um ihre Arbeit erleichtern zu können."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDas Handy, ........ die Leute täglich gebrauchen, ist von guter Qualität."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das Handy, das die Leute täglich gebrauchen, ist von guter Qualität."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\nDie meisten Jugendlichen haben die Absicht, neue Geräte zu benutzen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die meisten Jugendlichen wollen neue Geräte benutzen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Welche Erfindungen haben das Leben des Menschen stark revolutioniert? Schreiben Sie kurz darüber.\n\nThema 2: Die moderne Technik hat unser Leben positiv und negativ beeinflusst. Mit Hilfe folgender Stichpunkte schreiben Sie einige Zeilen dazu.\n- moderne Maschinen und Geräte → Zeitgewinn / hohe Produktion\n- Komfort - Luxus → neue Computer / schnelle Autos / moderne Handys\n- medizinische Fortschritte → Krankheiten bekämpfen / Medikamente entwickeln\n- Arbeitslosigkeit → wegen Roboter\n- Umweltprobleme → Industrie\n- Kriege → Waffen / Atombomben ..."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2018-normal",
+      "note": "The printed Subject 1 source line appears to spell “Medeicine” in “Britisch Royal Society of Medeicine”; the reviewed extract preserves the visible scan spelling."
+    },
+    {
+      "paper": "bac-german-le-2018-normal",
+      "note": "The official Arabic translation for Subject 2 A.4 contains missing glyph boxes in the scan; the reviewed solution uses the clear Arabic translation of the printed German sentence."
+    },
+    {
+      "paper": "bac-german-le-2018-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    }
+  ]
+}

@@ -1,0 +1,1177 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2014",
+    "totalPoints": 20,
+    "year": 2014
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fast jeder Mensch hat heutzutage die Möglichkeit im Internet zu surfen: Entweder zu Hause oder in Internetcafés.\nDas Internet informiert beispielsweise über die aktuellsten Ereignisse und bietet Informationen über alle möglichen Themen, Spiele, Bilder und Videos. Mit Hilfe von Suchmaschinen kann man sekundenschnell alles finden, was man braucht. Das Internet erlaubt uns ganze Internetseiten aus vielen Sprachen zu übersetzen.\nWir haben auch die Möglichkeit, uns mit anderen Personen per E-Mail oder in Chaträumen zu verständigen oder in Foren* über bestimmte Themen zu diskutieren. Viele suchen den Kontakt mit Menschen über das Internet. Sie wollen Menschen mit gleichen Interessen finden, um mit ihnen zu kommunizieren. Wenn sie sich gegenseitig sympathisch finden, treffen sie sich meist auch persönlich. Dadurch sind schon viele Freundschaften entstanden. Der Handel ist auch besonders beliebt über das Internet. Eigentlich hat jede Firma eine eigene Homepage, auf der man sich über ihre Angebote informieren kann. Das Internet bietet also die Möglichkeit, bequem und einfach verschiedene Waren zu kaufen und zu verkaufen...\n\nAus: deutsch-b22.blogspots.com\n(verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*Foren: les forums de tchat / المنتديات"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Wenige Leute surfen im Internet. | | | |\n| b. Über das Internet kann man sich über alles informieren. | | | |\n| c. Die Internetseiten sind in mehreren Sprachen zu lesen. | | | |\n| d. Man kann neue Freunde über das Internet kennen lernen. | | | |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Wenige Leute surfen im Internet.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Über das Internet kann man sich über alles informieren.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Die Internetseiten sind in mehreren Sprachen zu lesen.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Man kann neue Freunde über das Internet kennen lernen.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Fast jeder Mensch hat heutzutage die Möglichkeit im Internet zu surfen.\n\nb. Richtig: Das Internet informiert beispielsweise über die aktuellsten Ereignisse und bietet Informationen über alle möglichen Themen, Spiele, Bilder und Videos.\n\nc. Richtig: Das Internet erlaubt uns ganze Internetseiten aus vielen Sprachen zu übersetzen.\n\nd. Richtig: Dadurch sind schon viele Freundschaften entstanden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Wo kann man das Internet nutzen?\nb. Das Internet bietet viele Möglichkeiten. Zitieren Sie vier (4) Beispiele aus dem Text.\nc. Warum interessieren sich viele Leute für den Handel über das Internet?\nd. Erklären Sie den folgenden Satz: „Man kann sich mit vielen Leuten verständigen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Zu Hause oder in Internetcafés kann man das Internet nutzen.\n\nb. Das Internet bietet viele Möglichkeiten: informieren, spielen, übersetzen, E-Mails austauschen, chatten, neue Freunde kennen lernen, kaufen und verkaufen.\n\nc. Viele Leute interessieren sich für den Handel über das Internet, denn sie können dadurch verschiedene Waren kaufen und verkaufen; oder denn das Internet informiert uns über Angebote der Firmen.\n\nd. Satzerklärung: Wir verstehen uns mit ihnen, wir diskutieren über verschiedene Themen, wir tauschen mit ihnen Ideen aus und wir einigen uns über etwas."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Internet | Zeitung | E-Mails | Sprachen |\n\n| a | b | c | d |\n|---|---|---|---|\n| lernen | schicken | chatten | die Presse |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Internet"
+                  ],
+                  [
+                    "2",
+                    "Zeitung"
+                  ],
+                  [
+                    "3",
+                    "E-Mails"
+                  ],
+                  [
+                    "4",
+                    "Sprachen"
+                  ],
+                  [
+                    "a",
+                    "lernen"
+                  ],
+                  [
+                    "b",
+                    "schicken"
+                  ],
+                  [
+                    "c",
+                    "chatten"
+                  ],
+                  [
+                    "d",
+                    "die Presse"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | d | b | a |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "c",
+                    "d",
+                    "b",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel des Textes: das Internet. Andere Titel können berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Presse im Internet berichtet sehr schnell über viele Geschehnisse."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Geschehnisse = Ereignisse"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nFrüher gab es kein Internet, aber ............... findet man es überall."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "früher ≠ heutzutage"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Verb das passende Substantiv.\nverständigen: .... ........................\n\nb. Bilden Sie ein Kompositum.\ndas Internet + der Nutzer = ............ ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. verständigen → die Verständigung\nb. das Internet + der Nutzer → der Internetnutzer"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Viele suchen den Kontakt mit Menschen über das Internet.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "الكثير يبحثون عن التواصل عبر الانترنت."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nViele Leute treffen sich über das Internet."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Leute haben sich über das Internet getroffen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Futur.\nAlle Studenten benutzen das Internet."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Alle Studenten werden das Internet benutzen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDie Jugendlichen können E-Mails austauschen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "E-Mails können von den Jugendlichen ausgetauscht werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDie Kinder, ...... viel Zeit mit den neuen Medien verbringen, werden mediensüchtig."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Kinder, die viel Zeit mit den neuen Medien verbringen, werden mediensüchtig."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\nDas Internet ist in der Lage, viele Informationen zu geben."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das Internet kann viele Informationen geben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nEin wichtig... Vorteil d... Internet... ist die aktuell... Information."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Ein wichtiger Vorteil des Internets ist die aktuelle Information."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Die neuen Medien gehören zu unserem Alltagsleben. Welches Medium haben Sie gern? Begründen Sie Ihre Antwort mit konkreten Beispielen.\n\nThema 2: Das Internet hat auch Nachteile. Schreiben Sie anhand folgender Stichpunkte einige Zeilen dazu.\n- Internetsucht (Internetabhängigkeit)\n- gefährliche Webseiten (Kriminalität, Gewalt ...)\n- verfälschte Informationen\n- Gesundheitsprobleme (Schlafmangel, Augenkrankheiten, Kopfschmerzen ...)\n- Schulprobleme (schlechte Leistungen)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Auf der Erde gibt es mehr Wasser als Land. 70 % sind Wasser, 30 % sind Land. Die Menschheit konsumiert jedes Jahr 4000 Km³ Wasser im Haushalt, in der Landwirtschaft und Wirtschaft. Wasser braucht man für fast alles; für manche Produkte mehr und für andere weniger. In der Industrieproduktion wird das benutzte Wasser unsauber und oft ungenügend gereinigt. So werden die Flüsse und die Seen durch Chemikalien, Gifte und Bakterien verschmutzt. Die schädlichen Stoffe der Abwässer vergiften sogar den Boden und die Pflanzen. Tiere, die diese Pflanzen fressen, werden krank. Auch unsere tägliche Nahrung wird dadurch verseucht.\nIn China zum Beispiel sind etwa 70 % der Flüsse und der Seen mit Abwässern von Textilfabriken belastet* - eine große Gefahr, denn die Menschen dort nutzen das Wasser sowohl als Trinkwasser als auch zur Bewässerung* von Pflanzen. Deshalb sollen alle Fabrikanten keine Chemikalien in der Produktion verwenden, damit das Wasser überall sauber bleibt.\n\nAus: www.kids.greenpeace.de\n(verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*belastet: pollué / ملوثة\n*Bewässerung: l’irrigation / الري"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. In der Industrieproduktion wird das Wasser unrein. | | | |\n| b. Die chemischen Stoffe, Gifte und Bakterien gefährden die Flüsse und die Seen. | | | |\n| c. Die schädlichen Stoffe der Abwässer sind keine Gefahr für die Nahrung. | | | |\n| d. In China sind viele Flüsse und Seen nicht verschmutzt. | | | |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. In der Industrieproduktion wird das Wasser unrein.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Die chemischen Stoffe, Gifte und Bakterien gefährden die Flüsse und die Seen.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Die schädlichen Stoffe der Abwässer sind keine Gefahr für die Nahrung.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. In China sind viele Flüsse und Seen nicht verschmutzt.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: In der Industrieproduktion wird das benutzte Wasser unsauber und oft ungenügend gereinigt.\n\nb. Richtig: So werden die Flüsse und die Seen durch Chemikalien, Gifte und Bakterien verschmutzt.\n\nc. Falsch: Auch unsere tägliche Nahrung wird dadurch verseucht.\n\nd. Falsch: In China zum Beispiel sind etwa 70 % der Flüsse und der Seen mit Abwässern von Textilfabriken belastet."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. In welchen Bereichen wird das Wasser verbraucht?\nb. Wodurch werden die Flüsse und die Seen verunreinigt?\nc. Die verschmutzten Flüsse und Seen schaden der Gesundheit der Menschen in China. Warum?\nd. Erklären Sie den folgenden Satz: „Auch unsere Nahrung wird dadurch verseucht.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die Menschen verbrauchen das Wasser im Haushalt, in der Landwirtschaft und Wirtschaft.\n\nb. Die Flüsse und die Seen werden durch Chemikalien, Gifte und Bakterien verunreinigt.\n\nc. Die verschmutzten Flüsse und Seen schaden der Gesundheit der Menschen in China, denn die Menschen dort nutzen dieses Wasser zum Trinken und zur Bewässerung von Pflanzen.\n\nd. Satzerklärung: Durch Schadstoffe der Abwässer werden landwirtschaftliche Produkte (Gemüse, Obst, Milch ...) vergiftet."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Pestizide | Wasser | Pflanzen | Abwässer |\n\n| a | b | c | d |\n|---|---|---|---|\n| trinken | klären | giftige Stoffe | bewässern |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Pestizide"
+                  ],
+                  [
+                    "2",
+                    "Wasser"
+                  ],
+                  [
+                    "3",
+                    "Pflanzen"
+                  ],
+                  [
+                    "4",
+                    "Abwässer"
+                  ],
+                  [
+                    "a",
+                    "trinken"
+                  ],
+                  [
+                    "b",
+                    "klären"
+                  ],
+                  [
+                    "c",
+                    "giftige Stoffe"
+                  ],
+                  [
+                    "d",
+                    "bewässern"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | a | d | b |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "c",
+                    "a",
+                    "d",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel des Textes: Verseuchtes Wasser oder Wasserverschmutzung. Andere Titel können berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Industrieabwässer verseuchen die Meere, die Flüsse und die Seen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "verseuchen = vergiften / verschmutzen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nHeute sind die Meere nicht ............, sondern schmutzig."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "sauber ≠ schmutzig"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nsauber: ...... ........................\n\nb. Bilden Sie ein Kompositum.\ndas Wasser + der Schutz = ...... ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. sauber → die Sauberkeit\nb. das Wasser + der Schutz → der Wasserschutz"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die Fabrikanten sollen keine Chemikalien in der Produktion verwenden, damit das Wasser sauber bleibt.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يجب على المنتجين أن لا يستعملوا المواد الكيميائية لكي يبقى الماء نقيا."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nViele Wasserpflanzen sterben an schädlichen Stoffen der Abwässer."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Wasserpflanzen starben an schädlichen Stoffen der Abwässer."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nMit strengen Maßnahmen kann man die Wasserbelastung reduzieren."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Mit strengen Maßnahmen hat man die Wasserbelastung reduzieren können."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nMan schützte die Flüsse und Seen nicht genug."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Flüsse und Seen wurden nicht genug geschützt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDie Tiere und Pflanzen, ...... im Meer leben, sind in Gefahr."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Tiere und Pflanzen, die im Meer leben, sind in Gefahr."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passende Präposition: über, gegen, vor, aus.\n- Wasser muss man .... Schadstoffen schützen.\n- In den Zeitungen wird viel .... die Wasserverschmutzung berichtet.\n- Viele Umweltschutzorganisationen kämpfen .... das Aussterben von Meerestieren.\n- Unsere Erde besteht .... Wasser und Land."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "vor Schadstoffen schützen / über die Wasserverschmutzung berichten / gegen das Aussterben von Meerestieren kämpfen / besteht aus Wasser"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nDurch d... groß... Verseuchung d... Wasser... werden viele Fische getötet."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Durch die große Verseuchung des Wassers werden viele Fische getötet."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Durch den technischen Fortschritt wird das Wasser immer mehr verschmutzt. Wie könnte man, nach Ihrer Meinung, diese Wasserverschmutzung stoppen? Begründen Sie Ihre Antwort mit konkreten Beispielen.\n\nThema 2: Wasser ist für das Leben des Menschen notwendig. Wie könnte man dieses Wasser sparen? Schreiben Sie anhand folgender Stichpunkte einige Zeilen dazu.\n- duschen statt baden\n- Wasser nicht verschwenden\n- Autos nur mit wenig Wasser waschen\n- Garten mit Regenwasser bewässern\n- Gemüse und Obst in einer Schüssel abwaschen\n- Wasserhähne (robinets d’eau) zumachen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2014-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    },
+    {
+      "paper": "bac-german-le-2014-normal",
+      "note": "Official correction reorders two grammar labels in each subject; the reviewed extract keeps the exam order and attaches the official answers to the matching prompts."
+    }
+  ]
+}

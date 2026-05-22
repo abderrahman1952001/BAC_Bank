@@ -1,0 +1,1059 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2015",
+    "totalPoints": 20,
+    "year": 2015
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Der deutsche Pianist und Komponist Robert Schumann war ein bedeutender Musiker der deutschen Romantik. Er wurde am 08. Juni 1810 in Zwickau geboren. Er war eines von sechs Kindern des Buchhändlers August Schumann. Durch den Beruf seines Vaters hatte er die *Gelegenheit, neben dem Gymnasium auch viel in seiner Freizeit zu lesen.\nEr erhielt mit sieben Jahren Klavierunterricht. Im Alter von elf Jahren komponierte er sein erstes Werk für Klavier und Orchester. Nachdem sein Vater gestorben war, ging er zum Studium der Rechtswissenschaften nach Heidelberg und Leipzig. Dort begann er Klavierunterricht bei Friedrich Wieck zu nehmen und beschäftigte sich total mit der Musik. Eine Karriere als Pianist war ihm durch eine *Lähmung an der rechten Hand unmöglich, deshalb konzentrierte er sich auf das Komponieren.\n1834 gründete er mit anderen Musikern zusammen die \"Neue Zeitschrift für Musik\". Im Jahre 1840 heiratete er Clara Wieck, eine bekannte Pianistin. 1843 wurde Schumann Lehrer am Leipziger Konservatorium. Wegen seiner Nervenprobleme, wurde er in eine Nervenklinik in Bonn gebracht, wo er noch zwei Jahre lebte. Am 29. Juli 1856 ist er in Bonn gestorben.\nRobert Schumann hinterließ zahlreiche Werke und musikwissenschaftliche Schriften.\n\nClassic- Arietta\ndas Komponisten Lexikon\n(verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*Gelegenheit: L’occasion / الفرصة\n*Lähmung: L’handicap / شلل"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Robert Schumann war das Einzelkind seiner Eltern. | | | |\n| b. Als Kind war das Lesen seine beliebte Freizeitbeschäftigung. | | | |\n| c. Seine Frau war keine Musikerin. | | | |\n| d. Er hinterließ nur einige Werke. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Robert Schumann war das Einzelkind seiner Eltern.", "", "", ""],
+                  ["b. Als Kind war das Lesen seine beliebte Freizeitbeschäftigung.", "", "", ""],
+                  ["c. Seine Frau war keine Musikerin.", "", "", ""],
+                  ["d. Er hinterließ nur einige Werke.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Er war eines von sechs Kindern des Buchhändlers August Schumann.\n\nb. Richtig: Durch den Beruf seines Vaters hatte er die Gelegenheit, neben dem Gymnasium auch viel in seiner Freizeit zu lesen.\n\nc. Falsch: Im Jahr 1840 heiratete er Clara Wieck, eine bekannte Pianistin.\n\nd. Falsch: Robert Schumann hinterließ zahlreiche Werke und musikwissenschaftliche Schriften."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Wer war Robert Schumann?\nb. Wann und wo wurde Robert Schumann geboren?\nc. Wie alt war er, als er sein erstes Werk komponierte?\nd. Erklären Sie den Satz: „Eine Karriere als Pianist war ihm durch eine Lähmung an der rechten Hand unmöglich“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Robert Schumann war ein bedeutender Musiker der deutschen Romantik. Oder: Robert Schumann war ein deutscher Pianist und Komponist.\n\nb. Robert Schumann wurde am 8. Juni 1810 in Zwickau geboren.\n\nc. Als er elf Jahre alt war, komponierte er sein erstes Werk für Klavier und Orchester. Oder: Er war elf Jahre alt, als er sein erstes Werk für Klavier und Orchester komponierte.\n\nd. Satzerklärung: Wegen seiner Lähmung an der rechten Hand, beendete er nicht seine Karriere als Pianist. Andere Antworten werden berücksichtigt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Titel: Robert Schumann / Biografie von Robert Schumann. Andere Titel werden auch berücksichtigt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Bücher | Jura | Musik | Schauspieler |\n\n| a | b | c | d |\n|---|---|---|---|\n| Konservatorium | Theater | Buchhandlung | Rechtswissenschaft |",
+              "data": {
+                "rows": [
+                  ["1", "Bücher"],
+                  ["2", "Jura"],
+                  ["3", "Musik"],
+                  ["4", "Schauspieler"],
+                  ["a", "Konservatorium"],
+                  ["b", "Theater"],
+                  ["c", "Buchhandlung"],
+                  ["d", "Rechtswissenschaft"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | d | a | b |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "d", "a", "b"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit einem Synonym des unterstrichenen Wortes aus dem Text.\nRobert Schumann war ein berühmter Musiker. Seine Frau war auch eine ............... Pianistin."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "berühmte = bekannte"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nEr beendete seine Karriere als Pianist und ............... am Leipziger Konservatorium zu unterrichten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "beendete ≠ begann"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Verb das passende Substantiv.\nkomponieren: d.... ........................\n\nb. Bilden Sie aus dem folgenden Verb das passende Adjektiv.\nerreichen: ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. komponieren → das Komponieren / die Komposition\nb. erreichen → erreichbar"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Der deutsche Pianist und Komponist Robert Schumann war ein bedeutender Musiker der deutschen Romantik“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "كان عازف البيانو والموسيقي الألماني روبارت شومان مشهورا في العصر الرومانسي الألماني."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDer Musiker erhielt mit sieben Jahren Klavierunterricht."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Musiker hat mit sieben Jahren Klavierunterricht erhalten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präsens.\nDer Künstler unterrichtete am Berliner Konservatorium."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Künstler unterrichtet am Berliner Konservatorium."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDer Musiker hat viele Werke komponiert."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Werke sind vom (von dem) Musiker komponiert worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... klein... Kind beschäftigte sich auch mit d... klassisch... Musik."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das kleine Kind beschäftigte sich auch mit der klassischen Musik."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Konditionalsatz.\nDer Künstler hat eine Lähmung. Seine Karriere als Pianist ist unmöglich."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wenn der Künstler keine Lähmung hätte, wäre seine Karriere als Pianist möglich."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „damit“ oder „um ... zu“.\nDie Familie fährt dieses Wochenende nach Weimar. Sie will dort ein Theaterstück sehen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Familie fährt dieses Wochenende nach Weimar, um dort ein Theaterstück zu sehen.\nOder: Die Familie fährt dieses Wochenende nach Weimar, damit sie dort ein Theaterstück sieht."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie kurz über eine(n) algerische(n) oder deutsche(n) Künstler / in.\n\nThema 2: Anhand folgender Stichpunkte schreiben Sie eine kurze Biografie von dem algerischen Schriftsteller Mohamed Dib.\n- Geburtsdatum: 21. Juli 1920\n- Geburtsort: Tlemcen (Westalgerien)\n- Tätigkeiten: Lehrer; Oujda-Marokko, Los Angeles-Universität, Sorbonne-Paris\n- Andere Tätigkeiten: Übersetzer, Buchhalter und Journalist (Alger Républicain und Liberté)\n- Werke: La Grande Maison, L’Incendie, Le Métier à tisser\n- Preise: Grand Prix de la Francophonie de l’Académie Française\n- Tod: 02. Mai 2003 / La Celle-Saind-Cloud bei Paris"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Österreich\n\nÖsterreich wird oft Alpenland genannt, denn rund 60 % ihrer Fläche sind Teil der Alpen. Mit 3797 Metern ist der Großglockner der höchste Berg des Landes. Dieses deutschsprachige Land in Mitteleuropa ist als Urlaubsland sehr beliebt: Viele Leute kommen im Winter zum Skifahren und im Sommer zum Wandern*. Der Tourismus ist eine der wichtigsten Wirtschaftsbranchen des Landes.\nÖsterreich ist mit 83 872 Km² größer als die Schweiz, sein Nachbarland im Westen. Es hat noch mit sieben anderen Ländern gemeinsame Grenzen: im Südwesten mit dem Liechtenstein, im Süden mit Slowenien und Italien, im Osten mit Ungarn und der Slowakei, im Nordosten mit der Tschechischen Republik und im Nordwesten mit Deutschland. Österreich hat ungefähr 8,3 Millionen Einwohner und besteht aus neun Bundesländern: Burgenland, Kärnten, Niederösterreich, Oberösterreich, Salzburg, Steiermark, Tirol, Vorarlberg und Wien als Hauptstadt mit 1,7 Millionen Menschen. Wien ist die Stadt der Musik, des Theaters und der Kunst.\nÖsterreich ist ein hoch entwickeltes Industrieland. Zwei Drittel der Exporte gehen in die Europäische Union. Die wichtigsten Industriebranchen produzieren in den folgenden Bereichen: Chemie, Fahrzeuge und Maschinen. Nur 6 % der Österreicher arbeiten noch in der Landwirtschaft. Außerdem ist Österreich der erste Produzent von Wasserenergie in der Europäischen Union, denn es hat zahlreiche Wasserkraftwerke* an den vielen Flüssen.\n\nAus: www.oesterreich-auf-einen-blick.de"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*das Wandern: la promenade à pied / النزهة على الأرجل\n*die Wasserkraftwerke: les centrales hydrauliques / محطات توليد الطاقة المائية"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Österreich liegt in Mitteleuropa. | | | |\n| b. Die offizielle Sprache ist Deutsch. | | | |\n| c. Österreich grenzt nicht an die Schweiz. | | | |\n| d. Österreich ist nur ein Urlaubsland. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Österreich liegt in Mitteleuropa.", "", "", ""],
+                  ["b. Die offizielle Sprache ist Deutsch.", "", "", ""],
+                  ["c. Österreich grenzt nicht an die Schweiz.", "", "", ""],
+                  ["d. Österreich ist nur ein Urlaubsland.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Dieses deutschsprachige Land in Mitteleuropa.\n\nb. Richtig: Dieses deutschsprachige Land.\n\nc. Falsch: ... die Schweiz, sein Nachbarland im Westen.\n\nd. Falsch: Die wichtigsten Industriebranchen produzieren in den folgenden Bereichen: Chemie, Fahrzeuge und Maschinen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Warum ist Österreich oft Alpenland genannt?\nb. Was ist die bekannteste Wirtschaftsbranche in Österreich?\nc. Welche Industriebranchen sind in Österreich wichtig?\nd. Erklären Sie den folgenden Satz: „Österreich ist als Urlaubsland sehr beliebt.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Österreich ist oft Alpenland genannt, denn 60 % ihrer Fläche sind Teil der Alpen.\n\nb. Der Tourismus ist die bekannteste Wirtschaftsbranche in Österreich.\n\nc. Die Industriebranchen sind Chemie, Fahrzeuge, Maschinen und Wasserkraft.\n\nd. Satzerklärung: Viele Leute machen Urlaub in Österreich, weil das Land den Touristen viele Möglichkeiten bietet. Andere Antworten werden berücksichtigt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Fläche | Salzburg | Donau | Alpen |\n\n| a | b | c | d |\n|---|---|---|---|\n| Stadt | Strom | 83.872 Km² | Berge |",
+              "data": {
+                "rows": [
+                  ["1", "Fläche"],
+                  ["2", "Salzburg"],
+                  ["3", "Donau"],
+                  ["4", "Alpen"],
+                  ["a", "Stadt"],
+                  ["b", "Strom"],
+                  ["c", "83.872 Km²"],
+                  ["d", "Berge"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | a | b | d |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "a", "b", "d"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit den passenden Wörtern: Euro, Tourismus, Bundesrepublik, seenreiches.\n- Österreich ist eine ............ mit neun Bundesländern.\n- Österreich ist ein ............ Land.\n- Der ............ ist wichtig in Österreich.\n- In Österreich wird der ............ als Währung verwendet."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Bundesrepublik\nb. seenreiches\nc. Tourismus\nd. Euro"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Agrikultur spielt eine wichtige Rolle in der Ökonomie des Landes."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "die Agrikultur = die Landwirtschaft"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\n............... Ausländer leben in Wien, aber nur wenige von ihnen sprechen gut Deutsch."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "wenige ≠ viele oder zahlreiche"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nwichtig: ...... ........................\n\nb. Bilden Sie ein Kompositum.\ndie Kultur + das Zentrum = ...... ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. wichtig → die Wichtigkeit\nb. die Kultur + das Zentrum → das Kulturzentrum"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Österreich ist ein hoch entwickeltes Industrieland.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "النمسا بلد صناعي متطور جدا."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nViele Leute kommen im Winter zum Skifahren."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Leute kamen im Winter zum Skifahren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nIm Winter fahren viele Touristen in die Alpen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Im Winter sind viele Touristen in die Alpen gefahren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nÖsterreich erzeugt die besten Milchprodukte."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die besten Milchprodukte werden von Österreich erzeugt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „damit“ oder „um ... zu“.\nÖsterreich modernisiert sein Wirtschaftssystem. Es bleibt ein wichtiger Handelspartner in Europa."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Österreich modernisiert sein Wirtschaftssystem, damit es ein wichtiger Handelspartner in Europa bleibt.\nOder: Österreich modernisiert sein Wirtschaftssystem, um ein wichtiger Handelspartner in Europa zu bleiben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit der passenden Konjunktion: wenn, dass, weil, sowohl ... als auch.\n- Man sagt, ........ Wien eine der schönsten Städte in Europa ist.\n- ........ die Ausländer nach Österreich kommen, besuchen sie Salzburg.\n- Österreich bietet eine moderne Infrastruktur ........ für die Urlauber ........ für die Geschäftsleute.\n- Viele ausländische Investoren sind präsent in Österreich, ........ es dort viele Möglichkeiten gibt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "dass / wenn / sowohl ... als auch / weil"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nÖsterreich ist ein beliebt.... Land für d.... Touristen aus d.... ganz.... Welt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Österreich ist ein beliebtes Land für die Touristen aus der ganzen Welt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Berichten Sie kurz über Algerien und seine Ökonomie.\n\nThema 2: Berlin ist eine der wichtigsten Hauptstädte in der Welt. Schreiben Sie anhand folgender Stichpunkte einige Zeilen dazu.\n- Lage: im Osten von Deutschland\n- Fläche: 892 Km²\n- Einwohnerzahl: 3,5 Millionen, davon 502 181 Ausländer\n- Status: Hauptstadt seit 1990 und Bundesland\n- Infrastruktur: U-Bahn, S-Bahn, Hauptbahnhof, zwei Flughäfen\n- Sehenswürdigkeiten: das Brandenburger Tor, der Potsdamer Platz, der Alexanderplatz, der Fernsehturm, Unter den Linden ...\n- Weltstadt: Kultur, Politik, Medien und Wissenschaften"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2015-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    },
+    {
+      "paper": "bac-german-le-2015-normal",
+      "note": "Visible source typos and official correction wording were preserved where they affected wording rather than meaning."
+    }
+  ]
+}

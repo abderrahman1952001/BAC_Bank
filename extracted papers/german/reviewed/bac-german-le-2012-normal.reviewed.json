@@ -1,0 +1,1173 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2012",
+    "totalPoints": 20,
+    "year": 2012
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Werbung findet man überall: in Zeitungen und Zeitschriften, im Radio oder Fernsehen, im Kino und Internet, als Plakat auf der Straße, in den Verkehrsmitteln oder in den Kaufhäusern.\nDie Werbung ist eines der Instrumente der Kommunikation in der modernen Konsumwelt. Für die Firmen ist die Werbung das beste Mittel, um die neuen Waren auf den Markt zu bringen und sie schnell zu verkaufen. Sie müssen immer neue Informationen über die Qualität, den Preis und den Verkaufsort eines Produktes geben.\nDie Unternehmer benutzen alle Mittel, um die Konsumenten zu beeinflussen. Das ist die Rolle der Werbung.\nDie Werbeleute bemühen sich darum, die Konsumenten dazu zu bringen, ein bestimmtes Produkt zu kaufen. Die Werbeexperten brauchen gute Ideen besonders bei gleichen Produkten: Mit fantastischen Bildern und psychologischen Mitteln organisieren sie eine Werbekampagne.\nDie Konsumenten sollten sich aber fragen, warum ihnen eine bestimmte Werbung gefällt und eine andere nicht. Vielleicht werden sie selbst erkennen*, wie Werbung versucht, die Menschen zu beeinflussen und sogar zum Kauf zu verführen.\n\nAus: www.Feelok.ch / Werbung\n(verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*erkennen: reconnaître / يتعرف بشيء"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Werbung begegnet uns ständig im Leben. | | | |\n| b. Die Werbung ist für die Firmen nicht wichtig. | | | |\n| c. Die Werbeleute benutzen nur Bilder als Werbematerial. | | | |\n| d. Durch Reklamen werden die Leute zum Kauf verführt. | | | |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Werbung begegnet uns ständig im Leben.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Die Werbung ist für die Firmen nicht wichtig.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Die Werbeleute benutzen nur Bilder als Werbematerial.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Durch Reklamen werden die Leute zum Kauf verführt.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Richtig: Werbung findet man überall.\n\nb. Falsch: Für die Firmen ist die Werbung das beste Mittel.\n\nc. Falsch: Mit fantastischen Bildern und psychologischen Mitteln.\n\nd. Richtig: Werbung versucht, die Menschen zu beeinflussen und sogar zum Kauf zu verführen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. In welchen Medien erscheint die Werbung?\nb. Wozu benutzen die Unternehmer die Werbung?\nc. Wie wird eine Werbekampagne organisiert?\nd. Erklären Sie den folgenden Satz: „Werbung versucht, die Menschen zu beeinflussen und sogar zum Kauf zu verführen“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die Werbung erscheint in Zeitungen und Zeitschriften, im Radio, im Fernsehen, im Kino oder im Internet.\n\nb. Die Unternehmer benutzen die Werbung, um die neuen Waren auf den Markt zu bringen und sie schnell zu verkaufen.\n\nc. Fantastische Bilder und psychologische Mittel werden gebraucht, um eine Werbekampagne zu organisieren.\n\nd. Satzerklärung: Die Werbung lässt die Leute Produkte kaufen, die sie oft nicht brauchen. / Die Leute werden gereizt, Produkte zu erwerben (kaufen), weil sie von den positiven Versprechungen in der Werbung einen guten Eindruck bekommen haben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Werbespots | Werbeplakate | Annoncen | Waren |\n\n| a | b | c | d |\n|---|---|---|---|\n| Markt | Fernsehen | Straße | Zeitungen |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Werbespots"
+                  ],
+                  [
+                    "2",
+                    "Werbeplakate"
+                  ],
+                  [
+                    "3",
+                    "Annoncen"
+                  ],
+                  [
+                    "4",
+                    "Waren"
+                  ],
+                  [
+                    "a",
+                    "Markt"
+                  ],
+                  [
+                    "b",
+                    "Fernsehen"
+                  ],
+                  [
+                    "c",
+                    "Straße"
+                  ],
+                  [
+                    "d",
+                    "Zeitungen"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | c | d | a |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "b",
+                    "c",
+                    "d",
+                    "a"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Titel: die Werbung. Andere Titel können berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Werbeleute benutzen alle Mittel, um die Verbraucher zu verführen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "die Verbraucher = die Konsumenten"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nDer Verkauf und der ............... von Produkten sind zwei wichtige Prinzipien der Werbung."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "der Verkauf ≠ der Kauf"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Substantiv das passende Verb.\ndie Werbung: ........................\n\nb. Bilden Sie ein Kompositum.\ndie Waren + das Angebot = ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. die Werbung → werben\nb. die Waren + das Angebot → das Warenangebot"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die Firmen müssen immer neue Informationen über die Qualität, den Preis und den Verkaufsort eines Produktes geben.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يجب على المؤسسات التجارية دائما إعطاء معلومات جديدة حول النوعية والسعر ونقطة بيع المنتوج."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nDie Werbeexperten denken an alle Einflussmittel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Werbeexperten dachten an alle Einflussmittel."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDie Werbung stellt nur die Vorteile eines Produktes vor."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Werbung hat nur die Vorteile eines Produktes vorgestellt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDie Werbung verstärkt das positive Image des Produktes."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das positive Image des Produktes wird durch die Werbung verstärkt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „um ... zu“.\nDie Unternehmer gebrauchen die Werbung. Sie bringen ihre neuen Waren schnell auf den Markt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Unternehmer gebrauchen die Werbung, um ihre neuen Waren schnell auf den Markt zu bringen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passende Konjunktion: damit, weil, wenn, als.\n- Die Werbung ist notwendig, ........ es zu viele Produkte auf dem Markt gibt.\n- ........ die Werbung noch nicht existierte, verkauften die Unternehmer weniger.\n- ........ eine Werbeaktion gut organisiert ist, machen die Unternehmer viel Profit.\n- Die Werbeagenturen arbeiten mit fantastischen Bildern, ........ die Leute immer mehr konsumieren."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "weil / als / wenn / damit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nDie Kunden haben ein.... gut.... Idee von d.... positiv.... Seiten des Produktes."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Kunden haben eine gute Idee von den positiven Seiten des Produktes."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Die Werbung gehört heute zu unserem Alltagsleben. Wie reagieren Sie persönlich auf die Werbespots in den elektronischen Medien? Argumentieren Sie Ihre Antwort.\n\nThema 2: Die Werbung hat auch Nachteile. Schreiben Sie anhand folgender Stichpunkte einige Zeilen dazu:\n- zu viele Marken / schwierige Auswahl\n- Verblödung der Kunden\n- beworbene Produkte = nicht immer die besten\n- Bewerbungskosten mitbezahlen\n- viel Geld für unnötige Produkte ausgeben\n- Überkonsum von Produkten = Müllberge verursachen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nStil, Orthografie, Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Die Plastiktüten* sind praktisch, stabil, leicht, kosten wenig, und man kann sie auch benutzen, wenn es regnet. Aber die Umweltexperten kritisieren, dass die Menschen die Tüten oft nur einmal gebrauchen und dann wegwerfen.\nJedes Jahr werden auf der Erde 1,2 Billionen Plastiktüten verbraucht. Das heißt: Jeder Mensch verbraucht pro Jahr durchschnittlich 300 Plastiktüten! Plastikmüll findet man überall - am Strand, in Parks und auf den Straßen. Auch jede Meeresregion dieser Welt ist mit diesem Plastikmüll verschmutzt. Jedes Jahr sterben hunderttausende von Meerestieren am Müll.\nViele Länder treffen schon heute Maßnahmen gegen den Plastikmüll:\n- In den USA, Belgien und Irland müssen die Leute Plastiktüten teurer bezahlen,\n- In Australien, Indien, Italien und einigen afrikanischen Ländern ist es verboten, Plastiktüten zu gebrauchen. In diesen Ländern sollen die Menschen Papiertüten benutzen, denn sie sind für die Umwelt unschädlich.\n- In Deutschland benutzen die Bürger die Plastiktüten mehrere Male oder sie benutzen Papiertüten.\nAuch alle Menschen in der Welt müssen umweltfreundlich handeln, damit die Umwelt sauber bleibt.\n\nAus: www.deutsche.Welle.de\nTop-Thema: 24.05.2011 (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*die Plastiktüten: les sachets en plastique / الأكياس البلاستيكية"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Plastiktüten verunreinigen die Umwelt nicht. | | | |\n| b. Plastikmüll tötet die Fische. | | | |\n| c. In vielen Ländern kämpft man gegen den Plastikmüll. | | | |\n| d. Plastiktüten sind umweltfreundlicher als Papiertüten. | | | |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Plastiktüten verunreinigen die Umwelt nicht.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Plastikmüll tötet die Fische.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. In vielen Ländern kämpft man gegen den Plastikmüll.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Plastiktüten sind umweltfreundlicher als Papiertüten.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Auch jede Meeresregion dieser Welt ist mit diesem Plastikmüll verschmutzt. Oder: Plastikmüll findet man überall.\n\nb. Richtig: Jedes Jahr sterben hunderttausende von Meerestieren am Müll.\n\nc. Richtig: In den USA, Belgien und Irland ...; in Australien, Indien, Italien und einigen afrikanischen Ländern ...; in Deutschland ...\n\nd. Falsch: In diesen Ländern sollen die Menschen Papiertüten benutzen, denn sie sind für die Umwelt unschädlich."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Warum benutzen viele Menschen Plastiktüten?\nb. Welche Orte werden durch den Plastikmüll verschmutzt?\nc. Wie kann man den Gebrauch von Plastiktüten reduzieren? Zitieren Sie drei (3) Beispiele aus dem Text.\nd. Erklären Sie den folgenden Satz: „Auch alle Menschen in der Welt müssen umweltfreundlich handeln“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Viele Menschen gebrauchen Plastiktüten, denn sie sind praktisch, stabil, leicht, kosten wenig, und man kann sie auch benutzen, wenn es regnet.\n\nb. Strand, Parks, Straßen und Meeresregionen werden durch den Plastikmüll verschmutzt.\n\nc. Es gibt drei Alternativen zur Plastiktüte: Preiserhöhung der Plastiktüten; Plastiktütenverbot; Plastiktüten mehrere Male oder Papiertüten gebrauchen.\n\nd. Satzerklärung: Umweltbewusstes Verhalten des Menschen. Die Natur respektieren und schützen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Fisch | Natur | Plastik | Papier |\n\n| a | b | c | d |\n|---|---|---|---|\n| Schutz | unschädlich | Meer | giftig |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Fisch"
+                  ],
+                  [
+                    "2",
+                    "Natur"
+                  ],
+                  [
+                    "3",
+                    "Plastik"
+                  ],
+                  [
+                    "4",
+                    "Papier"
+                  ],
+                  [
+                    "a",
+                    "Schutz"
+                  ],
+                  [
+                    "b",
+                    "unschädlich"
+                  ],
+                  [
+                    "c",
+                    "Meer"
+                  ],
+                  [
+                    "d",
+                    "giftig"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | a | d | b |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "c",
+                    "a",
+                    "d",
+                    "b"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Gefährdung der Umwelt durch Plastiktüten. Andere Titel können berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Leute verwenden heute mehr Plastiktüten als Papiertüten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "verwenden = gebrauchen oder benutzen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nDie Plastiktüten sind billig, aber die Einkaufstaschen sind ..............."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "billig ≠ teuer"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nsauber: d... ........................\n\nb. Bilden Sie ein Kompositum.\ndas Plastik + die Stücke = ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. sauber → die Sauberkeit\nb. das Plastik + die Stücke → die Plastikstücke"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„In einigen afrikanischen Ländern ist es verboten, Plastiktüten zu gebrauchen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يمنع في بعض الدول الإفريقية استعمال الأكياس البلاستيكية."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nDie Bürger in der Europäischen Union verbrauchen rund eine Milliarde Plastiktüten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Bürger in der Europäischen Union verbrauchten rund eine Milliarde Plastiktüten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nViele Länder treffen Maßnahmen gegen den Plastikmüll."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Länder haben Maßnahmen gegen den Plastikmüll getroffen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDie Plastikabfälle gefährden die Umwelt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Umwelt wird durch die Plastikabfälle gefährdet."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\n- Der Müll, ...... wir ins Meer wegwerfen, bildet eine große Gefahr für die Fische.\n- Die Menschen, ...... nur Einkaufstaschen aus Stoff gebrauchen, sind umweltbewusst."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Müll, den wir ins Meer wegwerfen, bildet eine große Gefahr für die Fische.\nDie Menschen, die nur Einkaufstaschen aus Stoff gebrauchen, sind umweltbewusst."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passende Präposition: gegen, aus, über, mit.\n- Die Ökologen beschäftigen sich ........ dem Naturschutz.\n- Die Plastiktüten bestehen ...... chemischen Substanzen.\n- In vielen Ländern der Welt demonstrieren die Naturfreunde ........ den Atommüll.\n- Die Zeitungen berichten ständig ........ die Gefahren der Atomkraftwerke."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "mit / aus / gegen / über"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nGreenpeace gehört zu d.... international.... Organisationen, die für d.... Schutz d.... Umwelt kämpfen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Greenpeace gehört zu den internationalen Organisationen, die für den Schutz der Umwelt kämpfen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Was machen Sie persönlich für den Umweltschutz in Ihrer Stadt oder in Ihrem Dorf? Schreiben Sie einige Zeilen dazu.\n\nThema 2: Wie könnte man den Plastikmüll reduzieren? Schreiben Sie mit Hilfe folgender Stichpunkte einige Zeilen dazu:\n- Getränke nur in Glasflaschen kaufen\n- Obst und Gemüse nicht verpackt kaufen\n- Immer eine Einkaufstasche mitnehmen\n- Papiertüten bei jedem Einkauf gebrauchen\n- Plastiktüten mehrere Male verwenden\n- Plastikmüll sammeln und recyceln\n- Bio-Verpackungen produzieren"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nStil, Orthografie, Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2012-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    }
+  ]
+}

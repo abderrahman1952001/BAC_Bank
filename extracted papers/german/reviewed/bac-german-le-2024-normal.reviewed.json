@@ -1,0 +1,1034 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2024",
+    "totalPoints": 20,
+    "year": 2024
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Forscher glauben, dass viele Jobs in der Zukunft verschwinden werden, denn Menschen können durch Roboter und Computer ersetzt werden. So können viele Tätigkeiten von Robotern genauer und besser ausgeführt werden als von Menschen.\n\nIn einigen Jahren sind auf unseren Straßen Autos, die selbst unterwegs fahren. Fast alle Technikfabriken arbeiten an Roboter-Autos, deren Technologie mehr Sicherheit bietet. Diese werden nicht müde oder abgelenkt und haben eine bessere Reaktionszeit.\n\nMit dem Schweizer Projekt „Avatar Kids“ werden kranke Kinder durch einen Roboter vertreten. Mit einer Kamera kann er den Unterricht auf ein Tablett übertragen, damit die kranken Kinder von Zuhause oder vom Krankenhaus mit ihren Lehrern und Mitschülern interagieren können.\n\nAlle Fachleute meinen, dass mehr Roboter in den intelligenten Häusern der Zukunft benutzt werden. Sie helfen im Haushalt: räumen die Spül-und Waschmaschine ein und aus, kochen Kaffee und wärmen Essen auf und können so besonders für ältere Menschen nützlich sein.\n\nUnmöglich zu ersetzen sind aber Berufe, bei denen Empathie oder Überzeugungskraft wichtig sind wie zum Beispiel: Lehrer, Ärzte oder Manager.\n\nAspekte neu, Lehrbuch Seite 154 (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n- verschwinden: disparaitre / يختفي\n- ablenken: perturber / يشتت الانتباه\n- übertragen: transmettre / ينقل\n- Überzeugungskraft: pouvoir de persuasion / قوة الإقناع"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. TEXTVERSTÄNDNIS",
+          "maxPoints": 7.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text!"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a) Der Roboter bedroht die Arbeitnehmer. | | | |\n| b) „Avatar Kids“ stammt aus der Schweiz. | | | |\n| c) Der Roboter ist nur für die junge Generation nützlich. | | | |\n| d) Alle Berufe werden durch Roboter ersetzt. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a) Der Roboter bedroht die Arbeitnehmer.", "", "", ""],
+                  ["b) „Avatar Kids“ stammt aus der Schweiz.", "", "", ""],
+                  ["c) Der Roboter ist nur für die junge Generation nützlich.", "", "", ""],
+                  ["d) Alle Berufe werden durch Roboter ersetzt.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Richtig: „Forscher glauben, dass viele Jobs in der Zukunft verschwinden werden.“\n\nb) Richtig: „Mit dem Schweizer Projekt „Avatar Kids“.....“\n\nc) Falsch: „.....können so besonders für ältere Menschen nützlich sein.“\n\nd) Falsch: „Unmöglich zu ersetzen sind aber Berufe, bei denen Empathie oder Überzeugungskraft wichtig sind...“"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na) Warum werden viele Tätigkeiten in den kommenden Jahren nicht existieren?\nb) Wozu dient das Projekt „Avatar Kids“?\nc) Welche Jobs haben Roboter in den Häusern der Zukunft?"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Viele Tätigkeiten werden in den kommenden Jahren nicht existieren, denn Menschen können durch Roboter und Computer ersetzt werden. / oder: So können viele Tätigkeiten von Robotern genauer und besser ausgeführt werden als von Menschen.\n\nb) „Avatar Kids“ vertreten kranke Kinder im Unterricht. Oder: ..., damit die kranken Kinder von Zuhause oder vom Krankenhaus mit ihren Lehrern und Mitschülern interagieren können.\n\nc) Sie räumen die Spül-und Waschmaschine ein und aus, kochen Kaffee und wärmen Essen auf."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passenden Wörter!"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Satz | Auswahl |\n|---|---|\n| 1) Die Elektrizität wurde ........ | a) die Daten |\n| 2) Roboter haben ........ ersetzt. | b) die Würde |\n| 3) Der Computer speichert ........ | c) erfunden |\n| 4) Die Wissenschaft muss auf ........ des Menschen achten. | d) die Arbeiter |",
+              "data": {
+                "rows": [
+                  ["Satz", "Auswahl"],
+                  ["1) Die Elektrizität wurde ........", "a) die Daten"],
+                  ["2) Roboter haben ........ ersetzt.", "b) die Würde"],
+                  ["3) Der Computer speichert ........", "c) erfunden"],
+                  ["4) Die Wissenschaft muss auf ........ des Menschen achten.", "d) die Arbeiter"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1-C / 2-D / 3-A / 4-B"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel!"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Roboter (andere Antworten können auch berücksichtigt werden)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.50 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. SPRACHFÄHIGKEIT",
+          "maxPoints": 7.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein passendes Synonym aus dem Text!\nNeue Geräte werden im Alltagsleben verwendet."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Synonym: verwendet = benutzt"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit dem Gegenteil des unterstrichenen Wortes aus dem Text!\nDie jüngere Generation benutzt mehr Digitalmedien als die ........ Generation."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Gegenteil: jüngere ≠ ältere"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na) Bilden Sie Kompositum!\n- die Sucht - krank = ........\n\nb) Bilden Sie aus den unterstrichenen Wörtern das passende Adjektiv!\n- Die Wissenschaftler wollen ein Leben für die Menschheit ohne Sorgen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Kompositum: Die Sucht + krank = suchtkrank\nb) Adjektiv: ohne Sorgen → sorgenlos oder sorglos"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 + 0.50 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische!\n„Forscher glauben, dass viele Jobs in der Zukunft verschwinden werden“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يعتقد الباحثون أن الكثير من الوظائف ستختفي في المستقبل"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 4.5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.75,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt!\nEr reist vom Land zu Land."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Er ist / hat vom Land zu Land gereist."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.75 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.25,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Futur!\nDie Zahl der Arbeitslosigkeit hat rasant zugenommen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Zahl der Arbeitslosigkeit wird rasant zunehmen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Aktiv!\nViele Tätigkeiten können heutzutage genauer und besser ausgeführt werden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Man kann viele Tätigkeiten heutzutage genauer und besser ausführen.\n\noder: Viele Tätigkeiten kann man heutzutage genauer und besser ausführen.\n\noder: Heutzutage kann man viele Tätigkeiten genauer und besser ausführen."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz!\nDie Forscher haben die Roboter entwickelt. / Die Frauen können viel Zeit gewinnen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Forscher haben die Roboter entwickelt, damit die Frauen viel Zeit gewinnen können."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Stellen Sie die passende Frage zu den unterstrichenen Wörtern!\nDie Forscher diskutieren mit den älteren Leuten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Mit wem diskutieren die Forscher?"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Relativsatz!\nDie Forscher machen das Leben bequemer. / Die Intellektuellen gratulieren den Forschern."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Forscher, denen die Intellektuellen gratulieren, machen das Leben bequemer."
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. SCHREIBFÄHIGKEIT",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "Ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Amir schrieb: „Dank der neuen Erfindungen der Wissenschaftler ist das Leben meiner Mutter einfacher und bequemer geworden“. (Zitat: Auf Deutsch bitte- S. 89). Anhand dieser Aussage haben diese Erfindungen nur Vorteile? Schreiben Sie einen Abschnitt darüber!\n\nThema 2: Die technische Entwicklung hat unser Leben gründlich revolutioniert aber jede Medaille hat zwei Seiten. Anhand folgender Stichpunkte schreiben Sie einen Aufsatz, indem Sie die Vorteile dieser Revolution erwähnen!\n- Die Informationen blitzschnell erhalten und verbreiten.\n- Die Dauer der Reise verkürzen.\n- Robotern die Arbeit zu Hause erleichtern und in Luxus und Bequemlichkeit leben.\n- Neue und moderne Geräte im Haushalt helfen.\n- Computer. Alle Botschaften speichern.\n- Künstliche Intelligenz, die Welt kontrollieren und kultivieren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nInhalt, Ideen, Stil: 3 Punkte\nGrammatik, Orthografie: 1 Punkt\n\nThema 1: Der Kandidat kann entweder über Nachteile, Vorteile oder Beides schreiben. Er kann auch über eine Erfindung schreiben."
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schon Jahrtausende lang hat der Mensch seine Umwelt negativ beeinflusst. Mit Hilfe wissenschaftlicher und technischer Erfindungen hat der Mensch sein Leben erleichtert. Dabei hat er aber die natürliche Ordnung zerstört.\n\nSchlechte Luft, verseuchtes Wasser und der Lärm von Fahrzeugen und Flugzeugen machen das Leben in den Großstädten gefährlich und wirken sich negativ auf die Gesundheit des Menschen aus.\n\nDurch Luftverschmutzung, Plastikmüll im Meer, Abholzung der Wälder oder Bodenerosion werden die Lebensräume der Tiere zerstört. Viele Tier- und auch Pflanzenarten sind ausgestorben oder vom Aussterben bedroht.\n\nZum Schutz der Umwelt ist es ganz wichtig, einige Maßnahmen zu treffen, zum Beispiel:\n- Die Menschen können statt Auto die öffentlichen Verkehrsmittel wie Bus und Bahn nutzen, um die Umwelt weniger mit Schadstoffen zu verschmutzen.\n- Die Regierungen müssen gegen illegale Abholzung der Wälder kämpfen und bedrohte Tierarten schützen.\n- Die Leute sollen die Verwendung von Plastik vermeiden.\n\nJeder Einzelne hat im Alltag die Chance, auf die Umwelt zu achten und etwas für den Planeten zu tun.\n\nAus: www.Arbeit mit Sachtexten.de (verarbeitet)."
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n- Abholzung: déforestation / إزالة الغابات\n- vermeiden: éviter / تجنب"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. TEXTVERSTÄNDNIS",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text!"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a) Der Mensch hat das natürliche Ökosystem bewahrt. | | | |\n| b) Nur Tierarten sind vom Aussterben bedroht. | | | |\n| c) Statt Wagen können die Leute mit anderen Transportmitteln fahren. | | | |\n| d) Die Menschen sind verpflichtet Plastik zu vermeiden. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a) Der Mensch hat das natürliche Ökosystem bewahrt.", "", "", ""],
+                  ["b) Nur Tierarten sind vom Aussterben bedroht.", "", "", ""],
+                  ["c) Statt Wagen können die Leute mit anderen Transportmitteln fahren.", "", "", ""],
+                  ["d) Die Menschen sind verpflichtet Plastik zu vermeiden.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Falsch: „Dabei hat er aber die natürliche Ordnung zerstört.“ (Andere Zitate können auch aus dem Text berücksichtigt werden)\n\nb) Falsch: „Viele Tier- und auch Pflanzenarten sind ausgestorben oder vom Aussterben bedroht.“\n\nc) Richtig: „Die Menschen können statt Auto die öffentlichen Verkehrsmittel wie Bus und Bahn nutzen.“\n\nd) Richtig: „Die Leute sollen die Verwendung von Plastik vermeiden und reduzieren“."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Was macht das Leben in den Großstädten gefährlich?\nb) Wodurch werden die Lebensräume der Tiere zerstört?\nc) Wie kann man unseren Lebensort retten? Nennen Sie zwei Zitate aus dem Text!"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Schlechte Luft, verseuchtes Wasser und der Lärm von Fahrzeugen und Flugzeugen machen das Leben in den Großstädten gefährlich.\n\nb) Durch Luftverschmutzung, Klimawandel, Plastikmüll im Meer, Abholzung der Wälder oder Bodenerosion werden die Lebensräume der Tiere zerstört.\n\nc) Die zwei Zitate aus dem Text:\n- Die Menschen können statt ........, .......... zu verschmutzen.\n- Die Regierungen müssen gegen ........ kämpfen und bedrohte Tierarten schützen.\n- Die Leute sollen die Verwendung von Plastik vermeiden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie!"
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Wasser | Lösungen | Abgase | Gesundheit |\n\n| a | b | c | d |\n|---|---|---|---|\n| schaden | filtern | trinken | finden |",
+              "data": {
+                "rows": [
+                  ["1", "Wasser"],
+                  ["2", "Lösungen"],
+                  ["3", "Abgase"],
+                  ["4", "Gesundheit"],
+                  ["a", "schaden"],
+                  ["b", "filtern"],
+                  ["c", "trinken"],
+                  ["d", "finden"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| C | D | B | A |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["C", "D", "B", "A"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "4 x 0.25 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel!"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel des Textes: die Umweltprobleme / die Umweltverschmutzung (Andere Titel können auch berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. SPRACHFÄHIGKEIT",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch das passende Synonym aus dem Text!\nDie Luftverschmutzung gefährdet die Gesundheit."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "das Synonym: gefährdet = bedroht"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Gegenteil des unterstrichenen Wortes aus dem Text!\nFrüher war die Natur rein, leider ist sie heute ........"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "das Gegenteil: rein ≠ verseucht (Andere Antworten können auch berücksichtigt werden)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus dem folgenden Verb das passende Substantiv!\n- zerstören → ........\n\nb) Bilden Sie ein Kompositum!\n- der Wald + das Sterben → ........"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) das Substantiv: zerstören → die Zerstörung oder das Zerstören\nb) das Kompositum: das Waldsterben"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 + 0.50 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische!\n„Die Regierungen müssen die bedrohten Tierarten schützen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يجب على الحكومات أن تحمي (أنواع) الحيوانات المهددة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum!\nDie Umweltexperten sprechen über die Folgen der Luftverschmutzung."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Umweltexperten sprachen über die Folgen der .........."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präsens!\nDie neuen Technologien haben mehrere Lebewesen ausgerottet."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die neuen Technologien rotten mehrere Lebewesen aus."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.50 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv Perfekt!\nDie Abwässer verunreinigen die Meere und Flüsse."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Meere und Flüsse sind durch die Abwässer / von den Abwässern verunreinigt worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie den unterstrichenen Ausdruck durch das passende Modalverb!\nDer Bürger ist gezwungen, Energie zu sparen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Bürger muss Energie sparen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie die passenden Konjunktionen „bevor“, „sowohl...als auch“, „um...zu“, „dass“!\na) Alle Staaten der Welt treffen strenge Maßnahmen, .... die Natur .... bewahren.\nb) .... die Fabriken neue Dinge produzieren, müssen sie an die Umwelt denken.\nc) Die Umweltfreunde interessieren sich .... für Wälder .... für Meere.\nd) Die Fachleute meinen, .... die Umweltprobleme alle Lebewesen in Gefahr bringen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Alle Staaten der Welt treffen strenge Maßnahmen, um die Natur zu bewahren.\n\nb) Bevor die Fabriken neue Dinge produzieren, müssen sie an die Umwelt denken.\n\nc) Die Umweltfreunde interessieren sich sowohl für Wälder als auch für Meere.\n\nd) Die Fachleute meinen, dass die Umweltprobleme alle Lebewesen in Gefahr bringen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "4 x 0.25 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie!\nD... modern... Mensch engagiert sich für d... Schutz d... Umwelt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der moderne Mensch engagiert sich für den Schutz der Umwelt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "4 x 0.25 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. SCHREIBFÄHIGKEIT",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "Ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Umweltschutz bedeutet: Die Natur schützen. Luft, Wasser und Erdboden sind oft verschmutzt. Die Umweltschützer wollen das ändern. Schreiben Sie kurz darüber!\n\nThema 2: Wasser ist für uns Menschen, und auch für Tiere und Pflanzen lebenswichtig. Doch immer mehr ist unser Wasser von Verschmutzung gefährdet. Die Wasserverschmutzung ist ein globales Problem, das uns alle betrifft. Mit Hilfe folgender Stichpunkte schreiben Sie einige Zeilen dazu.\n- Abwässer aus Industriewerken und Haushalt → Meere, Flüsse und Trinkwasserquellen kontaminieren.\n- Chemikalien und schädliche Düngemittel → Grundwasser verunreinigen.\n- Plastik und Öl im Meer → Wasserlebewesen (Wasserpflanzen und Meerestiere) töten.\n- Wasserverbrauch reduzieren / Wasser sparen / Kläranlagen bauen..."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nInhalt, Ideen, Stil: 3 Punkte\nGrammatik, Orthografie: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2024-normal",
+      "note": "The exam headers label TEXTVERSTÄNDNIS as 07 points and SPRACHFÄHIGKEIT as 08 points, while the official correction barème visibly totals 7.5 and 7.5 for subject 1. Detailed correction points were preserved."
+    },
+    {
+      "paper": "bac-german-le-2024-normal",
+      "note": "Some exam pages contain handwritten candidate marks. The reviewed extract uses only printed source text and printed official correction content."
+    },
+    {
+      "paper": "bac-german-le-2024-normal",
+      "note": "The official correction for subject 2 includes Klimawandel in an answer although the visible exam text lists Luftverschmutzung, Plastikmüll, Abholzung and Bodenerosion. The correction wording was preserved."
+    }
+  ]
+}

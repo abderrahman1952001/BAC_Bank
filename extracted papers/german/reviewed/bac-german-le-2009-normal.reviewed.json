@@ -1,0 +1,1181 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2009",
+    "totalPoints": 20,
+    "year": 2009
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Heinrich Böll wurde am 21. Dezember 1917 in Köln geboren. Sein Vater war Schreiner. Heinrich war das achte Kind in der Familie. Von 1924 bis 1928 besuchte er die Volksschule und ging danach auf das Staatliche Kaiser-Wilhelm-Gymnasium. Nach dem Abitur im Jahr 1937 begann er eine Buchhändlerlehre. Im Sommer 1939 begann er an der Universität zu Köln ein Studium der Germanistik und der klassischen Philologie. Da schrieb er seinen ersten Roman „Am Rande der Kirche“. Von 1939 bis 1945 nahm er am Krieg teil. Im Krieg hatte Böll vor allem Briefe geschrieben. Seit 1951 arbeitete er als freier Schriftsteller in Deutschland. Für Böll musste die Literatur ein breites Publikum erreichen*. Deshalb gehört Heinrich Böll nicht nur zu den wichtigsten Vertretern der deutschen Nachkriegsliteratur, sondern auch zu den meistgelesenen* Autoren der Bundesrepublik Deutschland. Er schrieb Erzählungen, Romane, Hör- und Fernsehspiele und war auch als Übersetzer aus dem Englischen tätig. 1972 erhielt er den Nobelpreis für Literatur. Er starb am 16. Juli 1985 in Langenbroich.\n\nAus: H. Böll Biografie (Google).\n(verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "* erreichen: atteindre / يمس\n* meistgelesen: le plus lu / أكثر قراءة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n| --- | --- | --- | --- |\n| a. Böll war Einzelkind. |  |  |  |\n| b. Er bestand sein Abitur nicht. |  |  |  |\n| c. „Am Rande der Kirche“ war sein letzter Roman. |  |  |  |\n| d. Er hat auch als Übersetzer gearbeitet. |  |  |  |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Böll war Einzelkind.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Er bestand sein Abitur nicht.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. „Am Rande der Kirche“ war sein letzter Roman.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. Er hat auch als Übersetzer gearbeitet.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Heinrich war das achte Kind in der Familie.\n\nb. Falsch: Nach dem Abitur im Jahr 1937 begann er eine Buchhändlerlehre.\n\nc. Falsch: Da schrieb er seinen ersten Roman „Am Rande der Kirche“.\n\nd. Richtig: Er war auch als Übersetzer aus dem Englischen tätig."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Wie alt war Heinrich Böll, als er starb?\nb. Wo hat er studiert?\nc. Was charakterisiert Heinrich Böll als Schriftsteller?\nd. Erklären Sie diesen Satz: „Für Böll musste die Literatur ein breites Publikum erreichen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Nach den gedruckten Daten war Heinrich Böll 67 Jahre alt, als er starb. Der offizielle Lösungsvorschlag druckt „68 Jahre“.\n\nb. Er hat in Köln studiert.\n\nc. Heinrich Böll war nicht nur ein wichtiger Vertreter der deutschen Nachkriegsliteratur, sondern auch ein freier Schriftsteller.\n\nd. Für Böll wendet sich die Literatur an alle Leser. Sie muss von allen Leuten verstanden werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Nr. | Ausdruck |\n|---|---|\n| 1 | Louis Pasteur |\n| 2 | Musikstücke |\n| 3 | Nobelpreis |\n| 4 | Werke |\n\n| Buchstabe | Ausdruck |\n|---|---|\n| a | bekommen |\n| b | Wissenschaftler |\n| c | hinterlassen |\n| d | Komponieren |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Louis Pasteur"
+                  ],
+                  [
+                    "2",
+                    "Musikstücke"
+                  ],
+                  [
+                    "3",
+                    "Nobelpreis"
+                  ],
+                  [
+                    "4",
+                    "Werke"
+                  ],
+                  [
+                    "a",
+                    "bekommen"
+                  ],
+                  [
+                    "b",
+                    "Wissenschaftler"
+                  ],
+                  [
+                    "c",
+                    "hinterlassen"
+                  ],
+                  [
+                    "d",
+                    "Komponieren"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n| --- | --- | --- | --- |\n| b | d | a | c |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "b",
+                    "d",
+                    "a",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Heinrich Böll / Der Lebenslauf von H. Böll / Der Schriftsteller H. Böll. Andere Titel können berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Suchen Sie im Text das Synonym für den hier unterstrichenen Ausdruck.\nBöll war als Schriftsteller tätig."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "tätig sein = arbeiten"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit dem Gegenteil des hier unterstrichenen Wortes aus dem Text.\nViele engagierte Schriftsteller protestieren gegen den ............, denn sie sind für den Frieden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Frieden ≠ Krieg"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Substantiv das passende Verb.\ndie Erzählung: ............\nb. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nwichtig: ........ ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. erzählen\nb. die Wichtigkeit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„1972 erhielt Heinrich Böll den Nobelpreis für Literatur.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تحصل هاينرش بول على جائزة نوبل للأدب في سنة 1972."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präsens.\nNach dem Abitur ging Heinrich Böll zur Universität."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Nach dem Abitur geht Heinrich Böll zur Universität."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nVon 1920 bis 1928 besuchte er die Volksschule."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Von 1920 bis 1928 hat er die Volksschule besucht."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nHeinrich Böll hat viele Romane veröffentlicht."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Romane sind von H. Böll veröffentlicht worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie den unterstrichenen Ausdruck durch das passende Modalverb.\nDer Germanistikstudent hat die Absicht einen Roman von Böll zu lesen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Germanistikstudent will einen Roman von Böll lesen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Konditionalsatz.\nAssia Djebar hat viele Leser im Ausland. Sie ist weltberühmt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wenn Assia Djebar nicht viele Leser im Ausland hätte, wäre sie nicht weltberühmt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD.... letzt... Roman d.... algerisch.... Schriftstellerin wurde in viele Sprachen übersetzt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der letzte Roman der algerischen Schriftstellerin wurde in viele Sprachen übersetzt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie kurz über eine(n) algerische(n) Schriftsteller/in.\n\nThema 2: Anhand folgender Informationen schreiben Sie die Biografie von Emmanuel Kant.\nName: Kant\nVorname: Emmanuel\nGeburtsdatum: 22.04.1724\nGeburtsort: Königsberg (Deutschland)\nWas ist er? Philosoph\nStudium: Naturwissenschaft, Philosophie und Mathematik an der Universität zu Königsberg\nArbeit: Von 1746 bis 1755 Hauslehrer; 1757 Lehrer an der Universität\nHauptereignis: 1770 Professor der Logik und Metaphysik\nTod: 12.02.1804\nWerke: „Theorie des Himmels“, „Kritik der reinen Vernunft“, „Das reine Gold des Denkens“"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan des Aufsatzes: 1 Punkt\nStil, Hauptideen, Orthografie und Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wasser ist wertvoll, denn es wird auf der Welt nicht gleich verteilt. Nicht alle Menschen haben Zugang* zu sauberem Trinkwasser. In Mali müssen viele Frauen oft stundenlang zu Fuß bis zum nächsten Fluss gehen, um Wasser zu holen. Nur etwa die Hälfte der Menschen in Mali verfügt über sauberes Trinkwasser. Einige tausend Kilometer weiter im Osten haben wir die gleiche Situation. An einer Zisterne, im Jemen füllen Frauen Kanister* mit Wasser, um sie danach auf Eseln bis zum Haus zu transportieren. Der Jemen und Mali gehören zu den 50 Ländern, die vom Wassermangel bedroht sind. Weltweit leben heute 1,1 Milliarden Menschen ohne sicheren Zugang zu Trinkwasser. 2,4 Milliarden Menschen verfügen über wenige sanitäre Einrichtungen*. Für diese Probleme soll eine Lösung gefunden werden.\n\nAus: « Deutschland » Nr. 2/2008\nSeite 26 (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "* Zugang haben zu: avoir accès à / يمكن الوصول إلى\n* der Kanister: le jerrican / الدلو\n* sanitäre Einrichtungen: installations sanitaires / الهياكل الصحية"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n| --- | --- | --- | --- |\n| a. Alle Menschen haben Zugang zu Trinkwasser. |  |  |  |\n| b. Der Jemen ist wasserreich. |  |  |  |\n| c. Alle Menschen in Mali haben Wasser zu Hause. |  |  |  |\n| d. 2,4 Milliarden Menschen haben ungenügende sanitäre Einrichtungen. |  |  |  |",
+              "data": {
+                "rows": [
+                  [
+                    "Aussage",
+                    "R",
+                    "F",
+                    "Zitat"
+                  ],
+                  [
+                    "a. Alle Menschen haben Zugang zu Trinkwasser.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "b. Der Jemen ist wasserreich.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "c. Alle Menschen in Mali haben Wasser zu Hause.",
+                    "",
+                    "",
+                    ""
+                  ],
+                  [
+                    "d. 2,4 Milliarden Menschen haben ungenügende sanitäre Einrichtungen.",
+                    "",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Nicht alle Menschen haben Zugang zu sauberem Trinkwasser.\n\nb. Falsch: Der Jemen und Mali gehören zu den 50 Ländern, die vom Wassermangel bedroht sind.\n\nc. Falsch: Nur etwa die Hälfte der Menschen in Mali verfügt über sauberes Trinkwasser.\n\nd. Richtig: 2,4 Milliarden Menschen verfügen über wenige sanitäre Einrichtungen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Wie wird das Wasser auf der Welt verteilt?\nb. Wie holen die Frauen in Mali das Wasser?\nc. Was gefährdet heute viele Regionen der Welt?\nd. Erklären Sie den folgenden Satz: „Wasser ist wertvoll.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Das Wasser auf der Welt ist nicht gleich verteilt.\n\nb. In Mali müssen viele Frauen oft stundenlang zu Fuß gehen, um Wasser zu holen.\n\nc. Der Wassermangel gefährdet heute viele Regionen der Welt.\n\nd. Wasser ist wichtig / nötig für alle Lebewesen. Wasser ist Leben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Nr. | Ausdruck |\n|---|---|\n| 1 | Abwässer |\n| 2 | Reichtum |\n| 3 | Wasser |\n| 4 | Epidemien |\n\n| Buchstabe | Ausdruck |\n|---|---|\n| a | trinken |\n| b | Geld |\n| c | Krankheit |\n| d | klären |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "Abwässer"
+                  ],
+                  [
+                    "2",
+                    "Reichtum"
+                  ],
+                  [
+                    "3",
+                    "Wasser"
+                  ],
+                  [
+                    "4",
+                    "Epidemien"
+                  ],
+                  [
+                    "a",
+                    "trinken"
+                  ],
+                  [
+                    "b",
+                    "Geld"
+                  ],
+                  [
+                    "c",
+                    "Krankheit"
+                  ],
+                  [
+                    "d",
+                    "klären"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n| --- | --- | --- | --- |\n| d | b | a | c |",
+              "data": {
+                "rows": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4"
+                  ],
+                  [
+                    "d",
+                    "b",
+                    "a",
+                    "c"
+                  ]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wert des Wassers / Wasser ist Leben. Andere Titel können auch berücksichtigt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Suchen Sie im Text das Synonym für das hier unterstrichene Wort.\nReines Wasser ist gesund."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "reines = sauberes"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit dem Gegenteil des hier unterstrichenen Wortes aus dem Text.\nIn den Sahelländern regnet es selten; in den europäischen Ländern dagegen regnet es ........"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "selten ≠ oft"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Verb das passende Substantiv.\nverfügen → ........ ............\nb. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nsicher → ........ ............"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. die Verfügung\nb. die Sicherheit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n« Nur etwa die Hälfte der Menschen in Mali verfügt über sauberes Trinkwasser. »"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "في دولة مالي يتوفر حوالي نصف السكان فقط على الماء الصالح للشرب."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nDie Frauen füllen Kanister mit Wasser."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Frauen füllten Kanister mit Wasser."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nMan muss das Wasserproblem lösen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Man hat das Wasserproblem lösen müssen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDer Wassermangel kann Krankheiten verursachen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Krankheiten können vom Wassermangel verursacht werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Relativsatz.\nDie Sahelländer nehmen an der Konferenz teil. Sie suchen Lösungen für den Wassermangel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Sahelländer, die an der Konferenz teilnehmen, suchen Lösungen für Wassermangel."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit der passenden Konjunktion: weder ... noch / obwohl / solange / sowohl ... als auch.\n- ............ es in manchen Ländern Trockenheit gibt, leben die Leute in Armut.\n- Das Problem des Wassers existiert ............ im Jemen ........ .... in Mali.\n- In den armen Ländern können ............ Armut ........ Epidemien leicht beseitigt werden.\n- ............ es dieses Jahr in manchen Ländern viel geregnet hat, bleibt die Wasserversorgung immer noch ein Problem."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Solange\nb. sowohl ... als auch\nc. weder ... noch\nd. Obwohl"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD.... Existenz d.... Mensch.... hängt von d..... Wasser ab."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Existenz des Menschen hängt von dem Wasser ab. / Die Existenz der Menschen hängt von dem Wasser ab."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Man sagt: « Wasser ist Leben. » Was meinen Sie dazu? Begründen Sie Ihre Antwort mit konkreten Beispielen.\n\nThema 2: Auch in Algerien ist der Wassermangel ein großes Problem. Wie kann man es lösen? Schreiben Sie mit Hilfe folgender Stichpunkte einen Aufsatz.\n- Wasser rationell nutzen (zu Hause, in der Industrie, in der Landwirtschaft, ...)\n- Aufbau von modernen Wasserkläranlagen (schmutziges oder mit Bakterien verseuchtes Wasser reinigen)\n- Gebrauch entsalzten Meereswassers\n- Schutz der Wasserreserven\n- Aufbau von mehr Staudämmern (سدود)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan des Aufsatzes: 1 Punkt\nStil, Hauptideen, Orthografie und Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2009-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    },
+    {
+      "paper": "bac-german-le-2009-normal",
+      "note": "Subject 1 correction prints Heinrich Böll as 68 years old at death, but the source dates 21 December 1917 to 16 July 1985 support 67; reviewed solution records the source-supported value and notes the printed correction."
+    },
+    {
+      "paper": "bac-german-le-2009-normal",
+      "note": "Subject 2 correction appears to print the modal passive as \"verursacht worden\"; reviewed solution uses the grammatically required \"verursacht werden\"."
+    }
+  ]
+}

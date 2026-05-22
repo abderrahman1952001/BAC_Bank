@@ -1,0 +1,955 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "makeup",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2017 الدورة الاستثنائية",
+    "totalPoints": 20,
+    "year": 2017
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Noch vor einigen hundert Jahren wussten die Menschen nicht, dass es Elektrizität gibt. Elektrische Phänomene in der Natur wie Blitz und Donner waren für sie unerklärbar. Der Siegeszug* des elektrischen Stroms begann am Anfang des 20. Jahrhunderts. Mit der Erfindung des elektrischen Lichts und der Stromversorgung* von großen Flächen, so dass man den elektrischen Strom zu Hause bekommt, führte zu einer Entwicklung, die man nicht kontrollieren kann. Heute können wir uns kaum mehr vorstellen, wie die Welt ohne Elektrizität aussah. Kein Auto würde fahren, keine Ampel funktionieren, keine Straßenlaterne leuchten. In Hochhäusern würden Aufzüge, im Krankenhaus wichtige medizinische Geräte fehlen, ganz abgesehen von Kühlgeräten, die man zu Hause benutzt wie Kühlschränke, Klimaanlagen und Licht. So kann wirklich die Abwesenheit vom elektrischen Strom das moderne Leben von Menschen stoppen. Dazu liefert der elektrische Strom eine saubere Energie, die das Leben von Menschen entwickelt, aber auch ihm nicht schadet. Man muss dabei nur darauf achten, dass der Strom nicht aus fossilen Brennstoffen* wie Erdgas, Kohl und Atomkraft produziert wird, sondern aus natürlichen Quellen wie Wind, Wasser und Sonne.\n\nAus: www. Planet-wissen. de (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nder Siegeszug: Le grand succès / النجاح الباهر\ndie Stromversorgung: L’approvisionnement en courant / الإمداد بالكهرباء\nfossilen Brennstoffen: fossiles combustibles / الوقود الأحفوري"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a) Schon früher benutzten Menschen den Elektrizitätsstrom. | | | |\n| b) Der elektrische Strom ist in vielen Bereichen notwendig. | | | |\n| c) Der elektrische Strom produziert eine schädliche Energie. | | | |\n| d) Man kann Strom nur aus fossilen Brennstoffen produzieren. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a) Schon früher benutzten Menschen den Elektrizitätsstrom.", "", "", ""],
+                  ["b) Der elektrische Strom ist in vielen Bereichen notwendig.", "", "", ""],
+                  ["c) Der elektrische Strom produziert eine schädliche Energie.", "", "", ""],
+                  ["d) Man kann Strom nur aus fossilen Brennstoffen produzieren.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Noch vor einigen hundert Jahren wussten die Menschen nicht, dass es Elektrizität gibt.\n\nb. Richtig: Kein Auto würde fahren, keine Ampel funktionieren, keine Straßenlaterne leuchten. In Hochhäusern würden Aufzüge, im Krankenhaus wichtige medizinische Geräte fehlen, ganz abgesehen von Kühlgeräten, die man zu Hause benutzt wie Kühlschränke, Klimaanlagen und Licht.\n\nc. Falsch: Dazu liefert der elektrische Strom eine saubere Energie.\n\nd. Falsch: Man muss darauf achten, dass der Strom nicht aus fossilen Brennstoffen produziert wird, sondern aus natürlichen Quellen wie Wind, Wasser und Sonne."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\n1) Wann war der Anfang der Entwicklung vom elektrischen Strom?\n2) Was kann die Abwesenheit des Stroms verursachen?\n3) Erklären Sie den folgenden Satz: „So kann wirklich die Abwesenheit vom elektrischen Strom das moderne Leben von Menschen stoppen“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1. Der Anfang der Entwicklung vom elektrischen Strom war Anfang des 20. Jahrhunderts.\n\n2. Die Abwesenheit des Stroms kann Folgendes verursachen: Kein Auto würde fahren, keine Ampel funktionieren, keine Straßenlaterne leuchten. In Hochhäusern würden Aufzüge, im Krankenhaus wichtige medizinische Geräte fehlen, ganz abgesehen von Kühlgeräten, die man zu Hause benutzt wie Kühlschränke, Klimaanlagen und Licht.\n\n3. Satzerklärung: Der elektrische Strom ist unentbehrlich geworden, weil viele Geräte in den verschiedenen lebenswichtigen Bereichen mit Strom funktionieren."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Blitz und Donner | Kühlgerät | Elektrizität | saubere Energie |\n\n| a | b | c | d |\n|---|---|---|---|\n| Strom | Wind, Sonne, Wasser | Naturphänomene | Klimaanlage |",
+              "data": {
+                "rows": [
+                  ["1", "Blitz und Donner"],
+                  ["2", "Kühlgerät"],
+                  ["3", "Elektrizität"],
+                  ["4", "saubere Energie"],
+                  ["a", "Strom"],
+                  ["b", "Wind, Sonne, Wasser"],
+                  ["c", "Naturphänomene"],
+                  ["d", "Klimaanlage"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | d | a | b |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "d", "a", "b"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Wichtigkeit des elektrischen Stroms. (Andere Titel werden berücksichtigt.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Erfolgsserie des elektrischen Stroms fing erst in der neuen Zeit an."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "fing = begann"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nDie Anwesenheit der Elektrizität vereinfacht das Leben, aber ihre ... stoppt die Entwicklung."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Anwesenheit ≠ Abwesenheit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na) Bilden Sie aus dem folgenden Verb das passende Substantiv.\nvorstellen: ..........\n\nb) Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nsauber: .........."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. vorstellen → die Vorstellung\nb. sauber → die Sauberkeit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Heute können wir uns kaum mehr vorstellen, wie die Welt ohne Elektrizität aussah“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "لا يمكننا أبدا تصور عالم بدون كهرباء."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDer Mensch kann den technischen Fortschritt nicht stoppen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Mensch hat den technischen Fortschritt nicht stoppen können."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nMan benutzt heutzutage den elektrischen Strom zu Hause."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der elektrische Strom wird heutzutage zu Hause benutzt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Relativsatz.\nDer elektrische Strom ist unentbehrlich. Seine Entwicklung begann Anfang des 20. Jahrhunderts."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der elektrische Strom, dessen Entwicklung Anfang des 20. Jahrhunderts begann, ist unentbehrlich."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... Erfindung d... elektrisch.... Strom... hat d..... Leben von Menschen entwickelt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Erfindung des elektrischen Stroms hat das Leben von Menschen entwickelt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Der technische Fortschritt hat das Leben von Menschen stark beeinflusst. Schreiben Sie ein paar Zeilen über seine Vor- und Nachteile.\n\nThema 2: Wie sehen Sie ein Leben ohne Elektrizität? Mit Hilfe folgender Stichpunkte schreiben Sie ein paar Zeilen dazu.\n- Keine neuen Kommunikationsmittel.\n- Anstrengende Reisen.\n- Keine entwickelten medizinischen Geräte.\n- Schwere Arbeit für Hausfrauen.\n- Keine aktuellen Informationen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Innerhalb weniger Jahre sind Handys als kleine elektronische Geräte in der Welt bekannt geworden. Das Handy wurde hauptsächlich zum Telefonieren, oder zum Versenden von Kurznachrichten genutzt. Doch nicht nur die Technik im Allgemeinen, auch die Handys haben sich im Laufe der Zeit weiterentwickelt und sind für viele zu einem unverzichtbaren* Alltagsgegenstand* geworden.\n\nFür wen ist also ein Handy geeignet? Ein Handy ist wirklich für jeden geeignet*. Der Geschäftsmann kann von jedem Ort der Welt seine E-Mails versenden. Die Hausfrau kann mit Hilfe ihres Handys schnell und einfach Kochrezepte runterladen. Kinder, Jugendliche und Erwachsene können ihre Freunde und Familien jederzeit anrufen und überall erreichen. Man kann fast unabhängig vom Ort und zu jederzeit direkt mit dem gewünschten Gesprächspartner kommunizieren. Das Handy begleitet uns bei jeder Aktivität. Wichtige Informationen lassen sich innerhalb von Sekunden über das Handy abrufen. Schöne Momente im Leben können festgehalten und direkt online veröffentlicht werden. Auch in Notsituationen kann das Mobil-telefon nützlich sein. Das Handy sollte jedoch unsere Unabhängigkeit nicht einschränken, unsere Freiheit und Ruhe nicht stören, deswegen ist es notwendig, ein gewisses Verantwortungsbewusstsein im Umgang mit dem Handy zu zeigen und Regeln zu respektieren. Werden wir ein Tag das Handy so leicht los?\n\nAus: Wikipedia (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\nunverzichtbar: Inévitable / لا يستغنى عنه\ngeeignet: convenable / مناسب\nGegenstand: objet / شيء"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a) Das Handy ist seit vielen Jahren als elektronischer Apparat in der Welt bekannt. | | | |\n| b) Anfangs wurde das Handy nur zum Telefonieren genutzt. | | | |\n| c) Alle Menschen können das Handy verwenden. | | | |\n| d) Das Handy hat nur Vorteile. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a) Das Handy ist seit vielen Jahren als elektronischer Apparat in der Welt bekannt.", "", "", ""],
+                  ["b) Anfangs wurde das Handy nur zum Telefonieren genutzt.", "", "", ""],
+                  ["c) Alle Menschen können das Handy verwenden.", "", "", ""],
+                  ["d) Das Handy hat nur Vorteile.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Innerhalb weniger Jahre sind Handys als kleine elektronische Geräte in der Welt bekannt geworden.\n\nb. Falsch: Das Handy wurde hauptsächlich zum Telefonieren, oder zum Versenden von Kurznachrichten genutzt.\n\nc. Richtig: Ein Handy ist wirklich für jeden geeignet.\n\nd. Falsch: Das Handy sollte jedoch unsere Unabhängigkeit nicht einschränken, unsere Freiheit und Ruhe nicht stören."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\n1) Wozu wurde das Handy hauptsächlich genutzt?\n2) Welche Vorteile hat das Handy? Zitieren Sie zwei Beispiele aus dem Text.\n3) Erklären Sie den folgenden Satz: „Das Handy begleitet uns bei jeder Aktivität“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "1. Das Handy wurde hauptsächlich zum Telefonieren, oder zum Versenden von Kurznachrichten genutzt.\n\n2. Das Handy hat viele Vorteile: Der Geschäftsmann kann von jedem Ort der Welt seine E-Mails versenden. Kinder, Jugendliche und Erwachsene können ihre Freunde und Familien jederzeit anrufen und überall erreichen. Andere Beispiele sind zu berücksichtigen.\n\n3. Satzerklärung: Wir benutzen das Mobiltelefon in allen Situationen. (Andere Antworten sind zu berücksichtigen.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Videospiele | Telefon | SMS | Internet |\n\n| a | b | c | d |\n|---|---|---|---|\n| recherchieren | anrufen | machen | schreiben |",
+              "data": {
+                "rows": [
+                  ["1", "Videospiele"],
+                  ["2", "Telefon"],
+                  ["3", "SMS"],
+                  ["4", "Internet"],
+                  ["a", "recherchieren"],
+                  ["b", "anrufen"],
+                  ["c", "machen"],
+                  ["d", "schreiben"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | b | d | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "b", "d", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Das Handy / die Vorteile des Handys / Das Handy, ein unverzichtbarer Begleiter. (Andere Titel sind zu berücksichtigen.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Jugendlichen schicken täglich hunderte SMS."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "schicken = versenden"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nHeute verbringen die Jugendlichen viel Zeit mit dem Handy, dagegen lesen sie ...."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "viel ≠ wenig"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie aus diesen Verben die passenden Substantive.\nstören: ..................\nkommunizieren: .................."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "stören → die Störung\nkommunizieren → die Kommunikation"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die Handys haben sich im Laufe der Zeit weiterentwickelt“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "شهدت الهواتف النقالة تطورا مستمرا مع مرور الوقت."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDas Handy ist notwendig in unserem Leben."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Das Handy ist notwendig in unserem Leben gewesen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Aktiv.\nDie Kinder können von den Eltern leicht erreicht werden."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Eltern können die Kinder leicht erreichen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit dem passenden Relativpronomen.\nDie Kinder, ... zu viel im Internet surfen, haben schlechte Schulleistungen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Kinder, die zu viel im Internet surfen, haben schlechte Schulleistungen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Konditionalsatz.\nDas Handy begrenzt unsere Unabhängigkeit. Wir sind nicht frei."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wenn das Handy unsere Unabhängigkeit nicht begrenzen würde, wären wir frei.\nOder: Wenn das Handy unsere Unabhängigkeit nicht begrenzte, wären wir frei."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Wie benutzen Sie persönlich das Handy in Ihrem Alltagsleben? Schreiben Sie ein paar Zeilen dazu.\n\nThema 2: Das Handy hat sicher unser Leben im Bereich der Kommunikation vereinfacht. Aber es hat doch Nachteile. Welche? Mit Hilfe folgender Stichpunkte schreiben Sie ein paar Zeilen dazu.\n- Zeit verlieren\n- Hohe Handykosten\n- Stress verursachen\n- Das Handy stört: lautes Telefonieren (in den öffentlichen Verkehrsmitteln, ...), Handyklingeln (im Unterricht).\n- Schulprobleme (schlechte Schulleistungen)\n- Gefahr beim Autofahren"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Ideen: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2017-makeup",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    },
+    {
+      "paper": "bac-german-le-2017-makeup",
+      "note": "Subject 1 prints “Kohl” in the fossil-fuel list; the reviewed source text preserves the visible scan wording."
+    }
+  ]
+}

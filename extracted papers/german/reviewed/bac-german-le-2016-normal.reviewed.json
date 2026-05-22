@@ -1,0 +1,1055 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2016",
+    "totalPoints": 20,
+    "year": 2016
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Der Umweltschutz gehört heute zu den Schlüsselfragen der menschlichen Existenz. Täglich berichten die Medien über die Umweltverschmutzung, die keine Grenzen kennt und alle Menschen bedroht.\nIst die Welt noch zu retten?\nDie Umweltverschmutzung ist ein Problem, seit es die ersten Städte gibt. Durch die Entwicklung der Industrie und durch die Zunahme* der Weltbevölkerung hat dieses Problem bedrohliche Ausmaße* angenommen. Der Mensch ist das einzige Lebewesen, das die Umwelt verändert. Die Lebensräume werden zerstört. Menschen, Tiere und Pflanzen sind gefährdet. Die Luftverschmutzung führt zu chronischen Krankheiten wie Bronchitis, Asthma und Lungenkrebs. Die Menschen atmen verseuchte Luft und leiden an verschiedenen Allergien. Außerdem sind sie vom Lärm der Verkehrsmittel gestört.\nDeshalb kämpfen alle Staaten gegen diese Umweltprobleme: es werden zum Beispiel Kläranlagen gebaut, Reinigungsfilter installiert, umweltfreundliche Technologien eingeführt und Autos mit Katalysator hergestellt. Es müssen auch alternative Quellen der Energie genutzt werden.\n\nAus: www.google.de (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\ndie Zunahme: la croissance / التزايد\nbedrohliche Ausmaße: l’ampleur / أبعاد خطيرة"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Die Lebewesen sind nicht in Gefahr. | | | |\n| b. Die Luftverschmutzung verursacht keine Krankheiten. | | | |\n| c. Die Menschen leiden viel unter dem Lärm der Transportmittel. | | | |\n| d. Alle Länder tun etwas für den Umweltschutz. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Die Lebewesen sind nicht in Gefahr.", "", "", ""],
+                  ["b. Die Luftverschmutzung verursacht keine Krankheiten.", "", "", ""],
+                  ["c. Die Menschen leiden viel unter dem Lärm der Transportmittel.", "", "", ""],
+                  ["d. Alle Länder tun etwas für den Umweltschutz.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Menschen, Tiere und Pflanzen sind gefährdet.\n\nb. Falsch: Die Luftverschmutzung führt zu chronischen Krankheiten wie Bronchitis, Asthma und Lungenkrebs.\n\nc. Richtig: Außerdem sind sie vom Lärm der Verkehrsmittel gestört.\n\nd. Richtig: Deshalb kämpfen alle Staaten gegen diese Umweltprobleme. Oder: Es werden zum Beispiel Kläranlagen gebaut, Reinigungsfilter installiert, umweltfreundliche Technologien eingeführt und Autos mit Katalysator hergestellt. Es müssen auch alternative Quellen der Energie genutzt werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Worüber informieren die Medien jeden Tag?\nb. Die Umweltverschmutzung hat schlechte Folgen. Zitieren Sie zwei Beispiele aus dem Text.\nc. Welche Maßnahmen treffen die Staaten zum Umweltschutz?\nd. Erklären Sie den folgenden Satz: „Der Mensch ist das einzige Lebewesen, das die Umwelt verändert.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Jeden Tag informieren die Medien über die Umweltverschmutzung.\n\nb. Die Umweltverschmutzung hat schlechte Folgen, zum Beispiel: Die Lebensräume werden zerstört. Menschen, Tiere und Pflanzen sind gefährdet. Andere Antworten sind zu berücksichtigen.\n\nc. Es werden zum Beispiel Kläranlagen gebaut, Reinigungsfilter installiert, umweltfreundliche Technologien eingeführt und Autos mit Katalysator hergestellt. Es müssen auch alternative Quellen der Energie genutzt werden.\n\nd. Satzerklärung: Der Mensch hat seine Umwelt negativ beeinflusst; diese Veränderungen (wie verseuchte Luft, vergiftetes Wasser, Lärm, ...) können für viele Menschen lebensgefährlich sein. Andere Antworten sind zu berücksichtigen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Umwelt | Verschmutzung | Krankheit | Abgas |\n\n| a | b | c | d |\n|---|---|---|---|\n| Allergie | Katastrophe | CO₂ | Lebensraum |",
+              "data": {
+                "rows": [
+                  ["1", "Umwelt"],
+                  ["2", "Verschmutzung"],
+                  ["3", "Krankheit"],
+                  ["4", "Abgas"],
+                  ["a", "Allergie"],
+                  ["b", "Katastrophe"],
+                  ["c", "CO₂"],
+                  ["d", "Lebensraum"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| d | b | a | c |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["d", "b", "a", "c"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Die Umweltverschmutzung / Mensch und Umwelt. (Andere Titel sind zu berücksichtigen.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Verunreinigung des Wassers bringt unsere Existenz in Gefahr."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "die Verunreinigung = die Verschmutzung"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nIn der Stadt ist die Luft ................., aber auf dem Land ist sie rein."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "rein ≠ verseucht"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nsauber: ...... ........................\n\nb. Bilden Sie aus dem folgenden Verb das passende Substantiv.\nverändern: ...... ........................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. sauber → die Sauberkeit\nb. verändern → die Veränderung"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Die Luftverschmutzung führt zu chronischen Krankheiten“."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يؤدي تلوث الهواء إلى أمراض مزمنة."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nDie Menschen atmen frische Luft."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Menschen atmeten frische Luft."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDer Mensch muss die Tierarten schützen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Mensch hat die Tierarten schützen müssen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\nDie Regierung hat die Absicht, die erneuerbaren Energien zu nutzen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Regierung will die erneuerbaren Energien nutzen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDie Chemikalien haben die Natur verschmutzt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Natur ist durch die Chemikalien verschmutzt worden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das passende Relativpronomen.\nDie Menschen, ..... in der Großstadt leben, haben Gesundheitsprobleme."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Menschen, die in der Großstadt leben, haben Gesundheitsprobleme."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q6",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... technisch... Fortschritt hat d... Leben d... Menschen verändert."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der technische Fortschritt hat das Leben der / des Menschen verändert."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Die Industrie hat unsere Umwelt negativ beeinflusst. Schreiben Sie einige Zeilen dazu.\n\nThema 2: Unsere Umwelt ist in Gefahr. Was kann man tun, um sie zu retten? Schreiben Sie anhand folgender Stichpunkte ein paar Zeilen dazu.\n- umweltfreundlich handeln\n- Tiere und Pflanzen schützen\n- Abfälle beseitigen / Müll in die Container bringen\n- Glas, Plastik und Papier recyceln\n- die erneuerbaren Energien nutzen (Sonne, Wasser und Wind)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Heutzutage machen viele Menschen ihre Einkäufe im Internet. Vor einigen Jahren musste man in ein Geschäft* gehen, um sich eine Hose oder ein Buch zu kaufen. Fast jedes Produkt ist online zu haben: Schuhe, Tablets, Smartphones, Möbel, Kosmetik, Spielsachen, Lebensmittel...\nOnline-Shops sind 24 Stunden am Tag und an sieben Tagen der Woche für die Menschen geöffnet. Über Internet kann man Informationen zu den Produkten und zu den Preisen bekommen. So kann man heute stressfrei einkaufen, ohne das Haus zu verlassen. Es ist auch möglich, Produkte aus dem Ausland zu bestellen. Der Einkauf im Internet ist bequem und spart Zeit. Im Internet ist es viel schneller und leichter, das Produkt zu finden und die Waren sind viel billiger als im Geschäft.\nDas Online-Einkaufen ist beliebt, bringt aber auch einige Nachteile mit sich. Man bekommt zum Beispiel die falsche Ware oder manchmal kommt die Lieferung* spät an.\nVor allem finden die jungen Menschen das Einkaufen im Internet sehr wichtig und kaufen regelmäßig für Verwandte, Freunde, Bekannte und Kollegen ein.\n\nAus: www.google.de (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\ndas Geschäft: le magasin / المحل التجاري\ndie Lieferung: la livraison / تسليم البضائع"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | R | F | Zitat |\n|---|---|---|---|\n| a. Im Internet findet man wenige Produkte. | | | |\n| b. Im Geschäft ist es teurer als im Internet. | | | |\n| c. Das Einkaufen im Internet hat auch negative Aspekte. | | | |\n| d. Das Online-Einkaufen ist sehr wichtig für die alten Menschen. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "R", "F", "Zitat"],
+                  ["a. Im Internet findet man wenige Produkte.", "", "", ""],
+                  ["b. Im Geschäft ist es teurer als im Internet.", "", "", ""],
+                  ["c. Das Einkaufen im Internet hat auch negative Aspekte.", "", "", ""],
+                  ["d. Das Online-Einkaufen ist sehr wichtig für die alten Menschen.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Falsch: Fast jedes Produkt ist online zu haben: Schuhe, Tablets, Möbel, Smartphones, Kosmetik, Spielsachen, Lebensmittel...\n\nb. Richtig: Die Waren sind viel billiger als im Geschäft.\n\nc. Richtig: Das Online-Einkaufen bringt aber auch einige Nachteile mit sich.\n\nd. Falsch: Vor allem finden die jungen Menschen das Einkaufen im Internet sehr wichtig."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 4,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text:\na. Wozu benutzen die Menschen heutzutage das Internet?\nb. Man kann viele Waren im Internet kaufen. Zitieren Sie vier Beispiele aus dem Text.\nc. Welche Nachteile hat das Online-Einkaufen?\nd. Erklären Sie den folgenden Satz: „Es ist auch möglich, Produkte aus dem Ausland zu bestellen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. Die Menschen benutzen heutzutage das Internet, um ihre Einkäufe zu machen.\n\nb. Man kann viele Waren im Internet kaufen, zum Beispiel: Tablets, Smartphones, Möbel und Spielsachen.\n\nc. Man bekommt zum Beispiel die falsche Ware oder manchmal kommt die Lieferung spät an.\n\nd. Satzerklärung: Man kann Produkte aus anderen fremden Ländern einkaufen. Viele Menschen lassen sich im Internet verschiedene Waren vom Ausland schicken. Andere Antworten sind zu berücksichtigen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 4 = 4 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Geld | Waren | Preise | Internet |\n\n| a | b | c | d |\n|---|---|---|---|\n| surfen | kosten | sparen | bestellen |",
+              "data": {
+                "rows": [
+                  ["1", "Geld"],
+                  ["2", "Waren"],
+                  ["3", "Preise"],
+                  ["4", "Internet"],
+                  ["a", "surfen"],
+                  ["b", "kosten"],
+                  ["c", "sparen"],
+                  ["d", "bestellen"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | d | b | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "d", "b", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Das Einkaufen im Internet / Das Online-Shopping. (Andere Titel sind zu berücksichtigen.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie das unterstrichene Wort durch ein Synonym aus dem Text.\nDie Internetnutzer erhalten verschiedene Nachrichten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "erhalten = bekommen"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie das Gegenteil des unterstrichenen Wortes aus dem Text.\nDie alten Menschen finden das Einkaufen im Internet nicht .........., sondern schwer."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "schwer ≠ leicht"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung:\na. Bilden Sie aus dem folgenden Substantiv das passende Verb.\ndie Produktion: ..................\n\nb. Bilden Sie aus dem folgenden Adjektiv das passende Substantiv.\nwichtig: ...... .................."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. die Produktion → produzieren\nb. wichtig → die Wichtigkeit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 2 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Über Internet kann man Informationen zu den Produkten und zu den Preisen bekommen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "تستطيع عن طريق الانترنت أن تتحصل على المعلومات الخاصة بالمنتوجات والأسعار."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Präteritum.\nDer Ingenieur bestellt das Gerät."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Ingenieur bestellte das Gerät."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Perfekt.\nDer Kunde bekommt die neue Bestellung."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Kunde hat die neue Bestellung bekommen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie ins Passiv.\nDie Firma kann die Waren liefern."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Waren können durch die Firma geliefert werden."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz mit „damit“ oder „um ... zu“.\nDer Mann benutzt das Internet. Er sucht ein Geschenk für seinen Freund."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Mann benutzt das Internet, damit er ein Geschenk für seinen Freund sucht.\nOder: Der Mann benutzt das Internet, um ein Geschenk für seinen Freund zu suchen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ersetzen Sie die unterstrichenen Wörter durch das passende Modalverb.\nDer Jugendliche hat die Möglichkeit, die Preise von Produkten zu vergleichen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der Jugendliche kann die Preise von Produkten vergleichen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q6",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 6,
+          "label": "6",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... jung... Konsument informiert sich über d... neu... Produkte."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Der junge Konsument informiert sich über die neuen Produkte."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Das Internet ist das Kommunikationsmittel Nummer eins. Was können Sie alles mit dem Internet tun?\n\nThema 2: Das Internet bringt viele Gefahren mit sich. Schreiben Sie mit Hilfe folgender Stichpunkte einige Zeilen dazu.\n- internetsüchtig\n- Gesundheitsprobleme (Augenkrankheiten, Schlafstörungen)\n- wenig Zeit für Familie und Freunde\n- schlechte Schulleistungen\n- gefährliche / verbotene Angebote im Internet"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nOrthographie / Stil / Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2016-normal",
+      "note": "No Gemini JSON was available locally; this reviewed file was reconstructed directly from source page images."
+    }
+  ]
+}

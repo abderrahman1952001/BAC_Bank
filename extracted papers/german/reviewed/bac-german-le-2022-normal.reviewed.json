@@ -1,0 +1,1007 @@
+{
+  "schemaVersion": "bac_gemini_source_extract/v1",
+  "paper": {
+    "durationMinutes": 210,
+    "hasCorrection": true,
+    "sessionType": "normal",
+    "sourceLanguage": "de",
+    "streamCode": "لغات أجنبية",
+    "subjectCode": "اللغة الألمانية",
+    "title": "اختبار مادة اللغة الألمانية - بكالوريا 2022",
+    "totalPoints": 20,
+    "year": 2022
+  },
+  "variants": [
+    {
+      "code": "SUJET_1",
+      "title": "الموضوع الأول",
+      "nodes": [
+        {
+          "localId": "s1_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الأول",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Weimar ist eine der schönsten Städte Deutschlands. Wenn man von dieser Stadt spricht, denkt man an die schönen Bauten der 17. und 18. Jahrhundert und an die berühmten Vertreter der Kultur Deutschlands. Hier lebten die bekannten Künstler wie Goethe, Herder, Schiller sowie der Komponist Johannes Sebestien Bach.\n\nDie Stadt Weimar liegt in der Mitte des Bundeslandes Thüringen und ist nach Erfurt, Jena und Gera die viertgrößte Stadt. In weimar leben etwa 65000 Einwohner in einer Oberfläche von 8426 Km². Der höchste Berg in Weimar ist Ettersberg mit 482 Metern. In Weimar wird das Klima etwas wärmer und trockener als in anderen Regionen. Heute ist Weimar mit seinen klassischen Gedenkstätten, den Museen als Reiseverkehr bekannt. Hunderttausende von Touristen, Studenten und Wissenschaftler, besonders Germanisten und Historiker besuchen jedes Jahr die Stadt. Weimar verfügt über eine bekannte Universität und Musikhochschule “Franz Lizt”. Sie zählt auch mit ihrem modernen Kongreßzentrum zu den beliebtesten deutschen Kongreßstädten. Durch ihre Geschichte sowie zahlreiche Museen, Baudenkmale, Kultur und klassikerstädten ist Weimar ein bedeutendes Ziel für Bildungs- Kultur und Städtetourismus. In dieser Stadt wurde der bekannte Schriftsteller der klassischen Weltliteratur Johann Wolfgang von Goethe gestorben. Bis heute ist sein Geburtshaus ein wichtiges Denkmal für viele Besucher aus der ganzen Welt.\n\nAus: Deutsch Texte und Grammatik Peter Lualinsky (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*Gedenkstätten: un mémorial / نصب تذكاري\n*Denkmal: un monument / تمثال"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part1",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q1",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat |\n|---|---|---|---|\n| a. Nur Goethe und Herder lebten in der Stadt Weimar. | | | |\n| b. Die Stadt Weimar liegt im Zentrum des Bundeslandes Thüringen. | | | |\n| c. Für viele Besucher ist die Stadt Weimar ein Reiseziel. | | | |\n| d. Goethe war ein Vertreter der romantischen Weltliteratur. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat"],
+                  ["a. Nur Goethe und Herder lebten in der Stadt Weimar.", "", "", ""],
+                  ["b. Die Stadt Weimar liegt im Zentrum des Bundeslandes Thüringen.", "", "", ""],
+                  ["c. Für viele Besucher ist die Stadt Weimar ein Reiseziel.", "", "", ""],
+                  ["d. Goethe war ein Vertreter der romantischen Weltliteratur.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. falsch: Hier lebten die bekannten Künstler wie Goethe, Herder, Schiller sowie der Komponist Johannes Sebastien Bach.\n\nb. richtig: Die Stadt Weimar liegt in der Mitte des Bundeslandes Thüringen.\n\nc. richtig: Heute ist Weimar mit seinen klassischen Gedenkstätten, den Museen als Reiseverkehr bekannt.\n\nd. falsch: In dieser Stadt wurde der bekannte Schriftsteller der klassischen Weltliteratur Johann Wolfgang von Goethe gestorben."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q2",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) An wen denkt man, wenn man von Weimar spricht?\nb) Wer besucht die Stadt Weimar?\nc) Erklären Sie den folgenden Satz: „Weimar ist eine der schönsten Städte Deutschlands.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Wenn man von dieser Stadt spricht, denkt man an die berühmten Vertreter der Kultur Deutschlands.\n\nOder: Wenn man von dieser Stadt spricht, denkt man an die schönen Bauten der 17. und 18. Jahrhunderte und an die berühmten Vertreter der Kultur Deutschlands.\n\nb) Hunderttausende von Touristen, Studenten und Wissenschaftler, besonders Germanisten und Historiker besuchen jedes Jahr die Stadt Weimar.\n\nc) Satzerklärung: Weimar zählt zu den schönsten deutschen Städten. (Andere Antworten können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q3",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Berlin | Universität | Museum | Nachbarland |\n\n| a | b | c | d |\n|---|---|---|---|\n| Grenze | Hauptstadt | studieren | besuchen |",
+              "data": {
+                "rows": [
+                  ["1", "Berlin"],
+                  ["2", "Universität"],
+                  ["3", "Museum"],
+                  ["4", "Nachbarland"],
+                  ["a", "Grenze"],
+                  ["b", "Hauptstadt"],
+                  ["c", "studieren"],
+                  ["d", "besuchen"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| b | c | d | a |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["b", "c", "d", "a"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p1_q4",
+          "parentLocalId": "s1_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Weimar. (Andere Titel können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part2",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_a",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q1",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Suchen Sie im Text ein Synonym für das unterstrichene Wort.\nIn Deutschland leben ungefähr 84 Millionen Einwohner."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "ungefähr = etwa"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q2",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie das Gegenteil des unterstrichenen Wortes.\nWenige Leute besichtigen die Stadt Weimar, aber ........ kommen nach Goethes Haus zu Besuch."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wenige ≠ viele / zahlreiche"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q3",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Bilden Sie aus dem folgenden Verb das passende Substantiv: verfügen: d... ................\nb) Bilden Sie ein Kompositum: die Kultur + das Zentrum: d... ................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Substantiv: die Verfügung\nb) Kompositum: das Kulturzentrum"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 + 0.5 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2a_q4",
+          "parentLocalId": "s1_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„In Weimar leben etwa 65000 Einwohner in einer Oberfläche von 8426 Km².“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يعيش في فيمار حوالي 65000 ساكن في مساحة تقدر بثمانية آلاف وأربع مائة وستة وعشرون كلم²."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2_b",
+          "parentLocalId": "s1_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q1",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie den folgenden Satz ins Perfekt.\nDie bekannten Künstler lebten in dieser Stadt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die bekannten Künstler haben in dieser Stadt gelebt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q2",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie den folgenden Satz ins Passiv.\nDie Studenten entdeckten die Stadt Weimar."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Stadt Weimar wurde von den Studenten entdeckt."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1.5 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q3",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Schreiben Sie den folgenden Satz mit dem passenden Modalverb.\nViele Touristen haben die Absicht, die Stadt Weimar zu besuchen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viele Touristen wollen die Stadt Weimar besuchen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q4",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Konditionalsatz.\nDie Stadt Weimar ist wunderschön. Sie zieht jedes Jahr Touristen an."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Wenn die Stadt Weimar nicht wunderschön wäre, würde sie nicht jedes Jahr Touristen anziehen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p2b_q5",
+          "parentLocalId": "s1_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nD... alt... Stadt verfügt über d... historisch... Bauten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die alte Stadt verfügt über die historischen Bauten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_part3",
+          "parentLocalId": "s1_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s1_p3_q1",
+          "parentLocalId": "s1_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Schreiben Sie ein paar Zeilen über ein Land, das Sie gern haben.\n\nThema 2: Wien ist einer der schönsten Städte Europas. Anhand folgender Stichpunkte schreiben Sie einige Zeilen dazu.\n- Wien: die Hauptstadt von Österreich.\n- Lage: östlich von dem Fluss Donau.\n- Einwohnerzahl: 1.911.191 Einwohner.\n- Oberfläche: 414.87 Km².\n- Klima: warm, gemäßigt.\n- Infrastruktur: Wiener Hauptbahnhof, die west Autobahn A1.\n- Wirtschaft: Maschinenbau, Nahrungsmittelindustrie, Holzindustrie, chemische Produkte.\n- Sehenswürdigkeiten und Tourismus: Schloß Schönbrunn, der Stephansdom, Universität Wien."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nStil - Orthografie - Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    },
+    {
+      "code": "SUJET_2",
+      "title": "الموضوع الثاني",
+      "nodes": [
+        {
+          "localId": "s2_instruction",
+          "nodeType": "CONTEXT",
+          "orderIndex": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "على المترشح أن يختار أحد الموضوعين الآتيين:"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_subject",
+          "nodeType": "EXERCISE",
+          "orderIndex": 2,
+          "label": "الموضوع الثاني",
+          "maxPoints": 20,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "heading",
+              "text": "Text:"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Verpackungen, leere Flaschen und Dosen, alte Batterien, Essensreste, die Zeitung von gestern, unmoderne Kleidung - alles, was nicht mehr gebraucht wird, landet auf dem Müll.\n\nTäglich produziert jeder Deutsche im Durchschnitt 1,6 kg Müll. Das ist ungefähr doppelt so viel wie vor 60 Jahren Tendenz steigend. Diese Entwicklung führt zu riesigen Müllbergen und macht den Bau von teuren Müllverbrennungsanlagen notwendig. Eine Möglichkeit, die Müllberge zu reduzieren, besteht darin, den Müll zu sortieren und kompostieren.\n\nIn Deutschland bestimmen die Städte und Gemeinden, wie der Müll gesammelt, sortiert und entsorgt wird. Oft gibt es in den Haushalten drei oder vier Tonnen: eine für Biomüll, eine für Papier, eine für Verpackungen und eine für Restmüll. Plastik- Aluminiumverpackungen usw.... werden meistens im gelben Sack gesammelt. Das alles holt die Müllabfuhr ab. Daneben gibt es noch den Sperrmüll, z.B. alte Möbel und Hausrat, das heißt alle alte Gegenstände, die man nicht mehr zu Hause benutzt.\n\nIn den Sondermüll gehören alle Abfälle, die gefährliche Giftstoffe enthalten, wie z. B. Batterien, Farben und andere chemische Stoffe. Auch Energiesparlampen gehören in den Sondermüll, weil sie Quecksilber enthalten. Für Flaschen gibt es oft Glascontainer und gut erhaltene Kleidung wird in Kleidercontainern gesammelt.\n\nBerliner Platz 3 Neu B1. S 104b (verarbeitet)"
+            },
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Worterklärung:\n*Tonne: poubelle / قمامة\n*Quecksilber: mercure / الزئبق"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part1",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "I. Textverständnis",
+          "maxPoints": 7,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q1",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 2,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Richtig oder falsch? Begründen Sie Ihre Antwort mit einem Zitat aus dem Text."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| Aussage | Richtig | Falsch | Zitat |\n|---|---|---|---|\n| a. Alte Zeitungen und Kleidung landen auf dem Müll. | | | |\n| b. Man kann den Müll reduzieren. | | | |\n| c. Plastik und Aluminium werden in einem Container gesammelt. | | | |\n| d. Sondermüll ist nicht gefährlich. | | | |",
+              "data": {
+                "rows": [
+                  ["Aussage", "Richtig", "Falsch", "Zitat"],
+                  ["a. Alte Zeitungen und Kleidung landen auf dem Müll.", "", "", ""],
+                  ["b. Man kann den Müll reduzieren.", "", "", ""],
+                  ["c. Plastik und Aluminium werden in einem Container gesammelt.", "", "", ""],
+                  ["d. Sondermüll ist nicht gefährlich.", "", "", ""]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a. richtig: Zeitung von gestern, unmoderne Kleidung ..... landet auf dem Müll.\n\nb. richtig: Eine Möglichkeit, die Müllberge zu reduzieren.\n\nc. falsch: Plastik – Aluminiumverpackungen usw......... im gelber Sack gesammelt.\n\nd. falsch: In den Sondermüll gehören ......... die gefährliche Giftstoffe enthalten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 x 4 = 2 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q2",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 3,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Fragen zum Text.\na) Wie kann man Müllberge begrenzen?\nb) Wofür benutzt man die Tonnen?\nc) Erklären Sie den folgenden Satz: „Diese Entwicklung führt zu riesigen Müllbergen.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Man kann Müllberge begrenzen, wenn man den Müll sortiert und kompostiert.\n\nb) Man benutzt die Tonnen für Biomüll, für Papier, für Verpackungen und für Restmüll.\n\nc) Satzerklärung: Diese Entwicklung verursacht viel Müll. (Statt Entwicklung kann man auch Fortschritt akzeptieren.) (Andere Antworten können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 x 3 = 3 Punkte"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q3",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Kombinieren Sie."
+            },
+            {
+              "role": "PROMPT",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| Plastik | Luftverschmutzung | Umwelt | Müllverbrennungsanlagen |\n\n| a | b | c | d |\n|---|---|---|---|\n| Abgase | bauen | recyceln | schützen |",
+              "data": {
+                "rows": [
+                  ["1", "Plastik"],
+                  ["2", "Luftverschmutzung"],
+                  ["3", "Umwelt"],
+                  ["4", "Müllverbrennungsanlagen"],
+                  ["a", "Abgase"],
+                  ["b", "bauen"],
+                  ["c", "recyceln"],
+                  ["d", "schützen"]
+                ]
+              }
+            },
+            {
+              "role": "SOLUTION",
+              "type": "table",
+              "text": "| 1 | 2 | 3 | 4 |\n|---|---|---|---|\n| c | a | d | b |",
+              "data": {
+                "rows": [
+                  ["1", "2", "3", "4"],
+                  ["c", "a", "d", "b"]
+                ]
+              }
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p1_q4",
+          "parentLocalId": "s2_part1",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie dem Text einen Titel."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Titel: Der Müll / Das Abfallrecycling. (Andere Titel können berücksichtigt werden.)"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part2",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "II. Sprachfähigkeit",
+          "maxPoints": 8,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_a",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 1,
+          "label": "A. Wortschatz",
+          "maxPoints": 3,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q1",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Suchen Sie im Text ein Synonym für das unterstrichene Wort.\nGroße Projekte sind für das Recycling eingesetzt."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "große = riesige"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q2",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 0.5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Geben Sie das Gegenteil des unterstrichenen Wortes.\nMülltrennung wendet man selten in den Entwicklungsländern an, aber ...... in den Industrieländern."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "selten ≠ oft"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q3",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Wortbildung.\na) Woraus besteht das folgende Kompositum? die Müllabfuhr: d... ............... + d... ...............\nb) Bilden Sie aus dem folgenden Adjektiv das passende Substantiv: notwendig: d... ................"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "a) Kompositum: der Müll + die Abfuhr\nb) Substantiv: die Notwendigkeit"
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.5 + 0.5 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2a_q4",
+          "parentLocalId": "s2_p2_a",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Übersetzen Sie ins Arabische.\n„Täglich produziert jeder Deutsche im Durchschnitt 1,6 Kg Müll.“"
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "يخلف كل ألماني يوميا ما معدله 1,6 كلغ من النفايات."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2_b",
+          "parentLocalId": "s2_part2",
+          "nodeType": "PART",
+          "orderIndex": 2,
+          "label": "B. Grammatik",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q1",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "1",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie den folgenden Satz ins Futur.\nDiese Entwicklung führt zu riesigen Müllbergen."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Diese Entwicklung wird zu riesigen Müllbergen führen."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q2",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 2,
+          "label": "2",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Setzen Sie den folgenden Satz ins Passiv.\nMan produziert viel Müll in Deutschland."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Viel Müll wird in Deutschland produziert."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q3",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 3,
+          "label": "3",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Bilden Sie einen Finalsatz.\nDie Fabriken sortieren den Müll. Sie wollen die wertvollen Stoffe wieder neu verwerten."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Die Fabriken sortieren den Müll, um die wertvollen Stoffe wieder neu zu verwerten.\n\nOder:\n\nDie Fabriken sortieren den Müll, damit sie die wertvollen Stoffe wieder neu verwerten."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q4",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 4,
+          "label": "4",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Ergänzen Sie mit der passenden Präposition: an - über - gegen - für.\nIn vielen Ländern der Welt demonstrieren die Umweltfreunde ....... die Verschmutzung.\nDie Umweltexperten diskutieren rund um die Uhr ........ den Umweltschutz.\nZurzeit interessieren sich viele Leute ....... das Abfallrecycling.\nWissenschaftler denken ....... eine bessere Zukunft der Menschheit."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "demonstrieren gegen ..... / diskutieren über ..... / interessieren für ..... / denken an ....."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p2b_q5",
+          "parentLocalId": "s2_p2_b",
+          "nodeType": "QUESTION",
+          "orderIndex": 5,
+          "label": "5",
+          "maxPoints": 1,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Deklinieren Sie.\nSie arbeiten bei d... kommunal... Müllabfuhr und sie sammeln nur d... verwertbar... Stoffabfälle."
+            },
+            {
+              "role": "SOLUTION",
+              "type": "paragraph",
+              "text": "Sie arbeiten bei der kommunalen Müllabfuhr und sie sammeln nur die verwertbaren Abfallstoffe."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "0.25 x 4 = 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_part3",
+          "parentLocalId": "s2_subject",
+          "nodeType": "PART",
+          "orderIndex": 3,
+          "label": "III. Schreibfähigkeit",
+          "maxPoints": 5,
+          "blocks": [],
+          "assetIds": []
+        },
+        {
+          "localId": "s2_p3_q1",
+          "parentLocalId": "s2_part3",
+          "nodeType": "QUESTION",
+          "orderIndex": 1,
+          "label": "ein Thema zur Wahl",
+          "maxPoints": 5,
+          "blocks": [
+            {
+              "role": "PROMPT",
+              "type": "paragraph",
+              "text": "Thema 1: Das Abfallrecycling spielt heutzutage eine wichtige Rolle Für den Umweltschutz. Was denken Sie daran? Schreiben Sie einige Zeilen dazu und erklären Sie Ihre Meinung mit konkreten Beispielen.\n\nThema 2: Luft, Wasser und Felder sind überall verschmutzt. Welche sind die Ursachen der Umweltverschmutzung? Und was kann man dagegen tun? Anhand folgender Stichpunkte schreiben Sie einige Zeilen darüber.\n- Giftiger Rauch aus Fabriken und Industrieanlagen.\n- Abgase von Motoren.\n- Abwässer aus Häusern und Fabriken / Industrieabfälle.\n- Maßnahmen treffen:\n- Kläranlagen bauen / Abwässer klären / Abgase filtern.\n- Abfälle recyceln / beseitigen.\n- Menschen umweltbewusst handeln."
+            },
+            {
+              "role": "RUBRIC",
+              "type": "paragraph",
+              "text": "Plan: 1 Punkt\nStil - Orthografie - Wortschatz: 3 Punkte\nGrammatik: 1 Punkt"
+            }
+          ],
+          "assetIds": []
+        }
+      ]
+    }
+  ],
+  "assets": [],
+  "uncertainties": [
+    {
+      "paper": "bac-german-le-2022-normal",
+      "note": "SUJET_1 exam text visibly prints several non-standard spellings or forms such as Johannes Sebestien Bach, Franz Lizt, In weimar, Kongreßzentrum, and klassikerstädten. They were preserved in the prompt text; the correction's answer spelling was preserved separately."
+    },
+    {
+      "paper": "bac-german-le-2022-normal",
+      "note": "SUJET_2 correction line for Q1.c visibly uses an irregular phrase around 'im gelber Sack gesammelt'; the correction wording was preserved while the prompt follows the exam text."
+    }
+  ]
+}
