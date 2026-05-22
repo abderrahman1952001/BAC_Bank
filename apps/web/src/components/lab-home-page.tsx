@@ -8,16 +8,38 @@ import type { LabToolMissionsResponse, LabToolSummary } from "@/lib/lab-api";
 import {
   listLabSubjectGroups,
   listLabToolsForSubjectCode,
+  subjectCodeToLabSlug,
   type LabTool,
 } from "@/lib/lab-surface";
 
+function getToolStatusPresentation(status: LabTool["status"]) {
+  switch (status) {
+    case "READY":
+      return {
+        label: "جاهز",
+        tone: "success" as const,
+      };
+    case "DRAFT":
+      return {
+        label: "قيد التحضير",
+        tone: "warning" as const,
+      };
+    case "HIDDEN":
+      return {
+        label: "مخفي",
+        tone: "neutral" as const,
+      };
+  }
+}
+
 function LabToolInstrument({ tool }: { tool: LabTool }) {
   const isDnaTool = tool.id === "dna-to-protein";
+  const isDocumentTool = tool.engineKinds.includes("document-reasoning");
 
   return (
     <div
       className={`instrument-visual lab-tool-visual ${
-        isDnaTool ? "is-biology" : "is-function"
+        isDnaTool || isDocumentTool ? "is-biology" : "is-function"
       }`}
       aria-hidden="true"
     >
@@ -76,20 +98,25 @@ export function LabHomePage({
   initialToolMissions?: Record<string, LabToolMissionsResponse>;
   requestedSubjectCode?: string | null;
 }) {
-  const groups = listLabSubjectGroups();
+  const requestedSubjectSlug = subjectCodeToLabSlug(requestedSubjectCode);
+  const groups = listLabSubjectGroups({
+    subjectSlug: requestedSubjectSlug,
+  });
   const requestedSubjectTools = listLabToolsForSubjectCode(
     requestedSubjectCode,
   );
   const requestedSubjectUnavailable = Boolean(
     requestedSubjectCode && requestedSubjectTools.length === 0,
   );
-  const toolEntries = groups.flatMap((group) =>
-    group.tools.map((tool) => ({
-      group,
-      tool,
-    })),
-  );
   const toolCount = groups.reduce((sum, group) => sum + group.tools.length, 0);
+  const readyToolCount = groups.reduce(
+    (sum, group) => sum + group.readyToolCount,
+    0,
+  );
+  const draftToolCount = groups.reduce(
+    (sum, group) => sum + group.draftToolCount,
+    0,
+  );
   const missionCount =
     initialTools?.reduce((sum, tool) => sum + tool.missionCount, 0) ?? 0;
   const completedMissionCount =
@@ -107,6 +134,8 @@ export function LabHomePage({
           meta={[
             { label: "الأدوات", value: `${toolCount}` },
             { label: "المواد", value: `${groups.length}` },
+            { label: "جاهزة", value: `${readyToolCount}` },
+            { label: "قيد التحضير", value: `${draftToolCount}` },
             ...(initialTools
               ? [
                   {
@@ -122,8 +151,9 @@ export function LabHomePage({
           <section className="builder-wizard-alert" role="status">
             <h3>لا يوجد مختبر جاهز لهذه المادة بعد</h3>
             <p>
-              طلب Study Command مادة {requestedSubjectCode}. الأدوات المنشورة
-              الآن تظهر بالأسفل فقط.
+              طلب Study Command مادة {requestedSubjectCode}. إن كانت المادة
+              ضمن الخطة فسترى أدواتها التحضيرية هنا، ولن نفتحها كأدوات جاهزة
+              حتى تنشر.
             </p>
           </section>
         ) : null}
@@ -134,35 +164,77 @@ export function LabHomePage({
           </div>
         ) : null}
 
-        <div className="lab-tool-grid">
-          {toolEntries.map(({ group, tool }) => (
-            <article
-              key={tool.id}
-              className={`instrument-card lab-tool-card lab-tool-card-${tool.id}`}
-            >
-              <LabToolInstrument tool={tool} />
-              <div className="lab-tool-card-main">
-                <div className="lab-tool-card-head">
-                  <div>
-                    <p className="page-kicker">{group.title}</p>
-                    <h3>{tool.title}</h3>
-                  </div>
-                  <StudyBadge tone="success">جاهز</StudyBadge>
+        <div className="lab-subject-sections">
+          {groups.map((group) => (
+            <section key={group.subjectSlug} className="lab-subject-section">
+              <div className="lab-section-head">
+                <div>
+                  <p className="page-kicker">{group.title}</p>
+                  <h2>{group.description}</h2>
                 </div>
-                <p>{tool.description}</p>
-                <Button asChild className="h-11 rounded-full px-5">
-                  <Link href={tool.href}>
-                    افتح الأداة
-                    <ArrowUpLeft size={17} strokeWidth={2.1} />
-                  </Link>
-                </Button>
+                <div className="lab-chip-row" aria-label="حالة أدوات المختبر">
+                  <span>{group.readyToolCount} جاهزة</span>
+                  <span>{group.draftToolCount} قيد التحضير</span>
+                </div>
               </div>
 
-              <LabMissionPanel
-                missions={initialToolMissions?.[tool.id]?.missions ?? []}
-                toolHref={tool.href}
-              />
-            </article>
+              <div className="lab-tool-grid">
+                {group.tools.map((tool) => {
+                  const status = getToolStatusPresentation(tool.status);
+
+                  return (
+                    <article
+                      key={tool.id}
+                      className={`instrument-card lab-tool-card lab-tool-card-${tool.id}`}
+                      data-status={tool.status}
+                    >
+                      <LabToolInstrument tool={tool} />
+                      <div className="lab-tool-card-main">
+                        <div className="lab-tool-card-head">
+                          <div>
+                            <p className="page-kicker">{group.title}</p>
+                            <h3>{tool.title}</h3>
+                          </div>
+                          <StudyBadge tone={status.tone}>
+                            {status.label}
+                          </StudyBadge>
+                        </div>
+                        <p>{tool.description}</p>
+                        <div className="lab-tool-use-case">
+                          <span>BAC</span>
+                          <strong>{tool.bacUseCase}</strong>
+                        </div>
+                        {tool.status === "READY" ? (
+                          <Button asChild className="h-11 rounded-full px-5">
+                            <Link href={tool.href}>
+                              افتح الأداة
+                              <ArrowUpLeft
+                                data-icon
+                                size={17}
+                                strokeWidth={2.1}
+                              />
+                            </Link>
+                          </Button>
+                        ) : (
+                          <Button disabled className="h-11 rounded-full px-5">
+                            لم ينشر بعد
+                          </Button>
+                        )}
+                      </div>
+
+                      {tool.status === "READY" ? (
+                        <LabMissionPanel
+                          missions={
+                            initialToolMissions?.[tool.id]?.missions ?? []
+                          }
+                          toolHref={tool.href}
+                        />
+                      ) : null}
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
           ))}
         </div>
       </section>

@@ -22,11 +22,13 @@ export default async function StudentLabPage({
     .then((payload) => payload.data)
     .catch(() => undefined);
   const missionEntries = await Promise.all(
-    (initialTools ?? []).map((tool) =>
-      fetchServerLabToolMissions(tool.slug)
-        .then((payload) => [tool.slug, payload] as const)
-        .catch(() => null),
-    ),
+    (initialTools ?? [])
+      .filter((tool) => tool.status === "READY")
+      .map((tool) =>
+        fetchServerLabToolMissions(tool.slug)
+          .then((payload) => [tool.slug, payload] as const)
+          .catch(() => null),
+      ),
   );
   const initialToolMissions = Object.fromEntries(
     missionEntries.filter((entry) => entry !== null),

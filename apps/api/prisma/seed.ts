@@ -88,6 +88,7 @@ type PlatformLabToolDefinition = {
   subjectCode: string;
   title: string;
   description: string;
+  status?: 'READY' | 'DRAFT' | 'HIDDEN';
   metadata?: Record<string, unknown>;
   missions: PlatformLabMissionDefinition[];
 };
@@ -453,6 +454,63 @@ const CURRICULUM_RULES: CurriculumRuleDefinition[] = [
   },
 ] as const;
 
+const NATURAL_SCIENCES_SE_TOPIC_TREE: TopicNodeDefinition[] = [
+  {
+    code: 'PROTEINS',
+    name: 'التخصص الوظيفي للبروتينات',
+    studentLabel: 'البروتينات',
+    children: [
+      { code: 'PROTEIN_SYNTHESIS', name: 'تركيب البروتين' },
+      { code: 'STRUCTURE_FUNCTION', name: 'العلاقة بين البنية والوظيفة' },
+      { code: 'ENZYMES', name: 'الإنزيمات' },
+      { code: 'IMMUNITY', name: 'المناعة' },
+      { code: 'NERVOUS_COMMUNICATION', name: 'الاتصال العصبي' },
+    ],
+  },
+  {
+    code: 'ENERGY_TRANSFORMATIONS',
+    name: 'تحويل الطاقة',
+    studentLabel: 'تحويل الطاقة',
+    children: [
+      { code: 'PHOTOSYNTHESIS', name: 'التركيب الضوئي' },
+      { code: 'RESPIRATION_FERMENTATION', name: 'التنفس والتخمر' },
+      { code: 'ENERGY_BALANCE', name: 'الحصيلة الطاقوية' },
+    ],
+  },
+  {
+    code: 'PLATE_TECTONICS',
+    name: 'النشاط التكتوني للصفائح',
+    studentLabel: 'النشاط التكتوني',
+    children: [
+      { code: 'EARTH_STRUCTURE', name: 'بنية الكرة الأرضية' },
+      { code: 'PLATE_ACTIVITY', name: 'نشاط الصفائح' },
+      { code: 'TECTONIC_INTERPRETATION', name: 'التفسير التكتوني' },
+    ],
+  },
+];
+
+const NATURAL_SCIENCES_M_TOPIC_TREE: TopicNodeDefinition[] = [
+  {
+    code: 'PROTEINS',
+    name: 'التخصص الوظيفي للبروتينات',
+    studentLabel: 'البروتينات',
+    children: [
+      { code: 'PROTEIN_SYNTHESIS', name: 'تركيب البروتين' },
+      { code: 'STRUCTURE_FUNCTION', name: 'العلاقة بين البنية والوظيفة' },
+      { code: 'IMMUNITY', name: 'المناعة' },
+    ],
+  },
+  {
+    code: 'HUMAN_AND_PLANET_MANAGEMENT',
+    name: 'الإنسان وتسيير الكوكب',
+    studentLabel: 'الإنسان والكوكب',
+    children: [
+      { code: 'AIR_POLLUTION', name: 'تلوث الجو' },
+      { code: 'WATER_POLLUTION', name: 'تلوث الماء' },
+    ],
+  },
+];
+
 const SUBJECT_TOPIC_TREES: Record<string, TopicNodeDefinition[]> = {
   MATHEMATICS: [
     {
@@ -572,40 +630,7 @@ const SUBJECT_TOPIC_TREES: Record<string, TopicNodeDefinition[]> = {
     },
     { code: 'VOCABULARY_STYLE', name: 'Lexique et style' },
   ],
-  NATURAL_SCIENCES: [
-    {
-      code: 'PROTEINS',
-      name: 'التخصص الوظيفي للبروتينات',
-      studentLabel: 'البروتينات',
-      children: [
-        { code: 'PROTEIN_SYNTHESIS', name: 'تركيب البروتين' },
-        { code: 'STRUCTURE_FUNCTION', name: 'العلاقة بين البنية والوظيفة' },
-        { code: 'ENZYMES', name: 'الإنزيمات' },
-        { code: 'IMMUNITY', name: 'المناعة' },
-        { code: 'NERVOUS_COMMUNICATION', name: 'الاتصال العصبي' },
-      ],
-    },
-    {
-      code: 'ENERGY_TRANSFORMATIONS',
-      name: 'تحويل الطاقة',
-      studentLabel: 'تحويل الطاقة',
-      children: [
-        { code: 'PHOTOSYNTHESIS', name: 'التركيب الضوئي' },
-        { code: 'RESPIRATION_FERMENTATION', name: 'التنفس والتخمر' },
-        { code: 'ENERGY_BALANCE', name: 'الحصيلة الطاقوية' },
-      ],
-    },
-    {
-      code: 'PLATE_TECTONICS',
-      name: 'النشاط التكتوني للصفائح',
-      studentLabel: 'النشاط التكتوني',
-      children: [
-        { code: 'EARTH_STRUCTURE', name: 'بنية الكرة الأرضية' },
-        { code: 'PLATE_ACTIVITY', name: 'نشاط الصفائح' },
-        { code: 'TECTONIC_INTERPRETATION', name: 'التفسير التكتوني' },
-      ],
-    },
-  ],
+  NATURAL_SCIENCES: NATURAL_SCIENCES_SE_TOPIC_TREE,
   PHYSICS: [
     {
       code: 'CHEMICAL_TRANSFORMATIONS',
@@ -1670,6 +1695,61 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
   ],
 };
 
+const NATURAL_SCIENCES_M_LEARNING_TARGETS: LearningTargetDefinition[] = [
+  {
+    code: 'DOCUMENT_ANALYSIS',
+    name: 'تحليل الوثائق',
+    description: 'استخراج المعلومات من الوثائق العلمية وربطها بالاستنتاج.',
+    topicMappings: [
+      { topicCode: 'PROTEINS', weight: 0.6 },
+      { topicCode: 'PROTEIN_SYNTHESIS', weight: 1, isPrimary: true },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 0.9 },
+      { topicCode: 'IMMUNITY', weight: 0.8 },
+    ],
+  },
+  {
+    code: 'PROTEIN_FUNCTION_REASONING',
+    name: 'الاستدلال في البروتينات',
+    description: 'ربط المعلومة الوراثية ببنية البروتين ووظيفته.',
+    topicMappings: [
+      { topicCode: 'PROTEINS', weight: 1, isPrimary: true },
+      { topicCode: 'PROTEIN_SYNTHESIS', weight: 1 },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 1 },
+    ],
+  },
+  {
+    code: 'IMMUNITY_REASONING',
+    name: 'الاستدلال في المناعة',
+    description: 'تمييز الاستجابة المناعية وربط المراحل بالوثائق والرسوم.',
+    topicMappings: [{ topicCode: 'IMMUNITY', weight: 1, isPrimary: true }],
+  },
+  {
+    code: 'BIOLOGICAL_DATA_INTERPRETATION',
+    name: 'تفسير المعطيات البيولوجية',
+    description:
+      'قراءة المنحنيات والجداول والصور المجهرية وتوظيفها في البرهان.',
+    topicMappings: [
+      { topicCode: 'PROTEINS', weight: 0.6 },
+      { topicCode: 'IMMUNITY', weight: 0.7 },
+    ],
+  },
+  {
+    code: 'ENVIRONMENTAL_DOCUMENT_ANALYSIS',
+    name: 'تحليل وثائق الإنسان والكوكب',
+    description:
+      'قراءة وثائق التلوث الجوي والمائي وربطها بأثر الإنسان على الوسط.',
+    topicMappings: [
+      {
+        topicCode: 'HUMAN_AND_PLANET_MANAGEMENT',
+        weight: 1,
+        isPrimary: true,
+      },
+      { topicCode: 'AIR_POLLUTION', weight: 1 },
+      { topicCode: 'WATER_POLLUTION', weight: 1 },
+    ],
+  },
+];
+
 const PLATFORM_FLASHCARD_DECKS: PlatformFlashcardDeckDefinition[] = [
   {
     code: 'MATHEMATICS_FUNCTIONS_PRE_EXAM',
@@ -1830,6 +1910,404 @@ const PLATFORM_LAB_TOOLS: PlatformLabToolDefinition[] = [
         orderIndex: 2,
       },
     ],
+  },
+  {
+    slug: 'svt-document-workbench',
+    subjectCode: 'NATURAL_SCIENCES',
+    title: 'ورشة الوثائق والمنحنيات',
+    description: 'قراءة وثائق، اختيار أدلة، وبناء استنتاج.',
+    status: 'READY',
+    metadata: {
+      subjectSlug: 'svt',
+      route: '/student/lab/svt/document-workbench',
+      registryToolId: 'svt-document-workbench',
+      engineKinds: ['document-reasoning', 'graph', 'table'],
+    },
+    missions: [
+      {
+        code: 'SVT_DOC_LDL_RECEPTOR_REASONING',
+        title: 'فسّر مرضا انطلاقا من وثائق المستقبل R',
+        goal: 'اختر الأدلة التي تربط الطفرة بتغير بنية المستقبل ثم اكتب استنتاجا يفسر تراكم LDL عند المصاب.',
+        curriculumNodeCode: 'STRUCTURE_FUNCTION',
+        learningTargetCode: 'PROTEIN_FUNCTION_REASONING',
+        preset: {
+          id: 'ldl-receptor-structure-function',
+          title: 'مستقبل LDL والبنية الوظيفية',
+          subtitle: 'استغلال وثائق بنية البروتين لتفسير حالة مرضية.',
+          bacContext:
+            'نمط متكرر في مواضيع SVT: وثائق عن أليل سليم/مصاب، جدول أحماض أمينية، ثم مناقشة علاقة البنية بالوظيفة.',
+          sourceDocuments: [
+            {
+              id: 'doc-ldl-entry',
+              title: 'الوثيقة 1: دخول LDL إلى الخلية',
+              kind: 'diagram',
+              sourceLabel: 'رسم وظيفي',
+              blocks: [
+                {
+                  type: 'diagram',
+                  title: 'آلية التثبيت والاقتناص',
+                  description:
+                    'يرتبط LDL بمستقبل غشائي نوعي R، ثم تقتنصه الخلية لاستعمال الكولسترول. إذا اختل المستقبل لا يتم تثبيت LDL بكفاءة.',
+                  labels: ['LDL', 'المستقبل R', 'غشاء الخلية', 'اقتناص خلوي'],
+                },
+              ],
+            },
+            {
+              id: 'doc-r-alleles',
+              title: 'الوثيقة 2: مقارنة جزء من الأليلين R1 و R2',
+              kind: 'table',
+              sourceLabel: 'جدول مقارنة',
+              blocks: [
+                {
+                  type: 'table',
+                  title: 'أثر اختلاف رامزة واحدة في البروتين',
+                  columns: [
+                    { id: 'allele', label: 'الأليل' },
+                    { id: 'codon', label: 'الرامزة عند الموضع 33' },
+                    { id: 'protein', label: 'الأثر على السلسلة' },
+                  ],
+                  rows: [
+                    {
+                      id: 'r1',
+                      cells: {
+                        allele: 'R1',
+                        codon: 'CAG',
+                        protein: 'Gln ثم استمرار تركيب المستقبل',
+                      },
+                    },
+                    {
+                      id: 'r2',
+                      cells: {
+                        allele: 'R2',
+                        codon: 'UAG',
+                        protein: 'رامزة توقف مبكرة وسلسلة قصيرة',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'doc-ldl-graph',
+              title: 'الوثيقة 3: تغير LDL في الدم',
+              kind: 'graph',
+              sourceLabel: 'منحنى',
+              blocks: [
+                {
+                  type: 'graph',
+                  title: 'كمية LDL المتبقية في الدم بعد وجبة دسمة',
+                  xAxis: { label: 'الزمن', unit: 'ساعات' },
+                  yAxis: { label: 'LDL في الدم', unit: 'وحدة نسبية' },
+                  series: [
+                    {
+                      id: 'healthy',
+                      title: 'شخص سليم',
+                      kind: 'line',
+                      points: [
+                        { x: 0, y: 72 },
+                        { x: 2, y: 58 },
+                        { x: 4, y: 43 },
+                        { x: 6, y: 32 },
+                      ],
+                    },
+                    {
+                      id: 'affected',
+                      title: 'شخص مصاب',
+                      kind: 'line',
+                      points: [
+                        { x: 0, y: 74 },
+                        { x: 2, y: 78 },
+                        { x: 4, y: 82 },
+                        { x: 6, y: 86 },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          evidenceItems: [
+            {
+              id: 'ldl-normal-entry',
+              documentId: 'doc-ldl-entry',
+              label: 'المستقبل R السليم يسمح بتثبيت LDL واقتناصه.',
+              detail:
+                'هذه المعلومة تربط البنية الغشائية بالوظيفة الخلوية المباشرة.',
+              keywords: ['مستقبل', 'LDL', 'اقتناص'],
+            },
+            {
+              id: 'r2-stop-codon',
+              documentId: 'doc-r-alleles',
+              label: 'الأليل R2 يعطي رامزة توقف مبكرة UAG.',
+              detail:
+                'رامزة التوقف تختصر السلسلة البروتينية، فتتغير البنية الفراغية.',
+              keywords: ['طفرة', 'رامزة توقف', 'سلسلة قصيرة'],
+            },
+            {
+              id: 'ldl-accumulation',
+              documentId: 'doc-ldl-graph',
+              label: 'LDL يبقى مرتفعا عند المصاب بدل أن ينخفض.',
+              detail: 'المنحنى يدعم أن الخلايا لا تقتنص LDL بالفعالية نفسها.',
+              keywords: ['LDL', 'يتراكم', 'المصاب'],
+            },
+          ],
+          prompt: {
+            title: 'ناقش العلاقة بين بنية المستقبل R والحالة الصحية.',
+            task: 'اختر الأدلة التي تربط الطفرة بتغير بنية المستقبل ثم اكتب استنتاجا يفسر تراكم LDL عند المصاب.',
+            requiredEvidenceIds: [
+              'ldl-normal-entry',
+              'r2-stop-codon',
+              'ldl-accumulation',
+            ],
+            requiredConclusionKeywords: [
+              'LDL',
+              'مستقبل',
+              'طفرة',
+              'رامزة توقف',
+              'بنية',
+            ],
+            scaffoldPhrases: [
+              'تدل الوثيقة 1 على أن المستقبل R السليم يثبت LDL.',
+              'يبين جدول الأليلين أن الطفرة حولت رامزة إلى رامزة توقف.',
+              'أستنتج أن تغير البنية الفراغية للمستقبل يمنع اقتناص LDL.',
+            ],
+          },
+        },
+        exitCheck: {
+          kind: 'DOCUMENT_EVIDENCE',
+          requiredEvidenceIds: [
+            'ldl-normal-entry',
+            'r2-stop-codon',
+            'ldl-accumulation',
+          ],
+          requiredConclusionKeywords: [
+            'LDL',
+            'مستقبل',
+            'طفرة',
+            'رامزة توقف',
+            'بنية',
+          ],
+        },
+        orderIndex: 1,
+      },
+      {
+        code: 'SVT_DOC_PROTEIN_SYNTHESIS_CHAIN',
+        title: 'ابن نصا علميا من وثائق تركيب البروتين',
+        goal: 'اختر أدلة سلسلة ADN إلى ARNm إلى أحماض أمينية، ثم اكتب خلاصة تربط ترتيب المعلومة بالبنية الفراغية.',
+        curriculumNodeCode: 'PROTEIN_SYNTHESIS',
+        learningTargetCode: 'DOCUMENT_ANALYSIS',
+        preset: {
+          id: 'protein-synthesis-document-chain',
+          title: 'من الوثائق إلى نص تركيب البروتين',
+          subtitle: 'ربط ADN و ARNm والترجمة بالبنية الفراغية للبروتين.',
+          bacContext:
+            'نمط BAC كلاسيكي: وثيقة مراحل تركيب البروتين، جدول عناصر ضرورية، ثم نص علمي يربط المعلومة الوراثية بالبنية.',
+          sourceDocuments: [
+            {
+              id: 'doc-synthesis-diagram',
+              title: 'الوثيقة 1: مرحلتا تركيب البروتين',
+              kind: 'diagram',
+              sourceLabel: 'رسم تخطيطي',
+              blocks: [
+                {
+                  type: 'diagram',
+                  title: 'من المورثة إلى السلسلة البيبتيدية',
+                  description:
+                    'داخل النواة تستنسخ المورثة إلى ARNm، ثم ينتقل ARNm إلى الهيولى حيث تقرأ الريبوزومات رامزاته لتشكيل سلسلة أحماض أمينية.',
+                  labels: ['ADN', 'ARNm', 'ريبوزوم', 'أحماض أمينية'],
+                },
+              ],
+            },
+            {
+              id: 'doc-synthesis-elements',
+              title: 'الوثيقة 2: عناصر المرحلتين',
+              kind: 'table',
+              sourceLabel: 'جدول عناصر',
+              blocks: [
+                {
+                  type: 'table',
+                  title: 'العناصر الضرورية ودورها',
+                  columns: [
+                    { id: 'stage', label: 'المرحلة' },
+                    { id: 'element', label: 'عنصر ضروري' },
+                    { id: 'role', label: 'دوره' },
+                  ],
+                  rows: [
+                    {
+                      id: 'transcription',
+                      cells: {
+                        stage: 'الاستنساخ',
+                        element: 'ADN + نكليوتيدات ريبية',
+                        role: 'تشكيل ARNm وفق ترتيب المورثة',
+                      },
+                    },
+                    {
+                      id: 'translation',
+                      cells: {
+                        stage: 'الترجمة',
+                        element: 'ARNm + ريبوزومات + ARNt',
+                        role: 'تحويل الرامزات إلى أحماض أمينية',
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'doc-amino-count',
+              title: 'الوثيقة 3: قراءة عدد الرامزات',
+              kind: 'text',
+              sourceLabel: 'معطى حسابي',
+              blocks: [
+                {
+                  type: 'text',
+                  body: 'إذا كان ARNm يحتوي 327 نكليوتيدة، وتوجد رامزة بداية ورامزة توقف، فإن عدد الأحماض الأمينية في السلسلة الوظيفية يحسب من الرامزات المترجمة فقط.',
+                },
+              ],
+            },
+          ],
+          evidenceItems: [
+            {
+              id: 'dna-carries-message',
+              documentId: 'doc-synthesis-diagram',
+              label: 'ADN يحمل المعلومة الوراثية في ترتيب نكليوتيداته.',
+              detail: 'هذه بداية سلسلة البرهان من المورثة.',
+              keywords: ['ADN', 'معلومة وراثية'],
+            },
+            {
+              id: 'mrna-working-copy',
+              documentId: 'doc-synthesis-elements',
+              label: 'ARNm نسخة عمل تنقل ترتيب المورثة إلى الهيولى.',
+              detail: 'الاستنساخ يحافظ على ترتيب الرامزات.',
+              keywords: ['ARNm', 'استنساخ'],
+            },
+            {
+              id: 'ribosome-translates',
+              documentId: 'doc-synthesis-elements',
+              label: 'الريبوزوم يترجم رامزات ARNm إلى أحماض أمينية.',
+              detail: 'هذه خطوة تحويل الرسالة إلى سلسلة بروتينية.',
+              keywords: ['ترجمة', 'أحماض أمينية'],
+            },
+            {
+              id: 'amino-order-shapes-protein',
+              documentId: 'doc-amino-count',
+              label: 'عدد وترتيب الأحماض الأمينية يحددان بنية البروتين.',
+              detail: 'البنية الفراغية تظهر من السلسلة البيبتيدية الناتجة.',
+              keywords: ['بنية فراغية', 'سلسلة'],
+            },
+          ],
+          prompt: {
+            title: 'اكتب نصا علميا يبين كيف يتحكم ADN في بنية البروتين.',
+            task: 'اختر الأدلة التي تبني سلسلة ADN إلى ARNm إلى أحماض أمينية، ثم اكتب خلاصة تربط ترتيب المعلومة بالبنية الفراغية.',
+            requiredEvidenceIds: [
+              'dna-carries-message',
+              'mrna-working-copy',
+              'ribosome-translates',
+              'amino-order-shapes-protein',
+            ],
+            requiredConclusionKeywords: [
+              'ADN',
+              'ARNm',
+              'ترجمة',
+              'أحماض',
+              'بنية',
+            ],
+            scaffoldPhrases: [
+              'يحمل ADN المعلومة الوراثية في ترتيب النيكليوتيدات.',
+              'ينقل ARNm نسخة من هذه المعلومة إلى الهيولى.',
+              'تترجم الريبوزومات الرامزات إلى أحماض أمينية تحدد بنية البروتين.',
+            ],
+          },
+        },
+        exitCheck: {
+          kind: 'DOCUMENT_EVIDENCE',
+          requiredEvidenceIds: [
+            'dna-carries-message',
+            'mrna-working-copy',
+            'ribosome-translates',
+            'amino-order-shapes-protein',
+          ],
+          requiredConclusionKeywords: [
+            'ADN',
+            'ARNm',
+            'ترجمة',
+            'أحماض',
+            'بنية',
+          ],
+        },
+        orderIndex: 2,
+      },
+    ],
+  },
+  {
+    slug: 'physics-experiment-graphs',
+    subjectCode: 'PHYSICS',
+    title: 'منحنيات التجربة',
+    description: 'ميل، ثابت زمني، وحدات، واستنتاج تجريبي.',
+    status: 'DRAFT',
+    metadata: {
+      subjectSlug: 'physics',
+      route: '/student/lab/physics/experiment-graphs',
+      registryToolId: 'physics-experiment-graphs',
+      engineKinds: ['graph', 'table', 'formula-unit'],
+    },
+    missions: [],
+  },
+  {
+    slug: 'technology-civil-beam-statics',
+    subjectCode: 'TECHNOLOGY_CIVIL',
+    title: 'تحليل الجوائز',
+    description: 'ردود أفعال، مخططات قوى، وجداول مقاطع.',
+    status: 'DRAFT',
+    metadata: {
+      subjectSlug: 'technology-civil',
+      route: '/student/lab/technology-civil/beam-statics',
+      registryToolId: 'technology-civil-beam-statics',
+      engineKinds: ['diagram-labeling', 'graph', 'table', 'formula-unit'],
+    },
+    missions: [],
+  },
+  {
+    slug: 'technology-electrical-control-logic',
+    subjectCode: 'TECHNOLOGY_ELECTRICAL',
+    title: 'التحكم والمنطق',
+    description: 'GRAFCET، جداول صدق، خرائط Karnaugh، وكرونوغرام.',
+    status: 'DRAFT',
+    metadata: {
+      subjectSlug: 'technology-electrical',
+      route: '/student/lab/technology-electrical/control-logic',
+      registryToolId: 'technology-electrical-control-logic',
+      engineKinds: ['table', 'diagram-labeling', 'technical-workbench'],
+    },
+    missions: [],
+  },
+  {
+    slug: 'technology-mechanical-drawing-workbench',
+    subjectCode: 'TECHNOLOGY_MECHANICAL',
+    title: 'ورشة الرسم والآليات',
+    description: 'تسمية أجزاء، قراءة مقاطع، وتسلسل تصنيع.',
+    status: 'DRAFT',
+    metadata: {
+      subjectSlug: 'technology-mechanical',
+      route: '/student/lab/technology-mechanical/drawing-workbench',
+      registryToolId: 'technology-mechanical-drawing-workbench',
+      engineKinds: ['diagram-labeling', 'table', 'document-reasoning'],
+    },
+    missions: [],
+  },
+  {
+    slug: 'technology-process-reaction-workbench',
+    subjectCode: 'TECHNOLOGY_PROCESS',
+    title: 'ورشة التفاعلات',
+    description: 'جزيئات، جداول تقدم، مردود، ومنحنيات.',
+    status: 'DRAFT',
+    metadata: {
+      subjectSlug: 'technology-process',
+      route: '/student/lab/technology-process/reaction-workbench',
+      registryToolId: 'technology-process-reaction-workbench',
+      engineKinds: ['formula-unit', 'table', 'graph', 'document-reasoning'],
+    },
+    missions: [],
   },
 ];
 
@@ -2623,7 +3101,7 @@ async function syncPlatformLabTools(
         subjectId,
         title: toolDefinition.title,
         description: toolDefinition.description,
-        status: 'READY',
+        status: toolDefinition.status ?? 'READY',
         metadata: toJsonValue({
           seedSlug: toolDefinition.slug,
           subjectCode: toolDefinition.subjectCode,
@@ -2636,7 +3114,7 @@ async function syncPlatformLabTools(
         slug: toolDefinition.slug,
         title: toolDefinition.title,
         description: toolDefinition.description,
-        status: 'READY',
+        status: toolDefinition.status ?? 'READY',
         metadata: toJsonValue({
           seedSlug: toolDefinition.slug,
           subjectCode: toolDefinition.subjectCode,
@@ -2771,6 +3249,36 @@ async function syncPlatformLabTools(
   }
 }
 
+function resolveSeedTopicTree(
+  subjectCode: string,
+  curriculumCode: string,
+  defaultTree: TopicNodeDefinition[],
+): TopicNodeDefinition[] {
+  if (
+    subjectCode === 'NATURAL_SCIENCES' &&
+    curriculumCode === 'M__2008__OPEN'
+  ) {
+    return NATURAL_SCIENCES_M_TOPIC_TREE;
+  }
+
+  return defaultTree;
+}
+
+function resolveSeedLearningTargets(
+  subjectCode: string,
+  curriculumCode: string,
+  defaultLearningTargets: LearningTargetDefinition[],
+): LearningTargetDefinition[] {
+  if (
+    subjectCode === 'NATURAL_SCIENCES' &&
+    curriculumCode === 'M__2008__OPEN'
+  ) {
+    return NATURAL_SCIENCES_M_LEARNING_TARGETS;
+  }
+
+  return defaultLearningTargets;
+}
+
 export async function runCatalogSeed() {
   const streamIds = await seedStreams();
   const subjectIds = await seedSubjects();
@@ -2792,7 +3300,11 @@ export async function runCatalogSeed() {
     }
 
     for (const curriculum of curricula) {
-      await syncSubjectTopics(subjectId, curriculum.id, topicTree);
+      await syncSubjectTopics(
+        subjectId,
+        curriculum.id,
+        resolveSeedTopicTree(subjectCode, curriculum.code, topicTree),
+      );
     }
   }
 
@@ -2812,7 +3324,11 @@ export async function runCatalogSeed() {
       await syncSubjectLearningTargets(
         subjectId,
         curriculum.id,
-        learningTargets,
+        resolveSeedLearningTargets(
+          subjectCode,
+          curriculum.code,
+          learningTargets,
+        ),
       );
     }
   }

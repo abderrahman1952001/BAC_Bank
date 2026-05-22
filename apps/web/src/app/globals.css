@@ -4220,6 +4220,10 @@ textarea {
 
 .ingestion-preview-block-card .study-media-block.study-block-compact,
 .ingestion-preview-block-card .study-media-frame.study-block-compact,
+.ingestion-preview-block-card .study-chemistry-block.study-block-compact,
+.ingestion-preview-block-card .study-civil-diagram-block.study-block-compact,
+.ingestion-preview-block-card
+  .study-technical-diagram-block.study-block-compact,
 .ingestion-preview-block-card .study-table-wrap.study-block-compact {
   width: fit-content;
   max-width: min(100%, 340px);
@@ -4261,6 +4265,27 @@ textarea {
   .formula-graph-host {
   min-width: 0;
   width: 100%;
+}
+
+.ingestion-preview-block-card
+  .study-chemistry-block.study-block-compact
+  .study-chemistry-frame {
+  width: min(100%, 320px);
+  max-height: 220px;
+}
+
+.ingestion-preview-block-card
+  .study-civil-diagram-block.study-block-compact
+  .study-civil-diagram-frame {
+  width: min(100%, 320px);
+  max-height: 220px;
+}
+
+.ingestion-preview-block-card
+  .study-technical-diagram-block.study-block-compact
+  .study-technical-diagram-frame {
+  width: min(100%, 320px);
+  max-height: 220px;
 }
 
 .ingestion-preview-block-card .study-prose,
@@ -5599,6 +5624,362 @@ textarea {
   margin: 0;
   display: grid;
   gap: 0.28rem;
+}
+
+.study-chemistry-block {
+  margin: 0;
+  display: grid;
+  gap: 0.36rem;
+  justify-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-muted);
+  padding: 0.56rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.study-chemistry-title,
+.study-chemistry-card-title,
+.study-chemistry-card-caption {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.study-chemistry-title {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.study-chemistry-grid {
+  display: grid;
+  gap: 0.56rem;
+  width: 100%;
+  justify-items: center;
+}
+
+.study-chemistry-layout-grid,
+.study-chemistry-layout-row {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+}
+
+.study-chemistry-layout-stack {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.study-chemistry-card {
+  display: grid;
+  gap: 0.28rem;
+  min-width: 0;
+  width: 100%;
+  justify-items: center;
+}
+
+.study-chemistry-frame {
+  width: min(100%, 760px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  padding: 0.4rem;
+}
+
+.study-chemistry-frame svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.study-chemistry-state {
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  text-align: center;
+}
+
+.study-chemistry-fallback {
+  display: grid;
+  justify-items: center;
+}
+
+.study-chemistry-block.study-block-compact {
+  width: fit-content;
+  max-width: min(100%, 340px);
+  padding: 0.46rem;
+}
+
+.study-chemistry-block.study-block-compact .study-chemistry-frame {
+  width: min(100%, 320px);
+  max-height: 220px;
+}
+
+.study-civil-diagram-block {
+  margin: 0;
+  display: grid;
+  gap: 0.36rem;
+  justify-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-muted);
+  padding: 0.56rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.study-civil-diagram-title,
+.study-civil-diagram-caption {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.study-civil-diagram-title {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.study-civil-diagram-frame {
+  width: min(100%, 760px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+  padding: 0.42rem;
+}
+
+.civil-diagram-svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 180px;
+}
+
+.civil-diagram-stroke,
+.civil-diagram-shape {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.civil-diagram-member {
+  stroke: color-mix(in srgb, var(--ink) 88%, var(--primary) 12%);
+  stroke-width: 2.8;
+}
+
+.civil-diagram-arrow {
+  fill: none;
+  stroke: var(--primary);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+}
+
+.civil-diagram-marker {
+  fill: var(--primary);
+}
+
+.civil-diagram-dashed {
+  stroke-dasharray: 8 6;
+}
+
+.civil-diagram-support path {
+  fill: color-mix(in srgb, var(--surface-muted) 78%, var(--primary) 22%);
+  stroke: var(--ink);
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.civil-diagram-support line,
+.civil-diagram-support circle {
+  fill: var(--surface-strong);
+  stroke: var(--ink-soft);
+  stroke-linecap: round;
+  stroke-width: 1.7;
+}
+
+.civil-diagram-dimension line {
+  stroke: var(--ink-soft);
+  stroke-linecap: round;
+  stroke-width: 1.25;
+}
+
+.civil-diagram-node circle {
+  fill: var(--surface-strong);
+  stroke: var(--ink);
+  stroke-width: 1.8;
+}
+
+.civil-diagram-label {
+  fill: var(--ink);
+  font-family: var(--font-display), var(--font-display-fallback);
+  font-size: var(--civil-diagram-label-size, 15px);
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: var(--surface-strong);
+  stroke-linejoin: round;
+  stroke-width: 4px;
+}
+
+.study-civil-diagram-block.study-block-compact {
+  width: fit-content;
+  max-width: min(100%, 340px);
+  padding: 0.46rem;
+}
+
+.study-civil-diagram-block.study-block-compact .study-civil-diagram-frame {
+  width: min(100%, 320px);
+  max-height: 220px;
+}
+
+.study-technical-diagram-block {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.study-technical-diagram-title,
+.study-technical-diagram-caption {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.study-technical-diagram-title {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.study-technical-diagram-frame {
+  direction: ltr;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-strong);
+  padding: 0.75rem;
+}
+
+.technical-diagram-svg {
+  display: block;
+  width: 100%;
+  max-height: var(--technical-diagram-max-height, 560px);
+  min-width: 720px;
+  height: auto;
+}
+
+.technical-diagram-frame-box {
+  fill: color-mix(in srgb, var(--surface) 86%, transparent);
+  stroke: rgb(100 116 139 / 0.42);
+  stroke-dasharray: 8 6;
+  stroke-width: 1.5;
+}
+
+.technical-diagram-frame-label,
+.technical-grid-group-label {
+  fill: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.technical-diagram-node-box,
+.technical-grid-cell-box {
+  fill: var(--surface);
+  stroke: rgb(148 163 184 / 0.56);
+  stroke-width: 1.6;
+}
+
+.technical-node-step .technical-diagram-node-box {
+  fill: rgb(16 185 129 / 0.08);
+  stroke: rgb(5 150 105 / 0.78);
+}
+
+.technical-node-decision .technical-diagram-node-box {
+  fill: rgb(245 158 11 / 0.1);
+  stroke: rgb(217 119 6 / 0.76);
+}
+
+.technical-diagram-connector,
+.technical-wave-path {
+  fill: none;
+  stroke: rgb(148 163 184 / 0.86);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+}
+
+.technical-diagram-dashed {
+  stroke-dasharray: 7 6;
+}
+
+.technical-diagram-marker {
+  fill: rgb(148 163 184 / 0.86);
+}
+
+.technical-diagram-label,
+.technical-diagram-edge-label,
+.technical-diagram-subtitle,
+.technical-wave-label,
+.technical-wave-value {
+  fill: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.technical-diagram-subtitle,
+.technical-diagram-edge-label,
+.technical-wave-value {
+  fill: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: var(--surface-strong);
+  stroke-linejoin: round;
+  stroke-width: 4px;
+}
+
+.technical-grid-header .technical-grid-cell-box {
+  fill: rgb(14 165 233 / 0.09);
+}
+
+.technical-grid-answer .technical-grid-cell-box {
+  fill: rgb(16 185 129 / 0.1);
+}
+
+.technical-grid-muted .technical-grid-cell-box {
+  fill: rgb(148 163 184 / 0.08);
+}
+
+.technical-grid-group-box {
+  fill: none;
+  stroke: rgb(5 150 105 / 0.86);
+  stroke-dasharray: 9 6;
+  stroke-width: 2.4;
+}
+
+.technical-wave-grid {
+  stroke: rgb(148 163 184 / 0.28);
+  stroke-width: 1;
+}
+
+.study-technical-diagram-block.study-block-compact {
+  width: fit-content;
+  max-width: min(100%, 340px);
+  padding: 0.46rem;
+}
+
+.study-technical-diagram-block.study-block-compact
+  .study-technical-diagram-frame {
+  width: min(100%, 320px);
+  max-height: 220px;
+}
+
+.study-technical-diagram-block.study-block-compact .technical-diagram-svg {
+  min-width: min(320px, 100%);
 }
 
 .study-asset-grid img,
@@ -8332,6 +8713,315 @@ textarea {
   line-height: 1.55;
 }
 
+.svt-document-workspace {
+  grid-template-columns: minmax(300px, 390px) minmax(0, 1fr);
+}
+
+.svt-document-workspace,
+.svt-document-control,
+.svt-workbench-task,
+.svt-workbench-feedback,
+.svt-document-stack,
+.svt-document-card,
+.svt-document-card-head,
+.svt-document-blocks,
+.svt-evidence-list,
+.svt-doc-text-block,
+.svt-doc-table-block,
+.svt-doc-graph-block,
+.svt-doc-diagram-block {
+  min-width: 0;
+}
+
+.svt-document-control {
+  gap: 0.9rem;
+}
+
+.svt-workbench-task,
+.svt-workbench-feedback,
+.svt-document-card {
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+}
+
+.svt-workbench-task,
+.svt-workbench-feedback {
+  display: grid;
+  gap: 0.55rem;
+  border-radius: 22px;
+  padding: 0.9rem;
+}
+
+.svt-workbench-task h3,
+.svt-document-card h3,
+.svt-doc-text-block h4,
+.svt-doc-table-block h4,
+.svt-doc-graph-block h4,
+.svt-doc-diagram-block h4 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.svt-workbench-task p,
+.svt-document-card p,
+.svt-doc-text-block p,
+.svt-doc-diagram-block p,
+.svt-workbench-feedback p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+.svt-evidence-progress {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.16rem 0.65rem;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--app-accent-line);
+  border-radius: 18px;
+  background: var(--app-accent-ghost);
+  padding: 0.78rem;
+}
+
+.svt-evidence-progress span {
+  color: var(--app-accent);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.svt-evidence-progress strong {
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.svt-evidence-progress i {
+  grid-column: 1 / -1;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: var(--app-accent);
+}
+
+.svt-scaffold-phrases {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.svt-scaffold-phrases [data-slot="button"] {
+  justify-content: flex-start;
+  height: auto;
+  white-space: normal;
+  text-align: start;
+  line-height: 1.6;
+}
+
+.svt-workbench-feedback[data-passed="true"] {
+  border-color: var(--app-accent-line);
+  background: var(--app-accent-ghost);
+}
+
+.svt-workbench-feedback[data-passed="false"] {
+  border-color: rgba(245, 158, 11, 0.36);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.svt-workbench-feedback > div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink);
+}
+
+.svt-document-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.svt-document-card {
+  display: grid;
+  gap: 0.85rem;
+  border-radius: 26px;
+  padding: 1rem;
+}
+
+.svt-document-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.svt-document-card-head > div {
+  min-width: 0;
+}
+
+.svt-document-blocks,
+.svt-evidence-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.svt-doc-text-block,
+.svt-doc-table-block,
+.svt-doc-graph-block,
+.svt-doc-diagram-block {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  padding: 0.85rem;
+}
+
+.svt-doc-table-wrap {
+  overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+  margin-block-start: 0.55rem;
+}
+
+.svt-doc-table-wrap table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.svt-doc-table-wrap th,
+.svt-doc-table-wrap td {
+  border: 1px solid var(--line);
+  padding: 0.65rem;
+  text-align: start;
+  vertical-align: top;
+}
+
+.svt-doc-table-wrap th {
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  font-weight: var(--weight-label);
+}
+
+.svt-doc-graph-block {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.svt-doc-graph {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  height: auto;
+  color: var(--ink-soft);
+}
+
+.svt-doc-graph line {
+  stroke: var(--line-strong);
+  stroke-width: 1.4;
+}
+
+.svt-doc-graph text {
+  fill: var(--ink-muted);
+  font-size: 10px;
+}
+
+.svt-doc-graph polyline {
+  fill: none;
+  stroke: var(--app-accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.svt-doc-graph [data-series="2"] polyline {
+  stroke: #f59e0b;
+}
+
+.svt-doc-graph circle {
+  fill: var(--surface);
+  stroke: var(--app-accent);
+  stroke-width: 2;
+}
+
+.svt-doc-graph [data-series="2"] circle {
+  stroke: #f59e0b;
+}
+
+.svt-doc-graph-legend,
+.svt-doc-label-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.svt-doc-graph-legend span,
+.svt-doc-label-row span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  padding: 0.25rem 0.55rem;
+  font-size: 0.76rem;
+  font-weight: var(--weight-label);
+}
+
+.svt-doc-graph-legend [data-series="1"] {
+  border-color: var(--app-accent-line);
+  color: var(--app-accent);
+}
+
+.svt-doc-graph-legend [data-series="2"] {
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #f59e0b;
+}
+
+.svt-doc-diagram-block {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.32fr) minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.svt-doc-diagram-visual {
+  position: relative;
+  min-height: 120px;
+  overflow: hidden;
+  border: 1px solid var(--app-accent-line);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 30% 45%, rgba(0, 229, 153, 0.16), transparent 38%),
+    var(--surface-muted);
+}
+
+.svt-doc-diagram-visual span,
+.svt-doc-diagram-visual i,
+.svt-doc-diagram-visual b {
+  position: absolute;
+  border: 1px solid var(--app-accent);
+}
+
+.svt-doc-diagram-visual span {
+  inset: 24px 22px;
+  border-radius: 999px;
+}
+
+.svt-doc-diagram-visual i {
+  inset-block-start: 50%;
+  inset-inline-start: 16px;
+  width: 70%;
+  height: 0;
+  transform: rotate(-12deg);
+}
+
+.svt-doc-diagram-visual b {
+  width: 34px;
+  height: 34px;
+  inset-block-start: 34px;
+  inset-inline-end: 26px;
+  border-radius: 12px;
+  background: rgba(0, 229, 153, 0.11);
+}
+
 @media (max-width: 1100px) {
   .lab-workspace,
   .lab-tool-grid,
@@ -8345,6 +9035,10 @@ textarea {
 
   .lab-control-panel {
     position: static;
+  }
+
+  .svt-document-workspace {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -8374,6 +9068,10 @@ textarea {
   .function-fact-head,
   .dna-pipeline-head {
     flex-direction: column;
+  }
+
+  .svt-doc-diagram-block {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -12916,6 +13614,25 @@ textarea {
   gap: 0.95rem;
 }
 
+.lab-tool-page .study-header,
+.lab-tool-page .study-header-main,
+.lab-tool-page .study-header-actions,
+.lab-tool-page .study-meta-row,
+.lab-tool-page .study-meta-pill,
+.lab-tool-page .study-meta-pill span {
+  min-width: 0;
+}
+
+.lab-tool-page .study-header h1,
+.lab-tool-page .study-meta-pill span {
+  overflow-wrap: anywhere;
+}
+
+.lab-tool-page .study-meta-pill {
+  max-width: 100%;
+  white-space: normal;
+}
+
 .lab-subject-section {
   border: 0;
   border-radius: 0;
@@ -12950,6 +13667,15 @@ textarea {
 
 .lab-tool-card-dna-to-protein {
   --instrument-glow: rgba(111, 255, 196, 0.17);
+}
+
+.lab-tool-card[data-status="DRAFT"] {
+  --instrument-glow: rgba(245, 158, 11, 0.13);
+  opacity: 0.9;
+}
+
+.lab-tool-card[data-status="DRAFT"] .lab-tool-visual {
+  filter: saturate(0.75);
 }
 
 .lab-tool-visual {

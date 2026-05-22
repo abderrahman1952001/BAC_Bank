@@ -575,6 +575,34 @@ describe('study command', () => {
     });
   });
 
+  it('opens a matching future ready lab tool under its subject lab slug', () => {
+    const proposal = buildStudyCommandProposal('نحب مختبر في الفيزياء', {
+      ...context,
+      labTools: [
+        ...labTools,
+        {
+          ...labTools[0],
+          id: '22222222-2222-4222-8222-222222222222',
+          slug: 'experiment-graphs',
+          title: 'منحنيات التجربة',
+          subject: {
+            code: 'PHYSICS',
+            name: 'العلوم الفيزيائية',
+          },
+        },
+      ],
+    });
+
+    expect(proposal).toMatchObject({
+      mode: 'LAB_EXPLORATION',
+      primaryHref: '/student/lab/physics/experiment-graphs',
+      availability: {
+        status: 'READY',
+        matchingExerciseCount: 1,
+      },
+    });
+  });
+
   it('asks for one clarification before opening a generic lab request', () => {
     const proposal = buildStudyCommandProposal('نحب مختبر يشرحلي بصرياً', {
       ...context,

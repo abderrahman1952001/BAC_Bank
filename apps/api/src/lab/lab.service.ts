@@ -100,7 +100,9 @@ export class LabService {
   async listTools(userId: string): Promise<LabToolsResponse> {
     const tools = await this.prisma.labTool.findMany({
       where: {
-        status: 'READY',
+        status: {
+          in: ['READY', 'DRAFT'],
+        },
       },
       orderBy: [{ slug: 'asc' }, { createdAt: 'asc' }],
       select: {

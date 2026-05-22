@@ -64,6 +64,8 @@ function describeExitCheck(exitCheck: Record<string, unknown> | null) {
       return "تحقق من mRNA والرامزات الناتجة.";
     case "MUTATION_EFFECT":
       return "صنّف أثر الطفرة على السلسلة البروتينية.";
+    case "DOCUMENT_EVIDENCE":
+      return "اختر الأدلة الأساسية واكتب استنتاجا يتضمن العلاقات المطلوبة.";
     default:
       return "أنهِ المهمة عندما تستطيع شرح الملاحظة بكلماتك.";
   }

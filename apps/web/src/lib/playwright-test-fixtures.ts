@@ -31,6 +31,7 @@ import type {
   SessionPreviewResponse,
   WeakPointInsightsResponse,
 } from "@bac-bank/contracts/study";
+import { svtDocumentWorkbenchPresets } from "@/lib/lab-svt-document-workbench";
 
 const playwrightFreeStudyEntitlements = {
   tier: "FREE",
@@ -132,6 +133,25 @@ export const playwrightTestLabTools = {
       slug: "dna-to-protein",
       title: "من DNA إلى بروتين",
       description: "مهمات قصيرة لتحويل DNA إلى mRNA وفهم أثر الطفرات.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "svt",
+      },
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "99999999-9999-9999-9999-999999999999",
+      slug: "svt-document-workbench",
+      title: "ورشة الوثائق والمنحنيات",
+      description: "قراءة وثائق، اختيار أدلة، وبناء استنتاج.",
       status: "READY",
       metadata: {
         subjectSlug: "svt",
@@ -256,6 +276,81 @@ export const playwrightTestLabToolMissionsBySlug: Record<
             code: "PROTEIN_FUNCTION_REASONING",
             name: "الاستدلال في البروتينات",
             slug: "protein-function-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "svt-document-workbench": {
+    tool: playwrightTestLabTools.data[2],
+    missions: [
+      {
+        mission: {
+          id: "bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb",
+          toolId: "99999999-9999-9999-9999-999999999999",
+          title: "فسّر مرضا انطلاقا من وثائق المستقبل R",
+          goal: "اختر الأدلة التي تربط الطفرة بتغير بنية المستقبل ثم اكتب استنتاجا يفسر تراكم LDL عند المصاب.",
+          preset: svtDocumentWorkbenchPresets[0],
+          exitCheck: {
+            kind: "DOCUMENT_EVIDENCE",
+            requiredEvidenceIds:
+              svtDocumentWorkbenchPresets[0].prompt.requiredEvidenceIds,
+            requiredConclusionKeywords:
+              svtDocumentWorkbenchPresets[0].prompt
+                .requiredConclusionKeywords,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "cccccccc-cccc-4ccc-cccc-cccccccccccc",
+            code: "STRUCTURE_FUNCTION",
+            name: "العلاقة بين البنية والوظيفة",
+            slug: "structure-function",
+          },
+          learningTarget: {
+            id: "dddddddd-dddd-4ddd-dddd-dddddddddddd",
+            code: "PROTEIN_FUNCTION_REASONING",
+            name: "الاستدلال في البروتينات",
+            slug: "protein-function-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "eeeeeeee-eeee-4eee-eeee-eeeeeeeeeeee",
+          toolId: "99999999-9999-9999-9999-999999999999",
+          title: "ابن نصا علميا من وثائق تركيب البروتين",
+          goal: "اختر أدلة سلسلة ADN إلى ARNm إلى أحماض أمينية، ثم اكتب خلاصة تربط ترتيب المعلومة بالبنية الفراغية.",
+          preset: svtDocumentWorkbenchPresets[1],
+          exitCheck: {
+            kind: "DOCUMENT_EVIDENCE",
+            requiredEvidenceIds:
+              svtDocumentWorkbenchPresets[1].prompt.requiredEvidenceIds,
+            requiredConclusionKeywords:
+              svtDocumentWorkbenchPresets[1].prompt
+                .requiredConclusionKeywords,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "ffffffff-ffff-4fff-ffff-ffffffffffff",
+            code: "PROTEIN_SYNTHESIS",
+            name: "تركيب البروتين",
+            slug: "protein-synthesis",
+          },
+          learningTarget: {
+            id: "abababab-abab-4aba-abab-abababababab",
+            code: "DOCUMENT_ANALYSIS",
+            name: "تحليل الوثائق",
+            slug: "document-analysis",
           },
           courseLesson: null,
           createdAt: "2026-05-13T08:00:00.000Z",

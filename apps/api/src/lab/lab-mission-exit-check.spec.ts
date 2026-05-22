@@ -91,4 +91,134 @@ describe('evaluateLabMissionExitCheck', () => {
       kind: 'MUTATION_EFFECT',
     });
   });
+
+  it('accepts reusable table and document checks', () => {
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'TABLE_CELLS',
+          expectedCells: [
+            {
+              rowId: 'trial-1',
+              columnId: 'ph',
+              expectedValue: 7.2,
+              tolerance: 0.1,
+            },
+          ],
+        },
+        {
+          answerCells: [{ rowId: 'trial-1', columnId: 'ph', value: 7.25 }],
+        },
+      ),
+    ).toMatchObject({
+      passed: true,
+      kind: 'TABLE_CELLS',
+    });
+
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'DOCUMENT_EVIDENCE',
+          requiredEvidenceIds: ['doc-a'],
+          requiredConclusionKeywords: ['enzyme'],
+        },
+        {
+          selectedEvidenceIds: ['doc-a'],
+          conclusion: 'The enzyme activity changes.',
+        },
+      ),
+    ).toMatchObject({
+      passed: true,
+      kind: 'DOCUMENT_EVIDENCE',
+    });
+  });
+
+  it('accepts reusable diagram, formula, and graph checks', () => {
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'DIAGRAM_LABELS',
+          targets: [
+            {
+              id: 'target-1',
+              expectedLabel: 'Ribosome',
+              acceptedLabels: ['الريبوزوم'],
+            },
+          ],
+        },
+        {
+          labels: [{ targetId: 'target-1', label: 'الريبوزوم' }],
+        },
+      ),
+    ).toMatchObject({
+      passed: true,
+      kind: 'DIAGRAM_LABELS',
+    });
+
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'FORMULA_VALUE',
+          expectedMeasurements: [
+            {
+              id: 'tau',
+              expected: { value: 0.47, unit: 's' },
+              tolerance: 0.02,
+              acceptedUnits: ['sec'],
+            },
+          ],
+        },
+        {
+          measurements: [{ id: 'tau', value: 0.48, unit: 'sec' }],
+        },
+      ),
+    ).toMatchObject({
+      passed: true,
+      kind: 'FORMULA_VALUE',
+    });
+
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'GRAPH_POINT',
+          x: 2,
+          y: 8,
+          tolerance: 0.25,
+        },
+        {
+          graphPoints: [{ x: 2.1, y: 8.1 }],
+        },
+      ),
+    ).toMatchObject({
+      passed: true,
+      kind: 'GRAPH_POINT',
+    });
+  });
+
+  it('rejects SVT document workbench results when evidence or conclusion is missing', () => {
+    expect(
+      evaluateLabMissionExitCheck(
+        {
+          kind: 'DOCUMENT_EVIDENCE',
+          requiredEvidenceIds: [
+            'ldl-normal-entry',
+            'r2-stop-codon',
+            'ldl-accumulation',
+          ],
+          requiredConclusionKeywords: ['LDL', 'مستقبل', 'طفرة'],
+        },
+        {
+          selectedEvidenceIds: ['ldl-normal-entry'],
+          conclusion: 'تغيرت الحالة الصحية للشخص المصاب.',
+        },
+      ),
+    ).toMatchObject({
+      passed: false,
+      kind: 'DOCUMENT_EVIDENCE',
+      details: {
+        missingEvidenceIds: ['r2-stop-codon', 'ldl-accumulation'],
+        missingKeywords: ['LDL', 'مستقبل', 'طفرة'],
+      },
+    });
+  });
 });

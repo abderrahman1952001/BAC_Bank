@@ -78,6 +78,15 @@ describe('LabService', () => {
         }),
       ],
     });
+    expect(prisma.labTool.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          status: {
+            in: ['READY', 'DRAFT'],
+          },
+        },
+      }),
+    );
   });
 
   it('lists tool missions with latest attempt and completed count', async () => {

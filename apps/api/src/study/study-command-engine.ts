@@ -102,6 +102,16 @@ function subjectCodeToLabSlug(subjectCode: string | null | undefined) {
     case 'NATURAL_SCIENCES':
     case 'SVT':
       return 'svt';
+    case 'PHYSICS':
+      return 'physics';
+    case 'TECHNOLOGY_CIVIL':
+      return 'technology-civil';
+    case 'TECHNOLOGY_ELECTRICAL':
+      return 'technology-electrical';
+    case 'TECHNOLOGY_MECHANICAL':
+      return 'technology-mechanical';
+    case 'TECHNOLOGY_PROCESS':
+      return 'technology-process';
     default:
       return null;
   }
