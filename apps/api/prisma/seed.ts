@@ -1790,6 +1790,261 @@ const PLATFORM_FLASHCARD_DECKS: PlatformFlashcardDeckDefinition[] = [
   },
 ];
 
+const SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS = [
+  {
+    id: 'glucobay-alpha-glucosidase',
+    title: 'Glucobay ونشاط α غلوكوزيداز',
+    subtitle: 'قراءة منحنيين تجريبيين لتفسير أثر دواء على نشاط إنزيم.',
+    bacContext:
+      'نمط BAC متكرر في وحدة الإنزيمات: مقارنة منحنيين بوجود/غياب مثبط، قراءة قيمة قصوى، ثم ربط النتيجة بالموقع الفعال ونسبة السكر في الدم.',
+    sourceHint:
+      'مستوحى من SVT SE 2016: نشاط α غلوكوزيداز بوجود وغياب Glucobay.',
+    protocol: {
+      title: 'بروتوكول مختصر',
+      steps: [
+        'نحضّر أوساطا بتراكيز متزايدة من السكريات قليلة التعدد.',
+        'نقيس نشاط إنزيم α غلوكوزيداز في غياب الدواء ثم في وجود Glucobay.',
+        'نقارن سرعة النشاط ونستنتج أثر الدواء على تشكل الغلوكوز.',
+      ],
+    },
+    table: {
+      title: 'جدول النتائج التجريبية',
+      columns: [
+        { id: 'substrate', label: 'تركيز الركيزة', unit: 'mmol' },
+        { id: 'without', label: 'النشاط دون Glucobay', unit: 'و.ت' },
+        { id: 'with', label: 'النشاط مع Glucobay', unit: 'و.ت' },
+      ],
+      rows: [
+        { id: 's0', label: '0 mmol', cells: { substrate: 0, without: 0, with: 0 } },
+        { id: 's5', label: '5 mmol', cells: { substrate: 5, without: 4, with: 1.2 } },
+        { id: 's10', label: '10 mmol', cells: { substrate: 10, without: 7, with: 2.2 } },
+        { id: 's15', label: '15 mmol', cells: { substrate: 15, without: 8.5, with: 3.2 } },
+        { id: 's25', label: '25 mmol', cells: { substrate: 25, without: 9, with: 4.2 } },
+        { id: 's30', label: '30 mmol', cells: { substrate: 30, without: 9, with: 4.4 } },
+      ],
+    },
+    graph: {
+      title: 'تغير نشاط الإنزيم حسب تركيز الركيزة',
+      xAxis: { label: 'تركيز الركيزة', unit: 'mmol', min: 0, max: 30 },
+      yAxis: { label: 'نشاط الإنزيم', unit: 'و.ت', min: 0, max: 10 },
+      series: [
+        {
+          id: 'without-glucobay',
+          title: 'دون Glucobay',
+          kind: 'line',
+          points: [
+            { x: 0, y: 0 },
+            { x: 5, y: 4 },
+            { x: 10, y: 7 },
+            { x: 15, y: 8.5 },
+            { x: 25, y: 9 },
+            { x: 30, y: 9 },
+          ],
+        },
+        {
+          id: 'with-glucobay',
+          title: 'مع Glucobay',
+          kind: 'line',
+          points: [
+            { x: 0, y: 0 },
+            { x: 5, y: 1.2 },
+            { x: 10, y: 2.2 },
+            { x: 15, y: 3.2 },
+            { x: 25, y: 4.2 },
+            { x: 30, y: 4.4 },
+          ],
+        },
+      ],
+    },
+    expectedReadings: [
+      {
+        id: 'without-activity-25',
+        label: 'النشاط دون الدواء عند 25 mmol',
+        source: 'graph',
+        seriesId: 'without-glucobay',
+        x: 25,
+        expectedValue: 9,
+        tolerance: 0.4,
+        unit: 'و.ت',
+      },
+      {
+        id: 'with-activity-25',
+        label: 'النشاط مع Glucobay عند 25 mmol',
+        source: 'graph',
+        seriesId: 'with-glucobay',
+        x: 25,
+        expectedValue: 4.2,
+        tolerance: 0.45,
+        unit: 'و.ت',
+      },
+    ],
+    observationItems: [
+      {
+        id: 'without-rises-plateaus',
+        label: 'في غياب Glucobay يرتفع النشاط بسرعة ثم يبلغ قيمة أعظمية تقارب 9.',
+        detail: 'هذا يحدد السلوك المرجعي للإنزيم قبل إضافة الدواء.',
+        kind: 'trend',
+      },
+      {
+        id: 'glucobay-lowers-activity',
+        label: 'في وجود Glucobay يبقى نشاط α غلوكوزيداز أقل في كل التراكيز.',
+        detail: 'المقارنة بين المنحنيين هي الدليل المباشر على التثبيط.',
+        kind: 'comparison',
+      },
+      {
+        id: 'active-site-competition',
+        label: 'تشابه Glucobay مع الركيزة يسمح له بمنافسة الركيزة على الموقع الفعال.',
+        detail: 'هذه الفكرة تفسر لماذا ينخفض تشكل الغلوكوز في الدم.',
+        kind: 'mechanism',
+      },
+      {
+        id: 'glucobay-raises-activity',
+        label: 'Glucobay يزيد نشاط الإنزيم ويزيد إنتاج الغلوكوز.',
+        detail: 'اختيار مضلل: المنحنى مع الدواء أدنى من المنحنى المرجعي.',
+        kind: 'distractor',
+      },
+    ],
+    prompt: {
+      title: 'استنتج أثر Glucobay على النشاط الإنزيمي.',
+      task: 'اقرأ القيمتين عند 25 mmol، اختر الملاحظات الصحيحة، ثم اكتب استنتاجا يربط الدواء بنشاط α غلوكوزيداز ونسبة السكر في الدم.',
+      requiredObservationIds: [
+        'without-rises-plateaus',
+        'glucobay-lowers-activity',
+        'active-site-competition',
+      ],
+      requiredConclusionKeywords: [
+        'Glucobay',
+        'α غلوكوزيداز',
+        'يثبط',
+        'الموقع الفعال',
+        'الغلوكوز',
+      ],
+      scaffoldPhrases: [
+        'عند 25 mmol يبلغ نشاط الإنزيم دون الدواء حوالي 9 و.ت.',
+        'وجود Glucobay يخفض نشاط α غلوكوزيداز مقارنة بالشاهد.',
+        'أستنتج أن الدواء يثبط الإنزيم فينقص تشكل الغلوكوز.',
+      ],
+    },
+  },
+  {
+    id: 'enzyme-ph-optimum',
+    title: 'pH والنشاط الإنزيمي',
+    subtitle: 'تحديد pH الأمثل وربط تغير النشاط ببنية الموقع الفعال.',
+    bacContext:
+      'نمط BAC متكرر: منحنى نشاط إنزيمي بدلالة pH، قراءة القيمة المثلى، ثم تفسير أثر الحموضة على البنية الفراغية والموقع الفعال.',
+    sourceHint: 'مستوحى من SVT SE 2008: تأثير pH على النشاط الإنزيمي.',
+    protocol: {
+      title: 'بروتوكول مختصر',
+      steps: [
+        'نحضر أوساطا لها قيم pH مختلفة مع نفس كمية الإنزيم والركيزة.',
+        'نقيس سرعة النشاط الإنزيمي في كل وسط.',
+        'نحدد الوسط الأمثل ونفسر انخفاض النشاط في الأوساط الشديدة الحموضة أو القاعدية.',
+      ],
+    },
+    table: {
+      title: 'نشاط الإنزيم حسب pH الوسط',
+      columns: [
+        { id: 'ph', label: 'pH الوسط' },
+        { id: 'activity', label: 'النشاط الإنزيمي', unit: '%' },
+      ],
+      rows: [
+        { id: 'ph3', label: 'pH 3', cells: { ph: 3, activity: 12 } },
+        { id: 'ph5', label: 'pH 5', cells: { ph: 5, activity: 58 } },
+        { id: 'ph7', label: 'pH 7', cells: { ph: 7, activity: 100 } },
+        { id: 'ph9', label: 'pH 9', cells: { ph: 9, activity: 52 } },
+        { id: 'ph11', label: 'pH 11', cells: { ph: 11, activity: 9 } },
+      ],
+    },
+    graph: {
+      title: 'تأثير pH على سرعة النشاط',
+      xAxis: { label: 'pH', min: 3, max: 11 },
+      yAxis: { label: 'النشاط النسبي', unit: '%', min: 0, max: 100 },
+      series: [
+        {
+          id: 'ph-activity',
+          title: 'نشاط الإنزيم',
+          kind: 'line',
+          points: [
+            { x: 3, y: 12 },
+            { x: 5, y: 58 },
+            { x: 7, y: 100 },
+            { x: 9, y: 52 },
+            { x: 11, y: 9 },
+          ],
+        },
+      ],
+    },
+    expectedReadings: [
+      {
+        id: 'optimum-ph',
+        label: 'قيمة pH التي يكون فيها النشاط أعظميا',
+        source: 'table',
+        rowId: 'ph7',
+        columnId: 'ph',
+        expectedValue: 7,
+        tolerance: 0.1,
+      },
+      {
+        id: 'max-activity',
+        label: 'النشاط النسبي عند pH = 7',
+        source: 'graph',
+        seriesId: 'ph-activity',
+        x: 7,
+        expectedValue: 100,
+        tolerance: 3,
+        unit: '%',
+      },
+    ],
+    observationItems: [
+      {
+        id: 'ph7-optimum',
+        label: 'النشاط أعظمي عند pH = 7.',
+        detail: 'هذه هي القراءة المركزية للمنحنى.',
+        kind: 'trend',
+      },
+      {
+        id: 'activity-drops-extremes',
+        label: 'ينخفض النشاط في الوسط الحمضي القوي والقاعدي القوي.',
+        detail: 'المقارنة مع pH 7 تكشف أثر شروط الوسط.',
+        kind: 'comparison',
+      },
+      {
+        id: 'ph-active-site-charges',
+        label: 'تغير pH يؤثر في شحنات أحماض أمينية في الموقع الفعال.',
+        detail: 'هذا يفسر فقدان التكامل بين الإنزيم والركيزة.',
+        kind: 'mechanism',
+      },
+      {
+        id: 'all-ph-equal',
+        label: 'يبقى نشاط الإنزيم ثابتا مهما تغير pH.',
+        detail: 'اختيار مضلل: القيم التجريبية تتغير بوضوح.',
+        kind: 'distractor',
+      },
+    ],
+    prompt: {
+      title: 'حدد pH الأمثل وفسر تغير النشاط.',
+      task: 'اقرأ pH الأمثل والنشاط الموافق، اختر الملاحظات الصحيحة، ثم اكتب استنتاجا يربط pH ببنية الموقع الفعال.',
+      requiredObservationIds: [
+        'ph7-optimum',
+        'activity-drops-extremes',
+        'ph-active-site-charges',
+      ],
+      requiredConclusionKeywords: [
+        'pH',
+        '7',
+        'النشاط',
+        'الموقع الفعال',
+        'بنية',
+      ],
+      scaffoldPhrases: [
+        'تبلغ سرعة النشاط قيمة أعظمية عند pH = 7.',
+        'تنخفض سرعة النشاط في الأوساط الشديدة الحموضة أو القاعدية.',
+        'أستنتج أن pH يؤثر في بنية الموقع الفعال وتكامله مع الركيزة.',
+      ],
+    },
+  },
+];
+
 const PLATFORM_LAB_TOOLS: PlatformLabToolDefinition[] = [
   {
     slug: 'function-explorer',
@@ -2234,6 +2489,61 @@ const PLATFORM_LAB_TOOLS: PlatformLabToolDefinition[] = [
             'أحماض',
             'بنية',
           ],
+        },
+        orderIndex: 2,
+      },
+    ],
+  },
+  {
+    slug: 'svt-experimental-graph-table',
+    subjectCode: 'NATURAL_SCIENCES',
+    title: 'ورشة المنحنيات والجداول التجريبية',
+    description: 'تجارب، جداول، منحنيات، واستنتاج علمي.',
+    status: 'READY',
+    metadata: {
+      subjectSlug: 'svt',
+      route: '/student/lab/svt/experimental-graph-table',
+      registryToolId: 'svt-experimental-graph-table',
+      engineKinds: ['graph', 'table', 'document-reasoning'],
+    },
+    missions: [
+      {
+        code: 'SVT_EXP_GLUCOBAY_ENZYME_ACTIVITY',
+        title: 'حلل تأثير Glucobay على نشاط الإنزيم',
+        goal: 'اقرأ القيمتين عند 25 mmol، قارن المنحنيين، ثم اكتب استنتاجا يفسر أثر الدواء على نسبة الغلوكوز.',
+        curriculumNodeCode: 'ENZYMES',
+        learningTargetCode: 'DOCUMENT_ANALYSIS',
+        preset: SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[0],
+        exitCheck: {
+          kind: 'SVT_EXPERIMENTAL_GRAPH_TABLE',
+          expectedReadings:
+            SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[0].expectedReadings,
+          requiredObservationIds:
+            SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[0].prompt
+              .requiredObservationIds,
+          requiredConclusionKeywords:
+            SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[0].prompt
+              .requiredConclusionKeywords,
+        },
+        orderIndex: 1,
+      },
+      {
+        code: 'SVT_EXP_ENZYME_PH_OPTIMUM',
+        title: 'حدد pH الأمثل لنشاط إنزيمي',
+        goal: 'استخرج pH الأمثل من الجدول والمنحنى، ثم فسر لماذا ينخفض النشاط خارج هذا الوسط.',
+        curriculumNodeCode: 'ENZYMES',
+        learningTargetCode: 'PROTEIN_FUNCTION_REASONING',
+        preset: SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[1],
+        exitCheck: {
+          kind: 'SVT_EXPERIMENTAL_GRAPH_TABLE',
+          expectedReadings:
+            SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[1].expectedReadings,
+          requiredObservationIds:
+            SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[1].prompt
+              .requiredObservationIds,
+          requiredConclusionKeywords:
+            SVT_EXPERIMENTAL_GRAPH_TABLE_PRESETS[1].prompt
+              .requiredConclusionKeywords,
         },
         orderIndex: 2,
       },
