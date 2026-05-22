@@ -1,4 +1,5 @@
 import { spawn } from 'node:child_process';
+import { createReadStream } from 'node:fs';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -189,6 +190,18 @@ async function runPgRestore(input: {
     throw new Error('Restore confirmation is required.');
   }
 
+  if ((await canRunCommand('pg_restore')) && (await canRunCommand('psql'))) {
+    await runPgRestoreWithHostTools(input);
+    return;
+  }
+
+  await runPgRestoreWithDockerPostgres(input);
+}
+
+async function runPgRestoreWithHostTools(input: {
+  backupFilePath: string;
+  targetDatabaseUrl: string;
+}) {
   const pgRestore = spawn(
     'pg_restore',
     [
@@ -237,6 +250,151 @@ async function runPgRestore(input: {
     waitForExit(pgRestore, 'pg_restore'),
     waitForExit(psql, 'psql'),
   ]);
+}
+
+async function runPgRestoreWithDockerPostgres(input: {
+  backupFilePath: string;
+  targetDatabaseUrl: string;
+}) {
+  const containerName =
+    process.env.POSTGRES_RESTORE_DOCKER_CONTAINER?.trim() || 'bac-postgres';
+  const postgresToolImage =
+    process.env.POSTGRES_RESTORE_DOCKER_IMAGE?.trim() || 'postgres:17-alpine';
+
+  if (!(await canRunCommand('docker'))) {
+    throw new Error(
+      'pg_restore and psql were not found on PATH, and docker is unavailable.',
+    );
+  }
+
+  const containerDatabaseUrl = buildDockerPostgresDatabaseUrl(
+    input.targetDatabaseUrl,
+    containerName,
+  );
+
+  console.warn(
+    `pg_restore/psql were not found on PATH. Using ${postgresToolImage} over Docker container ${containerName}'s network.`,
+  );
+
+  const pgRestore = spawn(
+    'docker',
+    [
+      'run',
+      '--rm',
+      '-i',
+      '--network',
+      `container:${containerName}`,
+      postgresToolImage,
+      'sh',
+      '-c',
+      [
+        'set -e',
+        'backup_file="$(mktemp /tmp/bac-bank-restore.XXXXXX)"',
+        'cleanup() { rm -f "$backup_file"; }',
+        'trap cleanup EXIT',
+        'cat > "$backup_file"',
+        [
+          'pg_restore',
+          '--clean',
+          '--if-exists',
+          '--no-owner',
+          '--no-privileges',
+          '--format=custom',
+          '--file=-',
+          '"$backup_file"',
+        ].join(' '),
+      ].join('\n'),
+    ],
+    {
+      stdio: ['pipe', 'pipe', 'inherit'],
+      env: {
+        ...process.env,
+        PGAPPNAME: 'bac-bank-db-restore-export-docker',
+      },
+    },
+  );
+  const psql = spawn(
+    'docker',
+    [
+      'run',
+      '--rm',
+      '-i',
+      '--network',
+      `container:${containerName}`,
+      postgresToolImage,
+      'psql',
+      `--dbname=${containerDatabaseUrl}`,
+      '--set=ON_ERROR_STOP=1',
+    ],
+    {
+      stdio: ['pipe', 'inherit', 'inherit'],
+      env: {
+        ...process.env,
+        PGAPPNAME: 'bac-bank-db-restore-apply-docker',
+      },
+    },
+  );
+
+  if (!pgRestore.stdin) {
+    throw new Error('docker pg_restore did not expose stdin.');
+  }
+
+  if (!pgRestore.stdout) {
+    throw new Error('docker pg_restore did not expose stdout.');
+  }
+
+  if (!psql.stdin) {
+    throw new Error('docker psql did not expose stdin.');
+  }
+
+  await Promise.all([
+    pipeline(createReadStream(input.backupFilePath), pgRestore.stdin),
+    pipeline(pgRestore.stdout, stripUnsupportedSessionSettings(), psql.stdin),
+    waitForExit(pgRestore, 'docker pg_restore'),
+    waitForExit(psql, 'docker psql'),
+  ]);
+}
+
+async function canRunCommand(command: string) {
+  return new Promise<boolean>((resolve) => {
+    const child = spawn(command, ['--version'], {
+      stdio: 'ignore',
+    });
+
+    child.on('error', () => resolve(false));
+    child.on('exit', (code) => resolve(code === 0));
+  });
+}
+
+function buildDockerPostgresDatabaseUrl(
+  targetDatabaseUrl: string,
+  containerName: string,
+) {
+  let parsed: URL;
+
+  try {
+    parsed = new URL(targetDatabaseUrl);
+  } catch {
+    throw new Error(
+      'Docker restore fallback requires TARGET_DATABASE_URL to be a valid PostgreSQL URL.',
+    );
+  }
+
+  if (!['localhost', '127.0.0.1', '[::1]'].includes(parsed.hostname)) {
+    throw new Error(
+      'pg_restore and psql are missing on PATH. The Docker fallback is only supported for local TARGET_DATABASE_URL hosts.',
+    );
+  }
+
+  if (parsed.port !== '5433') {
+    throw new Error(
+      `pg_restore and psql are missing on PATH. The Docker fallback expected ${containerName} through host port 5433, not ${parsed.port || 'the default PostgreSQL port'}.`,
+    );
+  }
+
+  parsed.hostname = 'localhost';
+  parsed.port = '5432';
+  return parsed.toString();
 }
 
 function stripUnsupportedSessionSettings() {

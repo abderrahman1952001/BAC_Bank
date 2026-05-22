@@ -2,12 +2,17 @@
 
 ## Purpose
 
-Use one hosted PostgreSQL database as the shared development source of truth for
-BAC ingestion work across multiple devices.
+Use one hosted PostgreSQL database as a shared development database or as a
+handoff checkpoint for BAC ingestion work across multiple devices.
 
-This replaces the "one laptop owns the DB" workflow. Both devices can run the
-API, admin app, import scripts, and Codex ingestion work against the same
-database. The human still controls crop refinement, approval, and publish.
+For heavy ingestion and publication work, the current preferred workflow is
+local-first handoff: one device writes to local Postgres, then pushes a
+checkpoint to the hosted DB before another device pulls that checkpoint. See
+`docs/local-first-db-handoff.md`.
+
+The hosted-live workflow below is still available for light app testing and
+short shared sessions, but it can be slower because hosted connections may have
+remote latency, cold starts, or connection churn.
 
 ## Recommended Provider
 

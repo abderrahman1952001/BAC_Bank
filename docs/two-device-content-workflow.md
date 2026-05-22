@@ -1,13 +1,14 @@
 # Two-Device Content Workflow
 
-This project supports two different sync channels:
+This project supports three sync channels:
 
 - Git for code, contracts, docs, migrations, and reviewed text changes.
-- R2 plus a shared development database for active content and ingestion work.
+- R2 for large assets, theory content, and database backup checkpoints.
+- A PostgreSQL handoff workflow for active content and ingestion work.
 
 Do not try to keep two local PostgreSQL databases bidirectionally synced. For
-active ingestion/review/content work, use one shared development database as the
-working source of truth and point both devices at it.
+heavy ingestion/review/content work, use the local database on one device at a
+time and publish a checkpoint to the hosted database before switching devices.
 
 ## Theory Content In R2
 
@@ -87,24 +88,26 @@ large images, scans, generated course visuals, and durable source assets.
 
 ## Database For Active Ingestion
 
-For seamless ingestion across two devices, use one shared development Postgres
-database instead of two local databases.
+For heavy ingestion/admin work, use the local Postgres database on the device
+currently doing the work. Treat the hosted database as a handoff checkpoint, not
+as a live multi-device collaborative database.
 
-For the hosted setup and migration runbook, see
-`docs/hosted-dev-database.md`.
+For the active runbook, see `docs/local-first-db-handoff.md`.
 
-On both devices, set `apps/api/.env` to the same shared values:
+On the active device, set `apps/api/.env` to local Postgres:
 
 ```env
-DATABASE_URL=postgresql://...
-REDIS_URL=redis://...
+DATABASE_URL=postgresql://bac_user:bac_password@localhost:5433/bac_bank?schema=public
+REDIS_URL=redis://localhost:6379
 BAC_THEORY_CONTENT_SOURCE=r2
 ```
 
-Run the ingestion worker on only one device at a time unless you intentionally
-want both devices processing the same shared queue.
+Run the ingestion worker on only the active device. Before moving to the other
+device, stop writers, back up local Postgres to R2, restore that checkpoint into
+the hosted database, then restore the checkpoint into the other device's local
+Postgres.
 
-Use the backup commands for checkpoints, not live two-way sync:
+Use the backup commands for handoff checkpoints, not live two-way sync:
 
 ```bash
 npm run db:backup:r2 -w @bac-bank/api
