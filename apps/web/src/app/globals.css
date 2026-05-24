@@ -2592,7 +2592,7 @@ textarea {
 }
 
 .probability-tree-edges line {
-  stroke: rgba(9, 29, 57, 0.42);
+  stroke: var(--line-strong);
   stroke-width: 1.5;
 }
 
@@ -2603,8 +2603,8 @@ textarea {
 }
 
 .probability-tree-nodes circle {
-  fill: var(--brand-ghost);
-  stroke: var(--brand);
+  fill: var(--app-accent-ghost);
+  stroke: var(--app-accent);
   stroke-width: 1.6;
 }
 
@@ -9265,6 +9265,273 @@ textarea {
   font-weight: 600;
 }
 
+.math-prob-workspace {
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+}
+
+.math-prob-workspace,
+.math-prob-control,
+.math-prob-card,
+.math-prob-answer-stack,
+.math-prob-table-wrap,
+.math-prob-section-head,
+.math-prob-check-row {
+  min-width: 0;
+}
+
+.math-prob-control {
+  gap: 0.9rem;
+}
+
+.math-prob-answer-stack {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface-soft);
+  padding: 0.9rem;
+}
+
+.math-prob-section-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.math-prob-section-head svg,
+.math-prob-card svg {
+  color: var(--app-accent);
+}
+
+.math-prob-section-head h3 {
+  margin: 0;
+  font-size: 0.96rem;
+  letter-spacing: 0;
+}
+
+.math-prob-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.math-prob-table-wrap table {
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.math-prob-table-wrap th,
+.math-prob-table-wrap td {
+  border: 1px solid var(--line);
+  padding: 0.68rem;
+  text-align: start;
+  vertical-align: middle;
+}
+
+.math-prob-table-wrap th {
+  background: var(--surface-muted);
+  color: var(--ink-soft);
+  font-weight: var(--weight-label);
+}
+
+.math-prob-table-wrap th span {
+  display: block;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+}
+
+.math-prob-check-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 0.7rem 0.8rem;
+}
+
+.math-prob-check-row[data-passed="true"] {
+  border-color: var(--app-accent-line);
+  background: var(--app-accent-ghost);
+}
+
+.math-prob-check-row strong {
+  min-width: 0;
+  color: var(--ink);
+  font-size: 0.86rem;
+  overflow-wrap: anywhere;
+}
+
+.math-prob-check-row span {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: var(--weight-label);
+}
+
+.math-seq-workspace {
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+}
+
+.math-seq-workspace,
+.math-seq-control,
+.math-seq-card,
+.math-seq-empty-graph {
+  min-width: 0;
+}
+
+.math-seq-control {
+  gap: 0.9rem;
+}
+
+.math-seq-card svg {
+  color: var(--app-accent);
+}
+
+.math-seq-empty-graph {
+  min-height: 220px;
+  display: grid;
+  place-content: center;
+  gap: 0.45rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.math-seq-empty-graph p {
+  max-width: 28rem;
+}
+
+.math-geo-workspace {
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+}
+
+.math-geo-workspace,
+.math-geo-control,
+.math-geo-card,
+.math-geo-plane {
+  min-width: 0;
+}
+
+.math-geo-control {
+  gap: 0.9rem;
+}
+
+.math-geo-card svg {
+  color: var(--app-accent);
+}
+
+.math-geo-plane {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+}
+
+.math-geo-plane rect {
+  fill: transparent;
+  stroke: var(--line);
+}
+
+.math-geo-plane line {
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.math-geo-plane circle {
+  fill: var(--surface);
+  stroke: var(--app-accent);
+  stroke-width: 3;
+}
+
+.math-geo-plane text {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.math-geo-plane text.affix {
+  fill: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.structured-workbench {
+  grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
+}
+
+.structured-workbench,
+.structured-workbench-control,
+.structured-workbench-card,
+.structured-workbench-section,
+.structured-measure-row,
+.structured-diagram,
+.structured-diagram-target {
+  min-width: 0;
+}
+
+.structured-workbench-control {
+  gap: 0.9rem;
+}
+
+.structured-workbench-section {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface-soft);
+  padding: 0.9rem;
+}
+
+.structured-measure-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(92px, 0.34fr);
+  gap: 0.6rem;
+}
+
+.structured-diagram {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+  border: 1px solid var(--app-accent-line);
+  border-radius: 22px;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    radial-gradient(circle at 50% 45%, rgba(0, 229, 153, 0.1), transparent 34%),
+    var(--surface);
+  background-size:
+    48px 48px,
+    48px 48px,
+    auto,
+    auto;
+}
+
+.structured-diagram-target {
+  position: absolute;
+  width: min(180px, 44vw);
+  transform: translate(-50%, -50%);
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 0.55rem;
+}
+
+.structured-diagram-target span {
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  font-weight: var(--weight-label);
+}
+
 @media (max-width: 1100px) {
   .lab-workspace,
   .lab-tool-grid,
@@ -9285,6 +9552,22 @@ textarea {
   }
 
   .svt-exp-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .math-prob-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .math-seq-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .math-geo-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .structured-workbench {
     grid-template-columns: minmax(0, 1fr);
   }
 }

@@ -20,6 +20,13 @@ import type {
   LabToolMissionsResponse,
   LabToolsResponse,
 } from "@bac-bank/contracts/lab";
+import { mathGeometryComplexPresets } from "@/lib/lab-math-geometry-complex-plane";
+import { mathProbabilityWorkbenchPresets } from "@/lib/lab-math-probability-workbench";
+import { mathSequencesWorkbenchPresets } from "@/lib/lab-math-sequences-workbench";
+import { physicsChemistryReactionWorkbenchPresets } from "@/lib/lab-physics-chemistry-reaction-workbench";
+import { physicsCircuitsWorkbenchPresets } from "@/lib/lab-physics-circuits-workbench";
+import { physicsExperimentGraphPresets } from "@/lib/lab-physics-experiment-graphs";
+import { physicsMechanicsWorkbenchPresets } from "@/lib/lab-physics-mechanics-workbench";
 import type {
   CatalogResponse,
   ExamResponse,
@@ -31,8 +38,24 @@ import type {
   SessionPreviewResponse,
   WeakPointInsightsResponse,
 } from "@bac-bank/contracts/study";
+import { civilBeamStaticsWorkbenchPresets } from "@/lib/lab-civil-beam-statics-workbench";
+import { civilStructuresMaterialsWorkbenchPresets } from "@/lib/lab-civil-structures-materials-workbench";
+import { civilTechnicalSheetWorkbenchPresets } from "@/lib/lab-civil-technical-sheet-workbench";
+import { electricalControlLogicWorkbenchPresets } from "@/lib/lab-electrical-control-logic-workbench";
+import { electricalCircuitsChronogramsWorkbenchPresets } from "@/lib/lab-electrical-circuits-chronograms-workbench";
+import { electricalTechnicalFileWorkbenchPresets } from "@/lib/lab-electrical-technical-file-workbench";
+import { mechanicalDrawingWorkbenchPresets } from "@/lib/lab-mechanical-drawing-workbench";
+import { mechanicalManufacturingTolerancesWorkbenchPresets } from "@/lib/lab-mechanical-manufacturing-tolerances-workbench";
+import { mechanicalMechanismKinematicsWorkbenchPresets } from "@/lib/lab-mechanical-mechanism-kinematics-workbench";
+import { processFlowInstrumentationWorkbenchPresets } from "@/lib/lab-process-flow-instrumentation-workbench";
+import { processMaterialBalanceAdvancementWorkbenchPresets } from "@/lib/lab-process-material-balance-advancement-workbench";
+import { processReactionWorkbenchPresets } from "@/lib/lab-process-reaction-workbench";
 import { svtDocumentWorkbenchPresets } from "@/lib/lab-svt-document-workbench";
+import { svtDiagramLabelingWorkbenchPresets } from "@/lib/lab-svt-diagram-labeling-workbench";
+import { svtEnergyMetabolismWorkbenchPresets } from "@/lib/lab-svt-energy-metabolism-workbench";
 import { svtExperimentalGraphTablePresets } from "@/lib/lab-svt-experimental-graph-table";
+import { svtNervousImmuneResponseWorkbenchPresets } from "@/lib/lab-svt-nervous-immune-response-workbench";
+import { svtTectonicsWorkbenchPresets } from "@/lib/lab-svt-tectonics-workbench";
 
 const playwrightFreeStudyEntitlements = {
   tier: "FREE",
@@ -130,6 +153,139 @@ export const playwrightTestLabTools = {
       updatedAt: "2026-05-13T08:00:00.000Z",
     },
     {
+      id: "19191919-1919-4919-9919-191919191919",
+      slug: "math-probability-workbench",
+      title: "ورشة الاحتمالات",
+      description: "شجرات، جداول قانون احتمال، واحتمال شرطي.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "math",
+      },
+      subject: {
+        code: "MATHEMATICS",
+        name: "الرياضيات",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "1e1e1e1e-1e1e-4e1e-9e1e-1e1e1e1e1e1e",
+      slug: "math-sequences-workbench",
+      title: "ورشة المتتاليات",
+      description: "حدود، علاقة تراجعية، رتابة، وتحويل هندسي.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "math",
+      },
+      subject: {
+        code: "MATHEMATICS",
+        name: "الرياضيات",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "23232323-2323-4323-9323-232323232323",
+      slug: "math-geometry-complex-plane",
+      title: "ورشة الهندسة والمستوى المركب",
+      description: "نقاط، لواحق، متجهات، مسافات، وتحويلات.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "math",
+      },
+      subject: {
+        code: "MATHEMATICS",
+        name: "الرياضيات",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "28282828-2828-4828-9828-282828282828",
+      slug: "physics-experiment-graphs",
+      title: "منحنيات التجربة",
+      description: "ميل، ثابت زمني، وحدات، واستنتاج تجريبي.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "physics",
+      },
+      subject: {
+        code: "PHYSICS",
+        name: "العلوم الفيزيائية",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "30303030-3030-4030-9030-303030303030",
+      slug: "physics-circuits-workbench",
+      title: "ورشة الدارات الكهربائية",
+      description: "RC/RL، مخططات، ثابت الزمن، ووحدات.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "physics",
+      },
+      subject: {
+        code: "PHYSICS",
+        name: "العلوم الفيزيائية",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "33333333-3333-4333-9333-333333333333",
+      slug: "physics-mechanics-workbench",
+      title: "ورشة الميكانيك",
+      description: "قوى، حركة، ميل منحنى، واهتزازات.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "physics",
+      },
+      subject: {
+        code: "PHYSICS",
+        name: "العلوم الفيزيائية",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "36363636-3636-4636-9636-363636363636",
+      slug: "physics-chemistry-reaction-workbench",
+      title: "ورشة الكيمياء والتفاعلات",
+      description: "معايرة، جداول تقدم، منحنيات، وتركيز.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "physics",
+      },
+      subject: {
+        code: "PHYSICS",
+        name: "العلوم الفيزيائية",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
       id: "22222222-2222-2222-2222-222222222222",
       slug: "dna-to-protein",
       title: "من DNA إلى بروتين",
@@ -179,6 +335,310 @@ export const playwrightTestLabTools = {
       subject: {
         code: "NATURAL_SCIENCES",
         name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "3b3b3b3b-3b3b-4b3b-9b3b-3b3b3b3b3b3b",
+      slug: "svt-diagram-labeling-workbench",
+      title: "ورشة تسمية الرسوم الحيوية",
+      description: "مواقع فعالة، عضيات، وبنيات حيوية.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "svt",
+      },
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "40404040-4040-4040-9040-404040404040",
+      slug: "svt-energy-metabolism-workbench",
+      title: "ورشة الطاقة الخلوية",
+      description: "تركيب ضوئي، تنفس، تخمر، وATP.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "svt",
+      },
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "44444444-4444-4444-9444-444444444444",
+      slug: "svt-nervous-immune-response-workbench",
+      title: "ورشة الاستجابة العصبية والمناعية",
+      description: "منعكسات، مشابك، خلايا مناعية، وأجسام مضادة.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "svt",
+      },
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "4a4a4a4a-4a4a-4a4a-9a4a-4a4a4a4a4a4a",
+      slug: "svt-tectonics-workbench",
+      title: "ورشة التكتونية",
+      description: "خرائط، مقاطع، زلازل، وحركة صفائح.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "svt",
+      },
+      subject: {
+        code: "NATURAL_SCIENCES",
+        name: "علوم الطبيعة والحياة",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "50505050-5050-4050-9050-505050505050",
+      slug: "technology-civil-beam-statics",
+      title: "تحليل الجوائز",
+      description: "ردود أفعال، مخططات قوى، وجداول مقاطع.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-civil",
+      },
+      subject: {
+        code: "TECHNOLOGY_CIVIL",
+        name: "التكنولوجيا (هندسة مدنية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "55555555-5555-4555-9555-555555555555",
+      slug: "technology-civil-structures-materials",
+      title: "ورشة المنشآت والمواد",
+      description: "مقاطع، خرسانة مسلحة، فولاذ، وإجهادات.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-civil",
+      },
+      subject: {
+        code: "TECHNOLOGY_CIVIL",
+        name: "التكنولوجيا (هندسة مدنية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "5a5a5a5a-5a5a-4a5a-9a5a-5a5a5a5a5a5a",
+      slug: "technology-civil-technical-sheet",
+      title: "ورشة البطاقة التقنية المدنية",
+      description: "مخططات، كميات، مراحل إنجاز، وملف إجابة.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-civil",
+      },
+      subject: {
+        code: "TECHNOLOGY_CIVIL",
+        name: "التكنولوجيا (هندسة مدنية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "60606060-6060-4060-9060-606060606060",
+      slug: "technology-electrical-control-logic",
+      title: "التحكم والمنطق",
+      description: "GRAFCET، جداول صدق، خرائط Karnaugh، وكرونوغرام.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-electrical",
+      },
+      subject: {
+        code: "TECHNOLOGY_ELECTRICAL",
+        name: "التكنولوجيا (هندسة كهربائية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "65656565-6565-4565-9565-656565656565",
+      slug: "technology-electrical-circuits-chronograms",
+      title: "ورشة الدارات والكرونوغرامات",
+      description: "مرحلات، تلامسات، مؤقتات، وإشارات زمنية.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-electrical",
+      },
+      subject: {
+        code: "TECHNOLOGY_ELECTRICAL",
+        name: "التكنولوجيا (هندسة كهربائية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "69696969-6969-4969-9969-696969696969",
+      slug: "technology-electrical-technical-file",
+      title: "ورشة الملف التقني الكهربائي",
+      description: "مكونات، بطاقات محرك، حماية، وملف إجابة.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-electrical",
+      },
+      subject: {
+        code: "TECHNOLOGY_ELECTRICAL",
+        name: "التكنولوجيا (هندسة كهربائية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "70707070-7070-4070-9070-707070707070",
+      slug: "technology-mechanical-drawing-workbench",
+      title: "ورشة الرسم الميكانيكي",
+      description: "رسم تجميعي، مدونة قطع، مقاطع، سماحات، وخشونة.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-mechanical",
+      },
+      subject: {
+        code: "TECHNOLOGY_MECHANICAL",
+        name: "التكنولوجيا (هندسة ميكانيكية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "75757575-7575-4575-9575-757575757575",
+      slug: "technology-mechanical-mechanism-kinematics",
+      title: "ورشة الآليات والحركيات",
+      description: "نسب نقل، تروس، تحويل حركة، وسرعات/إزاحات.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-mechanical",
+      },
+      subject: {
+        code: "TECHNOLOGY_MECHANICAL",
+        name: "التكنولوجيا (هندسة ميكانيكية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "79797979-7979-4979-9979-797979797979",
+      slug: "technology-mechanical-manufacturing-tolerances",
+      title: "ورشة التصنيع والتسامحات",
+      description: "تحضير تصنيع، عمليات، أدوات مراقبة، وتساميحات/تلاؤم.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-mechanical",
+      },
+      subject: {
+        code: "TECHNOLOGY_MECHANICAL",
+        name: "التكنولوجيا (هندسة ميكانيكية)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "80808080-8080-4080-9080-808080808080",
+      slug: "technology-process-reaction-workbench",
+      title: "ورشة مخططات التفاعل",
+      description: "أسترة، بلمرة، عائلات عضوية، شروط، ونواتج.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-process",
+      },
+      subject: {
+        code: "TECHNOLOGY_PROCESS",
+        name: "التكنولوجيا (هندسة الطرائق)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "85858585-8585-4585-9585-858585858585",
+      slug: "technology-process-material-balance-advancement",
+      title: "ورشة الموازنة والتقدم",
+      description: "مردود، كتل، جداول تقدم، ومتفاعل محد.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-process",
+      },
+      subject: {
+        code: "TECHNOLOGY_PROCESS",
+        name: "التكنولوجيا (هندسة الطرائق)",
+      },
+      missionCount: 2,
+      completedMissionCount: 0,
+      inProgressMissionCount: 0,
+      createdAt: "2026-05-13T08:00:00.000Z",
+      updatedAt: "2026-05-13T08:00:00.000Z",
+    },
+    {
+      id: "89898989-8989-4989-9989-898989898989",
+      slug: "technology-process-flow-instrumentation",
+      title: "ورشة الجريان والقياس",
+      description: "PFD، تجهيزات، تيارات، رموز قياس، وتحكم.",
+      status: "READY",
+      metadata: {
+        subjectSlug: "technology-process",
+      },
+      subject: {
+        code: "TECHNOLOGY_PROCESS",
+        name: "التكنولوجيا (هندسة الطرائق)",
       },
       missionCount: 2,
       completedMissionCount: 0,
@@ -267,8 +727,483 @@ export const playwrightTestLabToolMissionsBySlug: Record<
       },
     ],
   },
-  "dna-to-protein": {
+  "math-probability-workbench": {
     tool: playwrightTestLabTools.data[1],
+    missions: [
+      {
+        mission: {
+          id: "1a1a1a1a-1a1a-4a1a-9a1a-1a1a1a1a1a1a",
+          toolId: "19191919-1919-4919-9919-191919191919",
+          title: "أكمل شجرة احتمال واحسب تقاطعا",
+          goal: "املأ الفروع الناقصة في شجرة احتمال على مرحلتين، ثم احسب P(A∩B) باستعمال قاعدة الضرب.",
+          preset: mathProbabilityWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mathProbabilityWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "1b1b1b1b-1b1b-4b1b-9b1b-1b1b1b1b1b1b",
+            code: "PROBABILITY",
+            name: "الاحتمالات والإحصاء",
+            slug: "probability",
+          },
+          learningTarget: {
+            id: "1c1c1c1c-1c1c-4c1c-9c1c-1c1c1c1c1c1c",
+            code: "PROBABILITY_MODELING",
+            name: "النمذجة في الاحتمالات",
+            slug: "probability-modeling",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "1d1d1d1d-1d1d-4d1d-9d1d-1d1d1d1d1d1d",
+          toolId: "19191919-1919-4919-9919-191919191919",
+          title: "أتمم قانون احتمال واحسب الأمل",
+          goal: "املأ قانون احتمال المتغير X ثم احسب E(X) من مجموع x×P(X=x).",
+          preset: mathProbabilityWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mathProbabilityWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "1b1b1b1b-1b1b-4b1b-9b1b-1b1b1b1b1b1b",
+            code: "PROBABILITY",
+            name: "الاحتمالات والإحصاء",
+            slug: "probability",
+          },
+          learningTarget: {
+            id: "1c1c1c1c-1c1c-4c1c-9c1c-1c1c1c1c1c1c",
+            code: "PROBABILITY_MODELING",
+            name: "النمذجة في الاحتمالات",
+            slug: "probability-modeling",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "math-sequences-workbench": {
+    tool: playwrightTestLabTools.data[2],
+    missions: [
+      {
+        mission: {
+          id: "1f1f1f1f-1f1f-4f1f-9f1f-1f1f1f1f1f1f",
+          toolId: "1e1e1e1e-1e1e-4e1e-9e1e-1e1e1e1e1e1e",
+          title: "حلل متتالية تراجعية بنقطة تثبيت",
+          goal: "أكمل حدود uₙ و vₙ، بين أن vₙ هندسية، ثم استنتج اتجاه الحدود ونهاية uₙ.",
+          preset: mathSequencesWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mathSequencesWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "20202020-2020-4020-9020-202020202020",
+            code: "SEQUENCES",
+            name: "المتتاليات",
+            slug: "sequences",
+          },
+          learningTarget: {
+            id: "21212121-2121-4121-9121-212121212121",
+            code: "SEQUENCE_PROOF",
+            name: "البرهان في المتتاليات",
+            slug: "sequence-proof",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "22222222-2222-4222-9222-222222222222",
+          toolId: "1e1e1e1e-1e1e-4e1e-9e1e-1e1e1e1e1e1e",
+          title: "تحقق من حد واحسب مجموعا",
+          goal: "استعمل صيغة uₙ=3n-9 لتحديد الأساس ورتبة الحد 2025 ثم حساب مجموع جزئي.",
+          preset: mathSequencesWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mathSequencesWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "20202020-2020-4020-9020-202020202020",
+            code: "SEQUENCES",
+            name: "المتتاليات",
+            slug: "sequences",
+          },
+          learningTarget: {
+            id: "21212121-2121-4121-9121-212121212121",
+            code: "SEQUENCE_PROOF",
+            name: "البرهان في المتتاليات",
+            slug: "sequence-proof",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "math-geometry-complex-plane": {
+    tool: playwrightTestLabTools.data[3],
+    missions: [
+      {
+        mission: {
+          id: "24242424-2424-4424-9424-242424242424",
+          toolId: "23232323-2323-4323-9323-232323232323",
+          title: "استنتج دائرة وطبيعة مثلث من اللواحق",
+          goal: "أكمل الأطوال والحجج، ثم استنتج الدائرة وطبيعة المثلث من نقاط المستوى المركب.",
+          preset: mathGeometryComplexPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mathGeometryComplexPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "25252525-2525-4525-9525-252525252525",
+            code: "COMPLEX_NUMBERS",
+            name: "الأعداد المركبة",
+            slug: "complex-numbers",
+          },
+          learningTarget: {
+            id: "26262626-2626-4626-9626-262626262626",
+            code: "COMPLEX_NUMBER_MANIPULATION",
+            name: "التعامل مع الأعداد المركبة",
+            slug: "complex-number-manipulation",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "27272727-2727-4727-9727-272727272727",
+          toolId: "23232323-2323-4323-9323-232323232323",
+          title: "اقرأ متجهة وترجمة من فروق اللواحق",
+          goal: "احسب zB-zA و zC-zB، ثم استنتج الاستقامية وصورة B بترجمة.",
+          preset: mathGeometryComplexPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mathGeometryComplexPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "25252525-2525-4525-9525-252525252525",
+            code: "COMPLEX_NUMBERS",
+            name: "الأعداد المركبة",
+            slug: "complex-numbers",
+          },
+          learningTarget: {
+            id: "26262626-2626-4626-9626-262626262626",
+            code: "COMPLEX_NUMBER_MANIPULATION",
+            name: "التعامل مع الأعداد المركبة",
+            slug: "complex-number-manipulation",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "physics-experiment-graphs": {
+    tool: playwrightTestLabTools.data[4],
+    missions: [
+      {
+        mission: {
+          id: "29292929-2929-4929-9929-292929292929",
+          toolId: "28282828-2828-4828-9828-282828282828",
+          title: "استخرج ثابت الزمن من منحنى RC",
+          goal: "اقرأ القيمة النهائية و0.63E من منحنى الشحن ثم استنتج ثابت الزمن τ.",
+          preset: physicsExperimentGraphPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: physicsExperimentGraphPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "2a2a2a2a-2a2a-4a2a-9a2a-2a2a2a2a2a2a",
+            code: "RC_RL_CIRCUITS",
+            name: "دارات RC و RL",
+            slug: "rc-rl-circuits",
+          },
+          learningTarget: {
+            id: "2b2b2b2b-2b2b-4b2b-9b2b-2b2b2b2b2b2b",
+            code: "CIRCUIT_TRANSIENT_ANALYSIS",
+            name: "تحليل الدارات الانتقالية",
+            slug: "circuit-transient-analysis",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "2c2c2c2c-2c2c-4c2c-9c2c-2c2c2c2c2c2c",
+          toolId: "28282828-2828-4828-9828-282828282828",
+          title: "اقرأ التسارع من منحنى السرعة",
+          goal: "استعمل v(t) لاستخراج السرعة الابتدائية والميل ثم حدد طبيعة الحركة.",
+          preset: physicsExperimentGraphPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: physicsExperimentGraphPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "2d2d2d2d-2d2d-4d2d-9d2d-2d2d2d2d2d2d",
+            code: "MECHANICS",
+            name: "الميكانيك",
+            slug: "mechanics",
+          },
+          learningTarget: {
+            id: "2e2e2e2e-2e2e-4e2e-9e2e-2e2e2e2e2e2e",
+            code: "MECHANICS_REASONING",
+            name: "الاستدلال في الميكانيك",
+            slug: "mechanics-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "physics-circuits-workbench": {
+    tool: playwrightTestLabTools.data[5],
+    missions: [
+      {
+        mission: {
+          id: "31313131-3131-4131-9131-313131313131",
+          toolId: "30303030-3030-4030-9030-303030303030",
+          title: "احسب سعة مكثفة من τ في دارة RC",
+          goal: "سمّ عناصر دارة RC، حوّل ثابت الزمن، ثم احسب سعة المكثفة بوحدة صحيحة.",
+          preset: physicsCircuitsWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              physicsCircuitsWorkbenchPresets[0].expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "2a2a2a2a-2a2a-4a2a-9a2a-2a2a2a2a2a2a",
+            code: "RC_RL_CIRCUITS",
+            name: "دارات RC و RL",
+            slug: "rc-rl-circuits",
+          },
+          learningTarget: {
+            id: "2b2b2b2b-2b2b-4b2b-9b2b-2b2b2b2b2b2b",
+            code: "CIRCUIT_TRANSIENT_ANALYSIS",
+            name: "تحليل الدارات الانتقالية",
+            slug: "circuit-transient-analysis",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "32323232-3232-4232-9232-323232323232",
+          toolId: "30303030-3030-4030-9030-303030303030",
+          title: "استخرج معامل تحريض وشيعة من τ في دارة RL",
+          goal: "حدد عناصر دارة RL، استعمل العلاقة τ=L/R، ثم اكتب L بوحدة الهنري.",
+          preset: physicsCircuitsWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              physicsCircuitsWorkbenchPresets[1].expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "2a2a2a2a-2a2a-4a2a-9a2a-2a2a2a2a2a2a",
+            code: "RC_RL_CIRCUITS",
+            name: "دارات RC و RL",
+            slug: "rc-rl-circuits",
+          },
+          learningTarget: {
+            id: "2b2b2b2b-2b2b-4b2b-9b2b-2b2b2b2b2b2b",
+            code: "CIRCUIT_TRANSIENT_ANALYSIS",
+            name: "تحليل الدارات الانتقالية",
+            slug: "circuit-transient-analysis",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "physics-mechanics-workbench": {
+    tool: playwrightTestLabTools.data[6],
+    missions: [
+      {
+        mission: {
+          id: "34343434-3434-4434-9434-343434343434",
+          toolId: "33333333-3333-4333-9333-333333333333",
+          title: "استخرج محصلة القوى من منحنى السرعة",
+          goal: "سمّ قوى جسم على مستوى مائل، اقرأ التسارع من v(t)، ثم طبق ΣF=m.a.",
+          preset: physicsMechanicsWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              physicsMechanicsWorkbenchPresets[0].expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "2d2d2d2d-2d2d-4d2d-9d2d-2d2d2d2d2d2d",
+            code: "MECHANICS",
+            name: "الميكانيك",
+            slug: "mechanics",
+          },
+          learningTarget: {
+            id: "2e2e2e2e-2e2e-4e2e-9e2e-2e2e2e2e2e2e",
+            code: "MECHANICS_REASONING",
+            name: "الاستدلال في الميكانيك",
+            slug: "mechanics-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "35353535-3535-4535-9535-353535353535",
+          toolId: "33333333-3333-4333-9333-333333333333",
+          title: "احسب صلابة نابض من دور الاهتزاز",
+          goal: "اقرأ الدور من x(t)، استعمل علاقة النواس المرن، ثم احسب k بوحدة N/m.",
+          preset: physicsMechanicsWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              physicsMechanicsWorkbenchPresets[1].expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "2d2d2d2d-2d2d-4d2d-9d2d-2d2d2d2d2d2d",
+            code: "MECHANICS",
+            name: "الميكانيك",
+            slug: "mechanics",
+          },
+          learningTarget: {
+            id: "2e2e2e2e-2e2e-4e2e-9e2e-2e2e2e2e2e2e",
+            code: "MECHANICS_REASONING",
+            name: "الاستدلال في الميكانيك",
+            slug: "mechanics-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "physics-chemistry-reaction-workbench": {
+    tool: playwrightTestLabTools.data[7],
+    missions: [
+      {
+        mission: {
+          id: "37373737-3737-4737-9737-373737373737",
+          toolId: "36363636-3636-4636-9636-363636363636",
+          title: "احسب تركيز حمض من منحنى معايرة",
+          goal: "اقرأ حجم التكافؤ من منحنى pH، ثم استعمل علاقة التكافؤ لحساب CA.",
+          preset: physicsChemistryReactionWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              physicsChemistryReactionWorkbenchPresets[0].expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "38383838-3838-4838-9838-383838383838",
+            code: "CHEMICAL_TRANSFORMATIONS",
+            name: "التحولات الكيميائية",
+            slug: "chemical-transformations",
+          },
+          learningTarget: {
+            id: "39393939-3939-4939-9939-393939393939",
+            code: "CHEMICAL_TRANSFORMATION_REASONING",
+            name: "الاستدلال في التحولات الكيميائية",
+            slug: "chemical-transformation-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "3a3a3a3a-3a3a-4a3a-9a3a-3a3a3a3a3a3a",
+          toolId: "36363636-3636-4636-9636-363636363636",
+          title: "أكمل جدول تقدم وحدد المتفاعل المحد",
+          goal: "استعمل معاملات المعادلة لتحديد xmax والمتفاعل المحد وكمية H₂.",
+          preset: physicsChemistryReactionWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              physicsChemistryReactionWorkbenchPresets[1].expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "38383838-3838-4838-9838-383838383838",
+            code: "CHEMICAL_TRANSFORMATIONS",
+            name: "التحولات الكيميائية",
+            slug: "chemical-transformations",
+          },
+          learningTarget: {
+            id: "39393939-3939-4939-9939-393939393939",
+            code: "CHEMICAL_TRANSFORMATION_REASONING",
+            name: "الاستدلال في التحولات الكيميائية",
+            slug: "chemical-transformation-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "dna-to-protein": {
+    tool: playwrightTestLabTools.data[8],
     missions: [
       {
         mission: {
@@ -307,7 +1242,7 @@ export const playwrightTestLabToolMissionsBySlug: Record<
     ],
   },
   "svt-document-workbench": {
-    tool: playwrightTestLabTools.data[2],
+    tool: playwrightTestLabTools.data[9],
     missions: [
       {
         mission: {
@@ -382,7 +1317,7 @@ export const playwrightTestLabToolMissionsBySlug: Record<
     ],
   },
   "svt-experimental-graph-table": {
-    tool: playwrightTestLabTools.data[3],
+    tool: playwrightTestLabTools.data[10],
     missions: [
       {
         mission: {
@@ -453,6 +1388,987 @@ export const playwrightTestLabToolMissionsBySlug: Record<
             name: "شروط النشاط الإنزيمي",
             slug: "enzyme-conditions",
           },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "svt-diagram-labeling-workbench": {
+    tool: playwrightTestLabTools.data[11],
+    missions: [
+      {
+        mission: {
+          id: "3c3c3c3c-3c3c-4c3c-9c3c-3c3c3c3c3c3c",
+          toolId: "3b3b3b3b-3b3b-4b3b-9b3b-3b3b3b3b3b3b",
+          title: "سمّ موقعا فعالا واربطه بوظيفة الإنزيم",
+          goal: "أدخل تسميات الرسم ثم اكتب خلاصة عن التكامل بين الموقع الفعال والركيزة.",
+          preset: svtDiagramLabelingWorkbenchPresets[0],
+          exitCheck: {
+            kind: "DIAGRAM_LABELS",
+            targets: svtDiagramLabelingWorkbenchPresets[0].diagram!.targets,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "ffffffff-ffff-4fff-ffff-ffffffffffff",
+            code: "PROTEIN_SYNTHESIS",
+            name: "تركيب البروتين",
+            slug: "protein-synthesis",
+          },
+          learningTarget: {
+            id: "dddddddd-dddd-4ddd-dddd-dddddddddddd",
+            code: "PROTEIN_FUNCTION_REASONING",
+            name: "الاستدلال في البروتينات",
+            slug: "protein-function-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "3d3d3d3d-3d3d-4d3d-9d3d-3d3d3d3d3d3d",
+          toolId: "3b3b3b3b-3b3b-4b3b-9b3b-3b3b3b3b3b3b",
+          title: "سمّ بلاستيدة خضراء واربط البنية بالتركيب الضوئي",
+          goal: "حدد التيلاكويد والغرانا والستروما ثم اربط البنية بمكان حدوث التفاعلات.",
+          preset: svtDiagramLabelingWorkbenchPresets[1],
+          exitCheck: {
+            kind: "DIAGRAM_LABELS",
+            targets: svtDiagramLabelingWorkbenchPresets[1].diagram!.targets,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "3e3e3e3e-3e3e-4e3e-9e3e-3e3e3e3e3e3e",
+            code: "PHOTOSYNTHESIS",
+            name: "التركيب الضوئي",
+            slug: "photosynthesis",
+          },
+          learningTarget: {
+            id: "3f3f3f3f-3f3f-4f3f-9f3f-3f3f3f3f3f3f",
+            code: "BIOLOGICAL_DATA_INTERPRETATION",
+            name: "تفسير المعطيات البيولوجية",
+            slug: "biological-data-interpretation",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "svt-energy-metabolism-workbench": {
+    tool: playwrightTestLabTools.data[12],
+    missions: [
+      {
+        mission: {
+          id: "41414141-4141-4141-9141-414141414141",
+          toolId: "40404040-4040-4040-9040-404040404040",
+          title: "حلل انطلاق O₂ حسب شدة الإضاءة",
+          goal: "اقرأ القيم من المنحنى ثم استنتج دور الضوء وحدود التشبع.",
+          preset: svtEnergyMetabolismWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              svtEnergyMetabolismWorkbenchPresets[0].expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "3e3e3e3e-3e3e-4e3e-9e3e-3e3e3e3e3e3e",
+            code: "PHOTOSYNTHESIS",
+            name: "التركيب الضوئي",
+            slug: "photosynthesis",
+          },
+          learningTarget: {
+            id: "3f3f3f3f-3f3f-4f3f-9f3f-3f3f3f3f3f3f",
+            code: "BIOLOGICAL_DATA_INTERPRETATION",
+            name: "تفسير المعطيات البيولوجية",
+            slug: "biological-data-interpretation",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "42424242-4242-4242-9242-424242424242",
+          toolId: "40404040-4040-4040-9040-404040404040",
+          title: "قارن مردود ATP بين التنفس والتخمر",
+          goal: "أكمل جدول المقارنة ثم اربط وجود O₂ بالمردود الطاقوي.",
+          preset: svtEnergyMetabolismWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: svtEnergyMetabolismWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "43434343-4343-4343-9343-434343434343",
+            code: "RESPIRATION_FERMENTATION",
+            name: "التنفس والتخمر",
+            slug: "respiration-fermentation",
+          },
+          learningTarget: {
+            id: "3f3f3f3f-3f3f-4f3f-9f3f-3f3f3f3f3f3f",
+            code: "BIOLOGICAL_DATA_INTERPRETATION",
+            name: "تفسير المعطيات البيولوجية",
+            slug: "biological-data-interpretation",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "svt-nervous-immune-response-workbench": {
+    tool: playwrightTestLabTools.data[13],
+    missions: [
+      {
+        mission: {
+          id: "45454545-4545-4545-9545-454545454545",
+          toolId: "44444444-4444-4444-9444-444444444444",
+          title: "سمّ قوسا انعكاسية وفسر اتجاه السيالة",
+          goal: "حدد عناصر المسار العصبي ثم اربطها باتجاه السيالة والاستجابة.",
+          preset: svtNervousImmuneResponseWorkbenchPresets[0],
+          exitCheck: {
+            kind: "DIAGRAM_LABELS",
+            targets:
+              svtNervousImmuneResponseWorkbenchPresets[0].diagram!.targets,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "46464646-4646-4646-9646-464646464646",
+            code: "NERVOUS_COMMUNICATION",
+            name: "الاتصال العصبي",
+            slug: "nervous-communication",
+          },
+          learningTarget: {
+            id: "abababab-abab-4aba-abab-abababababab",
+            code: "DOCUMENT_ANALYSIS",
+            name: "تحليل الوثائق",
+            slug: "document-analysis",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "47474747-4747-4747-9747-474747474747",
+          toolId: "44444444-4444-4444-9444-444444444444",
+          title: "رتب سلسلة الاستجابة المناعية الخلطية",
+          goal: "سمّ مولد الضد والخلايا اللمفاوية ثم اربطها بإنتاج الأجسام المضادة.",
+          preset: svtNervousImmuneResponseWorkbenchPresets[1],
+          exitCheck: {
+            kind: "DIAGRAM_LABELS",
+            targets:
+              svtNervousImmuneResponseWorkbenchPresets[1].diagram!.targets,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "48484848-4848-4848-9848-484848484848",
+            code: "IMMUNITY",
+            name: "المناعة",
+            slug: "immunity",
+          },
+          learningTarget: {
+            id: "49494949-4949-4949-9949-494949494949",
+            code: "IMMUNITY_REASONING",
+            name: "الاستدلال في المناعة",
+            slug: "immunity-reasoning",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "svt-tectonics-workbench": {
+    tool: playwrightTestLabTools.data[14],
+    missions: [
+      {
+        mission: {
+          id: "4b4b4b4b-4b4b-4b4b-9b4b-4b4b4b4b4b4b",
+          toolId: "4a4a4a4a-4a4a-4a4a-9a4a-4a4a4a4a4a4a",
+          title: "فسر مقطع اندساس من بؤر زلزالية",
+          goal: "سمّ عناصر المقطع ثم استنتج حركة الاندساس من مستوى بنيوف والخندق.",
+          preset: svtTectonicsWorkbenchPresets[0],
+          exitCheck: {
+            kind: "DIAGRAM_LABELS",
+            targets: svtTectonicsWorkbenchPresets[0].diagram!.targets,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "4c4c4c4c-4c4c-4c4c-9c4c-4c4c4c4c4c4c",
+            code: "TECTONIC_INTERPRETATION",
+            name: "التفسير التكتوني",
+            slug: "tectonic-interpretation",
+          },
+          learningTarget: {
+            id: "4d4d4d4d-4d4d-4d4d-9d4d-4d4d4d4d4d4d",
+            code: "GEOLOGICAL_INTERPRETATION",
+            name: "التفسير الجيولوجي",
+            slug: "geological-interpretation",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "4e4e4e4e-4e4e-4e4e-9e4e-4e4e4e4e4e4e",
+          toolId: "4a4a4a4a-4a4a-4a4a-9a4a-4a4a4a4a4a4a",
+          title: "احسب سرعة اتساع عند ذروة محيطية",
+          goal: "استعمل المسافة والعمر لحساب سرعة الاتساع واستنتاج التباعد.",
+          preset: svtTectonicsWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              svtTectonicsWorkbenchPresets[1].expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "4f4f4f4f-4f4f-4f4f-9f4f-4f4f4f4f4f4f",
+            code: "PLATE_ACTIVITY",
+            name: "نشاط الصفائح",
+            slug: "plate-activity",
+          },
+          learningTarget: {
+            id: "4d4d4d4d-4d4d-4d4d-9d4d-4d4d4d4d4d4d",
+            code: "GEOLOGICAL_INTERPRETATION",
+            name: "التفسير الجيولوجي",
+            slug: "geological-interpretation",
+          },
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-civil-beam-statics": {
+    tool: playwrightTestLabTools.data[15],
+    missions: [
+      {
+        mission: {
+          id: "51515151-5151-4151-9151-515151515151",
+          toolId: "50505050-5050-4050-9050-505050505050",
+          title: "احسب ردود الأفعال لجائزة بسيطة",
+          goal: "سمّ المساند والحمل ثم استعمل التوازن لحساب RA وRB.",
+          preset: civilBeamStaticsWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              civilBeamStaticsWorkbenchPresets[0].expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "52525252-5252-4252-9252-525252525252",
+            code: "STRENGTH_OF_MATERIALS",
+            name: "Résistance des matériaux",
+            slug: "strength-of-materials",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "53535353-5353-4353-9353-535353535353",
+          toolId: "50505050-5050-4050-9050-505050505050",
+          title: "استخرج القص والعزم الأعظميين في كابولي",
+          goal: "اقرأ الحمل الموزع ثم احسب Vmax وMmax عند التثبيت.",
+          preset: civilBeamStaticsWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              civilBeamStaticsWorkbenchPresets[1].expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "54545454-5454-4454-9454-545454545454",
+            code: "SIMPLE_BENDING",
+            name: "Flexion simple",
+            slug: "simple-bending",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-civil-structures-materials": {
+    tool: playwrightTestLabTools.data[16],
+    missions: [
+      {
+        mission: {
+          id: "56565656-5656-4656-9656-565656565656",
+          toolId: "55555555-5555-4555-9555-555555555555",
+          title: "احسب مساحة تسليح الشد",
+          goal: "اقرأ مقطع خرسانة مسلحة وجدول القضبان ثم احسب As.",
+          preset: civilStructuresMaterialsWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              civilStructuresMaterialsWorkbenchPresets[0].expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "57575757-5757-4757-9757-575757575757",
+            code: "REINFORCED_CONCRETE",
+            name: "Béton armé",
+            slug: "reinforced-concrete",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "58585858-5858-4858-9858-585858585858",
+          toolId: "55555555-5555-4555-9555-555555555555",
+          title: "تحقق إجهاد مادة من قوة ومقطع",
+          goal: "حوّل أبعاد المقطع، احسب σ=N/A، ثم قارنها بالإجهاد المسموح.",
+          preset: civilStructuresMaterialsWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              civilStructuresMaterialsWorkbenchPresets[1].expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "59595959-5959-4959-9959-595959595959",
+            code: "APPLIED_MECHANICS_TESTS",
+            name: "Mécanique appliquée / essais",
+            slug: "applied-mechanics-tests",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-civil-technical-sheet": {
+    tool: playwrightTestLabTools.data[17],
+    missions: [
+      {
+        mission: {
+          id: "5b5b5b5b-5b5b-4b5b-9b5b-5b5b5b5b5b5b",
+          toolId: "5a5a5a5a-5a5a-4a5a-9a5a-5a5a5a5a5a5a",
+          title: "احسب كمية خرسانة من بطاقة تقنية",
+          goal: "استخرج أبعاد أساس شريطي ثم احسب حجم الخرسانة المطلوب.",
+          preset: civilTechnicalSheetWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              civilTechnicalSheetWorkbenchPresets[0].expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "5c5c5c5c-5c5c-4c5c-9c5c-5c5c5c5c5c5c",
+            code: "BUILDING_STRUCTURE",
+            name: "Bâtiment / structure du bâtiment",
+            slug: "building-structure",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "5d5d5d5d-5d5d-4d5d-9d5d-5d5d5d5d5d5d",
+          toolId: "5a5a5a5a-5a5a-4a5a-9a5a-5a5a5a5a5a5a",
+          title: "رتب مراحل إنجاز أساس في ملف الإجابة",
+          goal: "أكمل جدول العمليات من التوقيع إلى الصب حسب منطق الإنجاز.",
+          preset: civilTechnicalSheetWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: civilTechnicalSheetWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "5c5c5c5c-5c5c-4c5c-9c5c-5c5c5c5c5c5c",
+            code: "BUILDING_STRUCTURE",
+            name: "Bâtiment / structure du bâtiment",
+            slug: "building-structure",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-electrical-control-logic": {
+    tool: playwrightTestLabTools.data[18],
+    missions: [
+      {
+        mission: {
+          id: "61616161-6161-4161-9161-616161616161",
+          toolId: "60606060-6060-4060-9060-606060606060",
+          title: "أكمل جدول صدق تشغيل محرك بشرط أمان",
+          goal: "استعمل العلاقة KM=M.S لإكمال جدول الصدق وتفسير شرط الأمان.",
+          preset: electricalControlLogicWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              electricalControlLogicWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "62626262-6262-4262-9262-626262626262",
+            code: "SEQUENTIAL_LOGIC",
+            name: "Logique séquentielle",
+            slug: "sequential-logic",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "63636363-6363-4363-9363-636363636363",
+          toolId: "60606060-6060-4060-9060-606060606060",
+          title: "أكمل GRAFCET أسطوانة دفع ورجوع",
+          goal: "املأ أفعال الخطوات وشروط الانتقال حسب تسلسل dcy ثم A+ ثم A-.",
+          preset: electricalControlLogicWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              electricalControlLogicWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "64646464-6464-4464-9464-646464646464",
+            code: "AUTOMATION_GRAFCET_GEMMA",
+            name: "Automatisation / GRAFCET / GEMMA",
+            slug: "automation-grafcet-gemma",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-electrical-circuits-chronograms": {
+    tool: playwrightTestLabTools.data[19],
+    missions: [
+      {
+        mission: {
+          id: "66666666-6666-4666-9666-666666666666",
+          toolId: "65656565-6565-4565-9565-656565656565",
+          title: "اقرأ دارة مرحل واستنتج حالات الخرج",
+          goal: "سمّ عناصر الدارة ثم أكمل حالات KA وH حسب حالة S.",
+          preset: electricalCircuitsChronogramsWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              electricalCircuitsChronogramsWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "67676767-6767-4767-9767-676767676767",
+            code: "ELECTRICAL_MACHINES_ACTUATORS",
+            name: "Machines électriques / actionneurs",
+            slug: "electrical-machines-actuators",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "68686868-6868-4868-9868-686868686868",
+          toolId: "65656565-6565-4565-9565-656565656565",
+          title: "أكمل كرونوغرام خرج مؤقت TON",
+          goal: "اقرأ دخل المؤقت وزمن الضبط ثم أكمل Q في المجالات الزمنية.",
+          preset: electricalCircuitsChronogramsWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              electricalCircuitsChronogramsWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "64646464-6464-4464-9464-646464646464",
+            code: "AUTOMATION_GRAFCET_GEMMA",
+            name: "Automatisation / GRAFCET / GEMMA",
+            slug: "automation-grafcet-gemma",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-electrical-technical-file": {
+    tool: playwrightTestLabTools.data[20],
+    missions: [
+      {
+        mission: {
+          id: "6a6a6a6a-6a6a-4a6a-9a6a-6a6a6a6a6a6a",
+          toolId: "69696969-6969-4969-9969-696969696969",
+          title: "عرّف مكونات ملف مشغل محرك",
+          goal: "سمّ QF وKM وRT وM ثم أكمل جدول وظيفة كل عنصر.",
+          preset: electricalTechnicalFileWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              electricalTechnicalFileWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "67676767-6767-4767-9767-676767676767",
+            code: "ELECTRICAL_MACHINES_ACTUATORS",
+            name: "Machines électriques / actionneurs",
+            slug: "electrical-machines-actuators",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "6b6b6b6b-6b6b-4b6b-9b6b-6b6b6b6b6b6b",
+          toolId: "69696969-6969-4969-9969-696969696969",
+          title: "احسب تيار محرك واختر عيار الحماية",
+          goal: "استغل بطاقة المحرك لحساب I ثم اختر عيار حماية أعلى مباشرة.",
+          preset: electricalTechnicalFileWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              electricalTechnicalFileWorkbenchPresets[1].expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "67676767-6767-4767-9767-676767676767",
+            code: "ELECTRICAL_MACHINES_ACTUATORS",
+            name: "Machines électriques / actionneurs",
+            slug: "electrical-machines-actuators",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-mechanical-drawing-workbench": {
+    tool: playwrightTestLabTools.data[21],
+    missions: [
+      {
+        mission: {
+          id: "71717171-7171-4171-9171-717171717171",
+          toolId: "70707070-7070-4070-9070-707070707070",
+          title: "اقرأ رسم تجميعي ومدونة قطع",
+          goal: "اربط أرقام القطع بالتعيين والمادة ثم اشرح دور المدونة.",
+          preset: mechanicalDrawingWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mechanicalDrawingWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "72727272-7272-4272-9272-727272727272",
+            code: "FUNCTIONAL_ANALYSIS",
+            name: "Analyse fonctionnelle",
+            slug: "functional-analysis",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "73737373-7373-4373-9373-737373737373",
+          toolId: "70707070-7070-4070-9070-707070707070",
+          title: "أتمم قراءة رسم تعريفي ومقطع",
+          goal: "حدد القطر الوظيفي والسماحة والخشونة والمقطع A-A.",
+          preset: mechanicalDrawingWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: mechanicalDrawingWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "74747474-7474-4474-9474-747474747474",
+            code: "MANUFACTURING_PREPARATION",
+            name: "Préparation de fabrication",
+            slug: "manufacturing-preparation",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-mechanical-mechanism-kinematics": {
+    tool: playwrightTestLabTools.data[22],
+    missions: [
+      {
+        mission: {
+          id: "76767676-7676-4676-9676-767676767676",
+          toolId: "75757575-7575-4575-9575-757575757575",
+          title: "احسب سرعة خرج مخفض تروس",
+          goal: "حدد القائد والمقاد ثم احسب n2 ونسبة التخفيض.",
+          preset: mechanicalMechanismKinematicsWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              mechanicalMechanismKinematicsWorkbenchPresets[0]
+                .expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "77777777-7777-4777-9777-777777777777",
+            code: "MOTION_TRANSMISSION_CONVERSION",
+            name: "Transmission et transformation de mouvement",
+            slug: "motion-transmission-conversion",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "78787878-7878-4878-9878-787878787878",
+          toolId: "75757575-7575-4575-9575-757575757575",
+          title: "احسب إزاحة جريدة مسننة",
+          goal: "ميز تحويل الدوران إلى انتقال ثم احسب إزاحة الجريدة.",
+          preset: mechanicalMechanismKinematicsWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              mechanicalMechanismKinematicsWorkbenchPresets[1]
+                .expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "77777777-7777-4777-9777-777777777777",
+            code: "MOTION_TRANSMISSION_CONVERSION",
+            name: "Transmission et transformation de mouvement",
+            slug: "motion-transmission-conversion",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-mechanical-manufacturing-tolerances": {
+    tool: playwrightTestLabTools.data[23],
+    missions: [
+      {
+        mission: {
+          id: "7a7a7a7a-7a7a-4a7a-9a7a-7a7a7a7a7a7a",
+          toolId: "79797979-7979-4979-9979-797979797979",
+          title: "أكمل ورقة تحضير تصنيع محور",
+          goal: "رتب العمليات واختر الآلة والأداة والمراقبة المناسبة.",
+          preset: mechanicalManufacturingTolerancesWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              mechanicalManufacturingTolerancesWorkbenchPresets[0]
+                .expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "74747474-7474-4474-9474-747474747474",
+            code: "MANUFACTURING_PREPARATION",
+            name: "Préparation de fabrication",
+            slug: "manufacturing-preparation",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "7b7b7b7b-7b7b-4b7b-9b7b-7b7b7b7b7b7b",
+          toolId: "79797979-7979-4979-9979-797979797979",
+          title: "احسب خلوص ملاءمة H7/g6",
+          goal: "استعمل حدود الثقب والعمود لحساب Jmin وJmax ونوع الملاءمة.",
+          preset: mechanicalManufacturingTolerancesWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              mechanicalManufacturingTolerancesWorkbenchPresets[1]
+                .expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "74747474-7474-4474-9474-747474747474",
+            code: "MANUFACTURING_PREPARATION",
+            name: "Préparation de fabrication",
+            slug: "manufacturing-preparation",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-process-reaction-workbench": {
+    tool: playwrightTestLabTools.data[24],
+    missions: [
+      {
+        mission: {
+          id: "81818181-8181-4181-9181-818181818181",
+          toolId: "80808080-8080-4080-9080-808080808080",
+          title: "حلل مخطط أسترة",
+          goal: "حدد عائلات المتفاعلات والنواتج والوسيط الحمضي.",
+          preset: processReactionWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: processReactionWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "82828282-8282-4282-9282-828282828282",
+            code: "OXYGENATED_FUNCTIONS",
+            name: "Fonctions oxygénées",
+            slug: "oxygenated-functions",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "83838383-8383-4383-9383-838383838383",
+          toolId: "80808080-8080-4080-9080-808080808080",
+          title: "اقرأ مخطط بلمرة بولي إستر",
+          goal: "حدد المونوميرات ونوع البلمرة والناتج الثانوي.",
+          preset: processReactionWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells: processReactionWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "84848484-8484-4484-9484-848484848484",
+            code: "POLYMERS",
+            name: "Polymères",
+            slug: "polymers",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-process-material-balance-advancement": {
+    tool: playwrightTestLabTools.data[25],
+    missions: [
+      {
+        mission: {
+          id: "86868686-8686-4686-9686-868686868686",
+          toolId: "85858585-8585-4585-9585-858585858585",
+          title: "احسب كمية وكتلة إستر من المردود",
+          goal: "استعمل R=60% وn0=0.5 mol لحساب كمية وكتلة الإستر.",
+          preset: processMaterialBalanceAdvancementWorkbenchPresets[0],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              processMaterialBalanceAdvancementWorkbenchPresets[0]
+                .expectedMeasurements,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "82828282-8282-4282-9282-828282828282",
+            code: "OXYGENATED_FUNCTIONS",
+            name: "Fonctions oxygénées",
+            slug: "oxygenated-functions",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "87878787-8787-4787-9787-878787878787",
+          toolId: "85858585-8585-4585-9585-858585858585",
+          title: "أكمل جدول تقدم وحدد المتفاعل المحد",
+          goal: "املأ الكميات النهائية وحدد H2 كمتفاعل محد.",
+          preset: processMaterialBalanceAdvancementWorkbenchPresets[1],
+          exitCheck: {
+            kind: "FORMULA_VALUE",
+            expectedMeasurements:
+              processMaterialBalanceAdvancementWorkbenchPresets[1]
+                .expectedMeasurements,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "88888888-8888-4888-9888-888888888888",
+            code: "CHEMICAL_KINETICS",
+            name: "Cinétique chimique",
+            slug: "chemical-kinetics",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+    ],
+  },
+  "technology-process-flow-instrumentation": {
+    tool: playwrightTestLabTools.data[26],
+    missions: [
+      {
+        mission: {
+          id: "8a8a8a8a-8a8a-4a8a-9a8a-8a8a8a8a8a8a",
+          toolId: "89898989-8989-4989-9989-898989898989",
+          title: "اقرأ مخطط جريان تقطير",
+          goal: "سمّ العمود والمكثف والغلاية وتيار التغذية.",
+          preset: processFlowInstrumentationWorkbenchPresets[0],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              processFlowInstrumentationWorkbenchPresets[0].expectedCells,
+          },
+          orderIndex: 1,
+          curriculumNode: {
+            id: "8b8b8b8b-8b8b-4b8b-9b8b-8b8b8b8b8b8b",
+            code: "THERMODYNAMICS",
+            name: "Thermodynamique",
+            slug: "thermodynamics",
+          },
+          learningTarget: null,
+          courseLesson: null,
+          createdAt: "2026-05-13T08:00:00.000Z",
+          updatedAt: "2026-05-13T08:00:00.000Z",
+        },
+        latestAttempt: null,
+        completedAttemptCount: 0,
+      },
+      {
+        mission: {
+          id: "8c8c8c8c-8c8c-4c8c-9c8c-8c8c8c8c8c8c",
+          toolId: "89898989-8989-4989-9989-898989898989",
+          title: "حلل حلقة تحكم في مفاعل",
+          goal: "اربط TT وTIC وTV بمتغير الحرارة وماء التبريد.",
+          preset: processFlowInstrumentationWorkbenchPresets[1],
+          exitCheck: {
+            kind: "TABLE_CELLS",
+            expectedCells:
+              processFlowInstrumentationWorkbenchPresets[1].expectedCells,
+          },
+          orderIndex: 2,
+          curriculumNode: {
+            id: "88888888-8888-4888-9888-888888888888",
+            code: "CHEMICAL_KINETICS",
+            name: "Cinétique chimique",
+            slug: "chemical-kinetics",
+          },
+          learningTarget: null,
           courseLesson: null,
           createdAt: "2026-05-13T08:00:00.000Z",
           updatedAt: "2026-05-13T08:00:00.000Z",

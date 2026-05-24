@@ -68,6 +68,8 @@ function describeExitCheck(exitCheck: Record<string, unknown> | null) {
       return "اختر الأدلة الأساسية واكتب استنتاجا يتضمن العلاقات المطلوبة.";
     case "SVT_EXPERIMENTAL_GRAPH_TABLE":
       return "تحقق من القراءات، الملاحظات، والاستنتاج التجريبي.";
+    case "TABLE_CELLS":
+      return "تحقق من خلايا الجدول أو الشجرة قبل إنهاء المهمة.";
     default:
       return "أنهِ المهمة عندما تستطيع شرح الملاحظة بكلماتك.";
   }

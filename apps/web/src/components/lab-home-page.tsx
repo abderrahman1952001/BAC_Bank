@@ -34,7 +34,8 @@ function getToolStatusPresentation(status: LabTool["status"]) {
 
 function LabToolInstrument({ tool }: { tool: LabTool }) {
   const isDnaTool = tool.id === "dna-to-protein";
-  const isDocumentTool = tool.engineKinds.includes("document-reasoning");
+  const isDocumentTool =
+    tool.subjectSlug === "svt" && tool.engineKinds.includes("document-reasoning");
 
   return (
     <div
