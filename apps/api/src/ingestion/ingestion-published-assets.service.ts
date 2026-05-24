@@ -8,6 +8,13 @@ import { collectReferencedAssetIds } from './ingestion-draft-graph';
 import { cropAssetBuffer } from './ingestion-image-crop';
 import { R2StorageClient } from './r2-storage';
 import { deleteStorageKeysBestEffort } from './storage-cleanup';
+import { resolvePositiveInteger } from '../runtime/runtime-config';
+
+const PUBLISHED_ASSET_PREPARE_CONCURRENCY = resolvePositiveInteger({
+  value: process.env.INGESTION_PUBLISHED_ASSET_CONCURRENCY,
+  fallback: 4,
+  min: 1,
+});
 
 export type PreparedPublishedAsset = {
   assetId: string;
@@ -43,74 +50,84 @@ export class IngestionPublishedAssetsService {
     const uploadedKeys: string[] = [];
 
     try {
-      for (const assetId of collectReferencedAssetIds(input.draft)) {
-        const asset = input.draft.assets.find((entry) => entry.id === assetId);
-
-        if (!asset) {
-          throw new BadRequestException(
-            `Block references missing asset ${assetId}.`,
+      const referencedAssetIds = Array.from(
+        collectReferencedAssetIds(input.draft),
+      );
+      const prepared = await mapWithConcurrency(
+        referencedAssetIds,
+        PUBLISHED_ASSET_PREPARE_CONCURRENCY,
+        async (assetId) => {
+          const asset = input.draft.assets.find(
+            (entry) => entry.id === assetId,
           );
-        }
 
-        const page = await this.prisma.sourcePage.findUnique({
-          where: {
-            id: asset.sourcePageId,
-          },
-          include: {
-            document: {
-              select: {
-                paperSourceId: true,
+          if (!asset) {
+            throw new BadRequestException(
+              `Block references missing asset ${assetId}.`,
+            );
+          }
+
+          const page = await this.prisma.sourcePage.findUnique({
+            where: {
+              id: asset.sourcePageId,
+            },
+            include: {
+              document: {
+                select: {
+                  paperSourceId: true,
+                },
               },
             },
-          },
-        });
+          });
 
-        if (!page || page.document.paperSourceId !== input.paperSourceId) {
-          throw new BadRequestException(
-            `Asset ${asset.id} references an unknown source page.`,
+          if (!page || page.document.paperSourceId !== input.paperSourceId) {
+            throw new BadRequestException(
+              `Asset ${asset.id} references an unknown source page.`,
+            );
+          }
+
+          const pageBuffer = await input.storageClient.getObjectBuffer(
+            page.storageKey,
           );
-        }
+          const cropped = await cropAssetBuffer(pageBuffer, asset);
+          const mediaId = randomUUID();
+          const storageKey = [
+            'published',
+            'assets',
+            `${input.draft.exam.year}`,
+            input.paperId,
+            `${mediaId}.png`,
+          ].join('/');
 
-        const pageBuffer = await input.storageClient.getObjectBuffer(
-          page.storageKey,
-        );
-        const cropped = await cropAssetBuffer(pageBuffer, asset);
-        const mediaId = randomUUID();
-        const storageKey = [
-          'published',
-          'assets',
-          `${input.draft.exam.year}`,
-          input.paperId,
-          `${mediaId}.png`,
-        ].join('/');
+          await input.storageClient.putObject({
+            key: storageKey,
+            body: cropped,
+            contentType: 'image/png',
+            metadata: {
+              sourcePageId: asset.sourcePageId,
+              classification: asset.classification,
+              documentKind: asset.documentKind,
+            },
+          });
+          uploadedKeys.push(storageKey);
 
-        await input.storageClient.putObject({
-          key: storageKey,
-          body: cropped,
-          contentType: 'image/png',
-          metadata: {
-            sourcePageId: asset.sourcePageId,
+          const imageInfo = await sharp(cropped).metadata();
+
+          return {
+            assetId: asset.id,
+            mediaId,
+            storageKey,
+            width: imageInfo.width ?? null,
+            height: imageInfo.height ?? null,
             classification: asset.classification,
-            documentKind: asset.documentKind,
-          },
-        });
-        uploadedKeys.push(storageKey);
-
-        const imageInfo = await sharp(cropped).metadata();
-
-        preparedAssets.push({
-          assetId: asset.id,
-          mediaId,
-          storageKey,
-          width: imageInfo.width ?? null,
-          height: imageInfo.height ?? null,
-          classification: asset.classification,
-          sourcePageId: asset.sourcePageId,
-          cropBox: asset.cropBox,
-          cleanupRequired: asset.cleanupRequired === true,
-          cleanupMasks: asset.cleanupMasks ?? [],
-        });
-      }
+            sourcePageId: asset.sourcePageId,
+            cropBox: asset.cropBox,
+            cleanupRequired: asset.cleanupRequired === true,
+            cleanupMasks: asset.cleanupMasks ?? [],
+          };
+        },
+      );
+      preparedAssets.push(...prepared);
 
       return preparedAssets;
     } catch (error) {
@@ -280,4 +297,45 @@ function readJsonString(metadata: Prisma.JsonValue | null, key: string) {
   return typeof value === 'string' && value.trim().length > 0
     ? value.trim()
     : null;
+}
+
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  concurrency: number,
+  mapper: (item: T) => Promise<R>,
+) {
+  const results = new Array<R>(items.length);
+  const errors = new Array<unknown>(items.length);
+  let nextIndex = 0;
+  let hasError = false;
+
+  async function worker() {
+    while (!hasError) {
+      const index = nextIndex;
+      nextIndex += 1;
+
+      if (index >= items.length) {
+        return;
+      }
+
+      try {
+        results[index] = await mapper(items[index]);
+      } catch (error) {
+        errors[index] = error;
+        hasError = true;
+      }
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, () => worker()),
+  );
+
+  const firstError = errors.find((error) => error !== undefined);
+
+  if (firstError) {
+    throw firstError;
+  }
+
+  return results;
 }

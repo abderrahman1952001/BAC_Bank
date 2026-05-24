@@ -84,6 +84,15 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
 
 - Published Process papers must be changed through published revision drafts,
   not by editing the frozen published job directly.
+- The 2025 normal paper has an active published revision draft
+  `577fd5de-7a7a-46cb-95a2-255858ebad15`. Its source page and revision-crop
+  contact sheets were visually checked. All 48 preserved image blocks in the
+  revision were marked intentionally image-backed because they are reaction
+  schemes, mixed official correction rows, multi-structure amino/peptide
+  panels, thermodynamic diagrams, or calculation regions whose exact source
+  layout is not represented faithfully by the current RDKit molecule renderer.
+  Do not publish this revision until human review confirms the conservative
+  image-backed decisions.
 - The 2024 normal paper has an active published revision draft
   `c7090a79-d185-436b-97d7-f59a5c17d172`. Its three thermodynamics/bond-energy
   source tables were visually checked against the stored page images, corrected
@@ -101,6 +110,49 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
   composition tables were visually checked against stored exam/correction page
   images, deduplicated to one native table block each, and given tight fallback
   crops. Nearby reaction schemes, graphs, and drawn structures remain image-backed.
+- The 2019 normal paper has an active published revision draft
+  `6dfe8079-e38e-41eb-9f18-5f471c3b7f95`. Its existing visually checked native
+  amino-acid panels (`Ala, Tyr, Asp` and `Asn, Glu, Ser`) were preserved, and
+  their source fallback crops were tightened. The other 33 revision image
+  blocks were visually checked against the page/crop contact sheets and marked
+  intentionally image-backed because they are reaction schemes, mixed official
+  correction calculation regions, multi-structure correction panels,
+  thermodynamic diagrams, polymer/peptide panels with source-specific layout,
+  or official correction visuals outside the current RDKit renderer's faithful
+  scope. Do not publish this revision until human review confirms these
+  conservative decisions.
+- The 2018 normal paper has an active published revision draft
+  `eb8c4009-3eb3-4087-ae61-d7588d363237`. Its inherited native
+  `Lys-Ala-Cys-Phe tetrapeptide` chemistry block and four native table blocks
+  were preserved, and their fallback/provenance crops were tightened. The other
+  18 revision image blocks were visually checked against the page/crop contact
+  sheets and marked intentionally image-backed because they are reaction
+  schemes, mixed official correction rows, multi-structure correction panels,
+  thermodynamic diagrams, polymer/peptide panels with source-specific layout,
+  or official correction visuals outside the current renderer's faithful scope.
+  Do not publish this revision until human review confirms these conservative
+  decisions.
+- The 2017 normal paper has an active published revision draft
+  `bcf37ce7-1941-4b6d-8e1f-643bf99cfcef`. Four native table blocks were
+  visually checked against stored exam pages 2, 3, and 6, marked
+  `reviewStatus: "visual_checked"`, and given focused fallback/provenance
+  crops. The existing visually checked RDKit blocks for `Glu-Cys-Ala` and the
+  Glu/Phe/Arg side-chain panel were preserved with focused source crops. The
+  remaining 16 image blocks were visually checked against source page/crop
+  contact sheets and marked intentionally image-backed because they are mixed
+  correction pages, reaction-scheme/calculation regions, graph visuals, or
+  source-specific chemistry panels outside the current renderer's faithful
+  scope.
+- The 2017 makeup paper has an active published revision draft
+  `3eb0f6dd-9e6b-40ee-8b92-e12750be41fa`. Four native table blocks were
+  visually checked against stored exam/correction pages 2, 4, 6, and correction
+  page 2, marked `reviewStatus: "visual_checked"`, and given focused
+  fallback/provenance crops. The remaining 17 image blocks were visually checked
+  against source page/crop contact sheets and marked intentionally image-backed
+  because they are reaction schemes, full or mixed correction pages, graph
+  visuals, or official calculation regions outside the current renderer's
+  faithful scope. One asset-free neon-state table remains native rows without a
+  crop fallback because no source asset is attached in the old draft.
 - The 2014 normal paper has an active published revision draft
   `66f567eb-edf2-4ba3-bfd5-960c1aad8664`. Ten source tables were visually
   checked against stored exam/correction page images and normalized to native
@@ -115,6 +167,15 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
   structure panel on exam page 2 and the materials/tools table on exam page 3.
   The duplicate empty materials/tools table block was removed from the revision
   draft.
+- The 2009 normal paper has an active published revision draft
+  `794247a1-1155-424c-a4f2-a525b01f8264`. Two thermodynamics source tables on
+  exam page 3 were visually checked, marked `reviewStatus: "visual_checked"`,
+  and given focused fallback/provenance crops. The remaining nine image blocks
+  were visually checked against source page/crop contact sheets and marked
+  intentionally image-backed because they are amino-acid/peptide diagrams,
+  correction sheets with marks columns, electrophoresis sketches, reaction or
+  enthalpy schemes, or mixed official calculation visuals outside the current
+  renderer's faithful scope.
 - The 2015 normal paper has an active published revision draft
   `47ad39b4-46a0-4cee-8fd7-29e9cbf9a11d`. Six real source tables were visually
   checked and normalized to native rows with fallback crops: the correction
@@ -133,3 +194,7 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
 - The technology native-rendering audit now reports both raw job totals and
   `effectiveSummaries`, where active published revision drafts replace their
   frozen origin paper for progress accounting.
+- After the 2025, 2019, 2018, 2017, and 2009 revisions were opened and reviewed,
+  remaining effective Process native-render candidates are concentrated in older
+  published years that still need their own revision drafts before safe edits:
+  2008 and 2012.

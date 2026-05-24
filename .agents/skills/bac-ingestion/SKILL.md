@@ -1,6 +1,6 @@
 ---
 name: bac-ingestion
-description: Use when working in the BAC_Bank repo on Algerian BAC paper discovery, canonical source storage, Gemini-assisted extraction, Codex reviewed draft normalization, subject corpus sweeps, crop-review handoff, approval-candidate preparation, or publish-ready ingestion handoff.
+description: Use when working in the BAC_Bank repo on Algerian BAC paper discovery, canonical source storage, Gemini-assisted extraction, Codex reviewed draft normalization, subject corpus sweeps, published premium QA sweeps, crop-review handoff, approval-candidate preparation, or publish-ready ingestion handoff.
 ---
 
 # BAC Ingestion
@@ -398,6 +398,96 @@ The human owns:
 Codex does not need to re-check after the human final preview unless the user
 explicitly asks.
 
+## Post-Publish Premium QA Sweep
+
+Use this mode when the user explicitly asks to audit already published papers
+for premium quality, source faithfulness, stream coverage, or student-facing
+render quality.
+
+This is not the normal final review surface. Publication remains the commit
+point. A substantive issue found in a published paper must be fixed through the
+published revision workflow, not by editing live published rows directly. If the
+issue is in shared rendering code rather than one paper's content, fix the app
+code in its owning module and verify representative published papers before
+calling the sweep complete.
+
+Start each subject sweep with a published-state inventory:
+
+- list published papers by subject, year, session, stream/family, and slug
+- confirm the canonical exam and correction PDFs and source pages still exist
+- reconcile `paper_source_streams`, published variants, and live exam offerings
+  so students see the correct stream/session coverage
+- check for duplicate, missing, stale, or orphaned live offerings and media
+- identify queued or processing ingestion/revision jobs before changing data
+- record any source gap as a blocker rather than guessing from published content
+
+For each published paper, audit source faithfulness and structure:
+
+- compare the published paper against the canonical exam and correction scans
+- confirm every visible prompt, instruction, source document, correction,
+  solution, hint, rubric, and barème row is represented once in the right place
+- verify the hierarchy follows the visible paper: variant, exercise, part,
+  context, question, and subquestion boundaries must match the source
+- keep structural labels in node labels, not duplicated prose, unless the source
+  makes the label part of the content
+- attach rubrics to the most specific scored node available
+- preserve point values, fractional points, multipliers, totals, and official
+  meaning exactly
+- check formulas, units, signs, exponents, indices, tables, diagrams, maps,
+  graphs, quoted text, poems, and dense Arabic/French typography visually
+- fix every safe mismatch through a published revision draft; leave only
+  unresolved source ambiguity as a concrete note with page, node, and issue
+
+Audit assets with a native-first but source-faithful rule:
+
+- native-render ordinary tables, correction tables, truth tables, sign/variation
+  tables, probability trees, and similar structured visuals when the renderer can
+  preserve the source faithfully
+- visually compare native data against the source page or crop and repair wrong
+  rows, cells, labels, signs, arrows, intervals, extrema, totals, and fallback
+  text
+- leave graphs, maps, experimental apparatus, biological/geological diagrams,
+  document images, photos, microscope imagery, and dense multi-panel visuals as
+  image crops unless a reviewed native representation exists
+- make image crops precise and pleasant: include all semantic labels, legends,
+  axes, units, captions, scale marks, and panel markers while excluding obvious
+  unrelated page chrome when safe
+- preserve published human-verified crops unless source comparison or reviewed
+  native rendering clearly proves a better result
+- remove duplicate assets, stale placeholders, stale native suggestions, and
+  non-semantic provider noise when removal does not hide source meaning
+
+Do a premium student-facing presentation pass:
+
+- open the student-facing published paper view, and use draft/revision preview
+  where a fix needs review before republishing
+- check desktop and mobile layouts when practical, especially for long Arabic
+  and French content, formulas, RTL direction, tables, trees, assets, and rubric
+  panels
+- fix ugly or unpremium rendering when source meaning is preserved: typography,
+  font weight, heading level, block splitting, punctuation, spacing, line joins,
+  list structure, formula display, asset sizing, asset placement, captions,
+  overflow, and rubric panel readability
+- do not rewrite exam prompts, invent solution steps, modernize source wording,
+  or add decorative formatting that the app cannot render consistently
+- if the same presentation defect appears across papers, treat it as a renderer
+  or component issue and verify the shared fix against multiple subjects
+
+The per-paper sweep note must include:
+
+- published slug, subject, year, session, streams/family, and offering status
+- source bundle status and pages visually checked
+- content, hierarchy, rubric, point-total, and stream-offering findings
+- native assets confirmed or repaired
+- image crops confirmed, refined, or left with concrete crop debt
+- student-facing routes and viewport sizes checked when practical
+- published revision job or app files changed, if any
+- validation and automated integrity checks run
+- remaining source uncertainty, renderer limitation, or human decision needed
+- confidence: high, medium, or low, with the reason
+- final status: clean, fixed through revision, needs human review, blocked, or
+  skipped
+
 ## Controlled Learning
 
 During a subject sweep, Codex may record lessons learned, but must avoid
@@ -439,9 +529,11 @@ For each processed paper, report:
 - non-native crop debt left for the human
 - source uncertainties or official-source contradictions corrected
 - whether student preview was checked
+- for post-publish sweeps, offering integrity, published revision target, and
+  student-facing rendering result
 - confidence: high, medium, or low, with a short reason
 - final status: imported, approval candidate, needs human crop refinement,
-  blocked, or skipped
+  clean, fixed through revision, needs human review, blocked, or skipped
 
 Stop before publish unless the user explicitly asks to publish.
 

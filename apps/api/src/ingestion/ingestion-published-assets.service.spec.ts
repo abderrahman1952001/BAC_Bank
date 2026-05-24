@@ -195,11 +195,14 @@ describe('IngestionPublishedAssetsService', () => {
       height: 2,
     });
     expect(storageClient.putObject).toHaveBeenCalledTimes(2);
-    const [firstPut] = storageClient.putObject.mock.calls[0] ?? [];
-    expect(firstPut?.key).toMatch(
+    const uploadedForAsset1 = storageClient.putObject.mock.calls
+      .map(([input]) => input)
+      .find((input) => input.metadata?.sourcePageId === 'page-1');
+
+    expect(uploadedForAsset1?.key).toMatch(
       /^published\/assets\/2024\/paper-1\/.+\.png$/,
     );
-    expect(firstPut?.metadata).toEqual({
+    expect(uploadedForAsset1?.metadata).toEqual({
       sourcePageId: 'page-1',
       classification: 'image',
       documentKind: 'EXAM',

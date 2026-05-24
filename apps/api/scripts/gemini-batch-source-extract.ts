@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs';
+import { spawn } from 'child_process';
 import path from 'path';
 import { GoogleGenAI } from '@google/genai';
 import { PrismaClient, SessionType, SourceDocumentKind } from '@prisma/client';
@@ -7,7 +8,7 @@ import {
   R2StorageClient,
 } from '../src/ingestion/r2-storage';
 
-type Mode = 'prepare' | 'submit' | 'status' | 'collect';
+type Mode = 'prepare' | 'submit' | 'status' | 'collect' | 'generate';
 
 type CliOptions = {
   mode: Mode;
@@ -128,6 +129,11 @@ async function main() {
 
   if (options.mode === 'collect') {
     await collectCampaign(options);
+    return;
+  }
+
+  if (options.mode === 'generate') {
+    await generateCampaign(options);
   }
 }
 
@@ -598,6 +604,158 @@ async function collectCampaign(options: CliOptions) {
   );
 }
 
+async function generateCampaign(options: CliOptions) {
+  const repoRoot = await findRepoRoot();
+  const campaignRoot = resolveCampaignRoot(repoRoot, options);
+  const manifest = await readManifest(campaignRoot);
+  const promptContract = await readPromptContract(repoRoot);
+  const apiKey = await readApiKey(repoRoot, options.apiKeyFile);
+
+  manifest.model = options.model;
+  manifest.status = 'SUBMITTED';
+  manifest.batch.state = 'DIRECT_GENERATE_RUNNING';
+  manifest.batch.lastCheckedAt = new Date().toISOString();
+  manifest.updatedAt = manifest.batch.lastCheckedAt;
+  await writeManifest(campaignRoot, manifest);
+
+  for (const item of manifest.items) {
+    if (item.resultStatus === 'SUCCEEDED' && item.result.rawJsonPath) {
+      continue;
+    }
+
+    await generateCampaignItem({
+      apiKey,
+      item,
+      manifest,
+      promptContract,
+      options,
+    });
+    manifest.updatedAt = new Date().toISOString();
+    await writeManifest(campaignRoot, manifest);
+  }
+
+  manifest.status = manifest.items.every(
+    (item) => item.resultStatus === 'SUCCEEDED',
+  )
+    ? 'COLLECTED'
+    : 'FAILED';
+  manifest.batch.state =
+    manifest.status === 'COLLECTED'
+      ? 'DIRECT_GENERATE_SUCCEEDED'
+      : 'DIRECT_GENERATE_FAILED';
+  manifest.batch.lastCheckedAt = new Date().toISOString();
+  manifest.updatedAt = manifest.batch.lastCheckedAt;
+  await writeManifest(campaignRoot, manifest);
+
+  console.log(
+    JSON.stringify(
+      {
+        mode: options.mode,
+        campaignId: manifest.campaignId,
+        state: manifest.batch.state,
+        succeeded: manifest.items.filter(
+          (item) => item.resultStatus === 'SUCCEEDED',
+        ).length,
+        failed: manifest.items.filter((item) => item.resultStatus === 'FAILED')
+          .length,
+        rawModelOutputDir: manifest.directories.rawModelOutput,
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+async function generateCampaignItem(input: {
+  apiKey: string;
+  item: CampaignItem;
+  manifest: CampaignManifest;
+  promptContract: PromptContract;
+  options: CliOptions;
+}) {
+  const { apiKey, item, manifest, promptContract, options } = input;
+  const itemOutputDir = path.join(
+    manifest.directories.rawModelOutput,
+    item.paperSourceSlug,
+  );
+  await fs.mkdir(itemOutputDir, { recursive: true });
+
+  const rawTextPath = path.join(itemOutputDir, 'source-extract.raw.txt');
+  const responsePath = path.join(itemOutputDir, 'source-extract.response.json');
+  const rawJsonPath = path.join(itemOutputDir, 'source-extract.json');
+  const errorPath = path.join(itemOutputDir, 'error.json');
+
+  try {
+    const response = await postGenerateContentWithCurl({
+      apiKey,
+      model: options.model,
+      payload: {
+        systemInstruction: {
+          parts: [{ text: promptContract.systemPrompt }],
+        },
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              {
+                text: fillPerPaperPrompt(
+                  promptContract.perPaperPromptTemplate,
+                  item,
+                ),
+              },
+              { text: 'Exam subject PDF:' },
+              {
+                inlineData: {
+                  mimeType: item.documents.exam.mimeType,
+                  data: await fileToBase64(item.documents.exam.localPath),
+                },
+              },
+              { text: 'Official correction PDF:' },
+              {
+                inlineData: {
+                  mimeType: item.documents.correction.mimeType,
+                  data: await fileToBase64(item.documents.correction.localPath),
+                },
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseJsonSchema: promptContract.responseJsonSchema,
+          temperature: 0,
+          maxOutputTokens: options.maxOutputTokens,
+        },
+      },
+      responsePath,
+    });
+    const rawText = stripJsonFences(extractResponseText(response));
+    await fs.writeFile(rawTextPath, rawText, 'utf8');
+    const parsed = JSON.parse(rawText);
+
+    await writeJson(rawJsonPath, parsed);
+    item.resultStatus = 'SUCCEEDED';
+    item.result.rawJsonPath = rawJsonPath;
+    item.result.rawTextPath = rawTextPath;
+    item.result.responsePath = responsePath;
+    item.result.errorPath = null;
+    item.result.usageMetadata = response.usageMetadata ?? null;
+  } catch (error) {
+    item.resultStatus = 'FAILED';
+    item.result.rawTextPath = await fileExists(rawTextPath)
+      ? rawTextPath
+      : null;
+    item.result.responsePath = await fileExists(responsePath)
+      ? responsePath
+      : null;
+    item.result.rawJsonPath = null;
+    item.result.errorPath = errorPath;
+    await writeJson(errorPath, {
+      message: error instanceof Error ? error.message : String(error),
+    });
+  }
+}
+
 async function uploadItemDocuments(ai: GoogleGenAI, item: CampaignItem) {
   item.documents.exam = await uploadDocumentIfNeeded(
     ai,
@@ -768,6 +926,194 @@ function extractResponseText(response: { candidates?: unknown }) {
     .map((part) => part.text)
     .filter((text): text is string => typeof text === 'string')
     .join('')
+    .trim();
+}
+
+async function fileToBase64(filePath: string) {
+  return (await fs.readFile(filePath)).toString('base64');
+}
+
+async function postGenerateContentWithCurl(input: {
+  apiKey: string;
+  model: string;
+  payload: unknown;
+  responsePath: string;
+}) {
+  const payloadPath = `${input.responsePath}.request.json`;
+  await writeJson(payloadPath, input.payload);
+
+  const maxAttempts = 4;
+  let lastError: Error | null = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    const result = await runCurlGeminiRequest({
+      apiKey: input.apiKey,
+      model: input.model,
+      payloadPath,
+      responsePath: input.responsePath,
+    });
+    const bodyText = await readFileIfExists(input.responsePath);
+    const parsedBody = parseJsonObject(bodyText, input.responsePath);
+
+    if (
+      result.exitCode === 0 &&
+      result.httpStatus >= 200 &&
+      result.httpStatus < 300
+    ) {
+      return parsedBody;
+    }
+
+    const status = result.httpStatus || readErrorStatusCode(parsedBody);
+    lastError = new Error(
+      `Gemini REST request failed status=${status || 'unknown'} exit=${result.exitCode}: ${summarizeGeminiError(parsedBody)}`,
+    );
+
+    if (
+      attempt < maxAttempts &&
+      (status === 429 ||
+        status === 500 ||
+        status === 502 ||
+        status === 503 ||
+        status === 504)
+    ) {
+      const delayMs = 10_000 * attempt;
+      console.warn(
+        `Gemini request retry ${attempt}/${maxAttempts} after ${Math.round(delayMs / 1000)}s: ${lastError.message}`,
+      );
+      await sleep(delayMs);
+      continue;
+    }
+
+    throw lastError;
+  }
+
+  throw lastError ?? new Error('Gemini REST request failed.');
+}
+
+async function runCurlGeminiRequest(input: {
+  apiKey: string;
+  model: string;
+  payloadPath: string;
+  responsePath: string;
+}) {
+  await fs.rm(input.responsePath, { force: true });
+
+  const curl = spawn(
+    'curl',
+    [
+      '-sS',
+      '--fail-with-body',
+      '--connect-timeout',
+      '30',
+      '--max-time',
+      '900',
+      '--config',
+      '-',
+      '--data-binary',
+      `@${input.payloadPath}`,
+      '-o',
+      input.responsePath,
+      '-w',
+      '%{http_code}',
+    ],
+    {
+      stdio: ['pipe', 'pipe', 'pipe'],
+    },
+  );
+  const stdoutChunks: Buffer[] = [];
+  const stderrChunks: Buffer[] = [];
+  curl.stdout.on('data', (chunk) => stdoutChunks.push(Buffer.from(chunk)));
+  curl.stderr.on('data', (chunk) => stderrChunks.push(Buffer.from(chunk)));
+  curl.stdin.end(
+    [
+      `url = "https://generativelanguage.googleapis.com/v1beta/models/${input.model}:generateContent"`,
+      'request = "POST"',
+      'header = "Content-Type: application/json"',
+      `header = "x-goog-api-key: ${input.apiKey}"`,
+    ].join('\n'),
+  );
+  const exitCode = await new Promise<number>((resolve, reject) => {
+    curl.on('error', reject);
+    curl.on('close', (code) => resolve(code ?? 1));
+  });
+  const stdout = Buffer.concat(stdoutChunks).toString('utf8').trim();
+  const stderr = Buffer.concat(stderrChunks).toString('utf8').trim();
+  const httpStatus = Number.parseInt(stdout.match(/(\d{3})$/)?.[1] ?? '0', 10);
+
+  if (stderr && exitCode !== 0) {
+    console.warn(`curl reported: ${stderr.slice(0, 500)}`);
+  }
+
+  return {
+    exitCode,
+    httpStatus: Number.isFinite(httpStatus) ? httpStatus : 0,
+  };
+}
+
+async function sleep(delayMs: number) {
+  return new Promise((resolve) => setTimeout(resolve, delayMs));
+}
+
+async function readFileIfExists(filePath: string) {
+  try {
+    return await fs.readFile(filePath, 'utf8');
+  } catch (error) {
+    if ((error as { code?: string }).code === 'ENOENT') {
+      return '';
+    }
+
+    throw error;
+  }
+}
+
+function parseJsonObject(value: string, sourceLabel: string) {
+  if (!value.trim()) {
+    return {};
+  }
+
+  const parsed = JSON.parse(value) as unknown;
+
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error(`${sourceLabel} did not contain a JSON object.`);
+  }
+
+  return parsed as Record<string, unknown>;
+}
+
+function readErrorStatusCode(value: Record<string, unknown>) {
+  const error = value.error;
+
+  if (!error || typeof error !== 'object' || Array.isArray(error)) {
+    return 0;
+  }
+
+  const code = (error as Record<string, unknown>).code;
+  return typeof code === 'number' ? code : 0;
+}
+
+function summarizeGeminiError(value: Record<string, unknown>) {
+  const error = value.error;
+
+  if (!error || typeof error !== 'object' || Array.isArray(error)) {
+    return JSON.stringify(value).slice(0, 500);
+  }
+
+  const record = error as Record<string, unknown>;
+  const message =
+    typeof record.message === 'string' ? record.message : JSON.stringify(error);
+  return message.slice(0, 500);
+}
+
+function stripJsonFences(value: string) {
+  const trimmed = value.trim();
+
+  if (!trimmed.startsWith('```')) {
+    return trimmed;
+  }
+
+  return trimmed
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/, '')
     .trim();
 }
 
@@ -966,7 +1312,8 @@ function parseMode(value: string): Mode {
     value === 'prepare' ||
     value === 'submit' ||
     value === 'status' ||
-    value === 'collect'
+    value === 'collect' ||
+    value === 'generate'
   ) {
     return value;
   }
@@ -996,6 +1343,7 @@ function printHelpAndExit(): never {
   npm run gemini:batch-source-extract -w @bac-bank/api -- --mode submit --campaign-id math-2024-normal-batch-001
   npm run gemini:batch-source-extract -w @bac-bank/api -- --mode status --campaign-id math-2024-normal-batch-001
   npm run gemini:batch-source-extract -w @bac-bank/api -- --mode collect --campaign-id math-2024-normal-batch-001
+  npm run gemini:batch-source-extract -w @bac-bank/api -- --mode generate --campaign-id math-2024-normal-batch-001
 
 Options:
   --campaign-id <id>        Durable local campaign id.
