@@ -69,6 +69,70 @@ describe('SVT SE curriculum mapping', () => {
     ).toContain('EARTH_STRUCTURE');
   });
 
+  it('maps historical photosynthesis prompts from green plant oxygen and ATP evidence', () => {
+    expect(
+      inferSvtSeCurriculumNodeCodesFromText(
+        'يستمد النبات الأخضر طاقته لبناء مادته العضوية وتضمن الصانعة الخضراء انطلاق الأكسجين وتشكل الـ ATP.',
+      ),
+    ).toContain('PHOTOSYNTHESIS');
+  });
+
+  it('does not map redox-potential energy prompts to nervous communication by generic potential wording', () => {
+    expect(
+      inferSvtSeCurriculumNodeCodesFromText(
+        'يمثل الشكل مخططا لتفاعلات الأكسدة والإرجاع في التيلاكوئيد، وتدل القيم المعطاة بالفولط على كمون الأكسدة والإرجاع خلال تركيب ATP.',
+      ),
+    ).toEqual(['PHOTOSYNTHESIS', 'ENERGY_BALANCE']);
+  });
+
+  it('maps tectonic activity prompts from Andes and explosive volcanism evidence', () => {
+    expect(
+      inferSvtSeCurriculumNodeCodesFromText(
+        'تقع سلسلة جبال الأنديز على طول الساحل الغربي وتتميز بنشاط تكتوني وبركان انفجاري.',
+      ),
+    ).toEqual(['PLATE_ACTIVITY', 'TECTONIC_INTERPRETATION']);
+  });
+
+  it('does not map immunity prompts to nervous communication just because infected cells are neural cells', () => {
+    expect(
+      inferSvtSeCurriculumNodeCodesFromText(
+        'تم حقن فئران بفيروس ممرض يصيب الخلايا العصبية ثم استخلصت لمفاويات محصنة لدراسة تخريب الخلايا المصابة.',
+      ),
+    ).toEqual(['IMMUNITY']);
+  });
+
+  it('does not map nervous immunofluorescence methods to the immunity unit', () => {
+    expect(
+      inferSvtSeCurriculumNodeCodesFromText(
+        'تمثل الوثيقة صورة للغشاء بعد مشبكي، وقد بينت الدراسة بتقنية الفلورة المناعية التي تعتمد على حقن أجسام مضادة مفلورة ترتبط بمركبات غشائية ذات طبيعة بروتينية.',
+      ),
+    ).toEqual(['NERVOUS_COMMUNICATION']);
+  });
+
+  it('does not map protein-synthesis prompts to the enzyme unit by incidental enzyme wording', () => {
+    expect(
+      inferSvtSeCurriculumNodeCodesFromText(
+        'نضع في أنبوب اختبار مستخلصا خلويا يحتوي على ADN ونكليوتيدات ريبية وإنزيم ARN بوليميراز ثم نقيس كمية ARNm المركبة.',
+      ),
+    ).toEqual(['PROTEIN_SYNTHESIS']);
+  });
+
+  it('does not map protein structure prompts to respiration by symptom wording alone', () => {
+    expect(
+      inferSvtSeCurriculumNodeCodesFromText(
+        'فقر الدم المنجلي مرض من أعراضه صعوبة في التنفس، وتبرز الوثيقة علاقة بنية الهيموغلوبين بوظيفته.',
+      ),
+    ).toEqual(['STRUCTURE_FUNCTION']);
+  });
+
+  it('does not map atmosphere-pollution prompts to Earth structure by generic Earth wording', () => {
+    expect(
+      inferSvtMCurriculumNodeCodesFromText(
+        'يتغير سمك طبقة الأوزون في الغلاف الجوي قرب قطبي الكرة الأرضية بفعل تلوث الجو.',
+      ),
+    ).toEqual(['AIR_POLLUTION']);
+  });
+
   it('keeps M stream mappings inside the confirmed M curriculum slice', () => {
     expect(
       filterSvtMCurriculumNodeCodes([

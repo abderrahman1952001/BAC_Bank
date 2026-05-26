@@ -1,6 +1,7 @@
 import {
   FlashcardSourceType,
   FlashcardType,
+  LearningTargetKind,
   Prisma,
   PrismaClient,
 } from '@prisma/client';
@@ -47,6 +48,7 @@ type LearningTargetDefinition = {
   code: string;
   name: string;
   description?: string;
+  kind?: LearningTargetKind;
   displayOrder?: number;
   topicMappings: Array<{
     topicCode: string;
@@ -1223,6 +1225,7 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
       code: 'DOCUMENT_ANALYSIS',
       name: 'تحليل الوثائق',
       description: 'استخراج المعلومات من الوثائق العلمية وربطها بالاستنتاج.',
+      kind: LearningTargetKind.METHOD,
       topicMappings: [
         { topicCode: 'PROTEINS', weight: 0.6 },
         { topicCode: 'PROTEIN_SYNTHESIS', weight: 1, isPrimary: true },
@@ -1242,6 +1245,7 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
       code: 'PROTEIN_FUNCTION_REASONING',
       name: 'الاستدلال في البروتينات',
       description: 'ربط المعلومة الوراثية ببنية البروتين ووظيفته.',
+      kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
       topicMappings: [
         { topicCode: 'PROTEINS', weight: 1, isPrimary: true },
         { topicCode: 'PROTEIN_SYNTHESIS', weight: 1 },
@@ -1251,15 +1255,46 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
       ],
     },
     {
+      code: 'GENETIC_INFORMATION_REASONING',
+      name: 'استدلال المعلومة الوراثية',
+      description:
+        'تتبع انتقال المعلومة الوراثية من ADN إلى ARN ثم إلى سلسلة ببتيدية.',
+      kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
+      topicMappings: [
+        { topicCode: 'PROTEIN_SYNTHESIS', weight: 1, isPrimary: true },
+        { topicCode: 'STRUCTURE_FUNCTION', weight: 0.5 },
+      ],
+    },
+    {
+      code: 'ENZYME_ACTIVITY_REASONING',
+      name: 'استدلال النشاط الإنزيمي',
+      description:
+        'تحليل شروط النشاط الإنزيمي والتخصص النوعي والعوامل المؤثرة فيه.',
+      kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
+      topicMappings: [{ topicCode: 'ENZYMES', weight: 1, isPrimary: true }],
+    },
+    {
       code: 'IMMUNITY_REASONING',
       name: 'الاستدلال في المناعة',
       description: 'تمييز الاستجابة المناعية وربط المراحل بالوثائق والرسوم.',
+      kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
       topicMappings: [{ topicCode: 'IMMUNITY', weight: 1, isPrimary: true }],
+    },
+    {
+      code: 'NERVOUS_COMMUNICATION_REASONING',
+      name: 'استدلال الاتصال العصبي',
+      description:
+        'تفسير الرسائل العصبية والمشابك والكمونات والاندماج العصبي.',
+      kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
+      topicMappings: [
+        { topicCode: 'NERVOUS_COMMUNICATION', weight: 1, isPrimary: true },
+      ],
     },
     {
       code: 'ENERGY_PATHWAY_INTEGRATION',
       name: 'تكامل المسارات الطاقوية',
       description: 'المقارنة بين التركيب الضوئي والتنفس والحصيلة الطاقوية.',
+      kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
       topicMappings: [
         { topicCode: 'ENERGY_TRANSFORMATIONS', weight: 1, isPrimary: true },
         { topicCode: 'PHOTOSYNTHESIS', weight: 1 },
@@ -1272,6 +1307,7 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
       name: 'التفسير الجيولوجي',
       description:
         'قراءة الخرائط والرسوم الجيولوجية وبناء تفسير تكتوني متماسك.',
+      kind: LearningTargetKind.METHOD,
       topicMappings: [
         { topicCode: 'PLATE_TECTONICS', weight: 1, isPrimary: true },
         { topicCode: 'EARTH_STRUCTURE', weight: 0.8 },
@@ -1284,6 +1320,7 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
       name: 'تفسير المعطيات البيولوجية',
       description:
         'قراءة المنحنيات والجداول والصور المجهرية وتوظيفها في البرهان.',
+      kind: LearningTargetKind.VISUAL_INTERPRETATION,
       topicMappings: [
         { topicCode: 'PROTEINS', weight: 0.6 },
         { topicCode: 'ENERGY_TRANSFORMATIONS', weight: 0.6 },
@@ -1291,6 +1328,91 @@ const SUBJECT_LEARNING_TARGETS: Record<string, LearningTargetDefinition[]> = {
         { topicCode: 'IMMUNITY', weight: 0.7 },
         { topicCode: 'PHOTOSYNTHESIS', weight: 0.7 },
         { topicCode: 'RESPIRATION_FERMENTATION', weight: 0.7 },
+      ],
+    },
+    {
+      code: 'EXPERIMENTAL_REASONING',
+      name: 'الاستدلال التجريبي',
+      description:
+        'فهم الغرض من التجربة، ضبط الشروط، تفسير النتائج، واقتراح بروتوكول.',
+      kind: LearningTargetKind.METHOD,
+      topicMappings: [
+        { topicCode: 'PROTEINS', weight: 0.5 },
+        { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.8 },
+        { topicCode: 'STRUCTURE_FUNCTION', weight: 0.7 },
+        { topicCode: 'ENZYMES', weight: 1, isPrimary: true },
+        { topicCode: 'IMMUNITY', weight: 0.7 },
+        { topicCode: 'NERVOUS_COMMUNICATION', weight: 0.7 },
+        { topicCode: 'PHOTOSYNTHESIS', weight: 0.9 },
+        { topicCode: 'RESPIRATION_FERMENTATION', weight: 0.9 },
+      ],
+    },
+    {
+      code: 'DIAGRAM_SCHEMA_LABELING',
+      name: 'قراءة وإنجاز الرسوم التخطيطية',
+      description:
+        'تسمية البيانات، إكمال الرسوم، وتمثيل الآليات أو البنى في مخطط علمي.',
+      kind: LearningTargetKind.VISUAL_INTERPRETATION,
+      topicMappings: [
+        { topicCode: 'PROTEINS', weight: 0.6 },
+        { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.8 },
+        { topicCode: 'STRUCTURE_FUNCTION', weight: 0.8 },
+        { topicCode: 'ENZYMES', weight: 0.8 },
+        { topicCode: 'IMMUNITY', weight: 0.9 },
+        { topicCode: 'NERVOUS_COMMUNICATION', weight: 0.9 },
+        { topicCode: 'PHOTOSYNTHESIS', weight: 0.8 },
+        { topicCode: 'RESPIRATION_FERMENTATION', weight: 0.7 },
+        { topicCode: 'PLATE_TECTONICS', weight: 0.8 },
+      ],
+    },
+    {
+      code: 'MECHANISM_EXPLANATION',
+      name: 'شرح الآليات العلمية',
+      description:
+        'بناء تفسير سببي متسلسل لآلية بيولوجية أو جيولوجية اعتمادا على المعطيات والمعارف.',
+      kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
+      topicMappings: [
+        { topicCode: 'PROTEINS', weight: 0.6 },
+        { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.8 },
+        { topicCode: 'STRUCTURE_FUNCTION', weight: 0.8 },
+        { topicCode: 'ENZYMES', weight: 0.8 },
+        { topicCode: 'IMMUNITY', weight: 0.9 },
+        { topicCode: 'NERVOUS_COMMUNICATION', weight: 0.9 },
+        { topicCode: 'PHOTOSYNTHESIS', weight: 0.8 },
+        { topicCode: 'RESPIRATION_FERMENTATION', weight: 0.8 },
+        { topicCode: 'ENERGY_BALANCE', weight: 0.7 },
+        { topicCode: 'PLATE_ACTIVITY', weight: 0.8 },
+        { topicCode: 'TECTONIC_INTERPRETATION', weight: 0.9 },
+      ],
+    },
+    {
+      code: 'SCIENTIFIC_ARGUMENTATION',
+      name: 'الاستدلال والبرهنة العلمية',
+      description:
+        'تعليل الإجابة، تبرير الاستنتاج، الحكم على فرضية، أو تحرير نص علمي منظم.',
+      kind: LearningTargetKind.BAC_MARKING_PATTERN,
+      topicMappings: [
+        { topicCode: 'PROTEINS', weight: 0.7 },
+        { topicCode: 'ENERGY_TRANSFORMATIONS', weight: 0.7 },
+        { topicCode: 'PLATE_TECTONICS', weight: 0.7 },
+        { topicCode: 'STRUCTURE_FUNCTION', weight: 0.8 },
+        { topicCode: 'IMMUNITY', weight: 0.8 },
+        { topicCode: 'NERVOUS_COMMUNICATION', weight: 0.8 },
+        { topicCode: 'TECTONIC_INTERPRETATION', weight: 0.8 },
+      ],
+    },
+    {
+      code: 'CALCULATION_QUANTIFICATION',
+      name: 'الحساب والتكميم العلمي',
+      description:
+        'حساب قيم أو نسب أو أعداد أو سرعات انطلاقا من معطيات علمية.',
+      kind: LearningTargetKind.FORMULA_APPLICATION,
+      topicMappings: [
+        { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.6 },
+        { topicCode: 'STRUCTURE_FUNCTION', weight: 0.5 },
+        { topicCode: 'ENERGY_BALANCE', weight: 0.8 },
+        { topicCode: 'EARTH_STRUCTURE', weight: 0.7 },
+        { topicCode: 'PLATE_ACTIVITY', weight: 0.8 },
       ],
     },
   ],
@@ -1700,6 +1822,7 @@ const NATURAL_SCIENCES_M_LEARNING_TARGETS: LearningTargetDefinition[] = [
     code: 'DOCUMENT_ANALYSIS',
     name: 'تحليل الوثائق',
     description: 'استخراج المعلومات من الوثائق العلمية وربطها بالاستنتاج.',
+    kind: LearningTargetKind.METHOD,
     topicMappings: [
       { topicCode: 'PROTEINS', weight: 0.6 },
       { topicCode: 'PROTEIN_SYNTHESIS', weight: 1, isPrimary: true },
@@ -1711,6 +1834,7 @@ const NATURAL_SCIENCES_M_LEARNING_TARGETS: LearningTargetDefinition[] = [
     code: 'PROTEIN_FUNCTION_REASONING',
     name: 'الاستدلال في البروتينات',
     description: 'ربط المعلومة الوراثية ببنية البروتين ووظيفته.',
+    kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
     topicMappings: [
       { topicCode: 'PROTEINS', weight: 1, isPrimary: true },
       { topicCode: 'PROTEIN_SYNTHESIS', weight: 1 },
@@ -1718,9 +1842,21 @@ const NATURAL_SCIENCES_M_LEARNING_TARGETS: LearningTargetDefinition[] = [
     ],
   },
   {
+    code: 'GENETIC_INFORMATION_REASONING',
+    name: 'استدلال المعلومة الوراثية',
+    description:
+      'تتبع انتقال المعلومة الوراثية من ADN إلى ARN ثم إلى سلسلة ببتيدية.',
+    kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
+    topicMappings: [
+      { topicCode: 'PROTEIN_SYNTHESIS', weight: 1, isPrimary: true },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 0.5 },
+    ],
+  },
+  {
     code: 'IMMUNITY_REASONING',
     name: 'الاستدلال في المناعة',
     description: 'تمييز الاستجابة المناعية وربط المراحل بالوثائق والرسوم.',
+    kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
     topicMappings: [{ topicCode: 'IMMUNITY', weight: 1, isPrimary: true }],
   },
   {
@@ -1728,9 +1864,72 @@ const NATURAL_SCIENCES_M_LEARNING_TARGETS: LearningTargetDefinition[] = [
     name: 'تفسير المعطيات البيولوجية',
     description:
       'قراءة المنحنيات والجداول والصور المجهرية وتوظيفها في البرهان.',
+    kind: LearningTargetKind.VISUAL_INTERPRETATION,
     topicMappings: [
       { topicCode: 'PROTEINS', weight: 0.6 },
       { topicCode: 'IMMUNITY', weight: 0.7 },
+    ],
+  },
+  {
+    code: 'EXPERIMENTAL_REASONING',
+    name: 'الاستدلال التجريبي',
+    description:
+      'فهم الغرض من التجربة، ضبط الشروط، تفسير النتائج، واقتراح بروتوكول.',
+    kind: LearningTargetKind.METHOD,
+    topicMappings: [
+      { topicCode: 'PROTEINS', weight: 0.6 },
+      { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.8, isPrimary: true },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 0.7 },
+      { topicCode: 'IMMUNITY', weight: 0.7 },
+    ],
+  },
+  {
+    code: 'DIAGRAM_SCHEMA_LABELING',
+    name: 'قراءة وإنجاز الرسوم التخطيطية',
+    description:
+      'تسمية البيانات، إكمال الرسوم، وتمثيل الآليات أو البنى في مخطط علمي.',
+    kind: LearningTargetKind.VISUAL_INTERPRETATION,
+    topicMappings: [
+      { topicCode: 'PROTEINS', weight: 0.6 },
+      { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.8 },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 0.8 },
+      { topicCode: 'IMMUNITY', weight: 0.9, isPrimary: true },
+    ],
+  },
+  {
+    code: 'MECHANISM_EXPLANATION',
+    name: 'شرح الآليات العلمية',
+    description:
+      'بناء تفسير سببي متسلسل لآلية بيولوجية اعتمادا على المعطيات والمعارف.',
+    kind: LearningTargetKind.CONCEPTUAL_UNDERSTANDING,
+    topicMappings: [
+      { topicCode: 'PROTEINS', weight: 0.6 },
+      { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.8 },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 0.8 },
+      { topicCode: 'IMMUNITY', weight: 0.9, isPrimary: true },
+    ],
+  },
+  {
+    code: 'SCIENTIFIC_ARGUMENTATION',
+    name: 'الاستدلال والبرهنة العلمية',
+    description:
+      'تعليل الإجابة، تبرير الاستنتاج، الحكم على فرضية، أو تحرير نص علمي منظم.',
+    kind: LearningTargetKind.BAC_MARKING_PATTERN,
+    topicMappings: [
+      { topicCode: 'PROTEINS', weight: 0.7, isPrimary: true },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 0.8 },
+      { topicCode: 'IMMUNITY', weight: 0.8 },
+    ],
+  },
+  {
+    code: 'CALCULATION_QUANTIFICATION',
+    name: 'الحساب والتكميم العلمي',
+    description:
+      'حساب قيم أو نسب أو أعداد انطلاقا من معطيات علمية.',
+    kind: LearningTargetKind.FORMULA_APPLICATION,
+    topicMappings: [
+      { topicCode: 'PROTEIN_SYNTHESIS', weight: 0.6, isPrimary: true },
+      { topicCode: 'STRUCTURE_FUNCTION', weight: 0.5 },
     ],
   },
   {
@@ -1738,6 +1937,7 @@ const NATURAL_SCIENCES_M_LEARNING_TARGETS: LearningTargetDefinition[] = [
     name: 'تحليل وثائق الإنسان والكوكب',
     description:
       'قراءة وثائق التلوث الجوي والمائي وربطها بأثر الإنسان على الوسط.',
+    kind: LearningTargetKind.METHOD,
     topicMappings: [
       {
         topicCode: 'HUMAN_AND_PLANET_MANAGEMENT',
@@ -7931,6 +8131,7 @@ async function syncSubjectLearningTargets(
           slug: slugFromCode(learningTarget.code),
           description: learningTarget.description ?? null,
           displayOrder: learningTarget.displayOrder ?? index + 1,
+          kind: learningTarget.kind ?? LearningTargetKind.PROCEDURE,
           isAssessable: true,
         },
         create: {
@@ -7941,6 +8142,7 @@ async function syncSubjectLearningTargets(
           slug: slugFromCode(learningTarget.code),
           description: learningTarget.description ?? null,
           displayOrder: learningTarget.displayOrder ?? index + 1,
+          kind: learningTarget.kind ?? LearningTargetKind.PROCEDURE,
           isAssessable: true,
         },
       }),

@@ -53,6 +53,9 @@ const RULES: Rule[] = [
       'التعبير عن المعلومه الوراثيه',
       'الترجمه',
       'الاستنساخ',
+      'arnm',
+      'arn بوليميراز',
+      'adn',
       'الرامزه',
       'الشفره الوراثيه',
       'التسلسل النيكليوتيدي',
@@ -76,6 +79,8 @@ const RULES: Rule[] = [
       'تخصصه الوظيفي',
       'الخصائص الوظيفيه للبروتينات',
       'العلاقه بين البنيه',
+      'علاقه بنيه',
+      'وظيفه البروتين',
       'البنيه والوظيفه',
       'تغير البنيه',
       'rastop',
@@ -152,6 +157,8 @@ const RULES: Rule[] = [
       'غشاء العصبون',
       'المشابك',
       'المشبك',
+      'مشبكي',
+      'بعد مشبكي',
       'التشابك',
       'مبلغات عصبيه',
       'كمون',
@@ -177,13 +184,16 @@ const RULES: Rule[] = [
       'التركيب الضوئي',
       'الطاقه الضوئيه',
       'النباتات الخضراء',
+      'النبات الاخضر',
       'الطحالب الخضراء',
       'الطحالب',
       'الصانعات الخضراء',
       'صانعاتها الخضراء',
       'الصانعه الخضراء',
+      'الصانعه',
       'اليخضور',
       'الكلوروفيل',
+      'انطلاق الاكسجين',
       'المرحله الكيموضوئيه',
       'المرحله الكيموحيويه',
       'rubisco',
@@ -193,6 +203,7 @@ const RULES: Rule[] = [
       'dcmu',
       'تثبيت جزيئه co2',
       'تثبيت جزيئه الـ co2',
+      'تيلاكوئيد',
       'التيلاكوئيدات',
     ],
   },
@@ -226,6 +237,10 @@ const RULES: Rule[] = [
       'تحويل الطاقه',
       'الطاقه الكيميائيه',
       'انتاج الطاقه',
+      'تركيب الـ atp',
+      'تركيب atp',
+      'تشكيل الـ atp',
+      'تشكل الـ atp',
       'atp',
     ],
     minimumMatches: 2,
@@ -249,6 +264,8 @@ const RULES: Rule[] = [
     code: 'PLATE_ACTIVITY',
     patterns: [
       'نشاط الصفائح',
+      'النشاط التكتوني',
+      'نشاط تكتوني',
       'الصفائح التكتونيه',
       'تكتونيه الصفائح',
       'زحزحه الصفائح',
@@ -257,6 +274,7 @@ const RULES: Rule[] = [
       'التمدد',
       'الظهرة',
       'الظهره',
+      'جبال الانديز',
     ],
   },
   {
@@ -266,6 +284,9 @@ const RULES: Rule[] = [
       'البنيات الجيولوجيه',
       'البنيات المرتبطه',
       'السلاسل الجبليه',
+      'جبال الانديز',
+      'البركان الانفجاري',
+      'بركان انفجاري',
       'خندق محيطي',
       'القوس الجزري',
       'الحوض الرسوبي',
@@ -314,6 +335,7 @@ const ENERGY_TOPIC_CODES = new Set<SvtSeCurriculumNodeCode>([
 ]);
 
 const NON_ENZYME_DOMINANT_CODES = new Set<SvtSeCurriculumNodeCode>([
+  'PROTEIN_SYNTHESIS',
   'PHOTOSYNTHESIS',
   'RESPIRATION_FERMENTATION',
 ]);
@@ -354,6 +376,58 @@ export function inferSvtSeCurriculumNodeCodesFromText(
     !hasDedicatedStructureFunctionEvidence(normalizedText)
   ) {
     selected.delete('STRUCTURE_FUNCTION');
+  }
+
+  if (
+    selected.has('PROTEIN_SYNTHESIS') &&
+    (selected.has('NERVOUS_COMMUNICATION') ||
+      selected.has('IMMUNITY') ||
+      selected.has('STRUCTURE_FUNCTION')) &&
+    !hasDedicatedProteinSynthesisEvidence(normalizedText)
+  ) {
+    selected.delete('PROTEIN_SYNTHESIS');
+  }
+
+  if (
+    selected.has('NERVOUS_COMMUNICATION') &&
+    selected.has('IMMUNITY') &&
+    !hasDedicatedNervousCommunicationEvidence(normalizedText)
+  ) {
+    selected.delete('NERVOUS_COMMUNICATION');
+  }
+
+  if (
+    selected.has('IMMUNITY') &&
+    selected.has('NERVOUS_COMMUNICATION') &&
+    !hasDedicatedImmunityEvidence(normalizedText)
+  ) {
+    selected.delete('IMMUNITY');
+  }
+
+  if (
+    selected.has('NERVOUS_COMMUNICATION') &&
+    [...ENERGY_TOPIC_CODES].some((code) => selected.has(code)) &&
+    !hasDedicatedNervousCommunicationEvidence(normalizedText)
+  ) {
+    selected.delete('NERVOUS_COMMUNICATION');
+  }
+
+  if (
+    selected.has('RESPIRATION_FERMENTATION') &&
+    (selected.has('STRUCTURE_FUNCTION') ||
+      selected.has('PROTEIN_SYNTHESIS') ||
+      selected.has('IMMUNITY') ||
+      selected.has('NERVOUS_COMMUNICATION')) &&
+    !hasDedicatedRespirationFermentationEvidence(normalizedText)
+  ) {
+    selected.delete('RESPIRATION_FERMENTATION');
+  }
+
+  if (
+    selected.has('EARTH_STRUCTURE') &&
+    !hasDedicatedEarthStructureEvidence(normalizedText)
+  ) {
+    selected.delete('EARTH_STRUCTURE');
   }
 
   if (!selected.size && normalizedText.includes('بروتين')) {
@@ -425,6 +499,129 @@ function hasDedicatedStructureFunctionEvidence(text: string): boolean {
     'العلاقه بين البنيه',
     'البنيه والوظيفه',
     'rastop',
+  ].some((pattern) => text.includes(normalizeArabicSearchText(pattern)));
+}
+
+function hasDedicatedProteinSynthesisEvidence(text: string): boolean {
+  return [
+    'تركيب البروتين',
+    'تركيبها بتدخل',
+    'تركيب بروتين',
+    'التعبير عن المعلومه الوراثيه',
+    'التعبير عن المعلومة الوراثية',
+    'الترجمه',
+    'الاستنساخ',
+    'arn بوليميراز',
+    'الشفره الوراثيه',
+    'الرامزه',
+    'تتابع النيكليوتيدات',
+    'الثلاثيات النيكليوتيديه',
+    'الريبوزوم',
+    'tetracycline',
+    'oxazolidinone',
+    'gentamicine',
+    'الريسين',
+  ].some((pattern) => text.includes(normalizeArabicSearchText(pattern)));
+}
+
+function hasDedicatedImmunityEvidence(text: string): boolean {
+  return [
+    'المناعه',
+    'استجابه مناعيه',
+    'استجابة مناعية',
+    'الجهاز المناعي',
+    'مستضد',
+    'المستضدي',
+    'لمفاويه',
+    'لمفاويات',
+    'الخلايا التائيه',
+    'lt4',
+    'lt8',
+    'ltc',
+    'vih',
+    'داء فقدان المناعه المكتسبه',
+    'الذات واللاذات',
+    'اللاذات',
+    'التسامح المناعي',
+    'نظام ال abo',
+    'abo',
+    'نقل الدم',
+    'hla',
+    'برفورين',
+    'perforin',
+    'الغرأنزيم',
+    'انترلوكين',
+    'بلعمه',
+    'اناتوكسين',
+    'bacterie',
+    'bacteria',
+  ].some((pattern) => text.includes(normalizeArabicSearchText(pattern)));
+}
+
+function hasDedicatedNervousCommunicationEvidence(text: string): boolean {
+  return [
+    'العصبون',
+    'العصبونات',
+    'الليف العصبي',
+    'غشاء العصبون',
+    'المشابك',
+    'المشبك',
+    'التشابك',
+    'مشبكي',
+    'بعد مشبكي',
+    'مبلغات عصبيه',
+    'كمون عمل',
+    'كمون الراحه',
+    'الاستقطاب',
+    'مشابك تنبيهيه',
+    'مشابك تثبيطيه',
+    'gaba',
+    'glutamate',
+    'الادينوزين',
+    'المورفين',
+  ].some((pattern) => text.includes(normalizeArabicSearchText(pattern)));
+}
+
+function hasDedicatedRespirationFermentationEvidence(text: string): boolean {
+  return [
+    'تنفس خلوي',
+    'الاكسده الخلويه',
+    'الاكسدة الخلوية',
+    'تحلل سكري',
+    'التحلل السكري',
+    'حمض البيروفيك',
+    'البيروفيك',
+    'الغلوكوز',
+    'glucose',
+    'nadh',
+    'nad+',
+    'التخمر',
+    'تخمر',
+    'فطر الخميره',
+    'خلية الخميره',
+    'خليه الخميره',
+    'الميتوكوندري',
+    'الفسفره التاكسديه',
+    'السلسله التنفسيه',
+    '2-dg',
+    'desoxyglucose',
+  ].some((pattern) => text.includes(normalizeArabicSearchText(pattern)));
+}
+
+function hasDedicatedEarthStructureEvidence(text: string): boolean {
+  return [
+    'بنيه وخصائص الكره الارضيه',
+    'بنيه الكره الارضيه',
+    'المعطيات الزلزاليه',
+    'الموجات الزلزاليه',
+    'الزلازل',
+    'سرعه الموجات',
+    'القشره الارضيه',
+    'رداء الكره الارضيه',
+    'نواه الكره الارضيه',
+    'الغلاف الصخري',
+    'الرداء',
+    'النواه',
   ].some((pattern) => text.includes(normalizeArabicSearchText(pattern)));
 }
 
