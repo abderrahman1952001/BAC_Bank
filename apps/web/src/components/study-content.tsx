@@ -28,6 +28,8 @@ import { ExamHierarchyBlock, toAssetUrl } from "@/lib/study-api";
 
 const INLINE_MATH_REGEX = /\$\$([\s\S]+?)\$\$|\$([^\n$]+?)\$|`([^`\n]+?)`/g;
 const INLINE_BOLD_REGEX = /\*\*([^*\n]+?)\*\*/g;
+const KATEX_MISSING_METRICS_WARNING =
+  /^No character metrics for '.+' in style '.+' and mode '.+'$/;
 
 function passthroughLoader({ src }: ImageLoaderProps): string {
   return src;
@@ -102,11 +104,37 @@ function resolveScripturePresentation(
 }
 
 function renderKatexToHtml(latex: string, displayMode: boolean): string {
-  return katex.renderToString(latex, {
-    displayMode,
-    throwOnError: false,
-    strict: "ignore",
-  });
+  const render = () =>
+    katex.renderToString(latex, {
+      displayMode,
+      throwOnError: false,
+      strict: "ignore",
+    });
+
+  if (typeof console === "undefined") {
+    return render();
+  }
+
+  const originalWarn = console.warn;
+
+  console.warn = (...args) => {
+    const [message] = args;
+
+    if (
+      typeof message === "string" &&
+      KATEX_MISSING_METRICS_WARNING.test(message)
+    ) {
+      return;
+    }
+
+    originalWarn(...args);
+  };
+
+  try {
+    return render();
+  } finally {
+    console.warn = originalWarn;
+  }
 }
 
 function normalizeMathDelimiters(text: string): string {

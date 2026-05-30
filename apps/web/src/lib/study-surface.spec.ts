@@ -3,6 +3,7 @@ import {
   buildStudyExercisesFromExam,
   buildStudyExercisesFromSessionExercises,
   canRevealStudyQuestionSolution,
+  formatStudyExerciseDisplayLabel,
 } from "./study-surface";
 import type { ExamResponse, StudySessionResponse } from "./study-api";
 
@@ -149,7 +150,7 @@ describe("study surface helpers", () => {
 
     const [exercise] = buildStudyExercisesFromExam(exam);
 
-    expect(exercise.displayOrder).toBe(2);
+    expect(exercise.displayOrder).toBe(1);
     expect(exercise.totalPoints).toBe(8);
     expect(exercise.contextBlocks).toHaveLength(2);
     expect(exercise.hierarchyNode?.id).toBe("exercise-1");
@@ -160,6 +161,191 @@ describe("study surface helpers", () => {
       "FUNC",
     ]);
     expect(canRevealStudyQuestionSolution(exercise.questions[0])).toBe(true);
+  });
+
+  it("presents top-level parts with leading context as student sections", () => {
+    const exam = {
+      id: "exam-law",
+      paperId: "paper-law",
+      year: 2008,
+      sessionType: "NORMAL",
+      durationMinutes: 210,
+      officialSourceReference: null,
+      stream: {
+        code: "GE",
+        name: "تسيير و اقتصاد",
+      },
+      subject: {
+        code: "LAW",
+        name: "القانون",
+      },
+      selectedSujetNumber: 1,
+      selectedSujetLabel: "الموضوع الأول",
+      availableSujets: [{ sujetNumber: 1, label: "الموضوع الأول" }],
+      selectedVariantCode: "SUJET_1",
+      hierarchy: {
+        variantId: "variant-law",
+        variantCode: "SUJET_1",
+        title: "الموضوع الأول",
+        status: "PUBLISHED",
+        nodeCount: 3,
+        exercises: [
+          {
+            id: "context-root",
+            nodeType: "CONTEXT",
+            orderIndex: 1,
+            label: null,
+            maxPoints: null,
+            status: "PUBLISHED",
+            metadata: null,
+            topics: [],
+            blocks: [
+              {
+                id: "context-root-block",
+                role: "PROMPT",
+                orderIndex: 1,
+                blockType: "PARAGRAPH",
+                textValue: "يشتمل الموضوع على جزأين مستقلين:",
+                data: null,
+                media: null,
+              },
+            ],
+            children: [],
+          },
+          {
+            id: "part-root",
+            nodeType: "PART",
+            orderIndex: 2,
+            label: "الجزء الأول",
+            maxPoints: 16,
+            status: "PUBLISHED",
+            metadata: null,
+            topics: [],
+            blocks: [
+              {
+                id: "part-root-block",
+                role: "PROMPT",
+                orderIndex: 1,
+                blockType: "PARAGRAPH",
+                textValue: "يشتمل هذا الجزء على سؤالين مستقلين:",
+                data: null,
+                media: null,
+              },
+            ],
+            children: [
+              {
+                id: "question-law",
+                nodeType: "QUESTION",
+                orderIndex: 1,
+                label: "السؤال الأول",
+                maxPoints: 10,
+                status: "PUBLISHED",
+                metadata: null,
+                topics: [],
+                blocks: [],
+                children: [],
+              },
+            ],
+          },
+        ],
+      },
+      exerciseCount: 2,
+      exercises: [],
+    } satisfies ExamResponse;
+
+    const [part] = buildStudyExercisesFromExam(exam);
+
+    expect(formatStudyExerciseDisplayLabel(part)).toBe("الجزء الأول");
+    expect(part.displayOrder).toBe(1);
+    expect(part.orderIndex).toBe(2);
+    expect(part.contextBlocks.map((block) => block.textValue)).toEqual([
+      "يشتمل الموضوع على جزأين مستقلين:",
+      "يشتمل هذا الجزء على سؤالين مستقلين:",
+    ]);
+  });
+
+  it("keeps a scored leaf part answerable so its review panels can open", () => {
+    const exam = {
+      id: "exam-law-leaf",
+      paperId: "paper-law-leaf",
+      year: 2008,
+      sessionType: "NORMAL",
+      durationMinutes: 210,
+      officialSourceReference: null,
+      stream: {
+        code: "GE",
+        name: "تسيير و اقتصاد",
+      },
+      subject: {
+        code: "LAW",
+        name: "القانون",
+      },
+      selectedSujetNumber: 1,
+      selectedSujetLabel: "الموضوع الأول",
+      availableSujets: [{ sujetNumber: 1, label: "الموضوع الأول" }],
+      selectedVariantCode: "SUJET_1",
+      hierarchy: {
+        variantId: "variant-law-leaf",
+        variantCode: "SUJET_1",
+        title: "الموضوع الأول",
+        status: "PUBLISHED",
+        nodeCount: 1,
+        exercises: [
+          {
+            id: "part-leaf",
+            nodeType: "PART",
+            orderIndex: 2,
+            label: "الجزء الثاني",
+            maxPoints: 4,
+            status: "PUBLISHED",
+            metadata: null,
+            topics: [],
+            blocks: [
+              {
+                id: "part-leaf-prompt",
+                role: "PROMPT",
+                orderIndex: 1,
+                blockType: "PARAGRAPH",
+                textValue: "اشرح الأركان الموضوعية لعقد البيع.",
+                data: null,
+                media: null,
+              },
+              {
+                id: "part-leaf-solution",
+                role: "SOLUTION",
+                orderIndex: 2,
+                blockType: "PARAGRAPH",
+                textValue: "الأركان الموضوعية لعقد البيع",
+                data: null,
+                media: null,
+              },
+              {
+                id: "part-leaf-rubric",
+                role: "RUBRIC",
+                orderIndex: 3,
+                blockType: "PARAGRAPH",
+                textValue: "كل ركن: 1 نقطة.",
+                data: null,
+                media: null,
+              },
+            ],
+            children: [],
+          },
+        ],
+      },
+      exerciseCount: 1,
+      exercises: [],
+    } satisfies ExamResponse;
+
+    const [part] = buildStudyExercisesFromExam(exam);
+
+    expect(formatStudyExerciseDisplayLabel(part)).toBe("الجزء الثاني");
+    expect(part.questions).toHaveLength(1);
+    expect(part.questions[0]?.id).toBe("part-leaf");
+    expect(part.questions[0]?.promptBlocks).toHaveLength(1);
+    expect(part.questions[0]?.solutionBlocks).toHaveLength(1);
+    expect(part.questions[0]?.rubricBlocks).toHaveLength(1);
+    expect(canRevealStudyQuestionSolution(part.questions[0])).toBe(true);
   });
 
   it("keeps session order when mapping session exercises", () => {

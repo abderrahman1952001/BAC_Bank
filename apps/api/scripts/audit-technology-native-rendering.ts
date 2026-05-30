@@ -159,6 +159,7 @@ type JobAudit = {
   publishedPaperId: string | null;
   isPublishedRevision: boolean;
   supersededByActiveRevision: boolean;
+  supersededByRevision: boolean;
   assets: number;
   placeholderAssets: number;
   imageBlocks: number;
@@ -344,6 +345,7 @@ async function buildAuditReport(prisma: PrismaClient): Promise<AuditReport> {
       .map((job) => job.publishedPaperId)
       .filter((paperId): paperId is string => Boolean(paperId)),
   );
+  const effectiveJobIds = resolveEffectiveJobIds(jobs);
 
   for (const job of jobs.sort(compareJobs)) {
     const subjectCode = asTechnologySubject(job.paperSource.subject.code);
@@ -365,6 +367,8 @@ async function buildAuditReport(prisma: PrismaClient): Promise<AuditReport> {
         Boolean(job.publishedPaperId) &&
         !isPublishedRevisionJob(job) &&
         activeRevisionPublishedPaperIds.has(job.publishedPaperId ?? ''),
+      supersededByRevision:
+        Boolean(job.publishedPaperId) && !effectiveJobIds.has(job.id),
       draft: job.draftJson,
     });
 
@@ -393,7 +397,7 @@ async function buildAuditReport(prisma: PrismaClient): Promise<AuditReport> {
     report.tableBlockDebts.push(...jobAudit.tableBlockDebts);
     report.nativeRendererDebts.push(...jobAudit.nativeRendererDebts);
     addJobToSubjectSummary(report.summaries[subjectCode], jobAudit.job);
-    if (!jobAudit.job.supersededByActiveRevision) {
+    if (!jobAudit.job.supersededByRevision) {
       addJobToSubjectSummary(
         report.effectiveSummaries[subjectCode],
         jobAudit.job,
@@ -421,6 +425,7 @@ function auditJob(input: {
   publishedPaperId: string | null;
   isPublishedRevision: boolean;
   supersededByActiveRevision: boolean;
+  supersededByRevision: boolean;
   draft: unknown;
 }) {
   const draft = asRecord(input.draft) ?? {};
@@ -460,6 +465,7 @@ function auditJob(input: {
     publishedPaperId: input.publishedPaperId,
     isPublishedRevision: input.isPublishedRevision,
     supersededByActiveRevision: input.supersededByActiveRevision,
+    supersededByRevision: input.supersededByRevision,
     assets: assets.length,
     placeholderAssets: assets.filter((asset) =>
       isPlaceholderAsset(
@@ -1243,6 +1249,110 @@ function createSubjectSummaryMap() {
       },
     ]),
   ) as Record<TechnologySubject, SubjectSummary>;
+}
+
+function resolveEffectiveJobIds<
+  TJob extends {
+    id: string;
+    status: string;
+    metadata: unknown;
+    publishedPaperId: string | null;
+    publishedAt?: Date | string | null;
+    updatedAt?: Date | string | null;
+    createdAt?: Date | string | null;
+  },
+>(jobs: TJob[]) {
+  const effectiveJobIds = new Set(jobs.map((job) => job.id));
+  const jobsByPublishedPaperId = new Map<string, TJob[]>();
+
+  for (const job of jobs) {
+    if (!job.publishedPaperId) {
+      continue;
+    }
+
+    const existing = jobsByPublishedPaperId.get(job.publishedPaperId) ?? [];
+    existing.push(job);
+    jobsByPublishedPaperId.set(job.publishedPaperId, existing);
+  }
+
+  for (const group of jobsByPublishedPaperId.values()) {
+    const activeRevisionJobs = group.filter(isActivePublishedRevisionJob);
+
+    if (activeRevisionJobs.length > 0) {
+      for (const job of group) {
+        effectiveJobIds.delete(job.id);
+      }
+
+      for (const job of activeRevisionJobs) {
+        effectiveJobIds.add(job.id);
+      }
+
+      continue;
+    }
+
+    const publishedRevisionJobs = group
+      .filter(isPublishedRevisionJob)
+      .filter((job) => job.status === 'PUBLISHED')
+      .sort(comparePublishedRevisionFreshness);
+
+    if (publishedRevisionJobs.length === 0) {
+      continue;
+    }
+
+    for (const job of group) {
+      effectiveJobIds.delete(job.id);
+    }
+
+    effectiveJobIds.add(publishedRevisionJobs[0].id);
+  }
+
+  return effectiveJobIds;
+}
+
+function comparePublishedRevisionFreshness(
+  left: {
+    id: string;
+    publishedAt?: Date | string | null;
+    updatedAt?: Date | string | null;
+    createdAt?: Date | string | null;
+  },
+  right: {
+    id: string;
+    publishedAt?: Date | string | null;
+    updatedAt?: Date | string | null;
+    createdAt?: Date | string | null;
+  },
+) {
+  return (
+    readJobTimestamp(right) - readJobTimestamp(left) ||
+    left.id.localeCompare(right.id)
+  );
+}
+
+function readJobTimestamp(job: {
+  publishedAt?: Date | string | null;
+  updatedAt?: Date | string | null;
+  createdAt?: Date | string | null;
+}) {
+  return (
+    readDateTime(job.publishedAt) ??
+    readDateTime(job.updatedAt) ??
+    readDateTime(job.createdAt) ??
+    0
+  );
+}
+
+function readDateTime(value: Date | string | null | undefined) {
+  if (value instanceof Date) {
+    return value.getTime();
+  }
+
+  if (typeof value === 'string') {
+    const parsed = Date.parse(value);
+    return Number.isNaN(parsed) ? null : parsed;
+  }
+
+  return null;
 }
 
 function compareJobs(

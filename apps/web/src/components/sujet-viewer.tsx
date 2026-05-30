@@ -28,6 +28,8 @@ import {
 } from "@/lib/study-api";
 import {
   buildStudyExercisesFromExam,
+  formatStudyExerciseCollectionLabel,
+  formatStudyExerciseDisplayLabel,
   type StudyExerciseModel,
 } from "@/lib/study-surface";
 import {
@@ -279,13 +281,15 @@ export function SujetViewer({
         streamCode: exam?.stream.code ?? decodedStreamCode,
         year: exam?.year ?? Number(year),
         sessionType: exam?.sessionType ?? null,
-        title: `دريل التمرين ${exercise.displayOrder} · ${exam?.subject.name ?? ""}`.trim(),
+        title: `دريل ${formatStudyExerciseDisplayLabel(exercise)} · ${
+          exam?.subject.name ?? ""
+        }`.trim(),
       });
 
       router.push(buildStudentTrainingSessionRoute(session.id));
     } catch (error) {
       setStartError(
-        error instanceof Error ? error.message : "تعذر إنشاء دريل لهذا التمرين.",
+        error instanceof Error ? error.message : "تعذر إنشاء دريل لهذا القسم.",
       );
     } finally {
       setStartingDrillExerciseId(null);
@@ -305,6 +309,8 @@ export function SujetViewer({
           <SujetViewerHero
             exam={exam}
             backToLibraryHref={backToLibraryHref}
+            sectionCount={exercises.length}
+            sectionCountLabel={formatStudyExerciseCollectionLabel(exercises)}
             simulationAction={
               <Button
                 type="button"
@@ -327,7 +333,7 @@ export function SujetViewer({
             variantLinks={variantLinks}
             exerciseTabs={exercises.map((exercise) => ({
               id: exercise.id,
-              label: `التمرين ${exercise.displayOrder}`,
+              label: formatStudyExerciseDisplayLabel(exercise),
               isActive: exercise.id === activeExercise.id,
               onSelect: () => handleSelectExercise(exercise.id),
             }))}
@@ -355,7 +361,7 @@ export function SujetViewer({
                   ? "جارٍ إنشاء الدريل..."
                   : drillQuota?.exhausted
                     ? "نفدت حصة الدريل"
-                    : "ابدأ دريل هذا التمرين"}
+                    : "ابدأ دريل هذا القسم"}
               </Button>
             }
             focusAction={

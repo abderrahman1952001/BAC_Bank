@@ -105,6 +105,10 @@ function buildContentSecurityPolicy() {
   if (!isProduction) {
     connectSources.add("http://localhost:3001");
     connectSources.add("http://127.0.0.1:3001");
+    imageSources.add("http://localhost:3001");
+    imageSources.add("http://127.0.0.1:3001");
+    mediaSources.add("http://localhost:3001");
+    mediaSources.add("http://127.0.0.1:3001");
     scriptSources.add("'unsafe-eval'");
   }
 

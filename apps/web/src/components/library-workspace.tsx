@@ -35,6 +35,11 @@ import {
   reconcileLibraryYear,
 } from '@/lib/library-workspace';
 import {
+  buildStudyExercisesFromExam,
+  formatStudyExerciseCollectionLabel,
+  formatStudyExerciseDisplayLabel,
+} from '@/lib/study-surface';
+import {
   STUDENT_LIBRARY_ROUTE,
   buildStudentLibraryExamRouteWithSearch,
   buildStudentTrainingSessionRoute,
@@ -176,6 +181,13 @@ export function LibraryWorkspace({
     initialExam.selectedSujetNumber === selectedSujet.sujetNumber
       ? initialExam
       : null;
+  const selectedExamExercises = useMemo(
+    () => buildStudyExercisesFromExam(selectedExam),
+    [selectedExam],
+  );
+  const selectedExamSectionLabel = formatStudyExerciseCollectionLabel(
+    selectedExamExercises,
+  );
   const loadingExam = Boolean(
     selectedPreviewKey && selectedPreviewKey !== serverPreviewKey,
   );
@@ -266,6 +278,7 @@ export function LibraryWorkspace({
   async function startExerciseDrill(input: {
     exerciseNodeId: string;
     orderIndex: number;
+    label: string;
   }) {
     if (!selectedExam || startingExerciseId || drillQuota?.exhausted) {
       return;
@@ -281,13 +294,13 @@ export function LibraryWorkspace({
         streamCode: selectedExam.stream.code,
         year: selectedExam.year,
         sessionType: selectedExam.sessionType,
-        title: `دريل التمرين ${input.orderIndex} · ${selectedExam.subject.name}`,
+        title: `دريل ${input.label} · ${selectedExam.subject.name}`,
       });
 
       router.push(buildStudentTrainingSessionRoute(session.id));
     } catch (error) {
       setLaunchError(
-        error instanceof Error ? error.message : 'تعذر إنشاء دريل لهذا التمرين.',
+        error instanceof Error ? error.message : 'تعذر إنشاء دريل لهذا القسم.',
       );
     } finally {
       setStartingExerciseId(null);
@@ -527,7 +540,7 @@ export function LibraryWorkspace({
                     <div>
                       <h2>التصفح الرقمي</h2>
                       {selectedSujet ? (
-                        <p>اختر التمرين للدخول مباشرة إلى الموضوع.</p>
+                        <p>اختر القسم للدخول مباشرة إلى الموضوع.</p>
                       ) : null}
                     </div>
                   </div>
@@ -575,7 +588,7 @@ export function LibraryWorkspace({
                             {selectedExam.year}
                           </p>
                           <p className="muted-text">
-                            داخل العرض ستجد تنقلاً بين التمارين وبين الموضوعين
+                            داخل العرض ستجد تنقلاً بين {selectedExamSectionLabel} وبين الموضوعين
                             مباشرة، بدون وضع دراسة منفصل.
                           </p>
                         </div>
@@ -602,14 +615,16 @@ export function LibraryWorkspace({
                       </article>
 
                       <div className="library-exercise-list">
-                        {selectedExam.exercises.map((exercise) => (
+                        {selectedExamExercises.map((exercise) => (
                           <article
                             key={exercise.id}
                             className="library-exercise-card"
                           >
                             <div>
-                              <strong>التمرين {exercise.orderIndex}</strong>
-                              <span>{exercise.questionCount} أسئلة</span>
+                              <strong>
+                                {formatStudyExerciseDisplayLabel(exercise)}
+                              </strong>
+                              <span>{exercise.questions.length} أسئلة</span>
                             </div>
 
                             <div className="library-exercise-actions">
@@ -631,7 +646,7 @@ export function LibraryWorkspace({
                                     exercise: exercise.orderIndex,
                                   })}
                                 >
-                                  افتح التمرين
+                                  افتح القسم
                                 </Link>
                               </Button>
 
@@ -641,8 +656,10 @@ export function LibraryWorkspace({
                                 className="h-10 rounded-full px-5"
                                 onClick={() => {
                                   void startExerciseDrill({
-                                    exerciseNodeId: exercise.id,
+                                    exerciseNodeId: exercise.exerciseNodeId,
                                     orderIndex: exercise.orderIndex,
+                                    label:
+                                      formatStudyExerciseDisplayLabel(exercise),
                                   });
                                 }}
                                 disabled={

@@ -16,6 +16,7 @@ import {
 import { buildStudyQuestionFlashcardDraft } from "@/lib/flashcards-surface";
 import {
   canRevealStudyQuestionSolution,
+  formatStudyExerciseDisplayLabel,
   type StudyExerciseModel,
   type StudyQuestionModel,
 } from "@/lib/study-surface";
@@ -64,21 +65,61 @@ export function formatSujetLabel(
   return trimmedLabel;
 }
 
+function formatStudentSourceReference(reference: string | null | undefined) {
+  const trimmedReference = reference?.trim();
+
+  if (!trimmedReference) {
+    return null;
+  }
+
+  if (
+    /Provider:|PDF key:|Source reference:|MIN_YEAR:/i.test(trimmedReference)
+  ) {
+    const sourceReferenceProvider = trimmedReference.match(
+      /Source reference:\s*Provider:\s*([^|]+)/i,
+    )?.[1];
+    const provider =
+      sourceReferenceProvider ??
+      trimmedReference.match(/Provider:\s*([^|]+)/i)?.[1] ??
+      null;
+    const normalizedProvider = provider?.trim().toLowerCase();
+
+    if (normalizedProvider === "eddirasa") {
+      return "أرشيف إدراسة للموضوع والتصحيح";
+    }
+
+    if (provider?.trim()) {
+      return `أرشيف ${provider.trim()} للموضوع والتصحيح`;
+    }
+
+    return "أرشيف الموضوع والتصحيح";
+  }
+
+  return trimmedReference;
+}
+
 export function SujetViewerHero({
   exam,
   backToLibraryHref,
   backLabel = "العودة إلى المكتبة",
   simulationAction,
+  sectionCount,
+  sectionCountLabel = "التمارين",
 }: {
   exam: ExamResponse;
   backToLibraryHref: string;
   backLabel?: string;
   simulationAction?: ReactNode;
+  sectionCount?: number;
+  sectionCountLabel?: string;
 }) {
   const selectedSujetNumber = exam.selectedSujetNumber ?? 1;
   const sujetLabel = formatSujetLabel(
     selectedSujetNumber,
     exam.selectedSujetLabel,
+  );
+  const sourceReference = formatStudentSourceReference(
+    exam.officialSourceReference,
   );
 
   return (
@@ -96,9 +137,9 @@ export function SujetViewerHero({
             <span className="sujet-browser-title-detail">
               عرض رقمي منظّم للتصفح والتدريب
             </span>
-            {exam.officialSourceReference ? (
+            {sourceReference ? (
               <span className="sujet-browser-source">
-                المصدر: {exam.officialSourceReference}
+                المصدر: {sourceReference}
               </span>
             ) : null}
           </div>
@@ -115,8 +156,8 @@ export function SujetViewerHero({
               <strong>{exam.durationMinutes} دقيقة</strong>
             </div>
             <div className="sujet-browser-meta-item">
-              <span>التمارين</span>
-              <strong>{exam.exerciseCount}</strong>
+              <span>{sectionCountLabel}</span>
+              <strong>{sectionCount ?? exam.exerciseCount}</strong>
             </div>
           </div>
 
@@ -155,6 +196,14 @@ export function SujetViewerNavigator({
       : null;
   const hasVariantLinks = variantLinks.length > 1;
   const hasStepControls = exerciseTabs.length > 1;
+  const activeExerciseLabel =
+    exerciseTabs[activeExerciseIndex]?.label ??
+    `القسم ${Math.min(activeExerciseIndex + 1, exerciseTabs.length)}`;
+  const exerciseNavLabel =
+    exerciseTabs.length > 0 &&
+    exerciseTabs.every((exercise) => exercise.label.trim().startsWith("الجزء"))
+      ? "الأجزاء"
+      : "التمارين";
 
   return (
     <section className="sujet-browser-nav" aria-label="التنقل داخل الموضوع">
@@ -165,8 +214,7 @@ export function SujetViewerNavigator({
       >
         <div className="sujet-browser-progress">
           <span>
-            التمرين {Math.min(activeExerciseIndex + 1, exerciseTabs.length)} من{" "}
-            {exerciseTabs.length}
+            {activeExerciseLabel} من {exerciseTabs.length}
           </span>
           <div className="sujet-browser-progress-track" aria-hidden="true">
             <span style={{ width: `${progress}%` }} />
@@ -199,7 +247,7 @@ export function SujetViewerNavigator({
         ) : null}
 
         <div className="sujet-browser-nav-group sujet-browser-exercise-nav-group">
-          <span className="sujet-browser-nav-label">التمارين</span>
+          <span className="sujet-browser-nav-label">{exerciseNavLabel}</span>
           <div className="sujet-browser-pill-row">
             {exerciseTabs.map((exercise, index) => (
               <Button
@@ -224,7 +272,7 @@ export function SujetViewerNavigator({
         {hasStepControls ? (
           <div
             className="sujet-browser-step-controls"
-            aria-label="التنقل بين التمارين"
+            aria-label="التنقل بين الأقسام"
           >
             <Button
               type="button"
@@ -547,12 +595,28 @@ function SujetViewerStructuredExerciseBody({
     return null;
   }
 
-  const exerciseIntroBlocks = getPromptBlocks(exercise.hierarchyNode.blocks);
   const questionsById = new Map(
     exercise.questions.map((question) => [question.id, question] as const),
   );
+  const rootQuestion = questionsById.get(exercise.hierarchyNode.id) ?? null;
 
   const renderNode = (node: ExamHierarchyNode, depth = 0): ReactNode => {
+    const question = questionsById.get(node.id) ?? null;
+
+    if (question) {
+      return (
+        <SujetViewerStructuredQuestionNode
+          key={node.id}
+          node={node}
+          depth={depth}
+          question={question}
+          revealedSolutions={revealedSolutions}
+          onToggleQuestionSolution={onToggleQuestionSolution}
+          renderChildNode={renderNode}
+        />
+      );
+    }
+
     if (node.nodeType === "PART" || node.nodeType === "EXERCISE") {
       return (
         <SujetViewerStructuredBranchNode
@@ -580,7 +644,7 @@ function SujetViewerStructuredExerciseBody({
           key={node.id}
           node={node}
           depth={depth}
-          question={questionsById.get(node.id) ?? null}
+          question={question}
           revealedSolutions={revealedSolutions}
           onToggleQuestionSolution={onToggleQuestionSolution}
           renderChildNode={renderNode}
@@ -593,14 +657,16 @@ function SujetViewerStructuredExerciseBody({
 
   return (
     <>
-      {exerciseIntroBlocks.length ? (
+      {!rootQuestion && exercise.contextBlocks.length ? (
         <div className="sujet-paper-context">
-          <StudyHierarchyBlocks blocks={exerciseIntroBlocks} />
+          <StudyHierarchyBlocks blocks={exercise.contextBlocks} />
         </div>
       ) : null}
 
       <div className="sujet-paper-structure">
-        {exercise.hierarchyNode.children.map((node) => renderNode(node))}
+        {rootQuestion
+          ? renderNode(exercise.hierarchyNode)
+          : exercise.hierarchyNode.children.map((node) => renderNode(node))}
       </div>
     </>
   );
@@ -662,7 +728,7 @@ function SujetViewerFlatExerciseBody({
                 <SujetQuestionReviewDrawer
                   question={question}
                   flashcardContext={{
-                    exerciseLabel: `التمرين ${exercise.displayOrder}`,
+                    exerciseLabel: formatStudyExerciseDisplayLabel(exercise),
                     subjectName: exercise.sourceExam?.subject.name ?? null,
                     sourceLabel: exercise.sourceExam
                       ? `${exercise.sourceExam.year} · ${formatSessionType(
@@ -697,6 +763,7 @@ export function SujetViewerExercisePaper({
 }) {
   const selectedSujetNumber = exam.selectedSujetNumber ?? 1;
   const exerciseNumber = String(exercise.displayOrder).padStart(2, "0");
+  const exerciseLabel = formatStudyExerciseDisplayLabel(exercise);
 
   return (
     <section className="sujet-paper-shell">
@@ -710,7 +777,7 @@ export function SujetViewerExercisePaper({
             <div className="sujet-paper-exercise-line">
               <span className="sujet-paper-serial">{exerciseNumber}</span>
               <span className="sujet-paper-exercise-label">
-                التمرين {exercise.displayOrder}
+                {exerciseLabel}
               </span>
             </div>
           </div>

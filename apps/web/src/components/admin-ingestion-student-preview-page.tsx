@@ -17,6 +17,8 @@ import type { ExamResponse } from "@/lib/study-api";
 import {
   buildStudyExercisesFromExam,
   canRevealStudyQuestionSolution,
+  formatStudyExerciseCollectionLabel,
+  formatStudyExerciseDisplayLabel,
   type StudyExerciseModel,
 } from "@/lib/study-surface";
 import { buildStudentIngestionPreviewRouteWithSearch } from "@/lib/student-routes";
@@ -209,13 +211,15 @@ export function AdminIngestionStudentPreviewPage({
             exam={exam}
             backToLibraryHref={editorHref}
             backLabel="العودة إلى المسودة"
+            sectionCount={exercises.length}
+            sectionCountLabel={formatStudyExerciseCollectionLabel(exercises)}
           />
 
           <SujetViewerNavigator
             variantLinks={variantLinks}
             exerciseTabs={exercises.map((exercise) => ({
               id: exercise.id,
-              label: `التمرين ${exercise.displayOrder}`,
+              label: formatStudyExerciseDisplayLabel(exercise),
               isActive: exercise.id === activeExercise.id,
               onSelect: () => handleSelectExercise(exercise.id),
             }))}

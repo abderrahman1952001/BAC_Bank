@@ -75,11 +75,11 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
 - Some local raw files are not usable as reviewed extracts:
   `2024.txt` is a Gemini refusal/empty extraction, `2021.txt` has no variants,
   and `2013.txt` is missing locally.
-- `2017 makeup` has a complete source bundle in the DB but no local raw JSON or
-  existing job in this checkout. A readiness report and contact sheets now live
-  under `output/technology-native-render-audit/missing-2017-makeup/`. Leave it
-  for a later extraction or deeper visual reconstruction pass; do not create an
-  empty placeholder job.
+- `2017 makeup` now has a complete source bundle and a published ingestion job
+  in the DB. Treat the old "no existing job" note as stale. There is still no
+  trusted local reviewed/raw artifact to overwrite it with; cleanup should use a
+  published revision draft and visual page/crop inspection, not a placeholder
+  re-import.
 - Do not import a single-variant raw file over a stronger existing two-variant
   draft unless the source pages confirm the exam is genuinely single-variant.
 
@@ -104,10 +104,21 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
   intentionally image-backed because it is a blank student answer-sheet diagram
   rather than a filled standalone flow.
 - The current audit separates intentional image-backed assets from unresolved
-  native-render candidates. After the 2025 FAST prompt marker and the
-  2023/2022/2020/2018/2017/2016/2015 FAST/GRAFCET slices, Mechanical has
-  `33` intentional image-backed assets, `15` trusted `technical_flow`
-  renderers, and `0` remaining native-render candidate assets.
+  native-render candidates. After the 2025 FAST prompt marker, the
+  2023/2022/2020/2018/2017/2016/2015 FAST/GRAFCET slices, and the 2017 makeup
+  visual-fallback pass, Mechanical has `78` intentional image-backed assets and
+  `15` trusted `technical_flow` renderers, with `0` effective native-render
+  candidate assets. Normal-session and makeup candidate cleanup is effectively
+  done for now; any further 2017 makeup improvement should be a deeper
+  structural extraction/review slice, not a page-level native rendering pass.
+- The 2017 makeup paper has a published revision
+  `aab89246-641a-4c2a-b9ba-84b05c31563f`. Its page-level visual-fallback assets
+  were checked with exam and correction contact sheets. All 45 revision image
+  blocks were marked intentionally image-backed because they are full-page or
+  page-level technical sheets containing assembly and definition drawings,
+  nomenclature/resource sheets, machining and tolerance content, FAST/A-0/GRAFCET
+  forms, tables, formulas, and official correction pages rather than isolated
+  renderer-safe diagrams. Preserve these source crops as provenance/fallback.
 - The 2023 normal `SUJET_1` correction FAST block (`s1_q1_a2_fast_corr`) was
   visually checked against correction page 2, tightened to crop
   `{x:880,y:900,width:850,height:690}`, and converted to a native
@@ -177,6 +188,8 @@ Use this alongside `.agents/skills/bac-ingestion/SKILL.md`,
   13, tightened to crops `{x:260,y:1200,width:800,height:1130}` and
   `{x:400,y:420,width:980,height:1660}`, and converted to native
   `technical_flow`.
-- Deferred normal-session years: `2024`, `2021`, and `2013`.
+- Deferred normal-session years: `2024`, `2021`, and `2013`. The separate
+  `2017 makeup` native-candidate slice has been visually audited in a published
+  revision draft and kept image-backed.
 - The remaining validation warnings are expected crop/graph-image fallback debt,
   not structural errors.

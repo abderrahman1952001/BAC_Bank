@@ -87,6 +87,34 @@ function blocksByRoles(
     .sort((a, b) => a.orderIndex - b.orderIndex);
 }
 
+function hasQuestionDescendant(node: ExamHierarchyNode): boolean {
+  return node.children.some(
+    (child) =>
+      child.nodeType === "QUESTION" ||
+      child.nodeType === "SUBQUESTION" ||
+      hasQuestionDescendant(child),
+  );
+}
+
+function isAnswerableLeafBranch(node: ExamHierarchyNode) {
+  if (node.nodeType === "QUESTION" || node.nodeType === "SUBQUESTION") {
+    return false;
+  }
+
+  if (node.children.length || hasQuestionDescendant(node)) {
+    return false;
+  }
+
+  const promptBlocks = blocksByRoles(node.blocks, ["PROMPT", "STEM"]);
+  const reviewBlocks = blocksByRoles(node.blocks, [
+    "SOLUTION",
+    "HINT",
+    "RUBRIC",
+  ]);
+
+  return Boolean(node.maxPoints && promptBlocks.length && reviewBlocks.length);
+}
+
 function collectHierarchyQuestionItems(
   nodes: ExamHierarchyNode[],
   depth = 0,
@@ -107,7 +135,7 @@ function collectHierarchyQuestionItems(
     const isQuestionNode =
       node.nodeType === "QUESTION" || node.nodeType === "SUBQUESTION";
 
-    if (isQuestionNode) {
+    if (isQuestionNode || isAnswerableLeafBranch(node)) {
       items.push({
         id: node.id,
         orderIndex: node.orderIndex,
@@ -166,29 +194,43 @@ export function buildStudyExercisesFromExam(
     stream: exam.stream,
   };
 
-  return exam.hierarchy.exercises.map((exercise, index) => {
-    const questions = collectHierarchyQuestionItems(
-      exercise.children,
-      0,
-      exercise.topics,
-    );
+  const exercises: StudyExerciseModel[] = [];
+  let pendingLeadingContextBlocks: ExamHierarchyBlock[] = [];
+
+  for (const exercise of exam.hierarchy.exercises) {
+    if (exercise.nodeType === "CONTEXT" && !hasQuestionDescendant(exercise)) {
+      pendingLeadingContextBlocks = [
+        ...pendingLeadingContextBlocks,
+        ...getExerciseContextBlocks(exercise),
+      ];
+      continue;
+    }
+
+    const questions = collectHierarchyQuestionItems([exercise], 0, []);
     const totalPoints =
       exercise.maxPoints ??
       questions.reduce((sum, question) => sum + question.points, 0);
 
-    return {
+    exercises.push({
       id: exercise.id,
       exerciseNodeId: exercise.id,
-      orderIndex: exercise.orderIndex || index + 1,
-      displayOrder: exercise.orderIndex || index + 1,
+      orderIndex: exercise.orderIndex || exercises.length + 1,
+      displayOrder: exercises.length + 1,
       title: exercise.label || null,
       totalPoints,
-      contextBlocks: getExerciseContextBlocks(exercise),
+      contextBlocks: [
+        ...pendingLeadingContextBlocks,
+        ...getExerciseContextBlocks(exercise),
+      ],
       hierarchyNode: exercise,
       sourceExam,
       questions,
-    };
-  });
+    });
+
+    pendingLeadingContextBlocks = [];
+  }
+
+  return exercises;
 }
 
 export function buildStudyExercisesFromSessionExercises(
@@ -236,4 +278,35 @@ export function canRevealStudyQuestionSolution(
     question.hintBlocks.length ||
     question.rubricBlocks.length,
   );
+}
+
+export function formatStudyExerciseDisplayLabel(exercise: StudyExerciseModel) {
+  const title = exercise.title?.trim();
+
+  if (title) {
+    return title;
+  }
+
+  if (exercise.hierarchyNode?.nodeType === "PART") {
+    return `الجزء ${exercise.displayOrder}`;
+  }
+
+  if (exercise.hierarchyNode?.nodeType === "CONTEXT") {
+    return `القسم ${exercise.displayOrder}`;
+  }
+
+  return `التمرين ${exercise.displayOrder}`;
+}
+
+export function formatStudyExerciseCollectionLabel(
+  exercises: StudyExerciseModel[],
+) {
+  if (
+    exercises.length > 0 &&
+    exercises.every((exercise) => exercise.hierarchyNode?.nodeType === "PART")
+  ) {
+    return "الأجزاء";
+  }
+
+  return "التمارين";
 }

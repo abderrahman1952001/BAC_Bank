@@ -10,7 +10,7 @@ import { NodeHttpHandler } from '@smithy/node-http-handler';
 import https from 'https';
 
 const DEFAULT_R2_CONNECTION_TIMEOUT_MS = 30_000;
-const DEFAULT_R2_SOCKET_TIMEOUT_MS = 180_000;
+const DEFAULT_R2_SOCKET_TIMEOUT_MS = 600_000;
 
 export type R2Config = {
   accessKeyId: string;
@@ -51,8 +51,14 @@ export class R2StorageClient {
       forcePathStyle: true,
       maxAttempts: 5,
       requestHandler: new NodeHttpHandler({
-        connectionTimeout: DEFAULT_R2_CONNECTION_TIMEOUT_MS,
-        socketTimeout: DEFAULT_R2_SOCKET_TIMEOUT_MS,
+        connectionTimeout: readPositiveIntegerEnv(
+          'R2_CONNECTION_TIMEOUT_MS',
+          DEFAULT_R2_CONNECTION_TIMEOUT_MS,
+        ),
+        socketTimeout: readPositiveIntegerEnv(
+          'R2_SOCKET_TIMEOUT_MS',
+          DEFAULT_R2_SOCKET_TIMEOUT_MS,
+        ),
         httpsAgent: new https.Agent({
           // Cloudflare R2 is reachable here over IPv4, while Node's
           // dual-stack auto-connect path intermittently times out.
@@ -160,4 +166,20 @@ function requiredEnv(value: string | undefined, name: string): string {
   }
 
   return value.trim();
+}
+
+function readPositiveIntegerEnv(name: string, fallback: number) {
+  const raw = process.env[name];
+
+  if (!raw || !raw.trim()) {
+    return fallback;
+  }
+
+  const parsed = Number.parseInt(raw, 10);
+
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return fallback;
+  }
+
+  return parsed;
 }
